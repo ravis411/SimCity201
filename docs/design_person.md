@@ -103,6 +103,10 @@ msgINeedMoney(double amountNeeded){
 msgYouHaveALoan(double loan){
   loanAmount = loan;
 }
+
+msgReceiveSalary(double amount){
+  money += amount;
+}
 ```
 
 ##Scheduler
@@ -143,7 +147,7 @@ PayBackLoan(){
         break;
     }
   else{
-    //--------------------NEEDS MSG FOR WITHDRAWING FROM BANK-------------------------------------//
+    //--------------------NEEDS MSG FOR WITHDRAWING FROM BANK------------------------------------------//
     BankCustomerRole role;
     for(Role r in roles){
       if r instanceof BankCustomerRole:
