@@ -99,6 +99,10 @@ msgINeedMoney(double amountNeeded){
   state = NeedsMoney;
   moneyNeeded += amountNeeded;
 }
+
+msgYouHaveALoan(double loan){
+
+}
 ```
 
 ##Scheduler
