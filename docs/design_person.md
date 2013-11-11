@@ -155,8 +155,8 @@ PayBackLoan(){
         break;
     }
     
-    r.msgWithdrawMoney();
-    r.msgPayLoan(loanAmount);
+    role.msgWithdrawMoney();
+    role.msgPayLoan(loanAmount);
   }
 }
 ```
