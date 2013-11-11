@@ -101,7 +101,7 @@ msgINeedMoney(double amountNeeded){
 }
 
 msgYouHaveALoan(double loan){
-
+  loanAmount = loan;
 }
 ```
 
@@ -115,6 +115,9 @@ if state = NeedsFood
   
 if state = NeedsMoney
   GoGetMoney();
+  
+if loan != 0.0
+  PayBackLoan();
 ```
 
 ##Actions
@@ -127,5 +130,29 @@ GoGetFood(){
 GoGetMoney(){
   state = GettingMoney;
   DoGoGetMoney();
+}
+
+PayBackLoan(){
+  DoGoToBank();
+  if(money >= loanAmount){
+    //--------------------NEEDS MSG FOR ENTERING BANK WITH THE INTENT TO PAY LOAN-----------------------//
+    
+    for(Role r in roles){
+      if r instanceof BankCustomerRole:
+        r.msgPayLoan(loanAmount);
+        break;
+    }
+  else{
+    //--------------------NEEDS MSG FOR WITHDRAWING FROM BANK-------------------------------------//
+    BankCustomerRole role;
+    for(Role r in roles){
+      if r instanceof BankCustomerRole:
+        role = r;
+        break;
+    }
+    
+    r.msgWithdrawMoney();
+    r.msgPayLoan(loanAmount);
+  }
 }
 ```
