@@ -32,6 +32,8 @@ void stateChanged(){
 void activate(){ isActive = true;}
 void deactivate(){ isActive = false;}
 ```
+##Interaction Diagram
+
 
 ##Data
 One side of the need for a PersonAgent class is the fact that our agents really are "people" outside of their roles as Cooks and Waiters and Customers in our SimCity establishments, and therefore have attributes we give to them independent of where they are at a given time.
@@ -127,36 +129,41 @@ if loan != 0.0
 ##Actions
 ```
 GoGetFood(){
-  state = GettingFood;
-  DoGoGetFood();
+  state = GettingMoney;
+  Building b = PickFoodLocation();
+  TransportationMode tm = pickTransportMode();
+  DoGoToFoodLocation(b, tm);
+  Role role;
+  if(b instanceof Restaurant){
+    role = getRestaurantCustomerRole();
+  }else if(b instanceof Apartment || b instanceof Home){
+    role = getHomeRole();
+  }
+  
+  role.activate();
 }
 
 GoGetMoney(){
   state = GettingMoney;
-  DoGoGetMoney();
+  Bank b = pickBank();
+  TransportationMode tm = pickTransportMode();
+  DoGoToBank(b, tm);
+  BankCustomerRole bcr = getBankCustomerRole();
+  bcr.activate();
 }
 
 PayBackLoan(){
   DoGoToBank();
   if(money >= loanAmount){
+  
     //--------------------NEEDS MSG FOR ENTERING BANK WITH THE INTENT TO PAY LOAN-----------------------//
-    
-    for(Role r in roles){
-      if r instanceof BankCustomerRole:
-        r.msgPayLoan(loanAmount);
-        break;
-    }
+    BankCustomerRole bcr = getBankCustomerRole();
+    bcr.msgPayLoan(loanAmount);
   else{
     //--------------------NEEDS MSG FOR WITHDRAWING FROM BANK------------------------------------------//
-    BankCustomerRole role;
-    for(Role r in roles){
-      if r instanceof BankCustomerRole:
-        role = r;
-        break;
-    }
-    
-    role.msgWithdrawMoney();
-    role.msgPayLoan(loanAmount);
+    BankCustomerRole bcr = getBankCustomerRole();
+    bcr.msgWithdrawMoney();
+    bcr.msgPayLoan(loanAmount);
   }
 }
 ```
