@@ -48,6 +48,7 @@ Residence home;
 int SSN; //distinguishes individual people from all people
 
 double loanAmount;
+double rentAmount;
 ```
 
 ###Utilities for Data
@@ -60,7 +61,7 @@ Residence getHome();
 int getSSN();
 double getLoan();
 
-enum PersonState state {Idle, NeedsMoney, GettingMoney, NeedsFood, GettingFood};
+enum PersonState state {Idle, NeedsMoney, PayRoleNow, PayRentNow, GettingMoney, NeedsFood, GettingFood};
 
 //setters
 
@@ -106,8 +107,23 @@ msgYouHaveALoan(double loan){
   loanAmount = loan;
 }
 
+msgReportForWork(String role){
+   if ∃ Role r in roles ∋ r.getRole==role
+     r.activate();
+ 
+}
 msgReceiveSalary(double amount){
   money += amount;
+}
+msgPayBackLoanUrgently(){
+   state=PayLoanNow;
+}
+msgYouHaveRentDue(double rent){
+  rentAmount=rent;
+}
+msgPayBackRentUrgently(){
+   
+   state=PayRentNow;
 }
 ```
 
@@ -115,6 +131,11 @@ msgReceiveSalary(double amount){
 ```
 if ∃ Role r in roles ∋ r.isActive()
   r.pickAndExecuteAction();
+if state = PayLoanNow
+  PayBackLoan();
+
+if state = PayLoanNow
+  PayBackRent();
   
 if state = NeedsFood
   GoGetFood();
@@ -124,6 +145,8 @@ if state = NeedsMoney
   
 if loan != 0.0
   PayBackLoan();
+if rent!=0.0
+  PayBackRent();
 ```
 
 ##Actions
@@ -150,6 +173,10 @@ GoGetMoney(){
   DoGoToBank(b, tm);
   BankCustomerRole bcr = getBankCustomerRole();
   bcr.activate();
+}
+PayBackRent(){
+  HomeRole hr= getHomeRole();
+  hr.msgPayRent(rentAmount);
 }
 
 PayBackLoan(){
