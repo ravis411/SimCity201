@@ -34,7 +34,8 @@ void activate(){ isActive = true;}
 void deactivate(){ isActive = false;}
 ```
 ##Interaction Diagram
-
+![interaction diagram](http://www-scf.usc.edu/~ciesielk/csci201/person_interaction.jpg)
+> Preliminary Interaction diagram because we are not sure if the separate Roles will require more functionality of general people. Also, the message above called reportForWork will have a string parameter for the job that the person has to report for.
 
 ##Data
 One side of the need for a PersonAgent class is the fact that our agents really are "people" outside of their roles as Cooks and Waiters and Customers in our SimCity establishments, and therefore have attributes we give to them independent of where they are at a given time.
@@ -182,7 +183,6 @@ Note that we use some message stubs here that will most likely be fleshed out la
 boolean outcome = false;
 
 
-//script-like approach
 
 //if we need to pay back our loan/rent urgently, then we have to do that even if it risks being late for work
 if state = PayLoanNow
@@ -190,6 +190,8 @@ if state = PayLoanNow
 
 if state = PayRentNow
   PayBackRent();
+
+//script-like approach
 
 if stateOfWork == Employee && needsToBeAtWork()
   getWorkRole().activate();
@@ -199,6 +201,9 @@ if isHungry() && canGoGetFood()
 else if isHungry() && canGoOnBreak()
   GoOnBreak();
   GoGetFood();
+  
+if onPublicTransportation() && arrivedAtDestination()
+  GetOffTransportation();
 
 //the role schedulers are almost always going to take priority
 if ∃ Role r in roles ∋ r.isActive()
@@ -246,9 +251,15 @@ GoGetMoney(){
   BankCustomerRole bcr = getBankCustomerRole();
   bcr.activate();
 }
+
 PayBackRent(){
   HomeRole hr= getHomeRole();
   hr.msgPayRent(rentAmount);
+}
+
+GetOffTransportation(){
+  Transport t = myTransportation();
+  t.msgWeHaveArrived();
 }
 
 PayBackLoan(){
