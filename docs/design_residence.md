@@ -1,4 +1,4 @@
-#Residence Class and Home Role
+##Residence Class and Home/Apartment Manager Roles
 
 ###Residence - inherits from Building class (provided by Prof. Crowley)
 
@@ -68,7 +68,7 @@
 ####Actions
 	goToMarket (String item);
 	fileWorkOrder (HomeFeature brokenFeature) {
-		landlord.msgBrokenFeature(brokenFeature.name)
+		landlord.msgBrokenFeature(brokenFeature.name, this)
 	}
 	payRent () {
 		landlord.msgRentPaid (this, rentOwed)
@@ -94,7 +94,9 @@
 		collectRent = true
 	}
 	msgRentPaid (Person, int amount)
-	msgBrokenFeature(String name)
+	msgBrokenFeature(String name, Person p) {
+		thingsToFix.add(new BrokenFeature(name, p)
+	}
 
 ####Scheduler
 	if collectRent == true
