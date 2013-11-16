@@ -13,7 +13,17 @@ public abstract class Role {
 	 */
 	public abstract boolean pickAndExecuteAction();
 	
+	/**
+	 * String accessor to get the name of the Role
+	 * @return
+	 */
+	public abstract String getName();
+	
 	//--------------------UTILITIES-----------------//
+	
+	protected void print(String s){
+		System.out.println(myPerson.getName()+"-"+getName()+": "+s);
+	}
 	
 	/**
 	 * Calls the stateChanged method to cue the scheduler in the person

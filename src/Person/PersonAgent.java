@@ -4,6 +4,7 @@
 package Person;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,10 +16,12 @@ import agent.Agent;
  *
  */
 public class PersonAgent extends Agent {
+	
+	private final double STARTING_MONEY = 100.00;
 
 	private String name;
 	private double money;
-	private Map<PersonAgent, Double> debts;
+	private double moneyNeeded;
 	
 	private int age;
 	
@@ -28,19 +31,29 @@ public class PersonAgent extends Agent {
 	private static int counter = 0;
 	
 	private double loanAmount;
-	private double rentAmount;
-	private double moneyNeeded;
 	
 	private List<Role> roles;
+	private List<PersonAgent> friends;
 	
 	private Time realTime;
 	public enum StateofNourishment {NotHungry, SlighltlyHungry, Hungry,VeryHungry,Starving};
 	public enum StateofLocation {AtHome,AtBank,AtMarket,AtRestaurant, InCar,InBus,Walking};
 	public enum StateofEmployment {Customer,Employee,Idle};
 	public enum PersonState {Idle,NeedsMoney,PayRentNow, PayLoanNow,GettingMoney,NeedsFood,GettingFood }
-	PersonState state;
-
 	
+	private PersonState state;
+
+	public PersonAgent(String name){
+		SSN = counter++;
+		this.name = name;
+		
+		//initializations
+		money = STARTING_MONEY;
+		moneyNeeded = 0;
+		loanAmount = 0;
+		friends = new ArrayList<PersonAgent>();
+		roles = new ArrayList<Role>();
+	}
 	
 //-------------------------------MESSAGES----------------------------------------//
 	
@@ -104,15 +117,6 @@ public class PersonAgent extends Agent {
 	  */
 	public void msgPayBackLoanUrgently(){
 	   state=PersonState.PayLoanNow;
-	}
-
-	/**
-	  * Message sent by the Building TopAgent or some other mechanism like a timer
-	  * for providing a scheduled rent payment.
-	  * @param rent the amount due for rent
-	  */
-	public void msgYouHaveRentDue(double rent){
-	  rentAmount=rent;
 	}
 
 	/**
@@ -209,6 +213,7 @@ public class PersonAgent extends Agent {
 	public String getName(){
 		return name;
 	}
+	
 	/**
 	 * Getter function for money
 	 * @return money
@@ -216,6 +221,7 @@ public class PersonAgent extends Agent {
 	public double getMoney(){
 		return money;
 	}
+	
 	/**
 	 * Getter function for age
 	 * @return age
@@ -223,6 +229,7 @@ public class PersonAgent extends Agent {
 	public int getAge(){
 		return age;
 	}
+	
 	/**
 	 * Getter function for SSN
 	 * @return SSN
@@ -230,12 +237,13 @@ public class PersonAgent extends Agent {
 	public int getSSN(){
 		return SSN;
 	}
+	
 	/**
 	 * Getter function for debts of person
 	 * @return debts
 	 */
-	public Map<PersonAgent,Double> getLoan(){
-		return debts;
+	public double getLoan(){
+		return loanAmount;
 	}
 	/**
 	 * Setter for the money
@@ -243,11 +251,12 @@ public class PersonAgent extends Agent {
 	public void setMoney(double money){
 		this.money=money;
 	}
+	
 	/**
 	 * Adds a loan/debt to the list of debts
 	 */
-	public void setLoan(PersonAgent p, double loan){
-		debts.put(p, loan);
+	public void setLoan(double loan){
+		this.loanAmount = loan;
 	}
 
 	/**
