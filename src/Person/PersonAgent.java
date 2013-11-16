@@ -6,7 +6,6 @@ package Person;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import Person.Role.Role;
 import agent.Agent;
@@ -53,6 +52,8 @@ public class PersonAgent extends Agent {
 		loanAmount = 0;
 		friends = new ArrayList<PersonAgent>();
 		roles = new ArrayList<Role>();
+		
+		realTime = null;
 	}
 	
 //-------------------------------MESSAGES----------------------------------------//
