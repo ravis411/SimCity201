@@ -2,6 +2,7 @@ package Transportation;
 
 public interface BusStop {
 	
+	
 	/**
 	 * Lets the BusStop know there is a Passenger waiting
 	 */
