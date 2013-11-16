@@ -202,7 +202,27 @@ public class PersonAgent extends Agent {
 		  
 	//------------------------DO XYZ FUNCTIONS----------------------//
 		  
-		  
+	//------------------------SCRIPTING STUBS-----------------------//
+	
+	private boolean isHungry(){
+		return true;
+	}
+	
+	private boolean canGoGetFood(){
+		return true;
+	}
+	
+	private boolean canGoOnBreak(){
+		return true;
+	}
+	
+	private boolean needsToBeAtWork(){
+		return true;
+	}
+	
+	private boolean needsTransportation(){
+		return true;
+	}
 	
 	//--------------------------UTILITIES---------------------------//
 	
