@@ -3,11 +3,6 @@ team29
 
 SimCity201 Project Repository for CS 201 students
 
-##Sub Branches
+Person Branch
 
-+ bank
-+ person
-+ market
-+ restaurant
-+ overworld
-
+Currently Assigned: Mike Ciesielka, Kushaan Kumar
