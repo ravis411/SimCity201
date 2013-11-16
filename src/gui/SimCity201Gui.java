@@ -21,6 +21,10 @@ public class SimCity201Gui extends JFrame {
 		
 		setBounds(50, 50, WINDOWX, WINDOWY);
 		
+		
+		/**
+		 * This stuff prolly shouldn't be here but for testing purposes
+		 */
 		//down left
 		if(!layout.addRoad(6, 5, 3, 20))
 			System.out.println("addRoad unsuccessful");
@@ -36,6 +40,8 @@ public class SimCity201Gui extends JFrame {
 		//down middle
 		if(!layout.addRoad(16, 8, 2, 17))
 			System.out.println("addRoad unsuccessful");
+		
+		
 		
 		add(animationPanel);
 		
