@@ -1,9 +1,8 @@
 package gui;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class SimCity201Gui extends JFrame {
 
 	private final int WINDOWX = 900;
@@ -44,8 +43,6 @@ public class SimCity201Gui extends JFrame {
 		
 		
 		add(animationPanel);
-		
-
 	}
 	
 	
@@ -58,5 +55,4 @@ public class SimCity201Gui extends JFrame {
         gui.setResizable(false);
         gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-
 }
