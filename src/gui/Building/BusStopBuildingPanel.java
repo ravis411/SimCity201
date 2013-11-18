@@ -16,21 +16,14 @@ import javax.swing.JPanel;
  * 
  *
  */
-public class BuildingPanel extends JPanel{
-	Rectangle2D myRectangle;
-	String myName;
-	BuildingsPanels myCity;
+public class BusStopBuildingPanel extends BuildingPanel{
 	
-	public BuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels) {
-		myRectangle = r;
-		myName = name;
-		myCity = buildingPanels;
+	public BusStopBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels) {
+		super(r, name, buildingPanels);
 		
-		setBackground( Color.green );
-		Dimension d = new Dimension(myCity.getSize());
-		setMinimumSize(d);
-		setMaximumSize(d);
-		setPreferredSize(d);
+		this.removeAll();
+		
+		setBackground( new Color(7,100,7) );
 		
 		JLabel j = new JLabel( myName );
 		add( j );

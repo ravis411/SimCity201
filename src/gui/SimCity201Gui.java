@@ -2,7 +2,10 @@ package gui;
 
 import gui.Building.Building;
 import gui.Building.BuildingPanel;
+import gui.Building.BusStopBuilding;
+import gui.Building.BusStopBuildingPanel;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
@@ -16,7 +19,7 @@ public class SimCity201Gui extends JFrame {
 	private final int WINDOWY = 800;
 	
 	SimCityLayout layout = new SimCityLayout(WINDOWX, WINDOWY/2);
-	CityPanel cityPanel = new CityPanel(layout);
+	CityAnimationPanel cityPanel = new CityAnimationPanel(layout);
 	BuildingsPanels buildingsPanels = new BuildingsPanels();
 	
 	
@@ -65,16 +68,28 @@ public class SimCity201Gui extends JFrame {
 	public void addBuildings(){
 		
 		for(int i = 1; i < 10;i++) {
-		Building b = layout.addBuilding(i * 2, i * 2, 2, 2 );
+			
+		Building b = layout.addBuilding(i * 2, i * 2, 2, 2 );//<-this puts the building on the grid
 		if(b != null){
 			BuildingPanel bp = new BuildingPanel(b, "Building " + i, buildingsPanels);
 			b.setBuildingPanel(bp);
-			cityPanel.addBuilding(b);
+			cityPanel.addGui(b);
 			buildingsPanels.addBuildingPanel(bp);
 		}
 		else
 			System.out.println("FAILED ADDING BUILDING TO LAYOUT DURING SETTUP");
 		}
+		
+		BusStopBuilding b = new BusStopBuilding(layout.addBuilding(15, 2, 2, 2 ));//<-this puts the building on the grid
+		if(b != null){
+			BuildingPanel bp = new BusStopBuildingPanel(b, "Bus Stop 1 ", buildingsPanels);
+			
+			b.setBuildingPanel(bp);
+			cityPanel.addGui(b);
+			buildingsPanels.addBuildingPanel(bp);
+		}
+		else
+			System.out.println("FAILED ADDING RED BUILDING TO LAYOUT DURING SETTUP");
 	}
 	
 	

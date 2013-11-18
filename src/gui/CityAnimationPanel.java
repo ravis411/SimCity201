@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 
 
-public class CityPanel extends JPanel implements MouseListener, ActionListener  {
+public class CityAnimationPanel extends JPanel implements MouseListener, ActionListener  {
 
 
 
@@ -30,7 +30,7 @@ public class CityPanel extends JPanel implements MouseListener, ActionListener  
 
 
 
-	public CityPanel(SimCityLayout layout) {
+	public CityAnimationPanel(SimCityLayout layout) {
 		WINDOWX = layout.WINDOWX;
 		WINDOWY = layout.WINDOWY;
 		
@@ -69,12 +69,7 @@ public class CityPanel extends JPanel implements MouseListener, ActionListener  
 			layout.draw(g2);
 		}
 		
-		g2.setColor(Color.cyan);
-		//Paint the buildings
-		for (Building b:buildings) {
-			g2.fill( b );
-		}
-
+		g2.setColor(Color.orange);
 
 		for(Gui gui : guis) {
 			if (gui.isPresent()) {
@@ -94,8 +89,13 @@ public class CityPanel extends JPanel implements MouseListener, ActionListener  
 		guis.add(gui);
 	}
 	
+	public void addGui(Building gui){
+		addBuilding(gui);
+	}
+	
 	public void addBuilding(Building b) {
 		buildings.add(b);
+		guis.add(b);
 	}
 
 	
