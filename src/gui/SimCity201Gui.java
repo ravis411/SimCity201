@@ -1,15 +1,23 @@
 package gui;
 
+import gui.Building.Building;
+import gui.Building.BuildingPanel;
+
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 @SuppressWarnings("serial")
 public class SimCity201Gui extends JFrame {
 
-	private final int WINDOWX = 900;
-	private final int WINDOWY = 900;
+	private final int WINDOWX = 800;
+	private final int WINDOWY = 800;
 	
-	SimCityLayout layout = new SimCityLayout(WINDOWX, WINDOWY);
-	AnimationPanel animationPanel = new AnimationPanel(layout);
+	SimCityLayout layout = new SimCityLayout(WINDOWX, WINDOWY/2);
+	CityPanel cityPanel = new CityPanel(layout);
+	BuildingsPanels buildingsPanels = new BuildingsPanels();
 	
 	
 	
@@ -19,6 +27,8 @@ public class SimCity201Gui extends JFrame {
 	public SimCity201Gui() {
 		
 		setBounds(50, 50, WINDOWX, WINDOWY);
+		setLayout(new GridLayout(0, 1));
+		
 		
 		
 		/**
@@ -40,11 +50,32 @@ public class SimCity201Gui extends JFrame {
 		if(!layout.addRoad(16, 8, 2, 17))
 			System.out.println("addRoad unsuccessful");
 		
+		addBuildings();
 		
 		
-		add(animationPanel);
+		
+		add(cityPanel);
+		add(buildingsPanels);
 	}
 	
+	
+	/**Adds some buildings to the gui
+	 * 
+	 */
+	public void addBuildings(){
+		
+		for(int i = 1; i < 10;i++) {
+		Building b = layout.addBuilding(i * 2, i * 2, 2, 2 );
+		if(b != null){
+			BuildingPanel bp = new BuildingPanel(b, "Building " + i, buildingsPanels);
+			b.setBuildingPanel(bp);
+			cityPanel.addBuilding(b);
+			buildingsPanels.addBuildingPanel(bp);
+		}
+		else
+			System.out.println("FAILED ADDING BUILDING TO LAYOUT DURING SETTUP");
+		}
+	}
 	
 	
 	

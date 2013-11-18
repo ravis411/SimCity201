@@ -21,15 +21,15 @@ public class VehicleGui implements Gui {
 
     private Agent agent = null;
     
-    private SimCity201Gui gui;
     private SimCityLayout cityLayout = null;
-    private Semaphore sem = new Semaphore(0, true);
 
     //Coordinate Positions
     private int xPos = -20, yPos = -20;
     private int xDestination = -20, yDestination = -20;
     
+    //A map of Grid Positions to java xy coordinates
     public final Map<Dimension, Dimension> positionMap;
+    
     AStarTraversal aStar;
     Position currentPosition;
     Position originalPosition;
@@ -37,12 +37,11 @@ public class VehicleGui implements Gui {
     ASTARSTATE aStarState = ASTARSTATE.none;
     Semaphore aSem = new Semaphore(0, true);
     
-    public VehicleGui(Agent agent, SimCity201Gui gui, SimCityLayout cityLayout, AStarTraversal aStar) {
+    public VehicleGui(Agent agent, SimCityLayout cityLayout, AStarTraversal aStar) {
     	positionMap = new HashMap<Dimension, Dimension>(cityLayout.positionMap);
     	this.agent = agent;
-        this.gui = gui;
         this.cityLayout = cityLayout;
-        
+    
         this.aStar = aStar;
        
         

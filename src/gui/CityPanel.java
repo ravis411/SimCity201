@@ -1,11 +1,11 @@
 package gui;
 
+import gui.Building.Building;
+
 import javax.swing.*;
 
-
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
@@ -13,43 +13,40 @@ import java.util.Map;
 import java.util.HashMap;
 
 
-public class AnimationPanel extends JPanel implements ActionListener{
+
+
+public class CityPanel extends JPanel implements MouseListener, ActionListener  {
 
 
 
 	private final int WINDOWX;
 	private final int WINDOWY;
-	private final int GRID_SIZEX = 25;
-	private final int GRID_SIZEY = 25;
-	public int numxGrids = 0;
-	public int numyGrids = 0;
 
-	
-
-	private Image bufferImage;
-	private Dimension bufferSize;
 
 	private List<Gui> guis = new ArrayList<Gui>();
+	private List<Building> buildings = new ArrayList<>(); 
 
 	private SimCityLayout layout = null;
 
 
 
-	public AnimationPanel(SimCityLayout layout) {
+	public CityPanel(SimCityLayout layout) {
 		WINDOWX = layout.WINDOWX;
 		WINDOWY = layout.WINDOWY;
 		
 		setSize(WINDOWX, WINDOWY);
+		setMinimumSize( new Dimension( WINDOWX, WINDOWY ) );
+		setMaximumSize( new Dimension( WINDOWX, WINDOWY ) );
+		setPreferredSize( new Dimension( WINDOWX, WINDOWY ) );
 
 		this.layout = layout;
 		
 
 		
-
 		setVisible(true);
 
-		bufferSize = this.getSize();
 		this.setBackground(Color.BLACK);
+		addMouseListener(this);
 
 		Timer timer = new Timer(20, this );
 		timer.start();
@@ -67,17 +64,16 @@ public class AnimationPanel extends JPanel implements ActionListener{
 		g2.fillRect(0, 0, WINDOWX, WINDOWY );
 
 
-		//Paint some boxes;//and labels
-
-		//String p = new String();
-		   
-
-
-		//Paint waiter home Positions
+		//Paint the cityLayout
 		if(layout != null) {
 			layout.draw(g2);
 		}
-
+		
+		g2.setColor(Color.cyan);
+		//Paint the buildings
+		for (Building b:buildings) {
+			g2.fill( b );
+		}
 
 
 		for(Gui gui : guis) {
@@ -96,6 +92,40 @@ public class AnimationPanel extends JPanel implements ActionListener{
 
 	public void addGui(Gui gui) {
 		guis.add(gui);
+	}
+	
+	public void addBuilding(Building b) {
+		buildings.add(b);
+	}
+
+	
+	public void mouseClicked(MouseEvent me) {
+		for(Building b : buildings) {
+			if(b.contains(me.getX(), me.getY())){
+				b.displayBuilding();
+			}
+		}
+	}
+	
+	
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		
 	}
 
 }

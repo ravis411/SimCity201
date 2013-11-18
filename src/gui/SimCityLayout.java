@@ -1,16 +1,25 @@
 package gui;
 
+import gui.Building.Building;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+
+
+/** This class holds the city layout information. Use this class to add roads and other static gui objects.
+ * 	This is also where the grids are initialized. 
+ * 
+ *
+ */
 public class SimCityLayout {
 	int numxGrids = 0;
 	int numyGrids = 0;
-	int GRID_SIZEX = 25;
-	int GRID_SIZEY = 25;
+	int GRID_SIZEX = 20;
+	int GRID_SIZEY = 20;
 	int WINDOWX = 900;
 	int WINDOWY = 900;
 
@@ -118,22 +127,86 @@ public class SimCityLayout {
 
 		//This loop trys to add the Roads to the list of roads
 		for(Road r: rds) {
-			//Make sure the mainGrid is free
-			if(mainGrid[r.position.width][r.position.height].tryAcquire()){
-				//check to make sure there aren't permits for this road position...if there are something is wrong
-				if(roadGrid[r.position.width][r.position.height].availablePermits() == 0)
-				{
-					roadGrid[r.position.width][r.position.height].release();//Release the roadGrid position
-					roads.add(r);//add the road
+			try {
+				//Make sure the mainGrid is free
+				if(mainGrid[r.position.width][r.position.height].tryAcquire()){
+					//check to make sure there aren't permits for this road position...if there are something is wrong
+					if(roadGrid[r.position.width][r.position.height].availablePermits() == 0)
+					{
+						roadGrid[r.position.width][r.position.height].release();//Release the roadGrid position
+						roads.add(r);//add the road
+					}
+					else
+						successfull = false;
 				}
 				else
 					successfull = false;
-			}
-			else
+			} catch (Exception e) {
 				successfull = false;
+			}
 		}
 		return successfull;
 	}//end addRoad
+	
+	
+	
+	/** Will try to add a building to the city
+	 * 
+	 * @param xPos
+	 * @param yPos
+	 * @param width
+	 * @param height
+	 * @return A pointer to a new Building object if successful. null otherwise
+	 */
+	public Building addBuilding(int xPos, int yPos, int width, int height) {
+		Dimension startPos = new Dimension(xPos, yPos);
+		List<Dimension> needed = new ArrayList<>();
+		List<Dimension> acquired = new ArrayList<>();
+		boolean successfull = true;
+		Dimension d = new Dimension(startPos);
+
+		//This loop will create a list of positions that we want to add
+		for(int x = 0; x < width;x++) {
+			for(int y = 0; y < height; y++ ){
+				needed.add(new Dimension(d));
+				d.height++;
+			}
+			d.width++;
+			d.height = yPos;
+		}
+		
+		try {
+			//Now check if all are available
+			for(Dimension dd : needed) {
+				if(mainGrid[dd.width][dd.height].tryAcquire()) {
+					acquired.add(dd);
+				}
+				else{
+					successfull = false;
+					break;
+				}
+			}//if all were acquired successful = true
+		} catch (Exception e) {
+			System.out.println("Error during setup...grid out of bounds");
+			successfull = false;
+		}
+		
+		
+		
+		if(successfull) {
+			d = new Dimension(positionMap.get(startPos));
+			Building b = new Building(d.width, d.height, width * GRID_SIZEX, GRID_SIZEY * height);
+			return b;
+		}
+		//we need to release the spaces that were not acquired
+		else{
+			for(Dimension dd : acquired) {
+				mainGrid[dd.width][dd.height].release();
+			}
+		}
+		
+		return null;
+	}
 
 
 
@@ -147,7 +220,7 @@ public class SimCityLayout {
 		for(Dimension pos : positionMap.keySet()) {
 			Dimension dim = positionMap.get(pos);
 			g.setColor(Color.DARK_GRAY);
-			g.fillRect(dim.width, dim.height, 24, 24);
+			g.fillRect(dim.width, dim.height, GRID_SIZEX - 1, GRID_SIZEY-1);
 		} //Grid painted
 
 
@@ -161,7 +234,13 @@ public class SimCityLayout {
 	}
 
 
+	public Semaphore[][] getMainGrid() {
+		return mainGrid;
+	}
 
+	public Semaphore[][] getRoadGrid() {
+		return roadGrid;
+	}
 	
 	
 	
