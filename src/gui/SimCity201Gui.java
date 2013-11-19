@@ -81,7 +81,8 @@ public class SimCity201Gui extends JFrame {
 		}
 		
 		BusStopBuilding b = new BusStopBuilding(layout.addBuilding(15, 2, 2, 2 ));//<-this puts the building on the grid
-		if(b != null){
+		if(b != null)
+		{
 			BuildingPanel bp = new BusStopBuildingPanel(b, "Bus Stop 1 ", buildingsPanels);
 			
 			b.setBuildingPanel(bp);
