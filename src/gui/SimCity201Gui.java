@@ -41,26 +41,23 @@ public class SimCity201Gui extends JFrame {
 		 * This stuff prolly shouldn't be here but for testing purposes
 		 */
 		//down left
-		if(!layout.addRoad(6, 5, 3, 20))
-			System.out.println("addRoad unsuccessful");
-		//across bottom
-		if(!layout.addRoad(6, 25, 20, 3))
+		if(!layout.addRoad(6, 4, 3, 6))
 			System.out.println("addRoad unsuccessful");
 		// across top
-		if(!layout.addRoad(9, 5, 20, 3))
+		if(!layout.addRoad(9, 4, 20, 3))
 			System.out.println("addRoad unsuccessful");
 		 //down right
-		if(!layout.addRoad(26, 8, 3, 20))
+		if(!layout.addRoad(26, 7, 3, 3))
 			System.out.println("addRoad unsuccessful");
 		//down middle
-		if(!layout.addRoad(16, 0, 2, 9))
+		if(!layout.addRoad(16, 1, 2, 10))
 			System.out.println("addRoad unsuccessful");
-		
+		//across middle
+		if(!layout.addRoad(6, 10, 23, 3))
+			System.out.println("addRoad unsuccessful");
 		addBuildings();
 		
-		//across middle
-		if(!layout.addRoad(9, 16, 20, 2))
-			System.out.println("addRoad unsuccessful");
+		
 		
 		//add a mockVehicle
 		MockVehicleAgent v1 = new MockVehicleAgent(true);
@@ -76,6 +73,9 @@ public class SimCity201Gui extends JFrame {
 				cityPanel.addGui(v2Gui);
 				v2.startThread();
 				//mockVehicle Added
+				
+				
+		
 		
 		add(cityPanel);
 		add(buildingsPanels);
@@ -87,17 +87,19 @@ public class SimCity201Gui extends JFrame {
 	 */
 	public void addBuildings(){
 		
-		for(int i = 1; i < 7;i++) {
-			
-		Building b = layout.addBuilding(i * 2, i * 2, 2, 2 );//<-this puts the building on the grid
-		if(b != null){
-			BuildingPanel bp = new BuildingPanel(b, "Building " + i, buildingsPanels);
-			b.setBuildingPanel(bp);
-			cityPanel.addGui(b);
-			buildingsPanels.addBuildingPanel(bp);
-		}
-		else
-			System.out.println("FAILED ADDING BUILDING TO LAYOUT DURING SETTUP");
+		for(int x = 1; x < 12;x++) {
+			for(int y = 1; y < 6; y++){
+
+				Building b = layout.addBuilding(x * 5 - 2, (y * 4)-3, 2, 2 );//<-this puts the building on the grid
+				if(b != null){
+					BuildingPanel bp = new BuildingPanel(b, "Building " + x + y, buildingsPanels);
+					b.setBuildingPanel(bp);
+					cityPanel.addGui(b);
+					buildingsPanels.addBuildingPanel(bp);
+				}
+				else
+					System.out.println("FAILED ADDING BUILDING TO LAYOUT DURING SETTUP");
+			}
 		}
 		
 		BusStopBuilding b = new BusStopBuilding(layout.addBuilding(15, 2, 1, 1 ));//<-this puts the building on the grid
@@ -113,7 +115,7 @@ public class SimCity201Gui extends JFrame {
 			System.out.println("FAILED ADDING Bus Stop 1 TO LAYOUT DURING SETTUP");
 		//add another bus stop
 		
-		Building bb2 = (layout.addBuilding(5, 15, 1, 1 ));//<-this puts the building on the grid
+		Building bb2 = (layout.addBuilding(5, 12, 1, 1 ));//<-this puts the building on the grid
 		if(bb2 != null)
 		{
 			BusStopBuilding b2 = new BusStopBuilding(bb2);
@@ -127,7 +129,7 @@ public class SimCity201Gui extends JFrame {
 			System.out.println("FAILED ADDING Bus Stop 3 TO LAYOUT DURING SETTUP");
 		
 		//and a third busStop
-		Building bb3 = (layout.addBuilding(29, 13, 1, 1 ));//<-this puts the building on the grid
+		Building bb3 = (layout.addBuilding(29, 12, 1, 1 ));//<-this puts the building on the grid
 		if(bb3 != null)
 		{
 			BusStopBuilding b3 = new BusStopBuilding(bb3);
@@ -140,7 +142,7 @@ public class SimCity201Gui extends JFrame {
 		else
 			System.out.println("FAILED ADDING Bus Stop 2 TO LAYOUT DURING SETTUP");
 		//and a fourth busStop?
-				Building bb4 = (layout.addBuilding(15, 18, 1, 1 ));//<-this puts the building on the grid
+				Building bb4 = (layout.addBuilding(14, 9, 1, 1 ));//<-this puts the building on the grid
 				if(bb4 != null)
 				{
 					BusStopBuilding b4 = new BusStopBuilding(bb4);
@@ -153,7 +155,7 @@ public class SimCity201Gui extends JFrame {
 				else
 					System.out.println("FAILED ADDING Bus Stop 4 TO LAYOUT DURING SETTUP");
 				//and a FITH busStop!
-				Building bb5 = (layout.addBuilding(9, 15, 1, 1 ));//<-this puts the building on the grid
+				Building bb5 = (layout.addBuilding(17, 13, 1, 1 ));//<-this puts the building on the grid
 				if(bb5 != null)
 				{
 					BusStopBuilding b5 = new BusStopBuilding(bb5);

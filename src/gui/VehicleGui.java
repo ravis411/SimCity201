@@ -56,15 +56,15 @@ public class VehicleGui implements Gui {
     	bs1.name="Bus Stop 1";
     	bs1.positionToEnterFromRoadGrid = new Dimension(16, 2);
     	bs2.name = "Bus Stop 2";
-    	bs2.positionToEnterFromRoadGrid = new Dimension(6, 15);
+    	bs2.positionToEnterFromRoadGrid = new Dimension(6, 12);
     	bs3.name = "Bus Stop 3";
-    	bs3.positionToEnterFromRoadGrid = new Dimension(28, 13);
+    	bs3.positionToEnterFromRoadGrid = new Dimension(28, 12);
     	bs4.name = "Bus Stop 4";
-    	bs4.positionToEnterFromRoadGrid = new Dimension(15, 17);
+    	bs4.positionToEnterFromRoadGrid = new Dimension(14, 10);
     	bs5.name = "Bus Stop 5";
-    	bs5.positionToEnterFromRoadGrid = new Dimension(8, 15);
+    	bs5.positionToEnterFromRoadGrid = new Dimension(17, 12);
     	bs6.name = "Bus Stop 6";
-    	bs6.positionToEnterFromRoadGrid = new Dimension(25, 7);
+    	bs6.positionToEnterFromRoadGrid = new Dimension(26, 8);
     	locations.put(bs1.name, bs1);
     	locations.put(bs2.name, bs2);
     	locations.put(bs3.name, bs3);
@@ -131,7 +131,6 @@ public class VehicleGui implements Gui {
     	xPos = startCoord.width;
     	yPos = startCoord.height;
     	Position entrance = new Position(16, 1);//This needs to be dynamic
-    	
     	
     	while( !entrance.moveInto(aStar.getGrid()) ) {
     		//System.out.println("EntranceBlocked!!!!!!! waiting 1sec");

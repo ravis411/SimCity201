@@ -18,8 +18,8 @@ import java.util.concurrent.Semaphore;
 public class SimCityLayout {
 	int numxGrids = 0;
 	int numyGrids = 0;
-	int GRID_SIZEX = 20;
-	int GRID_SIZEY = 20;
+	int GRID_SIZEX = 25;
+	int GRID_SIZEY = 25;
 	int WINDOWX = 900;
 	int WINDOWY = 900;
 
