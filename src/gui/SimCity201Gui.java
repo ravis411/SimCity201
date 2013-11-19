@@ -4,7 +4,7 @@ import gui.Building.Building;
 import gui.Building.BuildingPanel;
 import gui.Building.BusStopBuilding;
 import gui.Building.BusStopBuildingPanel;
-import gui.MockAgents.MockVehiclAgent;
+import gui.MockAgents.MockVehicleAgent;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -63,14 +63,14 @@ public class SimCity201Gui extends JFrame {
 			System.out.println("addRoad unsuccessful");
 		
 		//add a mockVehicle
-		MockVehiclAgent v1 = new MockVehiclAgent(true);
+		MockVehicleAgent v1 = new MockVehicleAgent(true);
 		VehicleGui v1Gui = new VehicleGui( v1, layout, new AStarTraversal(layout.getRoadGrid()) );
 		v1.agentGui = v1Gui;
 		cityPanel.addGui(v1Gui);
 		v1.startThread();
 		//mockVehicle Added
 		//add a mockVehicle
-				MockVehiclAgent v2 = new MockVehiclAgent(false);
+				MockVehicleAgent v2 = new MockVehicleAgent(false);
 				VehicleGui v2Gui = new VehicleGui( v2, layout, new AStarTraversal(layout.getRoadGrid()) );
 				v2.agentGui = v2Gui;
 				cityPanel.addGui(v2Gui);

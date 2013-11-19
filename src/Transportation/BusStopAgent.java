@@ -1,5 +1,6 @@
 package Transportation;
 
+import gui.interfaces.BusStop;
 import agent.Agent;
 
 public class BusStopAgent extends Agent implements BusStop {
