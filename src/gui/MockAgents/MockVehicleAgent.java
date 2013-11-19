@@ -7,17 +7,17 @@ import com.sun.jmx.remote.internal.ArrayQueue;
 
 import gui.LocationInfo;
 import gui.VehicleGui;
-import Transportation.Vehicle;
+import gui.interfaces.Vehicle;
 import agent.Agent;
 
-public class MockVehiclAgent extends Agent implements Vehicle {
+public class MockVehicleAgent extends Agent implements Vehicle {
 
 	boolean traveled = false;
 	boolean goToBusStop3 = false;
 	public VehicleGui agentGui;
 	Queue<String> StopsQueue = new LinkedList<>(); //<--a list of the stops to go to
 	
-	public MockVehiclAgent(boolean order) {
+	public MockVehicleAgent(boolean order) {
 		if(order) {
 			StopsQueue.add("Bus Stop " + 1);
 			StopsQueue.add("Bus Stop " + 3);

@@ -1,4 +1,4 @@
-package Transportation;
+package gui.interfaces;
 
 public interface Vehicle {
 
