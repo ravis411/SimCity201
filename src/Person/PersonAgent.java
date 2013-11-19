@@ -3,9 +3,13 @@
  */
 package Person;
 
-import java.sql.Time;
+import interfaces.Employee;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.prefs.Preferences;
+import java.util.prefs.PreferencesFactory;
 
 import Person.Role.Role;
 import agent.Agent;
@@ -17,6 +21,7 @@ import agent.Agent;
 public class PersonAgent extends Agent {
 	
 	private final double STARTING_MONEY = 100.00;
+	private final int HUNGER_THRESHOLD = 50;
 
 	private String name;
 	private double money;
@@ -34,13 +39,19 @@ public class PersonAgent extends Agent {
 	private List<Role> roles;
 	private List<PersonAgent> friends;
 	
-	private Time realTime;
-	public enum StateofNourishment {NotHungry, SlighltlyHungry, Hungry,VeryHungry,Starving};
-	public enum StateofLocation {AtHome,AtBank,AtMarket,AtRestaurant, InCar,InBus,Walking};
-	public enum StateofEmployment {Customer,Employee,Idle};
+	private Calendar realTime;
+	//private Preferences personalPreferences;
+	
+	public enum StateOfHunger {NotHungry, SlightlyHungry, Hungry, VeryHungry, Starving} 
+	public enum StateOfLocation {AtHome,AtBank,AtMarket,AtRestaurant, InCar,InBus,Walking};
+	public enum StateOfEmployment {Customer,Employee,Idle};
 	public enum PersonState {Idle,NeedsMoney,PayRentNow, PayLoanNow,GettingMoney,NeedsFood,GettingFood }
 	
 	private PersonState state;
+	private StateOfEmployment stateOfEmployment;
+	
+	//provides a hungerLevel on a normalized 0 to 100 scale
+	private int hungerLevel;
 
 	public PersonAgent(String name){
 		SSN = counter++;
@@ -52,8 +63,11 @@ public class PersonAgent extends Agent {
 		loanAmount = 0;
 		friends = new ArrayList<PersonAgent>();
 		roles = new ArrayList<Role>();
+		hungerLevel = 0;
 		
 		realTime = null;
+		
+		setUpPreferences();
 	}
 	
 //-------------------------------MESSAGES----------------------------------------//
@@ -204,20 +218,47 @@ public class PersonAgent extends Agent {
 		  
 	//------------------------SCRIPTING STUBS-----------------------//
 	
-	private boolean isHungry(){
-		return true;
+	private StateOfHunger howHungry(){
+		
+		if(hungerLevel < 20)
+			return StateOfHunger.NotHungry;
+		
+		if(hungerLevel < 40)
+			return StateOfHunger.SlightlyHungry;
+		
+		if(hungerLevel < 60)
+			return StateOfHunger.Hungry;
+		
+		if(hungerLevel < 80)
+			return StateOfHunger.VeryHungry;
+		
+		return StateOfHunger.Starving;
 	}
 	
 	private boolean canGoGetFood(){
-		return true;
+		//--------------COME UP WITH SPECIFIC STATES WHERE WE CANNOT GO GET A ROLE-------------------//
+		if(state != PersonState.Idle)
+			return true;
+		else
+			return false;
 	}
 	
 	private boolean canGoOnBreak(){
+		Role r = findMyJob();
+		if(r == null)
+			return true;
+		
 		return true;
 	}
 	
 	private boolean needsToBeAtWork(){
-		return true;
+		Role r = findMyJob();
+		if(r != null){
+			Employee e = (Employee) r;
+			return stateOfEmployment == StateOfEmployment.Employee && e.getShift().intersectsWithTime(realTime);
+		}
+		
+		return false;
 	}
 	
 	private boolean needsTransportation(){
@@ -226,6 +267,20 @@ public class PersonAgent extends Agent {
 	
 	//--------------------------UTILITIES---------------------------//
 	
+	
+	private void setUpPreferences(){
+		
+	}
+	
+	private Role findMyJob(){
+		for(Role r : roles){
+			if(r.isActive() && r instanceof Employee){
+				return r;
+			}
+		}
+		
+		return null;
+	}
 	
 	/**
 	 * Getter function for name
@@ -302,12 +357,5 @@ public class PersonAgent extends Agent {
 	public void removeRole(Role r){
 		roles.remove(r);
 	}
-	
-	/**
-	 * Updates the time to the new time
-	 * @param time
-	 */
-	public void updateTime(Time time){
-		this.realTime = time;
-	}
+
 }
