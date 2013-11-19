@@ -37,6 +37,8 @@ public class VehicleGui implements Gui {
     ASTARSTATE aStarState = ASTARSTATE.none;
     Semaphore aSem = new Semaphore(0, true);
     
+    private Map<String, LocationInfo> locations = new HashMap<>();//<<-- A Map of locations
+    
     public VehicleGui(Agent agent, SimCityLayout cityLayout, AStarTraversal aStar) {
     	positionMap = new HashMap<Dimension, Dimension>(cityLayout.positionMap);
     	this.agent = agent;
@@ -44,6 +46,32 @@ public class VehicleGui implements Gui {
     
         this.aStar = aStar;
        
+        //Initialize locations
+        LocationInfo bs1 = new LocationInfo();
+    	LocationInfo bs2 = new LocationInfo();
+    	LocationInfo bs3 = new LocationInfo();
+    	LocationInfo bs4 = new LocationInfo();
+    	LocationInfo bs5 = new LocationInfo();
+    	LocationInfo bs6 = new LocationInfo();
+    	bs1.name="Bus Stop 1";
+    	bs1.positionToEnterFromRoadGrid = new Dimension(16, 2);
+    	bs2.name = "Bus Stop 2";
+    	bs2.positionToEnterFromRoadGrid = new Dimension(6, 15);
+    	bs3.name = "Bus Stop 3";
+    	bs3.positionToEnterFromRoadGrid = new Dimension(28, 13);
+    	bs4.name = "Bus Stop 4";
+    	bs4.positionToEnterFromRoadGrid = new Dimension(15, 17);
+    	bs5.name = "Bus Stop 5";
+    	bs5.positionToEnterFromRoadGrid = new Dimension(8, 15);
+    	bs6.name = "Bus Stop 6";
+    	bs6.positionToEnterFromRoadGrid = new Dimension(25, 7);
+    	locations.put(bs1.name, bs1);
+    	locations.put(bs2.name, bs2);
+    	locations.put(bs3.name, bs3);
+    	locations.put(bs4.name, bs4);
+    	locations.put(bs5.name, bs5);
+    	locations.put(bs6.name, bs6);
+    	//locations have been initialized though it shouldn't be done here
         
     }
     
@@ -75,13 +103,34 @@ public class VehicleGui implements Gui {
         return true;
     }
     
+    
+    
+    public void DoGoTo(String location){
+    	
+    	
+    	LocationInfo info = null;
+    	info = locations.get(location);    	
+    	
+    	if(info != null){
+    		
+    		Position p = new Position(info.positionToEnterFromRoadGrid.width, info.positionToEnterFromRoadGrid.height);
+    		System.out.println("About to move to p: " + p);
+    		guiMoveFromCurrentPostionTo(p);
+    	}
+    }
+    
+    
+    
     /**
      * This function assumes the Vehicle is not in the world
      * Will enter the world
      */
     public void DoEnterWorld() {
     	
-    	Position entrance = new Position(1, 1);
+    	Dimension startCoord = new Dimension( positionMap.get(new Dimension(16,1)) );
+    	xPos = startCoord.width;
+    	yPos = startCoord.height;
+    	Position entrance = new Position(16, 1);//This needs to be dynamic
     	
     	
     	while( !entrance.moveInto(aStar.getGrid()) ) {
@@ -109,7 +158,9 @@ public class VehicleGui implements Gui {
     }
 
     public void DoPark() {
-    	DoGoToHomePosition();
+    	//DoGoToHomePosition();
+    	System.out.println("Moving to 6,10");
+    	guiMoveFromCurrentPostionTo(new Position(6,10));
     }
 
     
@@ -117,25 +168,25 @@ public class VehicleGui implements Gui {
     
     public void DoGoToHomePosition() {
     	guiMoveFromCurrentPostionTo(originalPosition);
-    }
+      }
     
     
     
     /**ASTAR************************************************************
      * Will try to find a path from the currentPosition to to.
-     *  The caller's Thread will sleep until it has reached the destination.
+     *  The caller's Thread will be here until the gui has reached the destination.
      *  Can throw an exception if no path can be found.
      *  
      * 
      *  @param to The Position to move to. 
-     *  @exception 
+     *  
      */
     void guiMoveFromCurrentPostionTo(Position to){
         //System.out.println("[Gaut] " + this + " moving from " + currentPosition.toString() + " to " + to.toString());
 
     	//System.out.println("TO" + to + "CUR " + currentPosition);
         AStarNode aStarNode = (AStarNode)aStar.generalSearch(currentPosition, to);
-        //System.out.println("WHY ISNMT THIS PRINTING");
+       // System.out.println("WHY ISNMT THIS PRINTING");
         List<Position> path = aStarNode.getPath();
         Boolean firstStep = true;
         Boolean gotPermit = true;
