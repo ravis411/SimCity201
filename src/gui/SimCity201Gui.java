@@ -53,7 +53,7 @@ public class SimCity201Gui extends JFrame {
 		if(!layout.addRoad(26, 8, 3, 20))
 			System.out.println("addRoad unsuccessful");
 		//down middle
-		if(!layout.addRoad(16, 0, 2, 10))
+		if(!layout.addRoad(16, 0, 2, 9))
 			System.out.println("addRoad unsuccessful");
 		
 		addBuildings();

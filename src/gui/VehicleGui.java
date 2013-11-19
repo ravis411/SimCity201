@@ -25,7 +25,7 @@ public class VehicleGui implements Gui {
 
     //Coordinate Positions
     private int xPos = -20, yPos = -20;
-    private int xDestination = -20, yDestination = -20;
+    private int xDestination = 400, yDestination = -20;
     
     //A map of Grid Positions to java xy coordinates
     public final Map<Dimension, Dimension> positionMap;
