@@ -31,8 +31,8 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 
 
 	public CityAnimationPanel(SimCityLayout layout) {
-		WINDOWX = layout.WINDOWX;
-		WINDOWY = layout.WINDOWY;
+		WINDOWX = layout.getWINDOWX();
+		WINDOWY = layout.getWINDOWY();
 		
 		setSize(WINDOWX, WINDOWY);
 		setMinimumSize( new Dimension( WINDOWX, WINDOWY ) );

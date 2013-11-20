@@ -39,6 +39,9 @@ public class VehicleGui implements Gui {
     
     private Map<String, LocationInfo> locations = new HashMap<>();//<<-- A Map of locations
     
+    
+    
+    
     public VehicleGui(Agent agent, SimCityLayout cityLayout, AStarTraversal aStar) {
     	positionMap = new HashMap<Dimension, Dimension>(cityLayout.positionMap);
     	this.agent = agent;

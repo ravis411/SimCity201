@@ -16,12 +16,12 @@ import java.util.concurrent.Semaphore;
  *
  */
 public class SimCityLayout {
-	int numxGrids = 0;
-	int numyGrids = 0;
-	int GRID_SIZEX = 25;
-	int GRID_SIZEY = 25;
-	int WINDOWX = 900;
-	int WINDOWY = 900;
+	private final int numxGrids;
+	private final int numyGrids;
+	private final int GRID_SIZEX;
+	private final int GRID_SIZEY;
+	private final int WINDOWX;
+	private final int WINDOWY;
 
 
 	//A map of grid positions to Java coordinates
@@ -39,9 +39,12 @@ public class SimCityLayout {
 	private Semaphore[][] roadGrid = null;
 
 
-	public SimCityLayout(int WindowSizeX, int WindowSizeY) {
+	public SimCityLayout(int WindowSizeX, int WindowSizeY, int GridSizeX, int GridSizeY) {
 		WINDOWX = WindowSizeX;
 		WINDOWY = WindowSizeY;
+		
+		this.GRID_SIZEX = GridSizeX;
+		this.GRID_SIZEY = GridSizeY;
 
 		numxGrids = WINDOWX / GRID_SIZEX;
 		numyGrids = WINDOWY / GRID_SIZEY;
@@ -255,4 +258,25 @@ public class SimCityLayout {
 			direction=null;
 		}
 	}
+
+
+	//Public Accesses /////////////////////////////////////////////
+	
+	public int getWINDOWX() {
+		return WINDOWX;
+	}
+
+	public int getGRID_SIZEX() {
+		return GRID_SIZEX;
+	}
+
+	public int getGRID_SIZEY() {
+		return GRID_SIZEY;
+	}
+
+	public int getWINDOWY() {
+		return WINDOWY;
+	}
+	
+	
 }
