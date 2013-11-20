@@ -109,14 +109,14 @@ public class bankClientRole extends Agent {
 	}
 	
 	//other
-/*	public void setGui(ClientGui g) {
+	public void setGui(ClientGui g) {
 		clientGui = g;
 	}
 
 	public ClientGui getGui() {
 		return clientGui;
 	}
-*/	
+	
 	public String getName() {
 		return name;
 	}
