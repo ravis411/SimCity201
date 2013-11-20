@@ -42,39 +42,45 @@ public class VehicleGui implements Gui {
     
     
     
-    public VehicleGui(Agent agent, SimCityLayout cityLayout, AStarTraversal aStar) {
+    public VehicleGui(Agent agent, SimCityLayout cityLayout, AStarTraversal aStar, List<LocationInfo> locationList) {
     	positionMap = new HashMap<Dimension, Dimension>(cityLayout.positionMap);
     	this.agent = agent;
         this.cityLayout = cityLayout;
     
         this.aStar = aStar;
+        
+        for(LocationInfo i : locationList){
+        	if(i != null && i.positionToEnterFromRoadGrid != null)
+        		locations.put(i.name, i);
+        	System.out.println("LOCATION " + i.positionToEnterFromRoadGrid);
+        }
        
-        //Initialize locations
-        LocationInfo bs1 = new LocationInfo();
-    	LocationInfo bs2 = new LocationInfo();
-    	LocationInfo bs3 = new LocationInfo();
-    	LocationInfo bs4 = new LocationInfo();
-    	LocationInfo bs5 = new LocationInfo();
-    	LocationInfo bs6 = new LocationInfo();
-    	bs1.name="Bus Stop 1";
-    	bs1.positionToEnterFromRoadGrid = new Dimension(16, 2);
-    	bs2.name = "Bus Stop 2";
-    	bs2.positionToEnterFromRoadGrid = new Dimension(6, 12);
-    	bs3.name = "Bus Stop 3";
-    	bs3.positionToEnterFromRoadGrid = new Dimension(28, 12);
-    	bs4.name = "Bus Stop 4";
-    	bs4.positionToEnterFromRoadGrid = new Dimension(14, 10);
-    	bs5.name = "Bus Stop 5";
-    	bs5.positionToEnterFromRoadGrid = new Dimension(17, 12);
-    	bs6.name = "Bus Stop 6";
-    	bs6.positionToEnterFromRoadGrid = new Dimension(26, 8);
-    	locations.put(bs1.name, bs1);
-    	locations.put(bs2.name, bs2);
-    	locations.put(bs3.name, bs3);
-    	locations.put(bs4.name, bs4);
-    	locations.put(bs5.name, bs5);
-    	locations.put(bs6.name, bs6);
-    	//locations have been initialized though it shouldn't be done here
+//        //Initialize locations
+//        LocationInfo bs1 = new LocationInfo();
+//    	LocationInfo bs2 = new LocationInfo();
+//    	LocationInfo bs3 = new LocationInfo();
+//    	LocationInfo bs4 = new LocationInfo();
+//    	LocationInfo bs5 = new LocationInfo();
+//    	LocationInfo bs6 = new LocationInfo();
+//    	bs1.name="Bus Stop 1";
+//    	bs1.positionToEnterFromRoadGrid = new Dimension(16, 2);
+//    	bs2.name = "Bus Stop 2";
+//    	bs2.positionToEnterFromRoadGrid = new Dimension(6, 12);
+//    	bs3.name = "Bus Stop 3";
+//    	bs3.positionToEnterFromRoadGrid = new Dimension(28, 12);
+//    	bs4.name = "Bus Stop 4";
+//    	bs4.positionToEnterFromRoadGrid = new Dimension(14, 10);
+//    	bs5.name = "Bus Stop 5";
+//    	bs5.positionToEnterFromRoadGrid = new Dimension(17, 12);
+//    	bs6.name = "Bus Stop 6";
+//    	bs6.positionToEnterFromRoadGrid = new Dimension(26, 8);
+//    	locations.put(bs1.name, bs1);
+//    	locations.put(bs2.name, bs2);
+//    	locations.put(bs3.name, bs3);
+//    	locations.put(bs4.name, bs4);
+//    	locations.put(bs5.name, bs5);
+//    	locations.put(bs6.name, bs6);
+//    	//locations have been initialized though it shouldn't be done here
         
     }
     

@@ -11,7 +11,11 @@ public class GuiJMenuBar extends JMenuBar implements ActionListener {
 
 	SimCity201Gui gui = null;
 	JMenu fileMenu, loadSubmenu, viewMenu;
-	JMenuItem exit, loadDefault, viewDefault;
+	//FileMenu Items
+	JMenuItem exit, loadDefault, loadGuiTest1, loadGuiTest2;
+	//View Menu Items
+	JMenuItem viewDefault;
+	
 	
 	public GuiJMenuBar(SimCity201Gui gui) {
 		this.gui = gui;
@@ -26,6 +30,12 @@ public class GuiJMenuBar extends JMenuBar implements ActionListener {
 		loadDefault = new JMenuItem("Load Default");
 		loadDefault.addActionListener(this);
 		loadSubmenu.add(loadDefault);
+		loadGuiTest1 = new JMenuItem("Load Gui Test1 A* Works Larger Grid");
+		loadGuiTest1.addActionListener(this);
+		loadSubmenu.add(loadGuiTest1);
+		loadGuiTest2 = new JMenuItem("Load Gui Test2 A* FREEEZES");
+		loadGuiTest2.addActionListener(this);
+		loadSubmenu.add(loadGuiTest2);
 		
 		fileMenu.addSeparator();
 		exit = new JMenuItem("Exit");
@@ -46,10 +56,15 @@ public class GuiJMenuBar extends JMenuBar implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == loadDefault) {
 			System.out.println("Loading Default Configuration");
-			gui.loadDefaultConfig();
+			gui.loadConfig("Default");;
 		}
-		
-		if(e.getSource() == exit) {
+		else if(e.getSource() == loadGuiTest1) {
+			gui.loadConfig("GUI Test 1");
+		}
+		else if(e.getSource() == loadGuiTest2) {
+			gui.loadConfig("GUI Test 2");
+		}
+		else if(e.getSource() == exit) {
 			System.exit(0);
 		}
 

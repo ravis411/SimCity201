@@ -12,14 +12,17 @@ import agent.Agent;
 
 public class MockBusAgent extends Agent implements Vehicle {
 
+	
+	String name;
 	boolean traveled = false;
 	boolean goToBusStop3 = false;
 	public VehicleGui agentGui;
 	Queue<String> StopsQueue = new LinkedList<>(); //<--a list of the stops to go to
 	
-	public MockBusAgent(Queue<String> busStops) {
+	public MockBusAgent(String name, Queue<String> busStops) {
+		super();
 		StopsQueue.addAll(busStops);
-		
+		this.name = name;
 //		if(order) {
 //			StopsQueue.add("Bus Stop " + 1);
 //			StopsQueue.add("Bus Stop " + 3);
@@ -34,6 +37,9 @@ public class MockBusAgent extends Agent implements Vehicle {
 //		}
 	}
 	
+	public String getName(){
+		return name;
+	}
 	
 	@Override
 	protected boolean pickAndExecuteAnAction() {
@@ -64,6 +70,12 @@ public class MockBusAgent extends Agent implements Vehicle {
 		print("Going to " + location);
 		agentGui.DoGoTo(location);
 		print("Arrived at " + location);
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 

@@ -96,8 +96,14 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 	public void addBuilding(Building b) {
 		buildings.add(b);
 		guis.add(b);
+		
 	}
 
+	public void clear(){
+		guis.clear();
+		buildings.clear();
+		layout = null;
+	}
 	
 	public void mouseClicked(MouseEvent me) {
 		for(Building b : buildings) {

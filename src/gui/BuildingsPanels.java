@@ -5,6 +5,8 @@ import gui.Building.BuildingPanel;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.io.Closeable;
+import java.io.IOException;
 
 import javax.swing.JPanel;
 
@@ -14,7 +16,7 @@ import javax.swing.JPanel;
  * 
  *
  */
-public class BuildingsPanels extends JPanel {
+public class BuildingsPanels extends JPanel{
 	CardLayout cardLayout = new CardLayout();
 	
 	
@@ -69,6 +71,16 @@ public class BuildingsPanels extends JPanel {
 	public void displayBuildingPanel(BuildingPanel buildingPanel) {
 		//System.out.println("Showing: " + buildingPanel.getName());
 		cardLayout.show(this, buildingPanel.getName());
+		
+		
 	}
+	
+	public void clear(){
+		this.removeAll();
+		cardLayout = null;
+	}
+
+
+	
 	
 }

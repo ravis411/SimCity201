@@ -25,7 +25,7 @@ public class SimCityLayout {
 
 
 	//A map of grid positions to Java coordinates
-	public static final Map<Dimension, Dimension> positionMap = new HashMap<Dimension, Dimension>();
+	public final Map<Dimension, Dimension> positionMap = new HashMap<Dimension, Dimension>();
 
 	//A list of the roads
 	private List<Road> roads = new ArrayList<>();
@@ -201,7 +201,7 @@ public class SimCityLayout {
 			Building b = new Building(d.width, d.height, width * GRID_SIZEX, GRID_SIZEY * height);
 			return b;
 		}
-		//we need to release the spaces that were not acquired
+		//we need to release the spaces that were acquired
 		else{
 			for(Dimension dd : acquired) {
 				mainGrid[dd.width][dd.height].release();
@@ -257,6 +257,15 @@ public class SimCityLayout {
 			position = new Dimension(0, 0);
 			direction=null;
 		}
+	}
+	
+	
+	
+	public void clear(){
+		roads.clear();
+		positionMap.clear();
+		mainGrid = null;
+		roadGrid = null;
 	}
 
 
