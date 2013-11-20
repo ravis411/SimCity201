@@ -21,6 +21,10 @@ import agent.Constants;
  */
 //MarketCustomer Agent
 public class MarketCustomer extends Agent{
+	String foodTypeWanted;
+	int FoodTypeAmount;
+	boolean willTakePartialOrder;
+	enum marketCustomerState =none, waitingForMarketEmployeeToReturn, replyingToEmployee, leaving
 	
 	/**
 	 * Constructor for CustomerAgent class
@@ -41,13 +45,28 @@ public class MarketCustomer extends Agent{
 	
 	// Messages
 
-
+	msgMarketCustomerOutofStock(String foodType){
+		marketCustomerState= leaving;
+		}
+		
+		msgMarketCustomerDoYouWantPartialOrder(String FoodType, int amount){
+		marketCustomerState= replyingToEmployee;
+		}
+		
+		msgMarketCustomerHereIsOrder(String FoodType, int amount){
+		marketCustomerState= leaving;
+		}
 
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAnAction() {
-	
+		if (marketCustomerState== none)
+			goToMarketEmployeeToOrder();
+		if (marketCustomerState== replyingToEmployee)
+			tellMarketEmployeeIfPartialOrderAcceptable();
+		if (marketCustomerState== leaving)
+			leaveMarket();
 
 		return false;
 		//we have tried all our rules and found
@@ -56,7 +75,21 @@ public class MarketCustomer extends Agent{
 	}
 
 	// Actions
-
+	
+	goToMarketEmployeeToOrder(){
+		//walk to Order Window if line wait in line and when customer first in line
+		msgMarketEmployeeOrder(foodTypeWanted, FoodTypeAmount, this)
+		marketCustomerState= waitingForMarketEmployeeToReturn;
+		}
+		
+	tellMarketEmployeeIfPartialOrderAcceptable(){
+		msgMarketEmployeeConfirmPartialOrder(willTakePartialOrder, MarketCustomer customer);
+		if (willTakePartialOrder == false)
+		marketCustomerState= leaving;
+		}
+	leaveMarket(){
+	//animation for CustomerRole to leave market
+	}
 
 	//utilities
 	public void setCook(Cook cook) {
