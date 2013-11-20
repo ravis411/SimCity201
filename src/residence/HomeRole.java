@@ -12,7 +12,8 @@ public class HomeRole extends Agent {
 	private ApartmentManagerRole landlord;
 	private int rentOwed = 0;
 	private boolean tired = false;
-	private Map <String, Integer> inventory = new HashMap<String, Integer>();
+	//private Map <String, Integer> inventory = new HashMap<String, Integer>();
+	private List <Item> inventory = new ArrayList<Item>();
 	private List <HomeFeature> features = new ArrayList<HomeFeature>(); //includes appliances, toilets, sinks, etc (anything that can break)
 
 	private String name;
@@ -44,8 +45,16 @@ public class HomeRole extends Agent {
 		tired = true;
 		stateChanged();
 	}
-	public void msgRestockItem (String item, int quantity) {
+	/*public void msgRestockItem (String item, int quantity) {
 		inventory.put(item, inventory.get(item)+quantity);
+		stateChanged();
+	}*/
+	public void msgRestockItem (String itemName, int quantity) {
+		for(Item i : inventory) {
+			if(i.name == itemName) {
+				i.quantity = i.quantity + quantity;
+			}
+		}
 		stateChanged();
 	}
 	public void msgFixedFeature (String name) {
@@ -74,10 +83,15 @@ public class HomeRole extends Agent {
 			goToSleep();
 			return true;
 		}
-		for(Integer i : inventory.values()) {
+		/*for(Integer i : inventory.values()) {
 			if (i.equals(1)) {
 				goToMarket(item);
 				return true;
+			}
+		}*/
+		for(Item i : inventory) {
+			if(i.quantity < 2) {
+				goToMarket(i);
 			}
 		}
 		for (HomeFeature hf : features) {
@@ -92,8 +106,8 @@ public class HomeRole extends Agent {
 
 	// Actions
 
-	private void goToMarket (String item) {
-		
+	private void goToMarket (Item item) {
+			
 	}
 	private void fileWorkOrder (HomeFeature brokenFeature) {
 		landlord.msgBrokenFeature(brokenFeature.name, this);
@@ -118,6 +132,15 @@ public class HomeRole extends Agent {
 		HomeFeature(String name) {
 			this.name = name;
 			working = true;
+		}
+	}
+	private class Item {
+		String name;
+		int quantity;
+		
+		Item(String name, int quantity) {
+			this.name = name;
+			this.quantity = quantity;
 		}
 	}
 }
