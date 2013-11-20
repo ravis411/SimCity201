@@ -90,6 +90,16 @@ public class VehicleGui implements Gui {
 			else if (yPos > yDestination)
 				yPos--;
         }
+        {
+			if (xPos < xDestination)
+				xPos++;
+			else if (xPos > xDestination)
+				xPos--;
+			if (yPos < yDestination)
+				yPos++;
+			else if (yPos > yDestination)
+				yPos--;
+        }
         
         if(aStarState == ASTARSTATE.moving && xPos == xDestination && yPos == yDestination) {
         	aStarState = ASTARSTATE.atDestination;

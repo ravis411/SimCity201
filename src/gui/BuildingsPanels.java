@@ -4,6 +4,7 @@ import gui.Building.BuildingPanel;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 
 import javax.swing.JPanel;
 
@@ -37,6 +38,29 @@ public class BuildingsPanels extends JPanel {
 	public void addBuildingPanel(BuildingPanel buildingPanel) {
 		this.add(buildingPanel, buildingPanel.getName());
 	}
+	
+	
+	
+	
+	
+	
+	
+	/** Returns true if a building with the given name already exists
+	 * 
+	 * @param name	The name to check for.
+	 * @return True if name is already used. False otherwise.
+	 */
+	public boolean containsName(String name) {
+		for(Component b : this.getComponents()){
+			if(b instanceof BuildingPanel) {
+				if(b.getName() == name){
+					return true;
+				}
+			}
+		}
+		return false;
+	}//end containsName
+	
 	
 	
 	/**This will display the building panel.

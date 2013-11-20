@@ -4,7 +4,7 @@ import gui.Building.Building;
 import gui.Building.BuildingPanel;
 import gui.Building.BusStopBuilding;
 import gui.Building.BusStopBuildingPanel;
-import gui.MockAgents.MockVehicleAgent;
+import gui.MockAgents.MockBusAgent;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -12,6 +12,7 @@ import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuBar;
 
 import astar.AStarTraversal;
 
@@ -19,11 +20,12 @@ import astar.AStarTraversal;
 public class SimCity201Gui extends JFrame {
 
 	private final int WINDOWX = 800;
-	private final int WINDOWY = 800;
+	private final int WINDOWY = 800 + 20;
 	
 	SimCityLayout layout = null;// <-This holds the grid information
 	CityAnimationPanel cityPanel = null;//<-AnimationPanel draws the layout and the GUIs
 	BuildingsPanels buildingsPanels = null;//<-Zoomed in view of buildings
+	GuiJMenuBar menuBar = null; //<<-- a menu for the user
 	
 	/**
 	 * Default Constructor Initializes gui
@@ -33,38 +35,33 @@ public class SimCity201Gui extends JFrame {
 		setBounds(50, 50, WINDOWX, WINDOWY);
 		setLayout(new GridLayout(0, 1));
 		
+		menuBar = new GuiJMenuBar(this);
+		this.setJMenuBar(menuBar);
 		
-		
-		SetUpWorld.LoadDefault();
-		layout = SetUpWorld.layout;
-		cityPanel = SetUpWorld.cityPanel;
-		buildingsPanels = SetUpWorld.buildingsPanels;
-		
-		//add a mockVehicle
-		MockVehicleAgent v1 = new MockVehicleAgent(true);
-		VehicleGui v1Gui = new VehicleGui( v1, layout, new AStarTraversal(layout.getRoadGrid()) );
-		v1.agentGui = v1Gui;
-		cityPanel.addGui(v1Gui);
-		v1.startThread();
-		//mockVehicle Added
-		//add a mockVehicle
-				MockVehicleAgent v2 = new MockVehicleAgent(false);
-				VehicleGui v2Gui = new VehicleGui( v2, layout, new AStarTraversal(layout.getRoadGrid()) );
-				v2.agentGui = v2Gui;
-				cityPanel.addGui(v2Gui);
-				v2.startThread();
-				//mockVehicle Added
-				
-				
-		
-		
-		add(cityPanel);
-		add(buildingsPanels);
+		loadDefaultConfig();
 	}
 	
 	
-	
-	
+	/** Loads the default settings
+	 * 
+	 */
+	void loadDefaultConfig(){
+		this.getContentPane().removeAll();
+		
+		SetUpWorldFactory.LoadDefault();
+		layout = SetUpWorldFactory.layout;
+		cityPanel = SetUpWorldFactory.cityPanel;
+		buildingsPanels = SetUpWorldFactory.buildingsPanels;
+		
+		//setJMenuBar(menuBar);
+		add(cityPanel);
+		add(buildingsPanels);
+		
+		
+		this.getContentPane().revalidate();
+		this.getContentPane().repaint();
+		
+	}
 	
 	
 	public static void main(String[] args) {
