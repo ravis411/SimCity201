@@ -31,8 +31,6 @@ public class SetUpWorldFactory{
 	SetUpWorldFactory() {
 	}
 		
-	
-	
 	/** Loads the default configuration
 	 * 
 	 */
@@ -47,9 +45,52 @@ public class SetUpWorldFactory{
 		cityPanel = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
 		buildingsPanels = new BuildingsPanels();//<-Zoomed in view of buildings
 		
+		//across middle
+		layout.addRoad(1, 5, 34, 5);
 		
+		LocationInfo location = new LocationInfo();
 		
+			for(int x = 1; x < 7;x++) {
+				for(int y = 1; y < 5; y++){
+					addBuilding("Default", "Building " + x + y, x * 5 - 2, (y * 5)-3, 2, 2, location );
+				}
+			}
+			
+			location.positionToEnterFromRoadGrid=new Dimension(16, 5);
+			addBuilding("Bus Stop", "Bus Stop 1", 16, 4, 1, 1, location);
+			location.positionToEnterFromRoadGrid=new Dimension(5, 9);
+			addBuilding("Bus Stop", "Bus Stop 2", 5, 10, 1, 1,location);
+			location.positionToEnterFromRoadGrid=new Dimension(16, 9);
+			addBuilding("Bus Stop", "Bus Stop 3", 16, 10, 1, 1, location);
+			location.positionToEnterFromRoadGrid=new Dimension(26, 9);
+			addBuilding("Bus Stop", "Bus Stop 4", 26, 10, 1, 1, location);
+			location.positionToEnterFromRoadGrid=new Dimension(6, 5);
+			addBuilding("Bus Stop", "Bus Stop 5", 6, 4, 1, 1, location);
+			location.positionToEnterFromRoadGrid=new Dimension(26, 5);
+			addBuilding("Bus Stop", "Bus Stop 6", 26, 4, 1, 1, location);
+			
+			location.entranceFromRoadGrid = new Dimension(1,5);
+			location.name = "City Entrance";
+			locationMap.add(location);
+			addVehicle("OddMockBus");
+			addVehicle("EvenMockBus");
+			addVehicle("OddMockBus");
 		
+	} //end LoadDefault
+	
+	/** Loads the second configuration
+	 * 
+	 */
+	public void LoadDefault2(){
+		final int WINDOWX = 800;
+		final int WINDOWY = 800;
+		final int GRIDSIZEX = 25;
+		final int GRIDSIZEY = 25;
+				
+		
+		layout = new SimCityLayout(WINDOWX, WINDOWY/2, GRIDSIZEX, GRIDSIZEY);// <-This holds the grid information
+		cityPanel = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
+		buildingsPanels = new BuildingsPanels();//<-Zoomed in view of buildings
 		
 		//down left
 		layout.addRoad(6, 4, 3, 6);
@@ -86,7 +127,10 @@ public class SetUpWorldFactory{
 			addVehicle("OddMockBus");
 			addVehicle("EvenMockBus");
 		
-	} //end LoadDefault
+	} //end LoadDefault2
+	
+	
+	
 	
 	public void LoadGUITest1(){
 		final int WINDOWX = 800;
@@ -192,10 +236,6 @@ public class SetUpWorldFactory{
 			addVehicle("EvenMockBus");
 		
 	} //end LoadGUITest2
-	
-	
-	
-	
 	
 	
 	

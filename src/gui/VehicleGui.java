@@ -146,10 +146,15 @@ public class VehicleGui implements Gui {
      */
     public void DoEnterWorld() {
     	
-    	Dimension startCoord = new Dimension( positionMap.get(new Dimension(16,1)) );
-    	xPos = startCoord.width;
-    	yPos = startCoord.height;
-    	Position entrance = new Position(16, 1);//This needs to be dynamic
+    	Dimension cityEntrance = locations.get("City Entrance").entranceFromRoadGrid;
+    	Position entrance;
+    	if(cityEntrance != null) {
+    	Dimension startCoord = new Dimension( positionMap.get(cityEntrance));
+    	xPos = xDestination = startCoord.width - 25;
+    	yPos = yDestination = startCoord.height;
+    	entrance = new Position(cityEntrance.width, cityEntrance.height);//This needs to be dynamic
+    	}else
+    		entrance = new Position(16, 1);//This needs to be dynamic
     	
     	while( !entrance.moveInto(aStar.getGrid()) ) {
     		//System.out.println("EntranceBlocked!!!!!!! waiting 1sec");

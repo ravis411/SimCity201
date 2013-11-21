@@ -1,21 +1,8 @@
 package gui;
 
-import gui.Building.Building;
-import gui.Building.BuildingPanel;
-import gui.Building.BusStopBuilding;
-import gui.Building.BusStopBuildingPanel;
-import gui.MockAgents.MockBusAgent;
-
-import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.io.IOException;
-
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenuBar;
 
-import astar.AStarTraversal;
 
 @SuppressWarnings("serial")
 public class SimCity201Gui extends JFrame {
