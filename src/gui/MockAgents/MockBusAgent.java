@@ -3,7 +3,6 @@ package gui.MockAgents;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import com.sun.jmx.remote.internal.ArrayQueue;
 
 import gui.LocationInfo;
 import gui.VehicleGui;
