@@ -39,11 +39,13 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
     	timer.start();
     }
 
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		repaint();  //Will have paintComponent called
 	}
 
-    public void paintComponent(Graphics g) {
+    @Override
+	public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
 
         //Clear the screen by painting a rectangle the size of the frame
@@ -72,6 +74,7 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
         g2.fillRect(550, 400, 10, 50);
         g2.drawString("Window #3", 570, 430);
         g2.fillRect(650, 400, 10, 50);
+        g2.drawString("Entrance", 380, 770);
         
        
 		g2.drawString("Manager's Office", 60, 215);
@@ -89,11 +92,11 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
             }
         }
     }
-/*
-    public void addGui(CustomerGui gui) {
+
+    public void addGui(MarketEmployeeGui gui) {
         guis.add(gui);
     }
-
+    /*
     public void addGui(WaiterGui gui) {
         guis.add(gui);
     }
