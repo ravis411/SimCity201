@@ -1,45 +1,34 @@
 package MarketEmployee;
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-
-import restaurant.interfaces.Cashier;
-import restaurant.interfaces.Cook;
-import restaurant.interfaces.Market;
-import restaurant.test.mock.EventLog;
-import restaurant.test.mock.LoggedEvent;
-import agent.Agent;
-import agent.Constants;
+import market.gui.MarketManagerGui;
+import Person.Role.Role;
 
 /**
- * MarketCustomer Agent
+ * MarketCustomer Role
  */
 //MarketCustomer Agent
-public class MarketManager extends Agent{
+public class MarketManager extends Role{
 	
+	MarketManagerGui gui;
 	/**
-	 * Constructor for CustomerAgent class
+	 * Constructor for MarketManager Role
 	 *
-	 * @param name name of the customer
-	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public MarketManager(String name){
-		super();
-		this.name = name;
+	public MarketManager(){
+		activate();
 		}
 	
-	public String getName(){
-		return name;
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
 	
 	// Messages
+	/*
 	msgMarketManagerFoodOrder(String foodType, int amount, BankManager bankManager)
 	{
 		myOrders.add(new Order(foodType, amount, bankManager);
@@ -63,13 +52,13 @@ public class MarketManager extends Agent{
 			order.setOrderState(Processed);
 			order.setAmountReadyToBeShipped(FoodTypeAmount);
 	}
-
+*/
 
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	public boolean pickAndExecuteAnAction() {
-		if (!myOrders.isEmpty)
+	public boolean pickAndExecuteAction() {
+	/*	if (!myOrders.isEmpty)
 			for all orders in MyOrder
 			{
 			if (order state == none)
@@ -90,14 +79,17 @@ public class MarketManager extends Agent{
 				{
 			}
 	
-
+*/
 		return false;
 		//we have tried all our rules and found
 		//nothing to do. So return false to main loop of abstract agent
 		//and wait.
+		 
+		 
 	}
 
 	// Actions
+		/*
 			giveOrderToMarketEmployee()
 			{
 			msgMarketEmployeeAttemptToFillOrder(String foodType, int amount, int orderNumber)
@@ -150,14 +142,17 @@ public class MarketManager extends Agent{
 			}
 			
 
-
 	//utilities
 	public void setCook(Cook cook) {
 		this.cook=cook;
 		
 	}
+	*/
+	public void setGui(MarketManagerGui gui) {
+		this.gui = gui;
+	} 
 	
-
+/*
 	Class Order{
 		enum state= none, waitingForOrder, orderProcessed
 		String foodType;
@@ -169,6 +164,6 @@ public class MarketManager extends Agent{
 		ArrayList myOrders;
 		int marketMoney;
 }
-
-
+*/
+}
 	

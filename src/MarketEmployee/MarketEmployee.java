@@ -5,13 +5,17 @@ import market.gui.MarketEmployeeGui;
 import Person.Role.Role;
 
 /**
- * MarketCustomer Agent
+ * MarketEmployee Role
  */
 //MarketCustomer Agent
 public class MarketEmployee extends Role{
 	
 	MarketEmployeeGui gui;
-	
+
+	/**
+	 * Constructor for MarketEmployee Role
+	 *
+	 */
 	public MarketEmployee(){
 			
 		activate();

@@ -1,50 +1,40 @@
 package MarketEmployee;
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-
-import restaurant.interfaces.Cashier;
-import restaurant.interfaces.Cook;
-import restaurant.interfaces.Market;
-import restaurant.test.mock.EventLog;
-import restaurant.test.mock.LoggedEvent;
-import agent.Agent;
-import agent.Constants;
+import market.gui.MarketCustomerGui;
+import market.gui.MarketEmployeeGui;
+import Person.Role.Role;
 
 /**
  * MarketCustomer Agent
  */
 //MarketCustomer Agent
-public class MarketCustomer extends Agent{
-	String foodTypeWanted;
+public class MarketCustomer extends Role{
+	MarketCustomerGui gui;
+
+	/*String foodTypeWanted;
 	int FoodTypeAmount;
 	boolean willTakePartialOrder;
 	enum marketCustomerState =none, waitingForMarketEmployeeToReturn, replyingToEmployee, leaving
-	
+	*/
 	/**
 	 * Constructor for CustomerAgent class
 	 *
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public MarketCustomer(String name){
-		super();
-		this.name = name;
+	public MarketCustomer(){
+		activate();
 		}
 	
 	public String getName(){
-		return name;
+		return null;
 	}
 
 
 	
 	// Messages
-
+/*
 	msgMarketCustomerOutofStock(String foodType){
 		marketCustomerState= leaving;
 		}
@@ -56,18 +46,18 @@ public class MarketCustomer extends Agent{
 		msgMarketCustomerHereIsOrder(String FoodType, int amount){
 		marketCustomerState= leaving;
 		}
-
+*/
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	public boolean pickAndExecuteAnAction() {
-		if (marketCustomerState== none)
+	public boolean pickAndExecuteAction() {
+		/*if (marketCustomerState== none)
 			goToMarketEmployeeToOrder();
 		if (marketCustomerState== replyingToEmployee)
 			tellMarketEmployeeIfPartialOrderAcceptable();
 		if (marketCustomerState== leaving)
 			leaveMarket();
-
+*/
 		return false;
 		//we have tried all our rules and found
 		//nothing to do. So return false to main loop of abstract agent
@@ -75,7 +65,7 @@ public class MarketCustomer extends Agent{
 	}
 
 	// Actions
-	
+	/*
 	goToMarketEmployeeToOrder(){
 		//walk to Order Window if line wait in line and when customer first in line
 		msgMarketEmployeeOrder(foodTypeWanted, FoodTypeAmount, this)
@@ -96,9 +86,10 @@ public class MarketCustomer extends Agent{
 		this.cook=cook;
 		
 	}
-	
+	*/
+	public void setGui(MarketCustomerGui gui) {
+	this.gui = gui;
+} 
 
 }
 
-
-	

@@ -96,14 +96,15 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
     public void addGui(MarketEmployeeGui gui) {
         guis.add(gui);
     }
-    /*
-    public void addGui(WaiterGui gui) {
-        guis.add(gui);
-    }
-
-	public void addGui(CookGui gui) {
-		guis.add(gui);
+    
+	public void addGui(MarketManagerGui gui) {
+		guis.add(gui);		
+	}
+	public void addGui(MarketCustomerGui gui) {
+		guis.add(gui);	
 		
 	}
-	*/
+
+ 
+
 }

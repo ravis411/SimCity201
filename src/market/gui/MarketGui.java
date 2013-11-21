@@ -8,7 +8,9 @@ import java.util.Vector;
 
 import javax.swing.JFrame;
 
+import MarketEmployee.MarketCustomer;
 import MarketEmployee.MarketEmployee;
+import MarketEmployee.MarketManager;
 import Person.PersonAgent;
 /**
  * Main GUI class.
@@ -23,7 +25,10 @@ public class MarketGui extends JFrame implements ActionListener {
     final int WINDOWYOpenPosition = 50;
     private Vector<PersonAgent> marketEmployeePersons = new Vector<PersonAgent>();
     private Vector<MarketEmployee> marketEmployeeRoles = new Vector<MarketEmployee>();
-
+    private Vector<PersonAgent> marketCustomerPersons = new Vector<PersonAgent>();
+    private Vector<MarketCustomer> marketCustomerRoles = new Vector<MarketCustomer>();
+    private PersonAgent marketManagerPerson= new PersonAgent("Harry");
+    private MarketManager marketManagereRole= new MarketManager();
     /**
      * Constructor for MarketGui class.
      * Sets up all the gui components.
@@ -62,6 +67,36 @@ public class MarketGui extends JFrame implements ActionListener {
         marketEmployeeGui = new MarketEmployeeGui(marketEmployeePersons.get(0), this, 2);
         marketEmployeeRoles.get(0).setGui(marketEmployeeGui);
         animationPanel.addGui(marketEmployeeGui);
+        
+      //Test Market Manager
+        marketManagerPerson.addRole(marketEmployeeRoles.get(0));
+        MarketManagerGui marketManagerGui = new MarketManagerGui(marketManagerPerson, this);
+        marketManagereRole.setGui(marketManagerGui);
+        animationPanel.addGui(marketManagerGui);
+        
+        //Test Customer #1
+        marketCustomerPersons.add( new PersonAgent("Fred"));
+        marketCustomerRoles.add(new MarketCustomer());
+        marketCustomerPersons.get(0).addRole(marketCustomerRoles.get(0));
+        MarketCustomerGui marketCustomerGui = new MarketCustomerGui(marketCustomerPersons.get(0), this, 0);
+        marketCustomerRoles.get(0).setGui(marketCustomerGui);
+        animationPanel.addGui(marketCustomerGui);
+        
+        //Test Customer #2
+        marketCustomerPersons.add( new PersonAgent("Jeff"));
+        marketCustomerRoles.add(new MarketCustomer());
+        marketCustomerPersons.get(0).addRole(marketCustomerRoles.get(0));
+        marketCustomerGui = new MarketCustomerGui(marketCustomerPersons.get(0), this, 1);
+        marketCustomerRoles.get(0).setGui(marketCustomerGui);
+        animationPanel.addGui(marketCustomerGui);
+        
+        //Test Customer #3
+        marketCustomerPersons.add( new PersonAgent("Mark"));
+        marketCustomerRoles.add(new MarketCustomer());
+        marketCustomerPersons.get(0).addRole(marketCustomerRoles.get(0));
+        marketCustomerGui = new MarketCustomerGui(marketCustomerPersons.get(0), this, 2);
+        marketCustomerRoles.get(0).setGui(marketCustomerGui);
+        animationPanel.addGui(marketCustomerGui);
     }
     
     
