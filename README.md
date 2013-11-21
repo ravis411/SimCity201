@@ -3,6 +3,6 @@ team29
 
 SimCity201 Project Repository for CS 201 students
 
-Person Branch
+Overworld Branch
 
-Currently Assigned: Mike Ciesielka, Kushaan Kumar
+Currently Assigned: Ryan
