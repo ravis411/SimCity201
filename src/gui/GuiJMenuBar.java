@@ -14,7 +14,7 @@ public class GuiJMenuBar extends JMenuBar implements ActionListener {
 	//FileMenu Items
 	JMenuItem exit, loadDefault, loadGuiTest1, loadGuiTest2;
 	//View Menu Items
-	JMenuItem viewDefault;
+	JMenuItem viewDefault, viewTesting;
 	
 	
 	public GuiJMenuBar(SimCity201Gui gui) {
@@ -47,8 +47,13 @@ public class GuiJMenuBar extends JMenuBar implements ActionListener {
 		//Set up the "View" menu
 		viewMenu = new JMenu("View");
 		add(viewMenu);
-		viewDefault = new JMenuItem("View Default");
+		viewDefault = new JMenuItem("Default View");
+		viewDefault.addActionListener(this);
+		viewTesting = new JMenuItem("Test View");
+		viewTesting.addActionListener(this);
 		viewMenu.add(viewDefault);
+		viewMenu.add(viewTesting);
+		
 	}
 	
 	
@@ -64,6 +69,18 @@ public class GuiJMenuBar extends JMenuBar implements ActionListener {
 		else if(e.getSource() == loadGuiTest2) {
 			gui.loadConfig("GUI Test 2");
 		}
+		
+		
+		
+		//View menu
+		else if(e.getSource() == viewDefault){
+			gui.cityPanel.setTestView(false);
+		}
+		else if(e.getSource() == viewTesting){
+			gui.cityPanel.setTestView(true);
+		}
+				
+		
 		else if(e.getSource() == exit) {
 			System.exit(0);
 		}

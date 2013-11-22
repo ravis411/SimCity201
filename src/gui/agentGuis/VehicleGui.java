@@ -1,8 +1,11 @@
-package gui;
+package gui.agentGuis;
 
 
 
 
+import gui.Gui;
+import gui.LocationInfo;
+import gui.SimCityLayout;
 import gui.interfaces.Vehicle;
 
 import java.awt.*;
@@ -36,10 +39,7 @@ public class VehicleGui implements Gui {
     
     private SimCityLayout cityLayout = null;
 
-    
-    
-    
-    
+
     //Coordinate Positions
     private int xPos = -20, yPos = -20;
     private int xDestination = 400, yDestination = -20;
@@ -77,41 +77,13 @@ public class VehicleGui implements Gui {
 			} catch (IOException e) {
 				testView = true;
 			}
-        
-        
-        
+
+			
         for(LocationInfo i : locationList){
         	if(i != null && i.positionToEnterFromRoadGrid != null)
         		locations.put(i.name, i);
         	System.out.println("LOCATION " + i.positionToEnterFromRoadGrid);
         }
-       
-//        //Initialize locations
-//        LocationInfo bs1 = new LocationInfo();
-//    	LocationInfo bs2 = new LocationInfo();
-//    	LocationInfo bs3 = new LocationInfo();
-//    	LocationInfo bs4 = new LocationInfo();
-//    	LocationInfo bs5 = new LocationInfo();
-//    	LocationInfo bs6 = new LocationInfo();
-//    	bs1.name="Bus Stop 1";
-//    	bs1.positionToEnterFromRoadGrid = new Dimension(16, 2);
-//    	bs2.name = "Bus Stop 2";
-//    	bs2.positionToEnterFromRoadGrid = new Dimension(6, 12);
-//    	bs3.name = "Bus Stop 3";
-//    	bs3.positionToEnterFromRoadGrid = new Dimension(28, 12);
-//    	bs4.name = "Bus Stop 4";
-//    	bs4.positionToEnterFromRoadGrid = new Dimension(14, 10);
-//    	bs5.name = "Bus Stop 5";
-//    	bs5.positionToEnterFromRoadGrid = new Dimension(17, 12);
-//    	bs6.name = "Bus Stop 6";
-//    	bs6.positionToEnterFromRoadGrid = new Dimension(26, 8);
-//    	locations.put(bs1.name, bs1);
-//    	locations.put(bs2.name, bs2);
-//    	locations.put(bs3.name, bs3);
-//    	locations.put(bs4.name, bs4);
-//    	locations.put(bs5.name, bs5);
-//    	locations.put(bs6.name, bs6);
-//    	//locations have been initialized though it shouldn't be done here
         
     }
     
@@ -144,6 +116,8 @@ public class VehicleGui implements Gui {
         }
     }
 
+    
+    
     public void draw(Graphics2D g) {
         if(testView){
         	g.setColor(Color.MAGENTA);
@@ -153,12 +127,18 @@ public class VehicleGui implements Gui {
         }
         else
         {
+        	if(img == null){
+        		testView = true; return;
+        	}
         	ImageIcon icon = new ImageIcon(img);
         	Image image = icon.getImage();
         	g.drawImage(image, xPos, yPos, 20, 20, null);
         }
     }
 
+    
+    
+    
     
     public boolean isPresent() {
         return true;
@@ -167,7 +147,6 @@ public class VehicleGui implements Gui {
     
     
     public void DoGoTo(String location){
-    	
     	
     	LocationInfo info = null;
     	info = locations.get(location);    	
@@ -180,23 +159,45 @@ public class VehicleGui implements Gui {
     	}
     }
     
+
+
+   // public void DoGoToHomePosition() {
+    //	guiMoveFromCurrentPostionTo(originalPosition);
+     // }
     
     
-    /**
-     * This function assumes the Vehicle is not in the world
-     * Will enter the world
+    /** Will enter the city, and the grid, from the default location City Entrance
+     * 
      */
-    public void DoEnterWorld() {
+    public void DoEnterWorld(){
+    	Dimension tooo = (locations.get("City Entrance").entranceFromRoadGrid);
+    	Position to = new Position(tooo.width, tooo.height);
     	
-    	Dimension cityEntrance = locations.get("City Entrance").entranceFromRoadGrid;
+    	Dimension from = new Dimension(positionMap.get(tooo));
+    	from.width -= 25;
+    	
+    	DoEnterWorld(from, to);
+    }
+    
+    
+    /**This function assumes the Vehicle is not in the world
+     * Will enter the world
+     * 
+     * @param from	The java xy coordinates to start from
+     * @param to	The grid Position to enter
+     */
+    private void DoEnterWorld(Dimension from, Position to) {
+    	
+    	//Dimension cityEntrance = locations.get("City Entrance").entranceFromRoadGrid;
+    	
     	Position entrance;
-    	if(cityEntrance != null) {
-    	Dimension startCoord = new Dimension( positionMap.get(cityEntrance));
-    	xPos = xDestination = startCoord.width - 25;
-    	yPos = yDestination = startCoord.height;
-    	entrance = new Position(cityEntrance.width, cityEntrance.height);//This needs to be dynamic
+    	
+    	if(from != null && to != null) {
+    	xPos = xDestination = from.width;
+    	yPos = yDestination = from.height;
+    	entrance = new Position(to.getX(), to.getY());
     	}else
-    		entrance = new Position(16, 1);//This needs to be dynamic
+    		return;
     	
     	while( !entrance.moveInto(aStar.getGrid()) ) {
     		//System.out.println("EntranceBlocked!!!!!!! waiting 1sec");
@@ -215,26 +216,12 @@ public class VehicleGui implements Gui {
     		currentPosition = new Position(entrance.getX(), entrance.getY());
             //currentPosition.moveInto(aStar.getGrid());
             originalPosition = currentPosition;
-    		DoGoToHomePosition();
+    		//DoGoToHomePosition();
     	}
     	}catch(Exception e) {
-    		DoGoToHomePosition();//Sometimes entrance can get clogged so try to find a path again
+    	//	DoGoToHomePosition();//Sometimes entrance can get clogged so try to find a path again
     	}
     }
-
-    public void DoPark() {
-    	//DoGoToHomePosition();
-    	System.out.println("Moving to 6,10");
-    	guiMoveFromCurrentPostionTo(new Position(6,10));
-    }
-
-    
-    
-    
-    public void DoGoToHomePosition() {
-    	guiMoveFromCurrentPostionTo(originalPosition);
-      }
-    
     
     
     /**ASTAR************************************************************
@@ -247,7 +234,23 @@ public class VehicleGui implements Gui {
      *  
      */
     void guiMoveFromCurrentPostionTo(Position to){
-        //System.out.println("[Gaut] " + this + " moving from " + currentPosition.toString() + " to " + to.toString());
+        
+    	//First check to make sure the destination is free otherwise wait
+    	while(true){
+    		if(currentPosition.equals(to) || to.open(aStar.getGrid()) ){
+    			break;
+    		}
+    		else
+    		{
+    			try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+				}
+    		}
+    	}
+    	
+    	
+    	//System.out.println("[Gaut] " + this + " moving from " + currentPosition.toString() + " to " + to.toString());
 
     	//System.out.println("TO" + to + "CUR " + currentPosition);
         AStarNode aStarNode = (AStarNode)aStar.generalSearch(currentPosition, to);
@@ -295,6 +298,7 @@ public class VehicleGui implements Gui {
          move(currentPosition.getX(), currentPosition.getY());
         }
     }//End A* guiMoveFromCurrent...
+    
     
     
     /**The caller's Thread will block until they have reached the destination

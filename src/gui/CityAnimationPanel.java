@@ -98,6 +98,13 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		guis.add(b);
 		
 	}
+	
+	
+	public void setTestView(boolean testView){
+		for(Gui g : guis){
+			g.setTestView(testView);
+		}
+	}
 
 	public void clear(){
 		guis.clear();

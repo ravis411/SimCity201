@@ -4,8 +4,9 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 
+
 import gui.LocationInfo;
-import gui.VehicleGui;
+import gui.agentGuis.VehicleGui;
 import gui.interfaces.Vehicle;
 import agent.Agent;
 
