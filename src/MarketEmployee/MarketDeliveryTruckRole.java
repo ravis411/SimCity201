@@ -20,7 +20,7 @@ import agent.Constants;
  * MarketCustomer Agent
  */
 //MarketCustomer Agent
-public class MarketDeliveryTruck extends Agent{
+public class MarketDeliveryTruckRole extends Role implements MarketDeliveryTruck{
 	
 	enum marketDeliveryTruckState = waitingForSomethingToDeliver, delivering, returning;
 	int amountbeingDelivered;;

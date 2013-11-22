@@ -2,13 +2,14 @@ package MarketEmployee;
 
 
 import market.gui.MarketEmployeeGui;
+import market.interfaces.MarketEmployee;
 import Person.Role.Role;
 
 /**
  * MarketEmployee Role
  */
 //MarketCustomer Agent
-public class MarketEmployee extends Role{
+public class MarketEmployeeRole extends Role implements MarketEmployee{
 	
 	MarketEmployeeGui gui;
 
@@ -16,7 +17,7 @@ public class MarketEmployee extends Role{
 	 * Constructor for MarketEmployee Role
 	 *
 	 */
-	public MarketEmployee(){
+	public MarketEmployeeRole(){
 			
 		activate();
 	}

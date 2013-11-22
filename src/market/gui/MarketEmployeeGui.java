@@ -24,19 +24,19 @@ public class MarketEmployeeGui implements Gui {
 	private final static int yPlatingCord= 100;
     public static final int xTable = 200;
     public static final int yTable = 250;
-    private int waiterNumber=0;
+    private int waiterNumber;
     private int tableNum;
     private String orderBeingCarried = " ";
     MarketGui gui;
 
     public MarketEmployeeGui(PersonAgent agent, MarketGui gui, int waiterNumber) {
         this.agent = agent;
-        xDestination=395 + 100*(waiterNumber%4);
+        xDestination=700;
         yDestination = 380;//default start position
         xPos = 400;
         yPos = 750;
         this.gui = gui;
-        //this.waiterNumber=waiterNumber;
+        this.waiterNumber=waiterNumber;
     }
 
     public void updatePosition() {
@@ -54,11 +54,12 @@ public class MarketEmployeeGui implements Gui {
         else if (yPos > yDestination)
             {yPos--;
             }
-/*
+
         if (xPos == xDestination && yPos == yDestination
-        		& (xDestination == xTable + 20 + ((tableNum-1)*60)) & (yDestination == yTable - 20)) {
-           agent.msgAtTable();
+        		& (xDestination == 700 & (yDestination == 380))) {
+        	xDestination= 395 + 100*(waiterNumber%4);
         }
+        	/*
         else if (((xDestination == xCookCord) && (yDestination == yCookCord))&& ((xCookCord == xPos) & (yCookCord == yPos) ))
         {
         	agent.msgAtCook();

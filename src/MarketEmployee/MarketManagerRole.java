@@ -2,20 +2,21 @@ package MarketEmployee;
 
 
 import market.gui.MarketManagerGui;
+import market.interfaces.MarketManager;
 import Person.Role.Role;
 
 /**
  * MarketCustomer Role
  */
 //MarketCustomer Agent
-public class MarketManager extends Role{
+public class MarketManagerRole extends Role implements MarketManager{
 	
 	MarketManagerGui gui;
 	/**
 	 * Constructor for MarketManager Role
 	 *
 	 */
-	public MarketManager(){
+	public MarketManagerRole(){
 		activate();
 		}
 	

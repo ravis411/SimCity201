@@ -10,6 +10,10 @@
 	enum marketCustomerState =none, waitingForMarketEmployeeToReturn, replyingToEmployee, leaving
 
 ###Messages
+	void msgMarketCustomerAtCounter(){
+		event=marketCustomerEvent.firstInLine;
+	}
+		
 	msgMarketCustomerOutofStock(String foodType){
 	marketCustomerState= leaving;
 	}

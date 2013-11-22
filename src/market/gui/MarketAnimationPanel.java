@@ -20,7 +20,8 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
     private final static int WINDOWY = 800;
     final static int storeCounterX = 0;//TABLEX and TABLEY describe where the table appears in the panel
     final static int storeCounterY = 400;
-    final static int storeCounterWIDTH = 800;
+    final static int storeCounterLeftWIDTH= 700;
+    final static int storeCounterRightWIDTH= 50;
     final static int storeCounterXHEIGHT = 50;
     
     final static int TIMERCOUNTmilliseconds = 5;
@@ -55,8 +56,8 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
         
         g2.setColor(Color.ORANGE);
         
-        g2.fillRect(storeCounterX, storeCounterY, storeCounterWIDTH, storeCounterXHEIGHT);//store counter
-
+        g2.fillRect(storeCounterX, storeCounterY, storeCounterLeftWIDTH, storeCounterXHEIGHT);//store counter
+        g2.fillRect(750, storeCounterY, storeCounterRightWIDTH, storeCounterXHEIGHT);//store counter
         g2.fillRect(0,200,200,20);//top manager office wall
         g2.fillRect(200,200,20,100);//manager office top half right wall
         g2.fillRect(200,340,20,60);//manager office bottom half left wall

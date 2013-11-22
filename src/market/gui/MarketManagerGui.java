@@ -18,10 +18,12 @@ public class MarketManagerGui implements Gui {
     static final int hostWidth = 20, hostHeight = 20;
     private int xResturantEntrance=380;
 	private final static int yResturantEntrance= 750;
-	private final static int xCookCord= 430;
-	private final static int yCookCord= 60;
+	private final int xManagerOfficeDoor= 200;
+	private final int yManagerOfficeDoor= 310;
+	private final int xManagerOfficeDesk= 90;
+	private final int yManagerOfficeDesk= 380;
 	private final static int xPlatingCord= 450;
-	private final static int yPlatingCord= 100;
+	private final static int yPlatingCord= 10;
     public static final int xTable = 200;
     public static final int yTable = 250;
     private int waiterNumber=0;
@@ -31,7 +33,7 @@ public class MarketManagerGui implements Gui {
 
     public MarketManagerGui(PersonAgent agent, MarketGui gui) {
         this.agent = agent;
-        xDestination=100;
+        xDestination=700;
         yDestination = 380;//default start position
         xPos = 400;
         yPos = 750;
@@ -54,6 +56,17 @@ public class MarketManagerGui implements Gui {
         else if (yPos > yDestination)
             {yPos--;
             }
+
+        if (xPos == xDestination && yPos == yDestination
+        		& (xDestination == 700 & (yDestination == 380))) {
+        	xDestination= xManagerOfficeDoor;
+        	yDestination= yManagerOfficeDoor;
+        }
+        if (xPos == xDestination && yPos == yDestination
+        		& (xDestination == xManagerOfficeDoor & (yDestination == yManagerOfficeDoor))) {
+        	xDestination= xManagerOfficeDesk;
+        	yDestination= yManagerOfficeDesk;
+        }
 /*
         if (xPos == xDestination && yPos == yDestination
         		& (xDestination == xTable + 20 + ((tableNum-1)*60)) & (yDestination == yTable - 20)) {
@@ -91,11 +104,7 @@ public class MarketManagerGui implements Gui {
         yDestination = yTable - 20;
     }
     
-    public void DoGoToCook() {
-    	xDestination = xCookCord;
-        yDestination = yCookCord;
-		
-	}
+
 	public void DoGoToPlatingArea() {
 		xDestination=xPlatingCord;
 		yDestination=yPlatingCord;

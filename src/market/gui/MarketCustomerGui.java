@@ -5,11 +5,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
+import MarketEmployee.MarketCustomerRole;
 import Person.PersonAgent;
 
 public class MarketCustomerGui implements Gui {
 
-    private PersonAgent agent = null;
+    private MarketCustomerRole role = null;
 
     private int xPos;
 	private int yPos;
@@ -18,8 +19,8 @@ public class MarketCustomerGui implements Gui {
     static final int hostWidth = 20, hostHeight = 20;
     private int xResturantEntrance=380;
 	private final static int yResturantEntrance= 750;
-	private final static int xCookCord= 430;
-	private final static int yCookCord= 60;
+	private final int xCounterCord;
+	private final int yCounterCord= 450;
 	private final static int xPlatingCord= 450;
 	private final static int yPlatingCord= 100;
     public static final int xTable = 200;
@@ -29,10 +30,11 @@ public class MarketCustomerGui implements Gui {
     private String orderBeingCarried = " ";
     MarketGui gui;
 
-    public MarketCustomerGui(PersonAgent agent, MarketGui gui, int customerNumber) {
+    public MarketCustomerGui(MarketCustomerRole marketCustomer, MarketGui gui, int customerNumber) {
     	this.customerNumber=customerNumber;
-        this.agent = agent;
-        xDestination=395 + 100*(customerNumber%4);
+        this.role = marketCustomer;
+        xCounterCord=395 + 100*(customerNumber%4);
+        xDestination=xCounterCord;
         yDestination = 450;//default start position
         xPos = 400;
         yPos = 750;
@@ -54,11 +56,12 @@ public class MarketCustomerGui implements Gui {
         else if (yPos > yDestination)
             {yPos--;
             }
-/*
+
         if (xPos == xDestination && yPos == yDestination
-        		& (xDestination == xTable + 20 + ((tableNum-1)*60)) & (yDestination == yTable - 20)) {
-           agent.msgAtTable();
+        		& (xDestination == xCounterCord) & (yDestination == yCounterCord)) {
+           role.msgMarketCustomerAtCounter();
         }
+        /*
         else if (((xDestination == xCookCord) && (yDestination == yCookCord))&& ((xCookCord == xPos) & (yCookCord == yPos) ))
         {
         	agent.msgAtCook();
@@ -92,8 +95,8 @@ public class MarketCustomerGui implements Gui {
     }
     
     public void DoGoToCook() {
-    	xDestination = xCookCord;
-        yDestination = yCookCord;
+    	//xDestination = xCookCord;
+      //  yDestination = yCookCord;
 		
 	}
 	public void DoGoToPlatingArea() {
