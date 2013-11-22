@@ -3,12 +3,23 @@ package gui;
 
 
 
+import gui.interfaces.Vehicle;
+
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.RescaleOp;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.concurrent.Semaphore;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 import agent.Agent;
 import astar.AStarNode;
@@ -19,10 +30,16 @@ import astar.Position;
 
 public class VehicleGui implements Gui {
 
-    private Agent agent = null;
+    private Vehicle agent = null;
+    
+    
     
     private SimCityLayout cityLayout = null;
 
+    
+    
+    
+    
     //Coordinate Positions
     private int xPos = -20, yPos = -20;
     private int xDestination = 400, yDestination = -20;
@@ -40,14 +57,28 @@ public class VehicleGui implements Gui {
     private Map<String, LocationInfo> locations = new HashMap<>();//<<-- A Map of locations
     
     
+    BufferedImage img = null;
+    boolean testView = false;
     
     
-    public VehicleGui(Agent agent, SimCityLayout cityLayout, AStarTraversal aStar, List<LocationInfo> locationList) {
+    
+    public VehicleGui(Vehicle agent, SimCityLayout cityLayout, AStarTraversal aStar, List<LocationInfo> locationList) {
     	positionMap = new HashMap<Dimension, Dimension>(cityLayout.positionMap);
     	this.agent = agent;
         this.cityLayout = cityLayout;
     
         this.aStar = aStar;
+        
+  
+			//img = new ImageIcon(("movingCar.gif"));
+	
+			try {
+			    img = ImageIO.read(new File("images/UFO.png"));
+			} catch (IOException e) {
+				testView = true;
+			}
+        
+        
         
         for(LocationInfo i : locationList){
         	if(i != null && i.positionToEnterFromRoadGrid != null)
@@ -114,10 +145,21 @@ public class VehicleGui implements Gui {
     }
 
     public void draw(Graphics2D g) {
-        g.setColor(Color.MAGENTA);
-        g.fillRect(xPos, yPos, 20, 20);
+        if(testView){
+        	g.setColor(Color.MAGENTA);
+        	g.fillRect(xPos, yPos, 20, 20);
+        	g.setColor(Color.white);
+        	g.drawString(agent.toString(), xPos, yPos);
+        }
+        else
+        {
+        	ImageIcon icon = new ImageIcon(img);
+        	Image image = icon.getImage();
+        	g.drawImage(image, xPos, yPos, 20, 20, null);
+        }
     }
 
+    
     public boolean isPresent() {
         return true;
     }
@@ -281,6 +323,12 @@ public class VehicleGui implements Gui {
     public int getYPos() {
         return yPos;
     }
+
+
+	@Override
+	public void setTestView(boolean test) {
+		this.testView = test;
+	}
 
 	
 }

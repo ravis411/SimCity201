@@ -76,6 +76,11 @@ public class MockBusAgent extends Agent implements Vehicle {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	public String toString(){
+		return "" + name;
+	}
 
 
 	
