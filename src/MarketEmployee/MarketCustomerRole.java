@@ -3,6 +3,7 @@ package MarketEmployee;
 
 import market.gui.MarketCustomerGui;
 import market.interfaces.MarketCustomer;
+import market.interfaces.MarketEmployee;
 import Person.Role.Role;
 
 /**
@@ -20,7 +21,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	enum marketCustomerEvent
 	{none, firstInLine, replyingToEmployee, leaving};
 	public marketCustomerEvent event;
-	public MarketEmployeeRole marketEmployee;
+	public MarketEmployee marketEmployee;
 	
 	
 	/**

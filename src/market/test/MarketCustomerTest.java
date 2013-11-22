@@ -1,6 +1,7 @@
 package market.test;
 
 import junit.framework.TestCase;
+import market.interfaces.MarketEmployee;
 import market.test.mock.MockMarketEmployee;
 import MarketEmployee.MarketCustomerRole;
 
@@ -17,7 +18,7 @@ public class MarketCustomerTest extends TestCase
 	
 	//these are instantiated for each test separately via the setUp() method.
 	MarketCustomerRole customer;
-	MockMarketEmployee employee;
+	MarketEmployee employee;
 	
 	
 	/**
@@ -27,8 +28,8 @@ public class MarketCustomerTest extends TestCase
 	public void setUp() throws Exception{
 		super.setUp();		
 		customer = new MarketCustomerRole();
-		employee = new MockMarketEmployee();
-		//customer.marketEmployee=employee;
+		employee = new MockMarketEmployee("employee");
+		customer.marketEmployee=employee;
 		
 	}	
 	/**
