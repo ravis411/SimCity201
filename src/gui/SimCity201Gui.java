@@ -36,18 +36,6 @@ public class SimCity201Gui extends JFrame {
 		//loadConfig("GUI Test 1");
 	}
 	
-	public SimCity201Gui(String config) {
-		setTitle("SimCity201 V0.5  - Team 29 --" + config);
-        setVisible(true);
-        setResizable(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(50, 50, WINDOWX, WINDOWY);
-		setLayout(new GridLayout(0, 1));
-		menuBar = new GuiJMenuBar(this);
-		this.setJMenuBar(menuBar);
-		loadConfig(config);
-	}
-	
 	
 	/** Loads the config
 	 * 

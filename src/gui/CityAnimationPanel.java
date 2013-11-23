@@ -86,7 +86,8 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		g2.setColor(Color.orange);
 		
 		for(Building b : buildings){
-			if(b.isPresent()){
+			//why would a building not be present? //if(b.isPresent())
+			{
 				b.draw(g2);
 			}
 		}
