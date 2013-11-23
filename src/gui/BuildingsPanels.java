@@ -5,8 +5,6 @@ import gui.Building.BuildingPanel;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.io.Closeable;
-import java.io.IOException;
 
 import javax.swing.JPanel;
 
@@ -45,6 +43,26 @@ public class BuildingsPanels extends JPanel{
 	
 	
 	
+	/***	Returns the BuildingPanel with the given name.
+	 * 
+	 * @param name	The name of the building panel to search for.
+	 * @return	The BuildingPanel with the given name if it exists. null otherwise.
+	 */
+	public BuildingPanel getBuildingPanel(String name){
+		BuildingPanel b = null;
+		for(Component c : this.getComponents()){
+			if(c instanceof BuildingPanel) {
+				if(c.getName() == name){
+					b = (BuildingPanel) c;
+					break;
+				}
+			}
+		}
+		return b;
+	}//end getBuildingPanel
+	
+	
+	
 	
 	
 	/** Returns true if a building with the given name already exists
@@ -72,11 +90,14 @@ public class BuildingsPanels extends JPanel{
 		//System.out.println("Showing: " + buildingPanel.getName());
 		cardLayout.show(this, buildingPanel.getName());
 	}
+	/**This will display the building panel.
+	 * 
+	 */
 	public void displayBuildingPanel(String name){
 		for(Component b : this.getComponents()){
 			if(b instanceof BuildingPanel) {
 				if(b.getName() == name){
-					System.out.println("SHOWING PANEL");
+					//System.out.println("SHOWING PANEL");
 					displayBuildingPanel((BuildingPanel)b);
 					return;
 				}

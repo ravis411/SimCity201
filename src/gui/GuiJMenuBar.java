@@ -10,7 +10,7 @@ import javax.swing.JMenuItem;
 public class GuiJMenuBar extends JMenuBar implements ActionListener {
 
 	SimCity201Gui gui = null;
-	JMenu fileMenu, loadSubmenu, viewMenu;
+	JMenu fileMenu, loadSubmenu, viewMenu, viewSettingsSubmenu;
 	//FileMenu Items
 	JMenuItem exit, loadDefault, loadGuiTest1, loadGuiTest2;
 	//View Menu Items
@@ -47,14 +47,17 @@ public class GuiJMenuBar extends JMenuBar implements ActionListener {
 		//Set up the "View" menu
 		viewMenu = new JMenu("View");
 		add(viewMenu);
+		viewSettingsSubmenu = new JMenu("Settings");
+		viewMenu.add(viewSettingsSubmenu);
 		viewDefault = new JMenuItem("Default View");
 		viewDefault.addActionListener(this);
 		viewTesting = new JMenuItem("Test View");
 		viewTesting.addActionListener(this);
-		viewMenu.add(viewDefault);
-		viewMenu.add(viewTesting);
+		viewSettingsSubmenu.add(viewDefault);
+		viewSettingsSubmenu.add(viewTesting);
 		showTeam29Panel = new JMenuItem("Team 29 Information");
 		showTeam29Panel.addActionListener(this);
+		viewMenu.addSeparator();
 		viewMenu.add(showTeam29Panel);
 		
 	}
