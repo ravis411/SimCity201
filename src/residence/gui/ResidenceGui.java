@@ -12,7 +12,7 @@ import java.awt.event.*;
  * Contains the main frame and subsequent panels
  */
 public class ResidenceGui extends JFrame implements ActionListener {
-	JPanel animationFrame = new JPanel();
+	//JPanel animationFrame = new JPanel();
 	AnimationPanel animationPanel = new AnimationPanel();
 	
 	private HomeRole homeRole = new HomeRole("Test");
@@ -30,12 +30,15 @@ public class ResidenceGui extends JFrame implements ActionListener {
      * Sets up all the gui components.
      */
     public ResidenceGui() {
-        int WINDOWX = 450;
+        int WINDOWX = 800;
         int WINDOWY = 400;
+        
+        homeRole.gui = homeRoleGui;
+        homeRole.startThread();
 
-        animationFrame.setBounds(100+WINDOWX, 50 , WINDOWX+100, WINDOWY+100);
-        animationFrame.setVisible(true);
-    	animationFrame.add(animationPanel);
+        //animationFrame.setBounds(100+WINDOWX, 50 , WINDOWX+100, WINDOWY+100);
+        //animationFrame.setVisible(true);
+    	//animationFrame.add(animationPanel);
     	animationPanel.addGui(homeRoleGui);
     	
     	
@@ -80,7 +83,7 @@ public class ResidenceGui extends JFrame implements ActionListener {
     public static void main(String[] args) {
         ResidenceGui gui = new ResidenceGui();
         gui.setTitle("SimCity201 Home");
-        gui.setSize(480, 670);
+        gui.setSize(800, 400);
         gui.setVisible(true);
         gui.setResizable(false);
         gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

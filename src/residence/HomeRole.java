@@ -1,7 +1,9 @@
 package residence;
 
 import agent.Agent;
+import residence.gui.HomeRoleGui;
 import residence.interfaces.*;
+
 import java.util.*;
 
 /**
@@ -17,6 +19,8 @@ public class HomeRole extends Agent implements Home {
 	private List <HomeFeature> features = new ArrayList<HomeFeature>(); //includes appliances, toilets, sinks, etc (anything that can break)
 
 	private String name;
+	
+	public HomeRoleGui gui = null;
 
 	public enum AgentState
 	{DoingNothing};
@@ -29,6 +33,9 @@ public class HomeRole extends Agent implements Home {
 	public HomeRole(String name) {
 		super();
 		this.name = name;
+		
+		inventory.add(new Item("Cooking Ingredients",2));
+		inventory.add(new Item("Cleaning supplies", 2));
 	}
 	
 	public String getName() {
@@ -43,12 +50,9 @@ public class HomeRole extends Agent implements Home {
 	}
 	public void msgTired() { //called by timer
 		tired = true;
+		print("I'm tired.");
 		stateChanged();
 	}
-	/*public void msgRestockItem (String item, int quantity) {
-		inventory.put(item, inventory.get(item)+quantity);
-		stateChanged();
-	}*/
 	public void msgRestockItem (String itemName, int quantity) {
 		for(Item i : inventory) {
 			if(i.name == itemName) {
@@ -93,6 +97,7 @@ public class HomeRole extends Agent implements Home {
 			if(i.quantity < 2) {
 				goToMarket(i);
 			}
+			return true;
 		}
 		for (HomeFeature hf : features) {
 			if(!hf.working) {
@@ -107,7 +112,8 @@ public class HomeRole extends Agent implements Home {
 	// Actions
 
 	private void goToMarket (Item item) {
-			
+		print("I'm going to the market.");
+		gui.DoGoToFrontDoor();
 	}
 	private void fileWorkOrder (HomeFeature brokenFeature) {
 		landlord.msgBrokenFeature(brokenFeature.name, this);
@@ -120,7 +126,7 @@ public class HomeRole extends Agent implements Home {
 		
 	}
 	private void goToSleep() {
-		
+		gui.DoGoToBed();
 	}
 
 	//utilities

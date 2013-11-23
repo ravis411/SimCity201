@@ -8,11 +8,8 @@ public class HomeRoleGui implements Gui {
 
     private HomeRole agent = null;
 
-    private int xPos = -20, yPos = -20;//default waiter position
-    private int xDestination = -20, yDestination = -20;//default start position
-
-    private int xTable = -20;
-    private int yTable = -20;
+    private int xPos = 700, yPos = 200;//default waiter position
+    private int xDestination = 700, yDestination = 200;//default start position
 
     public HomeRoleGui(HomeRole agent) {
         this.agent = agent;
@@ -29,8 +26,7 @@ public class HomeRoleGui implements Gui {
         else if (yPos > yDestination)
             yPos--;
 
-        if (xPos == xDestination && yPos == yDestination
-        		& (xDestination == xTable + 20) & (yDestination == yTable - 20)) {
+        if (xPos == xDestination && yPos == yDestination) {
            //agent.msgAtTable();
         }
     }
@@ -38,6 +34,27 @@ public class HomeRoleGui implements Gui {
     public void draw(Graphics2D g) {
         g.setColor(Color.MAGENTA);
         g.fillRect(xPos, yPos, 20, 20);
+    }
+    
+    public void DoGoToBed() {
+    	/*boolean inBedroom = false;
+    	xDestination = 200;
+    	yDestination = 150;
+    	while(xPos > 201) {
+    		inBedroom = false;
+    		System.out.println("asdad");
+    	}
+    	inBedroom = true;
+    	System.out.println("DONE");
+    	if(inBedroom == true) {*/
+    		xDestination = 50;
+    		yDestination = 110;
+    	//}
+    }
+    
+    public void DoGoToFrontDoor() {
+    	xDestination = 750;
+    	yDestination = 205;
     }
 
     public boolean isPresent() {
