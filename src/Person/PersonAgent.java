@@ -47,6 +47,8 @@ public class PersonAgent extends Agent {
 	public enum StateOfEmployment {Customer,Employee,Idle};
 	public enum PersonState {Idle,NeedsMoney,PayRentNow, PayLoanNow,GettingMoney,NeedsFood,GettingFood }
 	
+	private List<BackpackObject> backpack;
+	
 	private PersonState state;
 	private StateOfEmployment stateOfEmployment;
 	
@@ -68,6 +70,8 @@ public class PersonAgent extends Agent {
 		realTime = null;
 		
 		setUpPreferences();
+		
+		backpack = new ArrayList<BackpackObject>();
 	}
 	
 //-------------------------------MESSAGES----------------------------------------//
@@ -140,6 +144,22 @@ public class PersonAgent extends Agent {
 	  */
 	public void msgPayBackRentUrgently(){
 	   state=PersonState.PayRentNow;
+	}
+	
+	
+	public void msgAddObjectToBackpack(String object, int quantity){
+		boolean added = false;
+		for(BackpackObject bo : backpack){
+			if(bo.name.equals(object)){
+				bo.quantity += quantity;
+				added = true;
+				break;
+			}
+		}
+		
+		if(!added){
+			backpack.add(new BackpackObject(object, quantity));
+		}
 	}
 
 	//------------------------------SCHEDULER---------------------------//
@@ -339,7 +359,7 @@ public class PersonAgent extends Agent {
 	 * A public stateChanged method to allow the Roles to call stateChanged
 	 */
 	public void stateChanged(){
-		stateChanged();
+		super.stateChanged();
 	}
 	
 	/**
@@ -356,6 +376,16 @@ public class PersonAgent extends Agent {
 	 */
 	public void removeRole(Role r){
 		roles.remove(r);
+	}
+	
+	private class BackpackObject {
+		String name;
+		int quantity;
+		
+		public BackpackObject(String name, int quantity){
+			this.name = name;
+			this.quantity = quantity;
+		}
 	}
 
 }
