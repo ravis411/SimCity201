@@ -4,8 +4,9 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 
+
 import gui.LocationInfo;
-import gui.VehicleGui;
+import gui.agentGuis.VehicleGui;
 import gui.interfaces.Vehicle;
 import agent.Agent;
 
@@ -56,7 +57,7 @@ public class MockBusAgent extends Agent implements Vehicle {
 	}
 	
 	private void Travel(){
-		agentGui.DoEnterWorld();
+		//agentGui.DoEnterWorld();
 		//agentGui.DoPark();
 		traveled = true;
 	}
@@ -66,15 +67,20 @@ public class MockBusAgent extends Agent implements Vehicle {
 		
 		location = StopsQueue.poll();//<--removes location from front of queue
 		StopsQueue.add(location);//<--adds location to end of queue
-		print("Going to " + location);
+		//print("Going to " + location);
 		agentGui.DoGoTo(location);
-		print("Arrived at " + location);
+	//	print("Arrived at " + location);
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	
+	public String toString(){
+		return "" + name;
 	}
 
 

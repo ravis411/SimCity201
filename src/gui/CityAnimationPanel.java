@@ -82,6 +82,15 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 				gui.draw(g2);
 			}
 		}
+		
+		g2.setColor(Color.orange);
+		
+		for(Building b : buildings){
+			//why would a building not be present? //if(b.isPresent())
+			{
+				b.draw(g2);
+			}
+		}
 
 	}
 
@@ -97,6 +106,13 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		buildings.add(b);
 		guis.add(b);
 		
+	}
+	
+	
+	public void setTestView(boolean testView){
+		for(Gui g : guis){
+			g.setTestView(testView);
+		}
 	}
 
 	public void clear(){

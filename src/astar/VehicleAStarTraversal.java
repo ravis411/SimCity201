@@ -2,41 +2,21 @@ package astar;
 import java.util.*;
 import java.util.concurrent.*;
 
-public class AStarTraversal extends GraphTraversal
+public class VehicleAStarTraversal extends AStarTraversal
 {
     private Semaphore[][] grid;
+    private Semaphore[][] roadGrid;
 
-    public AStarTraversal(Semaphore[][] grid){
-	super();
-	this.grid = grid; 
-	//grid = new Object[1000][2000];
-	System.out.println("grid rows="+grid.length+",grid cols="+grid[0].length);
-	nodes = new PriorityQueue<Node>(6, new Comparator<Node>()
-	{
-	    public int compare(Node a, Node b)
-	    {
-		double distanceA = ((AStarNode)a).getApproxTotalDist();
-		double distanceB = ((AStarNode)b).getApproxTotalDist();
-		//System.out.println("Comparing Nodes" +distanceA+ "  "+distanceB);
-		if (distanceA>distanceB)
-		    return 1;
-		else if (distanceA<distanceB)
-		    return -1;
-		else return 0;     }
-	}
-	);
+    public VehicleAStarTraversal(Semaphore[][] agentGrid, Semaphore[][]roadGrid ){
+	super(agentGrid);
+	this.roadGrid = roadGrid;
+	this.grid = agentGrid;
+	
     }
-    public AStarNode createStartNode(Object state){
-	Position p = (Position) state;
-	AStarNode n = new AStarNode(p);
-	n.setDistTravelled(0);
-	n.setApproxTotalDist(p.distance((Position)getEndingState()));
-	List<Position> path = new ArrayList<Position>();
-	path.add(p);
-	n.setPath(path);
-	//System.out.print("createStartNode"); n.printNode();
-	return n;
-    }
+    
+    
+    
+    
     public List<Node> expandFunc(Node n) {
 	AStarNode node = (AStarNode) n;
 	//loop computes the positions you can get to from node
@@ -57,7 +37,7 @@ public class AStarTraversal extends GraphTraversal
 		      (nextX<0 || nextY<0)) continue;
 		Position next = new Position(nextX,nextY);
 		//System.out.println("considering"+next);
-		if (inPath(next,path) || !next.open(grid) ) continue;
+		if (inPath(next,path) || !next.open(grid) || !gridTypeOk(next) ) continue;
 		//printCurrentList();
 		//System.out.println("available"+next);
 		AStarNode nodeTemp = new AStarNode(next);
@@ -78,24 +58,21 @@ public class AStarTraversal extends GraphTraversal
 	}
 	return expandedNodes;
     }//end expandFunc
-    protected boolean inPath (Position pos, List<Position> path){
-	for (Position n:path) {if (pos.equals(n)) return true;};
-	return false;
+
+    //Vehicles cannot drive where there are no roads
+    public boolean gridTypeOk(Position next){
+    	boolean road = false;
+    	
+    	if(next.open(roadGrid))
+    		road = false;
+    	else
+    		road = true;
+    			    	
+    	if(!next.open(grid))
+    		return false;
+      	
+    	return road;
     }
-    public void printCurrentList() {
-	PriorityQueue<Node> pq = new PriorityQueue<Node>(nodes);
-	AStarNode p;
-	System.out.print("\n[");
-	while ((p = (AStarNode)pq.poll()) != null) {
-	    System.out.print("\n");
-	    p.printNode();
-	}
-	System.out.println("]");
-    }
-    public void queueFn(Queue<Node> old, List<Node> newNodes){
-	for (Node m:newNodes) {
-	    old.offer((AStarNode)m);
-	}
-    }
+
     public Semaphore[][] getGrid(){return grid;}
 }

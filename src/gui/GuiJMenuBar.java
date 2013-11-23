@@ -10,11 +10,11 @@ import javax.swing.JMenuItem;
 public class GuiJMenuBar extends JMenuBar implements ActionListener {
 
 	SimCity201Gui gui = null;
-	JMenu fileMenu, loadSubmenu, viewMenu;
+	JMenu fileMenu, loadSubmenu, viewMenu, viewSettingsSubmenu;
 	//FileMenu Items
 	JMenuItem exit, loadDefault, loadGuiTest1, loadGuiTest2;
 	//View Menu Items
-	JMenuItem viewDefault;
+	JMenuItem viewDefault, viewTesting, showTeam29Panel;
 	
 	
 	public GuiJMenuBar(SimCity201Gui gui) {
@@ -30,10 +30,10 @@ public class GuiJMenuBar extends JMenuBar implements ActionListener {
 		loadDefault = new JMenuItem("Load Default");
 		loadDefault.addActionListener(this);
 		loadSubmenu.add(loadDefault);
-		loadGuiTest1 = new JMenuItem("Load Gui Test1 A* Works Larger Grid");
+		loadGuiTest1 = new JMenuItem("Load Gui Test 1");
 		loadGuiTest1.addActionListener(this);
 		loadSubmenu.add(loadGuiTest1);
-		loadGuiTest2 = new JMenuItem("Load Gui Test2 A* FREEEZES");
+		loadGuiTest2 = new JMenuItem("Load Gui Test 2");
 		loadGuiTest2.addActionListener(this);
 		loadSubmenu.add(loadGuiTest2);
 		
@@ -47,8 +47,19 @@ public class GuiJMenuBar extends JMenuBar implements ActionListener {
 		//Set up the "View" menu
 		viewMenu = new JMenu("View");
 		add(viewMenu);
-		viewDefault = new JMenuItem("View Default");
-		viewMenu.add(viewDefault);
+		viewSettingsSubmenu = new JMenu("Settings");
+		viewMenu.add(viewSettingsSubmenu);
+		viewDefault = new JMenuItem("Default View");
+		viewDefault.addActionListener(this);
+		viewTesting = new JMenuItem("Test View");
+		viewTesting.addActionListener(this);
+		viewSettingsSubmenu.add(viewDefault);
+		viewSettingsSubmenu.add(viewTesting);
+		showTeam29Panel = new JMenuItem("Team 29 Information");
+		showTeam29Panel.addActionListener(this);
+		viewMenu.addSeparator();
+		viewMenu.add(showTeam29Panel);
+		
 	}
 	
 	
@@ -64,6 +75,21 @@ public class GuiJMenuBar extends JMenuBar implements ActionListener {
 		else if(e.getSource() == loadGuiTest2) {
 			gui.loadConfig("GUI Test 2");
 		}
+		
+		
+		
+		//View menu
+		else if(e.getSource() == viewDefault){
+			gui.cityPanel.setTestView(false);
+		}
+		else if(e.getSource() == viewTesting){
+			gui.cityPanel.setTestView(true);
+		}
+		else if(e.getSource() == showTeam29Panel){
+			gui.buildingsPanels.displayBuildingPanel("Team29");
+		}
+				
+		
 		else if(e.getSource() == exit) {
 			System.exit(0);
 		}
