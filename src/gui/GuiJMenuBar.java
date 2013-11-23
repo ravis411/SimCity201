@@ -30,10 +30,10 @@ public class GuiJMenuBar extends JMenuBar implements ActionListener {
 		loadDefault = new JMenuItem("Load Default");
 		loadDefault.addActionListener(this);
 		loadSubmenu.add(loadDefault);
-		loadGuiTest1 = new JMenuItem("Load Gui Test1 A* Works Larger Grid");
+		loadGuiTest1 = new JMenuItem("Load Gui Test 1");
 		loadGuiTest1.addActionListener(this);
 		loadSubmenu.add(loadGuiTest1);
-		loadGuiTest2 = new JMenuItem("Load Gui Test2 A* FREEEZES");
+		loadGuiTest2 = new JMenuItem("Load Gui Test 2");
 		loadGuiTest2.addActionListener(this);
 		loadSubmenu.add(loadGuiTest2);
 		

@@ -184,9 +184,104 @@ public class SetUpWorldFactory{
 		
 	} //end LoadDefault2
 	
+	public void LoadGUITest1(){
+		final int WINDOWX = 800;
+		final int WINDOWY = 800;
+		final int GRIDSIZEX = 25;
+		final int GRIDSIZEY = 25;
+				
+		
+		layout = new SimCityLayout(WINDOWX, WINDOWY/2, GRIDSIZEX, GRIDSIZEY);// <-This holds the grid information
+		cityPanel = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
+		buildingsPanels = new BuildingsPanels();//<-Zoomed in view of buildings
+		
+		buildingsPanels.addBuildingPanel(new Team29Panel(buildingsPanels));
+		
+		//across middle
+		layout.addRoad(1, 5, 32, 5);
+		//crosswalks
+		layout.addCrossWalk(10, 5, 2, 5);
+		layout.addCrossWalk(20, 5, 2, 5);
+		layout.addCrossWalk(2, 5, 2, 5);
+		layout.addCrossWalk(30, 5, 2, 5);
+		
+		
+		LocationInfo location = new LocationInfo();
+		
+			for(int x = 1; x < 7;x++) {
+				for(int y = 1; y < 5; y++){
+					addBuilding("Default", "Building " + x + y, x * 5 - 2, (y * 5)-3, 2, 2, location );
+				}
+			}
+			
+			
+//BusStop 1			
+			location.sector = 1;
+			location.positionToEnterFromRoadGrid=new Dimension(16, 5);
+			location.positionToEnterFromMainGrid=new Dimension(17, 4);
+			location.entranceFromMainGridPosition=location.entranceFromRoadGrid = new Dimension(16, 4);
+			addBuilding("Bus Stop", "Bus Stop 1", 16, 4, 1, 1, location);
+//BusStop 2
+			location.sector = 2;
+			location.positionToEnterFromRoadGrid=new Dimension(5, 9);
+			location.positionToEnterFromMainGrid=new Dimension(6, 10);
+			location.entranceFromMainGridPosition=location.entranceFromRoadGrid = new Dimension(5, 10);
+			addBuilding("Bus Stop", "Bus Stop 2", 5, 10, 1, 1,location);
+//BusStop 3	
+			location.sector = 2;
+			location.positionToEnterFromMainGrid=new Dimension(17, 10);
+			location.entranceFromMainGridPosition=location.entranceFromRoadGrid = new Dimension(16, 10);
+			location.positionToEnterFromRoadGrid=new Dimension(16, 9);
+			addBuilding("Bus Stop", "Bus Stop 3", 16, 10, 1, 1, location);
+//BusStop 4
+			location.sector = 2;
+			location.positionToEnterFromRoadGrid=new Dimension(26, 9);
+			location.positionToEnterFromMainGrid=new Dimension(27, 10);
+			location.entranceFromMainGridPosition=location.entranceFromRoadGrid = new Dimension(26, 10);
+			addBuilding("Bus Stop", "Bus Stop 4", 26, 10, 1, 1, location);
+//BusStop 5
+			location.sector = 1;
+			location.positionToEnterFromRoadGrid=new Dimension(6, 5);
+			location.positionToEnterFromMainGrid=new Dimension(7, 4);
+			location.entranceFromMainGridPosition=location.entranceFromRoadGrid = new Dimension(6, 4);
+			addBuilding("Bus Stop", "Bus Stop 5", 6, 4, 1, 1, location);
+//BusStop 6
+			location.sector = 1;
+			location.positionToEnterFromRoadGrid=new Dimension(26, 5);
+			location.positionToEnterFromMainGrid=new Dimension(27, 4);
+			location.entranceFromMainGridPosition=location.entranceFromRoadGrid = new Dimension(26, 4);
+			addBuilding("Bus Stop", "Bus Stop 6", 26, 4, 1, 1, location);
+			
+			
+			//Set default city entrance
+			location.entranceFromRoadGrid = new Dimension(1,5);
+			location.entranceFromMainGridPosition = new Dimension(1, 3);
+			location.positionToEnterFromMainGrid=new Dimension(0,3);
+			location.positionToEnterFromRoadGrid=new Dimension(0, 5);
+			location.name = "City Entrance";
+			location.sector = 1;
+			locationMap.add(new LocationInfo(location));
+			//Set default sector 1 to 2 location
+			location.sector = 1;
+			location.positionToEnterFromMainGrid = new Dimension(10, 5);
+			location.name = "Sector 1-2";
+			locationMap.add(new LocationInfo(location));
+			location.sector = 2;
+			
+			
+			addVehicle("OddMockBus");
+			addVehicle("EvenMockBus");
+			addVehicle("OddMockBus");
+			
+			addPerson("Person 1");
+			addPerson("Person 2");
+			addPerson("Person 3");
+	}
+	public void LoadGUITest2(){
+		
+	}
 	
-	
-	
+/*	
 	public void LoadGUITest1(){
 		final int WINDOWX = 800;
 		final int WINDOWY = 800;
@@ -241,9 +336,9 @@ public class SetUpWorldFactory{
 			addVehicle("EvenMockBus");
 		
 	} //end LoadGUITest1
+*/	
 	
-	
-	
+/*	
 	public void LoadGUITest2(){
 		final int WINDOWX = 800;
 		final int WINDOWY = 800;
@@ -292,7 +387,7 @@ public class SetUpWorldFactory{
 		
 	} //end LoadGUITest2
 	
-	
+	*/
 	
 	
 	
