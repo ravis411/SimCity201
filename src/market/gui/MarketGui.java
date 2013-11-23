@@ -21,7 +21,7 @@ public class MarketGui extends JFrame implements ActionListener {
    
 	MarketAnimationPanel animationPanel = new MarketAnimationPanel();
 	final int WINDOWX = 800;// window width
-    final int WINDOWY = 800;//window height
+    final int WINDOWY = 400;//window height
     final int WINDOWXOpenPosition = 50;//how many pixels from top left of screen window will appear
     final int WINDOWYOpenPosition = 50;
     private Vector<MarketPerson> marketEmployeePersons = new Vector<MarketPerson>();

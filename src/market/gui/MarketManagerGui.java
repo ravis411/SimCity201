@@ -18,11 +18,13 @@ public class MarketManagerGui implements Gui {
     private int xDestination;
     static final int hostWidth = 20, hostHeight = 20;
     private int xResturantEntrance=380;
-	private final static int yResturantEntrance= 750;
-	private final int xManagerOfficeDoor= 200;
-	private final int yManagerOfficeDoor= 310;
+	private final static int yResturantEntrance= 375;
+	private final int xCounterEntranceCord= 700;
+	private final int yCounterEntranceCord= 180;
+	private final int xManagerOfficeDoor= 180;
+	private final int yManagerOfficeDoor= 140;
 	private final int xManagerOfficeDesk= 90;
-	private final int yManagerOfficeDesk= 380;
+	private final int yManagerOfficeDesk= 180;
 	private final static int xPlatingCord= 450;
 	private final static int yPlatingCord= 10;
     public static final int xTable = 200;
@@ -34,10 +36,10 @@ public class MarketManagerGui implements Gui {
 
     public MarketManagerGui(MarketManagerRole marketManagereRole, MarketGui gui) {
         this.role = marketManagereRole;
-        xDestination=700;
-        yDestination = 380;//default start position
-        xPos = 400;
-        yPos = 750;
+        xDestination=xCounterEntranceCord;
+        yDestination = yCounterEntranceCord+80;//default start position
+        xPos = xResturantEntrance;
+        yPos = yResturantEntrance;
         this.gui = gui;
         //this.waiterNumber=waiterNumber;
     }
@@ -59,7 +61,12 @@ public class MarketManagerGui implements Gui {
             }
 
         if (xPos == xDestination && yPos == yDestination
-        		& (xDestination == 700 & (yDestination == 380))) {
+        		& (xDestination == xCounterEntranceCord & (yDestination == yCounterEntranceCord+80))) {
+        	xDestination= xCounterEntranceCord;
+        	yDestination= yCounterEntranceCord;
+        }
+        if (xPos == xDestination && yPos == yDestination
+        		& (xDestination == xCounterEntranceCord & (yDestination == yCounterEntranceCord))) {
         	xDestination= xManagerOfficeDoor;
         	yDestination= yManagerOfficeDoor;
         }
