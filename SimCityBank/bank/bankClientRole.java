@@ -16,6 +16,7 @@ public class bankClientRole extends Agent {
 	public enum inLineState{noTicket, waiting, goingToLine, beingHelped, leaving};
 	inLineState state2 = inLineState.noTicket;
 	private bankTellerRole teller;
+	private loanTellerRole loanTeller;
 	private double requestAmount = 0;
 	private boolean hasLoan = false;
 	private double amountDue = 0;
@@ -26,6 +27,10 @@ public class bankClientRole extends Agent {
 	private String name;
 	public double money = new Random().nextDouble() * 100; // hack for money
 	public int age = new Random().nextInt(90)+15;
+
+	//hack for accounts - to ensure that there are some existing accounts at the beginning of SimCity
+	private int existsBankAccount = new Random().nextInt(10);
+	 
 	/**
 	 * initializing bankClientRole
 	 */
@@ -42,6 +47,11 @@ public class bankClientRole extends Agent {
 		}
 		if (trans.equalsIgnoreCase("loan")){
 			this.state1 = bankState.loan;
+		}
+		if (existsBankAccount > 4){
+			int newMoney = new Random().nextInt(100);
+			myAccount = new Account(this,newMoney);
+			Database.INSTANCE.addToDatabase(myAccount);
 		}
 	}
 

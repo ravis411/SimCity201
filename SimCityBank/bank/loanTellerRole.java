@@ -18,8 +18,8 @@ public class loanTellerRole extends Agent{
 	public enum requestState {withdrawal, deposit, open, loan, none, notBeingHelped};
 	private requestState state = requestState.none;
 	double transactionAmount;
+	private List<Account> Accounts = Database.INSTANCE.Accounts;
 	private String name;
-	private Database database;
 	
 	loanTellerRole(String s, int n){
 		name = s;
@@ -50,9 +50,7 @@ public class loanTellerRole extends Agent{
 
 
 	//	Scheduler
-	@Override
 	protected boolean pickAndExecuteAnAction() {
-		// TODO Auto-generated method stub
 		if (!ClientLine.isEmpty()){
 			if (state == requestState.notBeingHelped){
 				receiveClient(ClientLine.get(0));
@@ -81,7 +79,7 @@ public class loanTellerRole extends Agent{
 		b.msgMayIHelpYou();
 	}
 	private void processDeposit(bankClientRole b){
-		for (Account a : database.Accounts){
+		for (Account a : Accounts){
 			if (a.client == b){
 				a.amount = a.amount + transactionAmount;
 				b.msgTransactionCompleted(transactionAmount - (2*transactionAmount));
@@ -91,7 +89,7 @@ public class loanTellerRole extends Agent{
 		}
 	}
 	private void processWithdrawal(bankClientRole b){
-		for (Account a : database.Accounts){
+		for (Account a : Accounts){
 			if (a.client == b){
 				if (transactionAmount > a.amount){
 					b.msgTransactionCompleted(0);
@@ -105,7 +103,7 @@ public class loanTellerRole extends Agent{
 		}
 	}
 	private void processLoan(bankClientRole b){
-		for (Account a : database.Accounts){
+		for (Account a : Accounts){
 			if (a.client == b){
 				if (b.age > 18 && b.age < 85){
 					if (transactionAmount > a.amount){
@@ -122,7 +120,7 @@ public class loanTellerRole extends Agent{
 	}
 	private void openAccount(bankClientRole b){
 		Account a = new Account(b, b.money);
-		database.Accounts.add(a);
+		Accounts.add(a);
 		b.msgAccountOpened(a);
 		state = requestState.none;   
 		ClientLine.remove(b);
