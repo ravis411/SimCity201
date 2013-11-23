@@ -1,14 +1,14 @@
 package residence;
 
 import agent.Agent;
-
+import residence.interfaces.*;
 import java.util.*;
 
 /**
  * Restaurant Cashier Agent
  */
 
-public class HomeRole extends Agent {
+public class HomeRole extends Agent implements Home {
 	private ApartmentManagerRole landlord;
 	private int rentOwed = 0;
 	private boolean tired = false;

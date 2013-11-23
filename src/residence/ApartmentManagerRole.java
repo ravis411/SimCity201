@@ -1,7 +1,7 @@
 package residence;
 
 import agent.Agent;
-
+import residence.interfaces.*;
 import java.util.*;
 
 /**
@@ -9,7 +9,7 @@ import java.util.*;
  * @param <HomeRole>
  */
 
-public class ApartmentManagerRole extends Agent {
+public class ApartmentManagerRole extends Agent implements ApartmentManager {
 	private List <HomeRole> residents = new ArrayList<HomeRole>();
 	private List <BrokenFeature> thingsToFix = new ArrayList<BrokenFeature>();
 	boolean collectRent = false;
@@ -39,7 +39,7 @@ public class ApartmentManagerRole extends Agent {
 		collectRent = true;
 		stateChanged();
 	}
-	public void msgRentPaid (Agent person, int amount) {
+	public void msgRentPaid (/*Agent person*/Home h, int amount) {
 		stateChanged();
 	}
 	public void msgBrokenFeature(String name, Agent p) {
