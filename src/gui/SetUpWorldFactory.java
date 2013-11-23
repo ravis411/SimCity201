@@ -1,8 +1,6 @@
 package gui;
 
 import java.awt.Dimension;
-import java.io.Closeable;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
