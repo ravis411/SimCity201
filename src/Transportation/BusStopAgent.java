@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gui.interfaces.BusStop;
+import gui.interfaces.Passenger;
 import agent.Agent;
-import Person.PersonAgent;
+import Person.Role.PassengerRole;;
 
 public class BusStopAgent extends Agent implements BusStop {
 	//Data
-	private List<PersonAgent> waitingPassengers = new ArrayList<PersonAgent>();
+	private List<Passenger> waitingPassengers = new ArrayList<Passenger>();
 	
 	
 	//Messages
-	public void msgWaitingForBus(PersonAgent p) {
+	public void msgWaitingForBus(Passenger p) {
 		//Sent from passenger to bus stop
 		waitingPassengers.add(p);
 		stateChanged();
