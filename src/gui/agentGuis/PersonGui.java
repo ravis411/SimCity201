@@ -283,6 +283,7 @@ public class PersonGui implements Gui {
     void guiMoveFromCurrentPostionTo(Position to){
         
     	//First check to make sure the destination is free otherwise wait
+    	int waits = 0;
     	while(true){
     		if(currentPosition.equals(to) || to.open(aStar.getGrid()) ){
     			break;
@@ -291,6 +292,12 @@ public class PersonGui implements Gui {
     		{
     			try {
 					Thread.sleep(500);
+					waits++;
+					if(waits > 10){
+						if(aStar.getGrid()[to.getX() + 1][to.getY()].availablePermits() > 0)
+							guiMoveFromCurrentPostionTo(new Position(to,1, 0));
+					}
+					
 				} catch (InterruptedException e) {
 				}
     		}
