@@ -1,27 +1,36 @@
 package Transportation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gui.interfaces.BusStop;
 import agent.Agent;
+import Person.PersonAgent;
 
 public class BusStopAgent extends Agent implements BusStop {
-
-
-	@Override
-	public void msgWaitingForBus() {
-		// TODO Auto-generated method stub
-		
+	//Data
+	private List<PersonAgent> waitingPassengers = new ArrayList<PersonAgent>();
+	
+	
+	//Messages
+	public void msgWaitingForBus(PersonAgent p) {
+		//Sent from passenger to bus stop
+		waitingPassengers.add(p);
+		stateChanged();
 	}
 
-	@Override
 	public void msgAtStop() {
-		// TODO Auto-generated method stub
+		//Sent from bus to bus stop
 		
 	}
-
+	
+	//Scheduler
 	@Override
 	protected boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	//Actions
 	
 }
