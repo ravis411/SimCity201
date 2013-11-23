@@ -12,6 +12,8 @@ public class MockPerson extends Agent{
 	PersonGui agentGui = null;
 	Queue<String> StopsQueue = new LinkedList<>(); //<--a list of the places to go to
 	
+	int times = 0;
+	
 	public MockPerson(String name){
 		this.name = name;
 		
@@ -26,7 +28,9 @@ public class MockPerson extends Agent{
 	protected boolean pickAndExecuteAnAction() {
 		
 		GoToLocation(name);
-
+		times++;
+		if(times >= 100)
+			return false;
 		
 		return true;
 	}
@@ -42,9 +46,9 @@ public class MockPerson extends Agent{
 		
 		print("Arrived at " + location);
 		try {
-			Thread.sleep(500);
+			Thread.sleep(10000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+			print("Exceipton caught while waiting at location!!!!!!!");
 			e.printStackTrace();
 		}
 	}

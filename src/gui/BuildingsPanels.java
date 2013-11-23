@@ -71,8 +71,17 @@ public class BuildingsPanels extends JPanel{
 	public void displayBuildingPanel(BuildingPanel buildingPanel) {
 		//System.out.println("Showing: " + buildingPanel.getName());
 		cardLayout.show(this, buildingPanel.getName());
-		
-		
+	}
+	public void displayBuildingPanel(String name){
+		for(Component b : this.getComponents()){
+			if(b instanceof BuildingPanel) {
+				if(b.getName() == name){
+					System.out.println("SHOWING PANEL");
+					displayBuildingPanel((BuildingPanel)b);
+					return;
+				}
+			}
+		}
 	}
 	
 	public void clear(){

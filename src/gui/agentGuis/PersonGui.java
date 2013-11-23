@@ -36,7 +36,7 @@ public class PersonGui implements Gui {
 
     private MockPerson agent = null;
     
-    
+    private boolean isPresent = true;
     
     private SimCityLayout cityLayout = null;
 
@@ -107,6 +107,7 @@ public class PersonGui implements Gui {
 				yPos--;
         }
         
+        
         if(aStarState == ASTARSTATE.moving && xPos == xDestination && yPos == yDestination) {
         	aStarState = ASTARSTATE.atDestination;
         	aSem.release();
@@ -138,7 +139,7 @@ public class PersonGui implements Gui {
     
     
     public boolean isPresent() {
-        return true;
+        return isPresent;
     }
     
     
@@ -231,6 +232,7 @@ public class PersonGui implements Gui {
     	currentPosition.release(aStar.getGrid());
     	move(to.width, to.height);
     	state = PersonState.inBuilding;
+    	isPresent = false;
     }
     
     
@@ -265,6 +267,7 @@ public class PersonGui implements Gui {
     	
     	try{
     		//System.out.println("MOVING " + entrance);
+    		isPresent = true;
     		move(entrance.getX(), entrance.getY());
     		
     	//if(SimCityLayout.addVehicleGui(this))

@@ -82,6 +82,14 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 				gui.draw(g2);
 			}
 		}
+		
+		g2.setColor(Color.orange);
+		
+		for(Building b : buildings){
+			if(b.isPresent()){
+				b.draw(g2);
+			}
+		}
 
 	}
 

@@ -50,6 +50,8 @@ public class SetUpWorldFactory{
 		cityPanel = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
 		buildingsPanels = new BuildingsPanels();//<-Zoomed in view of buildings
 		
+		buildingsPanels.add(new Team29Panel(buildingsPanels));
+		
 		//across middle
 		layout.addRoad(1, 5, 32, 5);
 		//crosswalks

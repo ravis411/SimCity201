@@ -331,6 +331,25 @@ public class VehicleGui implements Gui {
         return yPos;
     }
 
+    /**	This puts the gui on the grid at startPos
+     * 
+     * @param startPos
+     * @return
+     */
+    public boolean setDefaultStartPosition(Dimension startPos){
+    	currentPosition = new Position(startPos.width, startPos.height);
+    	if(!currentPosition.moveInto(aStar.getGrid())){
+    		return false;
+    	}
+    	
+    	Dimension d = positionMap.get(startPos);
+    	xPos = xDestination = d.width;
+    	yPos = yDestination = d.height;
+    	state = GuiState.inCity;
+    	
+    	return true;
+    }
+    
 
 	@Override
 	public void setTestView(boolean test) {

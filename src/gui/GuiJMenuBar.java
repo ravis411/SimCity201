@@ -14,7 +14,7 @@ public class GuiJMenuBar extends JMenuBar implements ActionListener {
 	//FileMenu Items
 	JMenuItem exit, loadDefault, loadGuiTest1, loadGuiTest2;
 	//View Menu Items
-	JMenuItem viewDefault, viewTesting;
+	JMenuItem viewDefault, viewTesting, showTeam29Panel;
 	
 	
 	public GuiJMenuBar(SimCity201Gui gui) {
@@ -53,6 +53,9 @@ public class GuiJMenuBar extends JMenuBar implements ActionListener {
 		viewTesting.addActionListener(this);
 		viewMenu.add(viewDefault);
 		viewMenu.add(viewTesting);
+		showTeam29Panel = new JMenuItem("Team 29 Information");
+		showTeam29Panel.addActionListener(this);
+		viewMenu.add(showTeam29Panel);
 		
 	}
 	
@@ -78,6 +81,9 @@ public class GuiJMenuBar extends JMenuBar implements ActionListener {
 		}
 		else if(e.getSource() == viewTesting){
 			gui.cityPanel.setTestView(true);
+		}
+		else if(e.getSource() == showTeam29Panel){
+			gui.buildingsPanels.displayBuildingPanel("Team29");
 		}
 				
 		
