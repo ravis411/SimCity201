@@ -15,4 +15,16 @@ public class MockMarketCustomer extends Mock implements MarketCustomer {
 		
 	}
 
+	@Override
+	public void msgMarketCustomerReadyToTakeOrder() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgMarketCustomerOutofStock(String foodType) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

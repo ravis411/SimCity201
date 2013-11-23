@@ -5,20 +5,19 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
-import MarketEmployee.MarketCustomerRole;
-import Person.PersonAgent;
+import market.interfaces.MarketCustomer;
 
 public class MarketCustomerGui implements Gui {
 
-    private MarketCustomerRole role = null;
+    private MarketCustomer role = null;
 
     private int xPos;
 	private int yPos;
     private int yDestination;
     private int xDestination;
     static final int hostWidth = 20, hostHeight = 20;
-    private int xResturantEntrance=380;
-	private final static int yResturantEntrance= 750;
+    private final int xResturantEntrance=400;
+	private final int yResturantEntrance= 750;
 	private final int xCounterCord;
 	private final int yCounterCord= 450;
 	private final static int xPlatingCord= 450;
@@ -28,16 +27,17 @@ public class MarketCustomerGui implements Gui {
     private int customerNumber;
     private int tableNum;
     private String orderBeingCarried = " ";
+    private Boolean atCounter=false;
     MarketGui gui;
 
-    public MarketCustomerGui(MarketCustomerRole marketCustomer, MarketGui gui, int customerNumber) {
+    public MarketCustomerGui(MarketCustomer marketCustomer, MarketGui gui, int customerNumber) {
     	this.customerNumber=customerNumber;
         this.role = marketCustomer;
         xCounterCord=395 + 100*(customerNumber%4);
-        xDestination=xCounterCord;
-        yDestination = 450;//default start position
-        xPos = 400;
-        yPos = 750;
+        xDestination=xResturantEntrance;
+        yDestination = yResturantEntrance;//default start position
+        xPos = xResturantEntrance;
+        yPos = yResturantEntrance;
         this.gui = gui;
     }
 
@@ -58,8 +58,9 @@ public class MarketCustomerGui implements Gui {
             }
 
         if (xPos == xDestination && yPos == yDestination
-        		& (xDestination == xCounterCord) & (yDestination == yCounterCord)) {
-           role.msgMarketCustomerAtCounter();
+        		& (xDestination == xCounterCord) & (yDestination == yCounterCord) && !atCounter) {
+        	atCounter=true;
+        	role.msgMarketCustomerAtCounter();
         }
         /*
         else if (((xDestination == xCookCord) && (yDestination == yCookCord))&& ((xCookCord == xPos) & (yCookCord == yPos) ))
@@ -99,9 +100,9 @@ public class MarketCustomerGui implements Gui {
       //  yDestination = yCookCord;
 		
 	}
-	public void DoGoToPlatingArea() {
-		xDestination=xPlatingCord;
-		yDestination=yPlatingCord;
+	public void DoGoToCounter() {
+		xDestination=xCounterCord;
+		yDestination=yCounterCord;
 	}
     public void DoLeave() {
         xDestination = xResturantEntrance;

@@ -5,11 +5,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
-import Person.PersonAgent;
+import market.interfaces.MarketEmployee;
 
 public class MarketEmployeeGui implements Gui {
 
-    private PersonAgent agent = null;
+    private MarketEmployee role = null;
 
     private int xPos;
 	private int yPos;
@@ -17,22 +17,32 @@ public class MarketEmployeeGui implements Gui {
     private int xDestination;
     static final int hostWidth = 20, hostHeight = 20;
     private int xResturantEntrance=380;
-	private final static int yResturantEntrance= 750;
-	private final static int xCookCord= 430;
-	private final static int yCookCord= 60;
-	private final static int xPlatingCord= 450;
-	private final static int yPlatingCord= 100;
-    public static final int xTable = 200;
-    public static final int yTable = 250;
+	private final int yResturantEntrance= 750;
+	private final int xCookCord= 430;
+	private final int yCookCord= 60;
+	private final int xFood1Cord= 450;
+	private final int yFood1Cord= 100;
+	private final int xFood2Cord= 550;
+	private final int yFood2Cord= 100;
+	private final int xFood3Cord= 650;
+	private final int yFood3Cord= 100;
+	private final int xCounterEntranceCord= 700;
+	private final int yCounterEntranceCord= 380;
+	private int xCounter;
+	private int yCounter= 380;
+    public final int xTable = 200;
+    public final int yTable = 250;
     private int waiterNumber;
     private int tableNum;
     private String orderBeingCarried = " ";
+    private boolean atCounter=false;
     MarketGui gui;
 
-    public MarketEmployeeGui(PersonAgent agent, MarketGui gui, int waiterNumber) {
-        this.agent = agent;
+    public MarketEmployeeGui(MarketEmployee marketEmployee, MarketGui gui, int waiterNumber) {
+        this.role = marketEmployee;
         xDestination=700;
         yDestination = 380;//default start position
+        xCounter=395 + 100*(waiterNumber%4);
         xPos = 400;
         yPos = 750;
         this.gui = gui;
@@ -54,11 +64,59 @@ public class MarketEmployeeGui implements Gui {
         else if (yPos > yDestination)
             {yPos--;
             }
-
         if (xPos == xDestination && yPos == yDestination
-        		& (xDestination == 700 & (yDestination == 380))) {
-        	xDestination= 395 + 100*(waiterNumber%4);
+        		& (xDestination == xFood1Cord & (yDestination == yFood1Cord))) {
+        	xDestination= xFood1Cord;
+        	yDestination= yFood1Cord+150;
+        	role.msgMarketEmployeeAtFood1();
         }
+        if (xPos == xDestination && yPos == yDestination
+        		& (xDestination == xFood1Cord & (yDestination == yFood1Cord+150))) {
+        	xDestination= xFood2Cord;
+        	yDestination= yFood2Cord+150;
+        }
+        if (xPos == xDestination && yPos == yDestination
+        		& (xDestination == xFood2Cord & (yDestination == yFood2Cord+150))) {
+        	xDestination= xFood2Cord;
+        	yDestination= yFood2Cord;
+        }
+        if (xPos == xDestination && yPos == yDestination
+        		& (xDestination == xFood2Cord & (yDestination == yFood2Cord))) {
+        	xDestination= xFood2Cord+10;
+        	yDestination= yFood2Cord+150;
+        	role.msgMarketEmployeeAtFood2();
+        }
+        if (xPos == xDestination && yPos == yDestination
+        		& (xDestination == xFood2Cord+10 & (yDestination == yFood2Cord+150))) {
+        	xDestination= xFood3Cord;
+        	yDestination= yFood3Cord+150;
+        }
+        if (xPos == xDestination && yPos == yDestination
+        		& (xDestination == xFood3Cord & (yDestination == yFood3Cord+150))) {
+        	xDestination= xFood3Cord;
+        	yDestination= yFood3Cord;
+        }
+        if (xPos == xDestination && yPos == yDestination
+        		& (xDestination == xFood3Cord & (yDestination == yFood3Cord))) {
+        	atCounter=false;
+        	xDestination= xFood3Cord;
+        	yDestination= yFood3Cord+160;
+        	role.msgMarketEmployeeAtFood3();
+        }
+        if (xPos == xDestination && yPos == yDestination
+        		& (xDestination == xFood3Cord & (yDestination == yFood3Cord+160))) {
+        	xDestination= xCounter;
+        	yDestination= yCounter;
+        }
+        if (xPos == xDestination && yPos == yDestination
+        		& (xDestination == xCounterEntranceCord & (yDestination == yCounterEntranceCord))) {
+        	xDestination= xCounter;
+        }
+        if (xPos == xDestination && yPos == yDestination
+				& (xDestination == xCounter & (yDestination == yCounter) ) && !atCounter) {
+        	atCounter=true;
+        	role.msgMarketEmployeeAtCounter();
+		}
         	/*
         else if (((xDestination == xCookCord) && (yDestination == yCookCord))&& ((xCookCord == xPos) & (yCookCord == yPos) ))
         {
@@ -97,9 +155,10 @@ public class MarketEmployeeGui implements Gui {
         yDestination = yCookCord;
 		
 	}
-	public void DoGoToPlatingArea() {
-		xDestination=xPlatingCord;
-		yDestination=yPlatingCord;
+	public void goCollectFoodOrder() {
+		xDestination=xFood1Cord;
+		yDestination=yFood1Cord;
+		
 	}
     public void DoLeave() {
         xDestination = xResturantEntrance;
@@ -135,6 +194,8 @@ public class MarketEmployeeGui implements Gui {
 		}
 		
 	}
+
+
 
 
 

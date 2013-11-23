@@ -5,11 +5,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
-import Person.PersonAgent;
+import market.interfaces.MarketManager;
+import MarketEmployee.MarketManagerRole;
 
 public class MarketManagerGui implements Gui {
 
-    private PersonAgent agent = null;
+    private MarketManager role = null;
 
     private int xPos;
 	private int yPos;
@@ -31,8 +32,8 @@ public class MarketManagerGui implements Gui {
     private String orderBeingCarried = " ";
     MarketGui gui;
 
-    public MarketManagerGui(PersonAgent agent, MarketGui gui) {
-        this.agent = agent;
+    public MarketManagerGui(MarketManagerRole marketManagereRole, MarketGui gui) {
+        this.role = marketManagereRole;
         xDestination=700;
         yDestination = 380;//default start position
         xPos = 400;

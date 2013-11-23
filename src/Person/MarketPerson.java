@@ -14,7 +14,7 @@ import agent.Agent;
  * @author MSILKJR
  *
  */
-public class PersonAgent extends Agent {
+public class MarketPerson extends Agent {
 	
 	private final double STARTING_MONEY = 100.00;
 
@@ -32,7 +32,7 @@ public class PersonAgent extends Agent {
 	private double loanAmount;
 	
 	private List<Role> roles;
-	private List<PersonAgent> friends;
+	private List<MarketPerson> friends;
 	
 	private Time realTime;
 	public enum StateofNourishment {NotHungry, SlighltlyHungry, Hungry,VeryHungry,Starving};
@@ -42,7 +42,7 @@ public class PersonAgent extends Agent {
 	
 	private PersonState state;
 
-	public PersonAgent(String name){
+	public MarketPerson(String name){
 		SSN = counter++;
 		this.name = name;
 		
@@ -50,7 +50,7 @@ public class PersonAgent extends Agent {
 		money = STARTING_MONEY;
 		moneyNeeded = 0;
 		loanAmount = 0;
-		friends = new ArrayList<PersonAgent>();
+		friends = new ArrayList<MarketPerson>();
 		roles = new ArrayList<Role>();
 		
 		realTime = null;
@@ -284,7 +284,7 @@ public class PersonAgent extends Agent {
 	 * A public stateChanged method to allow the Roles to call stateChanged
 	 */
 	public void stateChanged(){
-		stateChanged();
+		super.stateChanged();
 	}
 	
 	/**
