@@ -157,6 +157,12 @@ public class PersonGui implements Gui {
     	
     	if(info != null){
     		
+    		//See if the location is in the same sector otherwise travel to the next sector
+    		if(currentLocation.sector != info.sector){
+    			DoGoToSector(info.sector);
+    		}
+    		
+    		
     		Dimension entrance = info.entranceFromMainGridPosition;
     		Dimension entrnaceFrom = info.positionToEnterFromMainGrid;
     		
@@ -179,23 +185,28 @@ public class PersonGui implements Gui {
     }
     
 
-
-   // public void DoGoToHomePosition() {
-    //	guiMoveFromCurrentPostionTo(originalPosition);
-     // }
+   //This will allow the agent to travel to the next sector
+   private void DoGoToSector(int sector){
+	   //Need to go to a different sector means we need to cross a road.
+	   
+	   
+	   
+   }
     
     
     /** Will enter the city, and the grid, from the default location City Entrance
      * 
      */
     public void DoEnterWorld(){
-    	Dimension tooo = (locations.get("City Entrance").entranceFromMainGridPosition);
+    	currentLocation = locations.get("City Entrance");
+    	Dimension tooo = (currentLocation.entranceFromMainGridPosition);
     	Position to = new Position(tooo.width, tooo.height);
     	
     	Dimension from = new Dimension(positionMap.get(tooo));
     	from.width -= 25;
     	
     	DoEnterWorld(from, to);
+    	
     }
     
     private void DoLeaveBuilding(){
@@ -296,8 +307,10 @@ public class PersonGui implements Gui {
 					if(waits > 10){
 						if(aStar.getGrid()[to.getX() + 1][to.getY()].availablePermits() > 0)
 							guiMoveFromCurrentPostionTo(new Position(to,1, 0));
+						else if(aStar.getGrid()[to.getX()][to.getY()-1].availablePermits() > 0)
+							guiMoveFromCurrentPostionTo(new Position(to,0,-1));
+						waits = 0;
 					}
-					
 				} catch (InterruptedException e) {
 				}
     		}

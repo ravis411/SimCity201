@@ -16,8 +16,11 @@ public class MockPerson extends Agent{
 		this.name = name;
 		
 		StopsQueue.add("Bus Stop 5");
+		StopsQueue.add("Bus Stop 4");
 		StopsQueue.add("Bus Stop 1");
+		StopsQueue.add("Bus Stop 3");
 		StopsQueue.add("Bus Stop 6");
+		StopsQueue.add("Bus Stop 2");
 	}
 	
 	protected boolean pickAndExecuteAnAction() {

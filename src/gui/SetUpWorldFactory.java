@@ -10,6 +10,8 @@ import java.util.Queue;
 
 import agent.Agent;
 import astar.AStarTraversal;
+import astar.PersonAStarTraversal;
+import astar.VehicleAStarTraversal;
 import gui.Building.Building;
 import gui.Building.BuildingPanel;
 import gui.Building.BusStopBuilding;
@@ -49,10 +51,12 @@ public class SetUpWorldFactory{
 		buildingsPanels = new BuildingsPanels();//<-Zoomed in view of buildings
 		
 		//across middle
-		layout.addRoad(1, 5, 34, 5);
+		layout.addRoad(1, 5, 32, 5);
 		//crosswalks
 		layout.addCrossWalk(10, 5, 2, 5);
 		layout.addCrossWalk(20, 5, 2, 5);
+		layout.addCrossWalk(2, 5, 2, 5);
+		layout.addCrossWalk(30, 5, 2, 5);
 		
 		
 		LocationInfo location = new LocationInfo();
@@ -65,31 +69,37 @@ public class SetUpWorldFactory{
 			
 			
 //BusStop 1			
+			location.sector = 1;
 			location.positionToEnterFromRoadGrid=new Dimension(16, 5);
 			location.positionToEnterFromMainGrid=new Dimension(17, 4);
 			location.entranceFromMainGridPosition=location.entranceFromRoadGrid = new Dimension(16, 4);
 			addBuilding("Bus Stop", "Bus Stop 1", 16, 4, 1, 1, location);
 //BusStop 2
+			location.sector = 2;
 			location.positionToEnterFromRoadGrid=new Dimension(5, 9);
 			location.positionToEnterFromMainGrid=new Dimension(6, 10);
 			location.entranceFromMainGridPosition=location.entranceFromRoadGrid = new Dimension(5, 10);
 			addBuilding("Bus Stop", "Bus Stop 2", 5, 10, 1, 1,location);
-//BusStop 3		
+//BusStop 3	
+			location.sector = 2;
 			location.positionToEnterFromMainGrid=new Dimension(17, 10);
 			location.entranceFromMainGridPosition=location.entranceFromRoadGrid = new Dimension(16, 10);
 			location.positionToEnterFromRoadGrid=new Dimension(16, 9);
 			addBuilding("Bus Stop", "Bus Stop 3", 16, 10, 1, 1, location);
 //BusStop 4
+			location.sector = 2;
 			location.positionToEnterFromRoadGrid=new Dimension(26, 9);
 			location.positionToEnterFromMainGrid=new Dimension(27, 10);
 			location.entranceFromMainGridPosition=location.entranceFromRoadGrid = new Dimension(26, 10);
 			addBuilding("Bus Stop", "Bus Stop 4", 26, 10, 1, 1, location);
 //BusStop 5
+			location.sector = 1;
 			location.positionToEnterFromRoadGrid=new Dimension(6, 5);
 			location.positionToEnterFromMainGrid=new Dimension(7, 4);
 			location.entranceFromMainGridPosition=location.entranceFromRoadGrid = new Dimension(6, 4);
 			addBuilding("Bus Stop", "Bus Stop 5", 6, 4, 1, 1, location);
 //BusStop 6
+			location.sector = 1;
 			location.positionToEnterFromRoadGrid=new Dimension(26, 5);
 			location.positionToEnterFromMainGrid=new Dimension(27, 4);
 			location.entranceFromMainGridPosition=location.entranceFromRoadGrid = new Dimension(26, 4);
@@ -102,7 +112,14 @@ public class SetUpWorldFactory{
 			location.positionToEnterFromMainGrid=new Dimension(0,3);
 			location.positionToEnterFromRoadGrid=new Dimension(0, 5);
 			location.name = "City Entrance";
-			locationMap.add(location);
+			location.sector = 1;
+			locationMap.add(new LocationInfo(location));
+			//Set default sector 1 to 2 location
+			location.sector = 1;
+			location.positionToEnterFromMainGrid = new Dimension(10, 5);
+			location.name = "Sector 1-2";
+			locationMap.add(new LocationInfo(location));
+			location.sector = 2;
 			
 			
 			addVehicle("OddMockBus");
@@ -281,7 +298,8 @@ public class SetUpWorldFactory{
 	
 	private void addPerson(String name){
 		MockPerson p1 = new MockPerson(name);
-		PersonGui g1 = new PersonGui(p1, layout, new AStarTraversal(layout.getMainGrid()), locationMap);
+		AStarTraversal t = new PersonAStarTraversal(layout.getAgentGrid(), layout.getCrossWalkGrid(), layout.getRoadGrid());
+		PersonGui g1 = new PersonGui(p1, layout, t, locationMap);
 		p1.setAgentGui(g1);
 		cityPanel.addGui(g1);
 		p1.startThread();
@@ -297,7 +315,8 @@ public class SetUpWorldFactory{
 				OddStopsQueue.add("Bus Stop " + 3);
 				OddStopsQueue.add("Bus Stop " + 5);
 			MockBusAgent v1 = new MockBusAgent("Odd Mock Bus", OddStopsQueue);
-			VehicleGui v1Gui = new VehicleGui( v1, layout, new AStarTraversal(layout.getRoadGrid()), locationMap );
+			AStarTraversal t = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
+			VehicleGui v1Gui = new VehicleGui( v1, layout, t, locationMap );
 			v1.agentGui = v1Gui;
 			cityPanel.addGui(v1Gui);
 			v1.startThread();
@@ -310,7 +329,8 @@ public class SetUpWorldFactory{
 			EvenStopsQueue1.add("Bus Stop " + 4);
 			EvenStopsQueue1.add("Bus Stop " + 6);
 			MockBusAgent v2 = new MockBusAgent("Even Mock Bus", EvenStopsQueue1);
-			VehicleGui v2Gui = new VehicleGui( v2, layout, new AStarTraversal(layout.getRoadGrid()),locationMap );
+			AStarTraversal t2 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
+			VehicleGui v2Gui = new VehicleGui( v2, layout, t2 ,locationMap );
 			v2.agentGui = v2Gui;
 			cityPanel.addGui(v2Gui);
 			v2.startThread();

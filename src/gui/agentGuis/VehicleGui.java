@@ -10,21 +10,16 @@ import gui.interfaces.Vehicle;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
-import java.awt.image.RescaleOp;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
 import java.util.concurrent.Semaphore;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
-import agent.Agent;
 import astar.AStarNode;
 import astar.AStarTraversal;
 import astar.Position;
@@ -59,6 +54,9 @@ public class VehicleGui implements Gui {
     
     BufferedImage img = null;
     boolean testView = false;
+    
+    private enum GuiState {none, inCity, inBuilding};
+    private GuiState state = GuiState.none;
     
     
     
@@ -147,6 +145,10 @@ public class VehicleGui implements Gui {
     
     
     public void DoGoTo(String location){
+    	if(state == GuiState.none){
+    		DoEnterWorld();
+    	}
+    	
     	
     	LocationInfo info = null;
     	info = locations.get(location);    	
@@ -169,7 +171,7 @@ public class VehicleGui implements Gui {
     /** Will enter the city, and the grid, from the default location City Entrance
      * 
      */
-    public void DoEnterWorld(){
+    private void DoEnterWorld(){
     	Dimension tooo = (locations.get("City Entrance").entranceFromRoadGrid);
     	Position to = new Position(tooo.width, tooo.height);
     	
@@ -199,8 +201,8 @@ public class VehicleGui implements Gui {
     	}else
     		return;
     	
-    	while( !entrance.moveInto(aStar.getGrid()) ) {
-    		//System.out.println("EntranceBlocked!!!!!!! waiting 1sec");
+    	while(!entrance.moveInto(aStar.getGrid()) ) {
+    		System.out.println("EntranceBlocked!!!!!!! waiting 1sec");
     		try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -221,6 +223,7 @@ public class VehicleGui implements Gui {
     	}catch(Exception e) {
     	//	DoGoToHomePosition();//Sometimes entrance can get clogged so try to find a path again
     	}
+    	state = GuiState.inCity;
     }
     
     

@@ -53,6 +53,7 @@ public class LocationInfo {
 			this.positionToEnterFromRoadGrid = new Dimension(location.positionToEnterFromRoadGrid);
 		if(location.entranceFromRoadGrid != null)
 			this.entranceFromRoadGrid = new Dimension(location.entranceFromRoadGrid);
+		this.sector = location.sector;
 	}
 
 }

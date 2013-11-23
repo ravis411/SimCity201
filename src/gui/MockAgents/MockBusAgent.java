@@ -57,7 +57,7 @@ public class MockBusAgent extends Agent implements Vehicle {
 	}
 	
 	private void Travel(){
-		agentGui.DoEnterWorld();
+		//agentGui.DoEnterWorld();
 		//agentGui.DoPark();
 		traveled = true;
 	}

@@ -2,19 +2,15 @@ package astar;
 import java.util.*;
 import java.util.concurrent.*;
 
-public class PersonAStarTraversal extends AStarTraversal
+public class VehicleAStarTraversal extends AStarTraversal
 {
     private Semaphore[][] grid;
-    private Semaphore[][] crossWalk;
     private Semaphore[][] roadGrid;
 
-
-    public PersonAStarTraversal(Semaphore[][] agentGrid, Semaphore[][] crossWalkGrid, Semaphore[][]roadGrid ){
+    public VehicleAStarTraversal(Semaphore[][] agentGrid, Semaphore[][]roadGrid ){
 	super(agentGrid);
-	this.grid = agentGrid;
-	this.crossWalk = crossWalkGrid;
 	this.roadGrid = roadGrid;
-
+	this.grid = agentGrid;
 	
     }
     
@@ -41,7 +37,7 @@ public class PersonAStarTraversal extends AStarTraversal
 		      (nextX<0 || nextY<0)) continue;
 		Position next = new Position(nextX,nextY);
 		//System.out.println("considering"+next);
-		if (inPath(next,path) || !gridTypeOk(next) || !next.open(grid)  ) continue;
+		if (inPath(next,path) || !next.open(grid) || !gridTypeOk(next) ) continue;
 		//printCurrentList();
 		//System.out.println("available"+next);
 		AStarNode nodeTemp = new AStarNode(next);
@@ -63,29 +59,20 @@ public class PersonAStarTraversal extends AStarTraversal
 	return expandedNodes;
     }//end expandFunc
 
-    //People cannot walk where there are buildings, other agents, roads. They can walk on crosswalks though.
+    //Vehicles cannot drive where there are no roads
     public boolean gridTypeOk(Position next){
-    	
     	boolean road = false;
-    	boolean crosswalk = false;
     	
     	if(next.open(roadGrid))
     		road = false;
     	else
     		road = true;
-    	
-    	if(next.open(crossWalk))
-    		crosswalk = false;
-    	else
-    		crosswalk = true;
-
-    //	System.out.println("Crosswalk" + crosswalk + "Road" + road);
-    	
-    	if(crosswalk)
-    		return true;
-    	else if(road)
+    			    	
+    	if(!next.open(grid))
     		return false;
-    	
-    	return true;
+      	
+    	return road;
     }
+
+    public Semaphore[][] getGrid(){return grid;}
 }

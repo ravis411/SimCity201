@@ -23,7 +23,9 @@ public class SimCityLayout {
 	private final int WINDOWX;
 	private final int WINDOWY;
 
-
+	private boolean testView = false;//sets the graphics look
+	
+	
 	//A map of grid positions to Java coordinates
 	public final Map<Dimension, Dimension> positionMap = new HashMap<Dimension, Dimension>();
 
@@ -33,16 +35,19 @@ public class SimCityLayout {
 	private List<Dimension> crosswalks = new ArrayList<>();
 	
 
-	//The main Semaphore Grid
-	private Semaphore[][] mainGrid = null;
+	//The main Semaphore Grid a position is acquired if there is an agent there or building
+	private Semaphore[][] agentGrid = null;
 	/**
 	 * A Grid For Roads
-	 * A Position will be acquired everywhere there is not an empty road.
+	 * A Position will be acquired everywhere there is a road.
 	 */
 	private Semaphore[][] roadGrid = null;
 	
-	//A grid for the crosswalks //acquired everywhere there is not an empty crosswalk
+	//A grid for the crosswalks //acquired everywhere there is a crosswalk
 	private Semaphore[][] crossWalkGrid = null;
+	
+	//A grid for buildings //acquired wherever there is a building
+	//private Semaphore[][] buildingsGrid = null;
 
 
 	public SimCityLayout(int WindowSizeX, int WindowSizeY, int GridSizeX, int GridSizeY) {
@@ -64,9 +69,10 @@ public class SimCityLayout {
 		}
 
 		//initialize grids
-		mainGrid = addAndInitializeMainGrid(mainGrid);
-		roadGrid = addAndInitializeRoadGrid(roadGrid);
-		crossWalkGrid = addAndInitializeRoadGrid(crossWalkGrid);
+		agentGrid = addAndInitializeMainGrid(agentGrid);
+		roadGrid = addAndInitializeMainGrid(roadGrid);
+		crossWalkGrid = addAndInitializeMainGrid(crossWalkGrid);
+	//	buildingsGrid = addAndInitializeMainGrid(buildingsGrid);
 		
 
 	}
@@ -78,7 +84,7 @@ public class SimCityLayout {
 
 
 
-	private Semaphore[][] addAndInitializeRoadGrid( Semaphore[][] grid) {
+	private Semaphore[][] addAndInitialize0PermitGrid( Semaphore[][] grid) {
 		grid = new Semaphore[numxGrids + 1][numyGrids + 1];
 
 		//Initialize the semaphore grid with 0 permits
@@ -96,7 +102,7 @@ public class SimCityLayout {
 			for (int j = 0; j<numyGrids+1; j++)
 				grid[i][j]=new Semaphore(1,true);
 
-		//build the animation areas
+		
 		try {
 			//make the 0-th row and column unavailable
 			for (int i=0; i<numyGrids+1; i++) grid[0][0+i].acquire();
@@ -147,11 +153,13 @@ public class SimCityLayout {
 		//This loop trys to add the crosses to the grid
 		for(Dimension dd: crosses) {
 			try {
-				//Make sure the roadGrid is free
-				if(roadGrid[dd.width][dd.height].availablePermits() != 0){
+				//Make sure the roadGrid isn't free
+				if(roadGrid[dd.width][dd.height].availablePermits() == 0){
 					//check to make sure there aren't permits for this road position...if there are something is wrong
-					crossWalkGrid[dd.width][dd.height].release();
+					if(crossWalkGrid[dd.width][dd.height].tryAcquire())
 						crosswalks.add(new Dimension(dd));
+					else
+						successfull = false;
 				}
 				else
 					successfull = false;
@@ -192,15 +200,16 @@ public class SimCityLayout {
 		for(Road r: rds) {
 			try {
 				//Make sure the mainGrid is free
-				if(mainGrid[r.position.width][r.position.height].tryAcquire()){
-					//check to make sure there aren't permits for this road position...if there are something is wrong
-					if(roadGrid[r.position.width][r.position.height].availablePermits() == 0)
+				if(agentGrid[r.position.width][r.position.height].availablePermits() > 0){
+
+					//check to make sure there are permits for this road position...if there isn't something is wrong
+					if(roadGrid[r.position.width][r.position.height].tryAcquire())
 					{
-						roadGrid[r.position.width][r.position.height].release();//Release the roadGrid position
 						roads.add(r);//add the road
 					}
 					else
 						successfull = false;
+
 				}
 				else
 					successfull = false;
@@ -237,17 +246,21 @@ public class SimCityLayout {
 			d.width++;
 			d.height = yPos;
 		}
-		
+
 		try {
 			//Now check if all are available
 			for(Dimension dd : needed) {
-				if(mainGrid[dd.width][dd.height].tryAcquire()) {
-					acquired.add(dd);
-				}
-				else{
-					successfull = false;
+				if(roadGrid[dd.width][dd.height].availablePermits() > 0){
+						if(agentGrid[dd.width][dd.height].tryAcquire())
+							acquired.add(dd);
+						else
+							successfull = false;
+					}
+					else
+						successfull = false;
+
+				if(!successfull)
 					break;
-				}
 			}//if all were acquired successful = true
 		} catch (Exception e) {
 			System.out.println("Error during setup...grid out of bounds");
@@ -264,7 +277,7 @@ public class SimCityLayout {
 		//we need to release the spaces that were acquired
 		else{
 			for(Dimension dd : acquired) {
-				mainGrid[dd.width][dd.height].release();
+				agentGrid[dd.width][dd.height].release();
 			}
 		}
 		
@@ -302,23 +315,31 @@ public class SimCityLayout {
 				g.drawLine(d.width + i, d.height, d.width + i, d.height + GRID_SIZEY);
 			//g.drawRect(d.width, d.height, getGRID_SIZEX(), GRID_SIZEY);
 		}
-
+		
+		if(testView){
+		g.setColor(Color.blue);
+		for(int x = 0; x < agentGrid.length; x++){
+			for(int y = 0; y < agentGrid[x].length; y++){
+				if(agentGrid[x][y].availablePermits() == 0)
+				g.fillRect(x * 25-25, y * 25 - 25, 25, 25);
+			}
+		}}
+		
 	}
 
 
-	public Semaphore[][] getMainGrid() {
-		return mainGrid;
+	public Semaphore[][] getAgentGrid() {
+		return agentGrid;
 	}
-
 	public Semaphore[][] getRoadGrid() {
 		return roadGrid;
 	}
 	public Semaphore[][] getCrossWalkGrid(){
 		return crossWalkGrid;
 	}
-	
-	
-	
+	//public Semaphore[][] getbuildingsGrid(){
+	//	return buildingsGrid;
+	//}
 	
 	
 	class Road{
@@ -336,7 +357,7 @@ public class SimCityLayout {
 	public void clear(){
 		roads.clear();
 		positionMap.clear();
-		mainGrid = null;
+		agentGrid = null;
 		roadGrid = null;
 	}
 
@@ -357,6 +378,10 @@ public class SimCityLayout {
 
 	public int getWINDOWY() {
 		return WINDOWY;
+	}
+	
+	public void setTestView(boolean test){
+		this.testView = test;
 	}
 	
 	
