@@ -1,8 +1,12 @@
-package gui;
+package gui.agentGuis;
 
 
 
 
+import gui.Gui;
+import gui.LocationInfo;
+import gui.SimCityLayout;
+import gui.MockAgents.MockPerson;
 import gui.interfaces.Vehicle;
 
 import java.awt.*;
@@ -30,7 +34,7 @@ import astar.Position;
 
 public class PersonGui implements Gui {
 
-    private Vehicle agent = null;
+    private MockPerson agent = null;
     
     
     
@@ -50,16 +54,23 @@ public class PersonGui implements Gui {
     enum ASTARSTATE {none, moving, atDestination};
     ASTARSTATE aStarState = ASTARSTATE.none;
     Semaphore aSem = new Semaphore(0, true);
-    
     private Map<String, LocationInfo> locations = new HashMap<>();//<<-- A Map of locations
     
     
     BufferedImage img = null;
     boolean testView = false;
     
+    //This holds information about where the person currently is..including how to leave.
+    LocationInfo currentLocation = null;
+    private enum PersonState {none, inCity, inBuilding};
+    private PersonState state = PersonState.none;
     
     
-    public PersonGui(Vehicle agent, SimCityLayout cityLayout, AStarTraversal aStar, List<LocationInfo> locationList) {
+    
+    
+    
+    
+    public PersonGui(MockPerson agent, SimCityLayout cityLayout, AStarTraversal aStar, List<LocationInfo> locationList) {
     	positionMap = new HashMap<Dimension, Dimension>(cityLayout.positionMap);
     	this.agent = agent;
         this.cityLayout = cityLayout;
@@ -77,9 +88,8 @@ public class PersonGui implements Gui {
 
 			
         for(LocationInfo i : locationList){
-        	if(i != null && i.positionToEnterFromRoadGrid != null)
+        	if(i != null)
         		locations.put(i.name, i);
-        	System.out.println("LOCATION " + i.positionToEnterFromRoadGrid);
         }
         
     }
@@ -117,9 +127,9 @@ public class PersonGui implements Gui {
     
     public void draw(Graphics2D g) {
         if(testView){
-        	g.setColor(Color.MAGENTA);
-        	g.fillRect(xPos, yPos, 20, 20);
-        	g.setColor(Color.white);
+        	g.setColor(Color.GREEN);
+        	g.fillOval(xPos, yPos, 20, 20);
+        	g.setColor(Color.GREEN);
         	g.drawString(agent.toString(), xPos, yPos);
         }
         else
@@ -144,15 +154,29 @@ public class PersonGui implements Gui {
     
     
     public void DoGoTo(String location){
-    	
+    	//System.out.println("Going to " + location);
+    	if(state == PersonState.none) {
+    		//System.out.println("Entering WORLD ");
+    		DoEnterWorld();
+    	}
+    	else if(state == PersonState.inBuilding){
+    		DoLeaveBuilding();
+    	}
     	LocationInfo info = null;
     	info = locations.get(location);    	
     	
     	if(info != null){
     		
-    		Position p = new Position(info.positionToEnterFromRoadGrid.width, info.positionToEnterFromRoadGrid.height);
-    		System.out.println("About to move to p: " + p);
+    		Dimension entrance = info.entranceFromMainGridPosition;
+    		Dimension entrnaceFrom = info.positionToEnterFromMainGrid;
+    		
+    		
+    		Position p = new Position(info.positionToEnterFromMainGrid.width, info.positionToEnterFromMainGrid.height);
+    		//Walk To entrance
     		guiMoveFromCurrentPostionTo(p);
+    		
+    		DoEnterBuilding(entrance);
+    		currentLocation = info;
     	}
     }
     
@@ -167,13 +191,37 @@ public class PersonGui implements Gui {
      * 
      */
     public void DoEnterWorld(){
-    	Dimension tooo = (locations.get("City Entrance").entranceFromRoadGrid);
+    	Dimension tooo = (locations.get("City Entrance").entranceFromMainGridPosition);
     	Position to = new Position(tooo.width, tooo.height);
     	
     	Dimension from = new Dimension(positionMap.get(tooo));
     	from.width -= 25;
     	
     	DoEnterWorld(from, to);
+    }
+    
+    private void DoLeaveBuilding(){
+    	if(state != PersonState.inBuilding || currentLocation == null)
+    		return;
+    	
+    	Dimension tooo = currentLocation.positionToEnterFromMainGrid;
+    	Position to = new Position(tooo.width, tooo.height);
+    	Dimension from = new Dimension(positionMap.get(currentLocation.entranceFromMainGridPosition));
+    	DoEnterWorld(from, to);
+    }
+    
+    
+    /** This will release the currentPosition grid and move to
+     * 
+     * @param to	The grid position to move to from currentPosition
+     */
+    private void DoEnterBuilding(Dimension to){
+    	if(state != PersonState.inCity){
+    		return;
+    	}
+    	currentPosition.release(aStar.getGrid());
+    	move(to.width, to.height);
+    	state = PersonState.inBuilding;
     }
     
     
@@ -188,6 +236,7 @@ public class PersonGui implements Gui {
     	//Dimension cityEntrance = locations.get("City Entrance").entranceFromRoadGrid;
     	
     	Position entrance;
+    	//System.out.println("Going to " + to + "\nfrom\n" + from);
     	
     	if(from != null && to != null) {
     	xPos = xDestination = from.width;
@@ -206,8 +255,9 @@ public class PersonGui implements Gui {
     	}
     	
     	try{
-    	move(entrance.getX(), entrance.getY());
-    	
+    		//System.out.println("MOVING " + entrance);
+    		move(entrance.getX(), entrance.getY());
+    		
     	//if(SimCityLayout.addVehicleGui(this))
     	{
     		currentPosition = new Position(entrance.getX(), entrance.getY());
@@ -218,6 +268,8 @@ public class PersonGui implements Gui {
     	}catch(Exception e) {
     	//	DoGoToHomePosition();//Sometimes entrance can get clogged so try to find a path again
     	}
+    	
+    	state = PersonState.inCity;
     }
     
     

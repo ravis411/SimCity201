@@ -2,40 +2,13 @@ package astar;
 import java.util.*;
 import java.util.concurrent.*;
 
-public class AStarTraversal extends GraphTraversal
+public class PersonAStarTraversal extends AStarTraversal
 {
     private Semaphore[][] grid;
 
-    public AStarTraversal(Semaphore[][] grid){
-	super();
-	this.grid = grid; 
-	//grid = new Object[1000][2000];
-	System.out.println("grid rows="+grid.length+",grid cols="+grid[0].length);
-	nodes = new PriorityQueue<Node>(6, new Comparator<Node>()
-	{
-	    public int compare(Node a, Node b)
-	    {
-		double distanceA = ((AStarNode)a).getApproxTotalDist();
-		double distanceB = ((AStarNode)b).getApproxTotalDist();
-		//System.out.println("Comparing Nodes" +distanceA+ "  "+distanceB);
-		if (distanceA>distanceB)
-		    return 1;
-		else if (distanceA<distanceB)
-		    return -1;
-		else return 0;     }
-	}
-	);
-    }
-    public AStarNode createStartNode(Object state){
-	Position p = (Position) state;
-	AStarNode n = new AStarNode(p);
-	n.setDistTravelled(0);
-	n.setApproxTotalDist(p.distance((Position)getEndingState()));
-	List<Position> path = new ArrayList<Position>();
-	path.add(p);
-	n.setPath(path);
-	//System.out.print("createStartNode"); n.printNode();
-	return n;
+    public PersonAStarTraversal(Semaphore[][] mainGrid, Semaphore[][] crossWalkGrid ){
+	super(mainGrid);
+	
     }
     public List<Node> expandFunc(Node n) {
 	AStarNode node = (AStarNode) n;
@@ -78,24 +51,7 @@ public class AStarTraversal extends GraphTraversal
 	}
 	return expandedNodes;
     }//end expandFunc
-    protected boolean inPath (Position pos, List<Position> path){
-	for (Position n:path) {if (pos.equals(n)) return true;};
-	return false;
-    }
-    public void printCurrentList() {
-	PriorityQueue<Node> pq = new PriorityQueue<Node>(nodes);
-	AStarNode p;
-	System.out.print("\n[");
-	while ((p = (AStarNode)pq.poll()) != null) {
-	    System.out.print("\n");
-	    p.printNode();
-	}
-	System.out.println("]");
-    }
-    public void queueFn(Queue<Node> old, List<Node> newNodes){
-	for (Node m:newNodes) {
-	    old.offer((AStarNode)m);
-	}
-    }
+
+
     public Semaphore[][] getGrid(){return grid;}
 }

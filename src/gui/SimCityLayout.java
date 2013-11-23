@@ -29,6 +29,9 @@ public class SimCityLayout {
 
 	//A list of the roads
 	private List<Road> roads = new ArrayList<>();
+	//A List of crosswalks
+	private List<Dimension> crosswalks = new ArrayList<>();
+	
 
 	//The main Semaphore Grid
 	private Semaphore[][] mainGrid = null;
@@ -37,6 +40,9 @@ public class SimCityLayout {
 	 * A Position will be acquired everywhere there is not an empty road.
 	 */
 	private Semaphore[][] roadGrid = null;
+	
+	//A grid for the crosswalks //acquired everywhere there is not an empty crosswalk
+	private Semaphore[][] crossWalkGrid = null;
 
 
 	public SimCityLayout(int WindowSizeX, int WindowSizeY, int GridSizeX, int GridSizeY) {
@@ -60,6 +66,8 @@ public class SimCityLayout {
 		//initialize grids
 		mainGrid = addAndInitializeMainGrid(mainGrid);
 		roadGrid = addAndInitializeRoadGrid(roadGrid);
+		crossWalkGrid = addAndInitializeRoadGrid(crossWalkGrid);
+		
 
 	}
 
@@ -102,6 +110,58 @@ public class SimCityLayout {
 	}//end initialize grid
 
 
+	
+	
+	
+	
+	
+	
+	
+	
+	/**Adds a CrossWalk to the city.
+	 * A crosswalk can only be added where there is an empty road.
+	 * 
+	 * @param xPos 	The starting x grid Position of the crosswalk
+	 * @param yPos     The starting y grid Position of the crosswalk
+	 * @param width	The number of grid positions across
+	 * @param height	The number of grid positions high
+	 * @return True if successful False if at least one of the crosswalk positions was unsuccessful
+	 */
+	public boolean addCrossWalk(int xPos, int yPos, int width, int height){
+		Dimension d = new Dimension(xPos, yPos);
+		List<Dimension> crosses = new ArrayList<>();
+		boolean successfull = true;
+		
+		//Dimension cross;
+
+		//This loop will create a list of positions that we want to add
+		for(int x = 0; x < width;x++) {
+			for(int y = 0; y < height; y++ ) {
+				crosses.add(new Dimension(d));
+				d.height++;
+			}
+			d.width++;
+			d.height = yPos;
+		}
+		
+		//This loop trys to add the crosses to the grid
+		for(Dimension dd: crosses) {
+			try {
+				//Make sure the roadGrid is free
+				if(roadGrid[dd.width][dd.height].availablePermits() != 0){
+					//check to make sure there aren't permits for this road position...if there are something is wrong
+					crossWalkGrid[dd.width][dd.height].release();
+						crosswalks.add(new Dimension(dd));
+				}
+				else
+					successfull = false;
+			} catch (Exception e) {
+				successfull = false;
+			}
+		}
+		return successfull;
+	}//end addCrossWalk
+	
 	/**Adds a Road to the city.
 	 * 
 	 * @param xPos 	The starting x grid Position of the road
@@ -233,6 +293,15 @@ public class SimCityLayout {
 			g.setColor(Color.LIGHT_GRAY);
 			g.fillRect(d.width, d.height, GRID_SIZEX, GRID_SIZEY);
 		}//Roads painted
+		
+		//Paint the crosswalks
+		for(Dimension c : crosswalks){
+			Dimension d = positionMap.get(c);
+			g.setColor(Color.white);
+			for(int i = 0; i < GRID_SIZEX; i+=5)
+				g.drawLine(d.width + i, d.height, d.width + i, d.height + GRID_SIZEY);
+			//g.drawRect(d.width, d.height, getGRID_SIZEX(), GRID_SIZEY);
+		}
 
 	}
 
@@ -243,6 +312,9 @@ public class SimCityLayout {
 
 	public Semaphore[][] getRoadGrid() {
 		return roadGrid;
+	}
+	public Semaphore[][] getCrossWalkGrid(){
+		return crossWalkGrid;
 	}
 	
 	

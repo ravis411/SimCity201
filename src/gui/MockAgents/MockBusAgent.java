@@ -67,9 +67,9 @@ public class MockBusAgent extends Agent implements Vehicle {
 		
 		location = StopsQueue.poll();//<--removes location from front of queue
 		StopsQueue.add(location);//<--adds location to end of queue
-		print("Going to " + location);
+		//print("Going to " + location);
 		agentGui.DoGoTo(location);
-		print("Arrived at " + location);
+	//	print("Arrived at " + location);
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {

@@ -82,7 +82,7 @@ public class VehicleGui implements Gui {
         for(LocationInfo i : locationList){
         	if(i != null && i.positionToEnterFromRoadGrid != null)
         		locations.put(i.name, i);
-        	System.out.println("LOCATION " + i.positionToEnterFromRoadGrid);
+        	//System.out.println("LOCATION " + i.positionToEnterFromRoadGrid);
         }
         
     }
@@ -154,7 +154,7 @@ public class VehicleGui implements Gui {
     	if(info != null){
     		
     		Position p = new Position(info.positionToEnterFromRoadGrid.width, info.positionToEnterFromRoadGrid.height);
-    		System.out.println("About to move to p: " + p);
+    		//System.out.println("About to move to p: " + p);
     		guiMoveFromCurrentPostionTo(p);
     	}
     }

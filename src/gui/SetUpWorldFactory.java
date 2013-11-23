@@ -15,6 +15,8 @@ import gui.Building.BuildingPanel;
 import gui.Building.BusStopBuilding;
 import gui.Building.BusStopBuildingPanel;
 import gui.MockAgents.MockBusAgent;
+import gui.MockAgents.MockPerson;
+import gui.agentGuis.PersonGui;
 import gui.agentGuis.VehicleGui;
 
 
@@ -48,34 +50,68 @@ public class SetUpWorldFactory{
 		
 		//across middle
 		layout.addRoad(1, 5, 34, 5);
+		//crosswalks
+		layout.addCrossWalk(10, 5, 2, 5);
+		layout.addCrossWalk(20, 5, 2, 5);
+		
 		
 		LocationInfo location = new LocationInfo();
 		
 			for(int x = 1; x < 7;x++) {
 				for(int y = 1; y < 5; y++){
-					addBuilding("Default", "Building " + x + y, x * 5 - 2, (y * 5)-3, 2, 2, location );
+			//		addBuilding("Default", "Building " + x + y, x * 5 - 2, (y * 5)-3, 2, 2, location );
 				}
 			}
 			
+			
+//BusStop 1			
 			location.positionToEnterFromRoadGrid=new Dimension(16, 5);
+			location.positionToEnterFromMainGrid=new Dimension(17, 4);
+			location.entranceFromMainGridPosition=location.entranceFromRoadGrid = new Dimension(16, 4);
 			addBuilding("Bus Stop", "Bus Stop 1", 16, 4, 1, 1, location);
+//BusStop 2
 			location.positionToEnterFromRoadGrid=new Dimension(5, 9);
+			location.positionToEnterFromMainGrid=new Dimension(6, 10);
+			location.entranceFromMainGridPosition=location.entranceFromRoadGrid = new Dimension(5, 10);
 			addBuilding("Bus Stop", "Bus Stop 2", 5, 10, 1, 1,location);
+//BusStop 3		
+			location.positionToEnterFromMainGrid=new Dimension(17, 10);
+			location.entranceFromMainGridPosition=location.entranceFromRoadGrid = new Dimension(16, 10);
 			location.positionToEnterFromRoadGrid=new Dimension(16, 9);
 			addBuilding("Bus Stop", "Bus Stop 3", 16, 10, 1, 1, location);
+//BusStop 4
 			location.positionToEnterFromRoadGrid=new Dimension(26, 9);
+			location.positionToEnterFromMainGrid=new Dimension(27, 10);
+			location.entranceFromMainGridPosition=location.entranceFromRoadGrid = new Dimension(26, 10);
 			addBuilding("Bus Stop", "Bus Stop 4", 26, 10, 1, 1, location);
+//BusStop 5
 			location.positionToEnterFromRoadGrid=new Dimension(6, 5);
+			location.positionToEnterFromMainGrid=new Dimension(7, 4);
+			location.entranceFromMainGridPosition=location.entranceFromRoadGrid = new Dimension(6, 4);
 			addBuilding("Bus Stop", "Bus Stop 5", 6, 4, 1, 1, location);
+//BusStop 6
 			location.positionToEnterFromRoadGrid=new Dimension(26, 5);
+			location.positionToEnterFromMainGrid=new Dimension(27, 4);
+			location.entranceFromMainGridPosition=location.entranceFromRoadGrid = new Dimension(26, 4);
 			addBuilding("Bus Stop", "Bus Stop 6", 26, 4, 1, 1, location);
 			
+			
+			//Set default city entrance
 			location.entranceFromRoadGrid = new Dimension(1,5);
+			location.entranceFromMainGridPosition = new Dimension(1, 3);
+			location.positionToEnterFromMainGrid=new Dimension(0,3);
+			location.positionToEnterFromRoadGrid=new Dimension(0, 5);
 			location.name = "City Entrance";
 			locationMap.add(location);
+			
+			
 			addVehicle("OddMockBus");
 			addVehicle("EvenMockBus");
 			addVehicle("OddMockBus");
+			
+			addPerson("Person 1");
+			addPerson("Person 2");
+			
 		
 	} //end LoadDefault
 	
@@ -241,6 +277,16 @@ public class SetUpWorldFactory{
 	
 	
 	
+	
+	private void addPerson(String name){
+		MockPerson p1 = new MockPerson(name);
+		PersonGui g1 = new PersonGui(p1, layout, new AStarTraversal(layout.getMainGrid()), locationMap);
+		p1.setAgentGui(g1);
+		cityPanel.addGui(g1);
+		p1.startThread();
+	}
+	
+	
 	private void addVehicle(String type) {
 		switch (type) {
 		case "OddMockBus":
@@ -272,12 +318,8 @@ public class SetUpWorldFactory{
 		default:
 			break;
 		}
-		
-		
-		
-		
-		
-	}
+
+	}// end addVehicle
 
 	
 	
