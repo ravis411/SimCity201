@@ -10,5 +10,9 @@ import java.awt.event.*;
 import java.util.Vector;
 public class bankLayout {
 
+	public bankLayout(int i, int j) {
+		// TODO Auto-generated constructor stub
+	}
+
 	
 }
