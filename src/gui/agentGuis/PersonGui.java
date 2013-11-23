@@ -106,16 +106,6 @@ public class PersonGui implements Gui {
 			else if (yPos > yDestination)
 				yPos--;
         }
-        {
-			if (xPos < xDestination)
-				xPos++;
-			else if (xPos > xDestination)
-				xPos--;
-			if (yPos < yDestination)
-				yPos++;
-			else if (yPos > yDestination)
-				yPos--;
-        }
         
         if(aStarState == ASTARSTATE.moving && xPos == xDestination && yPos == yDestination) {
         	aStarState = ASTARSTATE.atDestination;
@@ -173,7 +163,15 @@ public class PersonGui implements Gui {
     		
     		Position p = new Position(info.positionToEnterFromMainGrid.width, info.positionToEnterFromMainGrid.height);
     		//Walk To entrance
-    		guiMoveFromCurrentPostionTo(p);
+    		
+    		while(true){
+    			try {
+    				guiMoveFromCurrentPostionTo(p);
+    				break;
+    			} catch (Exception e) {
+    				System.out.println("Try again.");
+    			}
+    		}
     		
     		DoEnterBuilding(entrance);
     		currentLocation = info;

@@ -59,7 +59,7 @@ public class SetUpWorldFactory{
 		
 			for(int x = 1; x < 7;x++) {
 				for(int y = 1; y < 5; y++){
-			//		addBuilding("Default", "Building " + x + y, x * 5 - 2, (y * 5)-3, 2, 2, location );
+					addBuilding("Default", "Building " + x + y, x * 5 - 2, (y * 5)-3, 2, 2, location );
 				}
 			}
 			
@@ -111,6 +111,7 @@ public class SetUpWorldFactory{
 			
 			addPerson("Person 1");
 			addPerson("Person 2");
+			addPerson("Person 3");
 			
 		
 	} //end LoadDefault
