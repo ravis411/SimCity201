@@ -1,4 +1,4 @@
-package simcity.gui.trace;
+package trace;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;

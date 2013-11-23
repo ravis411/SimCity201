@@ -1,4 +1,4 @@
-package simcity.gui.trace;
+package trace;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
