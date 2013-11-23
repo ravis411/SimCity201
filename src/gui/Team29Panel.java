@@ -39,6 +39,11 @@ public class Team29Panel extends BuildingPanel{
 	public String getName() {
 		return myName;
 	}
+	
+	public void displayBuildingPanel() {
+		myCity.displayBuildingPanel( this );
+		
+	}
 }
 
 

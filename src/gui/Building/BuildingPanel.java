@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 public class BuildingPanel extends JPanel{
 	Rectangle2D myRectangle;
 	protected String myName;
-	BuildingsPanels myCity;
+	protected BuildingsPanels myCity;
 	
 	public BuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels) {
 		myRectangle = r;
