@@ -2,16 +2,17 @@ package bank.gui;
 
 import bank.*;
 import astar.*;
+
 import java.util.concurrent.*; 
 
 import javax.swing.*;
+
 import java.awt.*;
-import java.awt.event.*;
 import java.util.Vector;
 
 
 /** Panel in frame that contains all the bank information,
- * including host, cook, waiters, and customers. */
+ * including tellers and waiters */
 public class bankPanel extends JPanel {
 	//create animation
 	static int gridX = 20;
@@ -101,9 +102,6 @@ public class bankPanel extends JPanel {
 		bank.setAnimDelay(500);
 		bank.displayBank();
 
-		host.startThread();
-		cook.startThread();
-
 		setLayout(new GridLayout(1,2, 20,20));
 		group.setLayout(new GridLayout(1,2, 10,10));
 
@@ -114,6 +112,23 @@ public class bankPanel extends JPanel {
 		add(restLabel);
 		add(group);
 	}
+
+	
+	public bankPanel(bankLayout layout) {
+		// TODO Auto-generated constructor stub
+	}
+
+
+
+	private void initRestLabel(){
+	JLabel label = new JLabel();
+	//restLabel.setLayout(new BoxLayout((Container)restLabel, BoxLayout.Y_AXIS));
+	restLabel.setLayout(new BorderLayout());
+	restLabel.setBorder(BorderFactory.createRaisedBevelBorder());
+	restLabel.add(label, BorderLayout.CENTER);
+	restLabel.add(new JLabel("               "), BorderLayout.EAST );
+	restLabel.add(new JLabel("               "), BorderLayout.WEST );
+    }
 
 
 	/** When a customer or waiter is clicked, this function calls

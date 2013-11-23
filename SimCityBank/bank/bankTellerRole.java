@@ -4,13 +4,16 @@ import bank.bankClientRole;
 import java.util.*;
 
 import agent.Agent;
+import astar.AStarTraversal;
+
+
 public class bankTellerRole extends Agent{
 	private List<bankClientRole> ClientLine = new ArrayList<bankClientRole>();
-	private int LineNum; //from 1 to n, with 5 being the loan line
+	private int LineNum; //from 1 to n, with 5 being the loan line, should be assigned in creation
 	public enum requestState {withdrawal, deposit, open, loan, none, notBeingHelped};
 	private requestState state = requestState.none;
+	private Database database;
 	double transactionAmount;
-	private List<Account> Accounts = new ArrayList<Account>();
 	private String name;
 	
 	bankTellerRole(String s, int n){
@@ -73,7 +76,7 @@ public class bankTellerRole extends Agent{
 		b.msgMayIHelpYou();
 	}
 	private void processDeposit(bankClientRole b){
-		for (Account a : Accounts){
+		for (Account a : database.Accounts){
 			if (a.client == b){
 				a.amount = a.amount + transactionAmount;
 				b.msgTransactionCompleted(transactionAmount - (2*transactionAmount));
@@ -83,7 +86,7 @@ public class bankTellerRole extends Agent{
 		}
 	}
 	private void processWithdrawal(bankClientRole b){
-		for (Account a : Accounts){
+		for (Account a : database.Accounts){
 			if (a.client == b){
 				if (transactionAmount > a.amount){
 					b.msgTransactionCompleted(0);
@@ -97,7 +100,7 @@ public class bankTellerRole extends Agent{
 		}
 	}
 	private void processLoan(bankClientRole b){
-		for (Account a : Accounts){
+		for (Account a : database.Accounts){
 			if (a.client == b){
 				if (b.age > 18 && b.age < 85){
 					if (transactionAmount > a.amount){
@@ -114,7 +117,7 @@ public class bankTellerRole extends Agent{
 	}
 	private void openAccount(bankClientRole b){
 		Account a = new Account(b, b.money);
-		Accounts.add(a);
+		database.Accounts.add(a);
 		b.msgAccountOpened(a);
 		state = requestState.none;   
 		ClientLine.remove(b);
