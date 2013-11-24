@@ -85,7 +85,8 @@ public class PersonGui implements Gui {
 			//img = new ImageIcon(("movingCar.gif"));
 	
 			try {
-				BufferedImage img = ImageIO.read(new File("images/alien.png"));
+				String s =( this.getClass().getResource("/images/alien.png").getPath() );
+				BufferedImage img = ImageIO.read(new File(s));
 			    if(img == null){
 	        		testView = true;
 	        	} else{

@@ -14,7 +14,8 @@ public class BusStopBuilding extends Building {
 		super( b.x, b.y, b.width, b.height );
 	}
 	
-	ImageIcon imageI = new ImageIcon("images/bus-stop.png");
+	ImageIcon imageI = new ImageIcon(this.getClass().getResource("/images/bus-stop.png").getPath());
+	
 	
 	@Override
 	public void draw(Graphics2D g) {
