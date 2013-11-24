@@ -6,7 +6,6 @@ public enum Database {
 
 	private List<Account>Accounts = new ArrayList<Account>();
 	private Database(){
-
 	}
 	public void addToDatabase(Account a){
 		Accounts.add(a);
