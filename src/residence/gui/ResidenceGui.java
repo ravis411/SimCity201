@@ -38,6 +38,8 @@ public class ResidenceGui extends JFrame implements ActionListener {
         homeRole.gui = homeRoleGui;
         homeRole.setPerson(person);
         homeRole.myPerson.startThread();
+        homeRole.activate();
+        homeRole.myPerson.addRole(homeRole);
 
         //animationFrame.setBounds(100+WINDOWX, 50 , WINDOWX+100, WINDOWY+100);
         //animationFrame.setVisible(true);

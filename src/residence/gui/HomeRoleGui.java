@@ -34,22 +34,15 @@ public class HomeRoleGui implements Gui {
     public void draw(Graphics2D g) {
         g.setColor(Color.MAGENTA);
         g.fillRect(xPos, yPos, 20, 20);
+        if(xPos == 375 && yPos == 65) {
+        	g.setColor(Color.black);
+            g.fillOval(372, 47, 11, 11);
+        }
     }
     
     public void DoGoToBed() {
-    	/*boolean inBedroom = false;
-    	xDestination = 200;
-    	yDestination = 150;
-    	while(xPos > 201) {
-    		inBedroom = false;
-    		System.out.println("asdad");
-    	}
-    	inBedroom = true;
-    	System.out.println("DONE");
-    	if(inBedroom == true) {*/
-    		xDestination = 50;
-    		yDestination = 110;
-    	//}
+    	xDestination = 50;
+    	yDestination = 110;
     }
     
     public void DoGoToFrontDoor() {
@@ -58,8 +51,8 @@ public class HomeRoleGui implements Gui {
     }
     
     public void DoGoToKitchen() {
-    	xDestination = 377;
-    	yDestination = 365;
+    	xDestination = 375;
+    	yDestination = 65;
     }
 
     public boolean isPresent() {

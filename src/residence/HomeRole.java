@@ -39,6 +39,8 @@ public class HomeRole extends Role implements Home {
 		
 		inventory.add(new Item("Cooking Ingredients",2));
 		inventory.add(new Item("Cleaning supplies", 2));
+		
+		features.add(new HomeFeature("Sink"));
 	}
 	
 	public String getName() {
@@ -101,14 +103,8 @@ public class HomeRole extends Role implements Home {
 			goToSleep();
 			return true;
 		}
-		/*for(Integer i : inventory.values()) {
-			if (i.equals(1)) {
-				goToMarket(item);
-				return true;
-			}
-		}*/
 		for(Item i : inventory) {
-			if(i.quantity < 2) {
+			if(i.quantity < 2 && state == AgentState.DoingNothing) {
 				goToMarket(i);
 			}
 			return true;
@@ -127,6 +123,11 @@ public class HomeRole extends Role implements Home {
 
 	private void cook() {
 		gui.DoGoToKitchen();
+		for(Item i : inventory) {
+			if(i.name == "Cooking Ingredients") {
+				i.quantity--;
+			}
+		}
 	}
 	private void goToMarket (Item item) {
 		print("I'm going to the market.");
