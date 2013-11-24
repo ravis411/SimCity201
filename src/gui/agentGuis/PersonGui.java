@@ -25,6 +25,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import trace.AlertLog;
+import trace.AlertTag;
 import agent.Agent;
 import astar.AStarNode;
 import astar.AStarTraversal;
@@ -83,6 +85,7 @@ public class PersonGui implements Gui {
 			try {
 			    img = ImageIO.read(new File("images/UFO.png"));
 			} catch (IOException e) {
+				AlertLog.getInstance().logWarning(AlertTag.PERSON_GUI, agent.toString(), "Image not found. Switching to test view.");
 				testView = true;
 			}
 
@@ -176,7 +179,8 @@ public class PersonGui implements Gui {
     				guiMoveFromCurrentPostionTo(p);
     				break;
     			} catch (Exception e) {
-    				System.out.println("Try again.");
+    				//System.out.println("Try again.");
+    				AlertLog.getInstance().logInfo(AlertTag.PERSON_GUI, agent.toString(), "Path not found/exception caught. Try again.");
     			}
     		}
     		
@@ -258,10 +262,12 @@ public class PersonGui implements Gui {
     	
     	while( !entrance.moveInto(aStar.getGrid()) ) {
     		//System.out.println("EntranceBlocked!!!!!!! waiting 1sec");
+    		AlertLog.getInstance().logInfo(AlertTag.PERSON_GUI, agent.toString(), "Entrance blocked. Waiting one second for path to clear.");
     		try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				System.out.println("EXCEPTION!!!!!!!!!! caught while waiting for entrance to clear.");
+				//System.out.println("EXCEPTION!!!!!!!!!! caught while waiting for entrance to clear.");
+				AlertLog.getInstance().logError(AlertTag.PERSON_GUI, agent.toString(), "Unexpected exception caught in PersonGui while waiting for entrance to clear.");
 			}    		
     	}
     	
@@ -386,7 +392,7 @@ public class PersonGui implements Gui {
     	try {
 			aSem.acquire();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			AlertLog.getInstance().logError(AlertTag.PERSON_GUI, agent.toString(), "Unexpected exception caught while waiting to acquire sem.");
 		}
     }
     
