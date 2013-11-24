@@ -1,5 +1,6 @@
 package bank;
 import bank.bankClientRole;
+import bank.gui.TellerGui;
 
 import java.util.*;
 
@@ -8,61 +9,57 @@ import astar.AStarTraversal;
 
 
 public class bankTellerRole extends Agent{
-	private List<bankClientRole> ClientLine = new ArrayList<bankClientRole>();
+	private bankClientRole myClient;
 	private int LineNum; //from 1 to n, with 5 being the loan line, should be assigned in creation
-	public enum requestState {withdrawal, deposit, open, loan, none, notBeingHelped};
+	public enum requestState {withdrawal, deposit, open, none, notBeingHelped};
 	private requestState state = requestState.none;
 	double transactionAmount;
+	private List<Account> Accounts = Database.INSTANCE.sendDatabase();
 	private String name;
-	
-	bankTellerRole(String s, int n){
+	private numberAnnouncer announcer;
+	private int ticketNum = 1;
+
+
+	public bankTellerRole(String s, int n){
+		super();
 		name = s;
 		LineNum = n;
+		Accounts = Database.INSTANCE.sendDatabase();
 	}
-	
-	//	Messages
 
+	//	Messages
 	public void msgInLine(bankClientRole b){
-		ClientLine.add(b);
+		myClient = b;
 		stateChanged();
 	}
 	public void msgOpenAccount(){
 		state = requestState.open;
+		stateChanged();
 	}
 	public void msgDeposit(double a){
 		transactionAmount = a;
 		state = requestState.deposit;
+		stateChanged();
 	}
 	public void msgWithdraw(double a){
 		transactionAmount = a;
 		state = requestState.withdrawal;
+		stateChanged();
 	}
-	public void msgLoan(double a){
-		transactionAmount = a;
-		state = requestState.loan;
-	}
-
 
 	//	Scheduler
-	@Override
 	protected boolean pickAndExecuteAnAction() {
-		// TODO Auto-generated method stub
-		if (!ClientLine.isEmpty()){
-			if (state == requestState.notBeingHelped){
-				receiveClient(ClientLine.get(0));
-				if (LineNum != 5){
-					if (state == requestState.deposit){
-						processDeposit(ClientLine.get(0));
-					}
-					if (state == requestState.withdrawal){
-						processWithdrawal(ClientLine.get(0));
-					}
-					if (state == requestState.open){
-						openAccount(ClientLine.get(0));
-					} else if (state == requestState.loan){
-						processLoan(ClientLine.get(0));
-					}
-				}
+		Accounts = Database.INSTANCE.sendDatabase();
+		if (state == requestState.notBeingHelped){
+			receiveClient(myClient);
+			if (state == requestState.deposit){
+				processDeposit(myClient);
+			}
+			if (state == requestState.withdrawal){
+				processWithdrawal(myClient);
+			}
+			if (state == requestState.open){
+				openAccount(myClient);
 			}
 		}
 		return false;
@@ -80,7 +77,9 @@ public class bankTellerRole extends Agent{
 				a.amount = a.amount + transactionAmount;
 				b.msgTransactionCompleted(transactionAmount - (2*transactionAmount));
 				state = requestState.none;
-				ClientLine.remove(b);
+				ticketNum++;
+				announcer.msgTransactionComplete(LineNum);
+				myClient = null;
 			}
 		}
 	}
@@ -94,36 +93,20 @@ public class bankTellerRole extends Agent{
 					b.msgTransactionCompleted(transactionAmount);
 				}
 				state = requestState.none;
-				ClientLine.remove(b);
+				ticketNum++;
+				announcer.msgTransactionComplete(LineNum);
+				myClient = null;
 			}
 		}
-	}
-	private void processLoan(bankClientRole b){
-		for (Account a : Accounts){
-			if (a.client == b){
-				if (b.age > 18 && b.age < 85){
-					if (transactionAmount > a.amount){
-						if (!b.HasLoan()){
-							b.msgLoanApproved(transactionAmount);
-						}
-					}
-				} else b.msgTransactionCompleted(0);
-				state = requestState.none;
-				ClientLine.remove(b);
-			}
-		}
-
 	}
 	private void openAccount(bankClientRole b){
 		Account a = new Account(b, b.money);
-		Accounts.add(a);
+		Database.INSTANCE.addToDatabase(a);
 		b.msgAccountOpened(a);
-		state = requestState.none;   
-		ClientLine.remove(b);
 	}
-	
-	
-	
+
+	//gui
+
 	//Accesors, etc.
 	public String getName() {
 		return name;
