@@ -35,20 +35,33 @@ public class SimCity201Gui extends JFrame {
         setVisible(true);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(50, 50, (int)(WINDOWX * 2), (WINDOWY));
-		setLayout(new GridLayout(1, 2));
 		
-		menuBar = new GuiJMenuBar(this);
+        menuBar = new GuiJMenuBar(this);
 		this.setJMenuBar(menuBar);
+        
+        setBounds(50, 50, (int)(WINDOWX * 1.5), (WINDOWY + 50));
+		//setLayout(new GridLayout(1, 2));
+		setLayout(new GridBagLayout());
+		
+		
 		
 		tracePanel.showAlertsForAllLevels();
 		tracePanel.showAlertsForAllTags();
-		AlertLog.getInstance().addAlertListener(tracePanel);
 		
+		GridBagConstraints c = new GridBagConstraints();
+		
+		c.gridx = 0; c.gridy = 0;
+		this.add(mainPanel, c);
+		
+		c.gridx = 1; c.gridy = 0;
+		//c.ipady = 200;
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = .8;
+		this.add(tracePanel, c);
 		
 		mainPanel.setLayout(new GridLayout(0, 1));
-		add(mainPanel);
-		add(tracePanel);
+		//add(mainPanel);
+		//add(tracePanel);
 	
 		
 		loadConfig("Default");
