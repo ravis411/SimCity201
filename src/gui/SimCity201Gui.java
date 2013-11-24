@@ -1,8 +1,11 @@
 package gui;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import trace.*;
@@ -33,7 +36,7 @@ public class SimCity201Gui extends JFrame {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(50, 50, (int)(WINDOWX * 2), (WINDOWY));
-		setLayout(new GridLayout(0, 2));
+		setLayout(new GridLayout(1, 2));
 		
 		menuBar = new GuiJMenuBar(this);
 		this.setJMenuBar(menuBar);
@@ -41,14 +44,12 @@ public class SimCity201Gui extends JFrame {
 		tracePanel.showAlertsForAllLevels();
 		tracePanel.showAlertsForAllTags();
 		AlertLog.getInstance().addAlertListener(tracePanel);
-		//JFrame logs = new JFrame("Logs");
-		//logs.add(tracePanel);
-		//logs.setBounds(850, 50, 400, 400);
-	//	logs.setVisible(true);
+		
 		
 		mainPanel.setLayout(new GridLayout(0, 1));
 		add(mainPanel);
 		add(tracePanel);
+	
 		
 		loadConfig("Default");
 		//loadConfig("GUI Test 1");
@@ -100,8 +101,8 @@ public class SimCity201Gui extends JFrame {
 		mainPanel.add(buildingsPanels);
 		mainPanel.revalidate();
 		mainPanel.repaint();
-		this.getContentPane().revalidate();
-		this.getContentPane().repaint();
+		//this.getContentPane().revalidate();
+		//this.getContentPane().repaint();
 		
 	}
 	

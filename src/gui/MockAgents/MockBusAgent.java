@@ -5,6 +5,9 @@ import java.util.Queue;
 
 
 
+
+import trace.AlertLog;
+import trace.AlertTag;
 import gui.LocationInfo;
 import gui.agentGuis.VehicleGui;
 import gui.interfaces.Vehicle;
@@ -43,6 +46,7 @@ public class MockBusAgent extends Agent implements Vehicle {
 	
 	@Override
 	protected boolean pickAndExecuteAnAction() {
+			
 		
 		if(!traveled) {
 			Travel();
