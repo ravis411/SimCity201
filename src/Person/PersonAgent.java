@@ -76,6 +76,7 @@ public class PersonAgent extends Agent {
 		prefs = new Preferences();
 		
 		backpack = new ArrayList<BackpackObject>();
+
 	}
 	
 //-------------------------------MESSAGES----------------------------------------//
