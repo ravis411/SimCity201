@@ -14,6 +14,7 @@ package trace;
  */
 public enum AlertTag {
 	PERSON,
+	PERSON_GUI,
 	BANK_TELLER,
 	BANK_CUSTOMER,
 	BUS_STOP,
