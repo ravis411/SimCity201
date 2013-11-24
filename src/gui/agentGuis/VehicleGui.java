@@ -54,7 +54,8 @@ public class VehicleGui implements Gui {
     private Map<String, LocationInfo> locations = new HashMap<>();//<<-- A Map of locations
     
     
-    BufferedImage img = null;
+   
+    Image image = null;
     boolean testView = false;
     
     private enum GuiState {none, inCity, inBuilding};
@@ -73,7 +74,11 @@ public class VehicleGui implements Gui {
 			//img = new ImageIcon(("movingCar.gif"));
 	
 			try {
-			    img = ImageIO.read(new File("images/UFO.png"));
+				 BufferedImage img = ImageIO.read(new File("images/UFO.png"));
+			    if(img != null){
+			    	ImageIcon icon = new ImageIcon(img);
+			    	image = icon.getImage();
+			    }
 			} catch (IOException e) {
 				testView = true;
 				AlertLog.getInstance().logWarning(AlertTag.VEHICLE_GUI, agent.toString(), "Image not found. Switching to Test View");
@@ -129,11 +134,10 @@ public class VehicleGui implements Gui {
         }
         else
         {
-        	if(img == null){
+        	if(image == null){
         		testView = true; return;
         	}
-        	ImageIcon icon = new ImageIcon(img);
-        	Image image = icon.getImage();
+        	
         	g.drawImage(image, xPos, yPos, 20, 20, null);
         }
     }

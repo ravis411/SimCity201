@@ -253,17 +253,18 @@ public class PersonGui implements Gui {
     	
     	//Dimension cityEntrance = locations.get("City Entrance").entranceFromRoadGrid;
     	
-    	Position entrance;
+    	//Position entrance;
     	//System.out.println("Going to " + to + "\nfrom\n" + from);
     	
     	if(from != null && to != null) {
     	xPos = xDestination = from.width;
     	yPos = yDestination = from.height;
-    	entrance = new Position(to.getX(), to.getY());
+    	//entrance = new Position(to.getX(), to.getY());
     	}else
     		return;
     	
-    	while( !entrance.moveInto(aStar.getGrid()) ) {
+    	//while( !entrance.moveInto(aStar.getGrid()) ) {
+    	while( !to.moveInto(aStar.getGrid()) ) {
     		//System.out.println("EntranceBlocked!!!!!!! waiting 1sec");
     		AlertLog.getInstance().logInfo(AlertTag.PERSON_GUI, agent.toString(), "Entrance blocked. Waiting one second for path to clear.");
     		try {
@@ -277,11 +278,11 @@ public class PersonGui implements Gui {
     	try{
     		//System.out.println("MOVING " + entrance);
     		isPresent = true;
-    		move(entrance.getX(), entrance.getY());
+    		move(to.getX(), to.getY());
     		
     	//if(SimCityLayout.addVehicleGui(this))
     	{
-    		currentPosition = new Position(entrance.getX(), entrance.getY());
+    		currentPosition = new Position(to.getX(), to.getY());
             //currentPosition.moveInto(aStar.getGrid());
             originalPosition = currentPosition;
     		//DoGoToHomePosition();
@@ -382,8 +383,8 @@ public class PersonGui implements Gui {
     
     /**The caller's Thread will block until they have reached the destination
      * 
-     * @param xCoord The java x coordinate to move to
-     * @param yCoord The java y coordinate to move to
+     * @param xCoord The grid x coordinate to move to
+     * @param yCoord The grid y coordinate to move to
      */
     private void move(int xCoord, int yCoord) {
     	Dimension p = new Dimension(xCoord, yCoord);

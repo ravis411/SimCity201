@@ -11,6 +11,18 @@ import javax.swing.JPanel;
 import trace.*;
 
 
+
+
+
+// If the program is lagging or runs out of memory.
+//It may help to add these to VM Arguments. Run -> Run Configurations -> Arguments -> VM Arguments.
+//-Xms2048M -Xmx2048M -Xss2048
+
+
+
+
+
+
 @SuppressWarnings("serial")
 public class SimCity201Gui extends JFrame {
 

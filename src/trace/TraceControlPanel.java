@@ -40,14 +40,6 @@ public class TraceControlPanel extends Panel implements ActionListener {
 		showVehicle.addActionListener(this);
 		
 	}
-	
-	
-	private void setAllVisible(){
-		panel.showAlertsForAllLevels();
-		panel.showAlertsForAllTags();
-	}
-
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -57,6 +49,7 @@ public class TraceControlPanel extends Panel implements ActionListener {
 			if(c == showAll){
 				if(c.isSelected()){
 					panel.showAlertsForAllTags();
+					panel.showAlertsForAllLevels();
 					showINFO.setSelected(true);
 					showPERSON.setSelected(true);
 					showVehicle.setSelected(true);
