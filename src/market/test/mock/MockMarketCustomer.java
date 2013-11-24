@@ -27,4 +27,10 @@ public class MockMarketCustomer extends Mock implements MarketCustomer {
 		
 	}
 
+	@Override
+	public void msgMarketCustomerHereIsOrder(String FoodType, int amount) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

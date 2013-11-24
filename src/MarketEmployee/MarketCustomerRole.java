@@ -80,11 +80,12 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		msgMarketCustomerDoYouWantPartialOrder(String FoodType, int amount){
 		marketCustomerState= replyingToEmployee;
 		}
-		
-		msgMarketCustomerHereIsOrder(String FoodType, int amount){
-		marketCustomerState= leaving;
+		*/
+	public void msgMarketCustomerHereIsOrder(String FoodType, int amount){
+		state= MarketCustomerState.leaving;
+		stateChanged();
 		}
-*/
+
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */

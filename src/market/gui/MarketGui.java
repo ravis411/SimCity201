@@ -8,7 +8,7 @@ import java.util.Vector;
 
 import javax.swing.JFrame;
 
-import market.interfaces.MarketEmployee;
+import market.data.Shelves;
 import MarketEmployee.MarketCustomerRole;
 import MarketEmployee.MarketEmployeeRole;
 import MarketEmployee.MarketManagerRole;
@@ -30,6 +30,7 @@ public class MarketGui extends JFrame implements ActionListener {
     private Vector<MarketCustomerRole> marketCustomerRoles = new Vector<MarketCustomerRole>();
     private MarketPerson marketManagerPerson= new MarketPerson("Harry");
     private MarketManagerRole marketManagereRole= new MarketManagerRole();
+    private Shelves marketInventory = new Shelves();
     /**
      * Constructor for MarketGui class.
      * Sets up all the gui components.
@@ -54,6 +55,7 @@ public class MarketGui extends JFrame implements ActionListener {
         marketEmployeeRoles.get(0).setPerson(marketEmployeePersons.get(0));
         animationPanel.addGui(marketEmployeeGui);
         marketEmployeePersons.get(0).startThread();
+        marketEmployeeRoles.get(0).setMarketInventory(marketInventory);
 
         
         
@@ -66,7 +68,7 @@ public class MarketGui extends JFrame implements ActionListener {
         marketEmployeeRoles.get(1).setPerson(marketEmployeePersons.get(1));
         animationPanel.addGui(marketEmployeeGui);
         marketEmployeePersons.get(1).startThread();
-
+        marketEmployeeRoles.get(1).setMarketInventory(marketInventory);
         
         //Test Employee #3
         marketEmployeePersons.add( new MarketPerson("Drew"));
@@ -77,6 +79,7 @@ public class MarketGui extends JFrame implements ActionListener {
         marketEmployeeRoles.get(2).setPerson(marketEmployeePersons.get(2));
         animationPanel.addGui(marketEmployeeGui);
         marketEmployeePersons.get(2).startThread();
+        marketEmployeeRoles.get(2).setMarketInventory(marketInventory);
 
         
       //Test Market Manager
