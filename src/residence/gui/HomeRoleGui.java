@@ -26,8 +26,20 @@ public class HomeRoleGui implements Gui {
         else if (yPos > yDestination)
             yPos--;
 
-        if (xPos == xDestination && yPos == yDestination) {
-           //agent.msgAtTable();
+        if (xPos == 50 && yPos == 110) {
+           agent.msgAtBed();
+        }
+        /*if (xPos == 50 && yPos == 110) {
+            agent.msgAtBedroom();
+        }*/
+        if (xPos == 375 && yPos == 65) {
+            agent.msgAtKitchen();
+        }
+        if (xPos == 750 && yPos == 205) {
+            agent.msgAtFrontDoor();
+        }
+        if (xPos == 370 && yPos == 80) {
+        	agent.msgAtTable();
         }
     }
 
@@ -53,6 +65,11 @@ public class HomeRoleGui implements Gui {
     public void DoGoToKitchen() {
     	xDestination = 375;
     	yDestination = 65;
+    }
+    
+    public void DoGoToTable() {
+    	xDestination = 370;
+    	yDestination = 80;
     }
 
     public boolean isPresent() {
