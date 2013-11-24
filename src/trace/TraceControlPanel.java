@@ -38,7 +38,6 @@ public class TraceControlPanel extends Panel implements ActionListener {
 		
 		this.add(showVehicle);
 		showVehicle.addActionListener(this);
-		
 	}
 
 	@Override

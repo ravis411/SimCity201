@@ -15,6 +15,7 @@ import java.awt.image.BufferedImageOp;
 import java.awt.image.RescaleOp;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -150,6 +151,71 @@ public class PersonGui implements Gui {
     
     
     
+    /**	This will move the person from their current location to the BusStop that is the closest
+     * 	straight line distance away. The name of that stop is returned.
+     * 
+     * @return	If a bus stop exists, the name of the closest stop from the Person's currentLocation.
+     */
+    public String DoGoToClosestBusStop(){
+    	//First gather a list of all bus stop locations
+    	List<LocationInfo> busLocations = new ArrayList<>();
+    	for(String s : locations.keySet()){
+    		if(s.contains("Bus Stop")){
+    			busLocations.add(new LocationInfo(locations.get(s)));
+    		}
+    	}
+    	
+    	//Lets make sure there's at least one bus stop
+    	if(busLocations.isEmpty()){
+    		return null;
+    	}
+    	
+    	
+    	if(state == PersonState.none){
+    		//How are we not in the city...lets get inside.
+    		DoEnterWorld();
+    	}
+    	
+    	
+    	// Now we need to find the closest stop to where we are.
+    	
+    	//Our current Position
+    	Position current = new Position(currentLocation.positionToEnterFromMainGrid.width, currentLocation.positionToEnterFromMainGrid.height);
+    	//The shortest distance
+    	double shortestDistance;
+    	// The stop that is the shortest distance
+    	LocationInfo closestStop = busLocations.get(0);
+    	
+    	Dimension d = new Dimension(closestStop.positionToEnterFromMainGrid);
+    	shortestDistance = current.distance(new Position(d.width, d.height));
+    	// Now we have the distance from our current location to the first bus stop in the list
+    	for(LocationInfo l : busLocations){
+    		Position p = new Position(l.positionToEnterFromMainGrid.width, l.positionToEnterFromMainGrid.height);
+    		double distance = current.distance(p);
+    		if(distance < shortestDistance){
+    			shortestDistance = distance;
+    			closestStop = l;
+    		}
+    	}
+    	
+    	//Now we've checked all stops; shortestDistance should be the shortest away 
+    		//and startStop should be the locationInfo for that stop
+    	if(closestStop != null) {
+    		DoGoTo(closestStop.name);
+    		return closestStop.name;
+    	}
+    	
+    	return null;
+    }
+    
+    
+    
+    
+    /**	This will move the person from their current location to location
+     * When this function returns, the person has arrived or the location does not exist.
+     * 
+     * @param location	The name of the destination to travel to.
+     */
     public void DoGoTo(String location){
     	//System.out.println("Going to " + location);
     	if(state == PersonState.none) {
