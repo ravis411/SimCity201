@@ -14,6 +14,15 @@ public abstract class Role {
 	public abstract boolean pickAndExecuteAction();
 	
 	/**
+	 * Using the states for a particular role, return true if
+	 * the role can go get food, false otherwise.
+	 * 
+	 * If the role can always get food, just return true
+	 * @return true if Role can go get food, false otherwise
+	 */
+	public abstract boolean canGoGetFood();
+	
+	/**
 	 * String accessor to get the name of the Role
 	 * @return
 	 */
