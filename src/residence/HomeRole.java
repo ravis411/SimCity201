@@ -20,11 +20,13 @@ public class HomeRole extends Role implements Home {
 	//private Map <String, Integer> inventory = new HashMap<String, Integer>();
 	private List <Item> inventory = new ArrayList<Item>();
 	private List <HomeFeature> features = new ArrayList<HomeFeature>(); //includes appliances, toilets, sinks, etc (anything that can break)
+	private List <PersonAgent> partyAttendees = new ArrayList<PersonAgent>();
 	private Semaphore atKitchen = new Semaphore(0, true);
 	private Semaphore atBedroom = new Semaphore(0, true);
 	private Semaphore atBed = new Semaphore(0, true);
 	private Semaphore atFrontDoor = new Semaphore(0, true);
 	private Semaphore atTable = new Semaphore(0, true);
+	private Semaphore atCenter = new Semaphore(0, true);
 	Timer timer = new Timer();
 
 	private String name;
@@ -106,6 +108,9 @@ public class HomeRole extends Role implements Home {
 	public void msgAtTable() {
 		atTable.release();
 	}
+	public void msgAtCenter() {
+		atCenter.release();
+	}
 	
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
@@ -146,6 +151,13 @@ public class HomeRole extends Role implements Home {
 	// Actions
 
 	private void cook() {
+		gui.DoGoToCenter();
+		try {
+			atCenter.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		gui.DoGoToKitchen();
 		event = AgentEvent.doneCooking;
 		for(Item i : inventory) {
@@ -178,12 +190,21 @@ public class HomeRole extends Role implements Home {
 		}
 		timer.schedule(new TimerTask() {
 			public void run() {
+				print("Done eating.");
 				state = AgentState.DoingNothing;
+				//event = AgentEvent.none;
 			}
 		},
 		5000);
 	}
 	private void goToMarket (Item item) {
+		gui.DoGoToCenter();
+		try {
+			atCenter.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		state = AgentState.Leaving;
 		print("Low on " + item.name + ". I'm going to the market.");
 		gui.DoGoToFrontDoor();
@@ -212,6 +233,13 @@ public class HomeRole extends Role implements Home {
 		
 	}
 	private void goToSleep() {
+		gui.DoGoToCenter();
+		try {
+			atCenter.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		gui.DoGoToBedroom();
 		try {
 			atBedroom.acquire();
@@ -230,6 +258,7 @@ public class HomeRole extends Role implements Home {
 		timer.schedule(new TimerTask() {
 			public void run() {
 				state = AgentState.DoingNothing;
+				//event = AgentEvent.none;
 				print("Getting up!");
 				stateChanged();
 			}

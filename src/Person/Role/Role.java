@@ -5,7 +5,7 @@ import Person.PersonAgent;
 public abstract class Role {
 
 	private boolean isActive;
-	protected PersonAgent myPerson;
+	public PersonAgent myPerson; //WILL BE CHANGED TO PROTECTED
 	public String role;
 	/**
 	 * The scheduler function for a particular role

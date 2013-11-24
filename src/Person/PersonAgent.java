@@ -271,6 +271,15 @@ public class PersonAgent extends Agent {
 	private void setUpPreferences(){
 		
 	}
+	public Role findRole(String role){
+        for(Role r : roles){
+                if(r.getName().equals(role)){
+                        return r;
+                }
+        }
+        
+        return null;
+}
 	
 	private Role findMyJob(){
 		for(Role r : roles){
@@ -339,7 +348,7 @@ public class PersonAgent extends Agent {
 	 * A public stateChanged method to allow the Roles to call stateChanged
 	 */
 	public void stateChanged(){
-		stateChanged();
+		super.stateChanged();
 	}
 	
 	/**
