@@ -1,9 +1,11 @@
 package Transportation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+
 
 
 
@@ -35,10 +37,11 @@ public class BusAgent extends Agent implements Vehicle {
 		PassengerState ps;
 	}
 	
-	private List<myPassenger> passengers = new ArrayList<myPassenger>();
+	private List<myPassenger> passengers = Collections.synchronizedList(new ArrayList<myPassenger>());
 	private enum PassengerState {riding, disembarking};
 	
 	public enum AgentState {inTransit, loading, loaded};
+	private AgentState state = AgentState.inTransit;
 	
 	public BusAgent(String name, Queue<String> busStops) {
 		super();
@@ -54,11 +57,19 @@ public class BusAgent extends Agent implements Vehicle {
 	}
 	
 	public void msgFreeToLeave() {
-		
+		state = AgentState.loaded;
+		stateChanged();
 	}
 	
 	public void msgGettingOffBus(Passenger p) {
-		
+		synchronized(passengers) {
+			for (myPassenger mp : passengers) {
+				if (mp.equals(p)) {
+					mp.ps = PassengerState.disembarking;
+					stateChanged();
+				}
+			}
+		}
 	}
 	
 	//Scheduler
