@@ -198,13 +198,27 @@ public class HomeRole extends Role implements Home {
 		landlord.msgBrokenFeature(brokenFeature.name, this);
 	}
 	private void payRent () {
-		landlord.msgRentPaid (this, rentOwed);
-		rentOwed = 0;
+		if(myPerson.getMoney() >= rentOwed) {
+			landlord.msgRentPaid (this, rentOwed);
+			myPerson.setMoney(myPerson.getMoney()-rentOwed);
+			rentOwed = 0;
+			print("Paid my rent. I have $" + myPerson.getMoney() + " left.");
+		}
+		else {
+			//do nothing
+		}
 	}
 	private void eat() { //chooses whether person cooks at home or goes out to a restaurant
 		
 	}
 	private void goToSleep() {
+		gui.DoGoToBedroom();
+		try {
+			atBedroom.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		gui.DoGoToBed();
 		event = AgentEvent.asleep;
 		try {
@@ -224,6 +238,10 @@ public class HomeRole extends Role implements Home {
 	}
 
 	//utilities
+	
+	public void setLandlord (ApartmentManagerRole role) {
+		this.landlord = role;
+	}
 	
 	private class HomeFeature {
 		String name;

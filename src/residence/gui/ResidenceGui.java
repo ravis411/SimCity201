@@ -3,6 +3,7 @@ package residence.gui;
 import javax.swing.*;
 
 import Person.PersonAgent;
+import residence.ApartmentManagerRole;
 import residence.HomeRole;
 
 import java.awt.*;
@@ -17,15 +18,17 @@ public class ResidenceGui extends JFrame implements ActionListener {
 	AnimationPanel animationPanel = new AnimationPanel();
 	
 	private HomeRole homeRole = new HomeRole("Test");
+	private ApartmentManagerRole apartmentManagerRole = new ApartmentManagerRole("Apt Manager Role");
 	private HomeRoleGui homeRoleGui = new HomeRoleGui(homeRole);
 	private PersonAgent person = new PersonAgent("Test Person");
+	private PersonAgent landlordPerson = new PersonAgent("Test Landlord");
 	
     //private ResidencePanel resPanel = new ResidencePanel(this);
     
     private JPanel hackPanel; //for testing different scenarios
     private JButton tired; //clears cook's inventory
     private JButton hungry; //makes cashier's money balance go to zero
-    private JButton giveMoney; //makes cashier's money balance go to two hundred
+    private JButton payRent; //makes cashier's money balance go to two hundred
 
     /**
      * Constructor for RestaurantGui class.
@@ -35,11 +38,17 @@ public class ResidenceGui extends JFrame implements ActionListener {
         int WINDOWX = 800;
         int WINDOWY = 400;
         
+        landlordPerson.addRole(apartmentManagerRole);
+        apartmentManagerRole.setPerson(person);
+        apartmentManagerRole.myPerson.startThread();
+        apartmentManagerRole.activate();
+        
         homeRole.gui = homeRoleGui;
         homeRole.setPerson(person);
         homeRole.myPerson.startThread();
         homeRole.activate();
         homeRole.myPerson.addRole(homeRole);
+        homeRole.setLandlord((ApartmentManagerRole) landlordPerson.findRole("Apt Manager Role"));
 
         //animationFrame.setBounds(100+WINDOWX, 50 , WINDOWX+100, WINDOWY+100);
         //animationFrame.setVisible(true);
@@ -66,10 +75,11 @@ public class ResidenceGui extends JFrame implements ActionListener {
         
         hungry = new JButton("Hungry");
         hungry.addActionListener(this);
-        //giveMoney = new JButton("Fill register");
-        //giveMoney.addActionListener(this);
         hackPanel.add(hungry);
-        //hackPanel.add(giveMoney);
+        
+        payRent = new JButton("Pay Rent");
+        payRent.addActionListener(this);
+        hackPanel.add(payRent);
         
         add(hackPanel);
         
@@ -82,6 +92,9 @@ public class ResidenceGui extends JFrame implements ActionListener {
         }
         if (e.getSource() == hungry) {
         	homeRole.msgMakeFood();
+        }
+        if (e.getSource() == payRent) {
+        	homeRole.msgRentDue(20);
         }
     }
     

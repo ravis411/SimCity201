@@ -29,9 +29,9 @@ public class HomeRoleGui implements Gui {
         if (xPos == 50 && yPos == 110) {
            agent.msgAtBed();
         }
-        /*if (xPos == 50 && yPos == 110) {
+        if (xPos == 200 && yPos == 150) {
             agent.msgAtBedroom();
-        }*/
+        }
         if (xPos == 375 && yPos == 65) {
             agent.msgAtKitchen();
         }
@@ -55,6 +55,11 @@ public class HomeRoleGui implements Gui {
     public void DoGoToBed() {
     	xDestination = 50;
     	yDestination = 110;
+    }
+    
+    public void DoGoToBedroom() {
+    	xDestination = 200;
+    	yDestination = 150;
     }
     
     public void DoGoToFrontDoor() {
