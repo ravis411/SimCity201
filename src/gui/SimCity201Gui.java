@@ -51,13 +51,26 @@ public class SimCity201Gui extends JFrame {
 		GridBagConstraints c = new GridBagConstraints();
 		
 		c.gridx = 0; c.gridy = 0;
+		c.gridheight = 4;
 		this.add(mainPanel, c);
 		
-		c.gridx = 1; c.gridy = 0;
+		/*c.gridx = 1; c.gridy = 0;
 		//c.ipady = 200;
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = .8;
+		this.add(tracePanel, c);*/
+		c.gridx = 1; c.gridy = 0;
+		c.ipady = 50;
+		c.gridheight = 1;
+		this.add(new TraceControlPanel(tracePanel), c);
+		
+		c.gridx = 1; c.gridy = 1;
+		c.weightx = .8;
+		c.fill = GridBagConstraints.BOTH;
+		c.gridheight = 0;
 		this.add(tracePanel, c);
+		
+		
 		
 		mainPanel.setLayout(new GridLayout(0, 1));
 		//add(mainPanel);

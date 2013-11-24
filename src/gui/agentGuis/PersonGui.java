@@ -59,7 +59,8 @@ public class PersonGui implements Gui {
     private Map<String, LocationInfo> locations = new HashMap<>();//<<-- A Map of locations
     
     
-    BufferedImage img = null;
+    
+    Image image;
     boolean testView = false;
     
     //This holds information about where the person currently is..including how to leave.
@@ -83,11 +84,18 @@ public class PersonGui implements Gui {
 			//img = new ImageIcon(("movingCar.gif"));
 	
 			try {
-			    img = ImageIO.read(new File("images/UFO.png"));
+				BufferedImage img = ImageIO.read(new File("images/alien.png"));
+			    if(img == null){
+	        		testView = true;
+	        	} else{
+	        	ImageIcon icon = new ImageIcon(img);
+	        	image = icon.getImage();
+	        	}
 			} catch (IOException e) {
 				AlertLog.getInstance().logWarning(AlertTag.PERSON_GUI, agent.toString(), "Image not found. Switching to test view.");
 				testView = true;
 			}
+			
 
 			
         for(LocationInfo i : locationList){
@@ -128,11 +136,6 @@ public class PersonGui implements Gui {
         }
         else
         {
-        	if(img == null){
-        		testView = true; return;
-        	}
-        	ImageIcon icon = new ImageIcon(img);
-        	Image image = icon.getImage();
         	g.drawImage(image, xPos, yPos, 20, 20, null);
         }
     }
