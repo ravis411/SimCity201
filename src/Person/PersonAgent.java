@@ -3,15 +3,17 @@
  */
 package Person;
 
+import gui.agentGuis.PersonGui;
 import interfaces.Employee;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.prefs.Preferences;
-import java.util.prefs.PreferencesFactory;
 
+import trace.AlertLog;
+import trace.AlertTag;
 import Person.Role.Role;
+import Person.Role.RoleFactory;
 import agent.Agent;
 
 /**
@@ -36,11 +38,10 @@ public class PersonAgent extends Agent {
 	
 	private double loanAmount;
 	
-	private List<Role> roles;
+	public List<Role> roles;
 	private List<PersonAgent> friends;
 	
 	private Calendar realTime;
-	//private Preferences personalPreferences;
 	
 	public enum StateOfHunger {NotHungry, SlightlyHungry, Hungry, VeryHungry, Starving} 
 	public enum StateOfLocation {AtHome,AtBank,AtMarket,AtRestaurant, InCar,InBus,Walking};
@@ -52,8 +53,11 @@ public class PersonAgent extends Agent {
 	private PersonState state;
 	private StateOfEmployment stateOfEmployment;
 	
+	private Preferences prefs;
 	//provides a hungerLevel on a normalized 0 to 100 scale
 	private int hungerLevel;
+	
+	private PersonGui gui;
 
 	public PersonAgent(String name){
 		SSN = counter++;
@@ -69,7 +73,7 @@ public class PersonAgent extends Agent {
 		
 		realTime = null;
 		
-		setUpPreferences();
+		prefs = new Preferences();
 		
 		backpack = new ArrayList<BackpackObject>();
 	}
@@ -169,7 +173,7 @@ public class PersonAgent extends Agent {
 	 * @return true if rule fulfilled, false otherwise
 	 */
 	@Override
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
 		
 		//cue the Role schedulers
@@ -186,18 +190,41 @@ public class PersonAgent extends Agent {
 	//----------------------------ACTIONS--------------------------//
 	
 	private void GoGetFood(){
-		  /*state = GettingMoney;
-		  Building b = PickFoodLocation();
-		  TransportationMode tm = pickTransportMode();
-		  DoGoToFoodLocation(b, tm);
+		  state = PersonState.GettingFood;
+		  //Building b = PickFoodLocation();
+		  String transport;
+		  switch(prefs.get(Preferences.KeyValue.VEHICLE_PREFERENCE)){
+		  	case Preferences.BUS:
+		  		transport = Preferences.BUS;
+		  		break;
+		  	case Preferences.CAR:
+		  		transport = Preferences.CAR;
+		  		break;
+		  	case Preferences.WALK:
+		  		transport = Preferences.WALK;
+		  		break;
+		  }
+		  
+		  String location = PickFoodLocation();
+		  
+		  GoToLocation(location, transport);
+		  
 		  Role role;
 		  if(b instanceof Restaurant){
-		    role = getRestaurantCustomerRole();
+			  if(findRole(Role.RESTAURANT_CUSTOMER_ROLE) != null){
+				  role = findRole(Role.RESTAURANT_CUSTOMER_ROLE);
+		  	  }else{
+				  role = RoleFactory.roleFromString(Role.RESTAURANT_CUSTOMER_ROLE);
+			  }
 		  }else if(b instanceof Apartment || b instanceof Home){
-		    role = getHomeRole();
+		    role = findRole(Role.HOME_ROLE);
 		  }
 
-		  role.activate();*/
+		  role.activate();
+	}
+	
+	private String PickFoodLocation(){
+		return "HOME";
 	}
 
 	private void GoGetMoney(){
@@ -232,6 +259,10 @@ public class PersonAgent extends Agent {
 		    bcr.msgWithdrawMoney();
 		    bcr.msgPayLoan(loanAmount);
 		  }*/
+	}
+	
+	private void GoToLocation(String location, String modeOfTransportation){
+		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Going to "+location+" via + "+modeOfTransportation);
 	}
 		  
 	//------------------------DO XYZ FUNCTIONS----------------------//
@@ -288,8 +319,14 @@ public class PersonAgent extends Agent {
 	//--------------------------UTILITIES---------------------------//
 	
 	
-	private void setUpPreferences(){
+	private Role findRole(String role){
+		for(Role r : roles){
+			if(r.getName().equals(role)){
+				return r;
+			}
+		}
 		
+		return null;
 	}
 	
 	private Role findMyJob(){
@@ -386,6 +423,10 @@ public class PersonAgent extends Agent {
 			this.name = name;
 			this.quantity = quantity;
 		}
+	}
+	
+	public void setGui(PersonGui gui){
+		this.gui = gui;
 	}
 
 }

@@ -4,9 +4,15 @@ import Person.PersonAgent;
 
 public abstract class Role {
 
-	private boolean isActive;
+	private boolean isActive = false;
 	protected PersonAgent myPerson;
 	public String role;
+	
+	public final static String HOME_ROLE = "HomeRole";
+	public final static String RESTAURANT_CUSTOMER_ROLE = "RestaurantCustomerRole";
+	public final static String RESTAURANT_WAITER_ROLE = "RestaurantWaiterRole";
+	public final static String RESTAURANT_HOST_ROLE = "RestaurantHostRole";
+	
 	/**
 	 * The scheduler function for a particular role
 	 * @return true if a rule was satisfied, false otherwise
