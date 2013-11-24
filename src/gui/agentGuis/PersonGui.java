@@ -212,10 +212,11 @@ public class PersonGui implements Gui {
     	return null;
     }
     
-    /**
+    /**	This will calculate and return the busStop that is closest to a destination.
+     * 	When this function returns...the person has been teleported to that busStop.
      * 
-     * @param destination
-     * @return
+     * @param destination	//The name of the location to that the Person needs to get to.
+     * @return	//The name of the busStop to get off at.
      */
     public String DoRideBusTo(String destination){
     	LocationInfo destLocation = locations.get(destination);
