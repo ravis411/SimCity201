@@ -13,7 +13,7 @@ import java.util.*;
  */
 
 public class ApartmentManagerRole extends Role implements ApartmentManager {
-	private List <HomeRole> residents = new ArrayList<HomeRole>();
+	private List <Home> residents = new ArrayList<Home>();
 	private List <BrokenFeature> thingsToFix = new ArrayList<BrokenFeature>();
 	boolean collectRent = false;
 	
@@ -39,14 +39,17 @@ public class ApartmentManagerRole extends Role implements ApartmentManager {
 	// Messages
 	
 	public void msgCollectRent() { //called by timer when it's time to collect rent from residents
+		print("Time to collect rent!");
 		collectRent = true;
 		stateChanged();
 	}
-	public void msgRentPaid (HomeRole p, int amount) {
+	public void msgRentPaid (Home p, int amount) {
+		print("Received $" + amount + " of rent from resident.");
 		stateChanged();
 	}
-	public void msgBrokenFeature(String name, HomeRole h) {
+	public void msgBrokenFeature(String name, Home h) {
 		thingsToFix.add(new BrokenFeature(name, h));
+		print("Resident reporting broken " + name);
 		stateChanged();
 	}
 	
@@ -56,7 +59,7 @@ public class ApartmentManagerRole extends Role implements ApartmentManager {
 	 */
 	public boolean pickAndExecuteAction() {
 		if (collectRent == true) {
-			for (HomeRole h : residents) {
+			for (Home h : residents) {
 				chargeRent(h);
 			}
 			return true;
@@ -77,7 +80,7 @@ public class ApartmentManagerRole extends Role implements ApartmentManager {
 
 	// Actions
 
-	private void chargeRent (HomeRole h) {
+	private void chargeRent (Home h) {
 		h.msgRentDue(20);
 	}
 	private void demandRent (PersonAgent p) {
@@ -91,9 +94,9 @@ public class ApartmentManagerRole extends Role implements ApartmentManager {
 	
 	private class BrokenFeature {
 		String name;
-		HomeRole resident;
+		Home resident;
 		
-		public BrokenFeature(String name, HomeRole h) {
+		public BrokenFeature(String name, Home h) {
 			this.name = name;
 			resident = h;
 		}

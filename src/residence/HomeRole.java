@@ -14,7 +14,7 @@ import java.util.concurrent.Semaphore;
  */
 
 public class HomeRole extends Role implements Home {
-	private ApartmentManagerRole landlord;
+	private ApartmentManager landlord;
 	private int rentOwed = 0;
 	private int aptNumber = 0;
 	//private Map <String, Integer> inventory = new HashMap<String, Integer>();
@@ -239,7 +239,7 @@ public class HomeRole extends Role implements Home {
 
 	//utilities
 	
-	public void setLandlord (ApartmentManagerRole role) {
+	public void setLandlord (ApartmentManager role) {
 		this.landlord = role;
 	}
 	

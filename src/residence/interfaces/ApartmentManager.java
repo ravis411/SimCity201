@@ -10,7 +10,6 @@ import residence.HomeRole;
  */
 
 public interface ApartmentManager {
-	public void msgCollectRent();
-	public void msgRentPaid (HomeRole h, int amount);
-	public void msgBrokenFeature(String name, HomeRole h);
+	public void msgRentPaid (Home h, int amount);
+	public void msgBrokenFeature(String name, Home h);
 }
