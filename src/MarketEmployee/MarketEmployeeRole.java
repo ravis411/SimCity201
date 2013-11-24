@@ -311,6 +311,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			return myCustomer;
 		}
 		}
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 
 	

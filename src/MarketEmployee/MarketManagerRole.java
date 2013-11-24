@@ -151,6 +151,12 @@ public class MarketManagerRole extends Role implements MarketManager{
 	*/
 	public void setGui(MarketManagerGui gui) {
 		this.gui = gui;
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
 	} 
 	
 /*

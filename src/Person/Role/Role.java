@@ -1,11 +1,11 @@
 package Person.Role;
 
-import Person.MarketPerson;
+import Person.PersonAgent;
 
 public abstract class Role {
 
 	private boolean isActive;
-	protected MarketPerson myPerson;
+	protected PersonAgent myPerson;
 	public String role;
 	/**
 	 * The scheduler function for a particular role
@@ -53,7 +53,7 @@ public abstract class Role {
 	 * Set the person agent
 	 * @param p the new person
 	 */
-	public void setPerson(MarketPerson p){
+	public void setPerson(PersonAgent p){
 		myPerson = p;
 	}
 	
@@ -61,7 +61,7 @@ public abstract class Role {
 	 * Standard accessor for myPerson
 	 * @return the personAgent that owns the Role
 	 */
-	protected MarketPerson getPerson(){
+	protected PersonAgent getPerson(){
 		return myPerson;
 	}
 	

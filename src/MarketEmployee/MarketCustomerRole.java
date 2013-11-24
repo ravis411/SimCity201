@@ -161,7 +161,12 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	
 	public void setGui(MarketCustomerGui gui) {
 	this.gui = gui;
-} 
+}
+
+	@Override
+	public boolean canGoGetFood() {
+		return false;
+	} 
 
 }
 

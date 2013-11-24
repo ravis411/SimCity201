@@ -18,7 +18,7 @@ import agent.Agent;
  * @author MSILKJR
  *
  */
-public class MarketPerson extends Agent {
+public class PersonAgent extends Agent {
 	
 	private final double STARTING_MONEY = 100.00;
 	private final int HUNGER_THRESHOLD = 50;
@@ -37,7 +37,7 @@ public class MarketPerson extends Agent {
 	private double loanAmount;
 	
 	private List<Role> roles;
-	private List<MarketPerson> friends;
+	private List<PersonAgent> friends;
 	
 	private Calendar realTime;
 	//private Preferences personalPreferences;
@@ -55,7 +55,7 @@ public class MarketPerson extends Agent {
 	//provides a hungerLevel on a normalized 0 to 100 scale
 	private int hungerLevel;
 
-	public MarketPerson(String name){
+	public PersonAgent(String name){
 		SSN = counter++;
 		this.name = name;
 		
@@ -63,7 +63,7 @@ public class MarketPerson extends Agent {
 		money = STARTING_MONEY;
 		moneyNeeded = 0;
 		loanAmount = 0;
-		friends = new ArrayList<MarketPerson>();
+		friends = new ArrayList<PersonAgent>();
 		roles = new ArrayList<Role>();
 		hungerLevel = 0;
 		
