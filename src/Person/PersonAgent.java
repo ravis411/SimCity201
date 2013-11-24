@@ -15,6 +15,7 @@ import trace.AlertTag;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
 import agent.Agent;
+import gui.CityAnimationPanel;
 
 /**
  * @author MSILKJR
@@ -40,7 +41,6 @@ public class PersonAgent extends Agent {
 	
 	public List<Role> roles;
 	private List<PersonAgent> friends;
-	
 	private Calendar realTime;
 	
 	public enum StateOfHunger {NotHungry, SlightlyHungry, Hungry, VeryHungry, Starving} 
@@ -52,7 +52,6 @@ public class PersonAgent extends Agent {
 	
 	private PersonState state;
 	private StateOfEmployment stateOfEmployment;
-	
 	private Preferences prefs;
 	//provides a hungerLevel on a normalized 0 to 100 scale
 	private int hungerLevel;
@@ -62,7 +61,6 @@ public class PersonAgent extends Agent {
 	public PersonAgent(String name){
 		SSN = counter++;
 		this.name = name;
-		
 		//initializations
 		money = STARTING_MONEY;
 		moneyNeeded = 0;
