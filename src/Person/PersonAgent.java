@@ -203,6 +203,9 @@ public class PersonAgent extends Agent {
 		  	case Preferences.WALK:
 		  		transport = Preferences.WALK;
 		  		break;
+		  		
+		  	default:
+		  		transport = "ERROR";
 		  }
 		  
 		  String location = PickFoodLocation();
@@ -210,7 +213,7 @@ public class PersonAgent extends Agent {
 		  GoToLocation(location, transport);
 		  
 		  Role role;
-		  if(b instanceof Restaurant){
+		  /*if(b instanceof Restaurant){
 			  if(findRole(Role.RESTAURANT_CUSTOMER_ROLE) != null){
 				  role = findRole(Role.RESTAURANT_CUSTOMER_ROLE);
 		  	  }else{
@@ -220,7 +223,7 @@ public class PersonAgent extends Agent {
 		    role = findRole(Role.HOME_ROLE);
 		  }
 
-		  role.activate();
+		  role.activate();*/
 	}
 	
 	private String PickFoodLocation(){
