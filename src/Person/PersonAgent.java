@@ -218,6 +218,7 @@ public class PersonAgent extends Agent {
 				  role = findRole(Role.RESTAURANT_CUSTOMER_ROLE);
 		  	  }else{
 				  role = RoleFactory.roleFromString(Role.RESTAURANT_CUSTOMER_ROLE);
+				  addRole(role);
 			  }
 		  }else if(b instanceof Apartment || b instanceof Home){
 		    role = findRole(Role.HOME_ROLE);
@@ -231,6 +232,32 @@ public class PersonAgent extends Agent {
 	}
 
 	private void GoGetMoney(){
+		
+		String transport;
+		switch(prefs.get(Preferences.KeyValue.VEHICLE_PREFERENCE)){
+		  	case Preferences.BUS:
+		  		transport = Preferences.BUS;
+		  		break;
+		  	case Preferences.CAR:
+		  		transport = Preferences.CAR;
+		  		break;
+		  	case Preferences.WALK:
+		  		transport = Preferences.WALK;
+		  		break;
+		  		
+		  	default:
+		  		transport = "ERROR";
+		}
+		
+		//needs a way to find a bank quite yet
+		GoToLocation("Bank", transport);
+		if(findRole(Role.BANK_CUSTOMER_ROLE) == null){
+			Role r = RoleFactory.roleFromString(Role.BANK_CUSTOMER_ROLE);
+			r.activate();
+			addRole(r);
+		}else{
+			findRole(Role.BANK_CUSTOMER_ROLE).activate();
+		}
 		  /*state = GettingMoney;
 		  Bank b = pickBank();
 		  TransportationMode tm = pickTransportMode();
@@ -239,17 +266,42 @@ public class PersonAgent extends Agent {
 		  bcr.activate();*/
 	}
 
-	private void PayBackRent(){
-		  /*HomeRole hr= getHomeRole();
-		  hr.msgPayRent(rentAmount);*/
-	}
-
-	private void GetOffTransportation(){
-		  /*Transport t = myTransportation();
-		  t.msgWeHaveArrived();*/
-	}
-
+	/**
+	 * @pre Assume that if we are paying back a loan we have a bank role
+	 */
 	private void PayBackLoan(){
+			
+		String transport;
+		switch(prefs.get(Preferences.KeyValue.VEHICLE_PREFERENCE)){
+		  	case Preferences.BUS:
+		  		transport = Preferences.BUS;
+		  		break;
+		  	case Preferences.CAR:
+		  		transport = Preferences.CAR;
+		  		break;
+		  	case Preferences.WALK:
+		  		transport = Preferences.WALK;
+		  		break;
+		  		
+		  	default:
+		  		transport = "ERROR";
+		}
+		
+		//needs a way to find a bank quite yet
+		GoToLocation("Bank", transport);
+		
+		if(money >= loanAmount){
+
+		    //--------------------NEEDS MSG FOR ENTERING BANK WITH THE INTENT TO PAY LOAN-----------------------//
+		   /* BankCustomerRole bcr = (BankCustomeRole) findRole(Role.BANK_CUSTOMER_ROLE);
+		    bcr.msgPayLoan(loanAmount);*/
+		}else{
+		    //--------------------NEEDS MSG FOR WITHDRAWING FROM BANK------------------------------------------//
+		   /* BankCustomerRole bcr = (BankCustomerRole) findRole(Role.BANK_CUSTOMER_ROLE);
+		    bcr.msgWithdrawMoney();
+		    bcr.msgPayLoan(loanAmount);*/
+		}
+		
 		  /*DoGoToBank();
 		  if(money >= loanAmount){
 
@@ -266,6 +318,22 @@ public class PersonAgent extends Agent {
 	
 	private void GoToLocation(String location, String modeOfTransportation){
 		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Going to "+location+" via + "+modeOfTransportation);
+		switch(modeOfTransportation){
+			case Preferences.BUS:
+				if(findRole(Role.PASSENGER_ROLE) == null){
+					Role role = RoleFactory.roleFromString(Role.PASSENGER_ROLE);
+					addRole(role);
+					role.activate();
+				}else{
+					findRole(Role.PASSENGER_ROLE).activate();
+				}
+				break;
+			case Preferences.CAR:
+				break;
+			case Preferences.WALK:
+				gui.DoGoTo(location);
+				break;
+		}
 	}
 		  
 	//------------------------DO XYZ FUNCTIONS----------------------//
