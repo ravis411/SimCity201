@@ -11,6 +11,6 @@ public interface Passenger {
 	/**
 	 * Notifies the passenger that the bus is at a particular destination
 	 */
-	public abstract void msgArrivedAtDestination();
+	public abstract void msgArrivedAtDestination(String location);
 	
 }
