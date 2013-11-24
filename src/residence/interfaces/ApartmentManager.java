@@ -1,5 +1,7 @@
 package residence.interfaces;
 
+import residence.HomeRole;
+
 /**
  * ApartmentManagerRole interface
  *
@@ -9,6 +11,6 @@ package residence.interfaces;
 
 public interface ApartmentManager {
 	public void msgCollectRent();
-	public void msgRentPaid (/*Agent person*/Home h, int amount);
-	public void msgBrokenFeature(String name, Agent p);
+	public void msgRentPaid (HomeRole h, int amount);
+	public void msgBrokenFeature(String name, HomeRole h);
 }

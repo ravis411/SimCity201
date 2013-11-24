@@ -1,5 +1,7 @@
 package residence;
 
+import Person.PersonAgent;
+import Person.Role.Role;
 import agent.Agent;
 import residence.gui.HomeRoleGui;
 import residence.interfaces.*;
@@ -7,12 +9,13 @@ import residence.interfaces.*;
 import java.util.*;
 
 /**
- * Restaurant Cashier Agent
+ * Home Role
  */
 
-public class HomeRole extends Agent implements Home {
+public class HomeRole extends Role implements Home {
 	private ApartmentManagerRole landlord;
 	private int rentOwed = 0;
+	private int aptNumber = 0;
 	private boolean tired = false;
 	//private Map <String, Integer> inventory = new HashMap<String, Integer>();
 	private List <Item> inventory = new ArrayList<Item>();
@@ -23,7 +26,7 @@ public class HomeRole extends Agent implements Home {
 	public HomeRoleGui gui = null;
 
 	public enum AgentState
-	{DoingNothing};
+	{DoingNothing, Cooking, Sleeping};
 	private AgentState state = AgentState.DoingNothing;//The start state
 
 	public enum AgentEvent
@@ -31,7 +34,7 @@ public class HomeRole extends Agent implements Home {
 	AgentEvent event = AgentEvent.none;
 
 	public HomeRole(String name) {
-		super();
+		//super();
 		this.name = name;
 		
 		inventory.add(new Item("Cooking Ingredients",2));
@@ -40,6 +43,10 @@ public class HomeRole extends Agent implements Home {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public boolean canGoGetFood() {
+		return true;
 	}
 	
 	// Messages
@@ -69,12 +76,19 @@ public class HomeRole extends Agent implements Home {
 		}
 		stateChanged();
 	}
-	
+	public void msgMakeFood() {
+		print("I'm eating at home today!");
+		state = AgentState.Cooking;
+		stateChanged();
+	}
 	
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
+		if (state == AgentState.Cooking) {
+			cook();
+		}
 		if (rentOwed > 0) {
 			payRent();
 			return true;
@@ -111,6 +125,9 @@ public class HomeRole extends Agent implements Home {
 
 	// Actions
 
+	private void cook() {
+		gui.DoGoToKitchen();
+	}
 	private void goToMarket (Item item) {
 		print("I'm going to the market.");
 		gui.DoGoToFrontDoor();

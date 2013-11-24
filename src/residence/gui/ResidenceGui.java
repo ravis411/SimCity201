@@ -2,6 +2,7 @@ package residence.gui;
 
 import javax.swing.*;
 
+import Person.PersonAgent;
 import residence.HomeRole;
 
 import java.awt.*;
@@ -17,8 +18,9 @@ public class ResidenceGui extends JFrame implements ActionListener {
 	
 	private HomeRole homeRole = new HomeRole("Test");
 	private HomeRoleGui homeRoleGui = new HomeRoleGui(homeRole);
+	private PersonAgent person = new PersonAgent("Test Person");
 	
-    private ResidencePanel resPanel = new ResidencePanel(this);
+    //private ResidencePanel resPanel = new ResidencePanel(this);
     
     private JPanel hackPanel; //for testing different scenarios
     private JButton tired; //clears cook's inventory
@@ -34,7 +36,8 @@ public class ResidenceGui extends JFrame implements ActionListener {
         int WINDOWY = 400;
         
         homeRole.gui = homeRoleGui;
-        homeRole.startThread();
+        homeRole.setPerson(person);
+        homeRole.myPerson.startThread();
 
         //animationFrame.setBounds(100+WINDOWX, 50 , WINDOWX+100, WINDOWY+100);
         //animationFrame.setVisible(true);
@@ -74,6 +77,9 @@ public class ResidenceGui extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == tired) {
         	homeRole.msgTired();
+        }
+        if (e.getSource() == hungry) {
+        	homeRole.msgMakeFood();
         }
     }
     

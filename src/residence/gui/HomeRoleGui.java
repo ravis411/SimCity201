@@ -56,6 +56,11 @@ public class HomeRoleGui implements Gui {
     	xDestination = 750;
     	yDestination = 205;
     }
+    
+    public void DoGoToKitchen() {
+    	xDestination = 377;
+    	yDestination = 365;
+    }
 
     public boolean isPresent() {
         return true;

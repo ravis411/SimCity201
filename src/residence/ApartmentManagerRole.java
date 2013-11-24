@@ -1,7 +1,10 @@
 package residence;
 
+import Person.PersonAgent;
+import Person.Role.Role;
 import agent.Agent;
 import residence.interfaces.*;
+
 import java.util.*;
 
 /**
@@ -9,7 +12,7 @@ import java.util.*;
  * @param <HomeRole>
  */
 
-public class ApartmentManagerRole extends Agent implements ApartmentManager {
+public class ApartmentManagerRole extends Role implements ApartmentManager {
 	private List <HomeRole> residents = new ArrayList<HomeRole>();
 	private List <BrokenFeature> thingsToFix = new ArrayList<BrokenFeature>();
 	boolean collectRent = false;
@@ -39,11 +42,11 @@ public class ApartmentManagerRole extends Agent implements ApartmentManager {
 		collectRent = true;
 		stateChanged();
 	}
-	public void msgRentPaid (/*Agent person*/Home h, int amount) {
+	public void msgRentPaid (HomeRole p, int amount) {
 		stateChanged();
 	}
-	public void msgBrokenFeature(String name, Agent p) {
-		thingsToFix.add(new BrokenFeature(name, p));
+	public void msgBrokenFeature(String name, HomeRole h) {
+		thingsToFix.add(new BrokenFeature(name, h));
 		stateChanged();
 	}
 	
@@ -51,10 +54,10 @@ public class ApartmentManagerRole extends Agent implements ApartmentManager {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		if (collectRent == true) {
-			for (Agent p : residents) {
-				chargeRent(p);
+			for (HomeRole h : residents) {
+				chargeRent(h);
 			}
 			return true;
 		}
@@ -74,10 +77,10 @@ public class ApartmentManagerRole extends Agent implements ApartmentManager {
 
 	// Actions
 
-	private void chargeRent (Agent p) {
-		p.msgPayBackRent();
+	private void chargeRent (HomeRole h) {
+		h.msgRentDue(20);
 	}
-	private void demandRent (Agent p) {
+	private void demandRent (PersonAgent p) {
 		p.msgPayBackRentUrgently();
 	}
 	private void fixFeature(BrokenFeature bf) {
@@ -88,11 +91,17 @@ public class ApartmentManagerRole extends Agent implements ApartmentManager {
 	
 	private class BrokenFeature {
 		String name;
-		Agent resident;
+		HomeRole resident;
 		
-		public BrokenFeature(String name, Agent p) {
+		public BrokenFeature(String name, HomeRole h) {
 			this.name = name;
-			resident = p;
+			resident = h;
 		}
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

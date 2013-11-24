@@ -26,7 +26,7 @@ public class ResidencePanel extends JPanel implements ActionListener {
         this.gui = gui;
         
         //gui.animationPanel.addGui(homeRole);
-        homeRole.startThread();
+        //homeRole.myPerson.startThread();
     }
     
     public void actionPerformed(ActionEvent e) {
