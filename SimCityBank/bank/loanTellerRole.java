@@ -1,5 +1,7 @@
 package bank;
 import bank.bankClientRole;
+import bank.bankTellerRole.requestState;
+import bank.gui.LoanGui;
 
 import java.util.*;
 
@@ -13,23 +15,27 @@ import astar.AStarTraversal;
  *
  */
 public class loanTellerRole extends Agent{
-	private List<bankClientRole> ClientLine = new ArrayList<bankClientRole>();
+	private bankClientRole myClient;
 	private int LineNum = 5; 
 	public enum requestState {withdrawal, deposit, open, loan, none, notBeingHelped};
 	private requestState state = requestState.none;
 	double transactionAmount;
-	private List<Account> Accounts = Database.INSTANCE.Accounts;
+	private List<Account> Accounts = Database.INSTANCE.sendDatabase();
+	private numberAnnouncer announcer;
 	private String name;
-	
-	loanTellerRole(String s, int n){
+	private int ticketNum = 1;
+
+
+	public loanTellerRole(String s){
+		super();
 		name = s;
-		LineNum = n;
+		Accounts = Database.INSTANCE.sendDatabase();
 	}
-	
+
 	//	Messages
 
 	public void msgInLine(bankClientRole b){
-		ClientLine.add(b);
+		myClient = b;
 		stateChanged();
 	}
 	public void msgOpenAccount(){
@@ -51,22 +57,13 @@ public class loanTellerRole extends Agent{
 
 	//	Scheduler
 	protected boolean pickAndExecuteAnAction() {
-		if (!ClientLine.isEmpty()){
-			if (state == requestState.notBeingHelped){
-				receiveClient(ClientLine.get(0));
-				if (LineNum != 5){
-					if (state == requestState.deposit){
-						processDeposit(ClientLine.get(0));
-					}
-					if (state == requestState.withdrawal){
-						processWithdrawal(ClientLine.get(0));
-					}
-					if (state == requestState.open){
-						openAccount(ClientLine.get(0));
-					} else if (state == requestState.loan){
-						processLoan(ClientLine.get(0));
-					}
-				}
+		Accounts = Database.INSTANCE.sendDatabase();
+		if (state == requestState.notBeingHelped){
+			receiveClient(myClient);
+			if (state == requestState.open){
+				openAccount(myClient);
+			} else if (state == requestState.loan){
+				processLoan(myClient);
 			}
 		}
 		return false;
@@ -77,30 +74,6 @@ public class loanTellerRole extends Agent{
 	//	Actions
 	private void receiveClient(bankClientRole b){
 		b.msgMayIHelpYou();
-	}
-	private void processDeposit(bankClientRole b){
-		for (Account a : Accounts){
-			if (a.client == b){
-				a.amount = a.amount + transactionAmount;
-				b.msgTransactionCompleted(transactionAmount - (2*transactionAmount));
-				state = requestState.none;
-				ClientLine.remove(b);
-			}
-		}
-	}
-	private void processWithdrawal(bankClientRole b){
-		for (Account a : Accounts){
-			if (a.client == b){
-				if (transactionAmount > a.amount){
-					b.msgTransactionCompleted(0);
-				}else if (transactionAmount <= a.amount){
-					a.amount = a.amount - transactionAmount;
-					b.msgTransactionCompleted(transactionAmount);
-				}
-				state = requestState.none;
-				ClientLine.remove(b);
-			}
-		}
 	}
 	private void processLoan(bankClientRole b){
 		for (Account a : Accounts){
@@ -113,20 +86,20 @@ public class loanTellerRole extends Agent{
 					}
 				} else b.msgTransactionCompleted(0);
 				state = requestState.none;
-				ClientLine.remove(b);
+				ticketNum++;
+				announcer.msgLoanComplete();
+				myClient = null;
 			}
 		}
-
 	}
 	private void openAccount(bankClientRole b){
 		Account a = new Account(b, b.money);
-		Accounts.add(a);
+		Database.INSTANCE.addToDatabase(a);
 		b.msgAccountOpened(a);
-		state = requestState.none;   
-		ClientLine.remove(b);
 	}
+
 	
-	
+	//gui
 	
 	//Accesors, etc.
 	public String getName() {

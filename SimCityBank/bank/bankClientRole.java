@@ -3,10 +3,8 @@ package bank;
 import agent.Agent;
 import bank.bankTellerRole;
 import bank.gui.ClientGui;
-import bank.gui.bankGui;
 
 import java.util.*;
-
 
 public class bankClientRole extends Agent {
 	//	Data
@@ -15,8 +13,9 @@ public class bankClientRole extends Agent {
 	Account myAccount;
 	public enum inLineState{noTicket, waiting, goingToLine, beingHelped, leaving};
 	inLineState state2 = inLineState.noTicket;
-	private bankTellerRole teller;
-	private loanTellerRole loanTeller;
+	private bankTellerRole teller = null;
+	private loanTellerRole loanTeller = null;
+	private numberAnnouncer announcer;
 	private double requestAmount = 0;
 	private boolean hasLoan = false;
 	private double amountDue = 0;
@@ -30,15 +29,31 @@ public class bankClientRole extends Agent {
 
 	//hack for accounts - to ensure that there are some existing accounts at the beginning of SimCity
 	private int existsBankAccount = new Random().nextInt(10);
-	 
+
+	/**
+	 * hack to establish connection to bankTellerRole
+	 */
+	public void setTeller(bankTellerRole btr){
+		this.teller = btr;
+	}
+	/**
+	 * hack to establish connection to loanTellerRole
+	 */
+	public void setLoanTeller(loanTellerRole ltr) {
+		this.loanTeller = ltr;
+	}
+
 	/**
 	 * initializing bankClientRole
-	 */
+	 * there is a hack implemented to make sure there are some bank accounts to begin with so that 
+	 * not everyone has to go open an account in the bank
+	 */  
 
 	public bankClientRole(String name, String trans, double ra) {
 		super();
 		this.name = name;
 		this.requestAmount = ra;
+		ticketNum = takeANumberDispenser.INSTANCE.pullTicket();
 		if (trans.equalsIgnoreCase("deposit")){
 			this.state1 = bankState.deposit;
 		}
@@ -48,6 +63,8 @@ public class bankClientRole extends Agent {
 		if (trans.equalsIgnoreCase("loan")){
 			this.state1 = bankState.loan;
 		}
+
+		//hack to ensure there are at least some bank accounts at simulation start
 		if (existsBankAccount > 4){
 			int newMoney = new Random().nextInt(100);
 			myAccount = new Account(this,newMoney);
@@ -55,7 +72,7 @@ public class bankClientRole extends Agent {
 		}
 	}
 
-	
+
 	//Messages
 	public void msgCallingTicket(int t, int l){
 		if (ticketNum == t){
@@ -105,26 +122,30 @@ public class bankClientRole extends Agent {
 				if (myAccount == null){
 					openAccount();
 					return true;
-				}
-				if (state1 == bankState.deposit){
-					IWantToDeposit();
-					return true;
-				}
-				if (state1 == bankState.withdraw){
-					IWantToWithdraw();
-					return true;
+				}else {
+					if (state1 == bankState.deposit){
+						IWantToDeposit();
+						return true;
+					}
+					if (state1 == bankState.withdraw){
+						IWantToWithdraw();
+						return true;
+					}
+					if (state1 == bankState.loan){
+						IWantALoan();
+						return true;
+					}
 				}
 			}
 		}
-		
 		return false;
 	}
 	//Actions
 	private void goToWaitingArea(){
-		
+
 	}
 	private void goToLine(int l){
-		
+
 	}
 	private void openAccount(){
 		teller.msgOpenAccount();
@@ -136,8 +157,12 @@ public class bankClientRole extends Agent {
 		teller.msgWithdraw(requestAmount);
 	}
 	private void IWantALoan(){
-		teller.msgLoan(requestAmount);
+		loanTeller.msgLoan(requestAmount);
 	}
+
+	
+	//gui
+	
 	
 	//other
 	public String getName() {
