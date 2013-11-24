@@ -31,6 +31,9 @@ public class Shelves {
 	public void decrementFoodAmount(int inventoryListNumber, int amountToDecrement){
 		marketInventory.get(inventoryListNumber).decrementFoodAmount(amountToDecrement);
 	}
+	public void restockFoodAmount(int inventoryListNumber, int amountToRestock){
+		marketInventory.get(inventoryListNumber).restockFoodAmount(amountToRestock);
+	}
 	
 	
 
@@ -49,7 +52,10 @@ private String getFoodType() {
 	return foodType;
 }
 private void decrementFoodAmount(int amountToDecrement) {
-	amount =amountToDecrement-amountToDecrement;
+	amount -=amountToDecrement;
+}
+private void restockFoodAmount(int amountToRestock) {
+	amount +=amountToRestock;
 }
 }
 }

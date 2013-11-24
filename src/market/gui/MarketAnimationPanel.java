@@ -69,11 +69,11 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
         g2.setColor(Color.BLACK);//sets text color...or anything following this line
         g2.setFont(new Font("Serif", Font.PLAIN, 15));
         g2.fillRect(350, 200, 10, 30);//dividers between counter windows 
-        g2.drawString("Window #1", 370, 430);
+        g2.drawString("Window #1", 370, 220);
         g2.fillRect(450, 200, 10, 30);
-        g2.drawString("Window #2", 470, 430);
+        g2.drawString("Window #2", 470, 220);
         g2.fillRect(550, 200, 10, 30);
-        g2.drawString("Window #3", 570, 430);
+        g2.drawString("Window #3", 570, 220);
         g2.fillRect(650, 200, 10, 30);
         g2.drawString("Entrance", 380, 370);
         

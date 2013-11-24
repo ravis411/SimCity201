@@ -161,7 +161,7 @@ public class MarketEmployeeGui implements Gui {
     }
     
 
-	public void goCollectFoodOrder() {
+	public void goCollectOrRestockFoodOrder() {
 		xDestination=xFood1Cord;
 		yDestination=yFood1Cord+69;
 		

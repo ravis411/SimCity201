@@ -27,13 +27,14 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	private Semaphore atCounter = new Semaphore(0,false);
 	private Semaphore employeeReadyToTakeOrder = new Semaphore(0,false);
 	enum MarketCustomerState 
-	{needsToOrder, waitingForMarketEmployeeToReturn, replyingToEmployee, leaving};
+	{none,needsToOrder, waitingForMarketEmployeeToReturn, replyingToEmployee, waitingForPartialOrder,leaving};
 	enum MarketCustomerEvent
 	{none, firstInLine, employeeBackAndAskedOrderDetail, leaving};
 	public MarketCustomerEvent event=MarketCustomerEvent.none;
 	public MarketCustomerState state=MarketCustomerState.needsToOrder;
 	public MarketEmployee marketEmployee;
 	private Map<String, Integer> menu;
+	private Random randomx = new Random(System.nanoTime());
 
 	
 	
@@ -50,6 +51,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		menu.put("Steak",  20);
 		menu.put("Chicken", 10);
 		menu.put("Burger", 15);
+		willTakePartialOrder = randomx.nextBoolean();
 		}
 	
 	public String getName(){
@@ -72,17 +74,19 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	
 
 	public void msgMarketCustomerOutofStock(String foodType){
-		state= MarketCustomerState.leaving;
+		event= MarketCustomerEvent.leaving;
 		stateChanged();
 		}
-	 /*
-	 *
-		msgMarketCustomerDoYouWantPartialOrder(String FoodType, int amount){
-		marketCustomerState= replyingToEmployee;
+
+	public void msgMarketCustomerDoYouWantPartialOrder(String FoodType, int amount){
+		event= MarketCustomerEvent.employeeBackAndAskedOrderDetail;
+		stateChanged();
 		}
-		*/
-	public void msgMarketCustomerHereIsOrder(String FoodType, int amount){
-		state= MarketCustomerState.leaving;
+		
+	public void msgMarketCustomerHereIsOrder(String foodType, int amount){
+		print("Got "+ amount + " "+ foodType);
+		myPerson.msgAddObjectToBackpack(foodType, amount);
+		event= MarketCustomerEvent.leaving;
 		stateChanged();
 		}
 
@@ -96,10 +100,15 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 			return true;
 		}
 		if (event == (MarketCustomerEvent.employeeBackAndAskedOrderDetail) && state==MarketCustomerState.waitingForMarketEmployeeToReturn){
+			tellMarketEmployeeIfPartialOrderAcceptable();
+			state=MarketCustomerState.waitingForPartialOrder;
 			return true;
 		}
-		if (state== MarketCustomerState.leaving)
+		if (event == MarketCustomerEvent.leaving && state!= MarketCustomerState.none){
+			print("Leaveing Market");
 			leaveMarket();
+			return true;
+		}
 				
 		/*
 		if (marketCustomerState== replyingToEmployee)
@@ -142,15 +151,16 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 
 		
 		}
-		/*
-	tellMarketEmployeeIfPartialOrderAcceptable(){
-		msgMarketEmployeeConfirmPartialOrder(willTakePartialOrder, MarketCustomer customer);
+
+	void tellMarketEmployeeIfPartialOrderAcceptable(){
+		marketEmployee.msgMarketEmployeeConfirmPartialOrder(willTakePartialOrder, this);
 		if (willTakePartialOrder == false)
-		marketCustomerState= leaving;
-		}*/
+			leaveMarket();
+		}
 	void leaveMarket(){
+		state= MarketCustomerState.none;
 		gui.DoLeave();//animation for CustomerRole to leave market
-	
+		
 	}
 
 	//utilities

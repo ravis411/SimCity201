@@ -11,4 +11,7 @@ public interface MarketCustomer {
 
 	public abstract void msgMarketCustomerOutofStock(String foodType);
 	public abstract void msgMarketCustomerHereIsOrder(String FoodType, int amount);
+
+	public abstract void msgMarketCustomerDoYouWantPartialOrder(
+			String foodType, int amountAvailable);
 }

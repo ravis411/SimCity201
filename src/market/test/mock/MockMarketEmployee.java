@@ -54,4 +54,12 @@ public class MockMarketEmployee extends Mock implements MarketEmployee {
 		
 	}
 
+
+	@Override
+	public void msgMarketEmployeeConfirmPartialOrder(
+			boolean willTakePartialOrder, MarketCustomerRole marketCustomerRole) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -153,12 +153,14 @@ public class PersonAgent extends Agent {
 			if(bo.name.equals(object)){
 				bo.quantity += quantity;
 				added = true;
+				print("Added "+ quantity +" "+ object+ " to backpack. Quantity now: "+bo.quantity);
 				break;
 			}
 		}
 		
 		if(!added){
 			backpack.add(new BackpackObject(object, quantity));
+			print("Added "+ quantity +" "+ object+ " to backpack. Quantity now: "+quantity);
 		}
 	}
 

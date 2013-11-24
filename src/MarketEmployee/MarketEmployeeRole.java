@@ -23,9 +23,9 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	private Semaphore atChicken = new Semaphore(0,false);
 	private Semaphore atBurger = new Semaphore(0,false);
 	enum MarketEmployeeState
-	{walkingToCounter, waiting, collectingOrder};
+	{walkingToCounter, waiting, collectingOrder, waitingForReplyFromCustomerIfPartialOrderOkay};
 	enum MarketEmployeeEvent
-	{enteredMarket, atCounter, gotCustomerOrder};
+	{enteredMarket, atCounter, gotReplyFromCustomerIfPartialOrderOkay, gotCustomerOrder};
 	public MarketEmployeeEvent event=MarketEmployeeEvent.enteredMarket;
 	public MarketEmployeeState state=MarketEmployeeState.walkingToCounter;
 	private MarketCustomer tempCustomer;
@@ -83,11 +83,14 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	public void msgMarketEmployeeAtFood3(){
 		atBurger.release();
 	}
-	/*
-	msgMarketEmployeeConfirmPartialOrder(boolean tf, MarketCustomer customer){
-	marketCustomerOrder.setSartialOrderAcceptable(tf);
-	}
 
+	public void msgMarketEmployeeConfirmPartialOrder(boolean tf, MarketCustomerRole customer){
+	marketCustomerOrder.setPartialOrderAcceptable(tf);
+	event=MarketEmployeeEvent.gotReplyFromCustomerIfPartialOrderOkay;
+	print(customer.getName() + " says Partial Order Okay: "+ tf);
+	stateChanged();
+	}
+	/*
 	msgMarketEmployeeAttemptToFillOrder(String foodType, int amount, int orderNumber)
 	{
 	myOrdersFromManager.add(new Order(foodType, amount, orderNumber);
@@ -107,7 +110,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		return true;
 		}
 		if ( state==MarketEmployeeState.waiting && event==MarketEmployeeEvent.gotCustomerOrder){
-			checkStockAndBringAmountAvailableToCustomer(marketCustomerOrder);
+			checkStockAndBringAmountAvailableToCustomer();
+		}
+		if (state==MarketEmployeeState.collectingOrder && event==MarketEmployeeEvent.gotReplyFromCustomerIfPartialOrderOkay){
+			partialOrder();
+			return true;
 		}
 		/*
 		if (!myOrders.isEmpty){
@@ -140,6 +147,13 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 
 
+	
+
+
+
+
+
+
 	@Override
 	public String getName() {
 		return name;
@@ -163,11 +177,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	}
 	*/
 	
-	synchronized void checkStockAndBringAmountAvailableToCustomer(Order order)
+	synchronized void checkStockAndBringAmountAvailableToCustomer()
 	{
-		gui.goCollectFoodOrder();//animation to check stock and then fetch as much as the food requested as possible
+		gui.goCollectOrRestockFoodOrder();//animation to check stock and then fetch as much as the food requested as possible
 		state=MarketEmployeeState.collectingOrder;
-		if (order.getFoodType() == "Steak")
+		if (marketCustomerOrder.getFoodType() == "Steak")
 		{
 			try {
 				atSteak.acquire();
@@ -176,21 +190,21 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			}
 			for (int i =0; i<marketInventory.size(); i++){
 				if (marketInventory.getFoodType(i) == "Steak"){
-					if (marketInventory.getAmount(i)>=order.getAmount()){
-						order.setAmountAvailable(order.getAmount());
-						print(marketInventory.getAmount(i)+ " " + marketInventory.getFoodType(i)+" on shelve and took " +order.getAmount() +" off shelf");
-						marketInventory.decrementFoodAmount(i, order.getAmount());
+					if (marketInventory.getAmount(i)>=marketCustomerOrder.getAmount()){
+						marketCustomerOrder.setAmountAvailable(marketCustomerOrder.getAmount());
+						print(marketInventory.getAmount(i)+ " " + marketInventory.getFoodType(i)+" on shelve and took " +marketCustomerOrder.getAmount() +" off shelf");
+						marketInventory.decrementFoodAmount(i, marketCustomerOrder.getAmount());
 					}
 					else
 					{
-						order.setAmountAvailable(marketInventory.getAmount(i));
-						print(marketInventory.getAmount(i)+ " " + marketInventory.getFoodType(i)+" on shelve and took " +order.getAmountAvailable() +" off shelf");
+						marketCustomerOrder.setAmountAvailable(marketInventory.getAmount(i));
+						print(marketInventory.getAmount(i)+ " " + marketInventory.getFoodType(i)+" on shelve and took " +marketCustomerOrder.getAmountAvailable() +" off shelf");
 						marketInventory.decrementFoodAmount(i,marketInventory.getAmount(i));
 					}
 				}
 			}
 		}
-		else if (order.getFoodType() == "Chicken")
+		else if (marketCustomerOrder.getFoodType() == "Chicken")
 		{
 			try {
 				atSteak.acquire();
@@ -199,21 +213,21 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			}
 			for (int i =0; i<marketInventory.size(); i++){
 				if (marketInventory.getFoodType(i) == "Chicken"){
-					if (marketInventory.getAmount(i)>=order.getAmount()){
-						order.setAmountAvailable(order.getAmount());
-						print(marketInventory.getAmount(i)+ " " + marketInventory.getFoodType(i)+" on shelve and took " +order.getAmount() +" off shelf");
-						marketInventory.decrementFoodAmount(i, order.getAmount());
+					if (marketInventory.getAmount(i)>=marketCustomerOrder.getAmount()){
+						marketCustomerOrder.setAmountAvailable(marketCustomerOrder.getAmount());
+						print(marketInventory.getAmount(i)+ " " + marketInventory.getFoodType(i)+" on shelve and took " +marketCustomerOrder.getAmount() +" off shelf");
+						marketInventory.decrementFoodAmount(i, marketCustomerOrder.getAmount());
 					}
 					else
 					{
-						order.setAmountAvailable(marketInventory.getAmount(i));
-						print(marketInventory.getAmount(i)+ " " + marketInventory.getFoodType(i)+" on shelve and took " +order.getAmountAvailable() +" off shelf");
+						marketCustomerOrder.setAmountAvailable(marketInventory.getAmount(i));
+						print(marketInventory.getAmount(i)+ " " + marketInventory.getFoodType(i)+" on shelve and took " +marketCustomerOrder.getAmountAvailable() +" off shelf");
 						marketInventory.decrementFoodAmount(i,marketInventory.getAmount(i));
 					}
 				}
 			}
 		}
-		else if (order.getFoodType() == "Burger")
+		else if (marketCustomerOrder.getFoodType() == "Burger")
 		{
 			try {
 				atSteak.acquire();
@@ -222,15 +236,15 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			}
 			for (int i =0; i<marketInventory.size(); i++){
 				if (marketInventory.getFoodType(i) == "Burger"){
-					if (marketInventory.getAmount(i)>=order.getAmount()){
-						order.setAmountAvailable(order.getAmount());
-						print(marketInventory.getAmount(i)+ " " + marketInventory.getFoodType(i)+" on shelve and took " +order.getAmount() +" off shelf");
-						marketInventory.decrementFoodAmount(i,order.getAmount());
+					if (marketInventory.getAmount(i)>=marketCustomerOrder.getAmount()){
+						marketCustomerOrder.setAmountAvailable(marketCustomerOrder.getAmount());
+						print(marketInventory.getAmount(i)+ " " + marketInventory.getFoodType(i)+" on shelve and took " +marketCustomerOrder.getAmount() +" off shelf");
+						marketInventory.decrementFoodAmount(i,marketCustomerOrder.getAmount());
 					}
 					else
 					{
-						order.setAmountAvailable(marketInventory.getAmount(i));
-						print(marketInventory.getAmount(i)+ " " + marketInventory.getFoodType(i)+" on shelve and took " +order.getAmountAvailable() +" off shelf");
+						marketCustomerOrder.setAmountAvailable(marketInventory.getAmount(i));
+						print(marketInventory.getAmount(i)+ " " + marketInventory.getFoodType(i)+" on shelve and took " +marketCustomerOrder.getAmountAvailable() +" off shelf");
 						;
 					}
 				}
@@ -244,28 +258,89 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		}
 		
 		
-		if (order.getAmountAvailable()==0){
-			order.getMyCustomer().msgMarketCustomerOutofStock(order.getFoodType());
+		if (marketCustomerOrder.getAmountAvailable()==0){
+			marketCustomerOrder.getMyCustomer().msgMarketCustomerOutofStock(marketCustomerOrder.getFoodType());
 			marketCustomerOrder=null;
+			state=MarketEmployeeState.waiting;
 		}
-	//	else if (order.getAmountAvailable()<order.getAmount()){
-	//	msgMarketCustomerDoYouWantPartialOrder(String FoodType, int amount);
-	//	}
+		else if (marketCustomerOrder.getAmountAvailable()<marketCustomerOrder.getAmount()){
+			print("Can only Satify Partial Order. Asking Customer if Partial Order Acceptable");
+			marketCustomerOrder.getMyCustomer().msgMarketCustomerDoYouWantPartialOrder(marketCustomerOrder.getFoodType(), marketCustomerOrder.getAmountAvailable());
+		}
 		else{
-			order.getMyCustomer().msgMarketCustomerHereIsOrder(order.getFoodType(), order.getAmountAvailable());
+			marketCustomerOrder.getMyCustomer().msgMarketCustomerHereIsOrder(marketCustomerOrder.getFoodType(), marketCustomerOrder.getAmountAvailable());
 			marketCustomerOrder=null;
+			state=MarketEmployeeState.waiting;
 		}
 	}
-	/*
-	restockFood(Order order){
-	//animation to return food to shelves
-	for all foodtype in storeInventory{
-		if foodtype == order.getfood()
-		add order.getAmount() to inventory of Foodtype
+	
+	private void partialOrder() {
+		if (marketCustomerOrder.getPartialOrderAcceptable()){
+		marketCustomerOrder.getMyCustomer().msgMarketCustomerHereIsOrder(marketCustomerOrder.getFoodType(), marketCustomerOrder.getAmountAvailable());
+		marketCustomerOrder=null;
+		state=MarketEmployeeState.waiting;
 		}
-	marketCustomerOrder==null;
+		else{
+			restockFood();
+			marketCustomerOrder=null;
+			state=MarketEmployeeState.waiting;
+			
+
+		}
 	}
-*/
+
+
+	
+	private void restockFood(){
+		gui.goCollectOrRestockFoodOrder();//animation to check stock and then fetch as much as the food requested as possible
+		//animation to return food to shelves
+		if (marketCustomerOrder.getFoodType() == "Steak")
+		{
+			try {
+				atSteak.acquire();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			for (int i =0; i<marketInventory.size(); i++){
+				if (marketInventory.getFoodType(i) == "Steak"){
+					marketInventory.restockFoodAmount(i,marketCustomerOrder.getAmountAvailable());
+				}
+					
+	
+			}
+		}
+		else if (marketCustomerOrder.getFoodType() == "Chicken")
+		{
+			try {
+				atChicken.acquire();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			for (int i =0; i<marketInventory.size(); i++){
+				if (marketInventory.getFoodType(i) == "Chicken"){
+					marketInventory.restockFoodAmount(i,marketCustomerOrder.getAmountAvailable());
+				}
+					
+	
+			}
+		}
+		else if (marketCustomerOrder.getFoodType() == "Burger")
+		{
+			try {
+				atBurger.acquire();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			for (int i =0; i<marketInventory.size(); i++){
+				if (marketInventory.getFoodType(i) == "Burger"){
+					marketInventory.restockFoodAmount(i,marketCustomerOrder.getAmountAvailable());
+				}
+					
+	
+			}
+		}
+	}
+
 	//utilities
 	public void setMarketInventory(Shelves marketInventory) {
 		this.marketInventory=marketInventory;
@@ -293,6 +368,13 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			this.foodType=foodType;
 			
 		}
+
+		private void setPartialOrderAcceptable(boolean tf) {
+			partialOrderAcceptable=tf;			
+		}
+		private boolean getPartialOrderAcceptable(){
+			return partialOrderAcceptable;
+		}
 		//enum state= none, partialOrderAcceptable, partialOrderNotAcceptable;
 		private int getAmount() {
 			return amount;
@@ -316,6 +398,14 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+
+
+
+
+
+
+
 
 
 	

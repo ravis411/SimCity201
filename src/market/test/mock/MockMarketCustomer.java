@@ -33,4 +33,11 @@ public class MockMarketCustomer extends Mock implements MarketCustomer {
 		
 	}
 
+	@Override
+	public void msgMarketCustomerDoYouWantPartialOrder(String foodType,
+			int amountAvailable) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
