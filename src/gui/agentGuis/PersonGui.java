@@ -61,7 +61,7 @@ public class PersonGui implements Gui {
     
     
     
-    Image image;
+    Image image = null;
     boolean testView = false;
     
     //This holds information about where the person currently is..including how to leave.
@@ -137,6 +137,10 @@ public class PersonGui implements Gui {
         }
         else
         {
+        	if(image == null){
+        		testView = true;
+        		return;
+        	}
         	g.drawImage(image, xPos, yPos, 20, 20, null);
         }
     }
@@ -207,6 +211,69 @@ public class PersonGui implements Gui {
     	
     	return null;
     }
+    
+    /**
+     * 
+     * @param destination
+     * @return
+     */
+    public String DoRideBusTo(String destination){
+    	LocationInfo destLocation = locations.get(destination);
+    	
+    	if(destLocation == null){
+    		return null;//location not found
+    	}
+    	
+    	
+    	//First gather a list of all bus stop locations
+    	List<LocationInfo> busLocations = new ArrayList<>();
+    	for(String s : locations.keySet()){
+    		if(s.contains("Bus Stop")){
+    			busLocations.add(new LocationInfo(locations.get(s)));
+    		}
+    	}
+    	
+    	//Lets make sure there's at least one bus stop
+    	if(busLocations.isEmpty()){
+    		return null;
+    	}
+    	
+    	// Now we need to find the closest stop to the destination.
+    	
+    	//The destination Position
+    	Position destPos = new Position(destLocation.positionToEnterFromMainGrid.width, destLocation.positionToEnterFromMainGrid.height);
+    	//The shortest distance
+    	double shortestDistance;
+    	// The stop that is the shortest distance
+    	LocationInfo closestStop = busLocations.get(0);
+    	
+    	Dimension d = new Dimension(closestStop.positionToEnterFromMainGrid);
+    	shortestDistance = destPos.distance(new Position(d.width, d.height));
+    	// Now we have the distance from our current location to the first bus stop in the list
+    	for(LocationInfo l : busLocations){
+    		Position p = new Position(l.positionToEnterFromMainGrid.width, l.positionToEnterFromMainGrid.height);
+    		double distance = destPos.distance(p);
+    		if(distance < shortestDistance){
+    			shortestDistance = distance;
+    			closestStop = l;
+    		}
+    	}
+    	
+    	//Now we've checked all stops; shortestDistance should be the shortest away 
+    		//and closestStop should be the locationInfo for that stop
+    	if(closestStop != null) {
+    		//lets teleport to the stop ;D
+    		Dimension pos = new Dimension(positionMap.get(closestStop.positionToEnterFromMainGrid));
+    		if(pos != null){
+    			xPos = xDestination = pos.width;
+        		yPos = yDestination = pos.height;
+        		currentLocation = new LocationInfo(closestStop);
+        		return closestStop.name;
+    		}
+    	}
+    	
+    	return null;
+    }//end DoRideBusTo(String destination)
     
     
     
