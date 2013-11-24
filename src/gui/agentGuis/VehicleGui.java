@@ -74,7 +74,8 @@ public class VehicleGui implements Gui {
 			//img = new ImageIcon(("movingCar.gif"));
 	
 			try {
-				 BufferedImage img = ImageIO.read(new File("images/UFO.png"));
+				//BufferedImage img = ImageIO.read(new File("images/UFO.png"));
+				BufferedImage img = ImageIO.read(new File("images/UFO.png"));
 			    if(img != null){
 			    	ImageIcon icon = new ImageIcon(img);
 			    	image = icon.getImage();
@@ -82,7 +83,6 @@ public class VehicleGui implements Gui {
 			} catch (IOException e) {
 				testView = true;
 				AlertLog.getInstance().logWarning(AlertTag.VEHICLE_GUI, agent.toString(), "Image not found. Switching to Test View");
-				
 			}
 
 			
