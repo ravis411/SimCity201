@@ -3,6 +3,7 @@ package residence;
 import Person.PersonAgent;
 import Person.Role.Role;
 import agent.Agent;
+import residence.ApartmentManagerRole.AgentEvent;
 import residence.gui.HomeRoleGui;
 import residence.interfaces.*;
 
@@ -17,6 +18,8 @@ public class HomeRole extends Role implements Home {
 	private ApartmentManager landlord;
 	private int rentOwed = 0;
 	private int aptNumber = 0;
+	private boolean leaveHome = false;
+	private boolean enterHome = false;
 	//private Map <String, Integer> inventory = new HashMap<String, Integer>();
 	private List <Item> inventory = new ArrayList<Item>();
 	private List <HomeFeature> features = new ArrayList<HomeFeature>(); //includes appliances, toilets, sinks, etc (anything that can break)
@@ -97,7 +100,16 @@ public class HomeRole extends Role implements Home {
 		stateChanged();
 	}
 	public void msgLeaveBuilding() {
-		//p
+		print("Leaving home.");
+		event = AgentEvent.leaving;
+		leaveHome = true;
+		stateChanged();
+	}
+	public void msgEnterBuilding() {
+		print("Home sweet home!");
+		event = AgentEvent.none;
+		enterHome = true;
+		stateChanged();
 	}
 	
 	public void msgAtKitchen() {
@@ -110,6 +122,7 @@ public class HomeRole extends Role implements Home {
 		atBed.release();
 	}
 	public void msgAtFrontDoor() {
+		event = AgentEvent.none;
 		atFrontDoor.release();
 		deactivate();
 	}
@@ -124,6 +137,14 @@ public class HomeRole extends Role implements Home {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAction() {
+		if (leaveHome == true) {
+			leaveHome();
+			return true;
+		}
+		if (enterHome == true) {
+			enterHome();
+			return true;
+		}
 		if (rentOwed > 0) {
 			payRent();
 			return true;
@@ -271,6 +292,33 @@ public class HomeRole extends Role implements Home {
 			}
 		},
 		5000);
+	}
+	private void leaveHome() {
+		gui.DoGoToCenter();
+		try {
+			atCenter.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		gui.DoGoToFrontDoor();
+		try {
+			atFrontDoor.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		leaveHome = false;
+	}
+	private void enterHome() {
+		gui.DoGoToCenter();
+		try {
+			atCenter.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		enterHome = false;
 	}
 
 	//utilities
