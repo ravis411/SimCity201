@@ -18,6 +18,8 @@ import agent.Agent;
 import astar.AStarTraversal;
 import astar.PersonAStarTraversal;
 import astar.VehicleAStarTraversal;
+import gui.Building.ApartmentBuilding;
+import gui.Building.ApartmentBuildingPanel;
 import gui.Building.BankBuilding;
 import gui.Building.BankBuildingPanel;
 import gui.Building.Building;
@@ -591,6 +593,15 @@ public class SetUpWorldFactory{
 				BuildingPanel bp = new BankBuildingPanel(bb, name, buildingsPanels);
 				bb.setBuildingPanel(bp);
 				cityPanel.addGui(bb);
+				buildingsPanels.addBuildingPanel(bp);
+			}
+			break;
+		case "Apartment":
+			ApartmentBuilding ab = new ApartmentBuilding(building);
+			if(ab != null){
+				ApartmentBuildingPanel bp = new ApartmentBuildingPanel(ab, name, buildingsPanels);
+				ab.setBuildingPanel(bp);
+				cityPanel.addGui(ab);
 				buildingsPanels.addBuildingPanel(bp);
 			}
 			break;
