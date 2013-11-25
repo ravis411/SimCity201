@@ -13,15 +13,13 @@
     <property name="target" value="1.7"/>
     <property name="source" value="1.7"/>
     <path id="Users/MSILKJR/Documents/CS201-Workspace/team29/bin.libraryclasspath"/>
-    <path id="JUnit 4.libraryclasspath">
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.junit_4.11.0.v201303080030/junit.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.hamcrest.core_1.3.0.v201303031735.jar"/>
-    </path>
     <path id="SimCity201.classpath">
         <pathelement location="bin"/>
         <pathelement location="${JRE_LIB}"/>
         <path refid="Users/MSILKJR/Documents/CS201-Workspace/team29/bin.libraryclasspath"/>
-        <path refid="JUnit 4.libraryclasspath"/>
+        <pathelement location="../../../../../Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/jre/lib/rt.jar"/>
+        <pathelement location="../../../Downloads/eclipse 3/plugins/org.junit_4.11.0.v201303080030/junit.jar"/>
+        <pathelement location="../../../Downloads/eclipse 3/plugins/org.hamcrest.core_1.3.0.v201303031735.jar"/>
     </path>
     <path id="run.PersonTest1.classpath">
         <pathelement location="${JRE_LIB}"/>
@@ -46,12 +44,6 @@
                 <exclude name="**/*.java"/>
             </fileset>
         </copy>
-        <copy includeemptydirs="false" todir="bin">
-            <fileset dir="images">
-                <exclude name="**/*.launch"/>
-                <exclude name="**/*.java"/>
-            </fileset>
-        </copy>
     </target>
     <target name="clean">
         <delete dir="bin"/>
@@ -63,7 +55,6 @@
         <echo message="${ant.project.name}: ${ant.file}"/>
         <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
             <src path="${src.link}"/>
-            <src path="images"/>
             <classpath refid="SimCity201.classpath"/>
         </javac>
     </target>
