@@ -1,5 +1,5 @@
 package Transportation.test.mock;
 
-public class AddressBookMock {
+public class MockAddressBook {
 
 }

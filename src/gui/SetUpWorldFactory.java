@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Queue;
 
 import Person.PersonAgent;
-import Transportation.test.mock.PseudoBusAgent;
 import agent.Agent;
 import astar.AStarTraversal;
 import astar.PersonAStarTraversal;
@@ -27,7 +26,8 @@ import gui.Building.BusStopBuilding;
 import gui.Building.BusStopBuildingPanel;
 import gui.Building.ResidenceBuilding;
 import gui.Building.ResidenceBuildingPanel;
-import gui.MockAgents.MockPerson;
+import gui.MockAgents.PseudoBusAgent;
+import gui.MockAgents.PseudoPerson;
 import gui.agentGuis.PersonGui;
 import gui.agentGuis.VehicleGui;
 

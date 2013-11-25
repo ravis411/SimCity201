@@ -61,7 +61,7 @@ public class BusAgent extends Agent implements Vehicle {
 
 	//Messages
 	public void msgGettingOnBus(Passenger p) {
-		passengers.add(new myPassenger(p, PassengerState.riding));
+		getPassengers().add(new myPassenger(p, PassengerState.riding));
 		stateChanged();
 	}
 	
@@ -71,8 +71,8 @@ public class BusAgent extends Agent implements Vehicle {
 	}
 	
 	public void msgGettingOffBus(Passenger p) {
-		synchronized(passengers) {
-			for (myPassenger mp : passengers) {
+		synchronized(getPassengers()) {
+			for (myPassenger mp : getPassengers()) {
 				if (mp.equals(p)) {
 					mp.ps = PassengerState.disembarking;
 					stateChanged();
@@ -127,6 +127,14 @@ public class BusAgent extends Agent implements Vehicle {
 	
 	public String getName(){
 		return name;
+	}
+
+	public List<myPassenger> getPassengers() {
+		return passengers;
+	}
+
+	public void setPassengers(List<myPassenger> passengers) {
+		this.passengers = passengers;
 	}
 	
 	

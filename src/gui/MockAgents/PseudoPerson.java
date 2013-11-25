@@ -6,7 +6,7 @@ import java.util.Queue;
 import gui.agentGuis.PersonGui;
 import agent.Agent;
 
-public class MockPerson extends Agent{
+public class PseudoPerson extends Agent{
 
 	String name;
 	PersonGui agentGui = null;
@@ -16,7 +16,7 @@ public class MockPerson extends Agent{
 	
 	boolean test = true;
 	
-	public MockPerson(String name){
+	public PseudoPerson(String name){
 		this.name = name;
 	}
 	
