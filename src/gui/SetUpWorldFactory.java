@@ -19,11 +19,11 @@ import agent.Agent;
 import astar.AStarTraversal;
 import astar.PersonAStarTraversal;
 import astar.VehicleAStarTraversal;
-
 import gui.Building.Building;
 import gui.Building.BuildingPanel;
 import gui.Building.BusStopBuilding;
 import gui.Building.BusStopBuildingPanel;
+import gui.Building.ResidenceBuilding;
 import gui.Building.ResidenceBuildingPanel;
 import gui.MockAgents.MockBusAgent;
 import gui.MockAgents.MockPerson;
@@ -89,14 +89,14 @@ public class SetUpWorldFactory{
 		location.positionToEnterFromMainGrid = new Dimension(10, 3);
 		location.entranceFromMainGridPosition = new Dimension(9, 3);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Default", "Building 2", 8, 2, 2, 2, location);
+		addBuilding("Residence", "House 2", 8, 2, 2, 2, location);
 		
 //Building 3
 		location.sector = 1;
 		location.positionToEnterFromMainGrid = new Dimension(15, 3);
 		location.entranceFromMainGridPosition = new Dimension(14, 3);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Default", "Building 3", 13, 2, 2, 2, location);
+		addBuilding("Default", "Market", 13, 2, 2, 2, location);
 		
 //Building 4
 		location.sector = 1;
@@ -576,10 +576,11 @@ public class SetUpWorldFactory{
 			}
 			break;
 		case "Residence":
-			if(building != null){
-				BuildingPanel bp = new ResidenceBuildingPanel(building, name, buildingsPanels);
-				building.setBuildingPanel(bp);
-				cityPanel.addGui(building);
+			ResidenceBuilding rb = new ResidenceBuilding(building);
+			if(rb != null){
+				BuildingPanel bp = new ResidenceBuildingPanel(rb, name, buildingsPanels);
+				rb.setBuildingPanel(bp);
+				cityPanel.addGui(rb);
 				buildingsPanels.addBuildingPanel(bp);
 			}
 			break;
