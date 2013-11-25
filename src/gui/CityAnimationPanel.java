@@ -4,8 +4,12 @@ import gui.Building.Building;
 
 import javax.swing.*;
 
+import trace.AlertLog;
+import trace.AlertTag;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
@@ -28,6 +32,7 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 
 	private SimCityLayout layout = null;
 
+	public static final Calendar calendar = Calendar.getInstance();
 
 
 	public CityAnimationPanel(SimCityLayout layout) {
@@ -40,6 +45,7 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		setPreferredSize( new Dimension( WINDOWX, WINDOWY ) );
 
 		this.layout = layout;
+		
 		
 
 		
@@ -54,11 +60,17 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 
 	public void actionPerformed(ActionEvent e) {
 		repaint();  //Will have paintComponent called
+		
 	}
 
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
 
+		calendar.add(Calendar.MINUTE, 5);
+		//AlertLog.getInstance().logInfo(AlertTag.GENERAL_CITY, "Calendar", calendar.toString());
+		
+		
+		
 		//Clear the screen by painting a rectangle the size of the frame
 		g2.setColor(getBackground());
 		g2.fillRect(0, 0, WINDOWX, WINDOWY );

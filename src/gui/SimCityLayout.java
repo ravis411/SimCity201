@@ -8,6 +8,9 @@ import java.awt.Graphics2D;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import trace.AlertLog;
+import trace.AlertTag;
+
 
 
 /** This class holds the city layout information. Use this class to add roads and other static gui objects.
@@ -109,7 +112,9 @@ public class SimCityLayout {
 			for (int i=1; i<numxGrids+1; i++) grid[0+i][0].acquire();
 
 		}catch (Exception e) {
-			System.out.println("Unexpected exception caught during setup:"+ e);
+			//System.out.println("Unexpected exception caught during setup:"+ e);
+			AlertLog.getInstance().logError(AlertTag.GENERAL_CITY, "City Layout", "Unexpected exception caught during setup:"+ e);
+			
 		}
 
 		return grid;
@@ -263,7 +268,8 @@ public class SimCityLayout {
 					break;
 			}//if all were acquired successful = true
 		} catch (Exception e) {
-			System.out.println("Error during setup...grid out of bounds");
+			//System.out.println("Error during setup...grid out of bounds");
+			AlertLog.getInstance().logWarning(AlertTag.GENERAL_CITY, "City Layout", "Error during setup...grid out of bounds.");
 			successfull = false;
 		}
 		

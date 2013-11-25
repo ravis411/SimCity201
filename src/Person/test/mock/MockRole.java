@@ -6,17 +6,18 @@ import Person.Role.Role;
 
 public class MockRole extends Role{
 
-	AlertLog log = AlertLog.getInstance();
+	public AlertLog log = AlertLog.getInstance();
 	
 	@Override
 	public boolean pickAndExecuteAction() {
 		// TODO Auto-generated method stub
-		log.logMessage(AlertTag.valueOf("ROLE"), getName(), "Scheduler Called");
-		return false;
+		log.logMessage(AlertTag.PERSON, getName(), "Role Scheduler Called");
+		return true;
 	}
 
 	@Override
 	public boolean canGoGetFood() {
+		
 		// TODO Auto-generated method stub
 		return false;
 	}
