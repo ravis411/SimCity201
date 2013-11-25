@@ -1,4 +1,4 @@
-package gui.MockAgents;
+package Transportation.test.mock;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -13,7 +13,7 @@ import gui.agentGuis.VehicleGui;
 import gui.interfaces.Vehicle;
 import agent.Agent;
 
-public class MockBusAgent extends Agent implements Vehicle {
+public class PseudoBusAgent extends Agent implements Vehicle {
 
 	
 	String name;
@@ -22,7 +22,7 @@ public class MockBusAgent extends Agent implements Vehicle {
 	public VehicleGui agentGui;
 	Queue<String> StopsQueue = new LinkedList<>(); //<--a list of the stops to go to
 	
-	public MockBusAgent(String name, Queue<String> busStops) {
+	public PseudoBusAgent(String name, Queue<String> busStops) {
 		super();
 		StopsQueue.addAll(busStops);
 		this.name = name;

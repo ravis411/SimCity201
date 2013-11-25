@@ -1,4 +1,4 @@
-package gui.MockAgents;
+package Transportation.test.mock;
 
 public class AddressBookMock {
 

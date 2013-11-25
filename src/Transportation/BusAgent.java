@@ -13,6 +13,7 @@ import java.util.Queue;
 
 
 
+
 import gui.LocationInfo;
 import gui.agentGuis.VehicleGui;
 import gui.interfaces.Passenger;
@@ -42,6 +43,14 @@ public class BusAgent extends Agent implements Vehicle {
 	
 	public enum AgentState {inTransit, loading, loaded};
 	private AgentState state = AgentState.inTransit;
+	
+	public BusAgent(String name) {
+		super();
+		StopsQueue.add("Bus Stop " + 1);
+		StopsQueue.add("Bus Stop " + 3);
+		StopsQueue.add("Bus Stop " + 5);
+		this.name = name;
+	}
 	
 	public BusAgent(String name, Queue<String> busStops) {
 		super();

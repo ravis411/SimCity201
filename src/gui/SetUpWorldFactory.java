@@ -4,7 +4,6 @@ import gui.Building.Building;
 import gui.Building.BuildingPanel;
 import gui.Building.BusStopBuilding;
 import gui.Building.BusStopBuildingPanel;
-import gui.MockAgents.MockBusAgent;
 import gui.agentGuis.PersonGui;
 import gui.agentGuis.VehicleGui;
 
@@ -15,6 +14,7 @@ import java.util.List;
 import java.util.Queue;
 
 import Person.PersonAgent;
+import Transportation.test.mock.PseudoBusAgent;
 import agent.Agent;
 import astar.AStarTraversal;
 import astar.PersonAStarTraversal;
@@ -27,7 +27,6 @@ import gui.Building.BusStopBuilding;
 import gui.Building.BusStopBuildingPanel;
 import gui.Building.ResidenceBuilding;
 import gui.Building.ResidenceBuildingPanel;
-import gui.MockAgents.MockBusAgent;
 import gui.MockAgents.MockPerson;
 import gui.agentGuis.PersonGui;
 import gui.agentGuis.VehicleGui;
@@ -501,7 +500,7 @@ public class SetUpWorldFactory{
 				OddStopsQueue.add("Bus Stop " + 1);
 				OddStopsQueue.add("Bus Stop " + 3);
 				OddStopsQueue.add("Bus Stop " + 5);
-			MockBusAgent v1 = new MockBusAgent("Odd Mock Bus", OddStopsQueue);
+			PseudoBusAgent v1 = new PseudoBusAgent("Odd Mock Bus", OddStopsQueue);
 			AStarTraversal t = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
 			VehicleGui v1Gui = new VehicleGui( v1, layout, t, locationMap );
 			v1.agentGui = v1Gui;
@@ -515,7 +514,7 @@ public class SetUpWorldFactory{
 			EvenStopsQueue1.add("Bus Stop " + 2);
 			EvenStopsQueue1.add("Bus Stop " + 4);
 			EvenStopsQueue1.add("Bus Stop " + 6);
-			MockBusAgent v2 = new MockBusAgent("Even Mock Bus", EvenStopsQueue1);
+			PseudoBusAgent v2 = new PseudoBusAgent("Even Mock Bus", EvenStopsQueue1);
 			AStarTraversal t2 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
 			VehicleGui v2Gui = new VehicleGui( v2, layout, t2 ,locationMap );
 			v2.agentGui = v2Gui;
