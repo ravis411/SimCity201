@@ -78,7 +78,7 @@ public class AStarTraversal extends GraphTraversal
 	}
 	return expandedNodes;
     }//end expandFunc
-    protected boolean inPath (Position pos, List<Position> path){
+    private boolean inPath (Position pos, List<Position> path){
 	for (Position n:path) {if (pos.equals(n)) return true;};
 	return false;
     }
