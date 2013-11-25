@@ -69,6 +69,18 @@ public class TraceControlPanel extends Panel implements ActionListener {
 		showMarket.setSelected(true);
 		showBank.setSelected(true);
 	}
+	private void hideAll(){
+		panel.hideAlertsForAllTags();
+		panel.hideAlertsForAllLevels();
+		showINFO.setSelected(false);
+		showMESSAGE.setSelected(false);
+		showPERSON.setSelected(false);
+		showVehicle.setSelected(false);
+		showCity.setSelected(false);
+		showHome.setSelected(false);
+		showMarket.setSelected(false);
+		showBank.setSelected(false);
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -78,6 +90,9 @@ public class TraceControlPanel extends Panel implements ActionListener {
 			if(c == showAll){
 				if(c.isSelected()){
 					showAll();
+				}
+				else{
+					hideAll();
 				}
 			}
 			else if(c == showINFO){

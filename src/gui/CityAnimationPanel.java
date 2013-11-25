@@ -34,6 +34,7 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 
 	public static final Calendar calendar = Calendar.getInstance();
 	private float ampmAlpha = 0f;
+	boolean testView = false;
 	
 
 	public CityAnimationPanel(SimCityLayout layout) {
@@ -98,30 +99,29 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		
 		g2.setColor(Color.orange);
 		
-		for(Building b : buildings){
-			//why would a building not be present? //if(b.isPresent())
-			{
-				b.draw(g2);
-			}
-		}
+//		for(Building b : buildings){
+//			//why would a building not be present? //if(b.isPresent())
+//			{
+//			//	b.draw(g2);
+//			}
+//		}
 		
 		
-		
-		if(calendar.get(Calendar.HOUR_OF_DAY) >= 17 && ampmAlpha < .3f){
+		//This section makes the city dark at night and draws the clock.
+		if(calendar.get(Calendar.HOUR_OF_DAY) >= 17 && ampmAlpha < .25f){
 			ampmAlpha += 0.01f;
 		}else if(calendar.get(Calendar.HOUR_OF_DAY) <= 5 && ampmAlpha > .01f)
 		{
 			ampmAlpha -= 0.01f;
 		}
-		AlphaComposite orig = AlphaComposite.getInstance(AlphaComposite.SRC_OVER);
-		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ampmAlpha);
-		
-		g2.setComposite(ac);
-		g2.setColor(Color.black);
-		g2.fillRect(0, 0, WINDOWX, WINDOWY);
-		
-		g2.setComposite(orig);
-		
+		if(!testView){
+			AlphaComposite orig = AlphaComposite.getInstance(AlphaComposite.SRC_OVER);
+			AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ampmAlpha);
+			g2.setComposite(ac);
+			g2.setColor(Color.black);
+			g2.fillRect(0, 0, WINDOWX, WINDOWY);
+			g2.setComposite(orig);
+		}
 		g2.setColor(Color.white);
 		String time = new java.text.SimpleDateFormat("EEEE, MM/dd/yyyy hh:mm a").format(calendar.getTime());
 		g2.drawString(time, 600, 390);
@@ -146,6 +146,7 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		for(Gui g : guis){
 			g.setTestView(testView);
 		}
+		this.testView = testView;
 	}
 
 	public void clear(){
