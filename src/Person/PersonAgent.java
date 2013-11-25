@@ -53,7 +53,7 @@ public class PersonAgent extends Agent {
 	public enum StateOfHunger {NotHungry, SlightlyHungry, Hungry, VeryHungry, Starving} 
 	public enum StateOfLocation {AtHome,AtBank,AtMarket,AtRestaurant, InCar,InBus,Walking};
 	public enum StateOfEmployment {Customer,Employee,Idle};
-	public enum PersonState {Idle,NeedsMoney,PayRentNow, PayLoanNow,GettingMoney,NeedsFood,GettingFood }
+	public enum PersonState {Idle,NeedsMoney,PayRentNow, Working, PayLoanNow,GettingMoney,NeedsFood,GettingFood }
 	
 	private List<Item> backpack;
 	
@@ -235,7 +235,7 @@ public class PersonAgent extends Agent {
 			return true;
 		}
 		
-		if(state != PersonState.Idle){
+		if(state != PersonState.Idle && state != PersonState.Working){
 			GoHome();
 		}
 		
@@ -439,7 +439,7 @@ public class PersonAgent extends Agent {
 	  		transport = "ERROR";
 	  }
 		  
-		  GoToLocation("House 1", transport);
+		  GoToLocation(home.getName(), transport);
 		  HomeRole role = (HomeRole) findRole(Role.HOME_ROLE);
 		  role.activate();
 		  role.msgMakeFood();
@@ -591,6 +591,9 @@ public class PersonAgent extends Agent {
 	 * @param r the role to add
 	 */
 	public void addRole(Role r){
+		if(r instanceof Employee){
+			state = PersonState.Working;
+		}
 		roles.add(r);
 	}
 	
