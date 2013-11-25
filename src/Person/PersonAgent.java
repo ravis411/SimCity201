@@ -431,7 +431,8 @@ public class PersonAgent extends Agent {
 	  		transport = "ERROR";
 	  }
 		  
-		  GoToLocation("Building 2", transport);
+		  GoToLocation("Building 12", transport);
+		  GoToLocation("House 1", transport);
 	}
 		  
 	//------------------------DO XYZ FUNCTIONS----------------------//
