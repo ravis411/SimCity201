@@ -1,6 +1,7 @@
 package bank;
 
 import agent.Agent;
+
 import java.util.*;
 
 public class numberAnnouncer extends Agent{
@@ -8,24 +9,36 @@ public class numberAnnouncer extends Agent{
 	List<bankTellerRole> tellers = new ArrayList<bankTellerRole>();
 	loanTellerRole loanTeller;
 	private int doneTeller;
-	private int tellerNumber = 1;
-	private int loanNumber = 1;
+	private int tellerNumber = 0;
+	private int loanNumber = 0;
 	public enum numberState{pending, announceB, announceL};
 	public numberState state = numberState.pending;
+	private String name;
+
+	public numberAnnouncer(String n){
+		super();
+		name = n;
+	}
 
 	public void msgAddLoanTeller(loanTellerRole l){
 		loanTeller = l;
 		stateChanged();
 	}
 	public void msgAddBankTeller(bankTellerRole b){
+		Do(b + " added.");
 		tellers.add(b);
 		stateChanged();
 	}
 	public void msgAddClient(bankClientRole c){
+		Do(c + " added.");
 		clients.add(c);
 		stateChanged();
 	}
+	public void msgGotTicket(){
+
+	}
 	public void msgTransactionComplete(int b){
+		Do("Recieved done message from line " + b);
 		doneTeller = b;
 		state = numberState.announceB;
 		stateChanged();
@@ -50,14 +63,25 @@ public class numberAnnouncer extends Agent{
 	//actions
 	private void announceNumberBank(){
 		tellerNumber++;
+		Do("Calling ticket " + tellerNumber);
 		for (bankClientRole b : clients){
 			b.msgCallingTicket(tellerNumber, doneTeller);
 		}
+		state = numberState.pending;
 	}
 	private void announceNumberLoan(){
 		loanNumber++;
 		for (bankClientRole b : clients){
 			b.msgCallingTicket(loanNumber, 5);
 		}
+		state = numberState.pending;
 	}
+
+	public String getName() {
+		return name;
+	}
+	public String toString() {
+		return "Bank Teller  " + getName();
+	}
+
 }
