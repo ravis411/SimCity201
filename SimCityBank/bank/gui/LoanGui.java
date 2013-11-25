@@ -50,12 +50,16 @@ public class LoanGui implements Gui {
         else if (yPos > yDestination)
             {yPos--;
             }
+        if (xPos == xDestination && yPos == yDestination && xDestination == xIntermediateEntrance && yDestination == yIntermediateEntrance){
+        	role.msgAtIntermediate();
+        }
 
+        
         if (xPos == xDestination && yPos == yDestination
-                        & (xDestination == xIntermediateEntrance & (yDestination == yIntermediateEntrance))) {
-            xDestination=xTellerDesk;
-            yDestination = yTellerDesk;//default start position
-            }
+                        && (xDestination == xTellerDesk) & (yDestination == yTellerDesk)) {
+        	role.msgAtStation();
+        }
+
 /*
         if (xPos == xDestination && yPos == yDestination
                         & (xDestination == xTable + 20 + ((tableNum-1)*60)) & (yDestination == yTable - 20)) {
@@ -84,6 +88,11 @@ public class LoanGui implements Gui {
         return true;
     }
     
+
+    public void DoGoToStation(){
+        xDestination=xTellerDesk;
+        yDestination = yTellerDesk;//default start position
+    }
     public void DoLeave() {
         xDestination = xBankEntrance;
         yDestination = yBankEntrance;
