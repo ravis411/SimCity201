@@ -44,15 +44,15 @@ public class AnimationPanel extends JPanel implements ActionListener {
         //String path = getClass().getClassLoader().getResource(".").getPath();
         //System.out.println(path);
         
-        String s = System.getProperty("user.dir");
+        //String s = System.getProperty("user.dir");
         //System.out.println(s);
         
-        try {
+        /*try {
             img = ImageIO.read(new File(s + "/images/wood-floor-lowres.jpg"));
         } catch (IOException e) {
-        }
+        }*/
         
-        floor = new ImageIcon("src/residence/gui/wood-floor-lowres.jpg");
+        //floor = new ImageIcon("src/residence/gui/wood-floor-lowres.jpg");
         //this.add(floor);
 
     	Timer timer = new Timer(10, this);
