@@ -225,7 +225,6 @@ public class PersonAgent extends Agent {
 		for(Role r: roles){
 			if(r.isActive()){
 				outcome = r.pickAndExecuteAction() || outcome;
-				
 				if(outcome)
 					return outcome;
 			}
@@ -340,14 +339,15 @@ public class PersonAgent extends Agent {
 		}
 		
 		//needs a way to find a bank quite yet
-		GoToLocation("Market", transport);
-		if(findRole(Role.MARKET_CUSTOMER_ROLE) == null){
+		GoToLocation("Building 10", transport);
+		/*if(findRole(Role.MARKET_CUSTOMER_ROLE) == null){
 			Role r = RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
 			r.activate();
 			addRole(r);
 		}else{
 			findRole(Role.MARKET_CUSTOMER_ROLE).activate();
-		}
+		}*/
+		GoHome();
 	}
 
 	/**
