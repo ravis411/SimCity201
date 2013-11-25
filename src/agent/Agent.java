@@ -9,8 +9,6 @@ import java.util.concurrent.*;
  */
 public abstract class Agent {
     Semaphore stateChange = new Semaphore(1, true);//binary semaphore, fair
-    boolean isPaused = false;
-    Semaphore pause = new Semaphore(0,true);
     private AgentThread agentThread;
 
     protected Agent() {
@@ -114,16 +112,11 @@ public abstract class Agent {
                     // The agent sleeps here until someone calls, stateChanged(),
                     // which causes a call to stateChange.give(), which wakes up agent.
                     stateChange.acquire();
-                    if (isPaused) {
-                    	pause.acquire();
-                    }
                     //The next while clause is the key to the control flow.
                     //When the agent wakes up it will call respondToStateChange()
                     //repeatedly until it returns FALSE.
                     //You will see that pickAndExecuteAnAction() is the agent scheduler.
-                    if (pickAndExecuteAnAction()) {
-                    	stateChange.release();
-                    };
+                    while (pickAndExecuteAnAction()) ;
                 } catch (InterruptedException e) {
                     // no action - expected when stopping or when deadline changed
                 } catch (Exception e) {
@@ -136,13 +129,6 @@ public abstract class Agent {
             goOn = false;
             this.interrupt();
         }
-    }
-    public void pause() {
-    	isPaused = true;
-    }
-    public void resume() {
-    	isPaused = false;
-    	pause.release();
     }
 }
 
