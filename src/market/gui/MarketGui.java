@@ -9,11 +9,11 @@ import java.util.Vector;
 import javax.swing.JFrame;
 
 import market.data.MarketData;
+import residence.HomeRole;
 import MarketEmployee.MarketCustomerRole;
 import MarketEmployee.MarketEmployeeRole;
 import MarketEmployee.MarketManagerRole;
 import Person.PersonAgent;
-import agent.Constants;
 /**
  * Main GUI class.
  * Contains the main frame and subsequent panels
@@ -69,7 +69,7 @@ public class MarketGui extends JFrame implements ActionListener {
         animationPanel.addGui(marketEmployeeGui);
         marketEmployeePersons.get(0).startThread();
         marketEmployeeRoles.get(0).setMarketData(marketData);
-        marketEmployeeRoles.get(0).msgMarketEmployeeAttemptToFillOrder("Burger",2,1);
+        marketManagereRole.msgMarketManagerFoodOrder("Burger",2,(new HomeRole("Bob")));
 
 
         //Test Employee #2

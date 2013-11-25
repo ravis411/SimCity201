@@ -80,6 +80,7 @@ public class MarketEmployeeGui implements Gui {
         	{
         		xDestination= xCounter;
             	yDestination= yCounter;
+            	role.msgMarketEmployeeAtManagerRelease();
             	orderForManager=false;
         	}
         	else

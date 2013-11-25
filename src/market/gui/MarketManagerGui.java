@@ -25,6 +25,8 @@ public class MarketManagerGui implements Gui {
 	private final int yManagerOfficeDoor= 140;
 	private final int xManagerOfficeDesk= 90;
 	private final int yManagerOfficeDesk= 180;
+	private final int xTruck= 20;
+	private final int yTruck= 20;
 	private final static int xPlatingCord= 450;
 	private final static int yPlatingCord= 10;
     public static final int xTable = 200;
@@ -33,7 +35,7 @@ public class MarketManagerGui implements Gui {
     private int tableNum;
     private String orderBeingCarried = " ";
     MarketGui gui;
-
+    boolean goToTruck=false;
     public MarketManagerGui(MarketManagerRole marketManagereRole, MarketGui gui) {
         this.role = marketManagereRole;
         xDestination=xCounterEntranceCord;
@@ -69,12 +71,23 @@ public class MarketManagerGui implements Gui {
         		& (xDestination == xCounterEntranceCord & (yDestination == yCounterEntranceCord))) {
         	xDestination= xManagerOfficeDoor;
         	yDestination= yManagerOfficeDoor;
+        	role.msgMarketEmployeeAtDesk();
+        }
+        if (xPos == xDestination && yPos == yDestination
+        		& (xDestination == xTruck & (yDestination == yTruck))) {
+        	
+        	xDestination= xManagerOfficeDesk;
+        	yDestination= yManagerOfficeDesk;
+        	role.msgMarketEmployeeAtTruck();
+        	
         }
         if (xPos == xDestination && yPos == yDestination
         		& (xDestination == xManagerOfficeDoor & (yDestination == yManagerOfficeDoor))) {
+        	
         	xDestination= xManagerOfficeDesk;
         	yDestination= yManagerOfficeDesk;
-        	role.msgMarketEmployeeAtDesk();
+        	role.msgMarketEmployeeAtDeskRelease();
+        	
         }
 /*
         if (xPos == xDestination && yPos == yDestination
@@ -107,16 +120,17 @@ public class MarketManagerGui implements Gui {
         return true;
     }
 
-    public void DoGoToTable( int tableN) {
-    	tableNum= tableN;
-        xDestination = (xTable + 20 + ((tableN-1)*60));
-        yDestination = yTable - 20;
-    }
+    public void DoGoToDeliveryTruck() {
+    	xDestination = xTruck;
+	    yDestination = yTruck;		
+	    goToTruck=true;
+	}
     
 
-	public void DoGoToPlatingArea() {
-		xDestination=xPlatingCord;
-		yDestination=yPlatingCord;
+	public void DoGoToDoor() {
+		 xDestination = xManagerOfficeDoor;
+	     yDestination = yManagerOfficeDoor;
+		
 	}
     public void DoLeave() {
         xDestination = xResturantEntrance;
@@ -152,6 +166,10 @@ public class MarketManagerGui implements Gui {
 		}
 		
 	}
+
+	
+
+
 
 
 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
+import residence.HomeRole;
 import market.data.MarketData;
 import market.gui.MarketEmployeeGui;
 import market.interfaces.MarketCustomer;
@@ -23,10 +24,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	private Semaphore atSteak = new Semaphore(0,false);
 	private Semaphore atChicken = new Semaphore(0,false);
 	private Semaphore atBurger = new Semaphore(0,false);
+	private Semaphore atManager = new Semaphore(0,false);
 	enum MarketEmployeeState
 	{gettingCounterAssignmentFromManager,walkingToCounter, waiting, collectingOrder, waitingForReplyFromCustomerIfPartialOrderOkay};
 	enum MarketEmployeeEvent
-	{enteredMarket,atManager, atCounter, gotReplyFromCustomerIfPartialOrderOkay, gotCustomerOrder};
+	{enteredMarket,atManager, atCounter, gotReplyFromCustomerIfPartialOrderOkay, gotCustomerOrder, getOrderForManager};
 	public MarketEmployeeEvent event=MarketEmployeeEvent.enteredMarket;
 	public MarketEmployeeState state=MarketEmployeeState.gettingCounterAssignmentFromManager;
 	private MarketCustomer tempCustomer;
@@ -95,6 +97,10 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	public void msgMarketEmployeeAtFood3(){
 		atBurger.release();
 	}
+	public void msgMarketEmployeeAtManagerRelease() {
+		atManager.release();
+		
+	}
 
 	public void msgMarketEmployeeConfirmPartialOrder(boolean tf, MarketCustomerRole customer){
 	marketCustomerOrder.setPartialOrderAcceptable(tf);
@@ -107,7 +113,8 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	{
 		print("Has reieved Order number: " + orderNumber+ " from Market Manager for "+ amount+ " " + foodType );
 		myOrdersFromManager.add(new Order(foodType, amount, orderNumber));
-		//stateChanged();
+		event=MarketEmployeeEvent.getOrderForManager;
+		stateChanged();
 	}
 
 	/**
@@ -138,7 +145,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			return true;
 		}
 		
-		if (!myOrdersFromManager.isEmpty() && marketCustomerOrder==null && state == MarketEmployeeState.waiting){
+		if (!myOrdersFromManager.isEmpty() && marketCustomerOrder==null && event==MarketEmployeeEvent.getOrderForManager){
 			
 			goCollectFoodOrderAndBringToMarketManager(myOrdersFromManager.get(0));
 			
@@ -258,6 +265,12 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 				}
 			}
 		}
+		try {
+			atManager.acquire();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		myManager.msgMarketManagerHereIsAmountWeCanFulfill(order.getFoodType(), order.getAmountAvailable(), order.getOrderNumber());
 		try {
 			atCounter.acquire();
 		} catch (InterruptedException e) {
@@ -511,6 +524,8 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+
 
 
 

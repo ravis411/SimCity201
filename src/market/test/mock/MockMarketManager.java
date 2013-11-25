@@ -30,5 +30,19 @@ public class MockMarketManager extends Mock implements MarketManager {
 		
 	}
 
+	@Override
+	public void msgMarketEmployeeAtDeskRelease() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgMarketEmployeeAtTruck() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
 	
 }

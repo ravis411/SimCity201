@@ -4,11 +4,16 @@ import MarketEmployee.MarketEmployeeRole;
 
 public interface MarketManager {
 
-	void msgMarketManagerReportingForWork(MarketEmployeeRole marketEmployeeRole);
+	public abstract void msgMarketManagerReportingForWork(MarketEmployeeRole marketEmployeeRole);
 
-	void msgMarketManagerHereIsAmountWeCanFulfill(String foodType,
+	public abstract void msgMarketManagerHereIsAmountWeCanFulfill(String foodType,
 			int amountAvailable, int orderNumber);
 
-	void msgMarketEmployeeAtDesk();
+	public abstract void msgMarketEmployeeAtDesk();
+
+	public abstract void msgMarketEmployeeAtDeskRelease();
+
+	public abstract void msgMarketEmployeeAtTruck();
+
 
 }
