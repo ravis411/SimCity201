@@ -8,8 +8,8 @@ public class HomeRoleGui implements Gui {
 
     private HomeRole agent = null;
 
-    private int xPos = 700, yPos = 200;//default waiter position
-    private int xDestination = 700, yDestination = 200;//default start position
+    private int xPos = 805, yPos = 150;//default waiter position
+    private int xDestination = 805, yDestination = 150;//default start position
 
     public HomeRoleGui(HomeRole agent) {
         this.agent = agent;
@@ -35,7 +35,7 @@ public class HomeRoleGui implements Gui {
         if (xPos == 375 && yPos == 65) {
             agent.msgAtKitchen();
         }
-        if (xPos == 805 && yPos == 200) {
+        if (xPos == 805 && yPos == 150) {
             agent.msgAtFrontDoor();
         }
         if (xPos == 371 && yPos == 195) {
@@ -65,17 +65,17 @@ public class HomeRoleGui implements Gui {
             g.setColor(Color.black);
             g.fillRect(200, 153, 5, 2);
         }
-        if(xPos > 700 && xPos < 800 && yPos > 150 && yPos < 250) { //front door
+        if(xPos > 700 && xPos < 800 && yPos > 110 && yPos < 210) { //front door
         	g.setColor(Color.orange);
-            g.fillRect(760, 160, 45, 5);
-            g.fillRect(760, 250, 45, 5);
+            g.fillRect(760, 120, 45, 5);
+            g.fillRect(760, 210, 45, 5);
         }
         else {
         	g.setColor(Color.orange);
-            g.fillRect(760, 160, 5, 45);
-            g.fillRect(760, 205, 5, 45);
+            g.fillRect(760, 120, 5, 45);
+            g.fillRect(760, 165, 5, 45);
             g.setColor(Color.black);
-            g.fillRect(760, 203, 5, 2);
+            g.fillRect(760, 163, 5, 2);
         }
     }
     
@@ -96,7 +96,7 @@ public class HomeRoleGui implements Gui {
     
     public void DoGoToFrontDoor() {
     	xDestination = 805;
-    	yDestination = 200;
+    	yDestination = 150;
     }
     
     public void DoGoToKitchen() {

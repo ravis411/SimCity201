@@ -45,7 +45,7 @@ public class AnimationPanel extends JPanel implements ActionListener {
         //System.out.println(path);
         
         String s = System.getProperty("user.dir");
-        System.out.println(s);
+        //System.out.println(s);
         
         try {
             img = ImageIO.read(new File(s + "/images/wood-floor-lowres.jpg"));
@@ -55,7 +55,7 @@ public class AnimationPanel extends JPanel implements ActionListener {
         floor = new ImageIcon("src/residence/gui/wood-floor-lowres.jpg");
         //this.add(floor);
 
-    	Timer timer = new Timer(20, this );
+    	Timer timer = new Timer(10, this);
     	timer.start();
     }
 
@@ -126,8 +126,8 @@ public class AnimationPanel extends JPanel implements ActionListener {
         g2.fillRect(10, 300, 750, 5); //perimeter
         g2.fillRect(10, 10, 5, 290);
         g2.fillRect(10, 10, 750, 5);
-        g2.fillRect(760, 10, 5, 150);
-        g2.fillRect(760, 250, 5, 55);
+        g2.fillRect(760, 10, 5, 110);
+        g2.fillRect(760, 210, 5, 95);
         
 
         for(Gui gui : guis) {
