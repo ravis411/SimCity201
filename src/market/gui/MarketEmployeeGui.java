@@ -26,25 +26,26 @@ public class MarketEmployeeGui implements Gui {
 	private final int yFood3Cord= 50;
 	private final int xCounterEntranceCord= 700;
 	private final int yCounterEntranceCord= 180;
+	private final int xManagerOfficeDoor= 180;
+	private final int yManagerOfficeDoor= 140;
 	private int xCounter;
 	private int yCounter= 180;
     public final int xTable = 200;
     public final int yTable = 250;
-    private int waiterNumber;
+    private int employeeNumber;
     private int tableNum;
     private String orderBeingCarried = " ";
     private boolean atCounter=false;
+    private boolean orderForManager=false;
     MarketGui gui;
 
-    public MarketEmployeeGui(MarketEmployee marketEmployee, MarketGui gui, int waiterNumber) {
+    public MarketEmployeeGui(MarketEmployee marketEmployee, MarketGui gui) {
         this.role = marketEmployee;
         xDestination=xCounterEntranceCord;
         yDestination = yCounterEntranceCord+100;
-        xCounter=395 + 100*(waiterNumber%4);
         xPos = xResturantEntrance;//default start position
         yPos = yResturantEntrance;
         this.gui = gui;
-        this.waiterNumber=waiterNumber;
     }
 
     public void updatePosition() {
@@ -62,10 +63,27 @@ public class MarketEmployeeGui implements Gui {
         else if (yPos > yDestination)
             {yPos--;
             }
+       
         if (xPos == xDestination && yPos == yDestination
         		& (xDestination == xCounterEntranceCord & (yDestination == yCounterEntranceCord+100))) {
         	xDestination= xCounterEntranceCord;
         	yDestination= yCounterEntranceCord;
+        }
+        if (xPos == xDestination && yPos == yDestination
+        		& (xDestination == xCounterEntranceCord & (yDestination == yCounterEntranceCord))) {
+        	xDestination= xManagerOfficeDoor;
+        	yDestination= yManagerOfficeDoor;
+        }
+        if (xPos == xDestination && yPos == yDestination
+        		& (xDestination == xManagerOfficeDoor & (yDestination == yManagerOfficeDoor))) {
+        	if (orderForManager)
+        	{
+        		xDestination= xCounter;
+            	yDestination= yCounter;
+            	orderForManager=false;
+        	}
+        	else
+        	role.msgMarketEmployeeAtManager();
         }
         if (xPos == xDestination && yPos == yDestination
         		& (xDestination == xFood1Cord & (yDestination == yFood1Cord+69))) {
@@ -114,13 +132,22 @@ public class MarketEmployeeGui implements Gui {
         }
         if (xPos == xDestination && yPos == yDestination
         		& (xDestination == xFood3Cord & (yDestination == yFood3Cord+76))) {
-        	xDestination= xCounter;
-        	yDestination= yCounter;
+        	if (orderForManager){
+        		xDestination= xManagerOfficeDoor;
+            	yDestination= yManagerOfficeDoor;
+            	
+        	}
+        	else{
+        		xDestination= xCounter;
+        		yDestination= yCounter;
+        	}
+        	
         }
         if (xPos == xDestination && yPos == yDestination
         		& (xDestination == xCounterEntranceCord & (yDestination == yCounterEntranceCord))) {
-        	xDestination= xCounter;
-        	yDestination= yCounter;
+        		xDestination= xManagerOfficeDoor;
+            	yDestination= yManagerOfficeDoor;
+         
         }
         if (xPos == xDestination && yPos == yDestination
 				& (xDestination == xCounter & (yDestination == yCounter) ) && !atCounter) {
@@ -166,12 +193,22 @@ public class MarketEmployeeGui implements Gui {
 		yDestination=yFood1Cord+69;
 		
 	}
+	public void goCollectFoodOrderForManager() {
+		xDestination=xFood1Cord;
+		yDestination=yFood1Cord+69;
+		orderForManager=true;
+	}
     public void DoLeave() {
         xDestination = xResturantEntrance;
         yDestination = yResturantEntrance;
         
     }
-
+    public void setCounter(int employeeNumber){
+    	this.employeeNumber=employeeNumber;
+    	xCounter=395 + 100*(employeeNumber%4);
+    	xDestination = xCounter;
+        yDestination = yCounter;
+    }
     public int getXPos() {
         return xPos;
     }
@@ -200,6 +237,8 @@ public class MarketEmployeeGui implements Gui {
 		}
 		
 	}
+
+	
 
 
 

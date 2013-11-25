@@ -18,4 +18,9 @@ public interface MarketEmployee {
 
 	public abstract void msgMarketEmployeeConfirmPartialOrder(
 			boolean willTakePartialOrder, MarketCustomerRole marketCustomerRole);
+
+	public abstract void msgMarketEmployeeYourCounterNumber(int i);
+
+	public abstract void msgMarketEmployeeAtManager();
+	public abstract void msgMarketEmployeeAttemptToFillOrder(String foodType, int amount, int orderNumber);
 }

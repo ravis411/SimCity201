@@ -1,7 +1,12 @@
 package MarketEmployee;
 
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import market.gui.MarketManagerGui;
+import market.interfaces.MarketEmployee;
 import market.interfaces.MarketManager;
 import Person.Role.Role;
 
@@ -10,8 +15,17 @@ import Person.Role.Role;
  */
 //MarketCustomer Agent
 public class MarketManagerRole extends Role implements MarketManager{
+	enum MarketEmployeeState
+	{walkingToCounter, waiting, waitingFor};
+	enum MarketEmployeeEvent
+	{enteredMarket, atDesk,};
 	
+	public MarketEmployeeEvent event=MarketEmployeeEvent.enteredMarket;
+	public MarketEmployeeState state=MarketEmployeeState.walkingToCounter;
+	List<CounterStation> currentEmployeees	= new ArrayList<CounterStation>();
+	List<Order> myOrders = new ArrayList<Order>();
 	MarketManagerGui gui;
+	int marketMoney;
 	/**
 	 * Constructor for MarketManager Role
 	 *
@@ -29,30 +43,67 @@ public class MarketManagerRole extends Role implements MarketManager{
 
 	
 	// Messages
+	@Override
+	synchronized public void msgMarketManagerReportingForWork(MarketEmployeeRole marketEmployee){
+		
+		boolean counter1Occupied=false;
+		boolean counter2Occupied=false;
+		boolean counter3Occupied=false;
+		if (!currentEmployeees.isEmpty()){
+		for (int i=0; i<currentEmployeees.size(); i++)
+		{
+			if (currentEmployeees.get(i).getCounterNumber()==0)
+				counter1Occupied=true;
+			if (currentEmployeees.get(i).getCounterNumber()==1)
+				counter2Occupied=true;
+			if (currentEmployeees.get(i).getCounterNumber()==2)
+				counter3Occupied=true;		
+		}
+		}
+		if (!counter1Occupied){
+			currentEmployeees.add(new CounterStation(0,marketEmployee));
+		}
+		else if (!counter2Occupied){
+			currentEmployeees.add(new CounterStation(1,marketEmployee));
+		}
+		else if (!counter3Occupied){
+			currentEmployeees.add(new CounterStation(2,marketEmployee));
+		}
+		
+	}
+
+	/*public void msgMarketManagerFoodOrder(String foodType, int amount, HomeRole homePerson)
+	{
+		myOrders.add(new Order(foodType, amount, homePerson));
+	}
+	*/
+	public void msgMarketManagerHereIsAmountWeCanFulfill(String foodType, int FoodTypeAmount, int orderNumber){
+		for (int i = 0; i<myOrders.size(); i++)
+			if (orderNumber == myOrders.get(i).getOrderNumber())
+			{
+				myOrders.get(i).setOrderProcessed(true);
+				myOrders.get(i).setAmountReadyToBeShipped(FoodTypeAmount);
+				break;
+			}
+	}
+	
+//	void msgMarketManagerFoodOrder(String foodType, int amount, Cook cook)
+	//{
+		//myOrders.add(new Order(foodType, amount, cook);
+//	}
 	/*
 	msgMarketManagerFoodOrder(String foodType, int amount, BankManager bankManager)
 	{
 		myOrders.add(new Order(foodType, amount, bankManager);
 	}
-	msgMarketManagerFoodOrder(String foodType, int amount, Cook cook)
-	{
-		myOrders.add(new Order(foodType, amount, cook);
-	}
 	
-	msgMarketManagerFoodOrder(String foodType, int amount, HomeRole homePerson)
-	{
-		myOrders.add(new Order(foodType, amount, homePerson);
-	}
+	
+	
 	msgMarketManagerHereIsPayment(int moneyPayment)
 	{
 		marketMoney= marketMoney+moneyPayment;
 	}
-	msgMarketManagerHereIsAmountWeCanFulfull(String foodType, int FoodTypeAmount, int orderNumber){
-		for all orders in myOrders
-			if orderNumber == an OrderNumber in myOrders
-			order.setOrderState(Processed);
-			order.setAmountReadyToBeShipped(FoodTypeAmount);
-	}
+	
 */
 
 	/**
@@ -90,13 +141,16 @@ public class MarketManagerRole extends Role implements MarketManager{
 	}
 
 	// Actions
-		/*
-			giveOrderToMarketEmployee()
-			{
-			msgMarketEmployeeAttemptToFillOrder(String foodType, int amount, int orderNumber)
-			order.setOrderState(waitingForOrder);
+		
+			void giveOrderToMarketEmployee(){
+				Random random = new Random(System.nanoTime());
+				int selcetedEmployee=random.nextInt(currentEmployeees.size());
+				
+				currentEmployeees.get(selcetedEmployee).getEmployeeAssignedToCounter().msgMarketEmployeeAttemptToFillOrder("Burger", 2, 1);
+			//msgMarketEmployeeAttemptToFillOrder(String foodType, int amount, int orderNumber)
+			//order.setOrderState(waitingForOrder);
 			}
-			
+			/*
 			shipAndOrNotifyCustomerOfOrderProblems(Order order){
 			
 				if (order.getRole == cook)
@@ -139,7 +193,7 @@ public class MarketManagerRole extends Role implements MarketManager{
 						msgTruckDeliverOrder(order.foodType, order.getamountReadyToBeShipped(), order.getRole());
 				}
 				
-				remove order from myOrders
+				remove order from myOrders/*
 			}
 			
 
@@ -159,18 +213,63 @@ public class MarketManagerRole extends Role implements MarketManager{
 		return false;
 	} 
 	
-/*
-	Class Order{
-		enum state= none, waitingForOrder, orderProcessed
+	private class CounterStation{
+		int CounterNumber;
+		MarketEmployee EmployeeAssignedToCounter;
+		
+		CounterStation(int CounterNumber, MarketEmployee EmployeeAssignedToCounter){
+			this.CounterNumber=CounterNumber;
+			this.EmployeeAssignedToCounter=EmployeeAssignedToCounter;
+			EmployeeAssignedToCounter.msgMarketEmployeeYourCounterNumber(CounterNumber);
+		}
+		
+		int getCounterNumber(){
+			return CounterNumber;
+		}
+		MarketEmployee getEmployeeAssignedToCounter(){
+			return EmployeeAssignedToCounter;
+		}
+	}
+	
+	private class Order{
+
 		String foodType;
 		int amount;
-		AgentRole role;
+		Role role;
 		int orderNumber;
 		int amountReadyToBeShipped;
+		boolean processed;
+		Order(String foodType,int amount,int orderNumber, Role role){
+			this.foodType=foodType;
+			this.amount=amount;
+			this.orderNumber=orderNumber;
+			this.role=role;
+			processed=false;
 		}
-		ArrayList myOrders;
-		int marketMoney;
+		public void setAmountReadyToBeShipped(int foodTypeAmount) {
+			amountReadyToBeShipped=foodTypeAmount;
+			
+		}
+		public int getAmountReadyToBeShipped(int foodTypeAmount) {
+			return amountReadyToBeShipped;
+			
+		}
+		public void setOrderProcessed(boolean tf) {
+			processed=tf;			
+		}
+		public int getOrderNumber() {
+			
+			return orderNumber;
+		}
+		
+		}
+
+
+
+
+
+		
 }
-*/
-}
+
+
 	

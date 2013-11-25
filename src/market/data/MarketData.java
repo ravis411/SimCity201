@@ -3,12 +3,19 @@ package market.data;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Shelves {
+import market.interfaces.MarketManager;
+
+public class MarketData {
 	List<Inventory> marketInventory	= new ArrayList<Inventory>();
-	public Shelves(){
+	MarketManager currentMarketManager;
+	List<Integer> numberOfCustomersInALine	= new ArrayList<Integer>();
+	public MarketData(){
 		marketInventory.add(new Inventory("Steak",1));
 		marketInventory.add(new Inventory("Chicken",1));
 		marketInventory.add(new Inventory("Burger",1));
+		numberOfCustomersInALine.add(new Integer(0));//line 1
+		numberOfCustomersInALine.add(new Integer(0));//line 2
+		numberOfCustomersInALine.add(new Integer(0));//line 3
 	}
 	public int size(){
 		return marketInventory.size();
@@ -34,7 +41,18 @@ public class Shelves {
 	public void restockFoodAmount(int inventoryListNumber, int amountToRestock){
 		marketInventory.get(inventoryListNumber).restockFoodAmount(amountToRestock);
 	}
-	
+	public void setMarketManager(MarketManager marketManager){
+		currentMarketManager=marketManager;
+	}
+	public MarketManager getMarketManager(){
+		return currentMarketManager;
+	}
+	public int getNumberOfCustomersInALine(int linenumber){
+		return numberOfCustomersInALine.get(linenumber).intValue();
+	}
+	public void incrementNumerOfCustomersInALine(int linenumber) {
+		numberOfCustomersInALine.add(linenumber, numberOfCustomersInALine.get(linenumber).intValue()+1);
+	}
 	
 
 private class Inventory {
@@ -58,4 +76,7 @@ private void restockFoodAmount(int amountToRestock) {
 	amount +=amountToRestock;
 }
 }
+
+
+
 }

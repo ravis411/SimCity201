@@ -105,16 +105,12 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 			return true;
 		}
 		if (event == MarketCustomerEvent.leaving && state!= MarketCustomerState.none){
-			print("Leaveing Market");
+			
 			leaveMarket();
 			return true;
 		}
 				
-		/*
-		if (marketCustomerState== replyingToEmployee)
-			tellMarketEmployeeIfPartialOrderAcceptable();
-		
-*/	
+	
 		return false;
 		//we have tried all our rules and found
 		//nothing to do. So return false to main loop of abstract agent
@@ -132,9 +128,9 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		marketEmployee.msgMarketEmployeetTellMeWhenICanGiveOrder(this);
+
 		try {
-			marketEmployee.msgMarketEmployeetTellMeWhenICanGiveOrder(this);
 			employeeReadyToTakeOrder.acquire();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -155,6 +151,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	void tellMarketEmployeeIfPartialOrderAcceptable(){
 		marketEmployee.msgMarketEmployeeConfirmPartialOrder(willTakePartialOrder, this);
 		if (willTakePartialOrder == false)
+			print("Leaveing Market");
 			leaveMarket();
 		}
 	void leaveMarket(){

@@ -24,7 +24,7 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
     final static int storeCounterRightWIDTH= 50;
     final static int storeCounterXHEIGHT = 30;
     
-    final static int TIMERCOUNTmilliseconds = 5;
+    final static int TIMERCOUNTmilliseconds = 1;
     private Image bufferImage;
     private Dimension bufferSize;
 

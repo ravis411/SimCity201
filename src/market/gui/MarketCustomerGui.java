@@ -94,12 +94,7 @@ public class MarketCustomerGui implements Gui {
         xDestination = (xTable + 20 + ((tableN-1)*60));
         yDestination = yTable - 20;
     }
-    
-    public void DoGoToCook() {
-    	//xDestination = xCookCord;
-      //  yDestination = yCookCord;
-		
-	}
+
 	public void DoGoToCounter() {
 		xDestination=xCounterCord;
 		yDestination=yCounterCord;

@@ -62,4 +62,26 @@ public class MockMarketEmployee extends Mock implements MarketEmployee {
 		
 	}
 
+
+	@Override
+	public void msgMarketEmployeeYourCounterNumber(int i) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void msgMarketEmployeeAtManager() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void msgMarketEmployeeAttemptToFillOrder(String foodType,
+			int amount, int orderNumber) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
