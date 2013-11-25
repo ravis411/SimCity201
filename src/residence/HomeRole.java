@@ -31,7 +31,7 @@ public class HomeRole extends Role implements Home {
 
 	private String name;
 	
-	public HomeRoleGui gui = null;
+	public HomeRoleGui gui;
 
 	public enum AgentState
 	{DoingNothing, Cooking, Sleeping, Leaving};
@@ -41,8 +41,11 @@ public class HomeRole extends Role implements Home {
 	{none, cooking, eating, asleep, leaving};
 	AgentEvent event = AgentEvent.none;
 
-	public HomeRole(String name) {
-		this.name = name;
+	public HomeRole(PersonAgent myPerson) {
+		this.myPerson = myPerson;
+		
+		gui = new HomeRoleGui(this);
+		myPerson.home.getPanel().addGui(gui);
 		
 		inventory.add(new Item("Cooking Ingredient",2));
 		inventory.add(new Item("Cleaning supply", 2));

@@ -22,6 +22,8 @@ import javax.swing.JPanel;
  */
 public class ResidenceBuildingPanel extends BuildingPanel{
 	
+	AnimationPanel residencePanel;
+	
 	public ResidenceBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels) {
 		super(r, name, buildingPanels);
 		
@@ -29,7 +31,7 @@ public class ResidenceBuildingPanel extends BuildingPanel{
 		
 		setBackground( Color.yellow );
 		
-		AnimationPanel residencePanel = new AnimationPanel();
+		residencePanel = new AnimationPanel();
 		
 		setLayout(new GridLayout(1,1));
 		
@@ -41,6 +43,10 @@ public class ResidenceBuildingPanel extends BuildingPanel{
 	
 	public String getName() {
 		return myName;
+	}
+	
+	public AnimationPanel getPanel() {
+		return residencePanel;
 	}
 
 	public void displayBuildingPanel() {

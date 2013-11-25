@@ -215,7 +215,7 @@ public class SetUpWorldFactory{
 			addVehicle("EvenMockBus");
 			addVehicle("OddMockBus");
 			
-			addPerson("Person 1");
+			addPerson("Person 1", buildingsPanels.getResidenceBuildingPanel("House 1"));
 //			addPerson("Person 2");
 //			addPerson("Person 3");
 			
@@ -362,9 +362,9 @@ public class SetUpWorldFactory{
 			addVehicle("EvenMockBus");
 			addVehicle("OddMockBus");
 			
-			addPerson("Person 1");
-			addPerson("Person 2");
-			addPerson("Person 3");
+			//addPerson("Person 1");
+			//addPerson("Person 2");
+			//addPerson("Person 3");
 	}
 	public void LoadGUITest2(){
 		
@@ -480,9 +480,9 @@ public class SetUpWorldFactory{
 	
 	
 	
-	private void addPerson(String name){
+	private void addPerson(String name, ResidenceBuildingPanel home){
 		//PersonAgent p1 = new PersonAgent(name);
-		PersonAgent p1 = new PersonAgent(name);
+		PersonAgent p1 = new PersonAgent(name, home);
 		AStarTraversal t = new PersonAStarTraversal(layout.getAgentGrid(), layout.getCrossWalkGrid(), layout.getRoadGrid());
 		PersonGui g1 = new PersonGui(p1, layout, t, locationMap);
 		p1.setGui(g1);
