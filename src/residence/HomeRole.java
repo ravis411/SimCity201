@@ -56,7 +56,7 @@ public class HomeRole extends Role implements Home {
 		features.add(new HomeFeature("Sink"));
 	}
 	
-	public String getName() {
+	public String getNameOfRole() {
 		return "HomeRole";
 	}
 	
@@ -122,9 +122,9 @@ public class HomeRole extends Role implements Home {
 		atBed.release();
 	}
 	public void msgAtFrontDoor() {
+		deactivate();
 		event = AgentEvent.none;
 		atFrontDoor.release();
-		deactivate();
 	}
 	public void msgAtTable() {
 		atTable.release();

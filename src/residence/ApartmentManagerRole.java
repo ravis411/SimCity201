@@ -32,7 +32,7 @@ public class ApartmentManagerRole extends Role implements ApartmentManager {
 		this.name = name;
 	}
 	
-	public String getName() {
+	public String getNameOfRole() {
 		return name;
 	}
 	

@@ -131,7 +131,7 @@ public class PersonAgent extends Agent {
 	  */
 	public void msgReportForWork(String role){
 		for(Role r: roles){
-			if(r.role==role){
+			if(r.getNameOfRole()==role){
 				r.activate();
 			}
 		}
@@ -442,7 +442,7 @@ public class PersonAgent extends Agent {
 		  GoToLocation("House 1", transport);
 		  HomeRole role = (HomeRole) findRole(Role.HOME_ROLE);
 		  role.activate();
-		  role.msgTired();
+		  role.msgMakeFood();
 	}
 		  
 	//------------------------DO XYZ FUNCTIONS----------------------//
@@ -501,7 +501,7 @@ public class PersonAgent extends Agent {
 	
 	private Role findRole(String role){
 		for(Role r : roles){
-			if(r.getName().equals(role)){
+			if(r.getNameOfRole().equals(role)){
 				return r;
 			}
 		}
@@ -664,6 +664,10 @@ public class PersonAgent extends Agent {
 	
 	public void setGui(PersonGui gui){
 		this.gui = gui;
+	}
+	
+	public String toString(){
+		return getName();
 	}
 
 }

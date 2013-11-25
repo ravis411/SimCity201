@@ -16,5 +16,5 @@ public interface Passenger {
 	/**
 	 * Utility getter for name
 	 */
-	public abstract String getName();
+	public abstract String getNameOfRole();
 }

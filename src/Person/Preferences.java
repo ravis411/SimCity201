@@ -18,7 +18,7 @@ public class Preferences {
 		//String vehicle_pref = Math.random() < 0.5 ? BUS : WALK;
 		String vehicle_pref = WALK;
 		//String vehicle_pref = BUS;
-		map.put(KeyValue.VEHICLE_PREFERENCE, vehicle_pref);
+//		map.put(KeyValue.VEHICLE_PREFERENCE, vehicle_pref);
 	}
 	
 	public String get(KeyValue field){

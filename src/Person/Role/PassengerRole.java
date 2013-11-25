@@ -60,7 +60,7 @@ public class PassengerRole extends Role implements Passenger{
 	}
 
 	@Override
-	public String getName() {
+	public String getNameOfRole() {
 		return name;
 	}
 		

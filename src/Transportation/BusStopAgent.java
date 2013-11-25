@@ -92,7 +92,7 @@ public class BusStopAgent extends Agent implements BusStop {
 	
 	//Actions
 	private void boardPassenger(myPassenger mp) {
-		print("Boarding passenger " + mp.passenger.getName());
+		print("Boarding passenger " + mp.passenger.getNameOfRole());
 		mp.passenger.msgBusIsHere();
 	}
 	

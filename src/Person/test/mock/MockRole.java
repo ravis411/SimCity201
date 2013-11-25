@@ -11,7 +11,7 @@ public class MockRole extends Role{
 	@Override
 	public boolean pickAndExecuteAction() {
 		// TODO Auto-generated method stub
-		log.logMessage(AlertTag.PERSON, getName(), "Role Scheduler Called");
+		log.logMessage(AlertTag.PERSON, getNameOfRole(), "Role Scheduler Called");
 		return true;
 	}
 
@@ -23,7 +23,7 @@ public class MockRole extends Role{
 	}
 
 	@Override
-	public String getName() {
+	public String getNameOfRole() {
 		// TODO Auto-generated method stub
 		return "mockrole";
 	}

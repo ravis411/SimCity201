@@ -3,7 +3,10 @@ team29
 
 SimCity201 Project Repository for CS 201 students
 
-<<<<<<< HEAD
+Bank Branch
+
+Currently Assigned: Byron Choy
+=======
 Residence Branch
 
 Currently Assigned: Dylan Resnik
@@ -12,4 +15,3 @@ Currently Assigned: Dylan Resnik
 Overworld Branch
 
 Currently Assigned: Ryan
->>>>>>> origin/person
