@@ -122,9 +122,9 @@ public class HomeRole extends Role implements Home {
 		atBed.release();
 	}
 	public void msgAtFrontDoor() {
+		deactivate();
 		event = AgentEvent.none;
 		atFrontDoor.release();
-		deactivate();
 	}
 	public void msgAtTable() {
 		atTable.release();
