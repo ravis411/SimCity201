@@ -72,7 +72,7 @@ public class PersonAgent extends Agent {
 		friends = new ArrayList<PersonAgent>();
 		roles = new ArrayList<Role>();
 		hungerLevel = 0;
-		state=PersonState.Idle;
+		state=PersonState.GettingFood;
 		realTime = null;
 		
 		prefs = new Preferences();
@@ -213,10 +213,7 @@ public class PersonAgent extends Agent {
 	 */
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		// TODO Auto-generated method stub
-		for(Party p:parties){
-
-		}
+		// TODO Auto-generated method stu
 		
 		//cue the Role schedulers
 		boolean outcome = false;
@@ -232,6 +229,10 @@ public class PersonAgent extends Agent {
 		if(!itemsNeeded.isEmpty()){
 			GoToMarketForItems();
 			return true;
+		}
+		
+		if(state != PersonState.Idle){
+			GoHome();
 		}
 		
 		return false;
@@ -409,9 +410,31 @@ public class PersonAgent extends Agent {
 			case Preferences.CAR:
 				break;
 			case Preferences.WALK:
+				System.err.println("Trying to walk to "+location);
 				gui.DoGoTo(location);
 				break;
 		}
+	}
+	
+	private void GoHome(){
+		String transport;
+	  //state = PersonState.Idle;
+	  switch(prefs.get(Preferences.KeyValue.VEHICLE_PREFERENCE)){
+	  	case Preferences.BUS:
+	  		transport = Preferences.BUS;
+	  		break;
+	  	case Preferences.CAR:
+	  		transport = Preferences.CAR;
+	  		break;
+	  	case Preferences.WALK:
+	  		transport = Preferences.WALK;
+	  		break;
+	  		
+	  	default:
+	  		transport = "ERROR";
+	  }
+		  
+		  GoToLocation("Building 2", transport);
 	}
 		  
 	//------------------------DO XYZ FUNCTIONS----------------------//
