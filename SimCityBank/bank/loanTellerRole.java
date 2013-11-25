@@ -4,6 +4,7 @@ import bank.bankTellerRole.requestState;
 import bank.gui.LoanGui;
 
 import java.util.*;
+import java.util.concurrent.Semaphore;
 
 import agent.Agent;
 import astar.AStarTraversal;
@@ -24,30 +25,32 @@ public class loanTellerRole extends Agent{
 	private numberAnnouncer announcer;
 	private String name;
 	private int ticketNum = 1;
-
+	private Semaphore atStation = new Semaphore(0,true);
 
 	public loanTellerRole(String s){
 		super();
 		name = s;
 		Accounts = Database.INSTANCE.sendDatabase();
 	}
+	
+	public void setAnnouncer(numberAnnouncer a){
+		announcer = a;
+	}
 
 	//	Messages
-
+	public void msgAtStation(){
+		Do("At Station.");
+		atStation.release();
+		announcer.msgAddLoanTeller(this);
+		stateChanged();
+	}
+	
 	public void msgInLine(bankClientRole b){
 		myClient = b;
 		stateChanged();
 	}
 	public void msgOpenAccount(){
 		state = requestState.open;
-	}
-	public void msgDeposit(double a){
-		transactionAmount = a;
-		state = requestState.deposit;
-	}
-	public void msgWithdraw(double a){
-		transactionAmount = a;
-		state = requestState.withdrawal;
 	}
 	public void msgLoan(double a){
 		transactionAmount = a;
@@ -73,6 +76,7 @@ public class loanTellerRole extends Agent{
 
 	//	Actions
 	private void receiveClient(bankClientRole b){
+		Do("Recieving new client");
 		b.msgMayIHelpYou();
 	}
 	private void processLoan(bankClientRole b){
@@ -81,10 +85,14 @@ public class loanTellerRole extends Agent{
 				if (b.age > 18 && b.age < 85){
 					if (transactionAmount > a.amount){
 						if (!b.HasLoan()){
+							Do("Loan approved.");
 							b.msgLoanApproved(transactionAmount);
 						}
 					}
-				} else b.msgTransactionCompleted(0);
+				} else {
+					Do("Loan denied.");
+					b.msgTransactionCompleted(0);
+				}
 				state = requestState.none;
 				ticketNum++;
 				announcer.msgLoanComplete();
@@ -95,6 +103,7 @@ public class loanTellerRole extends Agent{
 	private void openAccount(bankClientRole b){
 		Account a = new Account(b, b.money);
 		Database.INSTANCE.addToDatabase(a);
+		Do("New bank account has been opened for " + b);
 		b.msgAccountOpened(a);
 	}
 

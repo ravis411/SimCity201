@@ -18,11 +18,10 @@ public class BankAnimationPanel extends JPanel implements ActionListener {
 
 	private final static int WINDOWX = 800;//
 	private final static int WINDOWY = 400;
-	final static int storeCounterX = 0;//TABLEX and TABLEY describe where the table appears in the panel
-	final static int storeCounterY = 200;
-	final static int storeCounterLeftWIDTH= 700;
-	final static int storeCounterRightWIDTH= 50;
-	final static int storeCounterXHEIGHT = 30;
+	final static int counterX = 0;//TABLEX and TABLEY describe where the table appears in the panel
+	final static int counterY = 200;
+	final static int counterWIDTH= 800;
+	final static int counterXHEIGHT = 30;
 
 	final static int TIMERCOUNTmilliseconds = 5;
 	private Image bufferImage;
@@ -53,34 +52,42 @@ public class BankAnimationPanel extends JPanel implements ActionListener {
 		g2.setColor(getBackground());
 		g2.fillRect(0, 0, WINDOWX, WINDOWY );
 
-
+		g2.setColor(Color.WHITE);
+		//fillRect(xPosition,yPosition,xLength,yLength)
+		g2.fillRect(0, 250,150,150);
+		
+		
+		
 		g2.setColor(Color.ORANGE);
 
-		g2.fillRect(storeCounterX, storeCounterY, storeCounterLeftWIDTH, storeCounterXHEIGHT);//store counter
-		g2.fillRect(750, storeCounterY, storeCounterRightWIDTH, storeCounterXHEIGHT);//store counter
-		g2.fillRect(0,100,200,20);//top manager office wall
-		g2.fillRect(200,100,20,40);//manager office top half right wall
-		g2.fillRect(200,170,20,30);//manager office bottom half left wall
-		g2.fillRect(400, 0, 30, 125);//shelve #1 from left
-		g2.fillRect(500, 0, 30, 125);//shelve #2 from left
-		g2.fillRect(600, 0, 30, 125);//shelve #3 from left
-		g2.fillRect(700, 0, 30, 125);//shelve #4 from left
-
+		g2.fillRect(counterX, counterY, counterWIDTH, counterXHEIGHT);//store counter
+		g2.fillRect(140, 0, 30, 175);
+		g2.fillRect(240, 0, 30, 175);
+		g2.fillRect(340, 0, 30, 175);
+		g2.fillRect(440, 0, 30, 175);
+		g2.fillRect(540, 0, 30, 175);
+		g2.fillRect(640, 0, 30, 175);
+		
+		
 		g2.setColor(Color.BLACK);//sets text color...or anything following this line
 		g2.setFont(new Font("Serif", Font.PLAIN, 15));
-		g2.fillRect(350, 200, 10, 30);//dividers between counter windows 
-		g2.drawString("Window #1", 370, 430);
+		g2.drawString("Break Area", 0, 20);
+		g2.fillRect(150, 200, 10, 30);//dividers between counter windows 
+		g2.drawString("Window #1", 170, 220);
+		g2.fillRect(250, 200, 10, 30);
+		g2.drawString("Window #2", 270, 220);
+		g2.fillRect(350, 200, 10, 30);
+		g2.drawString("Window #3", 370, 220);
 		g2.fillRect(450, 200, 10, 30);
-		g2.drawString("Window #2", 470, 430);
+		g2.drawString("Window #4", 470, 220);
 		g2.fillRect(550, 200, 10, 30);
-		g2.drawString("Window #3", 570, 430);
+		g2.drawString("Window #5", 570,220);
 		g2.fillRect(650, 200, 10, 30);
-		g2.drawString("Entrance", 380, 370);
-
-
-		g2.drawString("Manager's Office", 60, 115);
-		g2.drawString("Store Shelves Area", 510, 20);
-		g2.drawString("Delivery Truck", 10, 20);
+		g2.drawString("Waiting Area", 30, 245);
+		g2.drawString("Employee",700, 20);
+		g2.drawString("Entrance",700,40);
+		g2.drawString("Entrance", 700, 370);
+		
 		for(Gui gui : guis) {
 			if (gui.isPresent()) {
 				gui.updatePosition();

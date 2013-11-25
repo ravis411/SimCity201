@@ -32,14 +32,16 @@ public class BankGui extends JFrame implements ActionListener {
     */
     private Vector<bankClientRole> bankClientRoles = new Vector<bankClientRole>();
     private Vector<bankTellerRole> bankTellerRoles = new Vector<bankTellerRole>();
+    private numberAnnouncer announcer = new numberAnnouncer("NumberBot");
     private loanTellerRole loanTeller = new loanTellerRole("Barry");
+    
     /**
      * Constructor for BankGui class.
      * Sets up all the gui components.
      */
     public BankGui() {
-        
-            setBounds(WINDOWXOpenPosition, WINDOWXOpenPosition, WINDOWX, WINDOWY);
+    	
+        setBounds(WINDOWXOpenPosition, WINDOWXOpenPosition, WINDOWX, WINDOWY);
 
         setLayout(new BorderLayout());
        
@@ -48,6 +50,7 @@ public class BankGui extends JFrame implements ActionListener {
         setMinimumSize(marketAnimationFrameDim);
         setMaximumSize(marketAnimationFrameDim);
         add(animationPanel, BorderLayout.CENTER);
+  
         //Test Employee #1
 /*
         marketEmployeePersons.add( new PersonAgent("Cary"));
@@ -61,80 +64,39 @@ public class BankGui extends JFrame implements ActionListener {
         marketEmployeeRoles.get(0).setMarketInventory(marketInventory);
 */
         bankTellerRoles.add(new bankTellerRole("Andy", 1));
-        TellerGui tellerGui = new TellerGui();
-        
-        
-        
-        //Test Employee #2
-
+        bankTellerRoles.add(new bankTellerRole("Sarah", 3));
+        bankClientRoles.add(new bankClientRole("Bob","deposit",50));
+        bankClientRoles.add(new bankClientRole("Candy", "deposit", 100));
+        TellerGui tellerGui = new TellerGui(bankTellerRoles.get(0),this, bankTellerRoles.get(0).getLine());
+        TellerGui tellerGui2 = new TellerGui(bankTellerRoles.get(1),this,bankTellerRoles.get(1).getLine());
+        ClientGui clientGui = new ClientGui(bankClientRoles.get(0),this);
+        ClientGui clientGui2 = new ClientGui(bankClientRoles.get(1),this);
+//        LoanGui loanGui = new LoanGui(loanTeller,this);
+        animationPanel.addGui(clientGui);
+        animationPanel.addGui(tellerGui);
+        animationPanel.addGui(clientGui2);
+        animationPanel.addGui(tellerGui2);
+ //       animationPanel.addGui(loanGui);
+       for (bankClientRole b : bankClientRoles){
+       	b.setAnnouncer(announcer);
+       }
+        for(bankTellerRole b : bankTellerRoles){
+        	b.setAnnouncer(announcer);
+        }
+        bankTellerRoles.get(0).setGui(tellerGui);
+        bankTellerRoles.get(0).startThread();
+        bankClientRoles.get(0).setGui(clientGui);
+        bankClientRoles.get(0).startThread();
+        bankClientRoles.get(1).setGui(clientGui2);
+        bankClientRoles.get(1).startThread();
+        bankTellerRoles.get(1).setGui(tellerGui2);
+        bankTellerRoles.get(1).startThread();
+        loanTeller.setAnnouncer(announcer);
+        announcer.startThread();
+    
     }
     
-    
- 
-    
-    /**
-     * updateInfoPanel() takes the given customer (or, for v3, Host) object and
-     * changes the information panel to hold that person's info.
-     *
-     * @param person customer (or waiter) object
-     */
-    /*
-    public void updateInfoPanel(Object person) {
-        stateCB.setVisible(true);
-        currentPerson = person;
-
-        if (currentPerson instanceof CustomerAgent && ((CustomerAgent) currentPerson).isHungry()) {//to make customer hungry if set as hungry in initial creation
-            CustomerAgent c = (CustomerAgent) currentPerson;
-            stateCB.setText("Hungry?");
-          //Should checkmark be there? 
-            stateCB.setSelected(c.isHungry());
-          //Is customer hungry? Hack. Should ask customerGui
-            stateCB.setEnabled(!c.isHungry());
-          // Hack. Should ask customerGui
-            infoLabel.setText(
-               "<html><pre>     Name: " + c.getName() + " </pre></html>");
-            if ( !c.getGui().isHungry())
-            {
-            c.getGui().setHungry();
-            }
-        }
-        else if (currentPerson instanceof CustomerAgent && !((CustomerAgent) currentPerson).isHungry()) {//to make customer hungry if set as hungry in initial creation
-            CustomerAgent c = (CustomerAgent) currentPerson;
-            stateCB.setText("Hungry?");
-          //Should checkmark be there? 
-            stateCB.setSelected(false);
-          //Is customer hungry? Hack. Should ask customerGui
-            stateCB.setEnabled(!c.isHungry());
-          // Hack. Should ask customerGui
-            infoLabel.setText(
-               "<html><pre>     Name: " + c.getName() + " </pre></html>");
-        }
-        else if (currentPerson instanceof WaiterAgent && !((WaiterAgent) currentPerson).isOnBreak()) {//to make customer hungry if set as hungry in initial creation
-            WaiterAgent         w = (WaiterAgent) currentPerson;
-            stateCB.setText("Break?");            
-                    stateCB.setSelected(false);
-                    stateCB.setEnabled(true);
-                    infoLabel.setText(
-                       "<html><pre>     Name: " + w.getName() + " </pre></html>");
-        }
-        else if (currentPerson instanceof WaiterAgent && ((WaiterAgent) currentPerson).isOnBreak()) {//to make customer hungry if set as hungry in initial creation
-            WaiterAgent         w = (WaiterAgent) currentPerson;
-            stateCB.setText("back-to-work?");            
-                    stateCB.setSelected(true);
-                    stateCB.setEnabled(true);
-                    infoLabel.setText(
-                       "<html><pre>     Name: " + w.getName() + " </pre></html>");
-        }
-        infoPanel.validate();
-    }
-   
-    /**
-     * Action listener method that reacts to the checkbox being clicked;
-     * If it's the customer's checkbox, it will make him hungry
-     * For v3, it will propose a break for the waiter.
-     */
-    
-    @Override
+   @Override
         public void actionPerformed(ActionEvent e) {
             //
     }
