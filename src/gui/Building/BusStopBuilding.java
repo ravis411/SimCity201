@@ -10,11 +10,22 @@ import javax.swing.ImageIcon;
 
 public class BusStopBuilding extends Building {	
 	
+	ImageIcon imageI;
+	
 	public BusStopBuilding( Building b ) {
 		super( b.x, b.y, b.width, b.height );
-	}
+		
+		if(System.getProperty("os.name").contains("Windows")){
+			imageI = new ImageIcon(this.getClass().getResource("/images/bus-stop.png").getPath());
+		}
+		else
+		{
+			imageI = new ImageIcon(this.getClass().getResource("\\images\\bus-stop.png").getPath());
+		}
+		
+		}
 	
-	ImageIcon imageI = new ImageIcon("images/bus-stop.png");
+	
 	
 	@Override
 	public void draw(Graphics2D g) {

@@ -62,7 +62,7 @@ public class SetUpWorldFactory{
 		LocationInfo location = new LocationInfo();
 		
 			for(int x = 1; x < 7;x++) {
-				for(int y = 1; y < 5; y++){
+				for(int y = 1; y < 4; y++){
 					addBuilding("Default", "Building " + x + y, x * 5 - 2, (y * 5)-3, 2, 2, location );
 				}
 			}

@@ -1,52 +1,80 @@
-package gui.MockAgents;
+package Transportation;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 
 
 
-import trace.AlertLog;
-import trace.AlertTag;
+
+
+
+
 import gui.LocationInfo;
 import gui.agentGuis.VehicleGui;
+import gui.interfaces.Passenger;
 import gui.interfaces.Vehicle;
 import agent.Agent;
 
-public class MockBusAgent extends Agent implements Vehicle {
+public class BusAgent extends Agent implements Vehicle {
 
-	
+	//Data
 	String name;
 	boolean traveled = false;
 	boolean goToBusStop3 = false;
 	public VehicleGui agentGui;
 	Queue<String> StopsQueue = new LinkedList<>(); //<--a list of the stops to go to
 	
-	public MockBusAgent(String name, Queue<String> busStops) {
+	private class myPassenger {
+		myPassenger(Passenger p, PassengerState pass) {
+			passenger = p;
+			ps = pass;
+		}
+		Passenger passenger;
+		PassengerState ps;
+	}
+	
+	private List<myPassenger> passengers = Collections.synchronizedList(new ArrayList<myPassenger>());
+	private enum PassengerState {riding, disembarking};
+	
+	public enum AgentState {inTransit, loading, loaded};
+	private AgentState state = AgentState.inTransit;
+	
+	public BusAgent(String name, Queue<String> busStops) {
 		super();
 		StopsQueue.addAll(busStops);
 		this.name = name;
-//		if(order) {
-//			StopsQueue.add("Bus Stop " + 1);
-//			StopsQueue.add("Bus Stop " + 3);
-//			StopsQueue.add("Bus Stop " + 5);
-//			
-//		}
-//		else
-//		{
-//			StopsQueue.add("Bus Stop " + 2);
-//			StopsQueue.add("Bus Stop " + 4);
-//			StopsQueue.add("Bus Stop " + 6);
-//		}
+
+	}
+
+	//Messages
+	public void msgGettingOnBus(Passenger p) {
+		passengers.add(new myPassenger(p, PassengerState.riding));
+		stateChanged();
 	}
 	
-	public String getName(){
-		return name;
+	public void msgFreeToLeave() {
+		state = AgentState.loaded;
+		stateChanged();
 	}
 	
+	public void msgGettingOffBus(Passenger p) {
+		synchronized(passengers) {
+			for (myPassenger mp : passengers) {
+				if (mp.equals(p)) {
+					mp.ps = PassengerState.disembarking;
+					stateChanged();
+				}
+			}
+		}
+	}
+	
+	//Scheduler
 	@Override
 	protected boolean pickAndExecuteAnAction() {
-			
 		
 		if(!traveled) {
 			Travel();
@@ -60,6 +88,7 @@ public class MockBusAgent extends Agent implements Vehicle {
 		return false;
 	}
 	
+	//Actions
 	private void Travel(){
 		//agentGui.DoEnterWorld();
 		//agentGui.DoPark();
@@ -86,8 +115,10 @@ public class MockBusAgent extends Agent implements Vehicle {
 	public String toString(){
 		return "" + name;
 	}
-
-
+	
+	public String getName(){
+		return name;
+	}
 	
 	
 }

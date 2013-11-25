@@ -1,7 +1,26 @@
 package gui;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import trace.*;
+
+
+
+
+
+// If the program is lagging or runs out of memory.
+//It may help to add these to VM Arguments. Run -> Run Configurations -> Arguments -> VM Arguments.
+//-Xms2048M -Xmx2048M -Xss2048
+
+
+
+
 
 
 @SuppressWarnings("serial")
@@ -15,6 +34,10 @@ public class SimCity201Gui extends JFrame {
 	BuildingsPanels buildingsPanels = null;//<-Zoomed in view of buildings
 	GuiJMenuBar menuBar = null; //<<-- a menu for the user
 	SetUpWorldFactory factory = null; //<<-- used to Initialize all agents guis etc
+	TracePanel tracePanel = new TracePanel();
+	JPanel mainPanel = new JPanel(); //<<-- this holds the cityPanel and BuildingsPanels
+	
+	
 	
 	/**
 	 * Default Constructor Initializes gui
@@ -24,13 +47,47 @@ public class SimCity201Gui extends JFrame {
         setVisible(true);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(50, 50, WINDOWX, WINDOWY);
-		setLayout(new GridLayout(0, 1));
 		
-		menuBar = new GuiJMenuBar(this);
+        menuBar = new GuiJMenuBar(this);
 		this.setJMenuBar(menuBar);
+        
+        setBounds(50, 50, (int)(WINDOWX * 1.5), (WINDOWY + 50));
+		//setLayout(new GridLayout(1, 2));
+		setLayout(new GridBagLayout());
 		
 		
+		
+		tracePanel.showAlertsForAllLevels();
+		tracePanel.showAlertsForAllTags();
+		
+		GridBagConstraints c = new GridBagConstraints();
+		
+		c.gridx = 0; c.gridy = 0;
+		c.gridheight = 4;
+		this.add(mainPanel, c);
+		
+		/*c.gridx = 1; c.gridy = 0;
+		//c.ipady = 200;
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = .8;
+		this.add(tracePanel, c);*/
+		c.gridx = 1; c.gridy = 0;
+		c.ipady = 50;
+		c.gridheight = 1;
+		this.add(new TraceControlPanel(tracePanel), c);
+		
+		c.gridx = 1; c.gridy = 1;
+		c.weightx = .8;
+		c.fill = GridBagConstraints.BOTH;
+		c.gridheight = 0;
+		this.add(tracePanel, c);
+		
+		
+		
+		mainPanel.setLayout(new GridLayout(0, 1));
+		//add(mainPanel);
+		//add(tracePanel);
+	
 		
 		loadConfig("Default");
 		//loadConfig("GUI Test 1");
@@ -41,7 +98,9 @@ public class SimCity201Gui extends JFrame {
 	 * 
 	 */
 	void loadConfig(String config){
-		this.getContentPane().removeAll();
+		AlertLog.getInstance().logInfo(AlertTag.GENERAL_CITY, "City", "Loading " + config + " configuration.");
+		
+		mainPanel.removeAll();
 		cityPanel = null;
 		layout = null;
 		buildingsPanels = null;
@@ -70,16 +129,18 @@ public class SimCity201Gui extends JFrame {
 			buildingsPanels = factory.buildingsPanels;
 			break;
 		default:
-			System.out.println("ERROR");
+			AlertLog.getInstance().logError(AlertTag.GENERAL_CITY, "City", "Error loading " + config + " configuration.");
 			break;
 		}
 		
 		
 		//setJMenuBar(menuBar);
-		add(cityPanel);
-		add(buildingsPanels);	
-		this.getContentPane().revalidate();
-		this.getContentPane().repaint();
+		mainPanel.add(cityPanel);
+		mainPanel.add(buildingsPanels);
+		mainPanel.revalidate();
+		mainPanel.repaint();
+		//this.getContentPane().revalidate();
+		//this.getContentPane().repaint();
 		
 	}
 	

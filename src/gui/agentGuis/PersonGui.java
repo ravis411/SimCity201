@@ -15,6 +15,7 @@ import java.awt.image.BufferedImageOp;
 import java.awt.image.RescaleOp;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -25,6 +26,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import trace.AlertLog;
+import trace.AlertTag;
 import agent.Agent;
 import astar.AStarNode;
 import astar.AStarTraversal;
@@ -57,7 +60,8 @@ public class PersonGui implements Gui {
     private Map<String, LocationInfo> locations = new HashMap<>();//<<-- A Map of locations
     
     
-    BufferedImage img = null;
+    
+    Image image = null;
     boolean testView = false;
     
     //This holds information about where the person currently is..including how to leave.
@@ -81,10 +85,19 @@ public class PersonGui implements Gui {
 			//img = new ImageIcon(("movingCar.gif"));
 	
 			try {
-			    img = ImageIO.read(new File("images/UFO.png"));
+				String s =( this.getClass().getResource("/images/alien.png").getPath() );
+				BufferedImage img = ImageIO.read(new File(s));
+			    if(img == null){
+	        		testView = true;
+	        	} else{
+	        	ImageIcon icon = new ImageIcon(img);
+	        	image = icon.getImage();
+	        	}
 			} catch (IOException e) {
+				AlertLog.getInstance().logWarning(AlertTag.PERSON_GUI, agent.toString(), "Image not found. Switching to test view.");
 				testView = true;
 			}
+			
 
 			
         for(LocationInfo i : locationList){
@@ -125,11 +138,10 @@ public class PersonGui implements Gui {
         }
         else
         {
-        	if(img == null){
-        		testView = true; return;
+        	if(image == null){
+        		testView = true;
+        		return;
         	}
-        	ImageIcon icon = new ImageIcon(img);
-        	Image image = icon.getImage();
         	g.drawImage(image, xPos, yPos, 20, 20, null);
         }
     }
@@ -144,6 +156,135 @@ public class PersonGui implements Gui {
     
     
     
+    /**	This will move the person from their current location to the BusStop that is the closest
+     * 	straight line distance away. The name of that stop is returned.
+     * 
+     * @return	If a bus stop exists, the name of the closest stop from the Person's currentLocation.
+     */
+    public String DoGoToClosestBusStop(){
+    	//First gather a list of all bus stop locations
+    	List<LocationInfo> busLocations = new ArrayList<>();
+    	for(String s : locations.keySet()){
+    		if(s.contains("Bus Stop")){
+    			busLocations.add(new LocationInfo(locations.get(s)));
+    		}
+    	}
+    	
+    	//Lets make sure there's at least one bus stop
+    	if(busLocations.isEmpty()){
+    		return null;
+    	}
+    	
+    	
+    	if(state == PersonState.none){
+    		//How are we not in the city...lets get inside.
+    		DoEnterWorld();
+    	}
+    	
+    	
+    	// Now we need to find the closest stop to where we are.
+    	
+    	//Our current Position
+    	Position current = new Position(currentLocation.positionToEnterFromMainGrid.width, currentLocation.positionToEnterFromMainGrid.height);
+    	//The shortest distance
+    	double shortestDistance;
+    	// The stop that is the shortest distance
+    	LocationInfo closestStop = busLocations.get(0);
+    	
+    	Dimension d = new Dimension(closestStop.positionToEnterFromMainGrid);
+    	shortestDistance = current.distance(new Position(d.width, d.height));
+    	// Now we have the distance from our current location to the first bus stop in the list
+    	for(LocationInfo l : busLocations){
+    		Position p = new Position(l.positionToEnterFromMainGrid.width, l.positionToEnterFromMainGrid.height);
+    		double distance = current.distance(p);
+    		if(distance < shortestDistance){
+    			shortestDistance = distance;
+    			closestStop = l;
+    		}
+    	}
+    	
+    	//Now we've checked all stops; shortestDistance should be the shortest away 
+    		//and startStop should be the locationInfo for that stop
+    	if(closestStop != null) {
+    		DoGoTo(closestStop.name);
+    		return closestStop.name;
+    	}
+    	
+    	return null;
+    }
+    
+    /**	This will calculate and return the busStop that is closest to a destination.
+     * 	When this function returns...the person has been teleported to that busStop.
+     * 
+     * @param destination	//The name of the location to that the Person needs to get to.
+     * @return	//The name of the busStop to get off at.
+     */
+    public String DoRideBusTo(String destination){
+    	LocationInfo destLocation = locations.get(destination);
+    	
+    	if(destLocation == null){
+    		return null;//location not found
+    	}
+    	
+    	
+    	//First gather a list of all bus stop locations
+    	List<LocationInfo> busLocations = new ArrayList<>();
+    	for(String s : locations.keySet()){
+    		if(s.contains("Bus Stop")){
+    			busLocations.add(new LocationInfo(locations.get(s)));
+    		}
+    	}
+    	
+    	//Lets make sure there's at least one bus stop
+    	if(busLocations.isEmpty()){
+    		return null;
+    	}
+    	
+    	// Now we need to find the closest stop to the destination.
+    	
+    	//The destination Position
+    	Position destPos = new Position(destLocation.positionToEnterFromMainGrid.width, destLocation.positionToEnterFromMainGrid.height);
+    	//The shortest distance
+    	double shortestDistance;
+    	// The stop that is the shortest distance
+    	LocationInfo closestStop = busLocations.get(0);
+    	
+    	Dimension d = new Dimension(closestStop.positionToEnterFromMainGrid);
+    	shortestDistance = destPos.distance(new Position(d.width, d.height));
+    	// Now we have the distance from our current location to the first bus stop in the list
+    	for(LocationInfo l : busLocations){
+    		Position p = new Position(l.positionToEnterFromMainGrid.width, l.positionToEnterFromMainGrid.height);
+    		double distance = destPos.distance(p);
+    		if(distance < shortestDistance){
+    			shortestDistance = distance;
+    			closestStop = l;
+    		}
+    	}
+    	
+    	//Now we've checked all stops; shortestDistance should be the shortest away 
+    		//and closestStop should be the locationInfo for that stop
+    	if(closestStop != null) {
+    		//lets teleport to the stop ;D
+    		Dimension pos = new Dimension(positionMap.get(closestStop.positionToEnterFromMainGrid));
+    		if(pos != null){
+    			xPos = xDestination = pos.width;
+        		yPos = yDestination = pos.height;
+        		currentLocation = new LocationInfo(closestStop);
+        		return closestStop.name;
+    		}
+    	}
+    	
+    	return null;
+    }//end DoRideBusTo(String destination)
+    
+    
+    
+    
+    /**	This will move the person from their current location to location
+     * When this function returns, the person has arrived or the location does not exist.
+     * 
+     * @param location	The name of the destination to travel to.
+     */
     public void DoGoTo(String location){
     	//System.out.println("Going to " + location);
     	if(state == PersonState.none) {
@@ -176,7 +317,8 @@ public class PersonGui implements Gui {
     				guiMoveFromCurrentPostionTo(p);
     				break;
     			} catch (Exception e) {
-    				System.out.println("Try again.");
+    				//System.out.println("Try again.");
+    				AlertLog.getInstance().logInfo(AlertTag.PERSON_GUI, agent.toString(), "Path not found/exception caught. Try again.");
     			}
     		}
     		
@@ -246,33 +388,36 @@ public class PersonGui implements Gui {
     	
     	//Dimension cityEntrance = locations.get("City Entrance").entranceFromRoadGrid;
     	
-    	Position entrance;
+    	//Position entrance;
     	//System.out.println("Going to " + to + "\nfrom\n" + from);
     	
     	if(from != null && to != null) {
     	xPos = xDestination = from.width;
     	yPos = yDestination = from.height;
-    	entrance = new Position(to.getX(), to.getY());
+    	//entrance = new Position(to.getX(), to.getY());
     	}else
     		return;
     	
-    	while( !entrance.moveInto(aStar.getGrid()) ) {
+    	//while( !entrance.moveInto(aStar.getGrid()) ) {
+    	while( !to.moveInto(aStar.getGrid()) ) {
     		//System.out.println("EntranceBlocked!!!!!!! waiting 1sec");
+    		AlertLog.getInstance().logInfo(AlertTag.PERSON_GUI, agent.toString(), "Entrance blocked. Waiting one second for path to clear.");
     		try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				System.out.println("EXCEPTION!!!!!!!!!! caught while waiting for entrance to clear.");
+				//System.out.println("EXCEPTION!!!!!!!!!! caught while waiting for entrance to clear.");
+				AlertLog.getInstance().logError(AlertTag.PERSON_GUI, agent.toString(), "Unexpected exception caught in PersonGui while waiting for entrance to clear.");
 			}    		
     	}
     	
     	try{
     		//System.out.println("MOVING " + entrance);
     		isPresent = true;
-    		move(entrance.getX(), entrance.getY());
+    		move(to.getX(), to.getY());
     		
     	//if(SimCityLayout.addVehicleGui(this))
     	{
-    		currentPosition = new Position(entrance.getX(), entrance.getY());
+    		currentPosition = new Position(to.getX(), to.getY());
             //currentPosition.moveInto(aStar.getGrid());
             originalPosition = currentPosition;
     		//DoGoToHomePosition();
@@ -373,8 +518,8 @@ public class PersonGui implements Gui {
     
     /**The caller's Thread will block until they have reached the destination
      * 
-     * @param xCoord The java x coordinate to move to
-     * @param yCoord The java y coordinate to move to
+     * @param xCoord The grid x coordinate to move to
+     * @param yCoord The grid y coordinate to move to
      */
     private void move(int xCoord, int yCoord) {
     	Dimension p = new Dimension(xCoord, yCoord);
@@ -386,7 +531,7 @@ public class PersonGui implements Gui {
     	try {
 			aSem.acquire();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			AlertLog.getInstance().logError(AlertTag.PERSON_GUI, agent.toString(), "Unexpected exception caught while waiting to acquire sem.");
 		}
     }
     
