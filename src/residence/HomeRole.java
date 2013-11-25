@@ -219,6 +219,7 @@ public class HomeRole extends Role implements Home {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		myPerson.msgGoToMarket(item.name);
 		deactivate();
 	}
 	private void fileWorkOrder (HomeFeature brokenFeature) {

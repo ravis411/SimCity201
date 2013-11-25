@@ -17,19 +17,19 @@ public class ResidenceGui extends JFrame implements ActionListener {
 	//JPanel animationFrame = new JPanel();
 	AnimationPanel animationPanel = new AnimationPanel();
 	
-	private HomeRole homeRole = new HomeRole("Test");
+	/*private HomeRole homeRole = new HomeRole("Test");
 	private ApartmentManagerRole apartmentManagerRole = new ApartmentManagerRole("Apt Manager Role");
 	private HomeRoleGui homeRoleGui = new HomeRoleGui(homeRole);
 	private PersonAgent person = new PersonAgent("Test Person");
-	private PersonAgent landlordPerson = new PersonAgent("Test Landlord");
+	private PersonAgent landlordPerson = new PersonAgent("Test Landlord");*/
 	
     //private ResidencePanel resPanel = new ResidencePanel(this);
     
-    private JPanel hackPanel; //for testing different scenarios
+    /*private JPanel hackPanel; //for testing different scenarios
     private JButton tired; //clears cook's inventory
     private JButton hungry; //makes cashier's money balance go to zero
     private JButton payRent; //makes cashier's money balance go to two hundred
-    private JButton restock;
+    private JButton restock;*/
 
     /**
      * Constructor for RestaurantGui class.
@@ -39,7 +39,9 @@ public class ResidenceGui extends JFrame implements ActionListener {
         int WINDOWX = 800;
         int WINDOWY = 400;
         
-        landlordPerson.addRole(apartmentManagerRole);
+        //agents for testing homerole
+        
+        /*landlordPerson.addRole(apartmentManagerRole);
         apartmentManagerRole.setPerson(person);
         apartmentManagerRole.myPerson.startThread();
         apartmentManagerRole.activate();
@@ -49,12 +51,12 @@ public class ResidenceGui extends JFrame implements ActionListener {
         homeRole.myPerson.startThread();
         homeRole.activate();
         homeRole.myPerson.addRole(homeRole);
-        homeRole.setLandlord((ApartmentManagerRole) landlordPerson.findRole("Apt Manager Role"));
+        homeRole.setLandlord((ApartmentManagerRole) landlordPerson.findRole("Apt Manager Role"));*/
 
         //animationFrame.setBounds(100+WINDOWX, 50 , WINDOWX+100, WINDOWY+100);
         //animationFrame.setVisible(true);
     	//animationFrame.add(animationPanel);
-    	animationPanel.addGui(homeRoleGui);
+    	//animationPanel.addGui(homeRoleGui);
     	
     	
     	
@@ -63,7 +65,7 @@ public class ResidenceGui extends JFrame implements ActionListener {
         setLayout(new BoxLayout((Container) getContentPane(), 
         		BoxLayout.Y_AXIS));
         
-        hackPanel = new JPanel();
+        /*hackPanel = new JPanel();
         Dimension infoDim = new Dimension(WINDOWX, (int) (WINDOWY * .15));
         hackPanel.setPreferredSize(infoDim);
         hackPanel.setMinimumSize(infoDim);
@@ -86,13 +88,13 @@ public class ResidenceGui extends JFrame implements ActionListener {
         restock.addActionListener(this);
         hackPanel.add(restock);
         
-        add(hackPanel);
+        add(hackPanel);*/
         
         add(animationPanel);
         
     }
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == tired) {
+        /*if (e.getSource() == tired) {
         	homeRole.msgTired();
         }
         if (e.getSource() == hungry) {
@@ -103,7 +105,7 @@ public class ResidenceGui extends JFrame implements ActionListener {
         }
         if (e.getSource() == restock) {
         	homeRole.msgRestockItem("Cooking Ingredient", 3);
-        }
+        }*/
     }
     
     /**

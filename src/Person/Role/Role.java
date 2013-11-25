@@ -4,9 +4,19 @@ import Person.PersonAgent;
 
 public abstract class Role {
 
-	private boolean isActive;
-	public PersonAgent myPerson; //WILL BE CHANGED TO PROTECTED
+	private boolean isActive = false;
+	protected PersonAgent myPerson;
+
 	public String role;
+	
+	public final static String MARKET_CUSTOMER_ROLE = "MarketCustomerRole";
+	public final static String BANK_CUSTOMER_ROLE = "BankCustomerRole";
+	public final static String PASSENGER_ROLE = "PassengerRole";
+	public final static String HOME_ROLE = "HomeRole";
+	public final static String RESTAURANT_CUSTOMER_ROLE = "RestaurantCustomerRole";
+	public final static String RESTAURANT_WAITER_ROLE = "RestaurantWaiterRole";
+	public final static String RESTAURANT_HOST_ROLE = "RestaurantHostRole";
+	
 	/**
 	 * The scheduler function for a particular role
 	 * @return true if a rule was satisfied, false otherwise
