@@ -1,5 +1,6 @@
 package Person;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Preferences {
@@ -13,7 +14,9 @@ public class Preferences {
 	private Map<KeyValue, String> map;
 	
 	public Preferences(){
-		String vehicle_pref = Math.random() < 0.5 ? BUS : WALK;
+		map = new HashMap<KeyValue, String>();
+		//String vehicle_pref = Math.random() < 0.5 ? BUS : WALK;
+		String vehicle_pref = WALK;
 		//String vehicle_pref = BUS;
 		map.put(KeyValue.VEHICLE_PREFERENCE, vehicle_pref);
 	}

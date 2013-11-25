@@ -1,15 +1,25 @@
 package gui;
 
+import gui.Building.Building;
+import gui.Building.BuildingPanel;
+import gui.Building.BusStopBuilding;
+import gui.Building.BusStopBuildingPanel;
+import gui.MockAgents.MockBusAgent;
+import gui.agentGuis.PersonGui;
+import gui.agentGuis.VehicleGui;
+
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import Person.PersonAgent;
 import agent.Agent;
 import astar.AStarTraversal;
 import astar.PersonAStarTraversal;
 import astar.VehicleAStarTraversal;
+
 import gui.Building.Building;
 import gui.Building.BuildingPanel;
 import gui.Building.BusStopBuilding;
@@ -19,8 +29,6 @@ import gui.MockAgents.MockBusAgent;
 import gui.MockAgents.MockPerson;
 import gui.agentGuis.PersonGui;
 import gui.agentGuis.VehicleGui;
-
-
 
 //This class will instantiate and setup everything.
 public class SetUpWorldFactory{
@@ -208,8 +216,8 @@ public class SetUpWorldFactory{
 			addVehicle("OddMockBus");
 			
 			addPerson("Person 1");
-			addPerson("Person 2");
-			addPerson("Person 3");
+//			addPerson("Person 2");
+//			addPerson("Person 3");
 			
 		
 	} //end LoadDefault
@@ -473,10 +481,11 @@ public class SetUpWorldFactory{
 	
 	
 	private void addPerson(String name){
-		MockPerson p1 = new MockPerson(name);
+		//PersonAgent p1 = new PersonAgent(name);
+		PersonAgent p1 = new PersonAgent(name);
 		AStarTraversal t = new PersonAStarTraversal(layout.getAgentGrid(), layout.getCrossWalkGrid(), layout.getRoadGrid());
 		PersonGui g1 = new PersonGui(p1, layout, t, locationMap);
-		p1.setAgentGui(g1);
+		p1.setGui(g1);
 		cityPanel.addGui(g1);
 		p1.startThread();
 	}
