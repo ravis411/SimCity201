@@ -8,6 +8,7 @@ import interfaces.Employee;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import trace.AlertLog;
@@ -41,7 +42,9 @@ public class PersonAgent extends Agent {
 	
 	public List<Role> roles;
 	private List<PersonAgent> friends;
+	private List<Party> parties;
 	private Calendar realTime;
+	
 	
 	public enum StateOfHunger {NotHungry, SlightlyHungry, Hungry, VeryHungry, Starving} 
 	public enum StateOfLocation {AtHome,AtBank,AtMarket,AtRestaurant, InCar,InBus,Walking};
@@ -50,7 +53,7 @@ public class PersonAgent extends Agent {
 	
 	private List<BackpackObject> backpack;
 	
-	private PersonState state;
+	public PersonState state;
 	private StateOfEmployment stateOfEmployment;
 	private Preferences prefs;
 	//provides a hungerLevel on a normalized 0 to 100 scale
@@ -68,7 +71,7 @@ public class PersonAgent extends Agent {
 		friends = new ArrayList<PersonAgent>();
 		roles = new ArrayList<Role>();
 		hungerLevel = 0;
-		
+		state=PersonState.Idle;
 		realTime = null;
 		
 		prefs = new Preferences();
@@ -164,6 +167,26 @@ public class PersonAgent extends Agent {
 			backpack.add(new BackpackObject(object, quantity));
 		}
 	}
+	/**
+	  * Message sent by the home role to invite the person to a party
+	  */
+	public void msgPartyInvitation(PersonAgent p,Calendar rsvpDeadline,Calendar partyTime){
+		parties.add(new Party(p,rsvpDeadline,partyTime));
+		
+		
+	}
+	/**
+	  * RSVP message sent by the home role
+	  */
+	public void msgIAmComing(PersonAgent p){
+		//findRole("HOME_ROLE").partyAttendees.add(p);
+		//findRole("HOME_ROLE").rsvp.get(p)=true;
+		
+		
+	}
+	public void msgIAmNotComing(PersonAgent p){
+		//findRole("HOME_ROLE").rsvp.get(p)=true;
+	}
 
 	//------------------------------SCHEDULER---------------------------//
 	
@@ -174,6 +197,11 @@ public class PersonAgent extends Agent {
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
+		for(Party p:parties){
+			   if(p.rsvp==false){
+				   p.rsvp=true;//bullshit, write something to activate home role 
+			   }
+			}
 		
 		//cue the Role schedulers
 		boolean outcome = false;
@@ -184,6 +212,8 @@ public class PersonAgent extends Agent {
 		}
 		
 		return outcome;
+		
+		
 	}
 	
 	//----------------------------ACTIONS--------------------------//
@@ -440,6 +470,13 @@ public class PersonAgent extends Agent {
 	public int getSSN(){
 		return SSN;
 	}
+	/**
+	 * Getter function for moneyNeeded
+	 * @return moneyNeeded
+	 */
+	public double getMoneyNeeded(){
+		return moneyNeeded;
+	}
 	
 	/**
 	 * Getter function for debts of person
@@ -492,6 +529,20 @@ public class PersonAgent extends Agent {
 		public BackpackObject(String name, int quantity){
 			this.name = name;
 			this.quantity = quantity;
+		}
+	}
+	private class Party{
+		PersonAgent host;
+		Calendar rsvpDeadline;
+		Calendar partyTime;
+		boolean rsvp;
+		boolean going;
+		public Party(PersonAgent p, Calendar rd, Calendar pt){
+			this.host=p;
+			this.rsvpDeadline= rd;
+			this.partyTime=pt;
+			rsvp=false;
+			going=false;
 		}
 	}
 	
