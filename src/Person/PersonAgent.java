@@ -1,5 +1,7 @@
 package Person;
 
+import gui.Building.BuildingPanel;
+import gui.Building.ResidenceBuildingPanel;
 import gui.agentGuis.PersonGui;
 import interfaces.Employee;
 
@@ -9,6 +11,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Queue;
 
+import residence.HomeRole;
 import trace.AlertLog;
 import trace.AlertTag;
 import Person.Role.Role;
@@ -61,8 +64,10 @@ public class PersonAgent extends Agent {
 	private int hungerLevel;
 	
 	private PersonGui gui;
+	
+	public ResidenceBuildingPanel home;
 
-	public PersonAgent(String name){
+	public PersonAgent(String name, ResidenceBuildingPanel home){
 		SSN = counter++;
 		this.name = name;
 		//initializations
@@ -76,9 +81,12 @@ public class PersonAgent extends Agent {
 		realTime = null;
 		parties = new ArrayList<Party>();
 		prefs = new Preferences();
+		this.home = home;
 		
 		backpack = new ArrayList<Item>();
 		itemsNeeded = new ArrayDeque<Item>();
+		
+		roles.add(new HomeRole("Home Role"));
 	}
 	
 //-------------------------------MESSAGES----------------------------------------//
