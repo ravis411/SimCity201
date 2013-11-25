@@ -33,7 +33,8 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 	private SimCityLayout layout = null;
 
 	public static final Calendar calendar = Calendar.getInstance();
-
+	private float ampmAlpha = 0f;
+	
 
 	public CityAnimationPanel(SimCityLayout layout) {
 		WINDOWX = layout.getWINDOWX();
@@ -104,12 +105,25 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 			}
 		}
 		
-		String time = new String();
-		time += (calendar.get(Calendar.MONTH) + 1) + "/";
-		time += (calendar.get(Calendar.DATE)) + "/";
-		time += (calendar.get(Calendar.YEAR)) + " ";
-		time += (calendar.get(Calendar.HOUR)) + ":";
 		
+		
+		if(calendar.get(Calendar.HOUR_OF_DAY) >= 17 && ampmAlpha < .3f){
+			ampmAlpha += 0.01f;
+		}else if(calendar.get(Calendar.HOUR_OF_DAY) <= 5 && ampmAlpha > .01f)
+		{
+			ampmAlpha -= 0.01f;
+		}
+		AlphaComposite orig = AlphaComposite.getInstance(AlphaComposite.SRC_OVER);
+		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ampmAlpha);
+		
+		g2.setComposite(ac);
+		g2.setColor(Color.black);
+		g2.fillRect(0, 0, WINDOWX, WINDOWY);
+		
+		g2.setComposite(orig);
+		
+		g2.setColor(Color.white);
+		String time = new java.text.SimpleDateFormat("EEEE, MM/dd/yyyy hh:mm a").format(calendar.getTime());
 		g2.drawString(time, 600, 390);
 	}
 
