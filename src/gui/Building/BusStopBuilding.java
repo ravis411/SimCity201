@@ -15,13 +15,15 @@ public class BusStopBuilding extends Building {
 	public BusStopBuilding( Building b ) {
 		super( b.x, b.y, b.width, b.height );
 		
-		String sep = new String(System.getProperty("file.separator"));
-		System.out.println("sep" + sep + "RESOURCE " + this.getClass().getResource("/images/bus-stop.png").getPath());
+		if(System.getProperty("os.name").contains("Windows")){
+			imageI = new ImageIcon(this.getClass().getResource("/images/bus-stop.png").getPath());
+		}
+		else
+		{
+			imageI = new ImageIcon(this.getClass().getResource("\\images\\bus-stop.png").getPath());
+		}
 		
-		
-		imageI = new ImageIcon(this.getClass().getResource("/images/bus-stop.png").getPath());
-		
-	}
+		}
 	
 	
 	
