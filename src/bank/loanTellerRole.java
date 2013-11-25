@@ -22,13 +22,14 @@ import util.Interval;
  */
 public class loanTellerRole extends Role implements Employee{
 	private bankClientRole myClient;
+	private int myClientAge;
 	public enum requestState {open, loan, pending, none, notBeingHelped};
 	private requestState state = requestState.none;
 	public enum location {entrance, station, breakRoom};
 	public location locationState = location.entrance;
 	double transactionAmount;
 	private List<Account> Accounts = Database.INSTANCE.sendDatabase();
-	private numberAnnouncer announcer;
+	private loanNumberAnnouncer announcer;
 	private String name;
 	private Semaphore atStation = new Semaphore(0,true);
 	private Semaphore atIntermediate = new Semaphore(0,true);
@@ -39,7 +40,7 @@ public class loanTellerRole extends Role implements Employee{
 		Accounts = Database.INSTANCE.sendDatabase();
 	}
 
-	public void setAnnouncer(numberAnnouncer a){
+	public void setAnnouncer(loanNumberAnnouncer a){
 		announcer = a;
 	}
 
@@ -66,8 +67,9 @@ public class loanTellerRole extends Role implements Employee{
 		state = requestState.open;
 		stateChanged();
 	}
-	public void msgLoan(double a){
+	public void msgLoan(double a, int age){
 		transactionAmount = a;
+		myClientAge = age;
 		state = requestState.loan;
 		stateChanged();
 	}
@@ -124,7 +126,7 @@ public class loanTellerRole extends Role implements Employee{
 			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, name,"Hold on a moment.");
 		for (Account a : Accounts){
 			if (a.client == b){
-				if (b.age > 18 && b.age < 85){
+				if (myClientAge > 18 && myClientAge < 85){
 					if (transactionAmount > a.amount){
 						if (!b.HasLoan()){
 								AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, name,"Loan approved for $" + transactionAmount);
@@ -143,7 +145,7 @@ public class loanTellerRole extends Role implements Employee{
 		}
 	}
 	private void openAccount(bankClientRole b){
-		Account a = new Account(b, b.money);
+		Account a = new Account(b, 0);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, name,"New bank account has been opened for " + b);
 		Database.INSTANCE.addToDatabase(a);
 		b.msgAccountOpened(a);

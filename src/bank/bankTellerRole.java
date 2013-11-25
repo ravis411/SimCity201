@@ -155,7 +155,7 @@ public class bankTellerRole extends Role implements Employee{
 		}
 	}
 	private void openAccount(bankClientRole b){
-		Account a = new Account(b, b.money);
+		Account a = new Account(b,0);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"New bank account has been opened for " + b);
 		Database.INSTANCE.addToDatabase(a);
 		b.msgAccountOpened(a);

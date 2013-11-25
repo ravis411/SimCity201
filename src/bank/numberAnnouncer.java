@@ -9,24 +9,19 @@ public class numberAnnouncer extends Agent{
 	List<bankClientRole> clients = new ArrayList<bankClientRole>();
 	List<bankTellerRole> tellers = new ArrayList<bankTellerRole>();
 	Queue<bankTellerRole> openTeller = new ArrayDeque<bankTellerRole>();
-	loanTellerRole loanTeller;
 	private int doneTeller;
 	private int tellerNumber = 0;
-	private int loanNumber = 0;
-	public enum numberState{pending, announceB, announceL};
+	public enum numberState{pending, announceB};
 	public numberState state = numberState.pending;
 	private String name;
-	
-	public void setLoanTeller(loanTellerRole lt){
-		loanTeller = lt;
-	} 
-	
+	private boolean onTheWay = false;
+
 	public numberAnnouncer(String n){
 		super();
 		name = n;
 	}
-	public void msgAddLoanTeller(loanTellerRole l){
-		loanTeller = l;
+	public void msgOnTheWay(){
+		onTheWay = true;
 		stateChanged();
 	}
 	public void msgAddBankTeller(bankTellerRole b){
@@ -43,12 +38,8 @@ public class numberAnnouncer extends Agent{
 		Do("Recieved done message from line " + b);
 		doneTeller = b;
 		openTeller.add(btr);
+		tellerNumber++;
 		state = numberState.announceB;
-		stateChanged();
-	}
-	public void msgLoanComplete(){
-		Do("Recieved done message from loan line.");
-		state = numberState.announceL;
 		stateChanged();
 	}
 
@@ -58,28 +49,16 @@ public class numberAnnouncer extends Agent{
 			announceNumberBank();
 			return true;
 		}
-		if (state == numberState.announceL){
-			announceNumberLoan();
-			return true;
-		}
 		return false;
 	}
 	//actions
 	private void announceNumberBank(){
-		tellerNumber++;
-		Do("Calling ticket " + tellerNumber);
-		for (bankClientRole b : clients){
-			b.msgCallingTicket(tellerNumber, doneTeller, openTeller.peek());
-		}	state = numberState.pending;
-
-	}
-	private void announceNumberLoan(){
-		loanNumber++;
-		Do("Calling loan ticket " + loanNumber);
-		for (bankClientRole b : clients){
-			b.msgCallingLoanTicket(loanNumber, 5, loanTeller);
+		while (onTheWay == false){
+		//	Do("Calling ticket " + tellerNumber);
+			for (bankClientRole b : clients){
+				b.msgCallingTicket(tellerNumber, doneTeller, openTeller.peek());
+			}
 		}
-		state = numberState.pending;
 	}
 
 	public String getName() {
