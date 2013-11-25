@@ -142,7 +142,21 @@ public class TraceControlPanel extends Panel implements ActionListener {
 			}
 			else if(c == showHome){
 				if(c.isSelected()){
-					//panel.showAlertsWithTag();
+					//panel.showAlertsWithTag(AlertTag.);
+				}
+				else{
+					//panel.showAlertsWithTag(AlertTag.);
+					showAll.setSelected(false);
+				}
+			}
+			else if(c == showMarket){
+				if(c.isSelected()){
+					panel.showAlertsWithTag(AlertTag.MARKET);
+				}
+				else
+				{
+					panel.hideAlertsWithTag(AlertTag.MARKET);
+					showAll.setSelected(false);
 				}
 			}
 			

@@ -22,5 +22,6 @@ public enum AlertTag {
 	RESTAURANT,		//For the demo code where you make a new restaurant
 	BANK,			//For the demo code where you make a new bank
 	GENERAL_CITY,
-	VEHICLE_GUI
+	VEHICLE_GUI,
+	MARKET
 }
