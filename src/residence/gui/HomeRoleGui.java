@@ -8,7 +8,7 @@ public class HomeRoleGui implements Gui {
 
     private HomeRole agent = null;
 
-    private int xPos = 805, yPos = 150;//default waiter position
+    private int xPos = 800, yPos = 150;//default waiter position
     private int xDestination = 805, yDestination = 150;//default start position
 
     public HomeRoleGui(HomeRole agent) {

@@ -111,6 +111,7 @@ public class HomeRole extends Role implements Home {
 	}
 	public void msgAtFrontDoor() {
 		atFrontDoor.release();
+		deactivate();
 	}
 	public void msgAtTable() {
 		atTable.release();
@@ -223,7 +224,6 @@ public class HomeRole extends Role implements Home {
 			e.printStackTrace();
 		}
 		myPerson.msgGoToMarket(item.name);
-		deactivate();
 	}
 	private void fileWorkOrder (HomeFeature brokenFeature) {
 		landlord.msgBrokenFeature(brokenFeature.name, this);
