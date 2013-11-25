@@ -19,7 +19,7 @@ public class PersonTest1 extends TestCase {
 	public void setUp() throws Exception{
 		super.setUp();
 		
-		person = new PersonAgent("TestPerson");
+		person = new PersonAgent("TestPerson", null);
 		role = new MockRole();
 	}
 	

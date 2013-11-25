@@ -439,8 +439,10 @@ public class PersonAgent extends Agent {
 	  		transport = "ERROR";
 	  }
 		  
-		  GoToLocation("Building 12", transport);
 		  GoToLocation("House 1", transport);
+		  HomeRole role = (HomeRole) findRole(Role.HOME_ROLE);
+		  role.activate();
+		  role.msgTired();
 	}
 		  
 	//------------------------DO XYZ FUNCTIONS----------------------//

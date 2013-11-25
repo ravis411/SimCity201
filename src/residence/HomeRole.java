@@ -54,7 +54,7 @@ public class HomeRole extends Role implements Home {
 	}
 	
 	public String getName() {
-		return name;
+		return "HomeRole";
 	}
 	
 	public boolean canGoGetFood() {
