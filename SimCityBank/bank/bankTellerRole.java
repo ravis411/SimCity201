@@ -12,7 +12,7 @@ import astar.AStarTraversal;
 public class bankTellerRole extends Agent{
 	private bankClientRole myClient;
 	private int LineNum; //from 1 to n, with 5 being the loan line, should be assigned in creation
-	public enum requestState {withdrawal, deposit, open, none, notBeingHelped};
+	public enum requestState {pending, withdrawal, deposit, open, none, notBeingHelped};
 	public enum location {entrance, station, breakRoom};
 	public location locationState = location.entrance;
 	private requestState state = requestState.none;
@@ -119,6 +119,7 @@ public class bankTellerRole extends Agent{
 		Do("Recieving new client");
 		Do("Hello " + b + ", how may I help you.");
 		b.msgMayIHelpYou();
+		state = requestState.pending;
 	}
 	private void processDeposit(bankClientRole b){
 		Do("Ok, hold on.");

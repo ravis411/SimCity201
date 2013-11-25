@@ -18,7 +18,7 @@ import astar.AStarTraversal;
 public class loanTellerRole extends Agent{
 	private bankClientRole myClient;
 	private int LineNum = 5; 
-	public enum requestState {open, loan, none, notBeingHelped};
+	public enum requestState {open, loan, pending, none, notBeingHelped};
 	private requestState state = requestState.none;
 	public enum location {entrance, station, breakRoom};
 	public location locationState = location.entrance;
@@ -30,7 +30,7 @@ public class loanTellerRole extends Agent{
 	private Semaphore atStation = new Semaphore(0,true);
 	private Semaphore atIntermediate = new Semaphore(0,true);
 	private LoanGui loanGui = null;
-
+	
 	public loanTellerRole(String s){
 		super();
 		name = s;
@@ -43,8 +43,8 @@ public class loanTellerRole extends Agent{
 
 	//	Messages
 	public void msgAtStation(){
-		Do("At Station.");
 		atStation.release();
+		locationState = location.station;
 		announcer.msgAddLoanTeller(this);
 		stateChanged();
 	}
@@ -55,6 +55,7 @@ public class loanTellerRole extends Agent{
 	}
 
 	public void msgInLine(bankClientRole b){
+		Do("Greetings customer");
 		myClient = b;
 		state = requestState.notBeingHelped;
 		stateChanged();
@@ -114,6 +115,7 @@ public class loanTellerRole extends Agent{
 	private void receiveClient(bankClientRole b){
 		Do("Recieving new client");
 		b.msgMayIHelpYou();
+		state = requestState.pending;
 	}
 	private void processLoan(bankClientRole b){
 		for (Account a : Accounts){
@@ -121,7 +123,7 @@ public class loanTellerRole extends Agent{
 				if (b.age > 18 && b.age < 85){
 					if (transactionAmount > a.amount){
 						if (!b.HasLoan()){
-							Do("Loan approved.");
+							Do("Loan approved for $" + transactionAmount);
 							b.msgLoanApproved(transactionAmount);
 						}
 					}
@@ -155,9 +157,16 @@ public class loanTellerRole extends Agent{
 	public String getName() {
 		return name;
 	}
-
+	
+	public void setGui(LoanGui gui){
+		loanGui = gui;
+	}
+	
+	public LoanGui getGui(){
+		return loanGui;
+	}
 	public String toString() {
-		return "Bank Teller  " + getName();
+		return "Loan Teller " + getName();
 	}
 
 }
