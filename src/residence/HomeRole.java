@@ -56,7 +56,7 @@ public class HomeRole extends Role implements Home {
 		features.add(new HomeFeature("Sink"));
 	}
 	
-	public String getName() {
+	public String getNameOfRole() {
 		return "HomeRole";
 	}
 	

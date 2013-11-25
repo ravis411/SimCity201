@@ -18,7 +18,7 @@ public class HomeGuestRole extends Role implements HomeGuest {
 		this.name = name;
 	}
 	
-	public String getName() {
+	public String getNameOfRole() {
 		return name;
 	}
 	
