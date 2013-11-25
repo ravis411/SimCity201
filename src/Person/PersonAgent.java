@@ -174,7 +174,7 @@ public class PersonAgent extends Agent {
 		}
 		
 		if(!added){
-			backpack.add(new BackpackObject(object, quantity));
+			backpack.add(new Item(object, quantity));
 			print("Added "+ quantity +" "+ object+ " to backpack. Quantity now: "+quantity);
 
 		}
