@@ -14,6 +14,7 @@ import gui.Building.Building;
 import gui.Building.BuildingPanel;
 import gui.Building.BusStopBuilding;
 import gui.Building.BusStopBuildingPanel;
+import gui.Building.ResidenceBuildingPanel;
 import gui.MockAgents.MockBusAgent;
 import gui.MockAgents.MockPerson;
 import gui.agentGuis.PersonGui;
@@ -562,6 +563,14 @@ public class SetUpWorldFactory{
 				
 				busStop.setBuildingPanel(bp);
 				cityPanel.addGui(busStop);
+				buildingsPanels.addBuildingPanel(bp);
+			}
+			break;
+		case "Residence":
+			if(building != null){
+				BuildingPanel bp = new ResidenceBuildingPanel(building, name, buildingsPanels);
+				building.setBuildingPanel(bp);
+				cityPanel.addGui(building);
 				buildingsPanels.addBuildingPanel(bp);
 			}
 			break;

@@ -23,7 +23,7 @@ public class ResidenceBuildingPanel extends BuildingPanel{
 		
 		this.removeAll();
 		
-		setBackground( new Color(7,100,7) );
+		setBackground( Color.yellow );
 		
 		JLabel j = new JLabel( myName );
 		add( j );
