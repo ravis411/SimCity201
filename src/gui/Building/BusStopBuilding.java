@@ -10,11 +10,19 @@ import javax.swing.ImageIcon;
 
 public class BusStopBuilding extends Building {	
 	
+	ImageIcon imageI;
+	
 	public BusStopBuilding( Building b ) {
 		super( b.x, b.y, b.width, b.height );
+		
+		String sep = new String(System.getProperty("file.separator"));
+		System.out.println("sep" + sep + "RESOURCE " + this.getClass().getResource("/images/bus-stop.png").getPath());
+		
+		
+		imageI = new ImageIcon(this.getClass().getResource("/images/bus-stop.png").getPath());
+		
 	}
 	
-	ImageIcon imageI = new ImageIcon(this.getClass().getResource("/images/bus-stop.png").getPath());
 	
 	
 	@Override
