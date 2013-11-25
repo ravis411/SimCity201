@@ -70,7 +70,7 @@ public class AnimationPanel extends JPanel implements ActionListener {
         g2.setColor(getBackground());
         g2.fillRect(XCOOR, YCOOR, WINDOWX, WINDOWY);
         
-        g.drawImage(img, 0, 0, 800, 400, observer);
+        //g.drawImage(img, 0, 0, 800, 400, observer);
 
         //Here is the kitchen
         g2.setColor(Color.lightGray); //counter top

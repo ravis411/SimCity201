@@ -1,11 +1,15 @@
 package gui.Building;
 
 import gui.BuildingsPanels;
+import residence.gui.AnimationPanel;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.geom.Rectangle2D;
 
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -25,8 +29,13 @@ public class ResidenceBuildingPanel extends BuildingPanel{
 		
 		setBackground( Color.yellow );
 		
+		AnimationPanel residencePanel = new AnimationPanel();
+		
+		setLayout(new GridLayout(1,1));
+		
+		
 		JLabel j = new JLabel( myName );
-		add( j );
+		add( residencePanel );
 	}
 	
 	
