@@ -6,29 +6,26 @@ package gui.agentGuis;
 import gui.Gui;
 import gui.LocationInfo;
 import gui.SimCityLayout;
-import gui.MockAgents.MockPerson;
-import gui.interfaces.Vehicle;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
-import java.awt.image.RescaleOp;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Timer;
-import java.util.concurrent.Semaphore;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Semaphore;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 import trace.AlertLog;
 import trace.AlertTag;
-import agent.Agent;
+import Person.PersonAgent;
 import astar.AStarNode;
 import astar.AStarTraversal;
 import astar.Position;
@@ -37,7 +34,7 @@ import astar.Position;
 
 public class PersonGui implements Gui {
 
-    private MockPerson agent = null;
+    private PersonAgent agent = null;
     
     private boolean isPresent = true;
     
@@ -74,7 +71,7 @@ public class PersonGui implements Gui {
     
     
     
-    public PersonGui(MockPerson agent, SimCityLayout cityLayout, AStarTraversal aStar, List<LocationInfo> locationList) {
+    public PersonGui(PersonAgent agent, SimCityLayout cityLayout, AStarTraversal aStar, List<LocationInfo> locationList) {
     	positionMap = new HashMap<Dimension, Dimension>(cityLayout.positionMap);
     	this.agent = agent;
         this.cityLayout = cityLayout;
