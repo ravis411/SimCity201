@@ -27,17 +27,17 @@ public class BankGui extends JFrame implements ActionListener {
     private Vector<bankTellerRole> bankTellerRoles = new Vector<bankTellerRole>();
     private Vector<PersonAgent> bankClientPersons = new Vector<PersonAgent>();
     private Vector<bankClientRole> bankClientRoles = new Vector<bankClientRole>();
-    private PersonAgent loanTellerPerson= new PersonAgent("Harry");
+    private PersonAgent loanTellerPerson= new PersonAgent("Harry", null);
     private loanTellerRole loanTellereRole= new loanTellerRole();
     private numberAnnouncer announcer = new numberAnnouncer("NumberBot");
     
     
     //test
-    private PersonAgent client = new PersonAgent("Test client");
-    private PersonAgent teller = new PersonAgent("Test teller");
-    private bankClientRole clientRole = new bankClientRole(client.getName(),"deposit",100);
+//    private PersonAgent client = new PersonAgent("Test client", null);
+    private PersonAgent teller = new PersonAgent("Test teller", null);
+//    private bankClientRole clientRole = new bankClientRole(client.getName(),"deposit",100);
     private bankTellerRole tellerRole = new bankTellerRole(teller.getName(),1);
-    private ClientGui clientGui = new ClientGui(clientRole, this);
+//    private ClientGui clientGui = new ClientGui(clientRole, this);
     private TellerGui tellerGui = new TellerGui(tellerRole, this, tellerRole.getLine());
     private LoanGui loanGui = new LoanGui(loanTellereRole, this);
     
@@ -83,7 +83,7 @@ public class BankGui extends JFrame implements ActionListener {
         tellerRole.setGui(tellerGui);
         tellerRole.activate();
         tellerRole.getPerson().startThread();
-        
+ /*       
         client.addRole(clientRole);
         clientRole.setPerson(client);
         animationPanel.addGui(clientGui);
@@ -91,7 +91,7 @@ public class BankGui extends JFrame implements ActionListener {
         clientRole.setGui(clientGui);
         clientRole.activate();
         clientRole.getPerson().startThread();
-        
+   */     
         loanTellerPerson.addRole(loanTellereRole);
         loanTellereRole.setPerson(loanTellerPerson);
         animationPanel.addGui(loanGui);

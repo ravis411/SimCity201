@@ -2,6 +2,8 @@ package bank;
 import bank.bankClientRole;
 import bank.gui.LoanGui;
 import Person.Role.*;
+import interfaces.Employee;
+
 
 //import Person.*;
 import java.util.*;
@@ -9,6 +11,7 @@ import java.util.concurrent.Semaphore;
 
 import trace.AlertLog;
 import trace.AlertTag;
+import util.Interval;
 
 
 /**
@@ -17,7 +20,7 @@ import trace.AlertTag;
  * this specific line
  *
  */
-public class loanTellerRole extends Role{
+public class loanTellerRole extends Role implements Employee{
 	private bankClientRole myClient;
 	public enum requestState {open, loan, pending, none, notBeingHelped};
 	private requestState state = requestState.none;
@@ -173,6 +176,23 @@ public class loanTellerRole extends Role{
 	@Override
 	public boolean canGoGetFood() {
 		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		return null;
+	}
+
+	@Override
+	public Interval getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

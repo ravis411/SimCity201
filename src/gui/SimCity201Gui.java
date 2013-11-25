@@ -72,11 +72,11 @@ public class SimCity201Gui extends JFrame {
 		c.weightx = .8;
 		this.add(tracePanel, c);*/
 		c.gridx = 1; c.gridy = 0;
-		c.ipady = 50;
-		c.gridheight = 1;
+		c.ipady = 100;
+		c.gridheight = 2;
 		this.add(new TraceControlPanel(tracePanel), c);
 		
-		c.gridx = 1; c.gridy = 1;
+		c.gridx = 1; c.gridy = 3;
 		c.weightx = .8;
 		c.fill = GridBagConstraints.BOTH;
 		c.gridheight = 0;

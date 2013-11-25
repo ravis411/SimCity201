@@ -218,7 +218,7 @@ public class SetUpWorldFactory{
 			addVehicle("OddMockBus");
 			
 			addPerson("Person 1", buildingsPanels.getResidenceBuildingPanel("House 1"));
-//			addPerson("Person 2");
+			addPerson("Person 2", buildingsPanels.getResidenceBuildingPanel("House 2"));
 //			addPerson("Person 3");
 			
 		
