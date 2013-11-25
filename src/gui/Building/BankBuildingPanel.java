@@ -13,6 +13,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import bank.gui.BankAnimationPanel;
+
 
 /**
  * Default class for various gui building panels.
@@ -22,7 +24,7 @@ import javax.swing.JPanel;
  */
 public class BankBuildingPanel extends BuildingPanel{
 	
-	
+	BankAnimationPanel animationPanel = new BankAnimationPanel();
 	
 	public BankBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels) {
 		super(r, name, buildingPanels);
@@ -30,11 +32,12 @@ public class BankBuildingPanel extends BuildingPanel{
 		this.removeAll();
 		
 		setBackground( Color.yellow );
+	
 		
 		setLayout(new GridLayout(1,1));
 		
 		JLabel j = new JLabel( myName );
-		add( j );
+		add(animationPanel);
 	}
 	
 	

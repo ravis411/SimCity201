@@ -329,4 +329,9 @@ public class bankClientRole extends Role {
 	public boolean canGoGetFood() {
 		return false;
 	}
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

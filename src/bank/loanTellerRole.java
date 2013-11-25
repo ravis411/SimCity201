@@ -175,4 +175,9 @@ public class loanTellerRole extends Role{
 		return false;
 	}
 
+	@Override
+	public String getNameOfRole() {
+		return null;
+	}
+
 }

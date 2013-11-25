@@ -27,14 +27,14 @@ public class BankGui extends JFrame implements ActionListener {
     private Vector<bankTellerRole> bankTellerRoles = new Vector<bankTellerRole>();
     private Vector<PersonAgent> bankClientPersons = new Vector<PersonAgent>();
     private Vector<bankClientRole> bankClientRoles = new Vector<bankClientRole>();
-    private PersonAgent loanTellerPerson= new PersonAgent("Harry");
+    private PersonAgent loanTellerPerson= new PersonAgent("Harry", null);
     private loanTellerRole loanTellereRole= new loanTellerRole();
     private numberAnnouncer announcer = new numberAnnouncer("NumberBot");
     
     
     //test
-    private PersonAgent client = new PersonAgent("Test client");
-    private PersonAgent teller = new PersonAgent("Test teller");
+    private PersonAgent client = new PersonAgent("Test client", null);
+    private PersonAgent teller = new PersonAgent("Test teller", null);
     private bankClientRole clientRole = new bankClientRole(client.getName(),"deposit",100);
     private bankTellerRole tellerRole = new bankTellerRole(teller.getName(),1);
     private ClientGui clientGui = new ClientGui(clientRole, this);
