@@ -74,7 +74,7 @@ public class PersonAgent extends Agent {
 		hungerLevel = 0;
 		state=PersonState.GettingFood;
 		realTime = null;
-		
+		parties = new ArrayList<Party>();
 		prefs = new Preferences();
 		
 		backpack = new ArrayList<Item>();

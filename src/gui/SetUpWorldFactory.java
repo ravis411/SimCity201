@@ -20,7 +20,15 @@ import agent.Agent;
 import astar.AStarTraversal;
 import astar.PersonAStarTraversal;
 import astar.VehicleAStarTraversal;
-
+import gui.Building.Building;
+import gui.Building.BuildingPanel;
+import gui.Building.BusStopBuilding;
+import gui.Building.BusStopBuildingPanel;
+import gui.Building.ResidenceBuildingPanel;
+import gui.MockAgents.MockBusAgent;
+import gui.MockAgents.MockPerson;
+import gui.agentGuis.PersonGui;
+import gui.agentGuis.VehicleGui;
 
 
 //This class will instantiate and setup everything.
