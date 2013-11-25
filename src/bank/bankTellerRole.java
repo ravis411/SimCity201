@@ -194,4 +194,10 @@ public class bankTellerRole extends Role{
 		return false;
 	}
 
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
