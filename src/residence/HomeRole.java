@@ -34,19 +34,19 @@ public class HomeRole extends Role implements Home {
 	public HomeRoleGui gui = null;
 
 	public enum AgentState
-	{DoingNothing, Cooking, Sleeping, Leaving, Eating};
+	{DoingNothing, Cooking, Sleeping, Leaving};
 	private AgentState state = AgentState.DoingNothing;//The start state
 
 	public enum AgentEvent
-	{none, doneCooking, asleep};
+	{none, cooking, eating, asleep, leaving};
 	AgentEvent event = AgentEvent.none;
 
 	public HomeRole(String name) {
 		//super();
 		this.name = name;
 		
-		inventory.add(new Item("Cooking Ingredients",2));
-		inventory.add(new Item("Cleaning supplies", 2));
+		inventory.add(new Item("Cooking Ingredient",2));
+		inventory.add(new Item("Cleaning supply", 2));
 		
 		features.add(new HomeFeature("Sink"));
 	}
@@ -72,6 +72,8 @@ public class HomeRole extends Role implements Home {
 		stateChanged();
 	}
 	public void msgRestockItem (String itemName, int quantity) {
+		print("Just received " + quantity + " " + itemName + "s.");
+		event = AgentEvent.none;
 		for(Item i : inventory) {
 			if(i.name == itemName) {
 				i.quantity = i.quantity + quantity;
@@ -120,7 +122,7 @@ public class HomeRole extends Role implements Home {
 			payRent();
 			return true;
 		}
-		if (state == AgentState.Cooking && event != AgentEvent.doneCooking) {
+		if (state == AgentState.Cooking && event == AgentEvent.none) {
 			cook();
 			return true;
 		}
@@ -128,12 +130,12 @@ public class HomeRole extends Role implements Home {
 			eat()
 			return true;
 		}*/
-		if (state == AgentState.Sleeping && event != AgentEvent.asleep) {
+		if (state == AgentState.Sleeping && event == AgentEvent.none) {
 			goToSleep();
 			return true;
 		}
 		for(Item i : inventory) {
-			if(i.quantity < 2 && state == AgentState.DoingNothing) {
+			if(i.quantity < 2 && state == AgentState.DoingNothing && event == AgentEvent.none) {
 				goToMarket(i);
 			}
 			return true;
@@ -151,6 +153,7 @@ public class HomeRole extends Role implements Home {
 	// Actions
 
 	private void cook() {
+		event = AgentEvent.cooking;
 		gui.DoGoToCenter();
 		try {
 			atCenter.acquire();
@@ -159,12 +162,6 @@ public class HomeRole extends Role implements Home {
 			e.printStackTrace();
 		}
 		gui.DoGoToKitchen();
-		event = AgentEvent.doneCooking;
-		for(Item i : inventory) {
-			if(i.name == "Cooking Ingredients") {
-				i.quantity--;
-			}
-		}
 		try {
 			atKitchen.acquire();
 		} catch (InterruptedException e) {
@@ -174,10 +171,16 @@ public class HomeRole extends Role implements Home {
 		timer.schedule(new TimerTask() {
 			public void run() {
 				goEat();
-				state = AgentState.Eating;
+				state = AgentState.DoingNothing;
+				event = AgentEvent.eating;
 			}
 		},
 		5000);
+		for(Item i : inventory) {
+			if(i.name == "Cooking Ingredient") {
+				i.quantity--;
+			}
+		}
 	}
 	private void goEat() {
 		print("Dinner's ready! Eating.");
@@ -192,12 +195,13 @@ public class HomeRole extends Role implements Home {
 			public void run() {
 				print("Done eating.");
 				state = AgentState.DoingNothing;
-				//event = AgentEvent.none;
+				event = AgentEvent.none;
 			}
 		},
 		5000);
 	}
 	private void goToMarket (Item item) {
+		event = AgentEvent.leaving;
 		gui.DoGoToCenter();
 		try {
 			atCenter.acquire();
@@ -205,7 +209,6 @@ public class HomeRole extends Role implements Home {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		state = AgentState.Leaving;
 		print("Low on " + item.name + ". I'm going to the market.");
 		gui.DoGoToFrontDoor();
 		try {
@@ -258,8 +261,8 @@ public class HomeRole extends Role implements Home {
 		timer.schedule(new TimerTask() {
 			public void run() {
 				state = AgentState.DoingNothing;
-				//event = AgentEvent.none;
-				print("Getting up!");
+				event = AgentEvent.none;
+				print("I'm awake!");
 				stateChanged();
 			}
 		},

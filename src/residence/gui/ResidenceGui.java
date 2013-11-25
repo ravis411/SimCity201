@@ -29,6 +29,7 @@ public class ResidenceGui extends JFrame implements ActionListener {
     private JButton tired; //clears cook's inventory
     private JButton hungry; //makes cashier's money balance go to zero
     private JButton payRent; //makes cashier's money balance go to two hundred
+    private JButton restock;
 
     /**
      * Constructor for RestaurantGui class.
@@ -81,6 +82,10 @@ public class ResidenceGui extends JFrame implements ActionListener {
         payRent.addActionListener(this);
         hackPanel.add(payRent);
         
+        restock = new JButton ("Restock");
+        restock.addActionListener(this);
+        hackPanel.add(restock);
+        
         add(hackPanel);
         
         add(animationPanel);
@@ -95,6 +100,9 @@ public class ResidenceGui extends JFrame implements ActionListener {
         }
         if (e.getSource() == payRent) {
         	homeRole.msgRentDue(20);
+        }
+        if (e.getSource() == restock) {
+        	homeRole.msgRestockItem("Cooking Ingredient", 3);
         }
     }
     
