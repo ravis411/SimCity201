@@ -42,7 +42,6 @@ public class HomeRole extends Role implements Home {
 	AgentEvent event = AgentEvent.none;
 
 	public HomeRole(String name) {
-		//super();
 		this.name = name;
 		
 		inventory.add(new Item("Cooking Ingredient",2));
@@ -93,6 +92,9 @@ public class HomeRole extends Role implements Home {
 		print("I'm eating at home.");
 		state = AgentState.Cooking;
 		stateChanged();
+	}
+	public void msgLeaveBuilding() {
+		//p
 	}
 	
 	public void msgAtKitchen() {
@@ -217,6 +219,7 @@ public class HomeRole extends Role implements Home {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		deactivate();
 	}
 	private void fileWorkOrder (HomeFeature brokenFeature) {
 		landlord.msgBrokenFeature(brokenFeature.name, this);
@@ -231,9 +234,6 @@ public class HomeRole extends Role implements Home {
 		else {
 			//do nothing
 		}
-	}
-	private void eat() { //chooses whether person cooks at home or goes out to a restaurant
-		
 	}
 	private void goToSleep() {
 		gui.DoGoToCenter();
