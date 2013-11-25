@@ -103,7 +103,14 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 				b.draw(g2);
 			}
 		}
-
+		
+		String time = new String();
+		time += (calendar.get(Calendar.MONTH) + 1) + "/";
+		time += (calendar.get(Calendar.DATE)) + "/";
+		time += (calendar.get(Calendar.YEAR)) + " ";
+		time += (calendar.get(Calendar.HOUR)) + ":";
+		
+		g2.drawString(time, 600, 390);
 	}
 
 	public void addGui(Gui gui) {
