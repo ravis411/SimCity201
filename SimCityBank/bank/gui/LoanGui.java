@@ -23,6 +23,8 @@ public class LoanGui implements Gui {
         private final int yTellerDesk= 180;
         private final static int xBreakRoom= 450;
         private final static int yBreakRoom= 10;
+        private int xcounter = 0;
+        private int ycounter = 0;
     BankGui gui;
 
     public LoanGui(loanTellerRole tellerRole, BankGui gui) {
@@ -36,20 +38,34 @@ public class LoanGui implements Gui {
     }
 
     public void updatePosition() {
-        if (xPos < xDestination)
-            {xPos++;
-          
-            }
-        else if (xPos > xDestination)
-            {xPos--;
-            }
-
-        if (yPos < yDestination)
-            {yPos++;
-            }
-        else if (yPos > yDestination)
-            {yPos--;
-            }
+		if (xPos < xDestination){
+			xcounter++;
+			if (xcounter == 3){
+				xPos++;
+				xcounter = 0;
+			}
+		}
+		else if (xPos > xDestination){
+			xcounter++;
+			if (xcounter == 3){
+				xPos--;
+				xcounter = 0;
+			}
+		}
+		if (yPos < yDestination){
+			ycounter++;
+			if (ycounter == 3){
+				yPos++;
+				ycounter = 0;
+			}
+		}
+		else if (yPos > yDestination){
+			ycounter++;
+			if (ycounter == 3){
+				yPos--;
+				ycounter = 0;
+			}
+		}
         if (xPos == xDestination && yPos == yDestination && xDestination == xIntermediateEntrance && yDestination == yIntermediateEntrance){
         	role.msgAtIntermediate();
         }
