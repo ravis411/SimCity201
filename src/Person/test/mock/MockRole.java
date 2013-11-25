@@ -17,6 +17,7 @@ public class MockRole extends Role{
 
 	@Override
 	public boolean canGoGetFood() {
+		
 		// TODO Auto-generated method stub
 		return false;
 	}
