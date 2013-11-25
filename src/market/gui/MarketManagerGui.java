@@ -74,6 +74,7 @@ public class MarketManagerGui implements Gui {
         		& (xDestination == xManagerOfficeDoor & (yDestination == yManagerOfficeDoor))) {
         	xDestination= xManagerOfficeDesk;
         	yDestination= yManagerOfficeDesk;
+        	role.msgMarketEmployeeAtDesk();
         }
 /*
         if (xPos == xDestination && yPos == yDestination

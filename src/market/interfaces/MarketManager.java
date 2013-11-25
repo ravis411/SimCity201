@@ -9,4 +9,6 @@ public interface MarketManager {
 	void msgMarketManagerHereIsAmountWeCanFulfill(String foodType,
 			int amountAvailable, int orderNumber);
 
+	void msgMarketEmployeeAtDesk();
+
 }

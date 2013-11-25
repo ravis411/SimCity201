@@ -231,9 +231,9 @@ public class PersonAgent extends Agent {
 			return true;
 		}
 		
-		if(state != PersonState.Idle){
+		/*if(state != PersonState.Idle){
 			GoHome();
-		}
+		}*/
 		
 		return false;
 	}

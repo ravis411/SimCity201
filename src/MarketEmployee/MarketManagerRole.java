@@ -4,10 +4,12 @@ package MarketEmployee;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.Semaphore;
 
 import market.gui.MarketManagerGui;
 import market.interfaces.MarketEmployee;
 import market.interfaces.MarketManager;
+import residence.HomeRole;
 import Person.Role.Role;
 
 /**
@@ -16,16 +18,18 @@ import Person.Role.Role;
 //MarketCustomer Agent
 public class MarketManagerRole extends Role implements MarketManager{
 	enum MarketEmployeeState
-	{walkingToCounter, waiting, waitingFor};
+	{walkingToDesk, waiting, waitingFor};
 	enum MarketEmployeeEvent
-	{enteredMarket, atDesk,};
+	{enteredMarket, atDesk, customerNeedsToBeGivenStation};
 	
 	public MarketEmployeeEvent event=MarketEmployeeEvent.enteredMarket;
-	public MarketEmployeeState state=MarketEmployeeState.walkingToCounter;
+	public MarketEmployeeState state=MarketEmployeeState.walkingToDesk;
 	List<CounterStation> currentEmployeees	= new ArrayList<CounterStation>();
 	List<Order> myOrders = new ArrayList<Order>();
+	private Semaphore atDesk = new Semaphore(0,false);
 	MarketManagerGui gui;
 	int marketMoney;
+	int orderNum=0;
 	/**
 	 * Constructor for MarketManager Role
 	 *
@@ -62,22 +66,31 @@ public class MarketManagerRole extends Role implements MarketManager{
 		}
 		if (!counter1Occupied){
 			currentEmployeees.add(new CounterStation(0,marketEmployee));
+			event=MarketEmployeeEvent.customerNeedsToBeGivenStation;
 		}
 		else if (!counter2Occupied){
 			currentEmployeees.add(new CounterStation(1,marketEmployee));
+			event=MarketEmployeeEvent.customerNeedsToBeGivenStation;
+
 		}
 		else if (!counter3Occupied){
 			currentEmployeees.add(new CounterStation(2,marketEmployee));
+			event=MarketEmployeeEvent.customerNeedsToBeGivenStation;
+
 		}
-		
+		stateChanged();
 	}
 
-	/*public void msgMarketManagerFoodOrder(String foodType, int amount, HomeRole homePerson)
+	public void msgMarketManagerFoodOrder(String foodType, int amount, HomeRole homePerson)
 	{
-		myOrders.add(new Order(foodType, amount, homePerson));
+		
+		myOrders.add(new Order(foodType, amount,orderNum++, homePerson));
+		stateChanged();
 	}
-	*/
+	
 	public void msgMarketManagerHereIsAmountWeCanFulfill(String foodType, int FoodTypeAmount, int orderNumber){
+		
+
 		for (int i = 0; i<myOrders.size(); i++)
 			if (orderNumber == myOrders.get(i).getOrderNumber())
 			{
@@ -85,6 +98,12 @@ public class MarketManagerRole extends Role implements MarketManager{
 				myOrders.get(i).setAmountReadyToBeShipped(FoodTypeAmount);
 				break;
 			}
+		stateChanged();
+	}
+
+	public void msgMarketEmployeeAtDesk(){
+		event=MarketEmployeeEvent.atDesk;
+		stateChanged();
 	}
 	
 //	void msgMarketManagerFoodOrder(String foodType, int amount, Cook cook)
@@ -110,15 +129,20 @@ public class MarketManagerRole extends Role implements MarketManager{
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAction() {
-	/*	if (!myOrders.isEmpty)
-			for all orders in MyOrder
-			{
-			if (order state == none)
+	
+		if (event==MarketEmployeeEvent.customerNeedsToBeGivenStation){
+			giveEmployeeAStation();
+			return true;
+		}
+		if (!myOrders.isEmpty())
+			for (int i = 0; i<myOrders.size(); i++){
+			//	if (state == none)
 				{
-					giveOrderToMarketEmployee(Order order);
+			//		giveOrderToMarketEmployee(Order order);
 					break;
 				}
 			}
+		/*
 			for all orders in MyOrder
 			{
 				if (order state == none)
@@ -141,6 +165,18 @@ public class MarketManagerRole extends Role implements MarketManager{
 	}
 
 	// Actions
+	
+	private void giveEmployeeAStation() {
+		for (int i = 0; i<currentEmployeees.size(); i++){
+			if (!currentEmployeees.get(i).getEmployeeGivenStationNumber()){
+				currentEmployeees.get(i).tellEmployeeStationNumber();
+				
+			}
+			
+		}
+		state=MarketEmployeeState.waiting;
+	}
+
 		
 			void giveOrderToMarketEmployee(){
 				Random random = new Random(System.nanoTime());
@@ -216,15 +252,23 @@ public class MarketManagerRole extends Role implements MarketManager{
 	private class CounterStation{
 		int CounterNumber;
 		MarketEmployee EmployeeAssignedToCounter;
+		boolean employeeGivenStation;
 		
 		CounterStation(int CounterNumber, MarketEmployee EmployeeAssignedToCounter){
 			this.CounterNumber=CounterNumber;
 			this.EmployeeAssignedToCounter=EmployeeAssignedToCounter;
-			EmployeeAssignedToCounter.msgMarketEmployeeYourCounterNumber(CounterNumber);
+			employeeGivenStation =false;
+			
 		}
-		
+		boolean getEmployeeGivenStationNumber(){
+			return employeeGivenStation;
+		}
 		int getCounterNumber(){
 			return CounterNumber;
+		}
+		void tellEmployeeStationNumber(){
+			EmployeeAssignedToCounter.msgMarketEmployeeYourCounterNumber(CounterNumber);
+			employeeGivenStation=true;
 		}
 		MarketEmployee getEmployeeAssignedToCounter(){
 			return EmployeeAssignedToCounter;
