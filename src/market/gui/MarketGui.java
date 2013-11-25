@@ -20,7 +20,7 @@ import Person.PersonAgent;
  */
 public class MarketGui extends JFrame implements ActionListener {
    
-	MarketAnimationPanel animationPanel = new MarketAnimationPanel();
+	public MarketAnimationPanel animationPanel = new MarketAnimationPanel();
 	final int WINDOWX = 800;// window width
     final int WINDOWY = 400;//window height
     final int WINDOWXOpenPosition = 50;//how many pixels from top left of screen window will appear
@@ -48,7 +48,7 @@ public class MarketGui extends JFrame implements ActionListener {
         setMinimumSize(marketAnimationFrameDim);
         setMaximumSize(marketAnimationFrameDim);
         add(animationPanel, BorderLayout.CENTER);
-        
+        /*
       //Test Market Manager
         marketManagerPerson.addRole(marketManagereRole);
         MarketManagerGui marketManagerGui = new MarketManagerGui(marketManagereRole, this);
@@ -180,7 +180,7 @@ public class MarketGui extends JFrame implements ActionListener {
         marketCustomerRoles.get(2).setPerson( marketCustomerPersons.get(2));
         marketCustomerPersons.get(2).startThread();
 
-
+*/
     }
     
     

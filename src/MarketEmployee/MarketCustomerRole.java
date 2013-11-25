@@ -12,6 +12,8 @@ import java.util.concurrent.Semaphore;
 import market.gui.MarketCustomerGui;
 import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
+import market.test.mock.EventLog;
+import market.test.mock.LoggedEvent;
 import Person.Role.Role;
 
 /**
@@ -19,23 +21,23 @@ import Person.Role.Role;
  */
 //MarketCustomer Agent
 public class MarketCustomerRole extends Role implements MarketCustomer{
-	MarketCustomerGui gui;
+	public MarketCustomerGui gui;
 	String name = "Market Customer";
 	String foodTypeWanted;
 	int foodTypeAmount;
-	boolean willTakePartialOrder;
+	public boolean willTakePartialOrder;
 	private Semaphore atCounter = new Semaphore(0,false);
 	private Semaphore employeeReadyToTakeOrder = new Semaphore(0,false);
-	enum MarketCustomerState 
-	{none,needsToOrder, waitingForMarketEmployeeToReturn, replyingToEmployee, waitingForPartialOrder,leaving};
-	enum MarketCustomerEvent
-	{none, firstInLine, employeeBackAndAskedOrderDetail, leaving};
+	public enum MarketCustomerState 
+	{none,needsToOrder,askedEmployeeToTellWhenWhenToOrder, waitingForMarketEmployeeToReturn, replyingToEmployee, waitingForPartialOrder,leaving};
+	public enum MarketCustomerEvent
+	{none, firstInLine,employeeSaysOrderNow, employeeBackAndAskedOrderDetail, leaving};
 	public MarketCustomerEvent event=MarketCustomerEvent.none;
 	public MarketCustomerState state=MarketCustomerState.needsToOrder;
 	public MarketEmployee marketEmployee;
 	private Map<String, Integer> menu;
 	private Random randomx = new Random(System.nanoTime());
-
+	public EventLog log= new EventLog();
 	
 	
 	/**
@@ -69,7 +71,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	public void msgMarketCustomerReadyToTakeOrder(){
 		
 		print("Market Employee Says he will take an Order Now");
-		employeeReadyToTakeOrder.release();
+		event= MarketCustomerEvent.employeeSaysOrderNow;
 	}
 	
 
@@ -99,9 +101,12 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 			goToMarketEmployeeToOrder();
 			return true;
 		}
+		if (event== MarketCustomerEvent.employeeSaysOrderNow && state==MarketCustomerState.askedEmployeeToTellWhenWhenToOrder){
+			giveEmployeeOrder();
+			return true;
+		}
 		if (event == (MarketCustomerEvent.employeeBackAndAskedOrderDetail) && state==MarketCustomerState.waitingForMarketEmployeeToReturn){
 			tellMarketEmployeeIfPartialOrderAcceptable();
-			state=MarketCustomerState.waitingForPartialOrder;
 			return true;
 		}
 		if (event == MarketCustomerEvent.leaving && state!= MarketCustomerState.none){
@@ -119,9 +124,13 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 
 	// Actions
 	
+
+
 	void goToMarketEmployeeToOrder(){
+		
 		gui.DoGoToCounter();//walk to Counter to Order
 		print("Entered Market");
+		log.add(new LoggedEvent("Entered Market"));
 		try {
 			atCounter.acquire();
 		} catch (InterruptedException e) {
@@ -129,13 +138,12 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 			e.printStackTrace();
 		}
 		marketEmployee.msgMarketEmployeetTellMeWhenICanGiveOrder(this);
-
-		try {
-			employeeReadyToTakeOrder.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		state=MarketCustomerState.askedEmployeeToTellWhenWhenToOrder;
+	
+		
 		}
+	private void giveEmployeeOrder() {
+
 		Random random = new Random(System.nanoTime());
 		List<String> keys = Collections.synchronizedList(new ArrayList<String>(menu.keySet()));
 		foodTypeWanted = keys.get( random.nextInt(keys.size()) ); //selects random food type from menu
@@ -145,15 +153,18 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		marketEmployee.msgMarketEmployeeOrder(foodTypeWanted, foodTypeAmount, this, getPerson().getName());
 		state= MarketCustomerState.waitingForMarketEmployeeToReturn;
 
-		
-		}
-
+	}
 	void tellMarketEmployeeIfPartialOrderAcceptable(){
-		marketEmployee.msgMarketEmployeeConfirmPartialOrder(willTakePartialOrder, this);
-		if (willTakePartialOrder == false)
+		
+		if (willTakePartialOrder == false){
 			print("Leaveing Market");
 			leaveMarket();
 		}
+		else{
+			marketEmployee.msgMarketEmployeeConfirmPartialOrder(willTakePartialOrder, this);
+			state=MarketCustomerState.waitingForPartialOrder;
+		}
+	}
 	void leaveMarket(){
 		state= MarketCustomerState.none;
 		gui.DoLeave();//animation for CustomerRole to leave market

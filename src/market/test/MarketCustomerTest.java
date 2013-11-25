@@ -1,9 +1,12 @@
 package market.test;
 
 import junit.framework.TestCase;
-import market.interfaces.MarketEmployee;
+import market.gui.MarketCustomerGui;
+import market.gui.MarketGui;
 import market.test.mock.MockMarketEmployee;
 import MarketEmployee.MarketCustomerRole;
+import MarketEmployee.MarketCustomerRole.MarketCustomerState;
+import Person.PersonAgent;
 
 /**
  * 
@@ -18,7 +21,7 @@ public class MarketCustomerTest extends TestCase
 	
 	//these are instantiated for each test separately via the setUp() method.
 	MarketCustomerRole customer;
-	MarketEmployee employee;
+	MockMarketEmployee employee;
 	
 	
 	/**
@@ -30,242 +33,102 @@ public class MarketCustomerTest extends TestCase
 		customer = new MarketCustomerRole();
 		employee = new MockMarketEmployee("employee");
 		customer.marketEmployee=employee;
+		MarketGui gui= new MarketGui();
+		customer.gui=new MarketCustomerGui(customer, gui, 1);
+		gui.animationPanel.addGui(customer.gui);
+		gui.setVisible(true);
+        gui.setResizable(false);
+		PersonAgent customerPerson =new PersonAgent("Bob");
+		customer.setPerson(customerPerson);
+		customerPerson.startThread();
 		
 	}	
 	/**
 	 * This tests the cashier under very simple terms: one customer is ready to pay the exact bill.
 	 */
-	public void testOneNormalCustomerScenario()
-	{/*
-		//setUp() runs first before this test!
-		
-		customer.cashier = cashier;//You can do almost anything in a unit test.			
-		
-		//check preconditions
-
-		assertEquals("CashierAgent should have an empty event log before the Cashier's HereIsBill is called. Instead, the Cashier's event log reads: "+ cashier.log.toString(), 0, cashier.log.size());
-		
-		//step 1 of the test
-		//public void msgCashierComputeBill(String customerChoice, Customer customer, Waiter waiter) {
-		String customerChoice="Steak";
-		cashier.msgCashierComputeBill(customerChoice, customer, waiter);//send the message from a waiter
-
-		//check postconditions for step 1 and preconditions for step 2
-		assertEquals("MockWaiter should have an empty event log before the Cashier's scheduler is called. Instead, the MockWaiter's event log reads: "
-						+ waiter.log.toString(), 0, waiter.log.size());
-	
-
-		
-		assertTrue("Cashier's scheduler should have returned true (giveWaiterCheck action should be done).", cashier.pickAndExecuteAnAction());
-		
-
-		assertEquals(
-				"MockCustomer should have an empty event log after the Cashier's scheduler is called for the first time. Instead, the MockCustomer's event log reads: "
-						+ customer.log.toString(), 0, customer.log.size());
-		
-		//step 2 of the test
-		int money= 20;
-		cashier.msgCashierPayForOrder(money,customer);
-		
-		//check postconditions for step 2 / preconditions for step 3
-		
-		assertTrue("Cashier should have logged \"Recieved msgCashierPayForOrder money: " + money + "customer: "+ customer + "\" but didn't. His log reads instead: " 
-				+ cashier.log.getLastLoggedEvent().toString(), cashier.log.containsString("Recieved msgCashierPayForOrder"));
-
-		assertTrue("CashierTab should contain a tab of price = 0. It contains something else instead: $" 
-				+ cashier.Tabs.get(0).getTab(),  cashier.Tabs.get(0).getTab() == 0);
-		
-		assertTrue("CashierBill should contain a bill with the right customer in it. It doesn't.", 
-					cashier.Tabs.get(0).getCustomer() == customer);
-		int bill=10;
-		cashier.restaurantMoney=20;
-		cashier.marketBills.add(cashier.new MarketBill(market1));	
-		cashier.msgCashierHereIsMarketBill(bill,market1);
-		assertTrue("Cashier should have logged \"Recieved msgCashierHereIsMarketBill orderPrice: " +bill + " market: "+market1 +"\" but didn't. His log reads instead: " 
-				+ cashier.log.getLastLoggedEvent().toString(), cashier.log.containsString("Recieved msgCashierHereIsMarketBill"));
-		assertTrue("Cashier should have logged \"New Event needToPayMarket\" instead: "
-				+ cashier.log.getLastLoggedEvent().toString(), cashier.log.containsString("New Event needToPayMarket"));
-		assertTrue("Cashier's scheduler should have returned true (giveWaiterCheck action should be done).", cashier.pickAndExecuteAnAction());
-		assertTrue("Market should have logged \"Recieved msgMarketHereIsPayment. moneyOwed: " + bill+"\" but didn't. His log reads instead: " 
-				+ market1.log.getLastLoggedEvent().toString(), market1.log.containsString("Recieved msgMarketHereIsPayment"));
-	*/}//end one normal customer scenario
-	public void testTwoNotEnoughMoneyforCustomerToPay()
-	{
-		/*
-		//setUp() runs first before this test!
-		
-		customer.cashier = cashier;//You can do almost anything in a unit test.			
-		
-		//check preconditions
-
-		assertEquals("CashierAgent should have an empty event log before the Cashier's HereIsBill is called. Instead, the Cashier's event log reads: "+ cashier.log.toString(), 0, cashier.log.size());
-		
-		//step 1 of the test
-		//public void msgCashierComputeBill(String customerChoice, Customer customer, Waiter waiter) {
-		String customerChoice="Steak";
-		cashier.msgCashierComputeBill(customerChoice, customer, waiter);//send the message from a waiter
-
-		//check postconditions for step 1 and preconditions for step 2
-		assertEquals("MockWaiter should have an empty event log before the Cashier's scheduler is called. Instead, the MockWaiter's event log reads: "
-						+ waiter.log.toString(), 0, waiter.log.size());
-	
-
-		
-		assertTrue("Cashier's scheduler should have returned true (giveWaiterCheck action should be done).", cashier.pickAndExecuteAnAction());
-		
-
-		assertEquals(
-				"MockCustomer should have an empty event log after the Cashier's scheduler is called for the first time. Instead, the MockCustomer's event log reads: "
-						+ customer.log.toString(), 0, customer.log.size());
-		
-		//step 2 of the test
-		int money= 10;
-		cashier.msgCashierPayForOrder(money,customer);
-
-		assertTrue("Cashier should have logged \"Recieved msgCashierPayForOrder money: " + money + "customer: "+ customer + "\" but didn't. His log reads instead: " 
-				+ cashier.log.getLastLoggedEvent().toString(), cashier.log.containsString("Recieved msgCashierPayForOrder"));
-
-		assertTrue("Customer Tab should contain a tab of amount = 10. It contains something else instead: $" 
-				+ cashier.Tabs.get(0).getTab(),  cashier.Tabs.get(0).getTab() == 10);
-		//should be ten because that is how much the customer owes next time.
-		assertTrue("CashierBill should contain a bill with the right customer in it. It doesn't.", 
-					cashier.Tabs.get(0).getCustomer() == customer);
-		
-	}
-	public void testThreeCorrectChangeGeneratedTest()
+	public void testOneNormalCustomerScenarioWithFoodInstock()
 	{
 		//setUp() runs first before this test!
 		
-				customer.cashier = cashier;//You can do almost anything in a unit test.			
-				
-				//check preconditions
-
-				assertEquals("CashierAgent should have an empty event log before the Cashier's HereIsBill is called. Instead, the Cashier's event log reads: "+ cashier.log.toString(), 0, cashier.log.size());
-				
-				//step 1 of the test
-				String customerChoice="Steak";
-				cashier.msgCashierComputeBill(customerChoice, customer, waiter);//send the message from a waiter
-
-				//check postconditions for step 1 and preconditions for step 2
-				assertEquals("MockWaiter should have an empty event log before the Cashier's scheduler is called. Instead, the MockWaiter's event log reads: "
-								+ waiter.log.toString(), 0, waiter.log.size());
+		
+		
+		assertEquals(
+				"customer should have an empty event log after the Cashier's scheduler is called for the first time. Instead, the MockCustomer's event log reads: "
+						+ customer.log.toString(), 0, customer.log.size());
+		assertTrue("Customer's scheduler should have returned true (goToMarketEmployeeToOrder action should be done).", customer.pickAndExecuteAction());
+		assertTrue("customer should have logged \"Recieved Entered Market" +"\" but didn't. His log reads instead: " 
+				+ customer.log.getLastLoggedEvent().toString(), customer.log.containsString("Entered Market"));
+		assertTrue("Employee should have logged \"Recieved msgMarketEmployeetTellMeWhenICanGiveOrder" +"\" but didn't. His log reads instead: " 
+				+ employee.log.getLastLoggedEvent().toString(), employee.log.containsString("msgMarketEmployeetTellMeWhenICanGiveOrder"));
+		customer.msgMarketCustomerReadyToTakeOrder();
+		assertTrue("Customer's scheduler should have returned true (giveEmployeeOrder action should be done).", customer.pickAndExecuteAction());
+		assertTrue("Employee should have logged \"Recieved msgMarketEmployeeOrder" +"\" but didn't. His log reads instead: " 
+				+ employee.log.getLastLoggedEvent().toString(), employee.log.containsString("msgMarketEmployeeOrder"));
+		//at this point the employee has recieved an order.
+		customer.msgMarketCustomerHereIsOrder("Burger",1);
+		assertTrue("Customer's scheduler should have returned true (leaveMarket action should be done).", customer.pickAndExecuteAction());
+		assertTrue("Customer's state should now equal none after leaving", customer.state==MarketCustomerRole.MarketCustomerState.none);
+		
 			
-
-				
-				assertTrue("Cashier's scheduler should have returned true (giveWaiterCheck action should be done).", cashier.pickAndExecuteAnAction());
-				
-
-				assertEquals(
-						"MockCustomer should have an empty event log after the Cashier's scheduler is called for the first time. Instead, the MockCustomer's event log reads: "
-								+ customer.log.toString(), 0, customer.log.size());
-				
-				//step 2 of the test
-				int money= 25;
-				cashier.msgCashierPayForOrder(money,customer);
-
-				assertTrue("Cashier should have logged \"Recieved msgCashierPayForOrder money: " + money + "customer: "+ customer + "\" but didn't. His log reads instead: " 
-						+ cashier.log.getLastLoggedEvent().toString(), cashier.log.containsString("Recieved msgCashierPayForOrder"));
-
-				assertTrue("Customer Change should contain a tab of amount = 10. It contains something else instead: $" 
-						+ cashier.Tabs.get(0).getChange(),  cashier.Tabs.get(0).getChange() == 5);
-				//should be ten because that is how much the customer owes next time.
-				assertTrue("CashierBill should contain a bill with the right customer in it. It doesn't.", 
-							cashier.Tabs.get(0).getCustomer() == customer);
-	*/
-	}
-	public void testFourWithOneOrderCashierDoesnotHaveEnoughMoney()
-	{
-	/*	customer.cashier = cashier;//You can do almost anything in a unit test.			
-		market1.msgMarketOrderFood("Chicken", 1);
-		assertTrue("Market should have logged \"Recieved msgMarketOrderFood.\" but didn't. His log reads instead: " 
-				+ market1.log.getLastLoggedEvent().toString(), market1.log.containsString("Recieved msgMarketOrderFood"));
-		cashier.restaurantMoney=1;
-		Vector<MarketAgent> markets = new Vector<MarketAgent>();
-		markets.add(market1);
-		cashier.addMarkets(markets);
-		market1.pickAndExecuteAnAction();
-		assertTrue("Cook should have logged \"Recieved msgHereAreRequestedFoodSupplies.\" but didn't. His log reads instead: " 
-				+ cook.log.getLastLoggedEvent().toString(), cook.log.containsString("Recieved msgHereAreRequestedFoodSupplies"));
-		assertFalse("Cook should NOT have logged \"Recieved msgCookNumberThatWereOrderedButNotFullfilled.\" but did.", cook.log.containsString("Recieved msgCookNumberThatWereOrderedButNotFullfilled"));
-		assertTrue("Cashier should have logged \"Recieved msgCashierHereIsMarketBill.\" but didn't. His log reads instead: " 
-				+ cashier.log.getLastLoggedEvent().toString(), cashier.log.containsString("Recieved msgCashierHereIsMarketBill"));
-		
-		assertFalse("Cashier should NOT have logged \"New Event needToPayMarket\" instead: "
-				+ cashier.log.getLastLoggedEvent().toString(), cashier.log.containsString("New Event needToPayMarket"));
-		assertTrue("Cashier should have logged \"New Event notEnoughMoneyToPayMarket\" instead: "
-				+ cashier.log.getLastLoggedEvent().toString(), cashier.log.containsString("New Event notEnoughMoneyToPayMarket"));
-		assertTrue("Cashier's scheduler should have returned true (giveWaiterCheck action should be done).", cashier.pickAndExecuteAnAction());
-		assertTrue("Market should have logged \"Recieved msgMarketHereIsPayment.\" but didn't. His log reads instead: " 
-				+ market1.log.getLastLoggedEvent().toString(), market1.log.containsString("Recieved msgMarketHereIsPayment"));
+	}//end one normal customer scenario
 	
-		assertEquals("Cashier Should be in debt with negative -$1 after paying with credit but has $"
-				+ cashier.restaurantMoney, -1,  cashier.restaurantMoney);
-	*/
-	}
-	public void testFiveWithOneOrderNormalCustomerScenario()
+	public void testTwoCustomerScenarioWithPartialOrderInstockAndPartialOrderNOTAcceptable()
 	{
-	/*	customer.cashier = cashier;//You can do almost anything in a unit test.			
-		market1.msgMarketOrderFood("Chicken", 1);
-		assertTrue("Market should have logged \"Recieved msgMarketOrderFood.\" but didn't. His log reads instead: " 
-				+ market1.log.getLastLoggedEvent().toString(), market1.log.containsString("Recieved msgMarketOrderFood"));
-		cashier.restaurantMoney=10;
-		Vector<MarketAgent> markets = new Vector<MarketAgent>();
-		markets.add(market1);
-		cashier.addMarkets(markets);
-		market1.pickAndExecuteAnAction();
-		assertTrue("Cook should have logged \"Recieved msgHereAreRequestedFoodSupplies.\" but didn't. His log reads instead: " 
-				+ cook.log.getLastLoggedEvent().toString(), cook.log.containsString("Recieved msgHereAreRequestedFoodSupplies"));
-		assertFalse("Cook should NOT have logged \"Recieved msgCookNumberThatWereOrderedButNotFullfilled.\" but did.", cook.log.containsString("Recieved msgCookNumberThatWereOrderedButNotFullfilled"));
-		assertTrue("Cashier should have logged \"Recieved msgCashierHereIsMarketBill.\" but didn't. His log reads instead: " 
-				+ cashier.log.getLastLoggedEvent().toString(), cashier.log.containsString("Recieved msgCashierHereIsMarketBill"));
+		//setUp() runs first before this test!
+		customer.willTakePartialOrder=false;
 		
-		assertTrue("Cashier should have logged \"New Event needToPayMarket\" instead: "
-				+ cashier.log.getLastLoggedEvent().toString(), cashier.log.containsString("New Event needToPayMarket"));
-		assertTrue("Cashier's scheduler should have returned true (giveWaiterCheck action should be done).", cashier.pickAndExecuteAnAction());
-		assertTrue("Market should have logged \"Recieved msgMarketHereIsPayment.\" but didn't. His log reads instead: " 
-				+ market1.log.getLastLoggedEvent().toString(), market1.log.containsString("Recieved msgMarketHereIsPayment"));
+		
+		assertEquals(
+				"customer should have an empty event log after the Cashier's scheduler is called for the first time. Instead, the MockCustomer's event log reads: "
+						+ customer.log.toString(), 0, customer.log.size());
+		assertTrue("Customer's scheduler should have returned true (goToMarketEmployeeToOrder action should be done).", customer.pickAndExecuteAction());
+		assertTrue("customer should have logged \"Recieved Entered Market" +"\" but didn't. His log reads instead: " 
+				+ customer.log.getLastLoggedEvent().toString(), customer.log.containsString("Entered Market"));
+		assertTrue("Employee should have logged \"Recieved msgMarketEmployeetTellMeWhenICanGiveOrder" +"\" but didn't. His log reads instead: " 
+				+ employee.log.getLastLoggedEvent().toString(), employee.log.containsString("msgMarketEmployeetTellMeWhenICanGiveOrder"));
+		customer.msgMarketCustomerReadyToTakeOrder();
+		assertTrue("Customer's scheduler should have returned true (giveEmployeeOrder action should be done).", customer.pickAndExecuteAction());
+		assertTrue("Employee should have logged \"Recieved msgMarketEmployeeOrder" +"\" but didn't. His log reads instead: " 
+				+ employee.log.getLastLoggedEvent().toString(), employee.log.containsString("msgMarketEmployeeOrder"));
+		//at this point the employee has recieved an order.
+		customer.msgMarketCustomerDoYouWantPartialOrder("Burger",1);
+		
+		assertTrue("Customer's scheduler should have returned true (tellMarketEmployeeIfPartialOrderAcceptable action should be done).", customer.pickAndExecuteAction());
+		assertTrue("Customer's state should now equal none after leaving", customer.state==MarketCustomerRole.MarketCustomerState.none);
+		
+			
+	}//end one normal customer scenario
+	public void testTwoCustomerScenarioWithPartialOrderInstockAndPartialOrderISAcceptable()
+	{
+		//setUp() runs first before this test!
+		customer.willTakePartialOrder=true;
+		
+		
+		assertEquals(
+				"customer should have an empty event log after the Cashier's scheduler is called for the first time. Instead, the MockCustomer's event log reads: "
+						+ customer.log.toString(), 0, customer.log.size());
+		assertTrue("Customer's scheduler should have returned true (goToMarketEmployeeToOrder action should be done).", customer.pickAndExecuteAction());
+		assertTrue("customer should have logged \"Recieved Entered Market" +"\" but didn't. His log reads instead: " 
+				+ customer.log.getLastLoggedEvent().toString(), customer.log.containsString("Entered Market"));
+		assertTrue("Employee should have logged \"Recieved msgMarketEmployeetTellMeWhenICanGiveOrder" +"\" but didn't. His log reads instead: " 
+				+ employee.log.getLastLoggedEvent().toString(), employee.log.containsString("msgMarketEmployeetTellMeWhenICanGiveOrder"));
+		customer.msgMarketCustomerReadyToTakeOrder();
+		assertTrue("Customer's scheduler should have returned true (giveEmployeeOrder action should be done).", customer.pickAndExecuteAction());
+		assertTrue("Employee should have logged \"Recieved msgMarketEmployeeOrder" +"\" but didn't. His log reads instead: " 
+				+ employee.log.getLastLoggedEvent().toString(), employee.log.containsString("msgMarketEmployeeOrder"));
+		//at this point the employee has recieved an order.
+		customer.msgMarketCustomerDoYouWantPartialOrder("Burger",1);
+		
+		assertTrue("Customer's scheduler should have returned true (tellMarketEmployeeIfPartialOrderAcceptable action should be done).", customer.pickAndExecuteAction());
+		assertTrue("Employee should have logged \"Recieved msgMarketEmployeeConfirmPartialOrder" +"\" but didn't. His log reads instead: " 
+				+ employee.log.getLastLoggedEvent().toString(), employee.log.containsString("msgMarketEmployeeConfirmPartialOrder"));
+		customer.msgMarketCustomerHereIsOrder("Burger",1);
+		assertTrue("Customer's scheduler should have returned true (leaveMarket action should be done).", customer.pickAndExecuteAction());
+		assertTrue("Customer's state should now equal none after leaving", customer.state==MarketCustomerRole.MarketCustomerState.none);
+		
+			
+	}//end one normal customer scenario
 	
-		assertEquals("Cashier's should Owe No Money. Instead, the waiter owes: "
-				+ cashier.marketBills.get(0).getMoneyOwed(), 0,  cashier.marketBills.get(0).getMoneyOwed());
-	*/
-	}
-	public void testSixWithTwoOrdersTwoBillsNormalCustomerScenario()
-	{/*
-		customer.cashier = cashier;//You can do almost anything in a unit test.			
-		market1.msgMarketOrderFood("Chicken", 3);
-		assertTrue("Market1 should have logged \"Recieved msgMarketOrderFood.\" but didn't. His log reads instead: " 
-				+ market1.log.getLastLoggedEvent().toString(), market1.log.containsString("Recieved msgMarketOrderFood"));
-		cashier.restaurantMoney=6;
-		Vector<MarketAgent> markets = new Vector<MarketAgent>();
-		markets.add(market1);
-		markets.add(market2);
-		cashier.addMarkets(markets);
-		market1.pickAndExecuteAnAction();
-		assertTrue("Cook should have logged \"Recieved msgHereAreRequestedFoodSupplies.\" but didn't. His log reads instead: " 
-				+ cook.log.getLastLoggedEvent().toString(), cook.log.containsString("Recieved msgHereAreRequestedFoodSupplies"));
-		assertTrue("Cook should have logged \"Recieved msgCookNumberThatWereOrderedButNotFullfilled.\" and did.", cook.log.containsString("Recieved msgCookNumberThatWereOrderedButNotFullfilled"));
-		assertTrue("Cashier should have logged \"Recieved msgCashierHereIsMarketBill.\" but didn't. His log reads instead: " 
-				+ cashier.log.getLastLoggedEvent().toString(), cashier.log.containsString("Recieved msgCashierHereIsMarketBill"));
-		
-		assertTrue("Cashier should have logged \"New Event needToPayMarket\" instead: "
-				+ cashier.log.getLastLoggedEvent().toString(), cashier.log.containsString("New Event needToPayMarket"));
-		assertTrue("Cashier's scheduler should have returned true (giveWaiterCheck action should be done).", cashier.pickAndExecuteAnAction());
-		assertTrue("Market1 should have logged \"Recieved msgMarketHereIsPayment.\" but didn't. His log reads instead: " 
-				+ market1.log.getLastLoggedEvent().toString(), market1.log.containsString("Recieved msgMarketHereIsPayment"));
-		assertEquals("Market1 should have $4. But instead has: $"+ market1.money, 4,  market1.money);
-		
-		market2.msgMarketOrderFood("Chicken", 1);
-		market2.pickAndExecuteAnAction();
-		assertTrue("Market2 should have logged \"Recieved msgMarketOrderFood.\" but didn't. His log reads instead: " 
-				+ market2.log.getLastLoggedEvent().toString(), market2.log.containsString("Recieved msgMarketOrderFood"));
-		assertTrue("Cashier's scheduler should have returned true (giveWaiterCheck action should be done).", cashier.pickAndExecuteAnAction());
-		assertTrue("Market2 should have logged \"Recieved msgMarketHereIsPayment.\" but didn't. His log reads instead: " 
-				+ market2.log.getLastLoggedEvent().toString(), market2.log.containsString("Recieved msgMarketHereIsPayment"));
-		assertEquals("Market2 should have $2. But instead has: $"
-				+ market2.money, 2,  market2.money);
-		assertEquals("Cashier's should Owe No Money. Instead, the waiter owes: "
-				+ cashier.marketBills.get(0).getMoneyOwed(), 0,  cashier.marketBills.get(0).getMoneyOwed());
-	*/
-	}
+	
 	
 }

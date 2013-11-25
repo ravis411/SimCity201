@@ -4,7 +4,7 @@ import market.interfaces.MarketEmployee;
 import MarketEmployee.MarketCustomerRole;
 
 public class MockMarketEmployee extends Mock implements MarketEmployee {
-
+	public EventLog log= new EventLog();
 	public MockMarketEmployee(String name) {
 		super(name);
 		// TODO Auto-generated constructor stub
@@ -14,7 +14,8 @@ public class MockMarketEmployee extends Mock implements MarketEmployee {
 	@Override
 	public void msgMarketEmployeeOrder(String foodType, int FoodTypeAmount,
 			MarketCustomerRole customer, String string) {
-		// TODO Auto-generated method stub
+		log.add(new LoggedEvent("Recieved msgMarketEmployeeOrder"));
+		
 		
 	}
 
@@ -22,7 +23,7 @@ public class MockMarketEmployee extends Mock implements MarketEmployee {
 	@Override
 	public void msgMarketEmployeetTellMeWhenICanGiveOrder(
 			MarketCustomerRole marketCustomer) {
-		// TODO Auto-generated method stub
+		log.add(new LoggedEvent("Recieved msgMarketEmployeetTellMeWhenICanGiveOrder"));		
 		
 	}
 
@@ -58,7 +59,8 @@ public class MockMarketEmployee extends Mock implements MarketEmployee {
 	@Override
 	public void msgMarketEmployeeConfirmPartialOrder(
 			boolean willTakePartialOrder, MarketCustomerRole marketCustomerRole) {
-		// TODO Auto-generated method stub
+		log.add(new LoggedEvent("Recieved msgMarketEmployeeConfirmPartialOrder"));		
+
 		
 	}
 

@@ -11,13 +11,14 @@ import market.gui.MarketEmployeeGui;
 import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
 import market.interfaces.MarketManager;
+import market.test.mock.EventLog;
 import Person.Role.Role;
 
 /**
  * MarketEmployee Role
  */
 public class MarketEmployeeRole extends Role implements MarketEmployee{
-
+	public EventLog log= new EventLog();
 	MarketEmployeeGui gui;
 	String name = "Market Employee";
 	private Semaphore atCounter = new Semaphore(0,false);
