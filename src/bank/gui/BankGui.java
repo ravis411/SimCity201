@@ -33,11 +33,11 @@ public class BankGui extends JFrame implements ActionListener {
     
     
     //test
-    private PersonAgent client = new PersonAgent("Test client", null);
+//    private PersonAgent client = new PersonAgent("Test client", null);
     private PersonAgent teller = new PersonAgent("Test teller", null);
-    private bankClientRole clientRole = new bankClientRole(client.getName(),"deposit",100);
+//    private bankClientRole clientRole = new bankClientRole(client.getName(),"deposit",100);
     private bankTellerRole tellerRole = new bankTellerRole(teller.getName(),1);
-    private ClientGui clientGui = new ClientGui(clientRole, this);
+//    private ClientGui clientGui = new ClientGui(clientRole, this);
     private TellerGui tellerGui = new TellerGui(tellerRole, this, tellerRole.getLine());
     private LoanGui loanGui = new LoanGui(loanTellereRole, this);
     
@@ -83,7 +83,7 @@ public class BankGui extends JFrame implements ActionListener {
         tellerRole.setGui(tellerGui);
         tellerRole.activate();
         tellerRole.getPerson().startThread();
-        
+ /*       
         client.addRole(clientRole);
         clientRole.setPerson(client);
         animationPanel.addGui(clientGui);
@@ -91,7 +91,7 @@ public class BankGui extends JFrame implements ActionListener {
         clientRole.setGui(clientGui);
         clientRole.activate();
         clientRole.getPerson().startThread();
-        
+   */     
         loanTellerPerson.addRole(loanTellereRole);
         loanTellereRole.setPerson(loanTellerPerson);
         animationPanel.addGui(loanGui);

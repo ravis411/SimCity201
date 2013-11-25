@@ -1,16 +1,18 @@
 package bank;
 import bank.bankClientRole;
 import bank.gui.TellerGui;
+import interfaces.Employee;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import trace.AlertLog;
 import trace.AlertTag;
+import util.Interval;
 import Person.Role.Role;
 
 
-public class bankTellerRole extends Role{
+public class bankTellerRole extends Role implements Employee{
 	private bankClientRole myClient;
 	private int LineNum; //from 1 to n, with 5 being the loan line, should be assigned in creation
 	public enum requestState {pending, withdrawal, deposit, open, none, notBeingHelped};
@@ -196,6 +198,18 @@ public class bankTellerRole extends Role{
 
 	@Override
 	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Interval getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
 		// TODO Auto-generated method stub
 		return null;
 	}
