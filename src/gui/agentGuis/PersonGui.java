@@ -108,6 +108,22 @@ public class PersonGui implements Gui {
     }
     
     
+    public boolean setStartingStates(String location){
+    	LocationInfo i = locations.get(location);
+    	if(i != null)
+    		return false;
+    	
+    	currentLocation = i;
+    	xPos = xDestination = i.entranceFromMainGridPosition.width;
+    	yPos = yDestination = i.entranceFromMainGridPosition.height;
+    	isPresent = false;    	
+    	state = PersonState.inBuilding;
+    	
+    	return true;
+    }
+    
+    
+    
     /** Gets the Person's current location.
      * 
      * @return	The name of the guis current location, null otherwise.
