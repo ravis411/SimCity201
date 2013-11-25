@@ -70,8 +70,81 @@ public class SetUpWorldFactory{
 		
 //Building 1
 		location.sector = 1;
-		location.positionToEnterFromMainGrid = new Dimension(4, 3);
+		location.positionToEnterFromMainGrid = new Dimension(5, 3);
 		location.entranceFromMainGridPosition = new Dimension(4, 3);
+		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+		addBuilding("Default", "Building 1", 3, 2, 2, 2, location);
+		
+//Building 2
+		location.sector = 1;
+		location.positionToEnterFromMainGrid = new Dimension(10, 3);
+		location.entranceFromMainGridPosition = new Dimension(9, 3);
+		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+		addBuilding("Default", "Building 2", 8, 2, 2, 2, location);
+		
+//Building 3
+		location.sector = 1;
+		location.positionToEnterFromMainGrid = new Dimension(15, 3);
+		location.entranceFromMainGridPosition = new Dimension(14, 3);
+		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+		addBuilding("Default", "Building 3", 13, 2, 2, 2, location);
+		
+//Building 4
+		location.sector = 1;
+		location.positionToEnterFromMainGrid = new Dimension(20, 3);
+		location.entranceFromMainGridPosition = new Dimension(19, 3);
+		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+		addBuilding("Default", "Building 4", 18, 2, 2, 2, location);
+		
+//Building 5
+		location.sector = 1;
+		location.positionToEnterFromMainGrid = new Dimension(25, 3);
+		location.entranceFromMainGridPosition = new Dimension(24, 3);
+		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+		addBuilding("Default", "Building 5", 23, 2, 2, 2, location);
+//Building 6
+		location.sector = 1;
+		location.positionToEnterFromMainGrid = new Dimension(30, 3);
+		location.entranceFromMainGridPosition = new Dimension(29, 3);
+		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+		addBuilding("Default", "Building 6", 28, 2, 2, 2, location);
+		
+//Building 7
+		location.sector = 2;
+		location.positionToEnterFromMainGrid = new Dimension(5, 12);
+		location.entranceFromMainGridPosition = new Dimension(4, 12);
+		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+		addBuilding("Default", "Building 7", 3, 12, 2, 2, location);
+//Building 8
+		location.sector = 2;
+		location.positionToEnterFromMainGrid = new Dimension(10, 12);
+		location.entranceFromMainGridPosition = new Dimension(9, 12);
+		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+		addBuilding("Default", "Building 8", 8, 12, 2, 2, location);
+//Building 9
+		location.sector = 2;
+		location.positionToEnterFromMainGrid = new Dimension(15, 12);
+		location.entranceFromMainGridPosition = new Dimension(14, 12);
+		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+		addBuilding("Default", "Building 9", 13, 12, 2, 2, location);
+//Building 10
+		location.sector = 2;
+		location.positionToEnterFromMainGrid = new Dimension(20, 12);
+		location.entranceFromMainGridPosition = new Dimension(19, 12);
+		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+		addBuilding("Default", "Building 10", 18, 12, 2, 2, location);
+//Building 11
+		location.sector = 2;
+		location.positionToEnterFromMainGrid = new Dimension(25, 12);
+		location.entranceFromMainGridPosition = new Dimension(24, 12);
+		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+		addBuilding("Default", "Building 11", 23, 12, 2, 2, location);
+//Building 12
+		location.sector = 2;
+		location.positionToEnterFromMainGrid = new Dimension(30, 12);
+		location.entranceFromMainGridPosition = new Dimension(29, 12);
+		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+		addBuilding("Default", "Building 12", 28, 12, 2, 2, location);
 		
 		
 			

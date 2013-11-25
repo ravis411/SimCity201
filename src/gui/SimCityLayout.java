@@ -110,10 +110,15 @@ public class SimCityLayout {
 			//make the 0-th row and column unavailable
 			for (int i=0; i<numyGrids+1; i++) grid[0][0+i].acquire();
 			for (int i=1; i<numxGrids+1; i++) grid[0+i][0].acquire();
+			//Lets make the last row and column unavailable too
+			for(int i = 1; i <= numxGrids;i++){
+				grid[i][numyGrids].acquire();
+				grid[i][numyGrids - 1].acquire();
+			}
 
 		}catch (Exception e) {
 			//System.out.println("Unexpected exception caught during setup:"+ e);
-			AlertLog.getInstance().logError(AlertTag.GENERAL_CITY, "City Layout", "Unexpected exception caught during setup:"+ e);
+			AlertLog.getInstance().logError(AlertTag.GENERAL_CITY, "City Layout", "Most likely fatal exception caught during setup:"+ e);
 			
 		}
 

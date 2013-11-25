@@ -14,18 +14,30 @@ public class MockPerson extends Agent{
 	
 	int times = 0;
 	
+	boolean test = true;
+	
 	public MockPerson(String name){
 		this.name = name;
-		
-		StopsQueue.add("Bus Stop 5");
-		StopsQueue.add("Bus Stop 4");
-		StopsQueue.add("Bus Stop 1");
-		StopsQueue.add("Bus Stop 3");
-		StopsQueue.add("Bus Stop 6");
-		StopsQueue.add("Bus Stop 2");
 	}
 	
 	protected boolean pickAndExecuteAnAction() {
+		
+		System.out.println("Closest Stop: " + agentGui.DoGoToClosestBusStop());
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Arrived at: " + agentGui.DoRideBusTo("Building 12"));
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Going to building 7");
+		agentGui.DoGoTo("Building 7");
 		
 		GoToLocation(name);
 		times++;
@@ -39,14 +51,14 @@ public class MockPerson extends Agent{
 	private void GoToLocation(String location){
 				
 		location = StopsQueue.poll();//<--removes location from front of queue
-		StopsQueue.add(location);//<--adds location to end of queue
+		StopsQueue.offer(location);//<--adds location to end of queue
 		print("Going to " + location);
 		
 		agentGui.DoGoTo(location);
 		
 		print("Arrived at " + location);
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			print("Exceipton caught while waiting at location!!!!!!!");
 			e.printStackTrace();
