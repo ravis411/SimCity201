@@ -8,24 +8,27 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.ImageIcon;
 
+import trace.AlertLog;
+import trace.AlertTag;
+
 public class BusStopBuilding extends Building {	
 	
-	ImageIcon imageI;
+	Image image = null;
 	
 	public BusStopBuilding( Building b ) {
 		super( b.x, b.y, b.width, b.height );
 		
-		if(System.getProperty("os.name").contains("Windows")){
-			imageI = new ImageIcon(this.getClass().getResource("/images/bus-stop.png").getPath());
-		}
-		else
-		{
-			imageI = new ImageIcon(this.getClass().getResource("\\images\\bus-stop.png").getPath());
-		}
-		
+		try {
+			if(System.getProperty("os.name").contains("Windows")){
+				ImageIcon imageI = new ImageIcon(this.getClass().getResource("/images/bus-stop.png").getPath());
+				image = imageI.getImage();
+			}
+		} catch (Exception e) {
+			AlertLog.getInstance().logWarning(AlertTag.BUS_STOP, "Bus Stop Building", "Error loading image.");
 		}
 	
 	
+	}
 	
 	@Override
 	public void draw(Graphics2D g) {
@@ -35,13 +38,13 @@ public class BusStopBuilding extends Building {
 			super.draw(g);
 		}
 		else{
-			if(imageI == null){
+			if(image == null){
 				testView = true;
 				return;
 			}
 			g.setColor(Color.black);
 			super.draw(g);
-			Image image = imageI.getImage();
+			
 			g.drawImage(image, (int)super.x, (int)super.y, (int)super.getWidth(), (int)super.getHeight(), null);
 		}
 		
