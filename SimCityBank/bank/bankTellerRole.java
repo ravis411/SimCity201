@@ -24,14 +24,14 @@ public class bankTellerRole extends Agent{
 	private Semaphore atStation = new Semaphore(0,true);
 	private Semaphore atIntermediate = new Semaphore(0,true);
 	private TellerGui tellerGui = null;
-	
+
 	public bankTellerRole(String s, int n){
 		super();
 		name = s;
 		LineNum = n;
 		Accounts = Database.INSTANCE.sendDatabase();
 	}
-	
+
 	public void setAnnouncer(numberAnnouncer a){
 		this.announcer = a;
 	}
@@ -43,14 +43,15 @@ public class bankTellerRole extends Agent{
 		locationState = location.station;
 		stateChanged();
 	}
-	
+
 	public void msgAtIntermediate(){
 		atIntermediate.release();
 		stateChanged();
 	}
-	
+
 	public void msgInLine(bankClientRole b){
 		myClient = b;
+		state = requestState.notBeingHelped;
 		stateChanged();
 	}
 	public void msgOpenAccount(){
@@ -72,21 +73,26 @@ public class bankTellerRole extends Agent{
 	protected boolean pickAndExecuteAnAction() {
 		Accounts = Database.INSTANCE.sendDatabase();
 		if (locationState == location.station){
-		if (state == requestState.notBeingHelped){
-			receiveClient(myClient);
 			if (state == requestState.deposit){
 				processDeposit(myClient);
+				return true;
 			}
 			if (state == requestState.withdrawal){
 				processWithdrawal(myClient);
+				return true;
 			}
 			if (state == requestState.open){
 				openAccount(myClient);
+				return true;
 			}
-		}
+			if (state == requestState.notBeingHelped){
+				receiveClient(myClient);
+				return true;
+			}
 		}
 		if (locationState == location.entrance){
 			goToStation();
+			return true;
 		}
 		return false;
 	}
@@ -107,21 +113,23 @@ public class bankTellerRole extends Agent{
 			e.printStackTrace();
 		}
 		announcer.msgAddBankTeller(this);
-		announcer.msgTransactionComplete(LineNum);
+		announcer.msgTransactionComplete(LineNum,this);
 	}
 	private void receiveClient(bankClientRole b){
 		Do("Recieving new client");
+		Do("Hello " + b + ", how may I help you.");
 		b.msgMayIHelpYou();
 	}
 	private void processDeposit(bankClientRole b){
+		Do("Ok, hold on.");
 		for (Account a : Accounts){
 			if (a.client == b){
 				a.amount = a.amount + transactionAmount;
+				Do("$" + transactionAmount + " has been deposited into the account.");
 				b.msgTransactionCompleted(transactionAmount - (2*transactionAmount));
 				state = requestState.none;
 				ticketNum++;
-				announcer.msgTransactionComplete(LineNum);
-				Do("$" + transactionAmount + " has been deposited into the account.");
+				announcer.msgTransactionComplete(LineNum,this);
 				myClient = null;
 			}
 		}
@@ -139,7 +147,7 @@ public class bankTellerRole extends Agent{
 				}
 				state = requestState.none;
 				ticketNum++;
-				announcer.msgTransactionComplete(LineNum);
+				announcer.msgTransactionComplete(LineNum,this);
 				myClient = null;
 			}
 		}
@@ -149,24 +157,25 @@ public class bankTellerRole extends Agent{
 		Do("New bank account has been opened for " + b);
 		Database.INSTANCE.addToDatabase(a);
 		b.msgAccountOpened(a);
+		state = requestState.notBeingHelped;
 	}
 
 	//gui
 	private void doGoToStation(){
 		tellerGui.DoGoToStation();
 	}
-	
-	
-	
+
+
+
 	//Accesors, etc.
 	public String getName() {
 		return name;
 	}
-	
+
 	public int getLine() {
 		return LineNum;
 	}
-	
+
 	public void setGui(TellerGui gui) {
 		tellerGui = gui;
 	}
@@ -175,9 +184,9 @@ public class bankTellerRole extends Agent{
 		return tellerGui;
 	}
 
-	
+
 	public String toString() {
-		return "Bank Teller  " + getName();
+		return "Bank Teller " + getName();
 	}
 
 }

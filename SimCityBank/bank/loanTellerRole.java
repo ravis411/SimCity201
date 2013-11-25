@@ -18,21 +18,25 @@ import astar.AStarTraversal;
 public class loanTellerRole extends Agent{
 	private bankClientRole myClient;
 	private int LineNum = 5; 
-	public enum requestState {withdrawal, deposit, open, loan, none, notBeingHelped};
+	public enum requestState {open, loan, none, notBeingHelped};
 	private requestState state = requestState.none;
+	public enum location {entrance, station, breakRoom};
+	public location locationState = location.entrance;
 	double transactionAmount;
 	private List<Account> Accounts = Database.INSTANCE.sendDatabase();
 	private numberAnnouncer announcer;
 	private String name;
 	private int ticketNum = 1;
 	private Semaphore atStation = new Semaphore(0,true);
+	private Semaphore atIntermediate = new Semaphore(0,true);
+	private LoanGui loanGui = null;
 
 	public loanTellerRole(String s){
 		super();
 		name = s;
 		Accounts = Database.INSTANCE.sendDatabase();
 	}
-	
+
 	public void setAnnouncer(numberAnnouncer a){
 		announcer = a;
 	}
@@ -44,30 +48,46 @@ public class loanTellerRole extends Agent{
 		announcer.msgAddLoanTeller(this);
 		stateChanged();
 	}
-	
+
+	public void msgAtIntermediate(){
+		atIntermediate.release();
+		stateChanged();
+	}
+
 	public void msgInLine(bankClientRole b){
 		myClient = b;
+		state = requestState.notBeingHelped;
 		stateChanged();
 	}
 	public void msgOpenAccount(){
 		state = requestState.open;
+		stateChanged();
 	}
 	public void msgLoan(double a){
 		transactionAmount = a;
 		state = requestState.loan;
+		stateChanged();
 	}
 
 
 	//	Scheduler
 	protected boolean pickAndExecuteAnAction() {
 		Accounts = Database.INSTANCE.sendDatabase();
-		if (state == requestState.notBeingHelped){
-			receiveClient(myClient);
-			if (state == requestState.open){
+		if (locationState == location.station){
+			if (state == requestState.notBeingHelped){
+				receiveClient(myClient);
+				return true;
+			}if (state == requestState.open){
 				openAccount(myClient);
+				return true;
 			} else if (state == requestState.loan){
 				processLoan(myClient);
+				return true;
 			}
+		}
+		if (locationState == location.entrance){
+			goToStation();
+			return true;
 		}
 		return false;
 	}
@@ -75,6 +95,22 @@ public class loanTellerRole extends Agent{
 
 
 	//	Actions
+	private void goToStation(){
+		try {
+			atIntermediate.acquire();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		doGoToStation();
+		try {
+			atStation.acquire();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		announcer.msgAddLoanTeller(this);
+		announcer.msgLoanComplete();
+	}
+
 	private void receiveClient(bankClientRole b){
 		Do("Recieving new client");
 		b.msgMayIHelpYou();
@@ -102,14 +138,19 @@ public class loanTellerRole extends Agent{
 	}
 	private void openAccount(bankClientRole b){
 		Account a = new Account(b, b.money);
-		Database.INSTANCE.addToDatabase(a);
 		Do("New bank account has been opened for " + b);
+		Database.INSTANCE.addToDatabase(a);
 		b.msgAccountOpened(a);
+		state = requestState.notBeingHelped;
 	}
 
-	
+
 	//gui
-	
+	private void doGoToStation(){
+		loanGui.DoGoToStation();
+	}
+
+
 	//Accesors, etc.
 	public String getName() {
 		return name;

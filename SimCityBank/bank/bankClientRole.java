@@ -13,7 +13,7 @@ public class bankClientRole extends Agent {
 	public enum bankState {nothing, deposit, withdraw, loan};
 	bankState state1 = bankState.nothing;
 	Account myAccount;
-	public enum inLineState{noTicket, waiting, goingToLine, atDesk, beingHelped, leaving};
+	public enum inLineState{noTicket, waiting, goingToLine, atDesk, beingHelped, transactionProcessing, leaving};
 	inLineState state2 = inLineState.noTicket;
 	private bankTellerRole teller = null;
 	private loanTellerRole loanTeller = null;
@@ -21,7 +21,8 @@ public class bankClientRole extends Agent {
 	private double requestAmount = 0;
 	private boolean hasLoan = false;
 	private double amountDue = 0;
-	private int ticketNum;
+	private int ticketNum = 0;
+	private int loanTicketNum = 0;
 	private int lineNum;
 	private Semaphore atLine = new Semaphore(0,true);
 	private ClientGui clientGui = null;
@@ -87,16 +88,28 @@ public class bankClientRole extends Agent {
 		state2 = inLineState.waiting;
 		stateChanged();
 	}
-	public void msgCallingTicket(int t, int l){
+	public void msgCallingTicket(int t, int l, bankTellerRole btr){
 		if (ticketNum == t){
 			state2 = inLineState.goingToLine;
 			lineNum = l;
+			Do("That's my ticket, I need to go to line " + lineNum);
+			setTeller(btr);
 			stateChanged();
-		} else stateChanged();
+		}
+	}
+	public void msgCallingLoanTicket(int loanNumber, int i,
+			loanTellerRole loanTeller2) {
+		if (loanTicketNum == loanNumber){
+			state2 = inLineState.goingToLine;
+			lineNum = i;
+			Do("That's my ticket, I need to go to line " + lineNum);
+			setLoanTeller(loanTeller2);
+			stateChanged();
+		}
+		
 	}
 	public void msgAtLine(){ //from gui
 		atLine.release();
-		state2 = inLineState.atDesk;
 		stateChanged();
 	}
 	public void msgMayIHelpYou(){
@@ -125,13 +138,13 @@ public class bankClientRole extends Agent {
 
 	//Scheduler
 	protected boolean pickAndExecuteAnAction() {
+		if (state2 == inLineState.goingToLine){
+			goToLine(lineNum);
+			return true;
+		}
 		if (state1 != bankState.nothing){
 			if (state2 == inLineState.noTicket){
 				goToWaitingArea();
-				return true;
-			}
-			if (state2 == inLineState.goingToLine){
-				goToLine(lineNum);
 				return true;
 			}
 			if (state2 == inLineState.beingHelped){
@@ -163,12 +176,12 @@ public class bankClientRole extends Agent {
 	//Actions
 	private void goToWaitingArea(){
 		DoGoToWaitingArea();
+		announcer.msgAddClient(this);
 		try {
 			atWaitingArea.acquire();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		announcer.msgAddClient(this);
 	}
 	private void goToLine(int l){
 		DoGoToLine(l);
@@ -177,23 +190,38 @@ public class bankClientRole extends Agent {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		Do("Arrived at line, the teller's name is " + teller);
 		teller.msgInLine(this);
+		state2 = inLineState.atDesk;
 	}
 	
 	private void openAccount(){
+		Do("I want to open an account.");
 		teller.msgOpenAccount();
+		state2 = inLineState.transactionProcessing;
 	}
 	private void IWantToDeposit(){
+		Do("I want to deposit money.");
 		teller.msgDeposit(requestAmount);
+		state2 = inLineState.transactionProcessing;
+
 	}
 	private void IWantToWithdraw(){
+		Do("I want to withdraw money.");
 		teller.msgWithdraw(requestAmount);
+		state2 = inLineState.transactionProcessing;
+
 	}
 	private void IWantALoan(){
+		Do("I want a loan.");
 		loanTeller.msgLoan(requestAmount);
+		state2 = inLineState.transactionProcessing;
+
 	}
 	private void Leaving(){
+		Do("Thanks, goodbye.");
 		clientGui.DoLeave();
+		state2 = inLineState.noTicket;
 	}
 
 	
@@ -218,7 +246,7 @@ public class bankClientRole extends Agent {
 	}
 
 	public String toString() {
-		return "Bank Client  " + getName();
+		return "Bank Client " + getName();
 	}
 	public boolean HasLoan(){
 		return hasLoan;
@@ -230,6 +258,7 @@ public class bankClientRole extends Agent {
 	public ClientGui getGui() {
 		return clientGui;
 	}
+
 
 
 

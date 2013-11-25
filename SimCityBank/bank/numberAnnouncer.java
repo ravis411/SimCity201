@@ -3,10 +3,12 @@ package bank;
 import agent.Agent;
 
 import java.util.*;
+import java.util.concurrent.Semaphore;
 
 public class numberAnnouncer extends Agent{
 	List<bankClientRole> clients = new ArrayList<bankClientRole>();
 	List<bankTellerRole> tellers = new ArrayList<bankTellerRole>();
+	Queue<bankTellerRole> openTeller = new ArrayDeque<bankTellerRole>();
 	loanTellerRole loanTeller;
 	private int doneTeller;
 	private int tellerNumber = 0;
@@ -14,18 +16,21 @@ public class numberAnnouncer extends Agent{
 	public enum numberState{pending, announceB, announceL};
 	public numberState state = numberState.pending;
 	private String name;
-
+	
+	public void setLoanTeller(loanTellerRole lt){
+		loanTeller = lt;
+	}
+	
 	public numberAnnouncer(String n){
 		super();
 		name = n;
 	}
-
 	public void msgAddLoanTeller(loanTellerRole l){
 		loanTeller = l;
 		stateChanged();
 	}
 	public void msgAddBankTeller(bankTellerRole b){
-		Do(b + " added.");
+		Do(b + " is ready to work.");
 		tellers.add(b);
 		stateChanged();
 	}
@@ -34,12 +39,10 @@ public class numberAnnouncer extends Agent{
 		clients.add(c);
 		stateChanged();
 	}
-	public void msgGotTicket(){
-
-	}
-	public void msgTransactionComplete(int b){
+	public void msgTransactionComplete(int b, bankTellerRole btr){
 		Do("Recieved done message from line " + b);
 		doneTeller = b;
+		openTeller.add(btr);
 		state = numberState.announceB;
 		stateChanged();
 	}
@@ -65,14 +68,14 @@ public class numberAnnouncer extends Agent{
 		tellerNumber++;
 		Do("Calling ticket " + tellerNumber);
 		for (bankClientRole b : clients){
-			b.msgCallingTicket(tellerNumber, doneTeller);
-		}
-		state = numberState.pending;
+			b.msgCallingTicket(tellerNumber, doneTeller, openTeller.peek());
+		}	state = numberState.pending;
+
 	}
 	private void announceNumberLoan(){
 		loanNumber++;
 		for (bankClientRole b : clients){
-			b.msgCallingTicket(loanNumber, 5);
+			b.msgCallingLoanTicket(loanNumber, 5, loanTeller);
 		}
 		state = numberState.pending;
 	}
