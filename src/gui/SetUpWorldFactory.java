@@ -61,12 +61,19 @@ public class SetUpWorldFactory{
 		
 		LocationInfo location = new LocationInfo();
 		
-			for(int x = 1; x < 7;x++) {
-				for(int y = 1; y < 4; y++){
-					addBuilding("Default", "Building " + x + y, x * 5 - 2, (y * 5)-3, 2, 2, location );
-				}
-			}
-			
+		//	for(int x = 1; x < 7;x++) {
+		//	for(int y = 1; y < 4; y++){
+		//			addBuilding("Default", "Building " + x + y, x * 5 - 2, (y * 5)-3, 2, 2, location );
+		//		}
+		//	}
+		
+		
+//Building 1
+		location.sector = 1;
+		location.positionToEnterFromMainGrid = new Dimension(4, 3);
+		location.entranceFromMainGridPosition = new Dimension(4, 3);
+		
+		
 			
 //BusStop 1			
 			location.sector = 1;
