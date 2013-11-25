@@ -6,17 +6,17 @@ package Person;
 import gui.agentGuis.PersonGui;
 import interfaces.Employee;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Queue;
 
 import trace.AlertLog;
 import trace.AlertTag;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
 import agent.Agent;
-import gui.CityAnimationPanel;
 
 /**
  * @author MSILKJR
@@ -45,13 +45,14 @@ public class PersonAgent extends Agent {
 	private List<Party> parties;
 	private Calendar realTime;
 	
+	private Queue<Item> itemsNeeded;
 	
 	public enum StateOfHunger {NotHungry, SlightlyHungry, Hungry, VeryHungry, Starving} 
 	public enum StateOfLocation {AtHome,AtBank,AtMarket,AtRestaurant, InCar,InBus,Walking};
 	public enum StateOfEmployment {Customer,Employee,Idle};
 	public enum PersonState {Idle,NeedsMoney,PayRentNow, PayLoanNow,GettingMoney,NeedsFood,GettingFood }
 	
-	private List<BackpackObject> backpack;
+	private List<Item> backpack;
 	
 	public PersonState state;
 	private StateOfEmployment stateOfEmployment;
@@ -76,8 +77,8 @@ public class PersonAgent extends Agent {
 		
 		prefs = new Preferences();
 		
-		backpack = new ArrayList<BackpackObject>();
-
+		backpack = new ArrayList<Item>();
+		itemsNeeded = new ArrayDeque<Item>();
 	}
 	
 //-------------------------------MESSAGES----------------------------------------//
@@ -127,6 +128,14 @@ public class PersonAgent extends Agent {
 			}
 		}
 	}
+	
+	/**
+	 * Message sent by the HomeRole for the person to go to the market
+	 * @param item the name of the item needed from the market
+	 */
+	public void msgGoToMarket(String item){
+		itemsNeeded.add(new Item(item, 1));
+	}
 
 	/**
 	  * Message called, probably by a timer, which increases the person's
@@ -155,7 +164,7 @@ public class PersonAgent extends Agent {
 	
 	public void msgAddObjectToBackpack(String object, int quantity){
 		boolean added = false;
-		for(BackpackObject bo : backpack){
+		for(Item bo : backpack){
 			if(bo.name.equals(object)){
 				bo.quantity += quantity;
 				added = true;
@@ -164,7 +173,7 @@ public class PersonAgent extends Agent {
 		}
 		
 		if(!added){
-			backpack.add(new BackpackObject(object, quantity));
+			backpack.add(new Item(object, quantity));
 		}
 	}
 	/**
@@ -198,10 +207,10 @@ public class PersonAgent extends Agent {
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
 		for(Party p:parties){
-			   if(p.rsvp==false){
-				   p.rsvp=true;//bullshit, write something to activate home role 
-			   }
-			}
+		   if(p.rsvp==false){
+			   p.rsvp=true;//bullshit, write something to activate home role 
+		   }
+		}
 		
 		//cue the Role schedulers
 		boolean outcome = false;
@@ -209,6 +218,10 @@ public class PersonAgent extends Agent {
 			if(r.isActive()){
 				outcome = r.pickAndExecuteAction() || outcome;
 			}
+		}
+		
+		if(!itemsNeeded.isEmpty()){
+			GoToMarketForItems();
 		}
 		
 		return outcome;
@@ -293,6 +306,34 @@ public class PersonAgent extends Agent {
 		  DoGoToBank(b, tm);
 		  BankCustomerRole bcr = getBankCustomerRole();
 		  bcr.activate();*/
+	}
+	
+	private void GoToMarketForItems(){
+		String transport;
+		switch(prefs.get(Preferences.KeyValue.VEHICLE_PREFERENCE)){
+		  	case Preferences.BUS:
+		  		transport = Preferences.BUS;
+		  		break;
+		  	case Preferences.CAR:
+		  		transport = Preferences.CAR;
+		  		break;
+		  	case Preferences.WALK:
+		  		transport = Preferences.WALK;
+		  		break;
+		  		
+		  	default:
+		  		transport = "ERROR";
+		}
+		
+		//needs a way to find a bank quite yet
+		GoToLocation("Market", transport);
+		if(findRole(Role.MARKET_CUSTOMER_ROLE) == null){
+			Role r = RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
+			r.activate();
+			addRole(r);
+		}else{
+			findRole(Role.MARKET_CUSTOMER_ROLE).activate();
+		}
 	}
 
 	/**
@@ -522,11 +563,15 @@ public class PersonAgent extends Agent {
 		roles.remove(r);
 	}
 	
-	private class BackpackObject {
+	public Queue<Item> getItemsNeeded(){
+		return itemsNeeded;
+	}
+	
+	private class Item {
 		String name;
 		int quantity;
 		
-		public BackpackObject(String name, int quantity){
+		public Item(String name, int quantity){
 			this.name = name;
 			this.quantity = quantity;
 		}

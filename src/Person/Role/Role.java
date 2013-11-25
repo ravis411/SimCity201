@@ -8,6 +8,7 @@ public abstract class Role {
 	protected PersonAgent myPerson;
 	public String role;
 	
+	public final static String MARKET_CUSTOMER_ROLE = "MarketCustomerRole";
 	public final static String BANK_CUSTOMER_ROLE = "BankCustomerRole";
 	public final static String PASSENGER_ROLE = "PassengerRole";
 	public final static String HOME_ROLE = "HomeRole";
