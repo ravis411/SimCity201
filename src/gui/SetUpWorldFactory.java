@@ -19,8 +19,7 @@ import agent.Agent;
 import astar.AStarTraversal;
 import astar.PersonAStarTraversal;
 import astar.VehicleAStarTraversal;
-<<<<<<< HEAD
-=======
+
 import gui.Building.Building;
 import gui.Building.BuildingPanel;
 import gui.Building.BusStopBuilding;
@@ -30,9 +29,6 @@ import gui.MockAgents.MockBusAgent;
 import gui.MockAgents.MockPerson;
 import gui.agentGuis.PersonGui;
 import gui.agentGuis.VehicleGui;
->>>>>>> 88a1d6bd5aed71e4d8edb36c802cea80a8a0d427
-
-
 
 //This class will instantiate and setup everything.
 public class SetUpWorldFactory{
