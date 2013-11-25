@@ -1,6 +1,3 @@
-/**
- * 
- */
 package Person;
 
 import gui.agentGuis.PersonGui;
@@ -38,11 +35,14 @@ public class PersonAgent extends Agent {
 	//private Residence home;
 	private static int counter = 0;
 	
+	//party variables
+	private List<Party> parties;
+	
+	
 	private double loanAmount;
 	
 	public List<Role> roles;
 	private List<PersonAgent> friends;
-	private List<Party> parties;
 	private Calendar realTime;
 	
 	private Queue<Item> itemsNeeded;
@@ -175,15 +175,20 @@ public class PersonAgent extends Agent {
 		if(!added){
 			backpack.add(new Item(object, quantity));
 		}
+		
+		stateChanged();
 	}
+	
 	/**
 	  * Message sent by the home role to invite the person to a party
 	  */
 	public void msgPartyInvitation(PersonAgent p,Calendar rsvpDeadline,Calendar partyTime){
-		parties.add(new Party(p,rsvpDeadline,partyTime));
-		
-		
+		Party party = new Party(p, rsvpDeadline, partyTime);
+		party.partyState = PartyState.ReceivedInvite;
+		parties.add(party);
+		stateChanged();
 	}
+	
 	/**
 	  * RSVP message sent by the home role
 	  */
@@ -207,9 +212,7 @@ public class PersonAgent extends Agent {
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
 		for(Party p:parties){
-		   if(p.rsvp==false){
-			   p.rsvp=true;//bullshit, write something to activate home role 
-		   }
+
 		}
 		
 		//cue the Role schedulers
@@ -217,16 +220,18 @@ public class PersonAgent extends Agent {
 		for(Role r: roles){
 			if(r.isActive()){
 				outcome = r.pickAndExecuteAction() || outcome;
+				
+				if(outcome)
+					return outcome;
 			}
 		}
 		
 		if(!itemsNeeded.isEmpty()){
 			GoToMarketForItems();
+			return true;
 		}
 		
-		return outcome;
-		
-		
+		return false;
 	}
 	
 	//----------------------------ACTIONS--------------------------//
@@ -567,6 +572,10 @@ public class PersonAgent extends Agent {
 		return itemsNeeded;
 	}
 	
+	/**
+	 * Class meant to simulate an Item the person either needs or has on hand.
+	 * (Essentially a struct for name and quantity)
+	 */
 	private class Item {
 		String name;
 		int quantity;
@@ -576,18 +585,46 @@ public class PersonAgent extends Agent {
 			this.quantity = quantity;
 		}
 	}
+	
+	/**
+	 * A class meant to simulate a friend.
+	 * (Essentially a struct which links a person to how good of a friend one is)
+	 */
+	private class Friend {
+		PersonAgent person;
+		boolean goodFriend;
+		
+		public Friend(PersonAgent person, boolean goodFriend){
+			this.person = person;
+			this.goodFriend = goodFriend;
+		}
+	}
+	
+	enum PartyState {Host, ReceivedInvite, NeedsResponseUrgently, RSVPed, GoingToParty, NotGoingToParty}
+	
+	/**
+	 * A class meant to simulate a Party
+	 *
+	 */
 	private class Party{
+		
 		PersonAgent host;
 		Calendar rsvpDeadline;
-		Calendar partyTime;
-		boolean rsvp;
-		boolean going;
-		public Party(PersonAgent p, Calendar rd, Calendar pt){
+		Calendar dateOfParty;
+		
+		PartyState partyState;
+		
+		/**
+		 * Party state should be set upon initialization accordingly whether or not 
+		 * the person has received an invite or is the host
+		 * @param p the personAgent hosting the party
+		 * @param rsvpDeadline the RSVP deadline
+		 * @param partyTime the date of the party
+		 */
+		public Party(PersonAgent p, Calendar rsvpDeadline, Calendar partyTime){
 			this.host=p;
-			this.rsvpDeadline= rd;
-			this.partyTime=pt;
-			rsvp=false;
-			going=false;
+			this.rsvpDeadline = rsvpDeadline;
+			this.dateOfParty = partyTime;
 		}
 	}
 	
