@@ -231,6 +231,7 @@ public class HomeRole extends Role implements Home {
 	}
 	private void goToMarket (Item item) {
 		event = AgentEvent.leaving;
+		state = AgentState.Leaving;
 		gui.DoGoToCenter();
 		try {
 			atCenter.acquire();
