@@ -105,6 +105,43 @@ public class PersonGui implements Gui {
     }
     
     
+    public boolean setStartingStates(String location){
+    	LocationInfo i = locations.get(location);
+    	if(i != null)
+    		return false;
+    	
+    	currentLocation = i;
+    	xPos = xDestination = i.entranceFromMainGridPosition.width;
+    	yPos = yDestination = i.entranceFromMainGridPosition.height;
+    	isPresent = false;    	
+    	state = PersonState.inBuilding;
+    	
+    	return true;
+    }
+    
+    
+    
+    /** Gets the Person's current location.
+     * 
+     * @return	The name of the guis current location, null otherwise.
+     */
+    public String getCurrentLocation(){
+    	if(currentLocation != null){
+    		return currentLocation.name;
+    	}
+    	else
+    		return null;
+    }
+    
+    
+    /**	
+     * @return A list of locations that the gui knows about.
+     */
+    public List<String> getLocations(){
+    	return new ArrayList<>(locations.keySet());
+    }
+    
+    
     public void updatePosition() {
         {
 			if (xPos < xDestination)
@@ -217,6 +254,10 @@ public class PersonGui implements Gui {
      * @return	//The name of the busStop to get off at.
      */
     public String DoRideBusTo(String destination){
+    	if(state != PersonState.inBuilding)
+    		AlertLog.getInstance().logDebug(AlertTag.PERSON_GUI, agent.getName(), "PERSON NOT IN BUILDING");
+    	
+    	
     	LocationInfo destLocation = locations.get(destination);
     	
     	if(destLocation == null){
@@ -267,6 +308,11 @@ public class PersonGui implements Gui {
     			xPos = xDestination = pos.width;
         		yPos = yDestination = pos.height;
         		currentLocation = new LocationInfo(closestStop);
+        		currentPosition = null;
+        		state = PersonState.inBuilding;
+        		//System.out.println("xPos = " + xPos);
+        		//System.out.println("yPos = " + yPos);
+        		//System.out.println("currentLocation = " + currentLocation.name);
         		return closestStop.name;
     		}
     	}
@@ -288,6 +334,8 @@ public class PersonGui implements Gui {
     		//System.out.println("Entering WORLD ");
     		DoEnterWorld();
     	}
+    	else if(currentLocation.name.equals(location))
+    		return;
     	else if(state == PersonState.inBuilding){
     		DoLeaveBuilding();
     	}
@@ -298,12 +346,12 @@ public class PersonGui implements Gui {
     		
     		//See if the location is in the same sector otherwise travel to the next sector
     		if(currentLocation.sector != info.sector){
-    			DoGoToSector(info.sector);
+    			//DoGoToSector(info.sector);
     		}
     		
     		
     		Dimension entrance = info.entranceFromMainGridPosition;
-    		Dimension entrnaceFrom = info.positionToEnterFromMainGrid;
+    		//Dimension entrnaceFrom = info.positionToEnterFromMainGrid;
     		
     		
     		Position p = new Position(info.positionToEnterFromMainGrid.width, info.positionToEnterFromMainGrid.height);
@@ -328,8 +376,19 @@ public class PersonGui implements Gui {
    //This will allow the agent to travel to the next sector
    private void DoGoToSector(int sector){
 	   //Need to go to a different sector means we need to cross a road.
-	   
-	   
+	   String bus = DoGoToClosestBusStop();
+	   System.out.println("IN BUS STOP about t RIDE bus from stop " + bus);
+	   try {
+		Thread.sleep(5000);
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	   if(sector == 2)
+		  bus =  DoRideBusTo("Building 7");
+	   else
+		 bus =  DoRideBusTo("Building 1");
+	   System.out.println("Going to bus stop " + bus);
 	   
    }
     
@@ -398,9 +457,9 @@ public class PersonGui implements Gui {
     	//while( !entrance.moveInto(aStar.getGrid()) ) {
     	while( !to.moveInto(aStar.getGrid()) ) {
     		//System.out.println("EntranceBlocked!!!!!!! waiting 1sec");
-    		AlertLog.getInstance().logInfo(AlertTag.PERSON_GUI, agent.toString(), "Entrance blocked. Waiting one second for path to clear.");
+    		AlertLog.getInstance().logInfo(AlertTag.PERSON_GUI, agent.toString(), "Entrance blocked. Waiting 2 seconds for path to clear.");
     		try {
-				Thread.sleep(1000);
+				Thread.sleep(3000);
 			} catch (InterruptedException e) {
 				//System.out.println("EXCEPTION!!!!!!!!!! caught while waiting for entrance to clear.");
 				AlertLog.getInstance().logError(AlertTag.PERSON_GUI, agent.toString(), "Unexpected exception caught in PersonGui while waiting for entrance to clear.");
