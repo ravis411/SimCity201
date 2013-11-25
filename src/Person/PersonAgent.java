@@ -211,9 +211,9 @@ public class PersonAgent extends Agent {
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
-		for(Party p:parties){
+	//	for(Party p:parties){
 
-		}
+	//	}
 		
 		//cue the Role schedulers
 		boolean outcome = false;

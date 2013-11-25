@@ -1,13 +1,15 @@
 package bank;
 import bank.bankClientRole;
-import bank.bankTellerRole.requestState;
 import bank.gui.LoanGui;
+import Person.Role.*;
 
+//import Person.*;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
-import agent.Agent;
-import astar.AStarTraversal;
+import trace.AlertLog;
+import trace.AlertTag;
+
 
 /**
  * 
@@ -15,7 +17,7 @@ import astar.AStarTraversal;
  * this specific line
  *
  */
-public class loanTellerRole extends Agent{
+public class loanTellerRole extends Role{
 	private bankClientRole myClient;
 	public enum requestState {open, loan, pending, none, notBeingHelped};
 	private requestState state = requestState.none;
@@ -25,14 +27,12 @@ public class loanTellerRole extends Agent{
 	private List<Account> Accounts = Database.INSTANCE.sendDatabase();
 	private numberAnnouncer announcer;
 	private String name;
-	private int ticketNum = 1;
 	private Semaphore atStation = new Semaphore(0,true);
 	private Semaphore atIntermediate = new Semaphore(0,true);
 	private LoanGui loanGui = null;
-
-	public loanTellerRole(String s){
+ 
+	public loanTellerRole(){
 		super();
-		name = s;
 		Accounts = Database.INSTANCE.sendDatabase();
 	}
 
@@ -54,7 +54,7 @@ public class loanTellerRole extends Agent{
 	}
 
 	public void msgInLine(bankClientRole b){
-		Do("Greetings customer");
+			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, name,"Greetings customer");
 		myClient = b;
 		state = requestState.notBeingHelped;
 		stateChanged();
@@ -71,7 +71,7 @@ public class loanTellerRole extends Agent{
 
 
 	//	Scheduler
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		Accounts = Database.INSTANCE.sendDatabase();
 		if (locationState == location.station){
 			if (state == requestState.notBeingHelped){
@@ -113,36 +113,35 @@ public class loanTellerRole extends Agent{
 	}
 
 	private void receiveClient(bankClientRole b){
-		Do("Recieving new client");
+			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, name,"Recieving new client");
 		b.msgMayIHelpYou();
 		state = requestState.pending;
 	}
 	private void processLoan(bankClientRole b){
-		Do("Hold on a moment.");
+			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, name,"Hold on a moment.");
 		for (Account a : Accounts){
 			if (a.client == b){
 				if (b.age > 18 && b.age < 85){
 					if (transactionAmount > a.amount){
 						if (!b.HasLoan()){
-							Do("Loan approved for $" + transactionAmount);
+								AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, name,"Loan approved for $" + transactionAmount);
 							announcer.msgLoanComplete();
 							b.msgLoanApproved(transactionAmount);
 						}
 					}
 				} else {
-					Do("Loan denied.");
+						AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, name,"Loan denied.");
 					announcer.msgLoanComplete();
 					b.msgTransactionCompleted(0);
 				}
 				state = requestState.none;
-				ticketNum++;
 				myClient = null;
 			}
 		}
 	}
 	private void openAccount(bankClientRole b){
 		Account a = new Account(b, b.money);
-		Do("New bank account has been opened for " + b);
+			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, name,"New bank account has been opened for " + b);
 		Database.INSTANCE.addToDatabase(a);
 		b.msgAccountOpened(a);
 		state = requestState.notBeingHelped;
@@ -169,6 +168,11 @@ public class loanTellerRole extends Agent{
 	}
 	public String toString() {
 		return "Loan Teller " + getName();
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		return false;
 	}
 
 }

@@ -39,7 +39,7 @@ public class ClientGui implements Gui {
 	public void updatePosition() {
 		if (xPos < xDestination)
 		{xPos++;
-
+ 
 		}
 		else if (xPos > xDestination)
 		{xPos--;

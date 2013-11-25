@@ -22,7 +22,7 @@ public class BankAnimationPanel extends JPanel implements ActionListener {
 	final static int counterY = 200;
 	final static int counterWIDTH= 800;
 	final static int counterXHEIGHT = 30;
-
+ 
 	final static int TIMERCOUNTmilliseconds = 5;
 	private Image bufferImage;
 	private Dimension bufferSize;

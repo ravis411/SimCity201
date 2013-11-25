@@ -11,5 +11,5 @@ public class Account {
 	Account(bankClientRole bank, double m){
 		client = bank;
 		amount = m;
-	}	
+	}	 
 }

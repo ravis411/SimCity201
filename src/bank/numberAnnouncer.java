@@ -19,7 +19,7 @@ public class numberAnnouncer extends Agent{
 	
 	public void setLoanTeller(loanTellerRole lt){
 		loanTeller = lt;
-	}
+	} 
 	
 	public numberAnnouncer(String n){
 		super();

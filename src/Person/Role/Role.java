@@ -39,7 +39,7 @@ public abstract class Role {
 	
 	//--------------------UTILITIES-----------------//
 	
-	protected void print(String s){
+	public void print(String s){
 		System.out.println(myPerson.getName()+"-"+getName()+": "+s);
 	}
 	
@@ -70,7 +70,7 @@ public abstract class Role {
 	 * Standard accessor for myPerson
 	 * @return the personAgent that owns the Role
 	 */
-	protected PersonAgent getPerson(){
+	public PersonAgent getPerson(){
 		return myPerson;
 	}
 	

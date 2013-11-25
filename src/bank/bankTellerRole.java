@@ -5,11 +5,12 @@ import bank.gui.TellerGui;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
-import agent.Agent;
-import astar.AStarTraversal;
+import trace.AlertLog;
+import trace.AlertTag;
+import Person.Role.Role;
 
 
-public class bankTellerRole extends Agent{
+public class bankTellerRole extends Role{
 	private bankClientRole myClient;
 	private int LineNum; //from 1 to n, with 5 being the loan line, should be assigned in creation
 	public enum requestState {pending, withdrawal, deposit, open, none, notBeingHelped};
@@ -20,18 +21,18 @@ public class bankTellerRole extends Agent{
 	private List<Account> Accounts = Database.INSTANCE.sendDatabase();
 	private String name;
 	private numberAnnouncer announcer;
-	private int ticketNum = 1;
 	private Semaphore atStation = new Semaphore(0,true);
 	private Semaphore atIntermediate = new Semaphore(0,true);
 	private TellerGui tellerGui = null;
 
+	
 	public bankTellerRole(String s, int n){
 		super();
 		name = s;
 		LineNum = n;
 		Accounts = Database.INSTANCE.sendDatabase();
 	}
-
+ 
 	public void setAnnouncer(numberAnnouncer a){
 		this.announcer = a;
 	}
@@ -70,7 +71,7 @@ public class bankTellerRole extends Agent{
 	}
 
 	//	Scheduler
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		Accounts = Database.INSTANCE.sendDatabase();
 		if (locationState == location.station){
 			if (state == requestState.deposit){
@@ -116,20 +117,19 @@ public class bankTellerRole extends Agent{
 		announcer.msgTransactionComplete(LineNum,this);
 	}
 	private void receiveClient(bankClientRole b){
-		Do("Recieving new client");
-		Do("Hello " + b + ", how may I help you.");
+			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Recieving new client");
+			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Hello " + b + ", how may I help you.");
 		b.msgMayIHelpYou();
 		state = requestState.pending;
 	}
 	private void processDeposit(bankClientRole b){
-		Do("Ok, hold on.");
+			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Ok, hold on.");
 		for (Account a : Accounts){
 			if (a.client == b){
 				a.amount = a.amount + transactionAmount;
-				Do("$" + transactionAmount + " has been deposited into the account.");
+					AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"$" + transactionAmount + " has been deposited into the account.");
 				b.msgTransactionCompleted(transactionAmount - (2*transactionAmount));
 				state = requestState.none;
-				ticketNum++;
 				announcer.msgTransactionComplete(LineNum,this);
 				myClient = null;
 			}
@@ -139,15 +139,14 @@ public class bankTellerRole extends Agent{
 		for (Account a : Accounts){
 			if (a.client == b){
 				if (transactionAmount > a.amount){
-					Do("Error: Attempted to withdraw more money than is available in account.");
+						AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Error: Attempted to withdraw more money than is available in account.");
 					b.msgTransactionCompleted(0);
 				}else if (transactionAmount <= a.amount){
 					a.amount = a.amount - transactionAmount;
-					Do("$" + transactionAmount + " has been withdrawn from the account.");
+						AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"$" + transactionAmount + " has been withdrawn from the account.");
 					b.msgTransactionCompleted(transactionAmount);
 				}
 				state = requestState.none;
-				ticketNum++;
 				announcer.msgTransactionComplete(LineNum,this);
 				myClient = null;
 			}
@@ -155,7 +154,7 @@ public class bankTellerRole extends Agent{
 	}
 	private void openAccount(bankClientRole b){
 		Account a = new Account(b, b.money);
-		Do("New bank account has been opened for " + b);
+			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"New bank account has been opened for " + b);
 		Database.INSTANCE.addToDatabase(a);
 		b.msgAccountOpened(a);
 		state = requestState.notBeingHelped;
@@ -188,6 +187,11 @@ public class bankTellerRole extends Agent{
 
 	public String toString() {
 		return "Bank Teller " + getName();
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		return false;
 	}
 
 }

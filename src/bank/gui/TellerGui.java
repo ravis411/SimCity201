@@ -43,7 +43,7 @@ public class TellerGui implements Gui {
 				xPos++;
 				xcounter = 0;
 			}
-		}
+		} 
 		else if (xPos > xDestination){
 			xcounter++;
 			if (xcounter == 2){
