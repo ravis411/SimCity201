@@ -90,7 +90,7 @@ public class PersonGui implements Gui {
 	        	ImageIcon icon = new ImageIcon(img);
 	        	image = icon.getImage();
 	        	}
-			} catch (IOException e) {
+			} catch (Exception e) {
 				AlertLog.getInstance().logWarning(AlertTag.PERSON_GUI, agent.toString(), "Image not found. Switching to test view.");
 				testView = true;
 			}
