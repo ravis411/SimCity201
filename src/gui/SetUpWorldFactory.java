@@ -19,6 +19,8 @@ import agent.Agent;
 import astar.AStarTraversal;
 import astar.PersonAStarTraversal;
 import astar.VehicleAStarTraversal;
+import gui.Building.BankBuilding;
+import gui.Building.BankBuildingPanel;
 import gui.Building.Building;
 import gui.Building.BuildingPanel;
 import gui.Building.BusStopBuilding;
@@ -110,7 +112,7 @@ public class SetUpWorldFactory{
 		location.positionToEnterFromMainGrid = new Dimension(25, 3);
 		location.entranceFromMainGridPosition = new Dimension(24, 3);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Default", "Building 5", 23, 2, 2, 2, location);
+		addBuilding("Bank", "Bank", 23, 2, 2, 2, location);
 //Building 6
 		location.sector = 1;
 		location.positionToEnterFromMainGrid = new Dimension(30, 3);
@@ -581,6 +583,15 @@ public class SetUpWorldFactory{
 				BuildingPanel bp = new ResidenceBuildingPanel(rb, name, buildingsPanels);
 				rb.setBuildingPanel(bp);
 				cityPanel.addGui(rb);
+				buildingsPanels.addBuildingPanel(bp);
+			}
+			break;
+		case "Bank":
+			BankBuilding bb = new BankBuilding(building);
+			if(bb != null){
+				BuildingPanel bp = new BankBuildingPanel(bb, name, buildingsPanels);
+				bb.setBuildingPanel(bp);
+				cityPanel.addGui(bb);
 				buildingsPanels.addBuildingPanel(bp);
 			}
 			break;

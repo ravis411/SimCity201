@@ -15,9 +15,13 @@ public class TraceControlPanel extends Panel implements ActionListener {
 	
 	JCheckBox showAll = new JCheckBox("Show All");
 	JCheckBox showINFO = new JCheckBox("Show Level: INFO");
+	JCheckBox showMESSAGE = new JCheckBox("Show Level: MESSAGE");
 	JCheckBox showPERSON = new JCheckBox("Show Tag: PERSON");
 	JCheckBox showVehicle = new JCheckBox("Show Tag: VEHICLE");
 	JCheckBox showCity = new JCheckBox("Show Tag: CITY");
+	JCheckBox showBank = new JCheckBox("Show Tag: BANK");
+	JCheckBox showHome = new JCheckBox("Show Tag: HOME");
+	JCheckBox showMarket = new JCheckBox("Show Tag: MARKET");
 	
 	
 	public TraceControlPanel(TracePanel tracePanel){
@@ -26,6 +30,9 @@ public class TraceControlPanel extends Panel implements ActionListener {
 		this.add(showAll);
 		showAll.addActionListener(this);
 		showAll.doClick();
+		
+		this.add(showMESSAGE);
+		showMESSAGE.addActionListener(this);
 		
 		this.add(showINFO);
 		showINFO.addActionListener(this);
@@ -38,6 +45,15 @@ public class TraceControlPanel extends Panel implements ActionListener {
 		
 		this.add(showVehicle);
 		showVehicle.addActionListener(this);
+		
+		this.add(showBank);
+		showBank.addActionListener(this);
+		
+		this.add(showHome);
+		showHome.addActionListener(this);
+		
+		this.add(showMarket);
+		showMarket.addActionListener(this);
 	}
 
 	@Override
@@ -92,6 +108,20 @@ public class TraceControlPanel extends Panel implements ActionListener {
 				else{
 					panel.hideAlertsWithTag(AlertTag.VEHICLE_GUI);
 					showAll.setSelected(false);
+				}
+			}
+			else if(c == showMESSAGE){
+				if(c.isSelected()){
+					panel.showAlertsWithLevel(AlertLevel.MESSAGE);
+				}
+				else{
+					panel.hideAlertsWithLevel(AlertLevel.MESSAGE);
+					showAll.setSelected(false);
+				}
+			}
+			else if(c == showBank){
+				if(c.isSelected()){
+					panel.showAlertsWithTag(AlertTag.BANK);
 				}
 			}
 			
