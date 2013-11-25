@@ -12,10 +12,10 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class ApartmentBuildingPanel extends JPanel implements MouseListener  {
+public class ApartmentAnimationPanel extends JPanel implements MouseListener  {
 	private List<Building> buildings = new ArrayList<>();
 	
-	public ApartmentBuildingPanel() {
+	public ApartmentAnimationPanel() {
 		setVisible(true);
 
 		this.setBackground(Color.BLACK);
