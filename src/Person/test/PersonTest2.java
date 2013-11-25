@@ -12,8 +12,8 @@ public class PersonTest2 extends TestCase{
 		
 		public void setUp() throws Exception{
 			super.setUp();
-			pa = new PersonAgent("TestPerson1");
-			pa2= new PersonAgent("TestPerson2");
+			pa = new PersonAgent("TestPerson1", null);
+			pa2= new PersonAgent("TestPerson2", null);
 		}
 		public void testInitialization() {
 			assertTrue("State of customer initially be Idle", pa.state==PersonState.Idle);

@@ -6,7 +6,6 @@ public abstract class Role {
 
 	private boolean isActive = false;
 	protected PersonAgent myPerson;
-	public String role;
 	
 	public final static String MARKET_CUSTOMER_ROLE = "MarketCustomerRole";
 	public final static String BANK_CUSTOMER_ROLE = "BankCustomerRole";
@@ -35,12 +34,12 @@ public abstract class Role {
 	 * String accessor to get the name of the Role
 	 * @return
 	 */
-	public abstract String getName();
+	public abstract String getNameOfRole();
 	
 	//--------------------UTILITIES-----------------//
 	
-	public void print(String s){
-		System.out.println(myPerson.getName()+"-"+getName()+": "+s);
+	protected void print(String s){
+		System.out.println(myPerson.getName()+"-"+getNameOfRole()+": "+s);
 	}
 	
 	/**

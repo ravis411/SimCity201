@@ -3,6 +3,11 @@ package Person.Role;
 import gui.interfaces.Passenger;
 
 public class PassengerRole extends Role implements Passenger{
+	
+	PassengerRole(String name) {
+		this.name = name;
+	}
+	
 	//Data
 	private String name;
 	private String destination; //Remember to set as null upon arrival
@@ -40,6 +45,7 @@ public class PassengerRole extends Role implements Passenger{
 		if (state == AgentState.riding) {
 			if (currentLocation.equals(destination)) {
 				getOffBus();
+				return true;
 			}
 		}
 		
@@ -54,7 +60,7 @@ public class PassengerRole extends Role implements Passenger{
 	}
 
 	@Override
-	public String getName() {
+	public String getNameOfRole() {
 		return name;
 	}
 		

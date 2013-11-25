@@ -1,6 +1,7 @@
 package gui;
 
 import gui.Building.BuildingPanel;
+import gui.Building.ResidenceBuildingPanel;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -61,6 +62,18 @@ public class BuildingsPanels extends JPanel{
 		return b;
 	}//end getBuildingPanel
 	
+	public ResidenceBuildingPanel getResidenceBuildingPanel(String name){
+		ResidenceBuildingPanel b = null;
+		for(Component c : this.getComponents()){
+			if(c instanceof ResidenceBuildingPanel) {
+				if(c.getName() == name){
+					b = (ResidenceBuildingPanel) c;
+					break;
+				}
+			}
+		}
+		return b;
+	}//end getResidenceBuildingPanel
 	
 	
 	

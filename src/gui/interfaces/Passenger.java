@@ -13,4 +13,8 @@ public interface Passenger {
 	 */
 	public abstract void msgArrivedAtDestination(String location);
 	
+	/**
+	 * Utility getter for name
+	 */
+	public abstract String getNameOfRole();
 }

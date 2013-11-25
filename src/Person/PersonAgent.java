@@ -1,5 +1,7 @@
 package Person;
 
+import gui.Building.BuildingPanel;
+import gui.Building.ResidenceBuildingPanel;
 import gui.agentGuis.PersonGui;
 import interfaces.Employee;
 
@@ -9,6 +11,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Queue;
 
+import residence.HomeRole;
 import trace.AlertLog;
 import trace.AlertTag;
 import Person.Role.Role;
@@ -61,8 +64,10 @@ public class PersonAgent extends Agent {
 	private int hungerLevel;
 	
 	private PersonGui gui;
+	
+	public ResidenceBuildingPanel home;
 
-	public PersonAgent(String name){
+	public PersonAgent(String name, ResidenceBuildingPanel home){
 		SSN = counter++;
 		this.name = name;
 		//initializations
@@ -72,13 +77,16 @@ public class PersonAgent extends Agent {
 		friends = new ArrayList<PersonAgent>();
 		roles = new ArrayList<Role>();
 		hungerLevel = 0;
-		state=PersonState.Idle;
+		state=PersonState.GettingFood;
 		realTime = null;
-		
+		parties = new ArrayList<Party>();
 		prefs = new Preferences();
+		this.home = home;
 		
 		backpack = new ArrayList<Item>();
 		itemsNeeded = new ArrayDeque<Item>();
+		
+		roles.add(new HomeRole(this));
 	}
 	
 //-------------------------------MESSAGES----------------------------------------//
@@ -123,7 +131,7 @@ public class PersonAgent extends Agent {
 	  */
 	public void msgReportForWork(String role){
 		for(Role r: roles){
-			if(r.role==role){
+			if(r.getNameOfRole()==role){
 				r.activate();
 			}
 		}
@@ -210,10 +218,7 @@ public class PersonAgent extends Agent {
 	 */
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		// TODO Auto-generated method stub
-	//	for(Party p:parties){
-
-	//	}
+		// TODO Auto-generated method stu
 		
 		//cue the Role schedulers
 		boolean outcome = false;
@@ -229,6 +234,10 @@ public class PersonAgent extends Agent {
 		if(!itemsNeeded.isEmpty()){
 			GoToMarketForItems();
 			return true;
+		}
+		
+		if(state != PersonState.Idle){
+			GoHome();
 		}
 		
 		return false;
@@ -406,9 +415,34 @@ public class PersonAgent extends Agent {
 			case Preferences.CAR:
 				break;
 			case Preferences.WALK:
+				System.err.println("Trying to walk to "+location);
 				gui.DoGoTo(location);
 				break;
 		}
+	}
+	
+	private void GoHome(){
+		String transport;
+	  //state = PersonState.Idle;
+	  switch(prefs.get(Preferences.KeyValue.VEHICLE_PREFERENCE)){
+	  	case Preferences.BUS:
+	  		transport = Preferences.BUS;
+	  		break;
+	  	case Preferences.CAR:
+	  		transport = Preferences.CAR;
+	  		break;
+	  	case Preferences.WALK:
+	  		transport = Preferences.WALK;
+	  		break;
+	  		
+	  	default:
+	  		transport = "ERROR";
+	  }
+		  
+		  GoToLocation("House 1", transport);
+		  HomeRole role = (HomeRole) findRole(Role.HOME_ROLE);
+		  role.activate();
+		  role.msgMakeFood();
 	}
 		  
 	//------------------------DO XYZ FUNCTIONS----------------------//
@@ -467,7 +501,7 @@ public class PersonAgent extends Agent {
 	
 	private Role findRole(String role){
 		for(Role r : roles){
-			if(r.getName().equals(role)){
+			if(r.getNameOfRole().equals(role)){
 				return r;
 			}
 		}
@@ -630,6 +664,10 @@ public class PersonAgent extends Agent {
 	
 	public void setGui(PersonGui gui){
 		this.gui = gui;
+	}
+	
+	public String toString(){
+		return getName();
 	}
 
 }
