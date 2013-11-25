@@ -64,18 +64,18 @@ public class BankGui extends JFrame implements ActionListener {
         marketEmployeeRoles.get(0).setMarketInventory(marketInventory);
 */
         bankTellerRoles.add(new bankTellerRole("Andy", 1));
-        bankTellerRoles.add(new bankTellerRole("Sarah", 3));
-        bankClientRoles.add(new bankClientRole("Bob","loan",50));
+//        bankTellerRoles.add(new bankTellerRole("Sarah", 3));
+        bankClientRoles.add(new bankClientRole("Bob","deposit",50));
         bankClientRoles.add(new bankClientRole("Candy", "deposit", 100));
         TellerGui tellerGui = new TellerGui(bankTellerRoles.get(0),this, bankTellerRoles.get(0).getLine());
-        TellerGui tellerGui2 = new TellerGui(bankTellerRoles.get(1),this,bankTellerRoles.get(1).getLine());
+  //      TellerGui tellerGui2 = new TellerGui(bankTellerRoles.get(1),this,bankTellerRoles.get(1).getLine());
         ClientGui clientGui = new ClientGui(bankClientRoles.get(0),this);
         ClientGui clientGui2 = new ClientGui(bankClientRoles.get(1),this);
         LoanGui loanGui = new LoanGui(loanTeller,this);
         animationPanel.addGui(clientGui);
         animationPanel.addGui(tellerGui);
         animationPanel.addGui(clientGui2);
-        animationPanel.addGui(tellerGui2);
+//        animationPanel.addGui(tellerGui2);
         animationPanel.addGui(loanGui);
        for (bankClientRole b : bankClientRoles){
        	b.setAnnouncer(announcer);
@@ -89,8 +89,8 @@ public class BankGui extends JFrame implements ActionListener {
         bankClientRoles.get(0).startThread();
         bankClientRoles.get(1).setGui(clientGui2);
         bankClientRoles.get(1).startThread();
-        bankTellerRoles.get(1).setGui(tellerGui2);
-        bankTellerRoles.get(1).startThread();
+//        bankTellerRoles.get(1).setGui(tellerGui2);
+//        bankTellerRoles.get(1).startThread();
         loanTeller.setAnnouncer(announcer);
         loanTeller.setGui(loanGui);
         loanTeller.startThread();

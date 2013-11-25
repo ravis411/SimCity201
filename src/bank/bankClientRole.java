@@ -3,7 +3,6 @@ package bank;
 import agent.Agent;
 import bank.bankTellerRole;
 import bank.gui.ClientGui;
-import bank.gui.TellerGui;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -20,7 +19,7 @@ public class bankClientRole extends Agent {
 	private numberAnnouncer announcer;
 	private double requestAmount = 0;
 	private boolean hasLoan = false;
-	private double amountDue = 0;
+//	private double amountDue = 0;
 	private int ticketNum = 0;
 	private int loanTicketNum = 0;
 	private int lineNum;
@@ -48,6 +47,9 @@ public class bankClientRole extends Agent {
 		this.loanTeller = ltr;
 	}
 
+	/**
+	 * establishes connection to the number Announcer
+	 */
 	public void setAnnouncer(numberAnnouncer a){
 		this.announcer = a;
 	}
@@ -87,11 +89,22 @@ public class bankClientRole extends Agent {
 
 
 	//Messages
+	/**
+	 * Message sent by the GUI releasing the semaphore when the client reaches the waiting area
+	 */
 	public void msgAtWaitingArea(){
 		atWaitingArea.release();
 		state2 = inLineState.waiting;
 		stateChanged();
 	}
+	
+	/**
+	 * 
+	 * Sent by the number announcer. If the number matches the client's ticket, the client should go to the proper line
+	 * @param t = ticket number
+	 * @param l = line number
+	 * @param btr = bank teller role
+	 */
 	public void msgCallingTicket(int t, int l, bankTellerRole btr){
 		if (ticketNum == t){
 			state2 = inLineState.goingToLine;
@@ -101,6 +114,13 @@ public class bankClientRole extends Agent {
 			stateChanged();
 		}
 	}
+	
+	/**
+	 * Same as msgCallingTicket, except for loans
+	 * @param loanNumber
+	 * @param i = line number 
+	 * @param loanTeller2 = loan teller
+	 */
 	public void msgCallingLoanTicket(int loanNumber, int i,
 			loanTellerRole loanTeller2) {
 		if (loanTicketNum == loanNumber){
@@ -112,10 +132,18 @@ public class bankClientRole extends Agent {
 		}
 
 	}
+	
+	/**
+	 * sent from the gui when the client is at the line
+	 */
 	public void msgAtLine(){ //from gui
 		atLine.release();
 		stateChanged();
 	}
+	
+	/**
+	 * sent by the bank teller as a greeting to the client to let the client know he can communicate his needs
+	 */
 	public void msgMayIHelpYou(){
 		state2 = inLineState.beingHelped;
 		stateChanged();
@@ -132,7 +160,7 @@ public class bankClientRole extends Agent {
 	}
 	public void msgLoanApproved(double n){
 		hasLoan = true;
-		amountDue = n;
+//		amountDue = n;
 		money = money + n;
 		state1 = bankState.nothing;
 		state2 = inLineState.leaving;

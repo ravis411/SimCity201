@@ -47,6 +47,7 @@ public class numberAnnouncer extends Agent{
 		stateChanged();
 	}
 	public void msgLoanComplete(){
+		Do("Recieved done message from loan line.");
 		state = numberState.announceL;
 		stateChanged();
 	}
@@ -74,6 +75,7 @@ public class numberAnnouncer extends Agent{
 	}
 	private void announceNumberLoan(){
 		loanNumber++;
+		Do("Calling loan ticket " + loanNumber);
 		for (bankClientRole b : clients){
 			b.msgCallingLoanTicket(loanNumber, 5, loanTeller);
 		}

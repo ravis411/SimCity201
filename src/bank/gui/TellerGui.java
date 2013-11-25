@@ -2,7 +2,6 @@ package bank.gui;
 
 import bank.bankTellerRole;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 
 

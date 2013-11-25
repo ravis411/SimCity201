@@ -17,7 +17,6 @@ import astar.AStarTraversal;
  */
 public class loanTellerRole extends Agent{
 	private bankClientRole myClient;
-	private int LineNum = 5; 
 	public enum requestState {open, loan, pending, none, notBeingHelped};
 	private requestState state = requestState.none;
 	public enum location {entrance, station, breakRoom};
@@ -30,7 +29,7 @@ public class loanTellerRole extends Agent{
 	private Semaphore atStation = new Semaphore(0,true);
 	private Semaphore atIntermediate = new Semaphore(0,true);
 	private LoanGui loanGui = null;
-	
+
 	public loanTellerRole(String s){
 		super();
 		name = s;
@@ -78,11 +77,12 @@ public class loanTellerRole extends Agent{
 			if (state == requestState.notBeingHelped){
 				receiveClient(myClient);
 				return true;
-			}if (state == requestState.open){
-				openAccount(myClient);
-				return true;
-			} else if (state == requestState.loan){
+			}if (state == requestState.loan){
 				processLoan(myClient);
+				return true;
+			}
+			if (state == requestState.open){
+				openAccount(myClient);
 				return true;
 			}
 		}
@@ -118,22 +118,24 @@ public class loanTellerRole extends Agent{
 		state = requestState.pending;
 	}
 	private void processLoan(bankClientRole b){
+		Do("Hold on a moment.");
 		for (Account a : Accounts){
 			if (a.client == b){
 				if (b.age > 18 && b.age < 85){
 					if (transactionAmount > a.amount){
 						if (!b.HasLoan()){
 							Do("Loan approved for $" + transactionAmount);
+							announcer.msgLoanComplete();
 							b.msgLoanApproved(transactionAmount);
 						}
 					}
 				} else {
 					Do("Loan denied.");
+					announcer.msgLoanComplete();
 					b.msgTransactionCompleted(0);
 				}
 				state = requestState.none;
 				ticketNum++;
-				announcer.msgLoanComplete();
 				myClient = null;
 			}
 		}
@@ -157,11 +159,11 @@ public class loanTellerRole extends Agent{
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setGui(LoanGui gui){
 		loanGui = gui;
 	}
-	
+
 	public LoanGui getGui(){
 		return loanGui;
 	}
