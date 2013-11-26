@@ -106,7 +106,13 @@ public class BusAgent extends Agent implements Bus {
 	public boolean pickAndExecuteAnAction() {
 		//print("Location is " + location);
 		if (state == AgentState.loading) {
-			addPassenger();
+			synchronized(passengers) {
+				for (myPassenger mp: passengers) {
+					if (mp.ps == PassengerState.boarding) {
+						addPassenger(mp);
+					}
+				}
+			}
 		}
 		if (state == AgentState.unloading) {
 			synchronized(passengers) {
@@ -165,15 +171,9 @@ public class BusAgent extends Agent implements Bus {
 		}
 	}
 	
-	private void addPassenger() {
-		synchronized(passengers) {
-			for (myPassenger mp: passengers) {
-				if (mp.ps == PassengerState.boarding) {
-					currentStop.msgNewPassenger(mp.passenger);
-					mp.ps = PassengerState.riding;
-				}
-			}
-		}
+	private void addPassenger(myPassenger mp) {
+		currentStop.msgNewPassenger(mp.passenger);
+		mp.ps = PassengerState.riding;
 	}
 	
 	public String toString(){
