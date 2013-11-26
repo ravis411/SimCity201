@@ -13,8 +13,6 @@ import javax.swing.JPanel;
 /**
  * Default class for various gui building panels.
  * BuildingPanel is added to the buildingPanels and is displayed in the zoomed in view of a building.
- * 
- *
  */
 public class BuildingPanel extends JPanel{
 	Rectangle2D myRectangle;
@@ -35,7 +33,6 @@ public class BuildingPanel extends JPanel{
 		JLabel j = new JLabel( myName );
 		add( j );
 	}
-	
 	
 	public String getName() {
 		return myName;

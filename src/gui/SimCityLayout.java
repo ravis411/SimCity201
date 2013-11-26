@@ -1,6 +1,6 @@
 package gui;
 
-import gui.Building.Building;
+import gui.Building.BuildingGui;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -240,7 +240,7 @@ public class SimCityLayout {
 	 * @param height
 	 * @return A pointer to a new Building object if successful. null otherwise
 	 */
-	public Building addBuilding(int xPos, int yPos, int width, int height) {
+	public BuildingGui addBuilding(int xPos, int yPos, int width, int height) {
 		Dimension startPos = new Dimension(xPos, yPos);
 		List<Dimension> needed = new ArrayList<>();
 		List<Dimension> acquired = new ArrayList<>();
@@ -282,7 +282,7 @@ public class SimCityLayout {
 		
 		if(successfull) {
 			d = new Dimension(positionMap.get(startPos));
-			Building b = new Building(d.width, d.height, width * GRID_SIZEX, GRID_SIZEY * height);
+			BuildingGui b = new BuildingGui(d.width, d.height, width * GRID_SIZEX, GRID_SIZEY * height);
 			return b;
 		}
 		//we need to release the spaces that were acquired

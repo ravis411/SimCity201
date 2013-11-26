@@ -1,6 +1,6 @@
 package gui;
 
-import gui.Building.Building;
+import gui.Building.BuildingGui;
 import gui.Building.BuildingPanel;
 
 import java.awt.Color;
@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 public class Team29Panel extends BuildingPanel{
 	JLabel title = new JLabel("SimCity V0.5     Team 29");
-	static Building b = new Building(0, 0, 0, 0);
+	static BuildingGui b = new BuildingGui(0, 0, 0, 0);
 	public Team29Panel(BuildingsPanels panels) {
 		super(b, "Team29", panels );
 		

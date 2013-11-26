@@ -1,6 +1,6 @@
 package residence.gui;
 
-import gui.Building.Building;
+import gui.Building.BuildingGui;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class ApartmentAnimationPanel extends JPanel implements MouseListener  {
-	private List<Building> apartments = new ArrayList<>();
+	private List<BuildingGui> apartments = new ArrayList<>();
 	
 	static final int XCOOR = 0;
 	static final int YCOOR = 0;

@@ -1,6 +1,6 @@
 package gui;
 
-import gui.Building.Building;
+import gui.Building.BuildingGui;
 import gui.Building.BuildingPanel;
 import gui.Building.BusStopBuilding;
 import gui.Building.BusStopBuildingPanel;
@@ -22,7 +22,7 @@ import gui.Building.ApartmentBuilding;
 import gui.Building.ApartmentBuildingPanel;
 import gui.Building.BankBuilding;
 import gui.Building.BankBuildingPanel;
-import gui.Building.Building;
+import gui.Building.BuildingGui;
 import gui.Building.BuildingPanel;
 import gui.Building.BusStopBuilding;
 import gui.Building.BusStopBuildingPanel;
@@ -551,7 +551,7 @@ public class SetUpWorldFactory{
 		if(buildingsPanels.containsName(name))
 			return;
 		
-		Building building = layout.addBuilding( xPos, yPos, width, height );//<-this puts the building on the grid
+		BuildingGui building = layout.addBuilding( xPos, yPos, width, height );//<-this puts the building on the grid
 		
 		if(building == null){
 			return;
