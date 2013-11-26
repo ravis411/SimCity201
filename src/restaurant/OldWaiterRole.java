@@ -110,31 +110,31 @@ public class OldWaiterRole extends Role implements Waiter {
 	
 	public void msgAtWaitingArea() {
 		atWaitingArea.release();
-		stateChanged();
+		//stateChanged();
 	}
 	
 	public void msgAtTable() {//from animation
 		atTable.release();// = true;
 		state = AgentState.AtTable;
-		stateChanged();
+		//stateChanged();
 	}
 	
 	public void msgAtCookingArea() {
 		atCookingArea.release();
 		state = AgentState.AtTable;
-		stateChanged();
+		//stateChanged();
 	}
 	
 	public void msgAtPlatingArea() {
 		atPlatingArea.release();
 		state = AgentState.AtKitchen;
-		stateChanged();
+		//stateChanged();
 	}
 	
 	public void msgAtFrontDesk() {
 		atFrontDesk.release();
 		state = AgentState.AtFrontDesk;
-		stateChanged();
+		//stateChanged();
 	}
 	
 	public void msgLeavingTable(Customer cust) {
