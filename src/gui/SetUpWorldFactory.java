@@ -501,10 +501,10 @@ public class SetUpWorldFactory{
 		p1.setGui(g1);
 		switch(name){
 			case "Person 1":
-				p1.setInitialRole(new HomeRole(p1), "House 1");
+				//p1.setInitialRole(new HomeRole(p1), "House 1");
 				break;
 			case "Person 2":
-				p1.setInitialRole(new HomeRole(p1), "House 2");
+				//p1.setInitialRole(new HomeRole(p1), "House 2");
 				break;
 			case "Person 4":
 				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_WAITER_ROLE), "Restaurant 1");

@@ -12,6 +12,8 @@ import restaurant.CookRole;
 import restaurant.NewWaiterRole;
 import restaurant.OldWaiterRole;
 import restaurant.RestaurantCustomerRole;
+import trace.AlertLog;
+import trace.AlertTag;
 import Person.Role.Role;
 
 import java.awt.*;
@@ -94,6 +96,7 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
         
 
         for(Gui gui : guis) {
+        	
             if (gui.isPresent()) {
                 gui.updatePosition();
             }
@@ -101,6 +104,9 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {
+//            	if(gui instanceof CookGui){
+//            		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "CustomerGui", "IM BEING DRAWN");
+//            	}
                 gui.draw(g2);
             }
         }
@@ -146,6 +152,7 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
 			RestaurantCustomerRole rcr = (RestaurantCustomerRole) r;
 			CustomerGui gui = new CustomerGui(rcr);
 			rcr.setGui(gui);
+			AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "CustomerGui", "Assigning the Customer Gui ---------");
 			guis.add(gui);
 			//System.out.println("My person is: " + hr.myPerson.getName());
 		}

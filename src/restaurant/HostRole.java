@@ -69,7 +69,7 @@ public class HostRole extends Role {
 		waitingCustomers.add(cust);
 		waitingCust++;
 		stateChanged();
-		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "Host", "Customer added to waitingCustomers");
+		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "Host", "Customer added to waitingCustomers: "+cust);
 	}
 
 	public void msgLeavingTable(Customer customer) {
@@ -124,7 +124,9 @@ public class HostRole extends Role {
 		for (Table table : tables) {
 			i = i+1;
 				if (!table.isOccupied() && i<4) {
+					AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "Host", "Inside scheduler table loop");
 					if (!waitingCustomers.isEmpty()) {
+						AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "Host", "We Should Return true here");
 						getWaiter(waitingCustomers.get(0), i-1, ((ArrayList<Table>) tables).get(i).getX(),((ArrayList<Table>) tables).get(i).getY());//the action
 						//waitingCustomers.remove(0);
 						return true;//return true to the abstract agent to reinvoke the scheduler.
@@ -160,6 +162,7 @@ public class HostRole extends Role {
 		customer.setTableX(xCoor);
 		customer.setTableY(yCoor);
 		customer.setTableNum(table);
+		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "Host", "Messaging a Waiter");
 		waiters.get(assignedWaiter).msgSeatCustomer(customer);
 		((ArrayList<Table>) tables).get(table).setOccupant(customer);
 		waitingCustomers.remove(customer);

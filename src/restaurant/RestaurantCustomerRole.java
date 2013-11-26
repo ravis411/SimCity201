@@ -355,7 +355,7 @@ public class RestaurantCustomerRole extends Role implements Customer {
 	}
 
 	public String toString() {
-		return "customer " + getName();
+		return "customer " + getNameOfRole();
 	}
 
 	public void setGui(CustomerGui g) {

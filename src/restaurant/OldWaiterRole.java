@@ -11,6 +11,8 @@ import restaurant.Menu.Dish;
 import restaurant.gui.WaiterGui;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
+import trace.AlertLog;
+import trace.AlertTag;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -85,6 +87,7 @@ public class OldWaiterRole extends Role implements Waiter {
 	public void msgSeatCustomer(Customer cust) {
 		myCustomers.add(new MyCustomer(cust));
 		event = AgentEvent.seatCustomer;
+		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "Waiter", "Message Received for Customer "+cust);
 		stateChanged();
 	}
 	
@@ -181,6 +184,7 @@ public class OldWaiterRole extends Role implements Waiter {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAction() {
+		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "Waiter", "WAITER SCHEDULER !!!!!!!");
 		if(requestBreak == true) {
 			requestBreak();
 			return true;
@@ -244,6 +248,7 @@ public class OldWaiterRole extends Role implements Waiter {
 
 	private void goToIdle() {
 		//waiterGui.DoGoToIdle();
+		state = AgentState.DoingNothing;
 		waiterGui.DoLeaveCustomer();
 	}
 	

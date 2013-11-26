@@ -148,6 +148,9 @@ public class PersonAgent extends Agent {
 		itemsNeeded = new ArrayDeque<Item>();
 		
 		roles.add(new HomeRole(this));
+		
+		if(name.equals("Person 1") || name.equals("Person 2"))
+			this.msgGoToMarket(null);
 	}
 	
 //-------------------------------MESSAGES----------------------------------------//
@@ -419,15 +422,16 @@ public class PersonAgent extends Agent {
 			  role = (RestaurantCustomerRole) RoleFactory.roleFromString(Role.RESTAURANT_CUSTOMER_ROLE);
 			  addRole(role);
 		  }
+		  AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Customer Role = "+role);
 		  BuildingList.findBuildingWithName("Restaurant 1").addRole(role);
 		  Building bdg =  BuildingList.findBuildingWithName("Restaurant 1");
 		  if(bdg instanceof Restaurant){
-			  System.out.println("HERE");
 			  Restaurant rest = (Restaurant) bdg;
-			  rest.getHostRole().msgIWantFood(role);
+			  role.setCashier(rest.getCashierRole());
+			  role.setHost(rest.getHostRole());
+			  role.gotHungry();
 			  role.activate();
 		  }
-		  System.err.println("here");
 		  
 		/*if(findRole(Role.MARKET_CUSTOMER_ROLE) == null){
 			Role r = RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);

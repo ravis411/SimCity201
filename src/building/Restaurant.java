@@ -57,5 +57,15 @@ public class Restaurant extends Building implements Workplace {
 		return null;
 	}
 	
+	public CashierRole getCashierRole(){
+		for(Role r : inhabitants){
+			if(r instanceof CashierRole){
+				return (CashierRole) r;
+			}
+		}
+	
+	return null;
+	}
+	
 
 }
