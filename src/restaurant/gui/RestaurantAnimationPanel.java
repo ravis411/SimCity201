@@ -30,8 +30,8 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
 	static final int TABLEX3 = 50;
 	static final int TABLEY3 = 50;
 	
-    private final int WINDOWX = 480;
-    private final int WINDOWY = 350;
+    private final int WINDOWX = 800;
+    private final int WINDOWY = 400;
     private Image bufferImage;
     private Dimension bufferSize;
 
