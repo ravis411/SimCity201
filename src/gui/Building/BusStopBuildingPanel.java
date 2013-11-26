@@ -48,6 +48,10 @@ public class BusStopBuildingPanel extends BuildingPanel{
 		return this.bustStopAgent;
 	}
 	
+	public BusStopAnimationPanel getBusStopAnimationPanel(){
+		return this.animationPanel;
+	}
+	
 	
 	public String getName() {
 		return myName;

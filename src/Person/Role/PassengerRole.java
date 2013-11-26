@@ -1,17 +1,20 @@
 package Person.Role;
 
+import gui.agentGuis.PersonGui;
 import gui.interfaces.Passenger;
 
 public class PassengerRole extends Role implements Passenger{
 	
 	PassengerRole(String name) {
 		this.name = name;
+		personGui = myPerson.getPersonGui();
 	}
 	
 	//Data
 	private String name;
 	private String destination; //Remember to set as null upon arrival
 	private String nextLocation;
+	private PersonGui personGui = null;
 	
 	public enum AgentState {waitingForBus, busArrived, riding, disembarking, notInTransit};
 	private AgentState state = AgentState.notInTransit;
@@ -38,6 +41,10 @@ public class PassengerRole extends Role implements Passenger{
 	//Scheduler
 	@Override
 	public boolean pickAndExecuteAction() {
+		if(state == AgentState.notInTransit){
+			goToClosestStop();
+		}
+		
 		if (state == AgentState.busArrived) {
 			getOnBus();
 			return true;
@@ -66,6 +73,13 @@ public class PassengerRole extends Role implements Passenger{
 		
 	
 	//Actions
+	
+	/**This has the person move from their current location to the bus stop nearest them.
+	 * 
+	 */
+	private void goToClosestStop(){
+		String startingBusStop = personGui.DoGoToClosestBusStop();
+	}
 	
 	private void getOnBus() {
 		//Get onto the bus

@@ -697,6 +697,9 @@ public class PersonAgent extends Agent {
 	public void setGui(PersonGui gui){
 		this.gui = gui;
 	}
+	public PersonGui getPersonGui(){
+		return this.gui;
+	}
 	
 	public String toString(){
 		return getName();
