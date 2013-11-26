@@ -1,6 +1,7 @@
 package gui.Building;
 
 import gui.BuildingsPanels;
+import interfaces.GuiPanel;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,8 +16,6 @@ import Person.Role.Role;
 /**
  * Default class for various gui building panels.
  * BuildingPanel is added to the buildingPanels and is displayed in the zoomed in view of a building.
- * 
- *
  */
 public abstract class BuildingPanel extends JPanel{
 	Rectangle2D myRectangle;
@@ -37,16 +36,15 @@ public abstract class BuildingPanel extends JPanel{
 		JLabel j = new JLabel( myName );
 		add( j );
 	}
-	
+
+	abstract public GuiPanel getPanel();
 	
 	/**	Add Person to the building.
 	 * 
 	 * @param The Role
 	 */
 	abstract public void addPersonWithRole(Role r);
-	
-	
-	
+
 	public String getName() {
 		return myName;
 	}

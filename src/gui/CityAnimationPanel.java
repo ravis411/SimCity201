@@ -1,6 +1,6 @@
 package gui;
 
-import gui.Building.Building;
+import gui.Building.BuildingGui;
 
 import javax.swing.*;
 
@@ -28,7 +28,7 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 
 
 	private List<Gui> guis = new ArrayList<Gui>();
-	private List<Building> buildings = new ArrayList<>(); 
+	private List<BuildingGui> buildings = new ArrayList<>(); 
 
 	private SimCityLayout layout = null;
 
@@ -110,11 +110,11 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		
 		
 		//This section makes the city dark at night and draws the clock.
-		if(calendar.get(Calendar.HOUR_OF_DAY) >= 17 && ampmAlpha < .25f){
-			ampmAlpha += 0.01f;
-		}else if(calendar.get(Calendar.HOUR_OF_DAY) <= 5 && ampmAlpha > .01f)
+		if(calendar.get(Calendar.HOUR_OF_DAY) >= 18 && ampmAlpha < .3f){
+			ampmAlpha += 0.001f;
+		}else if(calendar.get(Calendar.HOUR_OF_DAY) <= 6 && ampmAlpha > .01f)
 		{
-			ampmAlpha -= 0.01f;
+			ampmAlpha -= 0.001f;
 		}
 		if(!testView){
 			AlphaComposite orig = AlphaComposite.getInstance(AlphaComposite.SRC_OVER);
@@ -133,11 +133,11 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		guis.add(gui);
 	}
 	
-	public void addGui(Building gui){
+	public void addGui(BuildingGui gui){
 		addBuilding(gui);
 	}
 	
-	public void addBuilding(Building b) {
+	public void addBuilding(BuildingGui b) {
 		buildings.add(b);
 		guis.add(b);
 		
@@ -158,7 +158,7 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 	}
 	
 	public void mouseClicked(MouseEvent me) {
-		for(Building b : buildings) {
+		for(BuildingGui b : buildings) {
 			if(b.contains(me.getX(), me.getY())){
 				b.displayBuilding();
 			}

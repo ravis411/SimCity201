@@ -48,7 +48,7 @@ public class HomeRole extends Role implements Home {
 		this.myPerson = myPerson;
 		
 		gui = new HomeRoleGui(this);
-		myPerson.home.getPanel().addGui(gui);
+		//myPerson.home.getPanel().addGui(gui);
 		
 		inventory.add(new Item("Cooking Ingredient",2));
 		inventory.add(new Item("Cleaning supply", 2));

@@ -6,11 +6,11 @@ import gui.Gui;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
-public class Building extends Rectangle2D.Double implements Gui{
+public class BuildingGui extends Rectangle2D.Double implements Gui{
 	BuildingPanel myBuildingPanel;
 	boolean testView = false;
 
-	public Building( double x, double y, double width, double height ) {
+	public BuildingGui( double x, double y, double width, double height ) {
 		super( x, y, width, height );
 	}
 	
