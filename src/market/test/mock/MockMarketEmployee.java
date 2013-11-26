@@ -93,4 +93,10 @@ public class MockMarketEmployee extends Mock implements MarketEmployee {
 		
 	}
 
+
+	@Override
+	public void msgMarketEmployeePayment(int i) {
+		log.add(new LoggedEvent("Recieved msgMarketEmployeePayment"));				
+	}
+
 }

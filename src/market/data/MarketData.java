@@ -9,6 +9,7 @@ public class MarketData {
 	List<Inventory> marketInventory	= new ArrayList<Inventory>();
 	MarketManager currentMarketManager;
 	List<Integer> numberOfCustomersInALine	= new ArrayList<Integer>();
+	double marketMoney=0;
 	public MarketData(){
 		marketInventory.add(new Inventory("Steak",1));
 		marketInventory.add(new Inventory("Chicken",1));
@@ -34,7 +35,12 @@ public class MarketData {
 	public int getAmount(int inventoryListNumber){
 		return marketInventory.get(inventoryListNumber).getAmount();
 	}
-	
+	public void giveMarketMoney(double moneyAmount){
+		marketMoney +=moneyAmount;
+	}
+	public double getMarketMoney(){
+		return marketMoney;
+	}
 	public void decrementFoodAmount(int inventoryListNumber, int amountToDecrement){
 		marketInventory.get(inventoryListNumber).decrementFoodAmount(amountToDecrement);
 	}

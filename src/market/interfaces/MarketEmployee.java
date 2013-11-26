@@ -28,4 +28,6 @@ public interface MarketEmployee {
 	public abstract void msgMarketEmployeeAttemptToFillOrder(String foodType, int amount, int orderNumber);
 
 	public abstract void msgMarketEmployeeAtManagerRelease();
+
+	public abstract void msgMarketEmployeePayment(int i);
 }

@@ -24,14 +24,16 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	public MarketCustomerGui gui;
 	String name = "Market Customer";
 	String foodTypeWanted;
+	String foodTypeRecieved;
 	int foodTypeAmount;
+	int foodTypeAmountRecieved;
 	public boolean willTakePartialOrder;
 	private Semaphore atCounter = new Semaphore(0,false);
 	private Semaphore employeeReadyToTakeOrder = new Semaphore(0,false);
 	public enum MarketCustomerState 
 	{none,needsToOrder,askedEmployeeToTellWhenWhenToOrder, waitingForMarketEmployeeToReturn, replyingToEmployee, waitingForPartialOrder,leaving};
 	public enum MarketCustomerEvent
-	{none, firstInLine,employeeSaysOrderNow, employeeBackAndAskedOrderDetail, leaving};
+	{none, firstInLine,employeeSaysOrderNow, employeeBackAndAskedOrderDetail, leaving, pay};
 	public MarketCustomerEvent event=MarketCustomerEvent.none;
 	public MarketCustomerState state=MarketCustomerState.needsToOrder;
 	public MarketEmployee marketEmployee;
@@ -87,8 +89,9 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		
 	public void msgMarketCustomerHereIsOrder(String foodType, int amount){
 		print("Got "+ amount + " "+ foodType);
-		myPerson.msgAddObjectToBackpack(foodType, amount);
-		event= MarketCustomerEvent.leaving;
+		foodTypeAmountRecieved=amount;
+		foodTypeRecieved=foodType;
+		event= MarketCustomerEvent.pay;
 		stateChanged();
 		}
 
@@ -114,6 +117,10 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 			leaveMarket();
 			return true;
 		}
+		if (event == MarketCustomerEvent.pay && state!= MarketCustomerState.none){
+			payAndLeaveMarket();
+			return true;
+		}
 				
 	
 		return false;
@@ -125,6 +132,8 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	// Actions
 	
 
+
+	
 
 	void goToMarketEmployeeToOrder(){
 		
@@ -168,6 +177,14 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	void leaveMarket(){
 		state= MarketCustomerState.none;
 		gui.DoLeave();//animation for CustomerRole to leave market
+		
+	}
+	private void payAndLeaveMarket() {
+		myPerson.msgAddObjectToBackpack(foodTypeRecieved, foodTypeAmountRecieved);
+		myPerson.setMoney(myPerson.getMoney()-menu.get(foodTypeRecieved)*foodTypeAmountRecieved);
+		print(myPerson.getName()+ " paid $" + menu.get(foodTypeRecieved)*foodTypeAmountRecieved+ "and now has $"+myPerson.getMoney()); 
+		marketEmployee.msgMarketEmployeePayment(menu.get(foodTypeRecieved)*foodTypeAmountRecieved);
+		leaveMarket();
 		
 	}
 

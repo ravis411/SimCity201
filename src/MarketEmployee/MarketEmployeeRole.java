@@ -118,6 +118,12 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		stateChanged();
 	}
 
+	
+	public void msgMarketEmployeePayment(int moneyAmount) {
+		marketData.giveMarketMoney(moneyAmount);
+		print("Recieved money from customer and Added it to the Markets Money. Market Now has $" + marketData.getMarketMoney());
+		
+	}
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
@@ -525,6 +531,14 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+
+
+
+
+
+
+
 
 
 

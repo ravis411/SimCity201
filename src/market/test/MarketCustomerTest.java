@@ -66,8 +66,10 @@ public class MarketCustomerTest extends TestCase
 				+ employee.log.getLastLoggedEvent().toString(), employee.log.containsString("msgMarketEmployeeOrder"));
 		//at this point the employee has recieved an order.
 		customer.msgMarketCustomerHereIsOrder("Burger",1);
-		assertTrue("Customer's scheduler should have returned true (leaveMarket action should be done).", customer.pickAndExecuteAction());
+		assertTrue("Customer's scheduler should have returned true (payAndLeaveMarket action should be done).", customer.pickAndExecuteAction());
 		assertTrue("Customer's state should now equal none after leaving", customer.state==MarketCustomerRole.MarketCustomerState.none);
+		assertTrue("Employee should have logged \"Recieved msgMarketEmployeePayment" +"\" but didn't. His log reads instead: " 
+				+ employee.log.getLastLoggedEvent().toString(), employee.log.containsString("msgMarketEmployeePayment"));
 		
 			
 	}//end one normal customer scenario
@@ -95,7 +97,7 @@ public class MarketCustomerTest extends TestCase
 		
 		assertTrue("Customer's scheduler should have returned true (tellMarketEmployeeIfPartialOrderAcceptable action should be done).", customer.pickAndExecuteAction());
 		assertTrue("Customer's state should now equal none after leaving", customer.state==MarketCustomerRole.MarketCustomerState.none);
-		
+	
 			
 	}//end one normal customer scenario
 	public void testTwoCustomerScenarioWithPartialOrderInstockAndPartialOrderISAcceptable()
@@ -123,8 +125,10 @@ public class MarketCustomerTest extends TestCase
 		assertTrue("Employee should have logged \"Recieved msgMarketEmployeeConfirmPartialOrder" +"\" but didn't. His log reads instead: " 
 				+ employee.log.getLastLoggedEvent().toString(), employee.log.containsString("msgMarketEmployeeConfirmPartialOrder"));
 		customer.msgMarketCustomerHereIsOrder("Burger",1);
-		assertTrue("Customer's scheduler should have returned true (leaveMarket action should be done).", customer.pickAndExecuteAction());
+		assertTrue("Customer's scheduler should have returned true (payAndLeaveMarket action should be done).", customer.pickAndExecuteAction());
 		assertTrue("Customer's state should now equal none after leaving", customer.state==MarketCustomerRole.MarketCustomerState.none);
+		assertTrue("Employee should have logged \"Recieved msgMarketEmployeePayment" +"\" but didn't. His log reads instead: " 
+				+ employee.log.getLastLoggedEvent().toString(), employee.log.containsString("msgMarketEmployeePayment"));
 		
 			
 	}//end one normal customer scenario
