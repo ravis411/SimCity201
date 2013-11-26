@@ -227,6 +227,7 @@ public class SetUpWorldFactory{
 //			addPerson("Person 5", buildingsPanels.getResidenceBuildingPanel("House 2"));
 //			addPerson("Person 6", buildingsPanels.getResidenceBuildingPanel("House 2"));
 //			addPerson("Person 7", buildingsPanels.getResidenceBuildingPanel("House 2"));
+
 		
 	} //end LoadDefault
 	
