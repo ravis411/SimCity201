@@ -1,9 +1,14 @@
 package building;
 
 import gui.Building.BuildingPanel;
+import restaurant.CashierRole;
+import restaurant.CookRole;
+import restaurant.HostRole;
+import restaurant.NewWaiterRole;
+import restaurant.OldWaiterRole;
 import Person.Role.Role;
 
-public class Restaurant extends Workplace {
+public class Restaurant extends Building implements Workplace {
 
 	public Restaurant(BuildingPanel panel) {
 		super(panel);
@@ -27,15 +32,30 @@ public class Restaurant extends Workplace {
 		// TODO Auto-generated method stub
 		boolean hasHost = false, hasCook = false, hasWaiter = false, hasCashier = false;
 		for(Role r : inhabitants){
-			if(r instanceof RestaurantHostRole){
+			if(r instanceof HostRole){
 				hasHost = true;
 			}else if(r instanceof CookRole){
 				hasCook = true;
-			}else if(r instanceof CashierRole)
+			}else if(r instanceof CashierRole){
+				hasCashier = true;
+			}else if(r instanceof OldWaiterRole || r instanceof NewWaiterRole){
+				hasWaiter = true;
+			}
 		}
-		return false;
+		
+		System.out.println( hasHost && hasCook && hasWaiter && hasCashier);
+		return hasHost && hasCook && hasWaiter && hasCashier;
 	}
 	
-	public hostRole
+	public HostRole getHostRole(){
+			for(Role r : inhabitants){
+				if(r instanceof HostRole){
+					return (HostRole) r;
+				}
+			}
+		
+		return null;
+	}
+	
 
 }

@@ -5,6 +5,8 @@ import agent.Agent;
 import restaurant.gui.HostGui;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
+import trace.AlertLog;
+import trace.AlertTag;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -67,6 +69,7 @@ public class HostRole extends Role {
 		waitingCustomers.add(cust);
 		waitingCust++;
 		stateChanged();
+		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "Host", "Customer added to waitingCustomers");
 	}
 
 	public void msgLeavingTable(Customer customer) {
@@ -102,6 +105,7 @@ public class HostRole extends Role {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAction() {
+		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "host", "SCHEDULER ////////////////////////////");
 		if (!waitingCustomers.isEmpty()){
 			for(int w=0; w<waitingCustomers.size(); w++){
 				if(waitingCust>3) {

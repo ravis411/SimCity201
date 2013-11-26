@@ -2,7 +2,7 @@ package building;
 
 import gui.Building.BuildingPanel;
 
-public class Market extends Workplace {
+public class Market extends Building implements Workplace {
 
 	public Market(BuildingPanel panel) {
 		super(panel);

@@ -4,6 +4,7 @@ import gui.Building.BankBuildingPanel;
 import gui.Building.BuildingPanel;
 import gui.Building.MarketBuildingPanel;
 import gui.Building.ResidenceBuildingPanel;
+import gui.Building.RestaurantBuildingPanel;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -15,6 +16,7 @@ import building.Bank;
 import building.Building;
 import building.BuildingList;
 import building.Market;
+import building.Restaurant;
 
 
 /** This class holds all the panels for various buildings and displays them if called.
@@ -48,6 +50,8 @@ public class BuildingsPanels extends JPanel{
 			BuildingList.getInstance().add(new Bank(buildingPanel));
 		}else if(buildingPanel instanceof MarketBuildingPanel){
 			BuildingList.getInstance().add(new Market(buildingPanel));
+		}else if(buildingPanel instanceof RestaurantBuildingPanel){
+			BuildingList.getInstance().add(new Restaurant(buildingPanel));
 		}else{
 			BuildingList.getInstance().add(new Building(buildingPanel));
 		}

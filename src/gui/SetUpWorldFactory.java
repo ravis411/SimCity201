@@ -136,7 +136,7 @@ public class SetUpWorldFactory{
 		location.positionToEnterFromMainGrid = new Dimension(10, 12);
 		location.entranceFromMainGridPosition = new Dimension(9, 12);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Restaurant", "Building 8", 8, 12, 2, 2, location);
+		addBuilding("Restaurant", "Restaurant 1", 8, 12, 2, 2, location);
 //Building 9
 		location.sector = 2;
 		location.positionToEnterFromMainGrid = new Dimension(15, 12);
@@ -225,11 +225,11 @@ public class SetUpWorldFactory{
 			
 			addPerson("Person 1", buildingsPanels.getResidenceBuildingPanel("House 1"));
 			addPerson("Person 2", buildingsPanels.getResidenceBuildingPanel("House 1"));
-//			addPerson("Person 3", buildingsPanels.getResidenceBuildingPanel("House 2"));
-//			addPerson("Person 4", buildingsPanels.getResidenceBuildingPanel("House 2"));
+			addPerson("Person 3", buildingsPanels.getResidenceBuildingPanel("House 2"));
+			addPerson("Person 4", buildingsPanels.getResidenceBuildingPanel("House 2"));
 			
-//			addPerson("Person 5", buildingsPanels.getResidenceBuildingPanel("House 2"));
-//			addPerson("Person 6", buildingsPanels.getResidenceBuildingPanel("House 2"));
+			addPerson("Person 5", buildingsPanels.getResidenceBuildingPanel("House 2"));
+			addPerson("Person 6", buildingsPanels.getResidenceBuildingPanel("House 2"));
 //			addPerson("Person 7", buildingsPanels.getResidenceBuildingPanel("House 2"));
 
 		
@@ -506,19 +506,20 @@ public class SetUpWorldFactory{
 			case "Person 2":
 				p1.setInitialRole(new HomeRole(p1), "House 2");
 				break;
-//			case "Person 3":
-//				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_WAITER_ROLE), "Restaurant 1");
-//				break;
-//			case "Person 4":
-//				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_HOST_ROLE), "Restaurant 1");
-//				break;
-//			case "Person 5":
-//				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_COOK_ROLE), "Restaurant 1");
-//				break;
-//			case "Person 6":
-//				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_CASHIER_ROLE), "Restaurant 1");
-//			default:
-//				break;
+			case "Person 4":
+				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_WAITER_ROLE), "Restaurant 1");
+				break;
+			case "Person 3":
+				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_HOST_ROLE), "Restaurant 1");
+				break;
+			case "Person 5":
+				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_COOK_ROLE), "Restaurant 1");
+				break;
+			case "Person 6":
+				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_CASHIER_ROLE), "Restaurant 1");
+				break;
+			default:
+				break;
 		}
 		//p1.setInitialRole(new HomeRole(p1), "House 1");
 		cityPanel.addGui(g1);
