@@ -2,6 +2,7 @@ package Transportation.test;
 
 import junit.framework.*;
 import Transportation.BusAgent;
+import Transportation.BusAgent.AgentState;
 import Transportation.test.mock.MockBusStop;
 import Transportation.test.mock.MockPassenger;
 
@@ -32,11 +33,14 @@ public class TransportationTest1 extends TestCase {
 		assertEquals("Bus Agent should have only a single passenger", bus.getPassengers().size(), 1);
 		assertFalse("Scheduler should still return false", bus.pickAndExecuteAnAction());
 		
+		//assertEquals("State should not be inTransit", bus.state, AgentState.inTransit);
+		
 		//Move to new location
 		bus.msgFreeToLeave();
 		
 		//Postconditions
-		//assertEquals("Bus should be in next location", bus.location, "Bus Stop 3");
+		assertTrue("Scheduler should have a new task", bus.pickAndExecuteAnAction());
+		assertEquals("Bus should be in next location", bus.location, "Bus Stop 1");
 		
 		//Arrived at next stop
 		bus.msgArrivedAtStop();
