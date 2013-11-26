@@ -21,11 +21,14 @@ import gui.interfaces.Vehicle;
 import agent.Agent;
 
 public class BusAgent extends Agent implements Vehicle {
+	
+	//May need to modify DoGoToLocation method to implement agent methodology
 
 	//Data
 	String name;
 	boolean traveled = false;
 	boolean goToBusStop3 = false;
+	String location;
 	public VehicleGui agentGui;
 	Queue<String> StopsQueue = new LinkedList<>(); //<--a list of the stops to go to
 	
@@ -70,6 +73,11 @@ public class BusAgent extends Agent implements Vehicle {
 		stateChanged();
 	}
 	
+	public void msgArrivedAtStop() {
+		state = AgentState.loading;
+		stateChanged();
+	}
+	
 	public void msgGettingOffBus(Passenger p) {
 		synchronized(getPassengers()) {
 			for (myPassenger mp : getPassengers()) {
@@ -84,12 +92,19 @@ public class BusAgent extends Agent implements Vehicle {
 	//Scheduler
 	@Override
 	protected boolean pickAndExecuteAnAction() {
-		
-		if(!traveled) {
-			Travel();
+		synchronized(passengers) {
+			for (myPassenger mp : passengers) {
+				if (mp.ps == PassengerState.disembarking) {
+					passengers.remove(mp);
+					return true;
+				}
+			}
+		}
+		if (state == AgentState.loading){
+			notifyPassengers();
 			return true;
 		}
-		if(StopsQueue.peek() != null){
+		if (state == AgentState.loaded) {
 			GoToNextStop();
 			return true;
 		}
@@ -105,7 +120,8 @@ public class BusAgent extends Agent implements Vehicle {
 	}
 	
 	private void GoToNextStop(){
-		String location;
+		state = AgentState.inTransit;
+		
 		
 		location = StopsQueue.poll();//<--removes location from front of queue
 		StopsQueue.add(location);//<--adds location to end of queue
@@ -120,6 +136,15 @@ public class BusAgent extends Agent implements Vehicle {
 		}
 	}
 	
+	private void notifyPassengers() {
+		synchronized(passengers) {
+			for (myPassenger mp : passengers) {
+				if (mp.ps == PassengerState.riding) {
+					mp.passenger.msgArrivedAtDestination(location);
+				}
+			}
+		}
+	}
 	
 	public String toString(){
 		return "" + name;
