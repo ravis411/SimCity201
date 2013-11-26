@@ -5,10 +5,15 @@ import interfaces.GuiPanel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.geom.Rectangle2D;
 
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import Person.Role.Role;
 import Transportation.BusStopAgent;
@@ -27,23 +32,27 @@ public class BusStopBuildingPanel extends BuildingPanel{
 	BusStopAgent busStopAgent = null;
 	BusStopAnimationPanel animationPanel = null;
 	
+	 
 	
 	public BusStopBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels) {
 		super(r, name, buildingPanels);
 		
 		this.removeAll();
 		
+		
 		setBackground( new Color(7,100,7) );
 		this.setLayout(new BorderLayout());
 		JLabel j = new JLabel( myName );
 		add( j, BorderLayout.NORTH );
 		animationPanel = new BusStopAnimationPanel();
-		add(animationPanel, BorderLayout.CENTER);
 		
-		busStopAgent = new BusStopAgent(name);
+		add(animationPanel, BorderLayout.CENTER);
+		//add(passengerPane, BorderLayout.WEST);
+		busStopAgent = new BusStopAgent(name, animationPanel);
 		//busStopAgent.startThread();
 		//PassengerRole.addStop(myName, busStopAgent);
 		BusStopAgent.addStop(name, busStopAgent);
+
 	}
 	
 	

@@ -25,10 +25,11 @@ public class BusStopAgent implements BusStop {
 	}
 	
 	
+	BusStopAnimationPanel animationPanel = null;
 	
-	
-	public BusStopAgent(String name) {
+	public BusStopAgent(String name, BusStopAnimationPanel animationPanel) {
 		this.name = name;
+		this.animationPanel = animationPanel;
 	}
 	
 	
@@ -41,6 +42,7 @@ public class BusStopAgent implements BusStop {
 		//Sent from passenger to bus stop
 		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, name, "A new passenger is waiting for the bus\t"+waitingPassengers.size()+" people");
 		waitingPassengers.add(new myBusPassenger(person, destinationStop));
+		animationPanel.addWaitingPassenger(person.getName());
 		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, name, "A new passenger is waiting for the bus\t"+waitingPassengers.size()+" people");
 		//stateChanged();
 	}
@@ -50,6 +52,9 @@ public class BusStopAgent implements BusStop {
 		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, name, "A bus has arrived at the stop for "+waitingPassengers.size()+" people");
 		currentBus = bus;
 		currentBus.msgHereArePassengers(waitingPassengers);
+		for(myBusPassenger b : waitingPassengers){
+			animationPanel.removeWaitingPassenger(b.passenger.getName());
+		}
 		waitingPassengers.removeAll(waitingPassengers);
 	}
 	
