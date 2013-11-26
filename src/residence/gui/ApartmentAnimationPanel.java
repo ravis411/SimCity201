@@ -96,6 +96,12 @@ public class ApartmentAnimationPanel extends JPanel implements MouseListener, Gu
         g2.fillOval(300, 350, 20, 20);
         g2.fillOval(480, 350, 20, 20);
         
+        g2.setColor(Color.white);
+        g2.drawString("Apartment 1", 300, 100);
+        g2.drawString("Apartment 2", 300, 300);
+        g2.drawString("Apartment 3", 420, 100);
+        g2.drawString("Apartment 4", 420, 300);
+        
         for(Gui gui : guis) {
 			if (gui.isPresent()) {
 				gui.updatePosition();
