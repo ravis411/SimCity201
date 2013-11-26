@@ -14,6 +14,10 @@ import java.util.Queue;
 
 
 
+
+
+import trace.AlertLog;
+import trace.AlertTag;
 import gui.LocationInfo;
 import gui.agentGuis.VehicleGui;
 import gui.interfaces.Passenger;
@@ -124,26 +128,24 @@ public class BusAgent extends Agent implements Vehicle {
 	}
 	
 	private void GoToNextStop(){
-		print("Going to next stop");
+		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Going to next stop");
 		state = AgentState.inTransit;
 		
-		location = StopsQueue.poll();//<--removes location from front of queue
+		/*location = StopsQueue.poll();//<--removes location from front of queue
 		StopsQueue.add(location);//<--adds location to end of queue
-		//print("Going to " + location);
 		agentGui.DoGoTo(location);
-	//	print("Arrived at " + location);
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
 		//Need some way of notifying bus that we have arrived at next stop
 	}
 	
 	private void notifyPassengers() {
-		print("Notifying passengers");
+		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Notifying passenges of the current stop: " + location);
 		synchronized(passengers) {
 			for (myPassenger mp : passengers) {
 				if (mp.ps == PassengerState.riding) {
