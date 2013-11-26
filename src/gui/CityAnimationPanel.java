@@ -34,6 +34,8 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 
 	public static final Calendar calendar = Calendar.getInstance();
 	private float ampmAlpha = 0f;
+	
+	
 	boolean testView = false;
 	
 
@@ -68,7 +70,7 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
 
-		calendar.add(Calendar.MINUTE, 5);
+		calendar.add(Calendar.MINUTE, 1);
 		//AlertLog.getInstance().logInfo(AlertTag.GENERAL_CITY, "Calendar", calendar.toString());
 		
 		
