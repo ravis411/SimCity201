@@ -148,6 +148,7 @@ public class PersonAgent extends Agent {
 	public void msgWeHaveArrived(String currentDestination){
 	  //unpause agent, which will be in transit (implementation not necessary here)
 		onBus.release();
+		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Arrived at Destination!!");
 	}
 
 	/**

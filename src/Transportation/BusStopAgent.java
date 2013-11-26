@@ -46,7 +46,7 @@ public class BusStopAgent implements BusStop {
 
 	public void msgArrivedAtStop(Bus bus) {
 		//Sent from bus to bus stop
-		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, name, "A bus has arrived at the stop");
+		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, name, "A bus has arrived at the stop for "+waitingPassengers.size()+" people");
 		currentBus = bus;
 		currentBus.msgHereArePassengers(waitingPassengers);
 		waitingPassengers.clear();

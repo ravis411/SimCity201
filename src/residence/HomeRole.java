@@ -196,8 +196,9 @@ public class HomeRole extends Role implements Home {
 		for(Item i : inventory) {
 			if(i.quantity < 2 && state == AgentState.DoingNothing && event == AgentEvent.none) {
 				goToMarket(i);
+				return true;
 			}
-			return true;
+			
 		}
 		for (HomeFeature hf : features) {
 			if(!hf.working) {

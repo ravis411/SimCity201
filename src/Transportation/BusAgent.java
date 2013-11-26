@@ -62,6 +62,7 @@ public class BusAgent extends Agent implements Bus
 	
 	//Messages
 	public void msgHereArePassengers(List<myBusPassenger> passengers ){
+		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, "BusAgent", "Number of People added: "+passengers.size());
 		this.passengers.addAll(passengers);
 		state = AgentState.readyToLeave;
 		stateChanged();
