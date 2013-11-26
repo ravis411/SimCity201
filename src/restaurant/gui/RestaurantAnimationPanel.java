@@ -1,9 +1,17 @@
 package restaurant.gui;
 
+import gui.Building.BuildingPanel;
 import interfaces.GuiPanel;
 
 import javax.swing.*;
 
+import residence.HomeRole;
+import residence.gui.HomeRoleGui;
+import restaurant.CashierRole;
+import restaurant.CookRole;
+import restaurant.NewWaiterRole;
+import restaurant.OldWaiterRole;
+import restaurant.RestaurantCustomerRole;
 import Person.Role.Role;
 
 import java.awt.*;
@@ -34,6 +42,8 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
     private final int WINDOWY = 400;
     private Image bufferImage;
     private Dimension bufferSize;
+    
+    private int waiterCount = 1;
 
     private List<Gui> guis = new ArrayList<Gui>();
 
@@ -118,8 +128,46 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
 
 	@Override
 	public void addGuiForRole(Role r) {
-		// TODO Auto-generated method stub
-		
+		if(r instanceof CookRole){
+			CookRole cr = (CookRole) r;
+			CookGui gui = new CookGui(cr);
+			cr.setGui(gui);
+			guis.add(gui);
+			BuildingPanel bp = (BuildingPanel) this.getParent();
+			//System.out.println("My person is: " + hr.myPerson.getName());
+		}
+		if(r instanceof CashierRole){
+			CashierRole cr = (CashierRole) r;
+			CashierGui gui = new CashierGui(cr);
+			cr.setGui(gui);
+			guis.add(gui);
+			BuildingPanel bp = (BuildingPanel) this.getParent();
+			//System.out.println("My person is: " + hr.myPerson.getName());
+		}
+		if(r instanceof RestaurantCustomerRole){
+			RestaurantCustomerRole rcr = (RestaurantCustomerRole) r;
+			CustomerGui gui = new CustomerGui(rcr);
+			rcr.setGui(gui);
+			guis.add(gui);
+			BuildingPanel bp = (BuildingPanel) this.getParent();
+			//System.out.println("My person is: " + hr.myPerson.getName());
+		}
+		if(r instanceof NewWaiterRole){
+			NewWaiterRole nwr = (NewWaiterRole) r;
+			WaiterGui gui = new WaiterGui(nwr, waiterCount*50+120, 0);
+			nwr.setGui(gui);
+			guis.add(gui);
+			BuildingPanel bp = (BuildingPanel) this.getParent();
+			//System.out.println("My person is: " + hr.myPerson.getName());
+		}
+		if(r instanceof OldWaiterRole){
+			OldWaiterRole owr = (OldWaiterRole) r;
+			WaiterGui gui = new WaiterGui(owr, waiterCount*50+120, 0);
+			owr.setGui(gui);
+			guis.add(gui);
+			BuildingPanel bp = (BuildingPanel) this.getParent();
+			//System.out.println("My person is: " + hr.myPerson.getName());
+		}
 	}
 
 	@Override

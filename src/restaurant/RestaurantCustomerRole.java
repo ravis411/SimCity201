@@ -263,7 +263,7 @@ public class RestaurantCustomerRole extends Role implements Customer {
 	
 	private void Order() {
 		Random randNum = new Random();
-		mealChoice = randNum.nextInt(3);
+		mealChoice = randNum.nextInt(2);
 		//mealChoice = 0; //hack to test food inventory
 		waiter.msgTakeOrder(this, mealChoice);
 		print("I want the " + menu.getDishName(mealChoice));

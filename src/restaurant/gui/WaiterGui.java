@@ -22,7 +22,7 @@ public class WaiterGui implements Gui {
     private int xPos = 200, yPos = 0;//default waiter position
     private int xDestination = 200, yDestination = 0;//default start position
 
-    public WaiterGui(Waiter agent, RestaurantGui gui, int xHome, int yHome) {
+    public WaiterGui(Waiter agent,int xHome, int yHome) {
         this.agent = agent;
         this.gui = gui;
         this.xHome = xHome;

@@ -1,5 +1,6 @@
 package restaurant;
 
+import restaurant.gui.CashierGui;
 import restaurant.interfaces.*;
 
 import java.text.DecimalFormat;
@@ -31,11 +32,17 @@ public class CashierRole extends Role implements Cashier {
 	public enum AgentEvent
 	{none};
 	AgentEvent event = AgentEvent.none;
+	
+	CashierGui cashierGui = null;
 
-	public CashierRole(String name) {
+	public CashierRole() {
 		super();
 		
 		money = 200.00;
+	}
+	
+	public void setGui(CashierGui cg) {
+		cashierGui = cg;
 	}
 	
 	// Messages

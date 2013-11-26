@@ -11,6 +11,7 @@ import market.gui.MarketManagerGui;
 import market.interfaces.MarketEmployee;
 import market.interfaces.MarketManager;
 import residence.HomeRole;
+import restaurant.CookRole;
 import Person.Role.Role;
 
 /**
@@ -93,11 +94,11 @@ public class MarketManagerRole extends Role implements MarketManager{
 		myOrders.add(new Order(foodType, amount,orderNum++, homePerson));
 		stateChanged();
 	}
-	/*public void msgMarketManagerFoodOrder(String foodType, int amount, CookRole cook)
+	public void msgMarketManagerFoodOrder(String foodType, int amount, CookRole cook)
 	{
-		myOrders.add(new Order(foodType, amount, cook);
+		//myOrders.add(new Order(foodType, amount, cook);
 		stateChanged();
-	}*/
+	}
 	
 	public void msgMarketManagerHereIsAmountWeCanFulfill(String foodType, int FoodTypeAmount, int orderNumber){
 		

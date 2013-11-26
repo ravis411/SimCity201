@@ -2,13 +2,12 @@ package restaurant;
 
 public class Menu
 {
-	private Dish[] dishes = new Dish[4];
+	private Dish[] dishes = new Dish[3];
 
 	public Menu() {
 		dishes[0] = new Dish("Steak", 7000, 15.99);
 		dishes[1] = new Dish("Chicken", 6000, 10.99);
-		dishes[2] = new Dish("Salad", 3000, 5.99);
-		dishes[3] = new Dish("Pizza", 4000, 8.99);
+		dishes[2] = new Dish("Burger", 4000, 8.99);
 	}
 	
 	public String getDishName(int choice){

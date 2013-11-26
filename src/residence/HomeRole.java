@@ -66,10 +66,12 @@ public class HomeRole extends Role implements Home {
 //		gui = new HomeRoleGui(this);
 //		myPerson.home.getPanel().addGui(gui);
 		
-		inventory.add(new Item("Cooking Ingredient",2));
-		inventory.add(new Item("Cleaning supply", 2));
+		inventory.add(new Item("Steak",2));
+		inventory.add(new Item("Chicken", 2));
+		inventory.add(new Item("Burger", 2));
 		
 		features.add(new HomeFeature("Sink"));
+		features.add(new HomeFeature("Stove"));
 	}
 	
 	public void setGui(HomeRoleGui gui){
@@ -238,7 +240,7 @@ public class HomeRole extends Role implements Home {
 		},
 		5000);
 		for(Item i : inventory) {
-			if(i.name == "Cooking Ingredient") {
+			if(i.name == "Burger") {
 				i.quantity--;
 			}
 		}
