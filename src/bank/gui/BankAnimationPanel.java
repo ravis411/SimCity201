@@ -123,6 +123,12 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 		
 	}
 
+	@Override
+	public void removeGuiForRole(Role r) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 }

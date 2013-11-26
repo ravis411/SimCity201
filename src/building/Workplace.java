@@ -4,8 +4,8 @@ import gui.Building.BuildingPanel;
 
 public abstract class Workplace extends Building {
 
-	public Workplace(String name, BuildingPanel panel) {
-		super(name, panel);
+	public Workplace(BuildingPanel panel) {
+		super(panel);
 		// TODO Auto-generated constructor stub
 	}
 

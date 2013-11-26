@@ -153,5 +153,11 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void removeGuiForRole(Role r) {
+		// TODO Auto-generated method stub
+		
+	}
     
 }

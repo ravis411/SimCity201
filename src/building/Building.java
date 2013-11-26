@@ -25,9 +25,9 @@ public class Building {
 	 * @param name the name of the Building
 	 * @param panel the panel to which the Building should be linked
 	 */
-	public Building(String name, BuildingPanel panel){
+	public Building(BuildingPanel panel){
 		this.panel = panel;
-		this.name = name;
+		this.name = panel.getName();
 	}
 	
 	/**

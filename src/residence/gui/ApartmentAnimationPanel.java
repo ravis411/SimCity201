@@ -103,4 +103,10 @@ public class ApartmentAnimationPanel extends JPanel implements MouseListener, Gu
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void removeGuiForRole(Role r) {
+		// TODO Auto-generated method stub
+		
+	}
 }
