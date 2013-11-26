@@ -2,6 +2,7 @@ package Person;
 
 import gui.Building.ResidenceBuildingPanel;
 import gui.agentGuis.PersonGui;
+import gui.interfaces.BusStop;
 import interfaces.Employee;
 
 import java.util.ArrayDeque;
@@ -9,13 +10,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.Semaphore;
 
 import residence.HomeRole;
 import trace.AlertLog;
 import trace.AlertTag;
-import Person.Role.PassengerRole;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
+import Transportation.BusStopAgent;
 import agent.Agent;
 import bank.BankClientRole;
 import building.BuildingList;
@@ -32,6 +34,8 @@ public class PersonAgent extends Agent {
 	private String name;
 	private double money;
 	private double moneyNeeded;
+	
+	private Semaphore onBus = new Semaphore(0, true);
 	
 	private int age = 20; //edited by Byron for testing purposes
 	
@@ -143,7 +147,7 @@ public class PersonAgent extends Agent {
 	  */
 	public void msgWeHaveArrived(String currentDestination){
 	  //unpause agent, which will be in transit (implementation not necessary here)
-		GoToLocation(currentDestination, "WALK");
+		onBus.release();
 	}
 
 	/**
@@ -461,14 +465,14 @@ public class PersonAgent extends Agent {
 		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Going to "+location+" via + "+modeOfTransportation);
 		switch(modeOfTransportation){
 			case Preferences.BUS:
-				if(findRole(Role.PASSENGER_ROLE) == null){
-					PassengerRole role = (PassengerRole) RoleFactory.roleFromString(Role.PASSENGER_ROLE);
-					addRole(role);
-					role.setPersonGui(gui);
-					role.setDestination(location);
-					role.activate();
-				}else{
-					findRole(Role.PASSENGER_ROLE).activate();
+				String startStop = gui.DoGoToClosestBusStop();
+				String destStop = gui.DoRideBusTo(location);
+				BusStop startAgent = BusStopAgent.stops.get(startStop);
+				startAgent.msgAtBusStop(this, destStop);
+				try{
+					onBus.acquire();
+				}catch(Exception e){
+					e.printStackTrace();
 				}
 				break;
 			case Preferences.CAR:
