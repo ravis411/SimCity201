@@ -17,18 +17,16 @@ public class MarketCustomerGui implements Gui {
     private int xDestination;
     static final int hostWidth = 20, hostHeight = 20;
     private final int xResturantEntrance=400;
-	private final int yResturantEntrance= 350;
+	private final int yResturantEntrance= 410;
 	private final int xCounterCord;
 	private final int yCounterCord= 230;
-	private final static int xPlatingCord= 450;
-	private final static int yPlatingCord= 100;
     public static final int xTable = 200;
     public static final int yTable = 250;
     private int customerNumber;
     private int tableNum;
     private String orderBeingCarried = " ";
     private Boolean atCounter=false;
-   // MarketGui gui;
+
 
     public MarketCustomerGui(MarketCustomer marketCustomer, int customerNumber) {
     	this.customerNumber=customerNumber;

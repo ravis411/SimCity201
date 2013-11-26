@@ -223,6 +223,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	void leaveMarket(){
 		state= MarketCustomerState.none;
 		gui.DoLeave();//animation for CustomerRole to leave market
+		deactivate();
 		
 	}
 	private void payAndLeaveMarket() {
