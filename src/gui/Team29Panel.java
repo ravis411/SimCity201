@@ -2,6 +2,7 @@ package gui;
 
 import gui.Building.BuildingGui;
 import gui.Building.BuildingPanel;
+import interfaces.GuiPanel;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -17,7 +18,7 @@ public class Team29Panel extends BuildingPanel{
 	JLabel title = new JLabel("SimCity V0.5     Team 29");
 	static BuildingGui b = new BuildingGui(0, 0, 0, 0);
 	public Team29Panel(BuildingsPanels panels) {
-		super(b, "Team29", panels );
+		super(b, "Team29", panels ); 
 		
 		this.setBackground(Color.white);
 		
@@ -52,6 +53,13 @@ public class Team29Panel extends BuildingPanel{
 	public void addPersonWithRole(Role r) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	@Override
+	public GuiPanel getPanel() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 

@@ -1,6 +1,7 @@
 package gui.Building;
 
 import gui.BuildingsPanels;
+import interfaces.GuiPanel;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -36,6 +37,7 @@ public abstract class BuildingPanel extends JPanel{
 		add( j );
 	}
 
+	abstract public GuiPanel getPanel();
 	
 	/**	Add Person to the building.
 	 * 

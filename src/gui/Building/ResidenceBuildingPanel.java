@@ -1,18 +1,15 @@
 package gui.Building;
 
 import gui.BuildingsPanels;
-import residence.gui.AnimationPanel;
+import interfaces.GuiPanel;
 
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.geom.Rectangle2D;
 
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
+import residence.gui.AnimationPanel;
 import Person.Role.Role;
 
 
@@ -47,7 +44,7 @@ public class ResidenceBuildingPanel extends BuildingPanel{
 		return myName;
 	}
 	
-	public AnimationPanel getPanel() {
+	public GuiPanel getPanel() {
 		return residencePanel;
 	}
 

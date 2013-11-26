@@ -1,23 +1,25 @@
 package residence.gui;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
+import interfaces.GuiPanel;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-public class AnimationPanel extends JPanel implements ActionListener {
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
+import Person.Role.Role;
+
+public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
 	
 	static final int XCOOR = 0;
 	static final int YCOOR = 0;
@@ -145,5 +147,11 @@ public class AnimationPanel extends JPanel implements ActionListener {
     public void addGui(HomeRoleGui gui) {
         guis.add(gui);
     }
+
+	@Override
+	public void addGuiForRole(Role r) {
+		// TODO Auto-generated method stub
+		
+	}
     
 }

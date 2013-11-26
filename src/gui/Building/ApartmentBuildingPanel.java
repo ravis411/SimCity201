@@ -3,6 +3,7 @@ package gui.Building;
 import gui.BuildingsPanels;
 import residence.gui.AnimationPanel;
 import residence.gui.ApartmentAnimationPanel;
+import interfaces.GuiPanel;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -48,7 +49,7 @@ public class ApartmentBuildingPanel extends BuildingPanel{
 		return myName;
 	}
 	
-	public ApartmentAnimationPanel getPanel() {
+	public GuiPanel getPanel() {
 		return apartmentPanel;
 	}
 

@@ -1,6 +1,7 @@
 package residence.gui;
 
 import gui.Building.BuildingGui;
+import interfaces.GuiPanel;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,7 +16,9 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class ApartmentAnimationPanel extends JPanel implements MouseListener  {
+import Person.Role.Role;
+
+public class ApartmentAnimationPanel extends JPanel implements MouseListener, GuiPanel  {
 	private List<BuildingGui> apartments = new ArrayList<>();
 	
 	static final int XCOOR = 0;
@@ -75,5 +78,11 @@ public class ApartmentAnimationPanel extends JPanel implements MouseListener  {
         g.fillOval(200, 50, 100, 100);
         g.fillOval(50, 200, 100, 100);
         g.fillOval(200, 200, 100, 100);
+	}
+
+	@Override
+	public void addGuiForRole(Role r) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -1,5 +1,7 @@
 package bank.gui;
 
+import interfaces.GuiPanel;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -14,7 +16,9 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class BankAnimationPanel extends JPanel implements ActionListener {
+import Person.Role.Role;
+
+public class BankAnimationPanel extends JPanel implements ActionListener, GuiPanel {
 
 	private final static int WINDOWX = 800;//
 	private final static int WINDOWY = 400;
@@ -111,6 +115,12 @@ public class BankAnimationPanel extends JPanel implements ActionListener {
 	public void addGui(TellerGui gui) {
 		guis.add(gui);        
 
+	}
+
+	@Override
+	public void addGuiForRole(Role r) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

@@ -36,7 +36,6 @@ public class Building {
 	 */
 	public void addRole(Role r){
 		inhabitants.add(r);
-
 	}
 	
 	/**
