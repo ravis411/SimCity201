@@ -50,6 +50,14 @@ public class Building {
 	}
 	
 	/**
+	 * Getter for inhabitants
+	 * @return
+	 */
+	public List<Role> getInhabitants(){
+		return inhabitants;
+	}
+	
+	/**
 	 * Removes a person from the building
 	 * @param r
 	 */

@@ -67,6 +67,18 @@ public class PersonAgent extends Agent {
 	private PersonGui gui;
 	
 	public ResidenceBuildingPanel home;
+	
+	public PersonAgent(String name, ResidenceBuildingPanel home, Role initialRole, String roleLocation){
+		this(name, home);
+		addRole(initialRole);
+		initialRole.activate();
+		gui.setStartingStates(roleLocation);
+		BuildingList.findBuildingWithName(roleLocation).addRole(initialRole);
+		
+		if(!(initialRole instanceof HomeRole)){
+			
+		}
+	}
 
 	public PersonAgent(String name, ResidenceBuildingPanel home){
 		SSN = counter++;
