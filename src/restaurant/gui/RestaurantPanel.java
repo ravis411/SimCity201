@@ -103,6 +103,10 @@ public class RestaurantPanel extends JPanel implements ActionListener {
         customer.setCashier(cashier);
         host.addWaiter(waiter);
         
+        waiter.setCook(cook);
+        waiter.setCashier(cashier);
+        waiter.setHost(host);
+        
         waiter.waiterGui = waiterGui;
         customer.customerGui = customerGui;
         
@@ -112,14 +116,15 @@ public class RestaurantPanel extends JPanel implements ActionListener {
         person4.addRole(waiter);
         person5.addRole(customer);
         
-        person1.roles.get(0).activate();
-        person2.roles.get(0).activate();
-        person3.roles.get(0).activate();
-        person4.roles.get(0).activate();
-        person5.roles.get(0).activate();
+        person1.roles.get(1).activate();
+        person2.roles.get(1).activate();
+        person3.roles.get(1).activate();
+        person4.roles.get(1).activate();
+        person5.roles.get(1).activate();
         
-       customer.gotHungry();
-        
+       
+       customer.getGui().setHungry();
+       //customer.gotHungry();
         
         markets.add(market1);
         markets.add(market2);

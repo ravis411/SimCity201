@@ -382,7 +382,7 @@ public class OldWaiterAgent extends Role implements Waiter {
 				myCustomers.remove(i);
 			}
 		}
-		myCustomers.remove(c);
+		//myCustomers.remove(c);
 		waiterGui.DoGoToIdle();
 	}
 	
