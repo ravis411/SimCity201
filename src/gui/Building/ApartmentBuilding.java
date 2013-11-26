@@ -11,11 +11,11 @@ import javax.swing.ImageIcon;
 import trace.AlertLog;
 import trace.AlertTag;
 
-public class ApartmentBuilding extends Building {	
+public class ApartmentBuilding extends BuildingGui {	
 	
 	
 	
-	public ApartmentBuilding( Building b ) {
+	public ApartmentBuilding( BuildingGui b ) {
 		super( b.x, b.y, b.width, b.height );
 		
 			

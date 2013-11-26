@@ -1,18 +1,15 @@
 package gui.Building;
 
 import gui.BuildingsPanels;
-import residence.gui.AnimationPanel;
+import interfaces.GuiPanel;
 
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.geom.Rectangle2D;
 
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
+import Person.Role.Role;
 import bank.gui.BankAnimationPanel;
 
 
@@ -30,7 +27,9 @@ public class BankBuildingPanel extends BuildingPanel{
 		super(r, name, buildingPanels);
 		
 		this.removeAll();
-		
+	    animationPanel.announcer.startThread();
+	    animationPanel.loanAnnouncer.startThread();
+
 		setBackground( Color.yellow );
 	
 		
@@ -38,7 +37,12 @@ public class BankBuildingPanel extends BuildingPanel{
 		
 		JLabel j = new JLabel( myName );
 		add(animationPanel);
+		
+		//
+		
 	}
+	
+	
 	
 	
 	public String getName() {
@@ -48,6 +52,22 @@ public class BankBuildingPanel extends BuildingPanel{
 
 	public void displayBuildingPanel() {
 		myCity.displayBuildingPanel( this );
+		
+	}
+
+
+	@Override
+	public GuiPanel getPanel() {
+		// TODO Auto-generated method stub
+		return animationPanel;
+	}
+
+
+
+
+	@Override
+	public void addPersonWithRole(Role r) {
+		// TODO Auto-generated method stub
 		
 	}
 

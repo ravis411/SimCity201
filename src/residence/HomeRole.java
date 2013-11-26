@@ -20,8 +20,13 @@ public class HomeRole extends Role implements Home {
 	private ApartmentManager landlord;
 	private int rentOwed = 0;
 	private int aptNumber = 0;
+
 	public boolean leaveHome = false;
 	public boolean enterHome = false;
+
+	
+	//private Map <String, Integer> inventory = new HashMap<String, Integer>();
+
 	private List <Item> inventory = new ArrayList<Item>();
 	private List <HomeFeature> features = new ArrayList<HomeFeature>(); //includes appliances, toilets, sinks, etc (anything that can break)
 	private List <PersonAgent> partyAttendees = new ArrayList<PersonAgent>();
@@ -32,7 +37,7 @@ public class HomeRole extends Role implements Home {
 	private Semaphore atTable = new Semaphore(0, true);
 	private Semaphore atCenter = new Semaphore(0, true);
 	Timer timer = new Timer();
-	
+
 	private String name;
 	
 	public HomeRoleGui gui;
@@ -49,7 +54,7 @@ public class HomeRole extends Role implements Home {
 		this.myPerson = myPerson;
 		
 		gui = new HomeRoleGui(this);
-		myPerson.home.getPanel().addGui(gui);
+		//myPerson.home.getPanel().addGui(gui);
 		
 		inventory.add(new Item("Cooking Ingredient",2));
 		inventory.add(new Item("Cleaning supply", 2));
@@ -73,17 +78,22 @@ public class HomeRole extends Role implements Home {
 	// Messages
 	
 	public void msgRentDue (int amount) {
+
 		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "I just got charged rent.");
 		setRentOwed(amount);
+
+		print("I just got charged rent.");
+		rentOwed = amount;
+
 		stateChanged();
 	}
 	public void msgTired() { //called by timer
-		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "I'm tired.");
+		print("I'm tired.");
 		state = AgentState.Sleeping;
 		stateChanged();
 	}
 	public void msgRestockItem (String itemName, int quantity) {
-		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Just received " + quantity + " " + itemName + "s.");
+		print("Just received " + quantity + " " + itemName + "s.");
 		event = AgentEvent.none;
 		for(Item i : inventory) {
 			if(i.name == itemName) {
@@ -93,7 +103,6 @@ public class HomeRole extends Role implements Home {
 		stateChanged();
 	}
 	public void msgFixedFeature (String name) {
-		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), name + " fixed.");
 		for (HomeFeature hf : features) {
 			if (name == hf.name) {
 				hf.working = true;
@@ -102,18 +111,18 @@ public class HomeRole extends Role implements Home {
 		stateChanged();
 	}
 	public void msgMakeFood() {
-		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "I'm eating at home.");
+		print("I'm eating at home.");
 		state = AgentState.Cooking;
 		stateChanged();
 	}
 	public void msgLeaveBuilding() {
-		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Leaving home.");
+		print("Leaving home.");
 		event = AgentEvent.leaving;
 		leaveHome = true;
 		stateChanged();
 	}
 	public void msgEnterBuilding() {
-		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Going home.");
+		print("Home sweet home!");
 		event = AgentEvent.none;
 		enterHome = true;
 		stateChanged();
@@ -217,7 +226,7 @@ public class HomeRole extends Role implements Home {
 		}
 	}
 	private void goEat() {
-		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Dinner's ready! Eating.");
+		print("Dinner's ready! Eating.");
 		gui.DoGoToTable();
 		try {
 			atTable.acquire();
@@ -227,7 +236,7 @@ public class HomeRole extends Role implements Home {
 		}
 		timer.schedule(new TimerTask() {
 			public void run() {
-				AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Done eating.");
+				print("Done eating.");
 				state = AgentState.DoingNothing;
 				event = AgentEvent.none;
 			}
@@ -236,7 +245,6 @@ public class HomeRole extends Role implements Home {
 	}
 	private void goToMarket (Item item) {
 		event = AgentEvent.leaving;
-		state = AgentState.Leaving;
 		gui.DoGoToCenter();
 		try {
 			atCenter.acquire();
@@ -244,7 +252,7 @@ public class HomeRole extends Role implements Home {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Low on " + item.name + ". I'm going to the market.");
+		print("Low on " + item.name + ". I'm going to the market.");
 		gui.DoGoToFrontDoor();
 		try {
 			atFrontDoor.acquire();
@@ -258,15 +266,23 @@ public class HomeRole extends Role implements Home {
 		landlord.msgBrokenFeature(brokenFeature.name, this);
 	}
 	private void payRent () {
+
 		if(myPerson.getMoney() >= getRentOwed()) {
 			landlord.msgRentPaid (this, getRentOwed());
 			myPerson.setMoney(myPerson.getMoney()-getRentOwed());
 			setRentOwed(0);
 			AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Paid my rent. I have $" + myPerson.getMoney() + " left.");
+
+		if(myPerson.getMoney() >= rentOwed) {
+			landlord.msgRentPaid (this, rentOwed);
+			myPerson.setMoney(myPerson.getMoney()-rentOwed);
+			rentOwed = 0;
+			print("Paid my rent. I have $" + myPerson.getMoney() + " left.");
+
 		}
 		else {
 			//do nothing
-		}
+		}}
 	}
 	private void goToSleep() {
 		gui.DoGoToCenter();
@@ -295,7 +311,7 @@ public class HomeRole extends Role implements Home {
 			public void run() {
 				state = AgentState.DoingNothing;
 				event = AgentEvent.none;
-				AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "I'm awake!");
+				print("I'm awake!");
 				stateChanged();
 			}
 		},

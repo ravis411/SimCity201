@@ -23,30 +23,13 @@ public class BankGui extends JFrame implements ActionListener {
     final int WINDOWXOpenPosition = 50;//how many pixels from top left of screen window will appear
     final int WINDOWYOpenPosition = 50;
     
-    private Vector<PersonAgent> bankTellerPersons = new Vector<PersonAgent>();
-    private Vector<bankTellerRole> bankTellerRoles = new Vector<bankTellerRole>();
-    private Vector<PersonAgent> bankClientPersons = new Vector<PersonAgent>();
-    private Vector<bankClientRole> bankClientRoles = new Vector<bankClientRole>();
-    private PersonAgent loanTellerPerson= new PersonAgent("Harry", null);
-    private loanTellerRole loanTellereRole= new loanTellerRole();
-    private numberAnnouncer announcer = new numberAnnouncer("NumberBot");
-    
-    
-    //test
-//    private PersonAgent client = new PersonAgent("Test client", null);
-    private PersonAgent teller = new PersonAgent("Test teller", null);
-//    private bankClientRole clientRole = new bankClientRole(client.getName(),"deposit",100);
-    private bankTellerRole tellerRole = new bankTellerRole(teller.getName(),1);
-//    private ClientGui clientGui = new ClientGui(clientRole, this);
-    private TellerGui tellerGui = new TellerGui(tellerRole, this, tellerRole.getLine());
-    private LoanGui loanGui = new LoanGui(loanTellereRole, this);
-    
+
     
      
     /*
-    private Vector<bankClientRole> bankClientRoles = new Vector<bankClientRole>();
-    private Vector<bankTellerRole> bankTellerRoles = new Vector<bankTellerRole>();
-    private loanTellerRole loanTeller = new loanTellerRole("Barry");
+    private Vector<BankClientRole> BankClientRoles = new Vector<BankClientRole>();
+    private Vector<BankTellerRole> BankTellerRoles = new Vector<BankTellerRole>();
+    private LoanTellerRole loanTeller = new LoanTellerRole("Barry");
     */
     /**
      * Constructor for BankGui class.
@@ -57,8 +40,6 @@ public class BankGui extends JFrame implements ActionListener {
         setBounds(WINDOWXOpenPosition, WINDOWXOpenPosition, WINDOWX, WINDOWY);
 
         setLayout(new BorderLayout());
-        announcer.startThread();
-
         Dimension marketAnimationFrameDim = new Dimension((WINDOWX), (WINDOWY));
         setPreferredSize(marketAnimationFrameDim);
         setMinimumSize(marketAnimationFrameDim);
@@ -75,84 +56,61 @@ public class BankGui extends JFrame implements ActionListener {
          * start thread
          * 
          */
+
         
-        teller.addRole(tellerRole);
-        tellerRole.setPerson(teller);
-        animationPanel.addGui(tellerGui);
-        tellerRole.setAnnouncer(announcer);
-        tellerRole.setGui(tellerGui);
-        tellerRole.activate();
-        tellerRole.getPerson().startThread();
- /*       
-        client.addRole(clientRole);
-        clientRole.setPerson(client);
-        animationPanel.addGui(clientGui);
-        clientRole.setAnnouncer(announcer);
-        clientRole.setGui(clientGui);
-        clientRole.activate();
-        clientRole.getPerson().startThread();
-   */     
-        loanTellerPerson.addRole(loanTellereRole);
-        loanTellereRole.setPerson(loanTellerPerson);
-        animationPanel.addGui(loanGui);
-        loanTellereRole.setAnnouncer(announcer);
-        loanTellereRole.setGui(loanGui);
-        loanTellereRole.activate();
-        loanTellereRole.getPerson().startThread();
-/*
- *
+ /*
  
         bankTellerPersons.add(new PersonAgent("Cary"));
-        bankTellerRoles.add(new bankTellerRole(bankTellerPersons.get(0).getName(),1));
-        bankTellerPersons.get(0).addRole(bankTellerRoles.get(0));
-        TellerGui tellerGui = new TellerGui(bankTellerRoles.get(0), this, 0);
-        bankTellerRoles.get(0).setGui(tellerGui);
-        bankTellerRoles.get(0).setPerson(bankTellerPersons.get(0));
-        bankTellerRoles.get(0).setAnnouncer(announcer);
+        BankTellerRoles.add(new BankTellerRole(bankTellerPersons.get(0).getName(),1));
+        bankTellerPersons.get(0).addRole(BankTellerRoles.get(0));
+        TellerGui tellerGui = new TellerGui(BankTellerRoles.get(0), this, 0);
+        BankTellerRoles.get(0).setGui(tellerGui);
+        BankTellerRoles.get(0).setPerson(bankTellerPersons.get(0));
+        BankTellerRoles.get(0).setAnnouncer(announcer);
         animationPanel.addGui(tellerGui);
         bankTellerPersons.get(0).startThread();
  */ 
         /*
         bankClientPersons.add(new PersonAgent("Olaf"));
-        bankClientRoles.add(new bankClientRole(bankClientPersons.get(0).getName(), "deposit", 100));
-        bankClientPersons.get(0).addRole(bankClientRoles.get(0));
-        ClientGui clientGui = new ClientGui(bankClientRoles.get(0), this);
-        bankClientRoles.get(0).setGui(clientGui);
-        bankClientRoles.get(0).setPerson(bankClientPersons.get(0));
-        bankClientRoles.get(0).setAnnouncer(announcer);
+        BankClientRoles.add(new BankClientRole(bankClientPersons.get(0).getName(), "deposit", 100));
+        bankClientPersons.get(0).addRole(BankClientRoles.get(0));
+        ClientGui clientGui = new ClientGui(BankClientRoles.get(0), this);
+        BankClientRoles.get(0).setGui(clientGui);
+        BankClientRoles.get(0).setPerson(bankClientPersons.get(0));
+        BankClientRoles.get(0).setAnnouncer(announcer);
         animationPanel.addGui(clientGui);
         bankClientPersons.get(0).startThread();
         */
         
         /*
-        bankTellerRoles.add(new bankTellerRole("Andy", 1));
-//        bankTellerRoles.add(new bankTellerRole("Sarah", 3));
-        bankClientRoles.add(new bankClientRole("Bob","deposit",50));
-        bankClientRoles.add(new bankClientRole("Candy", "deposit", 100));
-        TellerGui tellerGui = new TellerGui(bankTellerRoles.get(0),this, bankTellerRoles.get(0).getLine());
-  //      TellerGui tellerGui2 = new TellerGui(bankTellerRoles.get(1),this,bankTellerRoles.get(1).getLine());
-        ClientGui clientGui = new ClientGui(bankClientRoles.get(0),this);
-        ClientGui clientGui2 = new ClientGui(bankClientRoles.get(1),this);
+        BankTellerRoles.add(new BankTellerRole("Andy", 1));
+//        BankTellerRoles.add(new BankTellerRole("Sarah", 3));
+        BankClientRoles.add(new BankClientRole("Bob","deposit",50));
+        BankClientRoles.add(new BankClientRole("Candy", "deposit", 100));
+        TellerGui tellerGui = new TellerGui(BankTellerRoles.get(0),this, BankTellerRoles.get(0).getLine());
+  //      TellerGui tellerGui2 = new TellerGui(BankTellerRoles.get(1),this,BankTellerRoles.get(1).getLine());
+        ClientGui clientGui = new ClientGui(BankClientRoles.get(0),this);
+        ClientGui clientGui2 = new ClientGui(BankClientRoles.get(1),this);
         LoanGui loanGui = new LoanGui(loanTeller,this);
         animationPanel.addGui(clientGui);
         animationPanel.addGui(tellerGui);
         animationPanel.addGui(clientGui2);
 //        animationPanel.addGui(tellerGui2);
         animationPanel.addGui(loanGui);
-       for (bankClientRole b : bankClientRoles){
+       for (BankClientRole b : BankClientRoles){
        	b.setAnnouncer(announcer);
        }
-        for(bankTellerRole b : bankTellerRoles){
+        for(BankTellerRole b : BankTellerRoles){
         	b.setAnnouncer(announcer);
         }
-        bankTellerRoles.get(0).setGui(tellerGui);
-        bankTellerRoles.get(0).startThread();
-        bankClientRoles.get(0).setGui(clientGui);
-        bankClientRoles.get(0).startThread();
-        bankClientRoles.get(1).setGui(clientGui2);
-        bankClientRoles.get(1).startThread();
-//        bankTellerRoles.get(1).setGui(tellerGui2);
-//        bankTellerRoles.get(1).startThread();
+        BankTellerRoles.get(0).setGui(tellerGui);
+        BankTellerRoles.get(0).startThread();
+        BankClientRoles.get(0).setGui(clientGui);
+        BankClientRoles.get(0).startThread();
+        BankClientRoles.get(1).setGui(clientGui2);
+        BankClientRoles.get(1).startThread();
+//        BankTellerRoles.get(1).setGui(tellerGui2);
+//        BankTellerRoles.get(1).startThread();
         loanTeller.setAnnouncer(announcer);
         loanTeller.setGui(loanGui);
         loanTeller.startThread();

@@ -9,6 +9,7 @@ import java.util.concurrent.*;
  */
 public abstract class Agent {
     Semaphore stateChange = new Semaphore(1, true);//binary semaphore, fair
+    Semaphore pausedSema = new Semaphore(0, true);
     private AgentThread agentThread;
 
     protected Agent() {
@@ -92,13 +93,22 @@ public abstract class Agent {
             agentThread = null;
         }
     }
+    
+    public void pauseThread() {
+    	agentThread.pause();
+    }
+    
+    public void resumeThread() {
+    	agentThread.restart();
+    }
 
     /**
      * Agent scheduler thread, calls respondToStateChange() whenever a state
-     * change has been signalled.
+     * change has been signaled.
      */
     private class AgentThread extends Thread {
         private volatile boolean goOn = false;
+        private volatile boolean paused = false;
 
         private AgentThread(String name) {
             super(name);
@@ -108,6 +118,14 @@ public abstract class Agent {
             goOn = true;
 
             while (goOn) {
+            	if (paused) {
+            		try {
+            			pausedSema.acquire();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+            	}
                 try {
                     // The agent sleeps here until someone calls, stateChanged(),
                     // which causes a call to stateChange.give(), which wakes up agent.
@@ -123,6 +141,15 @@ public abstract class Agent {
                     print("Unexpected exception caught in Agent thread:", e);
                 }
             }
+        }
+        
+        public void pause() {
+        	paused = true;
+        }
+        
+        public void restart() {
+        	paused = false;
+        	pausedSema.release();
         }
 
         private void stopAgent() {

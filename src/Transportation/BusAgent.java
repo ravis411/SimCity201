@@ -6,14 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-
-
-
-
-
-
-
-
+import trace.AlertLog;
+import trace.AlertTag;
 import gui.LocationInfo;
 import gui.agentGuis.VehicleGui;
 import gui.interfaces.Passenger;
@@ -28,7 +22,7 @@ public class BusAgent extends Agent implements Vehicle {
 	String name;
 	boolean traveled = false;
 	boolean goToBusStop3 = false;
-	private String location;
+	public String location = "N/A";
 	public VehicleGui agentGui;
 	Queue<String> StopsQueue = new LinkedList<>(); //<--a list of the stops to go to
 	
@@ -45,21 +39,14 @@ public class BusAgent extends Agent implements Vehicle {
 	private enum PassengerState {riding, disembarking};
 	
 	public enum AgentState {inTransit, loading, loaded};
-	private AgentState state = AgentState.inTransit;
+	public AgentState state;
 	
 	public BusAgent(String name) {
 		super();
 		StopsQueue.add("Bus Stop " + 1);
-		StopsQueue.add("Bus Stop " + 3);
+		StopsQueue.add("Bus Stop 3");
 		StopsQueue.add("Bus Stop " + 5);
 		this.name = name;
-	}
-	
-	public BusAgent(String name, Queue<String> busStops) {
-		super();
-		StopsQueue.addAll(busStops);
-		this.name = name;
-
 	}
 
 	//Messages
@@ -69,6 +56,7 @@ public class BusAgent extends Agent implements Vehicle {
 	}
 	
 	public void msgFreeToLeave() {
+		print("msgFreeToLeave called");
 		state = AgentState.loaded;
 		stateChanged();
 	}
@@ -92,10 +80,11 @@ public class BusAgent extends Agent implements Vehicle {
 	//Scheduler
 	@Override
 	public boolean pickAndExecuteAnAction() {
+		print("Location is " + location);
 		synchronized(passengers) {
 			for (myPassenger mp : passengers) {
 				if (mp.ps == PassengerState.disembarking) {
-					passengers.remove(mp);
+					removePassenger(mp);
 					return true;
 				}
 			}
@@ -119,15 +108,19 @@ public class BusAgent extends Agent implements Vehicle {
 		traveled = true;
 	}
 	
+	private void removePassenger(myPassenger mp) {
+		passengers.remove(mp);
+	}
+	
 	private void GoToNextStop(){
+		print("going to next stop");
+		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Going to next stop");
 		state = AgentState.inTransit;
 		
-		
-		setLocation(StopsQueue.poll());//<--removes location from front of queue
-		StopsQueue.add(getLocation());//<--adds location to end of queue
-		//print("Going to " + location);
-		agentGui.DoGoTo(getLocation());
-	//	print("Arrived at " + location);
+		location = StopsQueue.poll();//<--removes location from front of queue
+		print(location);
+		StopsQueue.add(location);//<--adds location to end of queue
+		agentGui.DoGoTo(location);
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
@@ -139,10 +132,11 @@ public class BusAgent extends Agent implements Vehicle {
 	}
 	
 	private void notifyPassengers() {
+		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Notifying passenges of the current stop: " + location);
 		synchronized(passengers) {
 			for (myPassenger mp : passengers) {
 				if (mp.ps == PassengerState.riding) {
-					mp.passenger.msgArrivedAtDestination(getLocation());
+					mp.passenger.msgArrivedAtDestination(location);
 				}
 			}
 		}
@@ -159,18 +153,5 @@ public class BusAgent extends Agent implements Vehicle {
 	public List<myPassenger> getPassengers() {
 		return passengers;
 	}
-
-	public void setPassengers(List<myPassenger> passengers) {
-		this.passengers = passengers;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
-	
 	
 }

@@ -1,22 +1,24 @@
 package residence.gui;
 
-import gui.Building.Building;
+import gui.Gui;
+import gui.Building.ResidenceBuilding;
+import interfaces.GuiPanel;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
-public class ApartmentAnimationPanel extends JPanel implements MouseListener  {
-	private List<Building> apartments = new ArrayList<>();
+import Person.Role.Role;
+
+public class ApartmentAnimationPanel extends JPanel implements MouseListener, GuiPanel  {
+	private List<Gui> guis = new ArrayList<Gui>();
+	private List<ResidenceBuilding> apartments = new ArrayList<>();
 	
 	static final int XCOOR = 0;
 	static final int YCOOR = 0;
@@ -33,17 +35,24 @@ public class ApartmentAnimationPanel extends JPanel implements MouseListener  {
 
 	}
 	
-	/*public void addBuilding(Building b) {
-		buildings.add(b);
-		
-	}*/
-	public void mouseClicked(MouseEvent me) {
-		/*for(Building b : buildings) {
-			if(b.contains(me.getX(), me.getY())){
-				b.displayBuilding();
-			}
-		}*/
+	public void addApartment(ResidenceBuilding b) {
+		apartments.add(b);
+		guis.add(b);
 	}
+	
+	public void addGui(ResidenceBuilding gui){
+		addApartment(gui);
+	}
+
+	
+	public void mouseClicked(MouseEvent me) {
+		for(ResidenceBuilding rb : apartments) {
+			if(rb.contains(me.getX(), me.getY())){
+				rb.displayBuilding();
+			}
+		}
+	}
+	
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		
@@ -70,10 +79,45 @@ public class ApartmentAnimationPanel extends JPanel implements MouseListener  {
         g2.setColor(getBackground());
         g2.fillRect(XCOOR, YCOOR, WINDOWX, WINDOWY);
         
+        g2.setColor(new Color(200, 50, 50));
+        g2.fillRect(300,0,200,400);
         g2.setColor(Color.orange);
-        g.fillOval(50, 50, 100, 100);
-        g.fillOval(200, 50, 100, 100);
-        g.fillOval(50, 200, 100, 100);
-        g.fillOval(200, 200, 100, 100);
+        g2.fillRect(310,0,180,400);
+        
+        
+        g2.setColor(new Color(100, 180, 200));
+        g2.fillOval(290, 140, 40, 40);
+        g2.fillOval(470, 140, 40, 40);
+        g2.fillOval(290, 340, 40, 40);
+        g2.fillOval(470, 340, 40, 40);
+        g2.setColor(Color.yellow);
+        g2.fillOval(300, 150, 20, 20);
+        g2.fillOval(480, 150, 20, 20);
+        g2.fillOval(300, 350, 20, 20);
+        g2.fillOval(480, 350, 20, 20);
+        
+        for(Gui gui : guis) {
+			if (gui.isPresent()) {
+				gui.updatePosition();
+			}
+		}
+
+		for(Gui gui : guis) {
+			if (gui.isPresent()) {
+				gui.draw(g2);
+			}
+		}
+        
+	}
+
+	@Override
+	public void addGuiForRole(Role r) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void removeGuiForRole(Role r) {
+		// TODO Auto-generated method stub
+		
 	}
 }

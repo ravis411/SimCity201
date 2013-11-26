@@ -4,11 +4,10 @@ import java.util.*;
 import Person.PersonAgent;
 
 public class Account {
-	PersonAgent person;
-	bankClientRole client;
+	BankClientRole client;
 	double amount;
 
-	Account(bankClientRole bank, double m){
+	Account(BankClientRole bank, double m){
 		client = bank;
 		amount = m;
 	}	 

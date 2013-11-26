@@ -1,5 +1,5 @@
 package bank;
-import bank.bankClientRole;
+import bank.BankClientRole;
 import bank.gui.TellerGui;
 import interfaces.Employee;
 
@@ -12,9 +12,9 @@ import util.Interval;
 import Person.Role.Role;
 
 
-public class bankTellerRole extends Role implements Employee{
-	private bankClientRole myClient;
-	private int LineNum; //from 1 to n, with 5 being the loan line, should be assigned in creation
+public class BankTellerRole extends Role implements Employee{
+	private BankClientRole myClient;
+	private int LineNum = new Random().nextInt(3)+1; //from 1 to n, with 5 being the loan line, should be assigned in creation
 	public enum requestState {pending, withdrawal, deposit, open, none, notBeingHelped};
 	public enum location {entrance, station, breakRoom};
 	public location locationState = location.entrance;
@@ -22,20 +22,18 @@ public class bankTellerRole extends Role implements Employee{
 	double transactionAmount;
 	private List<Account> Accounts = Database.INSTANCE.sendDatabase();
 	private String name;
-	private numberAnnouncer announcer;
+	private NumberAnnouncer announcer;
 	private Semaphore atStation = new Semaphore(0,true);
 	private Semaphore atIntermediate = new Semaphore(0,true);
 	private TellerGui tellerGui = null;
 
 	
-	public bankTellerRole(String s, int n){
+	public BankTellerRole(){
 		super();
-		name = s;
-		LineNum = n;
 		Accounts = Database.INSTANCE.sendDatabase();
 	}
  
-	public void setAnnouncer(numberAnnouncer a){
+	public void setAnnouncer(NumberAnnouncer a){
 		this.announcer = a;
 	}
 
@@ -52,7 +50,7 @@ public class bankTellerRole extends Role implements Employee{
 		stateChanged();
 	}
 
-	public void msgInLine(bankClientRole b){
+	public void msgInLine(BankClientRole b){
 		myClient = b;
 		state = requestState.notBeingHelped;
 		stateChanged();
@@ -116,15 +114,15 @@ public class bankTellerRole extends Role implements Employee{
 			e.printStackTrace();
 		}
 		announcer.msgAddBankTeller(this);
-		announcer.msgTransactionComplete(LineNum,this);
+		announcer.msgTransactionComplete(LineNum,this, null);
 	}
-	private void receiveClient(bankClientRole b){
+	private void receiveClient(BankClientRole b){
 			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Recieving new client");
 			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Hello " + b + ", how may I help you.");
 		b.msgMayIHelpYou();
 		state = requestState.pending;
 	}
-	private void processDeposit(bankClientRole b){
+	private void processDeposit(BankClientRole b){
 			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Ok, hold on.");
 		for (Account a : Accounts){
 			if (a.client == b){
@@ -132,12 +130,12 @@ public class bankTellerRole extends Role implements Employee{
 					AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"$" + transactionAmount + " has been deposited into the account.");
 				b.msgTransactionCompleted(transactionAmount - (2*transactionAmount));
 				state = requestState.none;
-				announcer.msgTransactionComplete(LineNum,this);
+				announcer.msgTransactionComplete(LineNum,this,b);
 				myClient = null;
 			}
 		}
 	}
-	private void processWithdrawal(bankClientRole b){
+	private void processWithdrawal(BankClientRole b){
 		for (Account a : Accounts){
 			if (a.client == b){
 				if (transactionAmount > a.amount){
@@ -149,13 +147,13 @@ public class bankTellerRole extends Role implements Employee{
 					b.msgTransactionCompleted(transactionAmount);
 				}
 				state = requestState.none;
-				announcer.msgTransactionComplete(LineNum,this);
+				announcer.msgTransactionComplete(LineNum,this,b);
 				myClient = null;
 			}
 		}
 	}
-	private void openAccount(bankClientRole b){
-		Account a = new Account(b, b.money);
+	private void openAccount(BankClientRole b){
+		Account a = new Account(b,0);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"New bank account has been opened for " + b);
 		Database.INSTANCE.addToDatabase(a);
 		b.msgAccountOpened(a);

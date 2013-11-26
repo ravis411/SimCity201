@@ -1,13 +1,13 @@
 package bank.gui;
 
-import bank.bankTellerRole;
+import bank.BankTellerRole;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
 
 public class TellerGui implements Gui {
 
-	private bankTellerRole role = null;
+	private BankTellerRole role = null;
 
 	private int xPos;
 	private int yPos;
@@ -23,47 +23,33 @@ public class TellerGui implements Gui {
 	private final static int xBreakRoom= 450;
 	private final static int yBreakRoom= 10;
 	private int lane;
-	BankGui gui;
+	BankAnimationPanel gui;
 	private int xcounter = 0;
 	private int ycounter = 0;
-	public TellerGui(bankTellerRole tellerRole, BankGui gui, int laneNum) {
+	public TellerGui(BankTellerRole tellerRole, BankAnimationPanel bankAnimationPanel, int laneNum) {
 		this.role = tellerRole;
 		lane = laneNum;
 		xPos = xBankEntrance;
 		yPos = yBankEntrance-50;
 		xDestination = xIntermediateEntrance;
 		yDestination = yIntermediateEntrance;
-		this.gui = gui;
+		this.gui = bankAnimationPanel;
 	}
 
 	public void updatePosition() {
-		if (xPos < xDestination){
-			xcounter++;
-			if (xcounter == 2){
-				xPos++;
-				xcounter = 0;
-			}
-		} 
-		else if (xPos > xDestination){
-			xcounter++;
-			if (xcounter == 2){
-				xPos--;
-				xcounter = 0;
-			}
+		if (xPos < xDestination)
+		{xPos++;
+ 
 		}
-		if (yPos < yDestination){
-			ycounter++;
-			if (ycounter == 2){
-				yPos++;
-				ycounter = 0;
-			}
+		else if (xPos > xDestination)
+		{xPos--;
 		}
-		else if (yPos > yDestination){
-			ycounter++;
-			if (ycounter == 2){
-				yPos--;
-				ycounter = 0;
-			}
+
+		if (yPos < yDestination)
+		{yPos++;
+		}
+		else if (yPos > yDestination)
+		{yPos--;
 		}
 		if (xPos == xDestination && yPos == yDestination && xDestination == xIntermediateEntrance && yDestination == yIntermediateEntrance){
 			role.msgAtIntermediate();

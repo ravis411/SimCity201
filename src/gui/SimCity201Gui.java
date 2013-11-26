@@ -5,7 +5,6 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import trace.*;
@@ -72,7 +71,7 @@ public class SimCity201Gui extends JFrame {
 		c.weightx = .8;
 		this.add(tracePanel, c);*/
 		c.gridx = 1; c.gridy = 0;
-		c.ipady = WINDOWY / 10;
+		c.ipady = WINDOWY / 9;
 		c.gridheight = 2;
 		this.add(new TraceControlPanel(tracePanel), c);
 		
