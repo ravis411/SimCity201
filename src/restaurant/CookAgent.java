@@ -28,6 +28,8 @@ public class CookAgent extends Role {
 	public List<Food> inventory = new ArrayList<Food>();
 	public List<MarketAgent> markets = new ArrayList<MarketAgent>();
 
+	private RevolvingStand revolvingStand = RevolvingStand.getInstance();
+	
 	private String name;
 	private Menu menu = new Menu();
 	Timer timer = new Timer();
@@ -88,6 +90,7 @@ public class CookAgent extends Role {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAction() {
+		
 		for(int i=0; i<inventory.size(); i++) {
 			if(inventory.get(i).inventory < 1 && event != AgentEvent.placedOrder) {
 				goToMarket(i);
@@ -108,6 +111,14 @@ public class CookAgent extends Role {
 						}
 				}
 			}
+			
+			if(!revolvingStand.isEmpty()){
+				Order o = revolvingStand.popOrder();
+				cookOrder(o);
+				inventory.get(o.choice);
+			}
+			
+			
 		}
 		return false;
 	}

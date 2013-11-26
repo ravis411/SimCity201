@@ -43,6 +43,8 @@ public class NewWaiterAgent extends Role implements Waiter {
 	private Menu menu = new Menu();
 	Timer timer = new Timer();
 	
+	private RevolvingStand revolvingStand = RevolvingStand.getInstance();
+	
 	public enum AgentState
 	{DoingNothing, AtFrontDesk, AtTable, AtKitchen, TakingOrder, TakeOrderToKitchen};
 	private AgentState state = AgentState.AtFrontDesk;//The start state
@@ -228,8 +230,10 @@ public class NewWaiterAgent extends Role implements Waiter {
 					return true;
 				}
 				if(myCustomers.get(i).customer.getState() == CustomerAgent.AgentState.WaitingForOrder && state == AgentState.TakeOrderToKitchen && myCustomers.get(i).customer.getEvent() == CustomerAgent.AgentEvent.order){
-					TakeOrderToCook(myCustomers.get(i));
-					return true;
+					if(!revolvingStand.isFull()){
+						TakeOrderToCook(myCustomers.get(i));
+						return true;
+					}
 				}
 				if(state == AgentState.AtTable) {
 					goToIdle();
@@ -333,7 +337,8 @@ public class NewWaiterAgent extends Role implements Waiter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		cook.orders.add(new Order(this, c.mealChoice, c.customer.getTableNum(), c.customer));
+		//cook.orders.add(new Order(this, c.mealChoice, c.customer.getTableNum(), c.customer));
+		revolvingStand.addIncomingOrder(this, c.customer.getTableNum(), c.mealChoice, c.customer);
 		c.customer.msgOrderOnItsWay();
 	}
 	
