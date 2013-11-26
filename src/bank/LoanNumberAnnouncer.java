@@ -4,6 +4,11 @@ import agent.Agent;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
+/**
+ * 
+ * @author Byron Choy
+ *
+ */
 
 public class LoanNumberAnnouncer extends Agent{
 	List<BankClientRole> clients = new ArrayList<BankClientRole>();

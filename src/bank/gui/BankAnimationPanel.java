@@ -21,6 +21,12 @@ import javax.swing.Timer;
 import Person.PersonAgent;
 import Person.Role.Role;
 
+
+/**
+ * 
+ * @author Byron Choy
+ *
+ */
 public class BankAnimationPanel extends JPanel implements ActionListener, GuiPanel {
 
 	private final static int WINDOWX = 800;//
@@ -46,8 +52,11 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
     //test
     private PersonAgent testTeller = new PersonAgent("Test Teller", null);
     private PersonAgent testLoanTeller = new PersonAgent("Test Loan Teller",null);
+    private PersonAgent testClient = new PersonAgent("Test Client", null);
     private BankTellerRole testTellerRole = new BankTellerRole();
     private LoanTellerRole testLoanTellerRole = new LoanTellerRole();
+    private BankClientRole testClientRole = new BankClientRole();
+    
     
 	private List<Gui> guis = new ArrayList<Gui>();
 
@@ -59,11 +68,14 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 		bufferSize = this.getSize();
 		
 		//test
+		
 		testTellerRole.setPerson(testTeller);
 		testLoanTellerRole.setPerson(testLoanTeller);
+		testClientRole.setPerson(testClient);
 		addGuiForRole(testTellerRole);
 		addGuiForRole(testLoanTellerRole);
-		
+		addGuiForRole(testClientRole);
+		testClientRole.setIntent("deposit");
 		
 		Timer timer = new Timer(TIMERCOUNTmilliseconds, this );
 		timer.start();
@@ -149,7 +161,6 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 
 	@Override
 	public void addGuiForRole(Role r) {
-		// TODO Auto-generated method stub
 		if (r instanceof BankClientRole){
 		    BankClientRole clientRole = (BankClientRole) r;
 			PersonAgent client = r.getPerson();
@@ -173,7 +184,7 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 	        this.addGui(tellerGui);
 	        tellerRole.setAnnouncer(announcer);
 	        tellerRole.setGui(tellerGui);
-	        tellerRole.activate();
+	        tellerRole.activate(); //remove later
 	        tellerRole.getPerson().startThread();
 		}
 		if (r instanceof LoanTellerRole){
@@ -184,7 +195,7 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 	        this.addGui(loanGui);
 	        loanTellereRole.setAnnouncer(loanAnnouncer);
 	        loanTellereRole.setGui(loanGui);
-	        loanTellereRole.activate();
+	        loanTellereRole.activate(); //remove later
 	        loanTellereRole.getPerson().startThread();
 		}
 	}

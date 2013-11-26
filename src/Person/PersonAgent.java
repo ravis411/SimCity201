@@ -17,6 +17,7 @@ import Person.Role.Role;
 import Person.Role.RoleFactory;
 import agent.Agent;
 import bank.BankClientRole;
+import building.BuildingList;
 
 /**
  * @author MSILKJR
@@ -454,11 +455,13 @@ public class PersonAgent extends Agent {
 //		  role.msgMakeFood();
 	  
 	  GoToLocation("Bank", transport);
+	  
 	  BankClientRole role = (BankClientRole) findRole(Role.BANK_CLIENT_ROLE);
 	  if(role == null){
 		  role = (BankClientRole) RoleFactory.roleFromString(Role.BANK_CLIENT_ROLE);
 		  addRole(role);
 	  }
+	  BuildingList.findBuildingWithName("Bank").addRole(role);
 	  
 	  moneyNeeded = 40.00;
 	  role.setIntent(BankClientRole.withdraw);

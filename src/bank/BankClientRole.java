@@ -10,6 +10,13 @@ import java.util.concurrent.*;
 import trace.AlertLog;
 import trace.AlertTag;
 
+
+/**
+ * 
+ * @author Byron Choy
+ *
+ */
+
 public class BankClientRole extends Role {
 	//	Data
 	public enum bankState {nothing, deposit, withdraw, loan};

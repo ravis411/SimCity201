@@ -18,6 +18,7 @@ import util.Interval;
  * 
  * loanTeller is very similar to bankTeller, but it is on a different ticket line than the bankTellers so the clients know to go to 
  * this specific line
+ * @author Byron Choy
  *
  */
 public class LoanTellerRole extends Role implements Employee{
