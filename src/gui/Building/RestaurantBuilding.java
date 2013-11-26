@@ -27,13 +27,14 @@ public class RestaurantBuilding extends BuildingGui {
 		}
 		else
 		{
-			g.setColor(Color.white);
-			int xs[] = {(int)super.x, (int)(super.x + super.width/2), (int)(super.x + super.width)};
-			int ys[] = {(int)(super.y + super.height/2), (int)(super.y), (int)(super.y + super.height/2)};
-			g.fillPolygon(xs, ys, 3);
 			g.setColor(Color.blue);
-			g.fillRect((int)(super.x), (int)(super.y + super.height/2), (int)super.width, (int)super.height/2);
-			g.setColor(Color.orange);
+			g.fillRect((int)(super.x), (int)(super.y), (int)super.width, (int)super.height);
+			g.setColor(Color.white);
+			g.fillRect((int)(super.x), (int)(super.y), (int)super.width, (int)super.height/6);
+			g.setColor(new Color(100, 180, 200));
+			g.fillRect((int)(super.x)+17, (int)(super.y)+30, (int)super.width/3, (int)super.height/5);
+			g.fillRect((int)(super.x)+17, (int)(super.y)+40, (int)super.width/3, (int)super.height/5);
+			
 			//super.draw(g);
 		}
 	}
