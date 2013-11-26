@@ -21,4 +21,10 @@ public class Market extends Workplace {
 
 	}
 
+	@Override
+	public boolean isOpen() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
