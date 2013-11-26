@@ -1,6 +1,10 @@
 package Person.Role;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import gui.agentGuis.PersonGui;
+import gui.interfaces.BusStop;
 import gui.interfaces.Passenger;
 
 public class PassengerRole extends Role implements Passenger{
@@ -19,6 +23,11 @@ public class PassengerRole extends Role implements Passenger{
 	public enum AgentState {waitingForBus, busArrived, riding, disembarking, notInTransit};
 	private AgentState state = AgentState.notInTransit;
 	
+	private static Map<String, BusStop> stops = new HashMap<String, BusStop>();
+	
+	public void addStop(String stop, BusStop agent) {
+		stops.put(stop, agent);
+	}
 	//Passenger role needs to figure out which bus is the closest one
 	//Messages
 	
