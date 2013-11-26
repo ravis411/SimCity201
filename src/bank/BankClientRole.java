@@ -31,8 +31,9 @@ import trace.AlertTag;
 
 public class BankClientRole extends Role implements BankClient{
 	//	Data
-	public enum bankState {nothing, deposit, withdraw, loan};
+	public enum bankState {nothing, deposit, withdraw, loan, repay};
 	public static final String loan = "loan";
+	public static final String repay = "repay";
 	public static final String deposit = "deposit";
 	public static final String withdraw = "withdraw";
 	bankState state1 = bankState.nothing;
@@ -45,7 +46,7 @@ public class BankClientRole extends Role implements BankClient{
 	private AnnouncerB loanAnnouncer;
 	private double requestAmount;
 	private boolean hasLoan = false;
-	//	private double amountDue = 0;
+	private double amountDue = 0;
 	private int ticketNum;
 	private int loanTicketNum;
 	private int lineNum;
@@ -89,6 +90,7 @@ public class BankClientRole extends Role implements BankClient{
 	 */  
 
 	public BankClientRole() {
+		
 	}
 
 
@@ -178,8 +180,17 @@ public void msgTransactionCompleted(double n){
  */
 public void msgLoanApproved(double n){
 	hasLoan = true;
-	//		amountDue = n;
+	amountDue = n;
 	myPerson.setMoney(myPerson.getMoney() + n);
+	state1 = bankState.nothing;
+	state2 = inLineState.leaving;
+	stateChanged();
+}
+
+public void msgLoanRepaid(double n){
+	hasLoan = false;
+	amountDue = 0;
+	myPerson.setMoney(myPerson.getMoney() - n);
 	state1 = bankState.nothing;
 	state2 = inLineState.leaving;
 	stateChanged();
@@ -188,11 +199,11 @@ public void msgLoanApproved(double n){
 
 //Scheduler
 public boolean pickAndExecuteAction() {
-	if (state2 == inLineState.goingToLine && state1 != bankState.loan){
+	if (!((state2 == inLineState.goingToLine && state1 == bankState.loan) ||(state2 == inLineState.goingToLine && state1 == bankState.repay))){
 		goToLine(lineNum);
 		return true;
 	}
-	if (state2 == inLineState.goingToLine && state1 == bankState.loan){
+	if ((state2 == inLineState.goingToLine && state1 == bankState.loan) ||(state2 == inLineState.goingToLine && state1 == bankState.repay)){
 		goToLoanLine();
 		return true;
 	}
@@ -219,6 +230,10 @@ public boolean pickAndExecuteAction() {
 				}
 				if (state1 == bankState.loan){
 					IWantALoan();
+					return true;
+				}
+				if (state1 == bankState.repay){
+					IWantToRepay();
 					return true;
 				}
 			}
@@ -320,6 +335,11 @@ private void IWantALoan(){
 	state2 = inLineState.transactionProcessing;
 
 }
+private void IWantToRepay(){
+	AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to repay my loan of " + amountDue);
+	loanTeller.msgRepay(requestAmount, amountDue);
+	state2 = inLineState.transactionProcessing;
+}
 /**
  * deactivates the role and removes its role from the buildingList.
  */
@@ -386,6 +406,11 @@ public void setIntent(String trans){
 		loanTicketNum = LoanTakeANumberDispenser.INSTANCE.pullTicket();
 		//			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + loanTicketNum);
 		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + loanTicketNum);
+	}
+	if (trans.equalsIgnoreCase("repay")){
+		this.state1 = bankState.repay;
+		loanTicketNum = LoanTakeANumberDispenser.INSTANCE.pullTicket();
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER,  myPerson.getName(), "My ticket number is " + loanTicketNum);
 	}
 
 	/*
