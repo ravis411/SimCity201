@@ -11,7 +11,6 @@ import ryansRestaurant.interfaces.Market;
 import ryansRestaurant.interfaces.Waiter;
 import ryansRestaurant.test.mock.EventLog;
 import ryansRestaurant.test.mock.LoggedEvent;
-import sun.misc.Queue;
 
 /**
  * Restaurant Cashier Agent
