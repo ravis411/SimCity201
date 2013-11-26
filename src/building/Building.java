@@ -39,6 +39,10 @@ public class Building {
 
 	}
 	
+	/**
+	 * Removes a person from the building
+	 * @param r
+	 */
 	public void removeRole(Role r){
 		inhabitants.remove(r);
 	}
