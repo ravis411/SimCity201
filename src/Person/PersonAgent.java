@@ -401,7 +401,6 @@ public class PersonAgent extends Agent {
 		
 		//needs a way to find a bank quite yet
 		GoToLocation("Building 10", "BUS");
-		GoToLocation("Building 10", "WALK");
 		/*if(findRole(Role.MARKET_CUSTOMER_ROLE) == null){
 			Role r = RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
 			r.activate();
@@ -475,6 +474,7 @@ public class PersonAgent extends Agent {
 				}catch(Exception e){
 					e.printStackTrace();
 				}
+				GoToLocation(location, "WALK");
 				break;
 			case Preferences.CAR:
 				break;

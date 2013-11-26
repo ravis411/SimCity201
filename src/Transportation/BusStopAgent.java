@@ -32,15 +32,16 @@ public class BusStopAgent implements BusStop {
 	}
 	
 	
-	private List<myBusPassenger> waitingPassengers = Collections.synchronizedList(new ArrayList<myBusPassenger>());
+	private List<myBusPassenger> waitingPassengers = new ArrayList<myBusPassenger>();
 	public Bus currentBus;
 	private String name;
 
 	
 	public void msgAtBusStop(PersonAgent person, String destinationStop) {
 		//Sent from passenger to bus stop
-		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, name, "A new passenger is waiting for the bus");
+		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, name, "A new passenger is waiting for the bus\t"+waitingPassengers.size()+" people");
 		waitingPassengers.add(new myBusPassenger(person, destinationStop));
+		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, name, "A new passenger is waiting for the bus\t"+waitingPassengers.size()+" people");
 		//stateChanged();
 	}
 
