@@ -31,7 +31,7 @@ public class Restaurant extends Workplace {
 				hasHost = true;
 			}else if(r instanceof CookRole){
 				hasCook = true;
-			}else if(r instanceof Old)
+			}else if(r instanceof CashierRole)
 		}
 		return false;
 	}
