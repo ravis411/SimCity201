@@ -13,6 +13,7 @@ import java.util.Queue;
 import java.util.concurrent.Semaphore;
 
 import residence.HomeRole;
+import restaurant.RestaurantCustomerRole;
 import trace.AlertLog;
 import trace.AlertTag;
 import Person.Role.Role;
@@ -603,17 +604,16 @@ public class PersonAgent extends Agent {
 
 	  
 	  
-	  GoToLocation("Bank", transport);
+	  GoToLocation("Restaurant 1", transport);
 	  
-	  BankClientRole role = (BankClientRole) findRole(Role.BANK_CLIENT_ROLE);
+	  RestaurantCustomerRole role = (RestaurantCustomerRole) findRole(Role.RESTAURANT_CUSTOMER_ROLE);
 	  if(role == null){
-		  role = (BankClientRole) RoleFactory.roleFromString(Role.BANK_CLIENT_ROLE);
+		  role = (RestaurantCustomerRole) RoleFactory.roleFromString(Role.RESTAURANT_CUSTOMER_ROLE);
 		  addRole(role);
 	  }
-	  BuildingList.findBuildingWithName("Bank").addRole(role);
+	  BuildingList.findBuildingWithName("Restaurant 1").addRole(role);
 	  
 	  moneyNeeded = 40.00;
-	  role.setIntent(BankClientRole.withdraw);
 	  role.activate();
 	  
 
