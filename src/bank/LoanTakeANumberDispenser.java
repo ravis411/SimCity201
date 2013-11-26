@@ -1,9 +1,9 @@
 package bank;
 import java.util.*;
 
-public enum loanTakeANumberDispenser {
+public enum LoanTakeANumberDispenser {
 	INSTANCE;
-	private loanTakeANumberDispenser(){
+	private LoanTakeANumberDispenser(){
 		
 	}
 	private int ticketCount = 0;

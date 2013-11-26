@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Queue;
 
-import bank.bankClientRole;
+import bank.BankClientRole;
 import trace.AlertLog;
 import trace.AlertTag;
 import Person.Role.Role;
@@ -449,14 +449,14 @@ public class PersonAgent extends Agent {
 //		  role.msgMakeFood();
 	  
 	  GoToLocation("Bank", transport);
-	  bankClientRole role = (bankClientRole) findRole(Role.BANK_CLIENT_ROLE);
+	  BankClientRole role = (BankClientRole) findRole(Role.BANK_CLIENT_ROLE);
 	  if(role == null){
-		  role = (bankClientRole) RoleFactory.roleFromString(Role.BANK_CLIENT_ROLE);
+		  role = (BankClientRole) RoleFactory.roleFromString(Role.BANK_CLIENT_ROLE);
 		  addRole(role);
 	  }
 	  
 	  moneyNeeded = 40.00;
-	  role.setIntent(bankClientRole.withdraw);
+	  role.setIntent(BankClientRole.withdraw);
 	  role.activate();
 	  
 	}
