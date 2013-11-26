@@ -24,11 +24,17 @@ public class TransportationTest1 extends TestCase {
 		//Preconditions
 		assertEquals("Bus Agent should have an empty list of passengers", bus.getPassengers().size(), 0);
 		
-		//Step 1
+		//Load first passenger
 		bus.msgGettingOnBus(mp1);
 		
 		//Postconditions
 		assertEquals("Bus Agent should have only a single passenger", bus.getPassengers().size(), 0);
+		
+		//Move to new location
+		bus.msgFreeToLeave();
+		
+		//Postconditions
+		assertTrue("Bus should be in next location", bus.location.equals("Bus Stop 3"));
 	}
 	
 }
