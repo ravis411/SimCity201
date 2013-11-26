@@ -36,15 +36,16 @@ public class ResidenceTest1 extends TestCase {
 		manager.homeRole=homeRole;
 		
 		}
-	public void testHomeRole(){
+	//-------------------ELEMENTARY PRECONDITIONS-----------------//
+	public void testHomeRolePreConditions(){
 		try {
 			setUp();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("TEST FOR PRECONDITIONS");
 		
-		//-------------------ELEMENTARY PRECONDITIONS-----------------//
 		
 		assertTrue("Initial State shoud be doingNothing",homeRole.state==AgentState.DoingNothing);
 		assertTrue("Size of inventory should be 2",homeRole.getInventory().size()==2);
@@ -55,7 +56,22 @@ public class ResidenceTest1 extends TestCase {
 		assertTrue("First item of inventory should be Cleaning supply and it should have 2 of those",homeRole.getInventory().get(1).quantity==2);
 		assertTrue("First item of feature list should be sink and it should be working",homeRole.getHomeFeatures().get(0).name.equals("Sink"));
 		assertTrue("First item of feature list should be sink and it should be working",homeRole.getHomeFeatures().get(0).working==true);
-		//-------------------MESSAGE CHECKING--------------------------//
+		
+		
+		
+		
+	}
+	//-------------------MESSAGE CHECKING--------------------------//
+	public void testHomeRoleMessages(){
+		try {
+			setUp();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("TEST FOR MESSAGES AND STATECHANGE OPERATIONS");
+		
 		assertTrue("The initial event state should be none",homeRole.event==AgentEvent.none);
 		homeRole.msgEnterBuilding();
 		assertTrue("Now the event should be none",homeRole.event==AgentEvent.none);
@@ -68,7 +84,6 @@ public class ResidenceTest1 extends TestCase {
 		assertTrue("Amount of rentOwed now should be 0",homeRole.getRentOwed()==0);
 		homeRole.msgTired();
 		assertTrue("Now the state should be Sleeping",homeRole.state==AgentState.Sleeping);
-		System.err.println("fuck this shit");
 		homeRole.msgMakeFood();
 		assertTrue("Now the state should be Cooking",homeRole.state==AgentState.Cooking);
 		homeRole.msgRestockItem ("Cleaning supply", 2);
