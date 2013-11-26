@@ -1,5 +1,10 @@
 package bank;
 import java.util.*;
+/**
+ * 
+ * @author Byron Choy
+ *
+ */
 
 public enum LoanTakeANumberDispenser {
 	INSTANCE;

@@ -11,8 +11,7 @@ import javax.swing.JLabel;
 
 import Person.Role.Role;
 import bank.gui.BankAnimationPanel;
-
-
+import bank.*;
 /**
  * Default class for various gui building panels.
  * BuildingPanel is added to the buildingPanels and is displayed in the zoomed in view of a building.
@@ -67,8 +66,7 @@ public class BankBuildingPanel extends BuildingPanel{
 
 	@Override
 	public void addPersonWithRole(Role r) {
-		// TODO Auto-generated method stub
-		
+		// TODO stub	
 	}
 
 }
