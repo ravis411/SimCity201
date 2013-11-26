@@ -22,7 +22,7 @@ public class BankTellerRole extends Role implements Employee , BankTeller{
 	public BankClient myClient;
 	private int LineNum = new Random().nextInt(3)+1; //from 1 to n, with 5 being the loan line, should be assigned in creation
 	public enum requestState {pending, withdrawal, deposit, open, none, notBeingHelped};
-	public enum location {entrance, station, breakRoom};
+	public enum location {entrance, station, breakRoom, closing};
 	public location locationState = location.entrance;
 	public requestState state = requestState.none;
 	public double transactionAmount;
@@ -100,9 +100,19 @@ public class BankTellerRole extends Role implements Employee , BankTeller{
 		stateChanged();
 	}
 
+	public void bankClosing(){
+		transactionAmount = 0;
+		locationState = location.closing;
+		stateChanged();
+		}
+	
 	//	Scheduler
 	public boolean pickAndExecuteAction() {
 		Accounts = Database.INSTANCE.sendDatabase();
+		if (locationState == location.closing){
+			Leaving();
+			return true;
+		}
 		if (locationState == location.station){
 			if (state == requestState.deposit){
 				processDeposit(myClient);
@@ -210,12 +220,19 @@ public class BankTellerRole extends Role implements Employee , BankTeller{
 		b.msgAccountOpened(a);
 		state = requestState.notBeingHelped;
 	}
+	
+	private void Leaving(){
+		announcer.msgGoodbye(this);
+		doLeave();
+	}
 
 	//gui
 	private void doGoToStation(){
 		tellerGui.DoGoToStation();
 	}
-
+	private void doLeave(){
+		tellerGui.DoLeave();
+	}
 
 
 	//Accesors, etc.

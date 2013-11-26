@@ -1,5 +1,8 @@
 package building;
 
+import bank.BankClientRole;
+import bank.BankTellerRole;
+import bank.LoanTellerRole;
 import gui.Building.BuildingPanel;
 
 public class Bank extends Workplace {
@@ -17,8 +20,24 @@ public class Bank extends Workplace {
 
 	@Override
 	public void close() {
-		// TODO Auto-generated method stub
+		for(int i = 0; i < this.inhabitants.size(); i++){
+			if (this.inhabitants.get(i) instanceof BankClientRole){
+				BankClientRole client = (BankClientRole)this.inhabitants.get(i);
+				client.bankClosing();
+				this.panel.getPanel().removeGuiForRole(client);
+			}
+			if (this.inhabitants.get(i) instanceof BankTellerRole){
+				BankTellerRole teller = (BankTellerRole)this.inhabitants.get(i);
+				teller.bankClosing();
+				this.panel.getPanel().removeGuiForRole(teller);
 
+			}
+			if (this.inhabitants.get(i) instanceof LoanTellerRole){
+				LoanTellerRole loanTeller = (LoanTellerRole) this.inhabitants.get(i);
+				loanTeller.bankClosing();
+				this.panel.getPanel().removeGuiForRole(loanTeller);
+			}
+		}
 	}
 
 }

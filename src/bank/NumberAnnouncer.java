@@ -55,11 +55,18 @@ public class NumberAnnouncer extends Agent implements AnnouncerA{
 		stateChanged();
 		
 	}
+	public void msgGoodbye(BankTeller o){
+		tellers.remove(o);
+		stateChanged();
+	}
 	//scheduler
 	protected boolean pickAndExecuteAnAction() {
-		if (state == numberState.announceB){
+		if (!(tellers.isEmpty()) && state == numberState.announceB){
 			announceNumberBank();
 			return true;
+		}
+		if (tellers.isEmpty()){
+			Reset();
 		}
 		return false;
 	}
@@ -77,6 +84,10 @@ public class NumberAnnouncer extends Agent implements AnnouncerA{
 			}
 			state = numberState.pending;
 		}
+	}
+	private void Reset(){
+		state = numberState.pending;
+		tellerNumber = 0;
 	}
 
 	public String getName() {
