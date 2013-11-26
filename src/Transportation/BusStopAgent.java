@@ -54,7 +54,6 @@ public class BusStopAgent implements BusStop {
 	
 	
 	//Utilities
-	
 	public int passengerSize() {
 		return waitingPassengers.size();
 	}
