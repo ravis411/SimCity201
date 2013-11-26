@@ -1,21 +1,18 @@
 package restaurant;
 
-import Person.Role.Role;
-import agent.Agent;
-import restaurant.gui.HostGui;
-import restaurant.Order;
-import restaurant.Menu;
-import restaurant.RestaurantCustomerRole.AgentEvent;
-import restaurant.RestaurantCustomerRole.AgentState;
-import restaurant.Menu.Dish;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.Vector;
+import java.util.concurrent.Semaphore;
+
 import restaurant.gui.WaiterGui;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
 import trace.AlertLog;
 import trace.AlertTag;
+import Person.Role.Role;
 
-import java.util.*;
-import java.util.concurrent.Semaphore;
+import com.sun.org.apache.xerces.internal.parsers.DOMParser;
 
 /**
  * Restaurant Waiter Agent
