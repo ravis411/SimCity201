@@ -15,9 +15,10 @@ import gui.agentGuis.VehicleGui;
 import gui.interfaces.BusStop;
 import gui.interfaces.Passenger;
 import gui.interfaces.Bus;
+import Transportation.CopyBusAgent.AgentState;
 import agent.Agent;
 
-public class BusAgent extends Agent //implements Bus 
+public class BusAgent extends Agent implements Bus 
 {
 	
 	//May need to modify DoGoToLocation method to implement agent methodology
@@ -61,6 +62,7 @@ public class BusAgent extends Agent //implements Bus
 	//Messages
 	public void msgHereArePassengers(List<myBusPassenger> passengers ){
 		this.passengers.addAll(passengers);
+		state = AgentState.readyToLeave;
 		stateChanged();
 	}
 	
@@ -80,7 +82,7 @@ public class BusAgent extends Agent //implements Bus
 			return true;
 		}
 		
-		if(true){
+		if(state == AgentState.readyToLeave){
 			GoToNextStop();
 			return true;
 		}
@@ -92,7 +94,21 @@ public class BusAgent extends Agent //implements Bus
 	//Actions
 	
 	private void GoToNextStop(){
+		print("going to next stop");
+		//currentStop.msgLeavingStop();
+		state = AgentState.inTransit;
+		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Going to next stop");
 		
+		//print("Count is now: " + count);
+		count++;
+		location = stops.get(count%stopSize +1);
+		currentStop = stopAgents.get(location);
+		//print("Location is now: " + location);
+		//print("Count is now: " + count);
+		agentGui.DoGoTo(location);
+		//Need some way of notifying bus that we have arrived at next stop
+		currentStop.msgArrivedAtStop(this);
+		state = AgentState.atStop;
 	}
 	
 	private void notifyPassenger(myBusPassenger pas) {
