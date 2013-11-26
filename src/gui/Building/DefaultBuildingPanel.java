@@ -18,9 +18,9 @@ import Person.Role.Role;
  * 
  *
  */
-public class BusStopBuildingPanel extends BuildingPanel{
+public class DefaultBuildingPanel extends BuildingPanel{
 	
-	public BusStopBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels) {
+	public DefaultBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels) {
 		super(r, name, buildingPanels);
 		
 		this.removeAll();

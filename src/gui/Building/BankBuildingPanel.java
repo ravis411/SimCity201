@@ -13,6 +13,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import Person.Role.Role;
 import bank.gui.BankAnimationPanel;
 
 
@@ -48,6 +49,13 @@ public class BankBuildingPanel extends BuildingPanel{
 
 	public void displayBuildingPanel() {
 		myCity.displayBuildingPanel( this );
+		
+	}
+
+
+	@Override
+	public void addPersonWithRole(Role r) {
+		// TODO Auto-generated method stub
 		
 	}
 

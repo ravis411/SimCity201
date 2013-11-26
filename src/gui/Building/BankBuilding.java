@@ -25,6 +25,23 @@ public class BankBuilding extends BuildingGui {
 			g.setColor(new Color(230, 220, 40));
 			g.drawString(super.myBuildingPanel.getName(), (int)super.x,(int)super.y);
 			super.draw(g);
+			g.setColor(new Color(230, 220, 40));
+
+			g.fill3DRect( (int)super.x,  (int)super.y+20,  (int)super.width, (int)super.height-20, true);
+			
+			g.fill3DRect( (int)super.x +10,  (int)super.y+10,  (int)super.width-20, (int)super.height-10, true);
+			
+			g.setColor(Color.white);
+			int xs[] = {(int)super.x + 15, (int)(super.x + super.width/2), (int)(super.x + super.width)-15};
+			int ys[] = {(int)(super.y + 15), (int)(super.y)+5, (int)(super.y + 15)};
+			g.fillPolygon(xs, ys, 3);
+			g.fill3DRect( (int)super.x +15,  (int)super.y+15,  (int)super.width-30, (int)super.height-45, false);
+			
+			g.fill3DRect( (int)(super.x),  (int)(super.y+super.height-5),  (int)(super.width), (int)5, true);
+			g.fill3DRect( (int)super.x +15,  (int)(super.y + 20),  (int)5, (int)super.height-25, false);
+			g.fill3DRect( (int)super.x +22,  (int)(super.y + 20),  (int)5, (int)super.height-25, false);
+			g.fill3DRect( (int)super.x +30,  (int)(super.y + 20),  (int)5, (int)super.height-25, false);
+			
 		}
 		else{
 			g.setColor(new Color(230, 220, 40));

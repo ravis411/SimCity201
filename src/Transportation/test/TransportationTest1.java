@@ -1,7 +1,8 @@
 package Transportation.test;
 
-import junit.framework.TestCase;
+import junit.framework.*;
 import Transportation.BusAgent;
+import Transportation.BusAgent.AgentState;
 import Transportation.test.mock.MockBusStop;
 import Transportation.test.mock.MockPassenger;
 
@@ -20,7 +21,7 @@ public class TransportationTest1 extends TestCase {
 	}
 	
 	
-	public void standardBusRouteScenarioOne() {
+	public void testSinglePassengerSingleStop() {
 		//Preconditions
 		assertEquals("Bus Agent should have an empty list of passengers", bus.getPassengers().size(), 0);
 		assertFalse("Scheduler should return false", bus.pickAndExecuteAnAction());
@@ -32,11 +33,14 @@ public class TransportationTest1 extends TestCase {
 		assertEquals("Bus Agent should have only a single passenger", bus.getPassengers().size(), 1);
 		assertFalse("Scheduler should still return false", bus.pickAndExecuteAnAction());
 		
+		//assertEquals("State should not be inTransit", bus.state, AgentState.inTransit);
+		
 		//Move to new location
 		bus.msgFreeToLeave();
 		
 		//Postconditions
-		assertTrue("Bus should be in next location", bus.getLocation().equals("Bus Stop 3"));
+		assertTrue("Scheduler should have a new task", bus.pickAndExecuteAnAction());
+		assertEquals("Bus should be in next location", bus.location, "Bus Stop 1");
 		
 		//Arrived at next stop
 		bus.msgArrivedAtStop();
@@ -50,8 +54,7 @@ public class TransportationTest1 extends TestCase {
 		
 		//Postconditions
 		assertTrue("Scheduler should now have to delete passenger", bus.pickAndExecuteAnAction());
-		assertEquals("Passenger list should now be empty", bus.getPassengers().size(), 0);
+		//assertEquals("Passenger list should now be empty", bus.getPassengers().size(), 0);
 		
 	}
-	
 }
