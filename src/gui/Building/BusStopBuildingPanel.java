@@ -11,7 +11,9 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.JLabel;
 
 import Person.Role.Role;
+import Transportation.BusStopAgent;
 import Transportation.BusStopAnimationPanel;
+import Transportation.test.BusTest1;
 
 
 /**
@@ -22,6 +24,10 @@ import Transportation.BusStopAnimationPanel;
  */
 public class BusStopBuildingPanel extends BuildingPanel{
 	
+	BusStopAgent bustStopAgent = null;
+	BusStopAnimationPanel animationPanel = null;
+	
+	
 	public BusStopBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels) {
 		super(r, name, buildingPanels);
 		
@@ -31,7 +37,15 @@ public class BusStopBuildingPanel extends BuildingPanel{
 		this.setLayout(new BorderLayout());
 		JLabel j = new JLabel( myName );
 		add( j,BorderLayout.NORTH );
-		add(new BusStopAnimationPanel(), BorderLayout.CENTER);
+		animationPanel = new BusStopAnimationPanel();
+		add(animationPanel, BorderLayout.CENTER);
+		
+		bustStopAgent = new BusStopAgent(name);
+	}
+	
+	
+	public BusStopAgent getBusStopAgent(){
+		return this.bustStopAgent;
 	}
 	
 	
@@ -43,7 +57,6 @@ public class BusStopBuildingPanel extends BuildingPanel{
 		myCity.displayBuildingPanel( this );
 		
 	}
-
 
 	@Override
 	public void addPersonWithRole(Role r) {

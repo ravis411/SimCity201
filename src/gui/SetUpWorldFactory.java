@@ -15,6 +15,7 @@ import java.util.Queue;
 
 import Person.PersonAgent;
 import Transportation.BusAgent;
+import Transportation.BusStopAgent;
 import agent.Agent;
 import astar.AStarTraversal;
 import astar.PersonAStarTraversal;
@@ -532,9 +533,12 @@ public class SetUpWorldFactory{
 			
 		case "EvenBus":
 			BusAgent v3 = new BusAgent("EBus1");
-			v3.addBusStop(1, "Bus Stop 2");
-			v3.addBusStop(2, "Bus Stop 4");
-			v3.addBusStop(3, "Bus Stop 6");
+			v3.addBusStop(1, "Bus Stop 2",
+					((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 2"))).getBusStopAgent() );
+			v3.addBusStop(2, "Bus Stop 4", 
+					((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 4"))).getBusStopAgent());
+			v3.addBusStop(3, "Bus Stop 6", 
+					((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 6"))).getBusStopAgent());
 			AStarTraversal t3 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
 			VehicleGui v3Gui = new VehicleGui( v3, layout, t3, locationMap);
 			v3.agentGui = v3Gui;
@@ -544,9 +548,12 @@ public class SetUpWorldFactory{
 			
 		case "OddBus":
 			BusAgent v4 = new BusAgent("OBus1");
-			v4.addBusStop(1, "Bus Stop 1");
-			v4.addBusStop(2, "Bus Stop 3");
-			v4.addBusStop(3, "Bus Stop 5");
+			v4.addBusStop(1, "Bus Stop 1", 
+					((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 1"))).getBusStopAgent());
+			v4.addBusStop(2, "Bus Stop 3",
+					((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 3"))).getBusStopAgent());
+			v4.addBusStop(3, "Bus Stop 5",
+					((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 5"))).getBusStopAgent());
 			v4.location = "Bus Stop 1";
 			AStarTraversal t4 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
 			VehicleGui v4Gui = new VehicleGui( v4, layout, t4, locationMap);
