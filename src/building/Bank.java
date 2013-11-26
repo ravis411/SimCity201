@@ -7,6 +7,7 @@ import gui.Building.BuildingPanel;
 
 public class Bank extends Workplace {
 
+	public boolean isOpenSetter = false;
 	public Bank(BuildingPanel panel) {
 		super(panel);
 		// TODO Auto-generated constructor stub
@@ -14,8 +15,7 @@ public class Bank extends Workplace {
 
 	@Override
 	public void open() {
-		// TODO Auto-generated method stub
-
+		isOpenSetter=true;
 	}
 
 	@Override
@@ -38,6 +38,14 @@ public class Bank extends Workplace {
 				this.panel.getPanel().removeGuiForRole(loanTeller);
 			}
 		}
+	}
+
+	@Override
+	public boolean isOpen() {
+		if (this.isOpenSetter){
+			return true;
+		}
+		else return false;
 	}
 
 }
