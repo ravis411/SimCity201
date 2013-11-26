@@ -2,13 +2,14 @@ package Transportation;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 
 import trace.AlertLog;
 import trace.AlertTag;
-import gui.LocationInfo;
 import gui.agentGuis.VehicleGui;
 import gui.interfaces.Passenger;
 import gui.interfaces.Vehicle;
@@ -22,7 +23,9 @@ public class BusAgent extends Agent implements Vehicle {
 	String name;
 	boolean traveled = false;
 	boolean goToBusStop3 = false;
-	public String location = "N/A";
+	public String location;
+	private Map<Integer,String> stops = new HashMap<Integer,String>(); //Will change stop names to real names on implementation
+	private int count;
 	public VehicleGui agentGui;
 	Queue<String> StopsQueue = new LinkedList<>(); //<--a list of the stops to go to
 	
@@ -38,14 +41,16 @@ public class BusAgent extends Agent implements Vehicle {
 	private List<myPassenger> passengers = Collections.synchronizedList(new ArrayList<myPassenger>());
 	private enum PassengerState {riding, disembarking};
 	
-	public enum AgentState {inTransit, loading, loaded};
+	public enum AgentState {inTransit, unloading, loading, loaded};
 	public AgentState state;
 	
 	public BusAgent(String name) {
 		super();
-		StopsQueue.add("Bus Stop " + 1);
-		StopsQueue.add("Bus Stop 3");
-		StopsQueue.add("Bus Stop " + 5);
+		stops.put(1,"Stop_1");
+		stops.put(2,"Stop_2");
+		stops.put(3,"Stop_3");
+		location = "Stop_1";
+		count = 1;
 		this.name = name;
 	}
 
@@ -62,14 +67,15 @@ public class BusAgent extends Agent implements Vehicle {
 	}
 	
 	public void msgArrivedAtStop() {
-		state = AgentState.loading;
+		state = AgentState.unloading;
 		stateChanged();
 	}
 	
 	public void msgGettingOffBus(Passenger p) {
 		synchronized(getPassengers()) {
 			for (myPassenger mp : getPassengers()) {
-				if (mp.equals(p)) {
+				if (mp.passenger.equals(p)) {
+					print("Found passenger leaving");
 					mp.ps = PassengerState.disembarking;
 					stateChanged();
 				}
@@ -81,16 +87,16 @@ public class BusAgent extends Agent implements Vehicle {
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		print("Location is " + location);
-		synchronized(passengers) {
-			for (myPassenger mp : passengers) {
-				if (mp.ps == PassengerState.disembarking) {
-					removePassenger(mp);
-					return true;
+		if (state == AgentState.unloading) {
+			synchronized(passengers) {
+				for (myPassenger mp : passengers) {
+					if (mp.ps == PassengerState.disembarking) {
+						removePassenger(mp);
+					}
 				}
 			}
-		}
-		if (state == AgentState.loading){
 			notifyPassengers();
+			state = AgentState.loading;
 			return true;
 		}
 		if (state == AgentState.loaded) {
@@ -102,13 +108,10 @@ public class BusAgent extends Agent implements Vehicle {
 	}
 	
 	//Actions
-	private void Travel(){
-		//agentGui.DoEnterWorld();
-		//agentGui.DoPark();
-		traveled = true;
-	}
 	
 	private void removePassenger(myPassenger mp) {
+		print("Removing passenger from list");
+		//notify passenger gui to leave
 		passengers.remove(mp);
 	}
 	
@@ -117,26 +120,21 @@ public class BusAgent extends Agent implements Vehicle {
 		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Going to next stop");
 		state = AgentState.inTransit;
 		
-		location = StopsQueue.poll();//<--removes location from front of queue
-		print(location);
-		StopsQueue.add(location);//<--adds location to end of queue
-		agentGui.DoGoTo(location);
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		print("Count is now: " + count);
+		count++;
+		location = stops.get(count%3);
+		print("Location is now: " + location);
+		print("Count is now: " + count);
+		//agentGui.DoGoTo(location);
 		//Need some way of notifying bus that we have arrived at next stop
 	}
 	
 	private void notifyPassengers() {
-		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Notifying passenges of the current stop: " + location);
+		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Notifying passenges of the next stop: " + location);
 		synchronized(passengers) {
 			for (myPassenger mp : passengers) {
 				if (mp.ps == PassengerState.riding) {
-					mp.passenger.msgArrivedAtDestination(location);
+					mp.passenger.msgNextDestination(location);
 				}
 			}
 		}
