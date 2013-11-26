@@ -86,7 +86,7 @@ public class PersonAgent extends Agent {
 		backpack = new ArrayList<Item>();
 		itemsNeeded = new ArrayDeque<Item>();
 		
-		roles.add(new HomeRole(this));
+//		roles.add(new HomeRole(this));
 	}
 	
 //-------------------------------MESSAGES----------------------------------------//

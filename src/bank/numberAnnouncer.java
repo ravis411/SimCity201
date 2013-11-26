@@ -10,6 +10,7 @@ public class numberAnnouncer extends Agent{
 	List<bankTellerRole> tellers = new ArrayList<bankTellerRole>();
 	Queue<bankTellerRole> openTeller = new ArrayDeque<bankTellerRole>();
 	private int doneTeller;
+	private Timer timer;
 	private int tellerNumber = 0;
 	public enum numberState{pending, announceB};
 	public numberState state = numberState.pending;
@@ -54,10 +55,15 @@ public class numberAnnouncer extends Agent{
 	//actions
 	private void announceNumberBank(){
 		while (onTheWay == false){
-		//	Do("Calling ticket " + tellerNumber);
-			for (bankClientRole b : clients){
-				b.msgCallingTicket(tellerNumber, doneTeller, openTeller.peek());
-			}
+			timer.schedule(new TimerTask() {
+				public void run() {			
+					Do("Calling ticket " + tellerNumber);
+				}
+			},5000);
+
+		}
+		for (bankClientRole b : clients){
+			b.msgCallingTicket(tellerNumber, doneTeller, openTeller.peek());
 		}
 		state = numberState.pending;
 	}
