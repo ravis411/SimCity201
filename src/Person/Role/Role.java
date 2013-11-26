@@ -11,7 +11,7 @@ public abstract class Role {
 	public final static String MARKET_EMPLOYEE_ROLE = "MarketEmployee.MarketEmployeeRole";
 	public final static String MARKET_MANAGER_ROLE = "MarketEmployee.MarketManagerRole";
 	public final static String BANK_CLIENT_ROLE = "bank.BankClientRole";
-	public final static String PASSENGER_ROLE = "PassengerRole";
+	public final static String PASSENGER_ROLE = "Person.Role.PassengerRole";
 	public final static String HOME_ROLE = "HomeRole";
 	public final static String RESTAURANT_CUSTOMER_ROLE = "RestaurantCustomerRole";
 	public final static String RESTAURANT_WAITER_ROLE = "RestaurantWaiterRole";

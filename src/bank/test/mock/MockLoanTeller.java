@@ -57,7 +57,12 @@ public class MockLoanTeller extends Mock implements LoanTeller{
 
 	@Override
 	public void msgRepay(double a, double m) {
-		// TODO Auto-generated method stub
-		
+		if (a < m){
+			log.add(new LoggedEvent("Loan repayment has been denied, the money is insufficient."));
+			client.msgTransactionCompleted(0);
+		} else if (a >= m){
+			log.add(new LoggedEvent("Loan repayment has been fulfilled."));
+			client.msgLoanRepaid(-a);
+		}
 	}
 }
