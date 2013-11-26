@@ -58,4 +58,10 @@ public interface BankClient {
 	 * @param n = loan amount
 	 */
 	public abstract void msgLoanApproved(double n);
+	
+	/**
+	 * sent by the loan teller when a loan has been successfully repaid
+	 * @param n - repayment amount
+	 */
+	public abstract void msgLoanRepaid(double n);
 }
