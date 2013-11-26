@@ -1,5 +1,6 @@
 package restaurant.interfaces;
 
+import restaurant.HostRole;
 import restaurant.RestaurantCustomerRole;
 import restaurant.Order;
 
@@ -17,6 +18,7 @@ public interface Waiter {
 	public void msgBringFoodToTable(Order o);
 	public void msgOutOfFood(int choice, Customer customer);
 	public void msgBreakReply(boolean b);
+	public void setHost(HostRole hr);
 	
 	void msgAtFrontDesk();
 	void msgAtWaitingArea();

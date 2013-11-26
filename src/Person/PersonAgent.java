@@ -120,6 +120,7 @@ public class PersonAgent extends Agent {
 				Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(roleLocation);
 				HostRole role = (HostRole) rest.getHostRole();
 				role.addWaiter(w);
+				w.setHost(role);
 			}
 			//gui.setStartingStates(roleLocation);
 			gui.setStartingStates(roleLocation);
