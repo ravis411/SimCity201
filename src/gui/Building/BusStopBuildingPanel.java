@@ -10,7 +10,6 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.JLabel;
 
-import Person.Role.PassengerRole;
 import Person.Role.Role;
 import Transportation.BusStopAgent;
 import Transportation.BusStopAnimationPanel;
