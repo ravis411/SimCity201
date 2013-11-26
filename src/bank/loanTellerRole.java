@@ -22,14 +22,14 @@ import util.Interval;
  */
 public class loanTellerRole extends Role implements Employee{
 	private bankClientRole myClient;
+	private int myClientAge;
 	public enum requestState {open, loan, pending, none, notBeingHelped};
 	private requestState state = requestState.none;
 	public enum location {entrance, station, breakRoom};
 	public location locationState = location.entrance;
 	double transactionAmount;
 	private List<Account> Accounts = Database.INSTANCE.sendDatabase();
-	private numberAnnouncer announcer;
-	private String name;
+	private loanNumberAnnouncer announcer;
 	private Semaphore atStation = new Semaphore(0,true);
 	private Semaphore atIntermediate = new Semaphore(0,true);
 	private LoanGui loanGui = null;
@@ -39,7 +39,7 @@ public class loanTellerRole extends Role implements Employee{
 		Accounts = Database.INSTANCE.sendDatabase();
 	}
 
-	public void setAnnouncer(numberAnnouncer a){
+	public void setAnnouncer(loanNumberAnnouncer a){
 		announcer = a;
 	}
 
@@ -47,7 +47,6 @@ public class loanTellerRole extends Role implements Employee{
 	public void msgAtStation(){
 		atStation.release();
 		locationState = location.station;
-		announcer.msgAddLoanTeller(this);
 		stateChanged();
 	}
 
@@ -57,7 +56,7 @@ public class loanTellerRole extends Role implements Employee{
 	}
 
 	public void msgInLine(bankClientRole b){
-			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, name,"Greetings customer");
+			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, this.myPerson.getName(),"Greetings customer");
 		myClient = b;
 		state = requestState.notBeingHelped;
 		stateChanged();
@@ -66,8 +65,9 @@ public class loanTellerRole extends Role implements Employee{
 		state = requestState.open;
 		stateChanged();
 	}
-	public void msgLoan(double a){
+	public void msgLoan(double a, int age){
 		transactionAmount = a;
+		myClientAge = age;
 		state = requestState.loan;
 		stateChanged();
 	}
@@ -116,26 +116,32 @@ public class loanTellerRole extends Role implements Employee{
 	}
 
 	private void receiveClient(bankClientRole b){
-			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, name,"Recieving new client");
+			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, this.myPerson.getName(),"Recieving new client");
 		b.msgMayIHelpYou();
 		state = requestState.pending;
 	}
 	private void processLoan(bankClientRole b){
-			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, name,"Hold on a moment.");
+			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, this.myPerson.getName(),"Hold on a moment.");
 		for (Account a : Accounts){
 			if (a.client == b){
-				if (b.age > 18 && b.age < 85){
-					if (transactionAmount > a.amount){
-						if (!b.HasLoan()){
-								AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, name,"Loan approved for $" + transactionAmount);
-							announcer.msgLoanComplete();
-							b.msgLoanApproved(transactionAmount);
-						}
-					}
-				} else {
-						AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, name,"Loan denied.");
+				if (myClientAge < 18 || myClientAge > 85){
+					AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, this.myPerson.getName(), "Loan denied, age inappropriate.");
 					announcer.msgLoanComplete();
 					b.msgTransactionCompleted(0);
+				}
+				else if (transactionAmount < a.amount){
+					AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, this.myPerson.getName(), "Loan denied, amount exists in account.");
+					announcer.msgLoanComplete();
+					b.msgTransactionCompleted(0);
+				}
+				else if (b.HasLoan()){
+					AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, this.myPerson.getName(), "Loan denied, existing loan has not been paid.");
+					announcer.msgLoanComplete();
+					b.msgTransactionCompleted(0);
+				} else {
+							AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, this.myPerson.getName(),"Loan approved for $" + transactionAmount);
+							announcer.msgLoanComplete();
+							b.msgLoanApproved(transactionAmount);
 				}
 				state = requestState.none;
 				myClient = null;
@@ -143,8 +149,8 @@ public class loanTellerRole extends Role implements Employee{
 		}
 	}
 	private void openAccount(bankClientRole b){
-		Account a = new Account(b, b.money);
-			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, name,"New bank account has been opened for " + b);
+		Account a = new Account(b, 0);
+			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, this.myPerson.getName(),"New bank account has been opened for " + b);
 		Database.INSTANCE.addToDatabase(a);
 		b.msgAccountOpened(a);
 		state = requestState.notBeingHelped;
@@ -159,7 +165,7 @@ public class loanTellerRole extends Role implements Employee{
 
 	//Accesors, etc.
 	public String getName() {
-		return name;
+		return this.myPerson.getName();
 	}
 
 	public void setGui(LoanGui gui){

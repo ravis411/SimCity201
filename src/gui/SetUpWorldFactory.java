@@ -602,7 +602,7 @@ public class SetUpWorldFactory{
 		case "Apartment":
 			ApartmentBuilding ab = new ApartmentBuilding(building);
 			if(ab != null){
-				ApartmentBuildingPanel bp = new ApartmentBuildingPanel(ab, name, buildingsPanels);
+				ApartmentBuildingPanel bp = new ApartmentBuildingPanel(ab, name, buildingsPanels, this);
 				ab.setBuildingPanel(bp);
 				cityPanel.addGui(ab);
 				buildingsPanels.addBuildingPanel(bp);

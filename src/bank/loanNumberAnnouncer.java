@@ -5,19 +5,21 @@ import agent.Agent;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
-public class numberAnnouncer extends Agent{
+public class loanNumberAnnouncer extends Agent{
 	List<bankClientRole> clients = new ArrayList<bankClientRole>();
-	List<bankTellerRole> tellers = new ArrayList<bankTellerRole>();
-	Queue<bankTellerRole> openTeller = new ArrayDeque<bankTellerRole>();
+	loanTellerRole loanTeller;
 	private int doneTeller;
-	private Timer timer;
-	private int tellerNumber = 0;
-	public enum numberState{pending, announceB};
+	private int loanNumber = 0;
+	public enum numberState{pending, announceL};
 	public numberState state = numberState.pending;
 	private String name;
 	private boolean onTheWay = false;
 
-	public numberAnnouncer(String n){
+	public void setLoanTeller(loanTellerRole lt){
+		loanTeller = lt;
+	} 
+
+	public loanNumberAnnouncer(String n){
 		super();
 		name = n;
 	}
@@ -25,9 +27,8 @@ public class numberAnnouncer extends Agent{
 		onTheWay = true;
 		stateChanged();
 	}
-	public void msgAddBankTeller(bankTellerRole b){
-		Do(b + " is ready to work.");
-		tellers.add(b);
+	public void msgAddLoanTeller(loanTellerRole l){
+		loanTeller = l;
 		stateChanged();
 	}
 	public void msgAddClient(bankClientRole c){
@@ -35,40 +36,37 @@ public class numberAnnouncer extends Agent{
 		clients.add(c);
 		stateChanged();
 	}
-	public void msgTransactionComplete(int b, bankTellerRole btr, bankClientRole bcr){
-		Do("Recieved done message from line " + b);
-		doneTeller = b;
-		openTeller.add(btr);
-		clients.remove(bcr);
-		tellerNumber++;
-		state = numberState.announceB;
+	public void msgLoanComplete(){
+		Do("Recieved done message from loan line.");
+		loanNumber++;
 		onTheWay = false;
+		state = numberState.announceL;
 		stateChanged();
 	}
 
 	//scheduler
 	protected boolean pickAndExecuteAnAction() {
-		if (state == numberState.announceB){
-			announceNumberBank();
+		if (state == numberState.announceL){
+			announceNumberLoan();
 			return true;
 		}
 		return false;
 	}
 	//actions
-	private void announceNumberBank(){
+	private void announceNumberLoan(){
 		while (onTheWay == false){
 			try {
-				Thread.sleep(3000);
+				Thread.sleep(10000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			Do("Calling ticket " + tellerNumber);
+			Do("Calling loan ticket " + loanNumber);
 			for (bankClientRole b : clients){
-				b.msgCallingTicket(tellerNumber, doneTeller, openTeller.peek());
+				b.msgCallingLoanTicket(loanNumber, 5, loanTeller);
 			}
-			state = numberState.pending;
 		}
+		state = numberState.pending;
 	}
 
 	public String getName() {
