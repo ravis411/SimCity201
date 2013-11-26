@@ -45,11 +45,10 @@ public class MarketBuilding extends BuildingGui {
             Rectangle2D rect = fm.getStringBounds("$$", g);
 
             g.setColor(Color.DARK_GRAY);
-            g.fillRect((int)super.x, (int)super.y - fm.getAscent(), (int) rect.getWidth(),
-                       (int) rect.getHeight());
+            g.fillRect((int)(super.x + super.width/2-6), (int)(super.y + super.height/2-6 ), (int) rect.getWidth(), (int) rect.getHeight());
 
             g.setColor(new Color(25, 128, 25));
-			g.drawString("$$", (int)(super.x + super.width/2 - 10), (int)(super.y + super.height/ 2) );
+			g.drawString("$$", (int)(super.x + super.width/2-6), (int)(super.y + super.height/ 2)+6 );
 			
 			g.setColor(Color.orange);
 		}
