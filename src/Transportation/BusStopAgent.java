@@ -18,7 +18,7 @@ public class BusStopAgent implements BusStop {
 	
 	
 	//A map of all the busStop agents.
-	public static Map<String, BusStop> stops = new HashMap<String, BusStop>();
+	public static Map<String, BusStop> stops = Collections.synchronizedMap(new HashMap<String, BusStop>());
 	
 	public static void addStop(String stop, BusStop agent) {
 		stops.put(stop, agent);
@@ -49,7 +49,7 @@ public class BusStopAgent implements BusStop {
 		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, name, "A bus has arrived at the stop");
 		currentBus = bus;
 		currentBus.msgHereArePassengers(waitingPassengers);
-		waitingPassengers.clear();
+		waitingPassengers.removeAll(waitingPassengers);
 	}
 	
 	
