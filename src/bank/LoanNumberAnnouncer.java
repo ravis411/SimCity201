@@ -2,6 +2,9 @@ package bank;
 
 import agent.Agent;
 
+
+import bank.interfaces.AnnouncerB;
+
 import java.util.*;
 import java.util.concurrent.Semaphore;
 /**
@@ -10,7 +13,7 @@ import java.util.concurrent.Semaphore;
  *
  */
 
-public class LoanNumberAnnouncer extends Agent{
+public class LoanNumberAnnouncer extends Agent implements AnnouncerB{
 	List<BankClientRole> clients = new ArrayList<BankClientRole>();
 	LoanTellerRole loanTeller;
 	private int doneTeller;
@@ -28,6 +31,9 @@ public class LoanNumberAnnouncer extends Agent{
 		super();
 		name = n;
 	}
+	
+	//Messages
+	
 	public void msgOnTheWay(){
 		onTheWay = true;
 		stateChanged();

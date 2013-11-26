@@ -1,6 +1,7 @@
 package bank;
 
 import agent.Agent;
+import bank.interfaces.AnnouncerA;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -10,7 +11,7 @@ import java.util.concurrent.Semaphore;
  *
  */
 
-public class NumberAnnouncer extends Agent{
+public class NumberAnnouncer extends Agent implements AnnouncerA{
 	List<BankClientRole> clients = new ArrayList<BankClientRole>();
 	List<BankTellerRole> tellers = new ArrayList<BankTellerRole>();
 	Queue<BankTellerRole> openTeller = new ArrayDeque<BankTellerRole>();
@@ -26,6 +27,9 @@ public class NumberAnnouncer extends Agent{
 		super();
 		name = n;
 	}
+	
+	//messages
+	
 	public void msgOnTheWay(){
 		onTheWay = true;
 		stateChanged();
