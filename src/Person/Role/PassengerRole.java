@@ -90,6 +90,13 @@ public class PassengerRole extends Role implements Passenger{
 		String startingBusStop = personGui.DoGoToClosestBusStop();
 	}
 	
+	/**This teleports the person to the bus stop they need to get off at.
+	 * 
+	 */
+	private void goToDestinationStop(){
+		String destinationStop = personGui.DoRideBusTo(destination);
+	}
+	
 	private void getOnBus() {
 		//Get onto the bus
 	}
