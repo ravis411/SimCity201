@@ -1,6 +1,10 @@
 package restaurant.gui;
 
+import interfaces.GuiPanel;
+
 import javax.swing.*;
+
+import Person.Role.Role;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,7 +12,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.ArrayList;
 
-public class AnimationPanel extends JPanel implements ActionListener {
+public class RestaurantAnimationPanel extends JPanel implements ActionListener, GuiPanel {
 	
 	static final int XCOOR = 0;
 	static final int YCOOR = 0;
@@ -26,14 +30,14 @@ public class AnimationPanel extends JPanel implements ActionListener {
 	static final int TABLEX3 = 50;
 	static final int TABLEY3 = 50;
 	
-    private final int WINDOWX = 480;
-    private final int WINDOWY = 350;
+    private final int WINDOWX = 800;
+    private final int WINDOWY = 400;
     private Image bufferImage;
     private Dimension bufferSize;
 
     private List<Gui> guis = new ArrayList<Gui>();
 
-    public AnimationPanel() {
+    public RestaurantAnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
         
@@ -111,4 +115,16 @@ public class AnimationPanel extends JPanel implements ActionListener {
     public void addGui(CookGui gui) {
     	guis.add(gui);
     }
+
+	@Override
+	public void addGuiForRole(Role r) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeGuiForRole(Role r) {
+		// TODO Auto-generated method stub
+		
+	}
 }

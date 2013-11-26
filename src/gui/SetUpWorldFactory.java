@@ -13,6 +13,8 @@ import gui.Building.MarketBuilding;
 import gui.Building.MarketBuildingPanel;
 import gui.Building.ResidenceBuilding;
 import gui.Building.ResidenceBuildingPanel;
+import gui.Building.RestaurantBuilding;
+import gui.Building.RestaurantBuildingPanel;
 import gui.MockAgents.PseudoBusAgent;
 import gui.agentGuis.PersonGui;
 import gui.agentGuis.VehicleGui;
@@ -131,7 +133,7 @@ public class SetUpWorldFactory{
 		location.positionToEnterFromMainGrid = new Dimension(10, 12);
 		location.entranceFromMainGridPosition = new Dimension(9, 12);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Default", "Building 8", 8, 12, 2, 2, location);
+		addBuilding("Restaurant", "Building 8", 8, 12, 2, 2, location);
 //Building 9
 		location.sector = 2;
 		location.positionToEnterFromMainGrid = new Dimension(15, 12);
@@ -663,6 +665,15 @@ public class SetUpWorldFactory{
 			mb.setBuildingPanel(mp);
 			cityPanel.addGui(mb);
 			buildingsPanels.addBuildingPanel(mp);
+		}
+			break;
+		case "Restaurant":
+			RestaurantBuilding restb = new RestaurantBuilding(building);
+			if(restb != null){
+			RestaurantBuildingPanel restPanel = new RestaurantBuildingPanel(restb, name, buildingsPanels);
+			restb.setBuildingPanel(restPanel);
+			cityPanel.addGui(restb);
+			buildingsPanels.addBuildingPanel(restPanel);
 		}
 			break;
 		default:
