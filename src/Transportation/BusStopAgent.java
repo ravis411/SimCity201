@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import trace.AlertLog;
+import trace.AlertTag;
 import gui.interfaces.BusStop;
 import gui.interfaces.Passenger;
 import gui.interfaces.Bus;
@@ -39,12 +41,14 @@ public class BusStopAgent extends Agent implements BusStop {
 	//Messages
 	public void msgWaitingForBus(Passenger p) {
 		//Sent from passenger to bus stop
+		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, name, "A new passenger is waiting for the bus");
 		waitingPassengers.add(new myPassenger(p, PassengerState.waiting));
 		stateChanged();
 	}
 
 	public void msgAtStop(Bus bus) {
 		//Sent from bus to bus stop
+		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, name, "A bus has arrived at the stop");
 		currentBus = bus;
 		state = AgentState.BusInStop;
 		stateChanged();
@@ -60,7 +64,8 @@ public class BusStopAgent extends Agent implements BusStop {
 		synchronized(waitingPassengers) {
 			for (myPassenger mp : waitingPassengers) {
 				if (mp.passenger.equals(p)) {
-					print("Passenger has boarded bus");
+					AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, name, "A passenger has boarded the bus");
+					//print("Passenger has boarded bus");
 					mp.ps = PassengerState.boarded;
 				}
 			}
@@ -101,7 +106,8 @@ public class BusStopAgent extends Agent implements BusStop {
 	
 	//Actions
 	private void boardPassengers() {
-		print("Boarding passengers");
+		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, name, "Telling passengers to board");
+		//print("Boarding passengers");
 		for (myPassenger mp: waitingPassengers) {
 			mp.passenger.msgBusIsHere(currentBus);
 		}
@@ -112,6 +118,7 @@ public class BusStopAgent extends Agent implements BusStop {
 	}
 	
 	private void releaseBus() {
+		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, name, "Releasing bus to continue route");
 		currentBus.msgFreeToLeave();
 	}
 	
