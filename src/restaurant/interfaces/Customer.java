@@ -34,5 +34,6 @@ public interface Customer {
 	public abstract int getTableNum();
 	public abstract String getName();
 	public abstract double getMoney();
+	public abstract void msgFoodAtTable();
 
 }

@@ -11,6 +11,7 @@ import restaurant.Menu.Dish;
 import restaurant.Order.orderStatus;
 import restaurant.gui.CookGui;
 import restaurant.gui.WaiterGui;
+import restaurant.interfaces.Waiter;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -65,7 +66,7 @@ public class CookAgent extends Agent {
 	}
 	
 	// Messages
-	public void msgHereIsAnOrder(WaiterAgent waiter, int choice, int table, CustomerAgent cust) {
+	public void msgHereIsAnOrder(Waiter waiter, int choice, int table, CustomerAgent cust) {
 		print("Received order from " + waiter.getName());
 		orders.add(new Order(waiter, choice, table, cust));
 		stateChanged();

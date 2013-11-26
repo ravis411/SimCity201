@@ -3,6 +3,7 @@ package restaurant;
 import agent.Agent;
 import restaurant.gui.HostGui;
 import restaurant.interfaces.Customer;
+import restaurant.interfaces.Waiter;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -31,7 +32,7 @@ public class HostAgent extends Agent {
 
 	private String name;
 	private Semaphore atTable = new Semaphore(0,true);
-	private WaiterAgent requestedBreak = null;
+	private Waiter requestedBreak = null;
 
 	public HostGui hostGui = null;
 
@@ -84,7 +85,7 @@ public class HostAgent extends Agent {
 		}
 	}
 	
-	public void msgWaiterGoOnBreak(WaiterAgent w) {
+	public void msgWaiterGoOnBreak(Waiter w) {
 		requestedBreak = w;
 		stateChanged();
 	}

@@ -1,5 +1,7 @@
 package restaurant.interfaces;
 
+import restaurant.Order;
+
 //import restaurant.WaiterAgent.Check;
 
 /**
@@ -10,5 +12,8 @@ package restaurant.interfaces;
  */
 public interface Waiter {
 	public void msgCheckReady(Customer customer, double amount);
-	public String getName();	
+	public String getName();
+	public void msgBringFoodToTable(Order o);
+	public void msgOutOfFood(int choice, Customer customer);
+	public void msgBreakReply(boolean b);
 }

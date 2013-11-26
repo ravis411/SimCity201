@@ -21,7 +21,7 @@ import java.util.concurrent.Semaphore;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the WaiterAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public abstract class WaiterAgent extends Agent implements Waiter {
+public abstract class OldWaiterAgent extends Agent implements Waiter {
 	/*public List<CustomerAgent> myCustomers
 	= new ArrayList<CustomerAgent>();*/
 	
@@ -59,7 +59,7 @@ public abstract class WaiterAgent extends Agent implements Waiter {
 
 	public WaiterGui waiterGui = null;
 
-	public WaiterAgent(String name) {
+	public OldWaiterAgent(String name) {
 		super();
 
 		this.name = name;

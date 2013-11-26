@@ -112,7 +112,7 @@ public class WaiterGui implements Gui {
     	yDestination = 160;
     }
     
-    public void DoTakeFoodToTable(CustomerAgent customer) {
+    public void DoTakeFoodToTable(Customer customer) {
     	DoGoTakeOrder(customer);
     }
     
