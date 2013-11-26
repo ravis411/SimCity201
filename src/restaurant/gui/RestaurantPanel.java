@@ -279,6 +279,7 @@ public class RestaurantPanel extends JPanel implements ActionListener {
     
     public void resumeThread() {
     	host.resumeThread();
+    	
     	cook.resumeThread();
     	cashier.resumeThread();
     	for(WaiterAgent waiter: waiters) {
