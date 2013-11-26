@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
+import trace.AlertLog;
+import trace.AlertTag;
 import market.data.MarketData;
 import market.gui.MarketCustomerGui;
 import market.interfaces.MarketCustomer;
@@ -68,12 +70,12 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	// Messages
 	public void msgMarketCustomerAtCounter(){
 		event=MarketCustomerEvent.firstInLine;
-		print("At Counter and about to Order");
+		AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "At Counter and about to Order");
 		atCounter.release();
 	}
 	public void msgMarketCustomerReadyToTakeOrder(){
 		
-		print("Market Employee Says he will take an Order Now");
+		AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "Market Employee Says he will take an Order Now");
 		event= MarketCustomerEvent.employeeSaysOrderNow;
 	}
 	
@@ -89,7 +91,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		}
 		
 	public void msgMarketCustomerHereIsOrder(String foodType, int amount){
-		print("Got "+ amount + " "+ foodType);
+		AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "Got "+ amount + " "+ foodType);
 		foodTypeAmountRecieved=amount;
 		foodTypeRecieved=foodType;
 		event= MarketCustomerEvent.pay;
@@ -139,7 +141,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	synchronized void goToMarketEmployeeToOrder(){
 		
 		gui.DoGoToCounter();//walk to Counter to Order
-		print("Entered Market");
+		AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "Entered Market");
 		log.add(new LoggedEvent("Entered Market"));
 		try {
 			atCounter.acquire();
@@ -210,7 +212,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	void tellMarketEmployeeIfPartialOrderAcceptable(){
 		
 		if (willTakePartialOrder == false){
-			print("Leaveing Market");
+			AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "Leaveing Market");
 			leaveMarket();
 		}
 		else{
@@ -226,7 +228,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	private void payAndLeaveMarket() {
 		myPerson.msgAddObjectToBackpack(foodTypeRecieved, foodTypeAmountRecieved);
 		myPerson.setMoney(myPerson.getMoney()-menu.get(foodTypeRecieved)*foodTypeAmountRecieved);
-		print(myPerson.getName()+ " paid $" + menu.get(foodTypeRecieved)*foodTypeAmountRecieved+ " and now has $"+myPerson.getMoney()); 
+		AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), getNameOfRole()+ " paid $" + menu.get(foodTypeRecieved)*foodTypeAmountRecieved+ " and now has $"+myPerson.getMoney()); 
 		marketEmployee.msgMarketEmployeePayment(menu.get(foodTypeRecieved)*foodTypeAmountRecieved);
 		leaveMarket();
 		

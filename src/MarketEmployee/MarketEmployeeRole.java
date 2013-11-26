@@ -11,6 +11,8 @@ import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
 import market.interfaces.MarketManager;
 import market.test.mock.EventLog;
+import trace.AlertLog;
+import trace.AlertTag;
 import Person.Role.Role;
 
 /**
@@ -43,6 +45,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	 *
 	 */
 	public MarketEmployeeRole(){
+	
 	}
 
 
@@ -60,7 +63,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// Messages
 	
 	public void msgMarketEmployeeYourCounterNumber(int i) {
-		print("Manager Assigned Me Counter #" +(i+1) );
+		AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "Manager Assigned Me Counter #" +(i+1) );
 		gui.setCounter(i);
 		stateChanged();
 	}
@@ -69,7 +72,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	public void msgMarketEmployeeAtCounter(){
 		if (state==MarketEmployeeState.walkingToCounter){
 			event=MarketEmployeeEvent.atCounter;
-			print("At Counter and waiting for an Order");
+			AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "At Counter and waiting for an Order");
 			stateChanged();
 		}
 		else if (state==MarketEmployeeState.collectingOrder){
@@ -84,7 +87,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	public void msgMarketEmployeeOrder(String foodType, int FoodTypeAmount, MarketCustomerRole customer, String name){
 		marketCustomerOrder= new Order(foodType, FoodTypeAmount, customer,name);
-		print("Has reieved Order from " + customer.getNameOfRole()+ ": "+ name +" for "+ FoodTypeAmount+ " " + foodType );
+		AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "Has reieved Order from " + customer.getNameOfRole()+ ": "+ name +" for "+ FoodTypeAmount+ " " + foodType );
 		event=MarketEmployeeEvent.gotCustomerOrder;
 		stateChanged();
 	}
@@ -115,7 +118,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	
 	public void msgMarketEmployeeAttemptToFillOrder(String foodType, int amount, int orderNumber)
 	{
-		print("Has reieved Order number: " + orderNumber+ " from Market Manager for "+ amount+ " " + foodType );
+		AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "Has reieved Order number: " + orderNumber+ " from Market Manager for "+ amount+ " " + foodType );
 		myOrdersFromManager.add(new Order(foodType, amount, orderNumber));
 		event=MarketEmployeeEvent.getOrderForManager;
 		stateChanged();
@@ -124,7 +127,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	
 	public void msgMarketEmployeePayment(int moneyAmount) {
 		marketData.giveMarketMoney(moneyAmount);
-		print("Recieved money from customer and Added it to the Markets Money. Market Now has $" + marketData.getMarketMoney());
+		AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "Recieved money from customer and Added it to the Markets Money. Market Now has $" + marketData.getMarketMoney());
 		
 	}
 	/**
@@ -187,7 +190,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// Actions
 	
 	synchronized void goCollectFoodOrderAndBringToMarketManager(Order order){
-		print("Gettting Order for Manager");
+		AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "Gettting Order for Manager");
 		state=MarketEmployeeState.collectingOrder;
 		gui.goCollectFoodOrderForManager();
 		if (order.getFoodType() == "Steak")
@@ -366,7 +369,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			state=MarketEmployeeState.waiting;
 		}
 		else if (marketCustomerOrder.getAmountAvailable()<marketCustomerOrder.getAmount()){
-			print("Can only Satify Partial Order. Asking Customer if Partial Order Acceptable");
+			AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "Can only Satify Partial Order. Asking Customer if Partial Order Acceptable");
 			marketCustomerOrder.getMyCustomer().msgMarketCustomerDoYouWantPartialOrder(marketCustomerOrder.getFoodType(), marketCustomerOrder.getAmountAvailable());
 		}
 		else{
