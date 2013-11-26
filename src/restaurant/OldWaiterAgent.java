@@ -1,5 +1,6 @@
 package restaurant;
 
+import Person.Role.Role;
 import agent.Agent;
 import restaurant.gui.HostGui;
 import restaurant.Order;
@@ -21,7 +22,7 @@ import java.util.concurrent.Semaphore;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the WaiterAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class OldWaiterAgent extends Agent implements Waiter {
+public class OldWaiterAgent extends Role implements Waiter {
 	/*public List<CustomerAgent> myCustomers
 	= new ArrayList<CustomerAgent>();*/
 	
@@ -59,10 +60,8 @@ public class OldWaiterAgent extends Agent implements Waiter {
 
 	public WaiterGui waiterGui = null;
 
-	public OldWaiterAgent(String name) {
+	public OldWaiterAgent() {
 		super();
-
-		this.name = name;
 	}
 
 	public String getName() {
@@ -83,7 +82,7 @@ public class OldWaiterAgent extends Agent implements Waiter {
 	
 	//Messages
 	
-	public void msgSeatCustomer(CustomerAgent cust) {
+	public void msgSeatCustomer(Customer cust) {
 		myCustomers.add(new MyCustomer(cust));
 		event = AgentEvent.seatCustomer;
 		stateChanged();
@@ -94,7 +93,7 @@ public class OldWaiterAgent extends Agent implements Waiter {
 		stateChanged();
 	}
 	
-	public void msgTakeOrder(CustomerAgent c, int choice) {
+	public void msgTakeOrder(Customer c, int choice) {
 		for(int i=0; i<myCustomers.size(); i++) {
 			if(myCustomers.get(i).customer == c) {
 				myCustomers.get(i).setMealChoice(choice);
@@ -138,7 +137,7 @@ public class OldWaiterAgent extends Agent implements Waiter {
 		stateChanged();
 	}
 	
-	public void msgLeavingTable(CustomerAgent cust) {
+	public void msgLeavingTable(Customer cust) {
 		for(int i=0; i<myCustomers.size(); i++) {
 			if (cust.getTableNum() == myCustomers.get(i).customer.getTableNum()) {
 				print(cust + " leaving table " + (cust.getTableNum()+1));
@@ -147,7 +146,7 @@ public class OldWaiterAgent extends Agent implements Waiter {
 		stateChanged();
 	}
 	
-	public void msgOutOfFood(int menuItem, CustomerAgent c) {
+	public void msgOutOfFood(int menuItem, Customer c) {
 		print("We're out of " + menu.getDishName(menuItem) + "!");
 		for(int i=0; i<myCustomers.size(); i++) {
 			if(myCustomers.get(i).customer == c) {
@@ -181,7 +180,7 @@ public class OldWaiterAgent extends Agent implements Waiter {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		if(requestBreak == true) {
 			requestBreak();
 			return true;
@@ -441,13 +440,13 @@ public class OldWaiterAgent extends Agent implements Waiter {
 	}
 
 	private class MyCustomer {
-		public CustomerAgent customer;
+		public Customer customer;
 		private int mealChoice = -1;
 		private boolean orderTaken = false;
 		
 		private CustomerState state = CustomerState.seated;
 		
-		MyCustomer(CustomerAgent c) {
+		MyCustomer(Customer c) {
 			customer = c;
 		}
 		
@@ -467,9 +466,15 @@ public class OldWaiterAgent extends Agent implements Waiter {
 	}
 
 	@Override
-	public void msgOutOfFood(int choice, Customer customer) {
+	public boolean canGoGetFood() {
 		// TODO Auto-generated method stub
-		
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return "OldWaiterRole";
 	}
 }
 

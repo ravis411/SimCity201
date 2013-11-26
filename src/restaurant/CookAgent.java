@@ -1,5 +1,6 @@
 package restaurant;
 
+import Person.Role.Role;
 import agent.Agent;
 import restaurant.Order;
 import restaurant.Menu;
@@ -11,6 +12,7 @@ import restaurant.Menu.Dish;
 import restaurant.Order.orderStatus;
 import restaurant.gui.CookGui;
 import restaurant.gui.WaiterGui;
+import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
 
 import java.util.*;
@@ -21,7 +23,7 @@ import java.util.Random;
  * Restaurant Cook Agent
  */
 
-public class CookAgent extends Agent {
+public class CookAgent extends Role {
 	public List<Order> orders = new ArrayList<Order>();
 	public List<Food> inventory = new ArrayList<Food>();
 	public List<MarketAgent> markets = new ArrayList<MarketAgent>();
@@ -40,18 +42,12 @@ public class CookAgent extends Agent {
 	{none, placedOrder, reOrder, orderPartiallyFulfilled, orderFulfilled};
 	AgentEvent event = AgentEvent.none;
 
-	public CookAgent(String name) {
+	public CookAgent() {
 		super();
-
-		this.name = name;
 		
 		for(int i=0; i<4; i++) {
 			inventory.add(new Food(menu.getDishName(i), 5000, 1));
 		}
-	}
-	
-	public String getName() {
-		return name;
 	}
 	
 	public void addMarket(MarketAgent market) {
@@ -66,9 +62,9 @@ public class CookAgent extends Agent {
 	}
 	
 	// Messages
-	public void msgHereIsAnOrder(Waiter waiter, int choice, int table, CustomerAgent cust) {
+	public void msgHereIsAnOrder(Waiter waiter, int choice, int table, Customer customer) {
 		print("Received order from " + waiter.getName());
-		orders.add(new Order(waiter, choice, table, cust));
+		orders.add(new Order(waiter, choice, table, customer));
 		stateChanged();
 	}
 	public void msgOrderFilled(int ingredientNum, int quantity) {
@@ -91,7 +87,7 @@ public class CookAgent extends Agent {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		for(int i=0; i<inventory.size(); i++) {
 			if(inventory.get(i).inventory < 1 && event != AgentEvent.placedOrder) {
 				goToMarket(i);
@@ -182,6 +178,16 @@ public class CookAgent extends Agent {
 		public void subtractFromInventory(int amount) {
 			inventory = inventory-amount;
 		}
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		return "CookRole";
 	}
 
 }

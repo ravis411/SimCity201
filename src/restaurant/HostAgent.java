@@ -1,5 +1,6 @@
 package restaurant;
 
+import Person.Role.Role;
 import agent.Agent;
 import restaurant.gui.HostGui;
 import restaurant.interfaces.Customer;
@@ -15,7 +16,7 @@ import java.util.concurrent.Semaphore;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class HostAgent extends Agent {
+public class HostAgent extends Role {
 	static final int NTABLES = 4;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
@@ -30,16 +31,14 @@ public class HostAgent extends Agent {
 	//note that tables is typed with Collection semantics.
 	//Later we will see how it is implemented
 
-	private String name;
 	private Semaphore atTable = new Semaphore(0,true);
 	private Waiter requestedBreak = null;
 
 	public HostGui hostGui = null;
 
-	public HostAgent(String name) {
+	public HostAgent() {
 		super();
 
-		this.name = name;
 		// make some tables
 		tables = new ArrayList<Table>(NTABLES);
 		for (int ix = 1; ix <= NTABLES; ix++) {
@@ -53,11 +52,6 @@ public class HostAgent extends Agent {
 	
 	public int getTableY(int tableNum) {
 		return ((ArrayList<Table>) tables).get(tableNum).getY();
-	}
-
-
-	public String getName() {
-		return name;
 	}
 
 	public List getWaitingCustomers() {
@@ -75,10 +69,10 @@ public class HostAgent extends Agent {
 		stateChanged();
 	}
 
-	public void msgLeavingTable(CustomerAgent cust) {
+	public void msgLeavingTable(Customer customer) {
 		for (Table table : tables) {
-			if (table.getOccupant() == cust) {
-				print(cust + " leaving " + table);
+			if (table.getOccupant() == customer) {
+				print(customer + " leaving " + table);
 				table.setUnoccupied();
 				stateChanged();
 			}
@@ -107,7 +101,7 @@ public class HostAgent extends Agent {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		if (!waitingCustomers.isEmpty()){
 			for(int w=0; w<waitingCustomers.size(); w++){
 				if(waitingCust>3) {
@@ -241,6 +235,16 @@ public class HostAgent extends Agent {
 		public int getY() {
 			return yCoor;
 		}
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		return "HostRole";
 	}
 	
 	/*public boolean setFrontDesk() {

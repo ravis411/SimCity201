@@ -1,5 +1,6 @@
 package restaurant;
 
+import Person.Role.Role;
 import agent.Agent;
 import restaurant.gui.HostGui;
 import restaurant.Order;
@@ -21,7 +22,7 @@ import java.util.concurrent.Semaphore;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the WaiterAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public abstract class WaiterAgent extends Agent implements Waiter {
+public abstract class WaiterAgent extends Role implements Waiter {
 	/*public List<CustomerAgent> myCustomers
 	= new ArrayList<CustomerAgent>();*/
 	
@@ -181,7 +182,7 @@ public abstract class WaiterAgent extends Agent implements Waiter {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		if(requestBreak == true) {
 			requestBreak();
 			return true;

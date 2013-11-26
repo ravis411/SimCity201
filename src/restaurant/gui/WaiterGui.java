@@ -81,7 +81,7 @@ public class WaiterGui implements Gui {
     	yDestination = 40;
     }
     
-    public void DoBringToTable(CustomerAgent customer) {
+    public void DoBringToTable(Customer customer) {
         xDestination = customer.getTableX() - 50;
         yDestination = customer.getTableY() - 70;
         xTable = customer.getTableX();

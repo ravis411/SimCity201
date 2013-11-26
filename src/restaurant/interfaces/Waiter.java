@@ -1,5 +1,6 @@
 package restaurant.interfaces;
 
+import restaurant.CustomerAgent;
 import restaurant.Order;
 
 //import restaurant.WaiterAgent.Check;
@@ -22,4 +23,10 @@ public interface Waiter {
 	void msgAtPlatingArea();
 	void msgAtCookingArea();
 	void msgAtTable();
+	public boolean getBreakStatus();
+	public int getNumberOfCustomers();
+	public void msgGoTakeOrder();
+	public void msgTakeOrder(Customer customerAgent, int mealChoice);
+	public void msgSeatCustomer(Customer customer);
+	public void msgLeavingTable(Customer customerAgent);
 }
