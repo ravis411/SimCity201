@@ -229,6 +229,14 @@ public class TracePanel extends JScrollPane implements AlertListener {
 		visibleTags = Collections.synchronizedSet(EnumSet.allOf(AlertTag.class));
 		filterTracePanel();
 	}
+	/**
+	 * Disables Alerts to be displayed for all Tag values in {@link AlertTag}.
+	 * Convenience method.
+	 */
+	public void hideAlertsForAllTags() {
+		visibleTags.clear();
+		filterTracePanel();
+	}
 	
 	/**
 	 * Enables Alerts to be displayed for all Level values in {@link AlertLevel}.
@@ -236,6 +244,14 @@ public class TracePanel extends JScrollPane implements AlertListener {
 	 */
 	public void showAlertsForAllLevels() {
 		visibleLevels = Collections.synchronizedSet(EnumSet.allOf(AlertLevel.class));
+		filterTracePanel();
+	}
+	/**
+	 * Disables Alerts to be displayed for all Level values in {@link AlertLevel}.
+	 * Convenience method.
+	 */
+	public void hideAlertsForAllLevels() {
+		visibleLevels.clear();
 		filterTracePanel();
 	}
 

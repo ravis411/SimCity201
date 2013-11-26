@@ -16,6 +16,7 @@ public class TraceControlPanel extends Panel implements ActionListener {
 	JCheckBox showAll = new JCheckBox("Show All");
 	JCheckBox showINFO = new JCheckBox("Show Level: INFO");
 	JCheckBox showMESSAGE = new JCheckBox("Show Level: MESSAGE");
+	
 	JCheckBox showPERSON = new JCheckBox("Show Tag: PERSON");
 	JCheckBox showVehicle = new JCheckBox("Show Tag: VEHICLE");
 	JCheckBox showCity = new JCheckBox("Show Tag: CITY");
@@ -56,6 +57,31 @@ public class TraceControlPanel extends Panel implements ActionListener {
 		showMarket.addActionListener(this);
 	}
 
+	private void showAll(){
+		panel.showAlertsForAllTags();
+		panel.showAlertsForAllLevels();
+		showINFO.setSelected(true);
+		showMESSAGE.setSelected(true);
+		showPERSON.setSelected(true);
+		showVehicle.setSelected(true);
+		showCity.setSelected(true);
+		showHome.setSelected(true);
+		showMarket.setSelected(true);
+		showBank.setSelected(true);
+	}
+	private void hideAll(){
+		panel.hideAlertsForAllTags();
+		panel.hideAlertsForAllLevels();
+		showINFO.setSelected(false);
+		showMESSAGE.setSelected(false);
+		showPERSON.setSelected(false);
+		showVehicle.setSelected(false);
+		showCity.setSelected(false);
+		showHome.setSelected(false);
+		showMarket.setSelected(false);
+		showBank.setSelected(false);
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() instanceof JCheckBox){
@@ -63,22 +89,10 @@ public class TraceControlPanel extends Panel implements ActionListener {
 			
 			if(c == showAll){
 				if(c.isSelected()){
-					panel.showAlertsForAllTags();
-					panel.showAlertsForAllLevels();
-					showINFO.setSelected(true);
-					showPERSON.setSelected(true);
-					showVehicle.setSelected(true);
-					showCity.setSelected(true);
+					showAll();
 				}
-			}
-			else if(c == showCity){
-				if(c.isSelected()){
-					panel.showAlertsWithTag(AlertTag.GENERAL_CITY);
-				}
-				else
-				{
-					panel.hideAlertsWithTag(AlertTag.GENERAL_CITY);
-					showAll.setSelected(false);
+				else{
+					hideAll();
 				}
 			}
 			else if(c == showINFO){
@@ -87,6 +101,15 @@ public class TraceControlPanel extends Panel implements ActionListener {
 				}
 				else{
 					panel.hideAlertsWithLevel(AlertLevel.INFO);
+					showAll.setSelected(false);
+				}
+			}
+			else if(c == showMESSAGE){
+				if(c.isSelected()){
+					panel.showAlertsWithLevel(AlertLevel.MESSAGE);
+				}
+				else{
+					panel.hideAlertsWithLevel(AlertLevel.MESSAGE);
 					showAll.setSelected(false);
 				}
 			}
@@ -110,18 +133,47 @@ public class TraceControlPanel extends Panel implements ActionListener {
 					showAll.setSelected(false);
 				}
 			}
-			else if(c == showMESSAGE){
+			else if(c == showCity){
 				if(c.isSelected()){
-					panel.showAlertsWithLevel(AlertLevel.MESSAGE);
+					panel.showAlertsWithTag(AlertTag.GENERAL_CITY);
 				}
-				else{
-					panel.hideAlertsWithLevel(AlertLevel.MESSAGE);
+				else
+				{
+					panel.hideAlertsWithTag(AlertTag.GENERAL_CITY);
 					showAll.setSelected(false);
 				}
 			}
 			else if(c == showBank){
 				if(c.isSelected()){
 					panel.showAlertsWithTag(AlertTag.BANK);
+					panel.showAlertsWithTag(AlertTag.BANK_CUSTOMER);
+					panel.showAlertsWithTag(AlertTag.BANK_TELLER);
+				}
+				else{
+					panel.hideAlertsWithTag(AlertTag.BANK);
+					panel.hideAlertsWithTag(AlertTag.BANK_CUSTOMER);
+					panel.hideAlertsWithTag(AlertTag.BANK_TELLER);
+				}
+			}
+			else if(c == showHome){
+				if(c.isSelected()){
+					panel.showAlertsWithTag(AlertTag.APARTMENT_MANAGER);
+					panel.showAlertsWithTag(AlertTag.HOME_ROLE);
+				}
+				else{
+					panel.hideAlertsWithTag(AlertTag.APARTMENT_MANAGER);
+					panel.hideAlertsWithTag(AlertTag.HOME_ROLE);
+					showAll.setSelected(false);
+				}
+			}
+			else if(c == showMarket){
+				if(c.isSelected()){
+					panel.showAlertsWithTag(AlertTag.MARKET);
+				}
+				else
+				{
+					panel.hideAlertsWithTag(AlertTag.MARKET);
+					showAll.setSelected(false);
 				}
 			}
 			

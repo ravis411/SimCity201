@@ -223,11 +223,16 @@ public class PersonAgent extends Agent {
 		//cue the Role schedulers
 		boolean outcome = false;
 		for(Role r: roles){
+			boolean somethingIsActive = false;
 			if(r.isActive()){
+				somethingIsActive = true;
 				outcome = r.pickAndExecuteAction() || outcome;
 				if(outcome)
 					return outcome;
 			}
+			
+			if(somethingIsActive)
+				return true;
 		}
 		
 		if(!itemsNeeded.isEmpty()){
