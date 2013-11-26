@@ -3,6 +3,7 @@ package bank;
 import Person.Role.Role;
 import bank.BankTellerRole;
 import bank.gui.ClientGui;
+import building.BuildingList;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -14,6 +15,11 @@ import trace.AlertTag;
 /**
  * 
  * @author Byron Choy
+ *
+ *possible scenarios:
+ *	get loan
+ *	
+ *
  *
  */
 
@@ -142,16 +148,29 @@ public class BankClientRole extends Role {
 		state2 = inLineState.beingHelped;
 		stateChanged();
 	}
+	/**
+	 *sent by the bank teller. Gives the client his new account.
+	 * @param a = account
+	 */
 	public void msgAccountOpened(Account a){
 		myAccount = a;
 		stateChanged();
 	}
+	/**
+	 * sent by the bank teller. Does deposits, withdrawals, and loan failures.
+	 * @param n = amount that is sent, 0 is sent when things fail (withdrawal fail, loan fail)
+	 */
 	public void msgTransactionCompleted(double n){
 		myPerson.setMoney(myPerson.getMoney() + n);
 		state1 = bankState.nothing;
 		state2 = inLineState.leaving;
 		stateChanged();
 	}
+	
+	/**
+	 * sent by the bank teller when a loan is approved. 
+	 * @param n = loan amount
+	 */
 	public void msgLoanApproved(double n){
 		hasLoan = true;
 		//		amountDue = n;
@@ -207,6 +226,10 @@ public class BankClientRole extends Role {
 		return false;
 	}
 	//Actions
+	/**
+	 * Action that sends client to the waiting area. Adds the number announcer and the loan number announcer and carries out the GUI. 
+	 * Acquires a semaphore atWaitingArea.
+	 */
 	private void goToWaitingArea(){
 		DoGoToWaitingArea();
 		announcer.msgAddClient(this);
@@ -217,6 +240,13 @@ public class BankClientRole extends Role {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Sends client to the specified line. Sends the announcer a message he is on the way to stop the announcer from sending the same number out.
+	 * Acquires the atLine semaphore.
+	 * After the semaphore, sends a message to the teller.
+	 * @param l = line number
+	 */
 	private void goToLine(int l){
 		announcer.msgOnTheWay();
 		DoGoToLine(l);
@@ -230,6 +260,11 @@ public class BankClientRole extends Role {
 		teller.msgInLine(this);
 		state2 = inLineState.atDesk;
 	}
+	
+	/**
+	 * Same as the goToLine action, but for the loan line specifically. 
+	 * 
+	 */
 	private void goToLoanLine(){
 		DoGoToLine(5);
 		loanAnnouncer.msgOnTheWay();
@@ -242,12 +277,20 @@ public class BankClientRole extends Role {
 		loanTeller.msgInLine(this);
 		state2 = inLineState.atDesk;
 	}
+	
+	/**
+	 * Sends the teller a message to open a new account.
+	 * 
+	 */
 	private void openAccount(){
 //		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to open an account.");
 		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to open an account.");		
 		teller.msgOpenAccount();
 		state2 = inLineState.transactionProcessing;
 	}
+	/**
+	 * Sends the loan teller a message to open a new account.
+	 */
 	private void loanOpenAccount(){
 //		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to open an account.");
 		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to open an account.");		
@@ -272,10 +315,15 @@ public class BankClientRole extends Role {
 		state2 = inLineState.transactionProcessing;
 
 	}
+	/**
+	 * deactivates the role and removes its role from the buildingList.
+	 */
 	private void Leaving(){
 		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Thanks, goodbye.");
 		clientGui.DoLeave();
+		BuildingList.findBuildingWithName(BANK_CLIENT_ROLE).removeRole(this);
 		state2 = inLineState.noTicket;
+		deactivate();
 	}
 
 
@@ -310,7 +358,10 @@ public class BankClientRole extends Role {
 	public void setGui(ClientGui gui) {
 		clientGui = gui;
 	}
-	
+	/**
+	 * Sets the intent of the client. 
+	 * @param trans - intent of the client. Deposit, open, withdraw, or loan.
+	 */
 	public void setIntent(String trans){
 		requestAmount = myPerson.getMoneyNeeded();
 		if (trans.equalsIgnoreCase("deposit")){
@@ -331,7 +382,6 @@ public class BankClientRole extends Role {
 //			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + loanTicketNum);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + loanTicketNum);
 		}
-        this.activate();
 
 		/*
 		//hack to ensure there are at least some bank accounts at simulation start

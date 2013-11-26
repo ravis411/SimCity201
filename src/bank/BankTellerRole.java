@@ -44,31 +44,55 @@ public class BankTellerRole extends Role implements Employee{
 
 	//	Messages
 
+	/**
+	 * Message stating that the teller is at his station and ready to take orders. Releases the atStation semaphore.
+	 */
 	public void msgAtStation(){
 		atStation.release();
 		locationState = location.station;
 		stateChanged();
 	}
 
+	/**
+	 * Message that releases the atIntermediate semaphore. Only for aesthetics - makes it so the teller doesn't move through objects
+	 */
 	public void msgAtIntermediate(){
 		atIntermediate.release();
 		stateChanged();
 	}
 
+	/**
+	 * message received by a bankClientRole that there is someone at the desk. 
+	 * @param b - bankClientRole being worked with
+	 */
 	public void msgInLine(BankClientRole b){
 		myClient = b;
 		state = requestState.notBeingHelped;
 		stateChanged();
 	}
+	
+	/**
+	 * message received by bankClientRole asking to open an account.
+	 */
 	public void msgOpenAccount(){
 		state = requestState.open;
 		stateChanged();
 	}
+
+	/**
+	 * message received by a bankClientRole asking to deposit money into an account.
+	 * @param a - amount of money
+	 */
 	public void msgDeposit(double a){
 		transactionAmount = a;
 		state = requestState.deposit;
 		stateChanged();
 	}
+	/**
+	 * message received by a bankClientRole asking to withdraw money from an account.
+	 * @param a - amount of money
+	 */
+
 	public void msgWithdraw(double a){
 		transactionAmount = a;
 		state = requestState.withdrawal;
@@ -106,6 +130,10 @@ public class BankTellerRole extends Role implements Employee{
 
 
 	//	Actions
+	/**
+	 * After getting to the intermediate position, sends the teller to the right station. After he gets there, 
+	 * sends a message to the number announcer enabling him to increment the announcer.
+	 */
 	private void goToStation(){
 		try {
 			atIntermediate.acquire();
@@ -121,12 +149,20 @@ public class BankTellerRole extends Role implements Employee{
 		announcer.msgAddBankTeller(this);
 		announcer.msgTransactionComplete(LineNum,this, null);
 	}
+	/**
+	 * Greeting the client
+	 * @param b - bankClientRole
+	 */
 	private void receiveClient(BankClientRole b){
 			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Recieving new client");
 			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Hello " + b + ", how may I help you.");
 		b.msgMayIHelpYou();
 		state = requestState.pending;
 	}
+	/**
+	 * Processes a deposit. If the account exists, deposits the asked amount into the account.
+	 * @param b - bankClientRole
+	 */
 	private void processDeposit(BankClientRole b){
 			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Ok, hold on.");
 		for (Account a : Accounts){
@@ -140,6 +176,11 @@ public class BankTellerRole extends Role implements Employee{
 			}
 		}
 	}
+	
+	/**
+	 * Processes a withdrawal. If there is enough money, withdraws that amount. If not, just quits with an error message.
+	 * @param b - bankClientRole
+	 */
 	private void processWithdrawal(BankClientRole b){
 		for (Account a : Accounts){
 			if (a.client == b){
@@ -157,6 +198,10 @@ public class BankTellerRole extends Role implements Employee{
 			}
 		}
 	}
+	/**
+	 * Opens new account
+	 * @param b - bankClientRole
+	 */
 	private void openAccount(BankClientRole b){
 		Account a = new Account(b,0);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"New bank account has been opened for " + b);
