@@ -347,7 +347,6 @@ private void IWantToRepay(){
 private void Leaving(){
 	AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Thanks, goodbye.");
 	clientGui.DoLeave();
-	//	BuildingList.findBuildingWithName(BANK_CLIENT_ROLE).removeRole(this);
 	state2 = inLineState.noTicket;
 	deactivate();
 }

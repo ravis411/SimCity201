@@ -2,6 +2,7 @@ package bank.gui;
 
 import interfaces.GuiPanel;
 import bank.*;
+import building.BuildingList;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -217,6 +218,7 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 		if (r instanceof BankClientRole){
 		    BankClientRole clientRole = (BankClientRole) r;
 		    BankClientRoles.remove(clientRole);
+			BuildingList.findBuildingWithName("Bank").removeRole(clientRole);
 		    guis.remove(clientRole.getGui());
 
 		}
