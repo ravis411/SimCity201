@@ -14,6 +14,8 @@ import bank.*;
 /**
  * Main GUI class.
  * Contains the main frame and subsequent panels
+ * Author Byron Choy
+ * 
  */
 public class BankGui extends JFrame implements ActionListener {
    

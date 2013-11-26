@@ -11,6 +11,11 @@ import trace.AlertTag;
 import util.Interval;
 import Person.Role.Role;
 
+/**
+ * 
+ * @author Byron Choy
+ *
+ */
 
 public class BankTellerRole extends Role implements Employee{
 	private BankClientRole myClient;
