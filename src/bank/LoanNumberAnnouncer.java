@@ -5,9 +5,9 @@ import agent.Agent;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
-public class loanNumberAnnouncer extends Agent{
-	List<bankClientRole> clients = new ArrayList<bankClientRole>();
-	loanTellerRole loanTeller;
+public class LoanNumberAnnouncer extends Agent{
+	List<BankClientRole> clients = new ArrayList<BankClientRole>();
+	LoanTellerRole loanTeller;
 	private int doneTeller;
 	private int loanNumber = 0;
 	public enum numberState{pending, announceL};
@@ -15,11 +15,11 @@ public class loanNumberAnnouncer extends Agent{
 	private String name;
 	private boolean onTheWay = false;
 
-	public void setLoanTeller(loanTellerRole lt){
+	public void setLoanTeller(LoanTellerRole lt){
 		loanTeller = lt;
 	} 
 
-	public loanNumberAnnouncer(String n){
+	public LoanNumberAnnouncer(String n){
 		super();
 		name = n;
 	}
@@ -27,11 +27,11 @@ public class loanNumberAnnouncer extends Agent{
 		onTheWay = true;
 		stateChanged();
 	}
-	public void msgAddLoanTeller(loanTellerRole l){
+	public void msgAddLoanTeller(LoanTellerRole l){
 		loanTeller = l;
 		stateChanged();
 	}
-	public void msgAddClient(bankClientRole c){
+	public void msgAddClient(BankClientRole c){
 		Do(c + " added.");
 		clients.add(c);
 		stateChanged();
@@ -62,7 +62,7 @@ public class loanNumberAnnouncer extends Agent{
 				e.printStackTrace();
 			}
 			Do("Calling loan ticket " + loanNumber);
-			for (bankClientRole b : clients){
+			for (BankClientRole b : clients){
 				b.msgCallingLoanTicket(loanNumber, 5, loanTeller);
 			}
 		}
