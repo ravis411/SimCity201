@@ -565,6 +565,7 @@ public class PersonAgent extends Agent {
 	  */
 
 	  
+	  
 	  GoToLocation("Bank", transport);
 	  
 	  BankClientRole role = (BankClientRole) findRole(Role.BANK_CLIENT_ROLE);

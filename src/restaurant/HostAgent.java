@@ -1,8 +1,10 @@
 package restaurant;
 
+import Person.Role.Role;
 import agent.Agent;
 import restaurant.gui.HostGui;
 import restaurant.interfaces.Customer;
+import restaurant.interfaces.Waiter;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -14,7 +16,7 @@ import java.util.concurrent.Semaphore;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class HostAgent extends Agent {
+public class HostAgent extends Role {
 	static final int NTABLES = 4;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
@@ -22,23 +24,21 @@ public class HostAgent extends Agent {
 	= new ArrayList<CustomerAgent>();
 	public List<WaiterAgent> waiters
 	= new ArrayList<WaiterAgent>();*/
-	private Vector<CustomerAgent> waitingCustomers = new Vector<CustomerAgent>();
-	private Vector<WaiterAgent> waiters = new Vector<WaiterAgent>();
+	private Vector<Customer> waitingCustomers = new Vector<Customer>();
+	private Vector<Waiter> waiters = new Vector<Waiter>();
 	public Collection<Table> tables;
 	int waitingCust = 0;
 	//note that tables is typed with Collection semantics.
 	//Later we will see how it is implemented
 
-	private String name;
 	private Semaphore atTable = new Semaphore(0,true);
-	private WaiterAgent requestedBreak = null;
+	private Waiter requestedBreak = null;
 
 	public HostGui hostGui = null;
 
-	public HostAgent(String name) {
+	public HostAgent() {
 		super();
 
-		this.name = name;
 		// make some tables
 		tables = new ArrayList<Table>(NTABLES);
 		for (int ix = 1; ix <= NTABLES; ix++) {
@@ -54,11 +54,6 @@ public class HostAgent extends Agent {
 		return ((ArrayList<Table>) tables).get(tableNum).getY();
 	}
 
-
-	public String getName() {
-		return name;
-	}
-
 	public List getWaitingCustomers() {
 		return waitingCustomers;
 	}
@@ -68,23 +63,23 @@ public class HostAgent extends Agent {
 	}
 	// Messages
 
-	public void msgIWantFood(CustomerAgent cust) {
+	public void msgIWantFood(Customer cust) {
 		waitingCustomers.add(cust);
 		waitingCust++;
 		stateChanged();
 	}
 
-	public void msgLeavingTable(CustomerAgent cust) {
+	public void msgLeavingTable(Customer customer) {
 		for (Table table : tables) {
-			if (table.getOccupant() == cust) {
-				print(cust + " leaving " + table);
+			if (table.getOccupant() == customer) {
+				print(customer + " leaving " + table);
 				table.setUnoccupied();
 				stateChanged();
 			}
 		}
 	}
 	
-	public void msgWaiterGoOnBreak(WaiterAgent w) {
+	public void msgWaiterGoOnBreak(Waiter w) {
 		requestedBreak = w;
 		stateChanged();
 	}
@@ -106,7 +101,7 @@ public class HostAgent extends Agent {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		if (!waitingCustomers.isEmpty()){
 			for(int w=0; w<waitingCustomers.size(); w++){
 				if(waitingCust>3) {
@@ -144,7 +139,7 @@ public class HostAgent extends Agent {
 
 	// Actions
 
-	private void getWaiter(CustomerAgent customer, int table, int xCoor, int yCoor) {
+	private void getWaiter(Customer customer, int table, int xCoor, int yCoor) {
 		int assignedWaiter = 0;
 		for(int i=0; i<waiters.size(); i++) {
 			if(waiters.get(i).getBreakStatus() == false) {
@@ -178,9 +173,9 @@ public class HostAgent extends Agent {
 		requestedBreak = null;
 	}
 	
-	private void notifyCustomerOfWait(CustomerAgent cust) {
-		print(cust.getCustomerName() + ", the restaurant is full. There's a wait to be seated.");
-		cust.msgRestaurantFull();
+	private void notifyCustomerOfWait(Customer customer) {
+		print(customer.getCustomerName() + ", the restaurant is full. There's a wait to be seated.");
+		customer.msgRestaurantFull();
 	}
 	
 	//utilities
@@ -193,12 +188,12 @@ public class HostAgent extends Agent {
 		return hostGui;
 	}*/
 	
-	public void addWaiter(WaiterAgent w) {
+	public void addWaiter(Waiter w) {
 		waiters.add(w);
 	}
 
 	private class Table {
-		CustomerAgent occupiedBy;
+		Customer occupiedBy;
 		int tableNumber;
 		int xCoor;
 		int yCoor;
@@ -213,15 +208,15 @@ public class HostAgent extends Agent {
 			this.yCoor = yCoor;
 		}
 
-		void setOccupant(CustomerAgent cust) {
-			occupiedBy = cust;
+		void setOccupant(Customer customer) {
+			occupiedBy = customer;
 		}
 
 		void setUnoccupied() {
 			occupiedBy = null;
 		}
 
-		CustomerAgent getOccupant() {
+		Customer getOccupant() {
 			return occupiedBy;
 		}
 
@@ -240,6 +235,16 @@ public class HostAgent extends Agent {
 		public int getY() {
 			return yCoor;
 		}
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		return "HostRole";
 	}
 	
 	/*public boolean setFrontDesk() {

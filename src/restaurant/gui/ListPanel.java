@@ -111,7 +111,7 @@ public class ListPanel extends JPanel implements ActionListener {
             list.add(button);
             checkList.add(checkbox);
             view.add(button);
-            restPanel.addPerson(type, name);//puts customer on list
+            //restPanel.addPerson(type, name);//puts customer on list
             restPanel.showInfo(type, name);//puts hungry button on panel
             validate();
         }
@@ -133,7 +133,7 @@ public class ListPanel extends JPanel implements ActionListener {
             list.add(button);
             checkList.add(checkbox);
             view.add(button);
-            restPanel.addPerson(type, name);//puts customer on list
+            //restPanel.addPerson(type, name);//puts customer on list
             restPanel.showInfo(type, name);//puts hungry button on panel
             validate();
         }
@@ -152,7 +152,7 @@ public class ListPanel extends JPanel implements ActionListener {
             button.addActionListener(this);
             list.add(button);
             view.add(button);
-            restPanel.addHungryPerson(type, name, CBState);//puts customer on list
+            //restPanel.addHungryPerson(type, name, CBState);//puts customer on list
             //restPanel.showInfo(type, name);//puts hungry button on panel
             validate();
         }

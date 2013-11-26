@@ -56,6 +56,7 @@ public class BusStopAgent extends Agent implements BusStop {
 	
 	public void msgLeavingStop() {
 		state = AgentState.Idle;
+		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, name, "A bus has left the stop");
 		stateChanged();
 	}
 	
@@ -120,6 +121,7 @@ public class BusStopAgent extends Agent implements BusStop {
 	private void releaseBus() {
 		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, name, "Releasing bus to continue route");
 		currentBus.msgFreeToLeave();
+		state = AgentState.Idle;
 	}
 	
 	public int passengerSize() {
