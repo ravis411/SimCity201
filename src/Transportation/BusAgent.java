@@ -56,6 +56,7 @@ public class BusAgent extends Agent implements Vehicle {
 
 	//Messages
 	public void msgGettingOnBus(Passenger p) {
+		state = AgentState.loading;
 		getPassengers().add(new myPassenger(p, PassengerState.riding));
 		stateChanged();
 	}
@@ -72,6 +73,7 @@ public class BusAgent extends Agent implements Vehicle {
 	}
 	
 	public void msgGettingOffBus(Passenger p) {
+		state = AgentState.unloading;
 		synchronized(getPassengers()) {
 			for (myPassenger mp : getPassengers()) {
 				if (mp.passenger.equals(p)) {
@@ -86,21 +88,21 @@ public class BusAgent extends Agent implements Vehicle {
 	//Scheduler
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		print("Location is " + location);
+		//print("Location is " + location);
 		if (state == AgentState.unloading) {
 			synchronized(passengers) {
 				for (myPassenger mp : passengers) {
 					if (mp.ps == PassengerState.disembarking) {
 						removePassenger(mp);
+						return true;
 					}
 				}
 			}
-			notifyPassengers();
-			state = AgentState.loading;
-			return true;
+			
 		}
 		if (state == AgentState.loaded) {
 			GoToNextStop();
+			notifyPassengers();
 			return true;
 		}
 		
@@ -120,11 +122,11 @@ public class BusAgent extends Agent implements Vehicle {
 		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Going to next stop");
 		state = AgentState.inTransit;
 		
-		print("Count is now: " + count);
+		//print("Count is now: " + count);
 		count++;
 		location = stops.get(count%3);
-		print("Location is now: " + location);
-		print("Count is now: " + count);
+		//print("Location is now: " + location);
+		//print("Count is now: " + count);
 		//agentGui.DoGoTo(location);
 		//Need some way of notifying bus that we have arrived at next stop
 	}
