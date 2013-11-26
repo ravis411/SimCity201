@@ -13,6 +13,8 @@ import java.util.Queue;
 import java.util.concurrent.Semaphore;
 
 import residence.HomeRole;
+import restaurant.CashierRole;
+import restaurant.CookRole;
 import restaurant.HostRole;
 import restaurant.NewWaiterRole;
 import restaurant.OldWaiterRole;
@@ -119,8 +121,12 @@ public class PersonAgent extends Agent {
 				Waiter w = (Waiter) r;
 				Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(roleLocation);
 				HostRole role = (HostRole) rest.getHostRole();
+				CookRole cook = (CookRole) rest.getCookRole();
+				CashierRole cashier = (CashierRole) rest.getCashierRole();
 				role.addWaiter(w);
 				w.setHost(role);
+				w.setCook(cook);
+				w.setCashier(cashier);
 			}
 			//gui.setStartingStates(roleLocation);
 			gui.setStartingStates(roleLocation);

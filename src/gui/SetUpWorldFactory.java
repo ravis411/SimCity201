@@ -506,7 +506,7 @@ public class SetUpWorldFactory{
 			case "Person 2":
 				//p1.setInitialRole(new HomeRole(p1), "House 2");
 				break;
-			case "Person 4":
+			case "Person 6":
 				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_WAITER_ROLE), "Restaurant 1");
 				break;
 			case "Person 3":
@@ -515,7 +515,7 @@ public class SetUpWorldFactory{
 			case "Person 5":
 				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_COOK_ROLE), "Restaurant 1");
 				break;
-			case "Person 6":
+			case "Person 4":
 				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_CASHIER_ROLE), "Restaurant 1");
 				break;
 			default:
