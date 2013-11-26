@@ -3,12 +3,18 @@ package gui.Building;
 import gui.BuildingsPanels;
 import interfaces.GuiPanel;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.JLabel;
 
+import Person.Role.PassengerRole;
 import Person.Role.Role;
+import Transportation.BusStopAgent;
+import Transportation.BusStopAnimationPanel;
+import Transportation.test.BusTest1;
 
 
 /**
@@ -19,15 +25,34 @@ import Person.Role.Role;
  */
 public class BusStopBuildingPanel extends BuildingPanel{
 	
+	BusStopAgent busStopAgent = null;
+	BusStopAnimationPanel animationPanel = null;
+	
+	
 	public BusStopBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels) {
 		super(r, name, buildingPanels);
 		
 		this.removeAll();
 		
 		setBackground( new Color(7,100,7) );
-		
+		this.setLayout(new BorderLayout());
 		JLabel j = new JLabel( myName );
-		add( j );
+		add( j, BorderLayout.NORTH );
+		animationPanel = new BusStopAnimationPanel();
+		add(animationPanel, BorderLayout.CENTER);
+		
+		busStopAgent = new BusStopAgent(name);
+		busStopAgent.startThread();
+		PassengerRole.addStop(myName, busStopAgent);
+	}
+	
+	
+	public BusStopAgent getBusStopAgent(){
+		return this.busStopAgent;
+	}
+	
+	public BusStopAnimationPanel getBusStopAnimationPanel(){
+		return this.animationPanel;
 	}
 	
 	
@@ -39,7 +64,6 @@ public class BusStopBuildingPanel extends BuildingPanel{
 		myCity.displayBuildingPanel( this );
 		
 	}
-
 
 	@Override
 	public void addPersonWithRole(Role r) {

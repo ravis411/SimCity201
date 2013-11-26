@@ -7,7 +7,7 @@ package bank.test.mock;
  *
  */
 public class Mock {
-	private String name;
+	protected String name;
 
 	public Mock(String name) {
 		this.name = name;

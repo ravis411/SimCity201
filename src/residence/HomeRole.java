@@ -37,6 +37,9 @@ public class HomeRole extends Role implements Home {
 	private Semaphore atTable = new Semaphore(0, true);
 	private Semaphore atCenter = new Semaphore(0, true);
 	Timer timer = new Timer();
+	
+	Calendar rsvpDate;
+	Calendar partyDate;
 
 	private String name;
 	
@@ -49,6 +52,10 @@ public class HomeRole extends Role implements Home {
 	public enum AgentEvent
 	{none, cooking, eating, asleep, leaving};
 	public AgentEvent event = AgentEvent.none;
+	
+	public enum PartyState
+	{none, sendInvites, setUp, host};
+	public PartyState partyState = PartyState.none;
 
 	public HomeRole(PersonAgent myPerson) {
 		this.myPerson = myPerson;
@@ -193,6 +200,10 @@ public class HomeRole extends Role implements Home {
 				return true;
 			}
 		}
+		if(partyState == PartyState.sendInvites) {
+			sendOutInvites();
+			return true;
+		}
 		return false;
 	}
 	
@@ -277,12 +288,12 @@ public class HomeRole extends Role implements Home {
 			setRentOwed(0);
 			AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Paid my rent. I have $" + myPerson.getMoney() + " left.");
 
+
 		if(myPerson.getMoney() >= rentOwed) {
 			landlord.msgRentPaid (this, rentOwed);
 			myPerson.setMoney(myPerson.getMoney()-rentOwed);
 			rentOwed = 0;
 			print("Paid my rent. I have $" + myPerson.getMoney() + " left.");
-
 		}
 		else {
 			//do nothing
@@ -347,6 +358,17 @@ public class HomeRole extends Role implements Home {
 			e.printStackTrace();
 		}
 		enterHome = false;
+	}
+	private void sendOutInvites() {
+		rsvpDate = myPerson.realTime;
+		rsvpDate.add(Calendar.DAY_OF_MONTH, 1);
+		System.out.println(rsvpDate.toString());
+		partyDate = myPerson.realTime;
+		partyDate.add(Calendar.DAY_OF_MONTH, 3);
+		System.out.println(partyDate.toString());
+		for(int i=0; i<4; i++) {
+			myPerson.friends.get(i).msgPartyInvitation(myPerson, rsvpDate, partyDate);
+		}
 	}
 
 	//utilities

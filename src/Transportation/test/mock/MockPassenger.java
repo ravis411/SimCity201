@@ -19,7 +19,7 @@ public class MockPassenger extends Mock implements Passenger {
 	}
 	
 	@Override
-	public void msgArrivedAtDestination(String location) {
+	public void msgNextDestination(String location) {
 		log.add(new LoggedEvent("Received msgArrivedAtDestination from bus"));
 		
 	}

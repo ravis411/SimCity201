@@ -1,7 +1,8 @@
 package bank;
 
-import java.util.*;
-import Person.PersonAgent;
+
+import bank.interfaces.BankClient;
+
 
 /**
  * 
@@ -10,10 +11,10 @@ import Person.PersonAgent;
  */
 
 public class Account {
-	BankClientRole client;
-	double amount;
+	public BankClient client;
+	public double amount;
 
-	Account(BankClientRole bank, double m){
+	public Account(BankClient bank, double m){
 		client = bank;
 		amount = m;
 	}	 

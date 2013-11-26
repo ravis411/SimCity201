@@ -19,6 +19,7 @@ import MarketEmployee.MarketManagerRole;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
 import agent.Agent;
+import bank.BankClientRole;
 import building.BuildingList;
 
 /**
@@ -48,8 +49,8 @@ public class PersonAgent extends Agent {
 	private double loanAmount;
 	
 	public List<Role> roles;
-	private List<PersonAgent> friends;
-	private Calendar realTime;
+	public List<PersonAgent> friends;
+	public Calendar realTime;
 	
 	private Queue<Item> itemsNeeded;
 	
@@ -69,6 +70,18 @@ public class PersonAgent extends Agent {
 	private PersonGui gui;
 	
 	public ResidenceBuildingPanel home;
+	
+	public PersonAgent(String name, ResidenceBuildingPanel home, Role initialRole, String roleLocation){
+		this(name, home);
+		addRole(initialRole);
+		initialRole.activate();
+		gui.setStartingStates(roleLocation);
+		BuildingList.findBuildingWithName(roleLocation).addRole(initialRole);
+		
+		if(!(initialRole instanceof HomeRole)){
+			
+		}
+	}
 
 	public PersonAgent(String name, ResidenceBuildingPanel home){
 		SSN = counter++;
@@ -460,6 +473,7 @@ public class PersonAgent extends Agent {
 //		  role.activate();
 //		  
 //		  role.msgMakeFood();
+
 //	  
 //	  GoToLocation("Bank", transport);
 //	  bankClientRole role = (bankClientRole) findRole(Role.BANK_CLIENT_ROLE);
@@ -471,7 +485,7 @@ public class PersonAgent extends Agent {
 //	  moneyNeeded = 40.00;
 //	  role.setIntent(bankClientRole.withdraw);
 //	  role.activate();
-	  if(getName().equals("Person 7")){
+	/*  if(getName().equals("Person 7")){
 		  GoToLocation("Market 1", transport);
 		  
 		  MarketCustomerRole role = (MarketCustomerRole) findRole(Role.MARKET_CUSTOMER_ROLE);
@@ -548,6 +562,21 @@ public class PersonAgent extends Agent {
 		  BuildingList.findBuildingWithName("Market 1").addRole(role);
 		  role.activate();
 	  }
+	  */
+
+	  
+	  GoToLocation("Bank", transport);
+	  
+	  BankClientRole role = (BankClientRole) findRole(Role.BANK_CLIENT_ROLE);
+	  if(role == null){
+		  role = (BankClientRole) RoleFactory.roleFromString(Role.BANK_CLIENT_ROLE);
+		  addRole(role);
+	  }
+	  BuildingList.findBuildingWithName("Bank").addRole(role);
+	  
+	  moneyNeeded = 40.00;
+	  role.setIntent(BankClientRole.withdraw);
+	  role.activate();
 	  
 
 	}
@@ -779,6 +808,9 @@ public class PersonAgent extends Agent {
 	
 	public void setGui(PersonGui gui){
 		this.gui = gui;
+	}
+	public PersonGui getPersonGui(){
+		return this.gui;
 	}
 	
 	public String toString(){

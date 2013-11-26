@@ -4,6 +4,8 @@ import residence.HomeRole;
 
 import java.awt.*;
 
+import building.BuildingList;
+
 public class HomeRoleGui implements Gui {
 
     private HomeRole agent = null;

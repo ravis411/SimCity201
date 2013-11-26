@@ -29,6 +29,10 @@ import Person.Role.Role;
  */
 public class BankAnimationPanel extends JPanel implements ActionListener, GuiPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final static int WINDOWX = 800;//
 	private final static int WINDOWY = 400;
 	final static int counterX = 0;//TABLEX and TABLEY describe where the table appears in the panel
@@ -52,10 +56,10 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
     //test
     private PersonAgent testTeller = new PersonAgent("Test Teller", null);
     private PersonAgent testLoanTeller = new PersonAgent("Test Loan Teller",null);
-    private PersonAgent testClient = new PersonAgent("Test Client", null);
+ //   private PersonAgent testClient = new PersonAgent("Test Client", null);
     private BankTellerRole testTellerRole = new BankTellerRole();
     private LoanTellerRole testLoanTellerRole = new LoanTellerRole();
-    private BankClientRole testClientRole = new BankClientRole();
+//    private BankClientRole testClientRole = new BankClientRole();
     
     
 	private List<Gui> guis = new ArrayList<Gui>();
@@ -69,6 +73,7 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 		
 		//test
 		
+
 //		testTellerRole.setPerson(testTeller);
 //		testLoanTellerRole.setPerson(testLoanTeller);
 //		testClientRole.setPerson(testClient);
@@ -76,6 +81,12 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 //		addGuiForRole(testLoanTellerRole);
 //		addGuiForRole(testClientRole);
 //		testClientRole.setIntent("deposit");
+
+		testTellerRole.setPerson(testTeller);
+		testLoanTellerRole.setPerson(testLoanTeller);
+		addGuiForRole(testTellerRole);
+		addGuiForRole(testLoanTellerRole);
+
 		
 		Timer timer = new Timer(TIMERCOUNTmilliseconds, this );
 		timer.start();
@@ -88,6 +99,11 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		repaint();  //Will have paintComponent called
+		for(Gui gui : guis) {
+			if (gui.isPresent()) {
+				gui.updatePosition();
+			}
+		}
 	}
 
 	@Override
@@ -134,11 +150,7 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 		g2.drawString("Entrance",700,40);
 		g2.drawString("Entrance", 700, 370);
 		
-		for(Gui gui : guis) {
-			if (gui.isPresent()) {
-				gui.updatePosition();
-			}
-		}
+		
 
 		for(Gui gui : guis) {
 			if (gui.isPresent()) {
@@ -202,8 +214,21 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 
 	@Override
 	public void removeGuiForRole(Role r) {
-		// TODO Auto-generated method stub
-		
+		if (r instanceof BankClientRole){
+		    BankClientRole clientRole = (BankClientRole) r;
+		    BankClientRoles.remove(clientRole);
+		    guis.remove(clientRole.getGui());
+
+		}
+		if (r instanceof BankTellerRole){
+		    BankTellerRole tellerRole = (BankTellerRole) r;
+		    BankTellerRoles.remove(tellerRole);
+		    guis.remove(tellerRole.getGui());
+		}
+		if (r instanceof LoanTellerRole){
+		    LoanTellerRole loanTellereRole=(LoanTellerRole) r;
+		    guis.remove(loanTellereRole.getGui());
+		}
 	}
 
 

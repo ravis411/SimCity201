@@ -1,6 +1,7 @@
 package bank;
-import bank.BankClientRole;
 import bank.gui.TellerGui;
+import bank.interfaces.BankTeller;
+import bank.interfaces.*;
 import interfaces.Employee;
 
 import java.util.*;
@@ -17,8 +18,8 @@ import Person.Role.Role;
  *
  */
 
-public class BankTellerRole extends Role implements Employee{
-	private BankClientRole myClient;
+public class BankTellerRole extends Role implements Employee , BankTeller{
+	private BankClient myClient;
 	private int LineNum = new Random().nextInt(3)+1; //from 1 to n, with 5 being the loan line, should be assigned in creation
 	public enum requestState {pending, withdrawal, deposit, open, none, notBeingHelped};
 	public enum location {entrance, station, breakRoom};
@@ -44,31 +45,55 @@ public class BankTellerRole extends Role implements Employee{
 
 	//	Messages
 
+	/**
+	 * Message stating that the teller is at his station and ready to take orders. Releases the atStation semaphore.
+	 */
 	public void msgAtStation(){
 		atStation.release();
 		locationState = location.station;
 		stateChanged();
 	}
 
+	/**
+	 * Message that releases the atIntermediate semaphore. Only for aesthetics - makes it so the teller doesn't move through objects
+	 */
 	public void msgAtIntermediate(){
 		atIntermediate.release();
 		stateChanged();
 	}
 
-	public void msgInLine(BankClientRole b){
+	/**
+	 * message received by a BankClient that there is someone at the desk. 
+	 * @param b - BankClient being worked with
+	 */
+	public void msgInLine(BankClient b){
 		myClient = b;
 		state = requestState.notBeingHelped;
 		stateChanged();
 	}
+	
+	/**
+	 * message received by BankClient asking to open an account.
+	 */
 	public void msgOpenAccount(){
 		state = requestState.open;
 		stateChanged();
 	}
+
+	/**
+	 * message received by a BankClient asking to deposit money into an account.
+	 * @param a - amount of money
+	 */
 	public void msgDeposit(double a){
 		transactionAmount = a;
 		state = requestState.deposit;
 		stateChanged();
 	}
+	/**
+	 * message received by a BankClient asking to withdraw money from an account.
+	 * @param a - amount of money
+	 */
+
 	public void msgWithdraw(double a){
 		transactionAmount = a;
 		state = requestState.withdrawal;
@@ -106,6 +131,10 @@ public class BankTellerRole extends Role implements Employee{
 
 
 	//	Actions
+	/**
+	 * After getting to the intermediate position, sends the teller to the right station. After he gets there, 
+	 * sends a message to the number announcer enabling him to increment the announcer.
+	 */
 	private void goToStation(){
 		try {
 			atIntermediate.acquire();
@@ -121,13 +150,21 @@ public class BankTellerRole extends Role implements Employee{
 		announcer.msgAddBankTeller(this);
 		announcer.msgTransactionComplete(LineNum,this, null);
 	}
-	private void receiveClient(BankClientRole b){
+	/**
+	 * Greeting the client
+	 * @param b - BankClient
+	 */
+	private void receiveClient(BankClient b){
 			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Recieving new client");
 			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Hello " + b + ", how may I help you.");
 		b.msgMayIHelpYou();
 		state = requestState.pending;
 	}
-	private void processDeposit(BankClientRole b){
+	/**
+	 * Processes a deposit. If the account exists, deposits the asked amount into the account.
+	 * @param b - BankClient
+	 */
+	private void processDeposit(BankClient b){
 			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Ok, hold on.");
 		for (Account a : Accounts){
 			if (a.client == b){
@@ -140,7 +177,12 @@ public class BankTellerRole extends Role implements Employee{
 			}
 		}
 	}
-	private void processWithdrawal(BankClientRole b){
+	
+	/**
+	 * Processes a withdrawal. If there is enough money, withdraws that amount. If not, just quits with an error message.
+	 * @param b - BankClient
+	 */
+	private void processWithdrawal(BankClient b){
 		for (Account a : Accounts){
 			if (a.client == b){
 				if (transactionAmount > a.amount){
@@ -157,7 +199,11 @@ public class BankTellerRole extends Role implements Employee{
 			}
 		}
 	}
-	private void openAccount(BankClientRole b){
+	/**
+	 * Opens new account
+	 * @param b - BankClient
+	 */
+	private void openAccount(BankClient b){
 		Account a = new Account(b,0);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"New bank account has been opened for " + b);
 		Database.INSTANCE.addToDatabase(a);
@@ -216,5 +262,6 @@ public class BankTellerRole extends Role implements Employee{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }

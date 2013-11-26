@@ -1,8 +1,11 @@
 package bank;
-import bank.BankClientRole;
 import bank.gui.LoanGui;
+import bank.interfaces.BankClient;
+import bank.interfaces.LoanTeller;
 import Person.Role.*;
 import interfaces.Employee;
+
+
 
 
 //import Person.*;
@@ -21,8 +24,8 @@ import util.Interval;
  * @author Byron Choy
  *
  */
-public class LoanTellerRole extends Role implements Employee{
-	private BankClientRole myClient;
+public class LoanTellerRole extends Role implements Employee, LoanTeller{
+	private BankClient myClient;
 	private int myClientAge;
 	public enum requestState {open, loan, pending, none, notBeingHelped};
 	private requestState state = requestState.none;
@@ -34,6 +37,7 @@ public class LoanTellerRole extends Role implements Employee{
 	private Semaphore atStation = new Semaphore(0,true);
 	private Semaphore atIntermediate = new Semaphore(0,true);
 	private LoanGui loanGui = null;
+	private boolean HasLoan = false;
  
 	public LoanTellerRole(){
 		super();
@@ -45,30 +49,48 @@ public class LoanTellerRole extends Role implements Employee{
 	}
 
 	//	Messages
+	/**
+	 * Message stating that the teller is at his station and ready to take orders. Releases the atStation semaphore.
+	 */
 	public void msgAtStation(){
 		atStation.release();
 		locationState = location.station;
 		stateChanged();
 	}
-
+	/**
+	 * Message that releases the atIntermediate semaphore. Only for aesthetics - makes it so the teller doesn't move through objects
+	 */
 	public void msgAtIntermediate(){
 		atIntermediate.release();
 		stateChanged();
 	}
-
-	public void msgInLine(BankClientRole b){
+	/**
+	 * message received by a bankClientRole that there is someone at the desk. 
+	 * @param b - bankClient being worked with
+	 */
+	public void msgInLine(BankClient b){
 			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, this.myPerson.getName(),"Greetings customer");
 		myClient = b;
 		state = requestState.notBeingHelped;
 		stateChanged();
 	}
+	
+	/**
+	 * message received by bankClient asking to open an account.
+	 */
 	public void msgOpenAccount(){
 		state = requestState.open;
 		stateChanged();
 	}
-	public void msgLoan(double a, int age){
+	/**
+	 * message received by a bankClient asking for a loan
+	 * @param a - amount of money
+	 * @param age - age of client
+	 */
+	public void msgLoan(double a, int age, boolean hl){
 		transactionAmount = a;
 		myClientAge = age;
+		HasLoan = hl;
 		state = requestState.loan;
 		stateChanged();
 	}
@@ -82,7 +104,7 @@ public class LoanTellerRole extends Role implements Employee{
 				receiveClient(myClient);
 				return true;
 			}if (state == requestState.loan){
-				processLoan(myClient);
+				processLoan(myClient, HasLoan);
 				return true;
 			}
 			if (state == requestState.open){
@@ -100,6 +122,10 @@ public class LoanTellerRole extends Role implements Employee{
 
 
 	//	Actions
+	/**
+	 * After getting to the intermediate position, sends the teller to the right station. After he gets there, 
+	 * sends a message to the number announcer enabling him to increment the announcer.
+	 */
 	private void goToStation(){
 		try {
 			atIntermediate.acquire();
@@ -116,12 +142,21 @@ public class LoanTellerRole extends Role implements Employee{
 		announcer.msgLoanComplete();
 	}
 
-	private void receiveClient(BankClientRole b){
+	/**
+	 * Greeting the client
+	 * @param b - bankClient
+	 */
+	private void receiveClient(BankClient b){
 			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, this.myPerson.getName(),"Recieving new client");
 		b.msgMayIHelpYou();
 		state = requestState.pending;
 	}
-	private void processLoan(BankClientRole b){
+	/**
+	 * Processes a loan. If the age of the client is less than 18 or above 85, the client has enough money in his account, or he has an outstanding loan, the loan is denied. 
+	 * Else it is approved. 
+	 * @param b - bankClient
+	 */
+	private void processLoan(BankClient b, boolean HasLoan){
 			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, this.myPerson.getName(),"Hold on a moment.");
 		for (Account a : Accounts){
 			if (a.client == b){
@@ -135,7 +170,7 @@ public class LoanTellerRole extends Role implements Employee{
 					announcer.msgLoanComplete();
 					b.msgTransactionCompleted(0);
 				}
-				else if (b.HasLoan()){
+				else if (HasLoan){
 					AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, this.myPerson.getName(), "Loan denied, existing loan has not been paid.");
 					announcer.msgLoanComplete();
 					b.msgTransactionCompleted(0);
@@ -149,7 +184,11 @@ public class LoanTellerRole extends Role implements Employee{
 			}
 		}
 	}
-	private void openAccount(BankClientRole b){
+	/**
+	 * Opens new account
+	 * @param b - bankClient
+	 */
+	private void openAccount(BankClient b){
 		Account a = new Account(b, 0);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, this.myPerson.getName(),"New bank account has been opened for " + b);
 		Database.INSTANCE.addToDatabase(a);
@@ -192,14 +231,15 @@ public class LoanTellerRole extends Role implements Employee{
 
 	@Override
 	public Interval getShift() {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	public Double getSalary() {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
+
 
 }

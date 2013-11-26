@@ -49,33 +49,33 @@ public class ApartmentBuildingPanel extends BuildingPanel{
 		LocationInfo location = new LocationInfo();
 		
 		//Apartment 1
-				location.sector = 1;
-				location.positionToEnterFromMainGrid = new Dimension(5, 3);
-				location.entranceFromMainGridPosition = new Dimension(4, 3);
-				location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-				addBuilding("Residence", "Apartment 1", 0, 0, 300, 200, location);
+			location.sector = 1;
+			location.positionToEnterFromMainGrid = new Dimension(20, 3);
+			location.entranceFromMainGridPosition = new Dimension(19, 3);
+			location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+			addBuilding("Residence", "Apartment 1", 0, 0, 300, 200, location);
 				
 		//Apartment 2
-				location.sector = 1;
-				location.positionToEnterFromMainGrid = new Dimension(10, 3);
-				location.entranceFromMainGridPosition = new Dimension(9, 3);
-				location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-				addBuilding("Residence", "Apartment 2", 0, 200, 300, 200, location);
+			location.sector = 1;
+			location.positionToEnterFromMainGrid = new Dimension(20, 3);
+			location.entranceFromMainGridPosition = new Dimension(19, 3);
+			location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+			addBuilding("Residence", "Apartment 2", 0, 200, 300, 200, location);
 				
 		//Apartment 3
-				location.sector = 1;
-				location.positionToEnterFromMainGrid = new Dimension(15, 3);
-				location.entranceFromMainGridPosition = new Dimension(14, 3);
-				location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-				addBuilding("Residence", "Apartment 3", 500, 0, 300, 200, location);
+			location.sector = 1;
+			location.positionToEnterFromMainGrid = new Dimension(20, 3);
+			location.entranceFromMainGridPosition = new Dimension(19, 3);
+			location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+			addBuilding("Residence", "Apartment 3", 500, 0, 300, 200, location);
 
 				
 		//Apartment 4
-				location.sector = 1;
-				location.positionToEnterFromMainGrid = new Dimension(20, 3);
-				location.entranceFromMainGridPosition = new Dimension(19, 3);
-				location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-				addBuilding("Residence", "Apartment 4", 500, 200, 300, 200, location);
+			location.sector = 1;
+			location.positionToEnterFromMainGrid = new Dimension(20, 3);
+			location.entranceFromMainGridPosition = new Dimension(19, 3);
+			location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+			addBuilding("Residence", "Apartment 4", 500, 200, 300, 200, location);
 		
 		
 		JLabel j = new JLabel( myName );
