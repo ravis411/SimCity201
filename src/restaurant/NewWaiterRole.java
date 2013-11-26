@@ -5,8 +5,8 @@ import agent.Agent;
 import restaurant.gui.HostGui;
 import restaurant.Order;
 import restaurant.Menu;
-import restaurant.CustomerAgent.AgentEvent;
-import restaurant.CustomerAgent.AgentState;
+import restaurant.RestaurantCustomerRole.AgentEvent;
+import restaurant.RestaurantCustomerRole.AgentState;
 import restaurant.Menu.Dish;
 import restaurant.gui.WaiterGui;
 import restaurant.interfaces.Customer;
@@ -22,7 +22,7 @@ import java.util.concurrent.Semaphore;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the WaiterAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class NewWaiterAgent extends Role implements Waiter {
+public class NewWaiterRole extends Role implements Waiter {
 	/*public List<CustomerAgent> myCustomers
 	= new ArrayList<CustomerAgent>();*/
 	
@@ -56,13 +56,13 @@ public class NewWaiterAgent extends Role implements Waiter {
 	public enum CustomerState
 	{waiting, seated, ordered, needToReorder};
 	
-	private CookAgent cook;
-	private HostAgent host;
-	private CashierAgent cashier;
+	private CookRole cook;
+	private HostRole host;
+	private CashierRole cashier;
 
 	public WaiterGui waiterGui = null;
 
-	public NewWaiterAgent() {
+	public NewWaiterRole() {
 		super();
 	}
 
@@ -70,15 +70,15 @@ public class NewWaiterAgent extends Role implements Waiter {
 		return name;
 	}
 	
-	public void setCook(CookAgent cook) {
+	public void setCook(CookRole cook) {
 		this.cook = cook;
 	}
 	
-	public void setHost(HostAgent host) {
+	public void setHost(HostRole host) {
 		this.host = host;
 	}
 	
-	public void setCashier(CashierAgent cashier) {
+	public void setCashier(CashierRole cashier) {
 		this.cashier = cashier;
 	}
 	
@@ -205,11 +205,11 @@ public class NewWaiterAgent extends Role implements Waiter {
 				return true;
 			}
 			for(int i=0; i<myCustomers.size(); i++) {
-				if(myCustomers.get(i).customer.getState() == CustomerAgent.AgentState.LeavingEarly) {
+				if(myCustomers.get(i).customer.getState() == RestaurantCustomerRole.AgentState.LeavingEarly) {
 					CustomerLeaving(myCustomers.get(i));
 					return true;
 				}
-				if(myCustomers.get(i).customer.getState() == CustomerAgent.AgentState.Paying) {
+				if(myCustomers.get(i).customer.getState() == RestaurantCustomerRole.AgentState.Paying) {
 					CustomerLeaving(myCustomers.get(i));
 					return true;
 				}
@@ -217,19 +217,19 @@ public class NewWaiterAgent extends Role implements Waiter {
 					GoRetakeOrder(myCustomers.get(i));
 					return true;
 				}
-				if(myCustomers.get(i).customer.getState() == CustomerAgent.AgentState.WaitingInRestaurant && state != AgentState.AtFrontDesk && event == AgentEvent.seatCustomer) {
+				if(myCustomers.get(i).customer.getState() == RestaurantCustomerRole.AgentState.WaitingInRestaurant && state != AgentState.AtFrontDesk && event == AgentEvent.seatCustomer) {
 					goToFrontDesk();
 					return true;
 				}
-				if(myCustomers.get(i).customer.getState() == CustomerAgent.AgentState.WaitingInRestaurant && state == AgentState.AtFrontDesk) {
+				if(myCustomers.get(i).customer.getState() == RestaurantCustomerRole.AgentState.WaitingInRestaurant && state == AgentState.AtFrontDesk) {
 					seatCustomer(myCustomers.get(i));
 					return true;
 				}
-				if(myCustomers.get(i).customer.getState() == CustomerAgent.AgentState.WaitingToOrder && myCustomers.get(i).customer.getEvent() == CustomerAgent.AgentEvent.readyToOrder) {
+				if(myCustomers.get(i).customer.getState() == RestaurantCustomerRole.AgentState.WaitingToOrder && myCustomers.get(i).customer.getEvent() == RestaurantCustomerRole.AgentEvent.readyToOrder) {
 					GoTakeOrder(myCustomers.get(i));
 					return true;
 				}
-				if(myCustomers.get(i).customer.getState() == CustomerAgent.AgentState.WaitingForOrder && state == AgentState.TakeOrderToKitchen && myCustomers.get(i).customer.getEvent() == CustomerAgent.AgentEvent.order){
+				if(myCustomers.get(i).customer.getState() == RestaurantCustomerRole.AgentState.WaitingForOrder && state == AgentState.TakeOrderToKitchen && myCustomers.get(i).customer.getEvent() == RestaurantCustomerRole.AgentEvent.order){
 					if(!revolvingStand.isFull()){
 						TakeOrderToCook(myCustomers.get(i));
 						return true;

@@ -4,8 +4,8 @@ import Person.Role.Role;
 import agent.Agent;
 import restaurant.Order;
 import restaurant.Menu;
-import restaurant.CustomerAgent.AgentEvent;
-import restaurant.CustomerAgent.AgentState;
+import restaurant.RestaurantCustomerRole.AgentEvent;
+import restaurant.RestaurantCustomerRole.AgentState;
 import restaurant.Menu.Dish;
 //import restaurant.gui.CookGui;
 
@@ -23,10 +23,10 @@ import java.util.Random;
  * Restaurant Cook Agent
  */
 
-public class CookAgent extends Role {
+public class CookRole extends Role {
 	public List<Order> orders = new ArrayList<Order>();
 	public List<Food> inventory = new ArrayList<Food>();
-	public List<MarketAgent> markets = new ArrayList<MarketAgent>();
+	public List<MarketRole> markets = new ArrayList<MarketRole>();
 
 	private RevolvingStand revolvingStand = RevolvingStand.getInstance();
 	
@@ -44,7 +44,7 @@ public class CookAgent extends Role {
 	{none, placedOrder, reOrder, orderPartiallyFulfilled, orderFulfilled};
 	AgentEvent event = AgentEvent.none;
 
-	public CookAgent() {
+	public CookRole() {
 		super();
 		
 		for(int i=0; i<4; i++) {
@@ -52,7 +52,7 @@ public class CookAgent extends Role {
 		}
 	}
 	
-	public void addMarket(MarketAgent market) {
+	public void addMarket(MarketRole market) {
 		markets.add(market);
 	}
 	

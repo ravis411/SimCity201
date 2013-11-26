@@ -19,7 +19,7 @@ import java.util.concurrent.Semaphore;
 /**
  * Restaurant customer agent.
  */
-public class CustomerAgent extends Role implements Customer {
+public class RestaurantCustomerRole extends Role implements Customer {
 	private String name;
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
@@ -37,7 +37,7 @@ public class CustomerAgent extends Role implements Customer {
 	private int waitingLocY = -1;
 
 	// agent correspondents
-	private HostAgent host;
+	private HostRole host;
 	private Waiter waiter;
 	private Cashier cashier;
 
@@ -56,7 +56,7 @@ public class CustomerAgent extends Role implements Customer {
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public CustomerAgent(){
+	public RestaurantCustomerRole(){
 		super();
 		
 		Random randNum = new Random();
@@ -66,7 +66,7 @@ public class CustomerAgent extends Role implements Customer {
 	/**
 	 * hack to establish connection to Host agent.
 	 */
-	public void setHost(HostAgent host) {
+	public void setHost(HostRole host) {
 		this.host = host;
 	}
 	
@@ -366,7 +366,7 @@ public class CustomerAgent extends Role implements Customer {
 		return customerGui;
 	}
 	
-	public HostAgent getHost() {
+	public HostRole getHost() {
 		return host;
 	}
 	

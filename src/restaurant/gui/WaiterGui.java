@@ -4,7 +4,7 @@ package restaurant.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import restaurant.CustomerAgent;
+import restaurant.RestaurantCustomerRole;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
 

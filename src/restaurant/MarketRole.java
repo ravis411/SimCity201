@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import restaurant.CookAgent.AgentState;
-import restaurant.CustomerAgent.AgentEvent;
+import restaurant.CookRole.AgentState;
+import restaurant.RestaurantCustomerRole.AgentEvent;
 import agent.Agent;
 import java.util.Random;
 import restaurant.interfaces.*;
@@ -15,11 +15,11 @@ import restaurant.interfaces.*;
  * Restaurant Market Agent
  */
 
-public class MarketAgent extends Agent implements Market {
+public class MarketRole extends Agent implements Market {
 	public Ingredient[] ingredients = new Ingredient[4];
 	
 	String name;
-	CookAgent cook;
+	CookRole cook;
 	Cashier cashier;
 	private int currentRequest;
 	private int currentRequestQuantity;
@@ -29,7 +29,7 @@ public class MarketAgent extends Agent implements Market {
 	{DoingNothing, RespondingToCook, SellingFood};
 	private AgentState state = AgentState.DoingNothing;//The start state
 	
-	public MarketAgent(String name, CookAgent cook, Cashier cashier) {
+	public MarketRole(String name, CookRole cook, Cashier cashier) {
 		super();
 		
 		Random randNum = new Random();
@@ -82,7 +82,7 @@ public class MarketAgent extends Agent implements Market {
 	}
 	
 	private void fulfillOrder() {
-		final MarketAgent temp = this;
+		final MarketRole temp = this;
 		print("I have " + ingredients[currentRequest].quantity + " " + ingredients[currentRequest].getName() + "s. Enough to fill the cook's order.");
 		timer.schedule(new TimerTask() {
 			public void run() {
@@ -98,7 +98,7 @@ public class MarketAgent extends Agent implements Market {
 	}
 	
 	private void fulfillPartialOrder() {
-		final MarketAgent temp = this;
+		final MarketRole temp = this;
 		print("I have " + ingredients[currentRequest].quantity + " " + ingredients[currentRequest].getName() + "s. Enough to fill only part of the cook's order.");
 		timer.schedule(new TimerTask() {
 			public void run() {

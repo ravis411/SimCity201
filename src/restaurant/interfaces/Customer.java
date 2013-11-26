@@ -36,8 +36,8 @@ public interface Customer {
 	public abstract double getMoney();
 	public abstract void msgFoodAtTable();
 	public abstract void msgOrderOnItsWay();
-	public abstract restaurant.CustomerAgent.AgentState getState();
-	public abstract restaurant.CustomerAgent.AgentEvent getEvent();
+	public abstract restaurant.RestaurantCustomerRole.AgentState getState();
+	public abstract restaurant.RestaurantCustomerRole.AgentEvent getEvent();
 	public abstract void msgSitAtTable(Menu menu);
 	public abstract void msgWaiterReadyToTakeOrder();
 	public abstract void msgWaiterReadyToRetakeOrder();

@@ -13,7 +13,7 @@ import agent.Agent;
  * Restaurant Cashier Agent
  */
 
-public class CashierAgent extends Role implements Cashier {
+public class CashierRole extends Role implements Cashier {
 	private Vector<Check> checks = new Vector<Check>();
 	private Vector<Check> payingCustomers = new Vector<Check>();
 	private Vector<MarketBill> marketBills = new Vector<MarketBill>();
@@ -32,7 +32,7 @@ public class CashierAgent extends Role implements Cashier {
 	{none};
 	AgentEvent event = AgentEvent.none;
 
-	public CashierAgent(String name) {
+	public CashierRole(String name) {
 		super();
 		
 		money = 200.00;
