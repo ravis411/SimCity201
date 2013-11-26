@@ -64,16 +64,16 @@ public class MarketData {
 		return currentMarketEmployee1;
 	}
 	public void setMarketEmployeeAtCounter2(MarketEmployee marketEmployee){
-		currentMarketEmployee1=marketEmployee;
+		currentMarketEmployee2=marketEmployee;
 	}
 	public MarketEmployee getMarketCustomerAtCounter2(){
-		return currentMarketEmployee1;
+		return currentMarketEmployee2;
 	}
 	public void setMarketEmployeeAtCounter3(MarketEmployee marketEmployee){
-		currentMarketEmployee1=marketEmployee;
+		currentMarketEmployee3=marketEmployee;
 	}
 	public MarketEmployee getMarketCustomerAtCounter3(){
-		return currentMarketEmployee1;
+		return currentMarketEmployee3;
 	}
 	public int getNumberOfCustomersInALine(int linenumber){
 		return numberOfCustomersInALine.get(linenumber).intValue();
