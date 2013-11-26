@@ -11,10 +11,10 @@ import bank.interfaces.BankClient;
  */
 
 public class Account {
-	BankClient client;
-	double amount;
+	public BankClient client;
+	public double amount;
 
-	Account(BankClient bank, double m){
+	public Account(BankClient bank, double m){
 		client = bank;
 		amount = m;
 	}	 

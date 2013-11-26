@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Transportation.test.mock.LoggedEvent;
+import bank.Account;
 import bank.interfaces.AnnouncerA;
 import bank.interfaces.BankClient;
 import bank.interfaces.BankTeller;
@@ -12,40 +13,48 @@ public class MockBankTeller extends Mock implements BankTeller{
 
 	public List<LoggedEvent> log = new ArrayList<LoggedEvent>();
 	public AnnouncerA announcerA;
+	public BankClient client;
 
 	public MockBankTeller(String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
 	}
-	@Override
 	public void msgAtStation() {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("msgAtStation received from Gui. At station."));
 	}
-	@Override
 	public void msgAtIntermediate() {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("msgAtIntermediate received from Gui. At intermediate location."));
 	}
 	@Override
 	public void msgInLine(BankClient b) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("msgInLine received from bankClient. Dealing with new client " + b));		
+		client.msgMayIHelpYou();
 	}
 	@Override
 	public void msgOpenAccount() {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("msgOpenAccount received from bankClient. Creating new account."));		
+		client.msgAccountOpened(new Account(client,0));
 	}
 	@Override
 	public void msgDeposit(double a) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("msgDeposit received from bankClient."));
+		if (this.name.toLowerCase().contains("no")){
+			log.add(new LoggedEvent("Deposit has been denied."));
+			client.msgTransactionCompleted(0);
+		} else {
+			log.add(new LoggedEvent("Deposit has been accepted."));
+			client.msgTransactionCompleted(-2*a);
+		}
 	}
 	@Override
 	public void msgWithdraw(double a) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("msgWithdraw received from bankClient."));
+		if (this.name.toLowerCase().contains("no")){
+			log.add(new LoggedEvent("Withdrawal has been denied."));
+			client.msgTransactionCompleted(0);
+		} else {
+			log.add(new LoggedEvent("Withdrawal has been accepted."));
+			client.msgTransactionCompleted(a);
+		}
 	}
-	
+
 }

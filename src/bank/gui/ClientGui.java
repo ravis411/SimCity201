@@ -23,8 +23,8 @@ public class ClientGui implements Gui {
 	static final int hostWidth = 20, hostHeight = 20;
 	private int xBankEntrance= 750;
 	private final static int yBankEntrance= 400;
-	private final int xWaitingArea= new Random().nextInt(130);
-	private final int yWaitingArea= new Random().nextInt(130) + 220;
+	private final int xWaitingArea= new Random().nextInt(120);
+	private final int yWaitingArea= new Random().nextInt(160) + 220;
 	private final static int xTellerDesk= 195;
 	private final static int yTellerDesk= 230;
 	private int line;
