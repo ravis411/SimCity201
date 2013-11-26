@@ -35,10 +35,10 @@ public class BankClientRole extends Role implements BankClient{
 	public static final String loan = "loan";
 	public static final String deposit = "deposit";
 	public static final String withdraw = "withdraw";
-	bankState state1 = bankState.nothing;
-	Account myAccount;
+	public bankState state1 = bankState.nothing;
+	private Account myAccount;
 	public enum inLineState{noTicket, waiting, goingToLine, atDesk, beingHelped, transactionProcessing, leaving};
-	inLineState state2 = inLineState.noTicket;
+	public inLineState state2 = inLineState.noTicket;
 	private BankTeller teller = null;
 	private LoanTeller loanTeller = null;
 	private AnnouncerA announcer;
@@ -52,6 +52,7 @@ public class BankClientRole extends Role implements BankClient{
 	private Semaphore atLine = new Semaphore(0,true);
 	private Semaphore atWaitingArea = new Semaphore(0,true);
 	private ClientGui clientGui = null;
+	
 
 	//hack for accounts - to ensure that there are some existing accounts at the beginning of SimCity
 	//	private int existsBankAccount = new Random().nextInt(10);
@@ -158,7 +159,7 @@ public void msgMayIHelpYou(){
  * @param a = account
  */
 public void msgAccountOpened(Account a){
-	myAccount = a;
+	setMyAccount(a);
 	stateChanged();
 }
 /**
@@ -202,10 +203,10 @@ public boolean pickAndExecuteAction() {
 			return true;
 		}
 		if (state2 == inLineState.beingHelped){
-			if (myAccount == null && state1 != bankState.loan){
+			if (getMyAccount() == null && state1 != bankState.loan){
 				openAccount();
 				return true;
-			}else if (myAccount == null && state1 == bankState.loan){
+			}else if (getMyAccount() == null && state1 == bankState.loan){
 				loanOpenAccount();
 				return true;
 			}else{
@@ -409,6 +410,12 @@ public boolean canGoGetFood() {
 @Override
 public String getNameOfRole() {
 	return null;
+}
+public Account getMyAccount() {
+	return myAccount;
+}
+public void setMyAccount(Account myAccount) {
+	this.myAccount = myAccount;
 }
 
 

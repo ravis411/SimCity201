@@ -25,19 +25,19 @@ import util.Interval;
  *
  */
 public class LoanTellerRole extends Role implements Employee, LoanTeller{
-	private BankClient myClient;
+	public BankClient myClient;
 	private int myClientAge;
 	public enum requestState {open, loan, pending, none, notBeingHelped};
-	private requestState state = requestState.none;
+	public requestState state = requestState.none;
 	public enum location {entrance, station, breakRoom};
 	public location locationState = location.entrance;
-	double transactionAmount;
+	public double transactionAmount;
 	private List<Account> Accounts = Database.INSTANCE.sendDatabase();
 	private LoanNumberAnnouncer announcer;
 	private Semaphore atStation = new Semaphore(0,true);
 	private Semaphore atIntermediate = new Semaphore(0,true);
 	private LoanGui loanGui = null;
-	private boolean HasLoan = false;
+	public boolean HasLoan = false;
  
 	public LoanTellerRole(){
 		super();
