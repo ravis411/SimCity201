@@ -3,11 +3,11 @@ package gui.Building;
 import gui.BuildingsPanels;
 import interfaces.GuiPanel;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 
-import javax.swing.JLabel;
-
+import market.gui.MarketAnimationPanel;
 import Person.Role.Role;
 
 
@@ -18,16 +18,16 @@ import Person.Role.Role;
  *
  */
 public class MarketBuildingPanel extends BuildingPanel{
-	
+	public MarketAnimationPanel animationPanel = new MarketAnimationPanel();
+
 	public MarketBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels) {
 		super(r, name, buildingPanels);
-		
+		setLayout(new BorderLayout());
 		this.removeAll();
 		
 		setBackground( new Color(100,100,200) );
+		add(animationPanel, BorderLayout.CENTER);
 		
-		JLabel j = new JLabel( myName );
-		add( j );
 	}
 	
 	

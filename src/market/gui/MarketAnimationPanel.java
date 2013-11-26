@@ -75,7 +75,7 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
         g2.fillRect(550, 200, 10, 30);
         g2.drawString("Window #3", 570, 220);
         g2.fillRect(650, 200, 10, 30);
-        g2.drawString("Entrance", 380, 370);
+        g2.drawString("Entrance", 380, 395);
         
        
 		g2.drawString("Manager's Office", 60, 115);
