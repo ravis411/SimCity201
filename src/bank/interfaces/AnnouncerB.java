@@ -1,11 +1,9 @@
 package bank.interfaces;
 
-import bank.BankClientRole;
-import bank.LoanTellerRole;
 
 public interface AnnouncerB {
 	public void msgOnTheWay();
-	public void msgAddLoanTeller(LoanTellerRole l);
-	public void msgAddClient(BankClientRole c);
+	public void msgAddLoanTeller(LoanTeller l);
+	public void msgAddClient(BankClient c);
 	public void msgLoanComplete();
 }

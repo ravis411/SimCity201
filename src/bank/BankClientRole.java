@@ -1,10 +1,15 @@
 package bank;
 
 import Person.Role.Role;
-import bank.BankTellerRole;
+import bank.interfaces.AnnouncerA;
+import bank.interfaces.AnnouncerB;
+import bank.interfaces.BankTeller;
+import bank.interfaces.LoanTeller;
 import bank.gui.ClientGui;
 import bank.interfaces.BankClient;
-import building.BuildingList;
+
+
+
 
 //import java.util.*;
 import java.util.concurrent.*;
@@ -34,10 +39,10 @@ public class BankClientRole extends Role implements BankClient{
 	Account myAccount;
 	public enum inLineState{noTicket, waiting, goingToLine, atDesk, beingHelped, transactionProcessing, leaving};
 	inLineState state2 = inLineState.noTicket;
-	private BankTellerRole teller = null;
-	private LoanTellerRole loanTeller = null;
-	private NumberAnnouncer announcer;
-	private LoanNumberAnnouncer loanAnnouncer;
+	private BankTeller teller = null;
+	private LoanTeller loanTeller = null;
+	private AnnouncerA announcer;
+	private AnnouncerB loanAnnouncer;
 	private double requestAmount;
 	private boolean hasLoan = false;
 	//	private double amountDue = 0;
@@ -49,29 +54,29 @@ public class BankClientRole extends Role implements BankClient{
 	private ClientGui clientGui = null;
 
 	//hack for accounts - to ensure that there are some existing accounts at the beginning of SimCity
-//	private int existsBankAccount = new Random().nextInt(10);
+	//	private int existsBankAccount = new Random().nextInt(10);
 
 	/**
-	 * hack to establish connection to BankTellerRole
+	 * hack to establish connection to BankTeller
 	 */
-	public void setTeller(BankTellerRole btr){
+	public void setTeller(BankTeller btr){
 		this.teller = btr;
 	}
 	/**
-	 * hack to establish connection to LoanTellerRole
+	 * hack to establish connection to LoanTeller
 	 */	
-	public void setLoanTeller(LoanTellerRole ltr) {
+	public void setLoanTeller(LoanTeller ltr) {
 		this.loanTeller = ltr;
 	}
 
 	/**
 	 * establishes connection to the number Announcer
 	 */
-	public void setAnnouncer(NumberAnnouncer a){
+	public void setAnnouncer(AnnouncerA a){
 		this.announcer = a;
 	} 
 
-	public void setLoanAnnouncer(LoanNumberAnnouncer a){
+	public void setLoanAnnouncer(AnnouncerB a){
 		this.loanAnnouncer = a;
 	}
 	/**
@@ -104,7 +109,7 @@ public class BankClientRole extends Role implements BankClient{
 	 * @param l = line number
 	 * @param btr = bank teller role
 	 */
-	public void msgCallingTicket(int t, int l, BankTellerRole btr){
+	public void msgCallingTicket(int t, int l, BankTeller btr) {
 		if (ticketNum == t){
 			state2 = inLineState.goingToLine;
 			lineNum = l;
@@ -113,6 +118,7 @@ public class BankClientRole extends Role implements BankClient{
 			setTeller(btr);
 			stateChanged();
 		}
+
 	}
 
 	/**
@@ -121,289 +127,289 @@ public class BankClientRole extends Role implements BankClient{
 	 * @param i = line number 
 	 * @param loanTeller2 = loan teller
 	 */
-	public void msgCallingLoanTicket(int loanNumber, int i,
-			LoanTellerRole loanTeller2) {
-		if (loanTicketNum == loanNumber){
-			state2 = inLineState.goingToLine;
-			lineNum = i;
-			//			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "That's my ticket, I need to go to line " + lineNum);
-			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "That's my ticket, I need to go to line " + lineNum);
-			setLoanTeller(loanTeller2);
-			stateChanged();
-		}
 
-	}
-
-	/**
-	 * sent from the gui when the client is at the line
-	 */
-	public void msgAtLine(){ //from gui
-		atLine.release();
+public void msgCallingLoanTicket(int loanNumber, int i, LoanTeller loanTeller2) {
+	if (loanTicketNum == loanNumber){
+		state2 = inLineState.goingToLine;
+		lineNum = i;
+		//			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "That's my ticket, I need to go to line " + lineNum);
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "That's my ticket, I need to go to line " + lineNum);
+		setLoanTeller(loanTeller2);
 		stateChanged();
 	}
+}
+/**
+ * sent from the gui when the client is at the line
+ */
+public void msgAtLine(){ //from gui
+	atLine.release();
+	stateChanged();
+}
 
-	/**
-	 * sent by the bank teller as a greeting to the client to let the client know he can communicate his needs
-	 */
-	public void msgMayIHelpYou(){
-		state2 = inLineState.beingHelped;
-		stateChanged();
-	}
-	/**
-	 *sent by the bank teller. Gives the client his new account.
-	 * @param a = account
-	 */
-	public void msgAccountOpened(Account a){
-		myAccount = a;
-		stateChanged();
-	}
-	/**
-	 * sent by the bank teller. Does deposits, withdrawals, and loan failures.
-	 * @param n = amount that is sent, 0 is sent when things fail (withdrawal fail, loan fail)
-	 */
-	public void msgTransactionCompleted(double n){
-		myPerson.setMoney(myPerson.getMoney() + n);
-		state1 = bankState.nothing;
-		state2 = inLineState.leaving;
-		stateChanged();
-	}
+/**
+ * sent by the bank teller as a greeting to the client to let the client know he can communicate his needs
+ */
+public void msgMayIHelpYou(){
+	state2 = inLineState.beingHelped;
+	stateChanged();
+}
+/**
+ *sent by the bank teller. Gives the client his new account.
+ * @param a = account
+ */
+public void msgAccountOpened(Account a){
+	myAccount = a;
+	stateChanged();
+}
+/**
+ * sent by the bank teller. Does deposits, withdrawals, and loan failures.
+ * @param n = amount that is sent, 0 is sent when things fail (withdrawal fail, loan fail)
+ */
+public void msgTransactionCompleted(double n){
+	myPerson.setMoney(myPerson.getMoney() + n);
+	state1 = bankState.nothing;
+	state2 = inLineState.leaving;
+	stateChanged();
+}
 
-	/**
-	 * sent by the bank teller when a loan is approved. 
-	 * @param n = loan amount
-	 */
-	public void msgLoanApproved(double n){
-		hasLoan = true;
-		//		amountDue = n;
-		myPerson.setMoney(myPerson.getMoney() + n);
-		state1 = bankState.nothing;
-		state2 = inLineState.leaving;
-		stateChanged();
+/**
+ * sent by the bank teller when a loan is approved. 
+ * @param n = loan amount
+ */
+public void msgLoanApproved(double n){
+	hasLoan = true;
+	//		amountDue = n;
+	myPerson.setMoney(myPerson.getMoney() + n);
+	state1 = bankState.nothing;
+	state2 = inLineState.leaving;
+	stateChanged();
+}
+
+
+//Scheduler
+public boolean pickAndExecuteAction() {
+	if (state2 == inLineState.goingToLine && state1 != bankState.loan){
+		goToLine(lineNum);
+		return true;
 	}
-
-
-	//Scheduler
-	public boolean pickAndExecuteAction() {
-		if (state2 == inLineState.goingToLine && state1 != bankState.loan){
-			goToLine(lineNum);
+	if (state2 == inLineState.goingToLine && state1 == bankState.loan){
+		goToLoanLine();
+		return true;
+	}
+	if (state1 != bankState.nothing){
+		if (state2 == inLineState.noTicket){
+			goToWaitingArea();
 			return true;
 		}
-		if (state2 == inLineState.goingToLine && state1 == bankState.loan){
-			goToLoanLine();
-			return true;
-		}
-		if (state1 != bankState.nothing){
-			if (state2 == inLineState.noTicket){
-				goToWaitingArea();
+		if (state2 == inLineState.beingHelped){
+			if (myAccount == null && state1 != bankState.loan){
+				openAccount();
 				return true;
-			}
-			if (state2 == inLineState.beingHelped){
-				if (myAccount == null && state1 != bankState.loan){
-					openAccount();
+			}else if (myAccount == null && state1 == bankState.loan){
+				loanOpenAccount();
+				return true;
+			}else{
+				if (state1 == bankState.deposit){
+					IWantToDeposit();
 					return true;
-				}else if (myAccount == null && state1 == bankState.loan){
-					loanOpenAccount();
+				}
+				if (state1 == bankState.withdraw){
+					IWantToWithdraw();
 					return true;
-				}else{
-					if (state1 == bankState.deposit){
-						IWantToDeposit();
-						return true;
-					}
-					if (state1 == bankState.withdraw){
-						IWantToWithdraw();
-						return true;
-					}
-					if (state1 == bankState.loan){
-						IWantALoan();
-						return true;
-					}
+				}
+				if (state1 == bankState.loan){
+					IWantALoan();
+					return true;
 				}
 			}
 		}
-		if (state2 == inLineState.leaving){
-			Leaving();
-			return true;
-		}
-		return false;
 	}
-	//Actions
-	/**
-	 * Action that sends client to the waiting area. Adds the number announcer and the loan number announcer and carries out the GUI. 
-	 * Acquires a semaphore atWaitingArea.
-	 */
-	private void goToWaitingArea(){
-		DoGoToWaitingArea();
-		announcer.msgAddClient(this);
-		loanAnnouncer.msgAddClient(this);
-		try {
-			atWaitingArea.acquire();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+	if (state2 == inLineState.leaving){
+		Leaving();
+		return true;
 	}
+	return false;
+}
+//Actions
+/**
+ * Action that sends client to the waiting area. Adds the number announcer and the loan number announcer and carries out the GUI. 
+ * Acquires a semaphore atWaitingArea.
+ */
+private void goToWaitingArea(){
+	DoGoToWaitingArea();
+	announcer.msgAddClient(this);
+	loanAnnouncer.msgAddClient(this);
+	try {
+		atWaitingArea.acquire();
+	} catch (InterruptedException e) {
+		e.printStackTrace();
+	}
+}
 
-	/**
-	 * Sends client to the specified line. Sends the announcer a message he is on the way to stop the announcer from sending the same number out.
-	 * Acquires the atLine semaphore.
-	 * After the semaphore, sends a message to the teller.
-	 * @param l = line number
-	 */
-	private void goToLine(int l){
-		announcer.msgOnTheWay();
-		DoGoToLine(l);
-		try {
-			atLine.acquire();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		//		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Arrived at line, the teller's myPerson.getName() is " + teller);
-		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Arrived at line, the teller's name is " + teller);		
-		teller.msgInLine(this);
-		state2 = inLineState.atDesk;
+/**
+ * Sends client to the specified line. Sends the announcer a message he is on the way to stop the announcer from sending the same number out.
+ * Acquires the atLine semaphore.
+ * After the semaphore, sends a message to the teller.
+ * @param l = line number
+ */
+private void goToLine(int l){
+	announcer.msgOnTheWay();
+	DoGoToLine(l);
+	try {
+		atLine.acquire();
+	} catch (InterruptedException e) {
+		e.printStackTrace();
 	}
+	//		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Arrived at line, the teller's myPerson.getName() is " + teller);
+	AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Arrived at line, the teller's name is " + teller);		
+	teller.msgInLine(this);
+	state2 = inLineState.atDesk;
+}
 
-	/**
-	 * Same as the goToLine action, but for the loan line specifically. 
-	 * 
-	 */
-	private void goToLoanLine(){
-		DoGoToLine(5);
-		loanAnnouncer.msgOnTheWay();
-		try{
-			atLine.acquire();
-		} catch(InterruptedException e){
-			e.printStackTrace();
-		}
-		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Arrived at line, the teller's name is " + teller);		
-		loanTeller.msgInLine(this);
-		state2 = inLineState.atDesk;
+/**
+ * Same as the goToLine action, but for the loan line specifically. 
+ * 
+ */
+private void goToLoanLine(){
+	DoGoToLine(5);
+	loanAnnouncer.msgOnTheWay();
+	try{
+		atLine.acquire();
+	} catch(InterruptedException e){
+		e.printStackTrace();
 	}
+	AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Arrived at line, the teller's name is " + teller);		
+	loanTeller.msgInLine(this);
+	state2 = inLineState.atDesk;
+}
 
-	/**
-	 * Sends the teller a message to open a new account.
-	 * 
-	 */
-	private void openAccount(){
-		//		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to open an account.");
-		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to open an account.");		
-		teller.msgOpenAccount();
-		state2 = inLineState.transactionProcessing;
-	}
-	/**
-	 * Sends the loan teller a message to open a new account.
-	 */
-	private void loanOpenAccount(){
-		//		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to open an account.");
-		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to open an account.");		
-		loanTeller.msgOpenAccount();
-		state2 = inLineState.transactionProcessing;
-	}
-	private void IWantToDeposit(){
-		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to deposit " + requestAmount);
-		teller.msgDeposit(requestAmount);
-		state2 = inLineState.transactionProcessing;
+/**
+ * Sends the teller a message to open a new account.
+ * 
+ */
+private void openAccount(){
+	//		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to open an account.");
+	AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to open an account.");		
+	teller.msgOpenAccount();
+	state2 = inLineState.transactionProcessing;
+}
+/**
+ * Sends the loan teller a message to open a new account.
+ */
+private void loanOpenAccount(){
+	//		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to open an account.");
+	AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to open an account.");		
+	loanTeller.msgOpenAccount();
+	state2 = inLineState.transactionProcessing;
+}
+private void IWantToDeposit(){
+	AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to deposit " + requestAmount);
+	teller.msgDeposit(requestAmount);
+	state2 = inLineState.transactionProcessing;
 
-	}
-	private void IWantToWithdraw(){
-		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to withdraw money.");
-		teller.msgWithdraw(requestAmount);
-		state2 = inLineState.transactionProcessing;
+}
+private void IWantToWithdraw(){
+	AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to withdraw money.");
+	teller.msgWithdraw(requestAmount);
+	state2 = inLineState.transactionProcessing;
 
-	}
-	private void IWantALoan(){
-		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want a loan for " + requestAmount);
-		loanTeller.msgLoan(requestAmount, this.getPerson().getAge());
-		state2 = inLineState.transactionProcessing;
+}
+private void IWantALoan(){
+	AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want a loan for " + requestAmount);
+	loanTeller.msgLoan(requestAmount, this.getPerson().getAge(), hasLoan);
+	state2 = inLineState.transactionProcessing;
 
-	}
-	/**
-	 * deactivates the role and removes its role from the buildingList.
-	 */
-	private void Leaving(){
-		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Thanks, goodbye.");
-		clientGui.DoLeave();
+}
+/**
+ * deactivates the role and removes its role from the buildingList.
+ */
+private void Leaving(){
+	AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Thanks, goodbye.");
+	clientGui.DoLeave();
 	//	BuildingList.findBuildingWithName(BANK_CLIENT_ROLE).removeRole(this);
-		state2 = inLineState.noTicket;
-		deactivate();
+	state2 = inLineState.noTicket;
+	deactivate();
+}
+
+
+//gui
+private void DoGoToLine(int l){
+	AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Going to line " + l);
+	clientGui.doGoToLine(l);
+}
+
+private void DoGoToWaitingArea(){
+	AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Going to waiting area");
+	clientGui.doGoToWaitingArea();
+
+}
+
+
+
+
+//other
+public String getName() {
+	return myPerson.getName();
+}
+
+public String toString() {
+	return "Bank Client " + getName();
+}
+
+public boolean HasLoan(){
+	return hasLoan;
+}
+
+public void setGui(ClientGui gui) {
+	clientGui = gui;
+}
+/**
+ * Sets the intent of the client. 
+ * @param trans - intent of the client. Deposit, open, withdraw, or loan.
+ */
+public void setIntent(String trans){
+	requestAmount = myPerson.getMoneyNeeded();
+	if (trans.equalsIgnoreCase("deposit")){
+		this.state1 = bankState.deposit;
+		ticketNum = TakeANumberDispenser.INSTANCE.pullTicket();
+		//			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
+	}
+	if (trans.equalsIgnoreCase("withdraw")){
+		this.state1 = bankState.withdraw;
+		ticketNum = TakeANumberDispenser.INSTANCE.pullTicket();
+		//			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
+	}
+	if (trans.equalsIgnoreCase("loan")){
+		this.state1 = bankState.loan;
+		loanTicketNum = LoanTakeANumberDispenser.INSTANCE.pullTicket();
+		//			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + loanTicketNum);
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + loanTicketNum);
 	}
 
-
-	//gui
-	private void DoGoToLine(int l){
-		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Going to line " + l);
-		clientGui.doGoToLine(l);
-	}
-
-	private void DoGoToWaitingArea(){
-		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Going to waiting area");
-		clientGui.doGoToWaitingArea();
-
-	}
-
-
-
-
-	//other
-	public String getName() {
-		return myPerson.getName();
-	}
-
-	public String toString() {
-		return "Bank Client " + getName();
-	}
-
-	public boolean HasLoan(){
-		return hasLoan;
-	}
-
-	public void setGui(ClientGui gui) {
-		clientGui = gui;
-	}
-	/**
-	 * Sets the intent of the client. 
-	 * @param trans - intent of the client. Deposit, open, withdraw, or loan.
-	 */
-	public void setIntent(String trans){
-		requestAmount = myPerson.getMoneyNeeded();
-		if (trans.equalsIgnoreCase("deposit")){
-			this.state1 = bankState.deposit;
-			ticketNum = TakeANumberDispenser.INSTANCE.pullTicket();
-			//			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
-			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
-		}
-		if (trans.equalsIgnoreCase("withdraw")){
-			this.state1 = bankState.withdraw;
-			ticketNum = TakeANumberDispenser.INSTANCE.pullTicket();
-			//			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
-			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
-		}
-		if (trans.equalsIgnoreCase("loan")){
-			this.state1 = bankState.loan;
-			loanTicketNum = LoanTakeANumberDispenser.INSTANCE.pullTicket();
-			//			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + loanTicketNum);
-			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + loanTicketNum);
-		}
-
-		/*
+	/*
 		//hack to ensure there are at least some bank accounts at simulation start
 		if (existsBankAccount > 4){
 			int newMoney = new Random().nextInt(100);
 			myAccount = new Account(this,newMoney);
 			Database.INSTANCE.addToDatabase(myAccount);
 		}
-		 */
+	 */
 
-	}
+}
 
-	public ClientGui getGui() {
-		return clientGui;
-	}
-	@Override
-	public boolean canGoGetFood() {
-		return false;
-	}
-	@Override
-	public String getNameOfRole() {
-		return null;
-	}
+public ClientGui getGui() {
+	return clientGui;
+}
+@Override
+public boolean canGoGetFood() {
+	return false;
+}
+@Override
+public String getNameOfRole() {
+	return null;
+}
+
+
 }

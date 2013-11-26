@@ -4,12 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
 
 import javax.swing.JFrame;
 
-import Person.PersonAgent;
-import bank.*;
+
 
 /**
  * Main GUI class.
@@ -19,7 +17,11 @@ import bank.*;
  */
 public class BankGui extends JFrame implements ActionListener {
    
-        BankAnimationPanel animationPanel = new BankAnimationPanel();
+        /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+		BankAnimationPanel animationPanel = new BankAnimationPanel();
         final int WINDOWX = 800;// window width
     final int WINDOWY = 400;//window height
     final int WINDOWXOpenPosition = 50;//how many pixels from top left of screen window will appear
