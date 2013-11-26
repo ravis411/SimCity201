@@ -8,6 +8,10 @@ Market Branch
 
 Currently Assigned: Luca Spinazzola
 
+Bank Branch
+
+Currently Assigned: Byron Choy
+
 Residence Branch
 
 Currently Assigned: Dylan Resnik
@@ -15,5 +19,7 @@ Currently Assigned: Dylan Resnik
 Overworld Branch
 
 Currently Assigned: Ryan
->>>>>>> origin/person
->>>>>>> origin/residence
+
+Restaurant Branch
+
+Currently Assigned:

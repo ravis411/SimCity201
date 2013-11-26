@@ -4,6 +4,8 @@ import Person.PersonAgent;
 import Person.Role.Role;
 import agent.Agent;
 import residence.interfaces.*;
+import trace.AlertLog;
+import trace.AlertTag;
 
 import java.util.*;
 
@@ -32,24 +34,24 @@ public class ApartmentManagerRole extends Role implements ApartmentManager {
 		this.name = name;
 	}
 	
-	public String getName() {
+	public String getNameOfRole() {
 		return name;
 	}
 	
 	// Messages
 	
 	public void msgCollectRent() { //called by timer when it's time to collect rent from residents
-		print("Time to collect rent!");
+		AlertLog.getInstance().logMessage(AlertTag.APARTMENT_MANAGER, myPerson.getName(), "Charging residents rent.");
 		collectRent = true;
 		stateChanged();
 	}
 	public void msgRentPaid (Home p, int amount) {
-		print("Received $" + amount + " of rent from resident.");
+		AlertLog.getInstance().logMessage(AlertTag.APARTMENT_MANAGER, myPerson.getName(), "Received $" + amount + " of rent from resident.");
 		stateChanged();
 	}
 	public void msgBrokenFeature(String name, Home h) {
 		thingsToFix.add(new BrokenFeature(name, h));
-		print("Resident reporting broken " + name);
+		AlertLog.getInstance().logMessage(AlertTag.APARTMENT_MANAGER, myPerson.getName(), "Resident reporting broken " + name);
 		stateChanged();
 	}
 	

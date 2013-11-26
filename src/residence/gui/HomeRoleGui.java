@@ -8,7 +8,7 @@ public class HomeRoleGui implements Gui {
 
     private HomeRole agent = null;
 
-    private int xPos = 805, yPos = 150;//default waiter position
+    private int xPos = 800, yPos = 150;//default waiter position
     private int xDestination = 805, yDestination = 150;//default start position
 
     public HomeRoleGui(HomeRole agent) {
@@ -16,6 +16,7 @@ public class HomeRoleGui implements Gui {
     }
 
     public void updatePosition() {
+    	
         if (xPos < xDestination)
             xPos++;
         else if (xPos > xDestination)
@@ -47,6 +48,7 @@ public class HomeRoleGui implements Gui {
     }
 
     public void draw(Graphics2D g) {
+    	
         g.setColor(Color.MAGENTA);
         g.fillRect(xPos, yPos, 20, 20);
         if(xPos == 375 && yPos == 65) {

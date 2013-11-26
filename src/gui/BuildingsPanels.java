@@ -1,12 +1,16 @@
 package gui;
 
 import gui.Building.BuildingPanel;
+import gui.Building.ResidenceBuildingPanel;
 
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.JPanel;
+
+import building.Building;
+import building.BuildingList;
 
 
 /** This class holds all the panels for various buildings and displays them if called.
@@ -36,6 +40,7 @@ public class BuildingsPanels extends JPanel{
 	 * @param buildingPanel
 	 */
 	public void addBuildingPanel(BuildingPanel buildingPanel) {
+		BuildingList.getInstance().add(new Building(buildingPanel));
 		this.add(buildingPanel, buildingPanel.getName());
 	}
 	
@@ -61,6 +66,18 @@ public class BuildingsPanels extends JPanel{
 		return b;
 	}//end getBuildingPanel
 	
+	public ResidenceBuildingPanel getResidenceBuildingPanel(String name){
+		ResidenceBuildingPanel b = null;
+		for(Component c : this.getComponents()){
+			if(c instanceof ResidenceBuildingPanel) {
+				if(c.getName() == name){
+					b = (ResidenceBuildingPanel) c;
+					break;
+				}
+			}
+		}
+		return b;
+	}//end getResidenceBuildingPanel
 	
 	
 	

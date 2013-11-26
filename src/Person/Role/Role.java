@@ -6,11 +6,9 @@ public abstract class Role {
 
 	private boolean isActive = false;
 	protected PersonAgent myPerson;
-
-	public String role;
 	
 	public final static String MARKET_CUSTOMER_ROLE = "MarketCustomerRole";
-	public final static String BANK_CUSTOMER_ROLE = "BankCustomerRole";
+	public final static String BANK_CLIENT_ROLE = "bank.BankClientRole";
 	public final static String PASSENGER_ROLE = "PassengerRole";
 	public final static String HOME_ROLE = "HomeRole";
 	public final static String RESTAURANT_CUSTOMER_ROLE = "RestaurantCustomerRole";
@@ -36,12 +34,12 @@ public abstract class Role {
 	 * String accessor to get the name of the Role
 	 * @return
 	 */
-	public abstract String getName();
+	public abstract String getNameOfRole();
 	
 	//--------------------UTILITIES-----------------//
 	
 	protected void print(String s){
-		System.out.println(myPerson.getName()+"-"+getName()+": "+s);
+		System.out.println(myPerson.getName()+"-"+getNameOfRole()+": "+s);
 	}
 	
 	/**
@@ -71,7 +69,7 @@ public abstract class Role {
 	 * Standard accessor for myPerson
 	 * @return the personAgent that owns the Role
 	 */
-	protected PersonAgent getPerson(){
+	public PersonAgent getPerson(){
 		return myPerson;
 	}
 	
@@ -80,6 +78,7 @@ public abstract class Role {
 	 */
 	public void activate(){
 		isActive = true;
+		stateChanged();
 	}
 	
 	/**

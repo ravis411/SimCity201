@@ -81,7 +81,7 @@ public class VehicleGui implements Gui {
 			    	ImageIcon icon = new ImageIcon(img);
 			    	image = icon.getImage();
 			    }
-			} catch (IOException e) {
+			} catch (Exception e) {
 				testView = true;
 				AlertLog.getInstance().logWarning(AlertTag.VEHICLE_GUI, agent.toString(), "Image not found. Switching to Test View");
 			}

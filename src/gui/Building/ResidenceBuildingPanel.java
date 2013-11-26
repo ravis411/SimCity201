@@ -1,13 +1,16 @@
 package gui.Building;
 
 import gui.BuildingsPanels;
+import interfaces.GuiPanel;
 
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+
+import residence.gui.AnimationPanel;
+import Person.Role.Role;
 
 
 /**
@@ -18,6 +21,8 @@ import javax.swing.JPanel;
  */
 public class ResidenceBuildingPanel extends BuildingPanel{
 	
+	AnimationPanel residencePanel;
+	
 	public ResidenceBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels) {
 		super(r, name, buildingPanels);
 		
@@ -25,17 +30,33 @@ public class ResidenceBuildingPanel extends BuildingPanel{
 		
 		setBackground( Color.yellow );
 		
+		residencePanel = new AnimationPanel();
+		
+		setLayout(new GridLayout(1,1));
+		
+		
 		JLabel j = new JLabel( myName );
-		add( j );
+		add( residencePanel );
 	}
 	
 	
 	public String getName() {
 		return myName;
 	}
+	
+	public AnimationPanel getPanel() {
+		return residencePanel;
+	}
 
 	public void displayBuildingPanel() {
 		myCity.displayBuildingPanel( this );
+		
+	}
+
+
+	@Override
+	public void addPersonWithRole(Role r) {
+		// TODO Auto-generated method stub
 		
 	}
 

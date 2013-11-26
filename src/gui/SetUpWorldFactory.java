@@ -1,11 +1,14 @@
 package gui;
 
-import gui.Building.Building;
+import gui.Building.BuildingGui;
 import gui.Building.BuildingPanel;
 import gui.Building.BusStopBuilding;
 import gui.Building.BusStopBuildingPanel;
+<<<<<<< HEAD
 import gui.Building.ResidenceBuildingPanel;
 import gui.MockAgents.MockBusAgent;
+=======
+>>>>>>> origin/develop
 import gui.agentGuis.PersonGui;
 import gui.agentGuis.VehicleGui;
 
@@ -20,13 +23,25 @@ import agent.Agent;
 import astar.AStarTraversal;
 import astar.PersonAStarTraversal;
 import astar.VehicleAStarTraversal;
+<<<<<<< HEAD
 import gui.Building.Building;
+=======
+import gui.Building.ApartmentBuilding;
+import gui.Building.ApartmentBuildingPanel;
+import gui.Building.BankBuilding;
+import gui.Building.BankBuildingPanel;
+import gui.Building.BuildingGui;
+>>>>>>> origin/develop
 import gui.Building.BuildingPanel;
 import gui.Building.BusStopBuilding;
 import gui.Building.BusStopBuildingPanel;
+import gui.Building.DefaultBuildingPanel;
+import gui.Building.MarketBuilding;
+import gui.Building.MarketBuildingPanel;
+import gui.Building.ResidenceBuilding;
 import gui.Building.ResidenceBuildingPanel;
-import gui.MockAgents.MockBusAgent;
-import gui.MockAgents.MockPerson;
+import gui.MockAgents.PseudoBusAgent;
+import gui.MockAgents.PseudoPerson;
 import gui.agentGuis.PersonGui;
 import gui.agentGuis.VehicleGui;
 
@@ -90,28 +105,28 @@ public class SetUpWorldFactory{
 		location.positionToEnterFromMainGrid = new Dimension(10, 3);
 		location.entranceFromMainGridPosition = new Dimension(9, 3);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Default", "Building 2", 8, 2, 2, 2, location);
+		addBuilding("Residence", "House 2", 8, 2, 2, 2, location);
 		
 //Building 3
 		location.sector = 1;
 		location.positionToEnterFromMainGrid = new Dimension(15, 3);
 		location.entranceFromMainGridPosition = new Dimension(14, 3);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Default", "Building 3", 13, 2, 2, 2, location);
+		addBuilding("Market", "Market", 13, 2, 2, 2, location);
 		
 //Building 4
 		location.sector = 1;
 		location.positionToEnterFromMainGrid = new Dimension(20, 3);
 		location.entranceFromMainGridPosition = new Dimension(19, 3);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Default", "Building 4", 18, 2, 2, 2, location);
+		addBuilding("Apartment", "Building 4", 18, 2, 2, 2, location);
 		
 //Building 5
 		location.sector = 1;
 		location.positionToEnterFromMainGrid = new Dimension(25, 3);
 		location.entranceFromMainGridPosition = new Dimension(24, 3);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Default", "Building 5", 23, 2, 2, 2, location);
+		addBuilding("Bank", "Bank", 23, 2, 2, 2, location);
 //Building 6
 		location.sector = 1;
 		location.positionToEnterFromMainGrid = new Dimension(30, 3);
@@ -124,7 +139,7 @@ public class SetUpWorldFactory{
 		location.positionToEnterFromMainGrid = new Dimension(5, 12);
 		location.entranceFromMainGridPosition = new Dimension(4, 12);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Default", "Building 7", 3, 12, 2, 2, location);
+		addBuilding("Market", "Market 2", 3, 12, 2, 2, location);
 //Building 8
 		location.sector = 2;
 		location.positionToEnterFromMainGrid = new Dimension(10, 12);
@@ -216,8 +231,9 @@ public class SetUpWorldFactory{
 			addVehicle("EvenMockBus");
 			addVehicle("OddMockBus");
 			
-			addPerson("Person 1");
-//			addPerson("Person 2");
+			
+			addPerson("Person 1", buildingsPanels.getResidenceBuildingPanel("House 1"));
+			addPerson("Person 2", buildingsPanels.getResidenceBuildingPanel("House 2"));
 //			addPerson("Person 3");
 			
 		
@@ -363,9 +379,9 @@ public class SetUpWorldFactory{
 			addVehicle("EvenMockBus");
 			addVehicle("OddMockBus");
 			
-			addPerson("Person 1");
-			addPerson("Person 2");
-			addPerson("Person 3");
+			//addPerson("Person 1");
+			//addPerson("Person 2");
+			//addPerson("Person 3");
 	}
 	public void LoadGUITest2(){
 		
@@ -481,9 +497,9 @@ public class SetUpWorldFactory{
 	
 	
 	
-	private void addPerson(String name){
+	private void addPerson(String name, ResidenceBuildingPanel home){
 		//PersonAgent p1 = new PersonAgent(name);
-		PersonAgent p1 = new PersonAgent(name);
+		PersonAgent p1 = new PersonAgent(name, home);
 		AStarTraversal t = new PersonAStarTraversal(layout.getAgentGrid(), layout.getCrossWalkGrid(), layout.getRoadGrid());
 		PersonGui g1 = new PersonGui(p1, layout, t, locationMap);
 		p1.setGui(g1);
@@ -500,7 +516,7 @@ public class SetUpWorldFactory{
 				OddStopsQueue.add("Bus Stop " + 1);
 				OddStopsQueue.add("Bus Stop " + 3);
 				OddStopsQueue.add("Bus Stop " + 5);
-			MockBusAgent v1 = new MockBusAgent("Odd Mock Bus", OddStopsQueue);
+			PseudoBusAgent v1 = new PseudoBusAgent("Odd Mock Bus", OddStopsQueue);
 			AStarTraversal t = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
 			VehicleGui v1Gui = new VehicleGui( v1, layout, t, locationMap );
 			v1.agentGui = v1Gui;
@@ -514,7 +530,7 @@ public class SetUpWorldFactory{
 			EvenStopsQueue1.add("Bus Stop " + 2);
 			EvenStopsQueue1.add("Bus Stop " + 4);
 			EvenStopsQueue1.add("Bus Stop " + 6);
-			MockBusAgent v2 = new MockBusAgent("Even Mock Bus", EvenStopsQueue1);
+			PseudoBusAgent v2 = new PseudoBusAgent("Even Mock Bus", EvenStopsQueue1);
 			AStarTraversal t2 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
 			VehicleGui v2Gui = new VehicleGui( v2, layout, t2 ,locationMap );
 			v2.agentGui = v2Gui;
@@ -549,7 +565,7 @@ public class SetUpWorldFactory{
 		if(buildingsPanels.containsName(name))
 			return;
 		
-		Building building = layout.addBuilding( xPos, yPos, width, height );//<-this puts the building on the grid
+		BuildingGui building = layout.addBuilding( xPos, yPos, width, height );//<-this puts the building on the grid
 		
 		if(building == null){
 			return;
@@ -559,7 +575,7 @@ public class SetUpWorldFactory{
 		switch (type) {
 		case "Default":
 			if(building != null){
-				BuildingPanel bp = new BuildingPanel(building, name, buildingsPanels);
+				BuildingPanel bp = new DefaultBuildingPanel(building, name, buildingsPanels);//null;//new BuildingPanel(building, name, buildingsPanels);
 				building.setBuildingPanel(bp);
 				cityPanel.addGui(building);
 				buildingsPanels.addBuildingPanel(bp);
@@ -577,13 +593,40 @@ public class SetUpWorldFactory{
 			}
 			break;
 		case "Residence":
-			if(building != null){
-				BuildingPanel bp = new ResidenceBuildingPanel(building, name, buildingsPanels);
-				building.setBuildingPanel(bp);
-				cityPanel.addGui(building);
+			ResidenceBuilding rb = new ResidenceBuilding(building, false);
+			if(rb != null){
+				BuildingPanel bp = new ResidenceBuildingPanel(rb, name, buildingsPanels);
+				rb.setBuildingPanel(bp);
+				cityPanel.addGui(rb);
 				buildingsPanels.addBuildingPanel(bp);
 			}
 			break;
+		case "Bank":
+			BankBuilding bb = new BankBuilding(building);
+			if(bb != null){
+				BuildingPanel bp = new BankBuildingPanel(bb, name, buildingsPanels);
+				bb.setBuildingPanel(bp);
+				cityPanel.addGui(bb);
+				buildingsPanels.addBuildingPanel(bp);
+			}
+			break;
+		case "Apartment":
+			ApartmentBuilding ab = new ApartmentBuilding(building);
+			if(ab != null){
+				ApartmentBuildingPanel bp = new ApartmentBuildingPanel(ab, name, buildingsPanels, this);
+				ab.setBuildingPanel(bp);
+				cityPanel.addGui(ab);
+				buildingsPanels.addBuildingPanel(bp);
+			}
+			break;
+		case "Market":
+			MarketBuilding mb = new MarketBuilding(building);
+			if(mb != null){
+			MarketBuildingPanel mp = new MarketBuildingPanel(mb, name, buildingsPanels);
+			mb.setBuildingPanel(mp);
+			cityPanel.addGui(mb);
+			buildingsPanels.addBuildingPanel(mp);
+		}
 		default:
 			return;
 		}

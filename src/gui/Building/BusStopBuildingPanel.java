@@ -1,13 +1,14 @@
 package gui.Building;
 
 import gui.BuildingsPanels;
+import interfaces.GuiPanel;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+
+import Person.Role.Role;
 
 
 /**
@@ -37,6 +38,20 @@ public class BusStopBuildingPanel extends BuildingPanel{
 	public void displayBuildingPanel() {
 		myCity.displayBuildingPanel( this );
 		
+	}
+
+
+	@Override
+	public void addPersonWithRole(Role r) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public GuiPanel getPanel() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

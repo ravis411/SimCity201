@@ -1,23 +1,28 @@
 package residence.gui;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
+import gui.Building.BuildingPanel;
+import gui.Building.ResidenceBuildingPanel;
+import interfaces.GuiPanel;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-public class AnimationPanel extends JPanel implements ActionListener {
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
+import residence.HomeRole;
+import Person.Role.Role;
+
+public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
 	
 	static final int XCOOR = 0;
 	static final int YCOOR = 0;
@@ -60,6 +65,13 @@ public class AnimationPanel extends JPanel implements ActionListener {
     }
 
 	public void actionPerformed(ActionEvent e) {
+		ResidenceBuildingPanel bp = (ResidenceBuildingPanel) this.getParent();
+		 for(Gui gui : guis) {
+	            if (gui.isPresent()) {
+	                gui.updatePosition();
+	            }
+	        }
+		 
 		repaint();  //Will have paintComponent called
 	}
 
@@ -69,8 +81,8 @@ public class AnimationPanel extends JPanel implements ActionListener {
         //Clear the screen by painting a rectangle the size of the frame
         g2.setColor(getBackground());
         g2.fillRect(XCOOR, YCOOR, WINDOWX, WINDOWY);
-        
-        g.drawImage(img, 0, 0, 800, 400, observer);
+//        
+        //g.drawImage(img, 0, 0, 800, 400, observer);
 
         //Here is the kitchen
         g2.setColor(Color.lightGray); //counter top
@@ -128,13 +140,6 @@ public class AnimationPanel extends JPanel implements ActionListener {
         g2.fillRect(10, 10, 750, 5);
         g2.fillRect(760, 10, 5, 110);
         g2.fillRect(760, 210, 5, 95);
-        
-
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.updatePosition();
-            }
-        }
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {
@@ -146,5 +151,24 @@ public class AnimationPanel extends JPanel implements ActionListener {
     public void addGui(HomeRoleGui gui) {
         guis.add(gui);
     }
+
+	@Override
+	public void addGuiForRole(Role r) {
+		// TODO Auto-generated method stub
+		if(r instanceof HomeRole){
+			HomeRole hr = (HomeRole) r;
+			HomeRoleGui gui = new HomeRoleGui(hr);
+			hr.setGui(gui);
+			guis.add(gui);
+			BuildingPanel bp = (BuildingPanel) this.getParent();
+			System.out.println("Added to "+bp.getName());
+			//System.out.println("My person is: " + hr.myPerson.getName());
+		}
+	}
+
+	public void removeGuiForRole(Role r) {
+		// TODO Auto-generated method stub
+		
+	}
     
 }

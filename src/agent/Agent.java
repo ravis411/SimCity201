@@ -7,8 +7,7 @@ import java.util.concurrent.Semaphore;
  */
 public abstract class Agent {
     Semaphore stateChange = new Semaphore(1, true);//binary semaphore, fair
-    boolean isPaused = false;
-    Semaphore pause = new Semaphore(0,true);
+    Semaphore pausedSema = new Semaphore(0, true);
     private AgentThread agentThread;
 
     protected Agent() {
@@ -92,13 +91,22 @@ public abstract class Agent {
             agentThread = null;
         }
     }
+    
+    public void pauseThread() {
+    	agentThread.pause();
+    }
+    
+    public void resumeThread() {
+    	agentThread.restart();
+    }
 
     /**
      * Agent scheduler thread, calls respondToStateChange() whenever a state
-     * change has been signalled.
+     * change has been signaled.
      */
     private class AgentThread extends Thread {
         private volatile boolean goOn = false;
+        private volatile boolean paused = false;
 
         private AgentThread(String name) {
             super(name);
@@ -108,20 +116,23 @@ public abstract class Agent {
             goOn = true;
 
             while (goOn) {
+            	if (paused) {
+            		try {
+            			pausedSema.acquire();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+            	}
                 try {
                     // The agent sleeps here until someone calls, stateChanged(),
                     // which causes a call to stateChange.give(), which wakes up agent.
                     stateChange.acquire();
-                    if (isPaused) {
-                    	pause.acquire();
-                    }
                     //The next while clause is the key to the control flow.
                     //When the agent wakes up it will call respondToStateChange()
                     //repeatedly until it returns FALSE.
                     //You will see that pickAndExecuteAnAction() is the agent scheduler.
-                    if (pickAndExecuteAnAction()) {
-                    	stateChange.release();
-                    };
+                    while (pickAndExecuteAnAction()) ;
                 } catch (InterruptedException e) {
                     // no action - expected when stopping or when deadline changed
                 } catch (Exception e) {
@@ -129,18 +140,20 @@ public abstract class Agent {
                 }
             }
         }
+        
+        public void pause() {
+        	paused = true;
+        }
+        
+        public void restart() {
+        	paused = false;
+        	pausedSema.release();
+        }
 
         private void stopAgent() {
             goOn = false;
             this.interrupt();
         }
-    }
-    public void pause() {
-    	isPaused = true;
-    }
-    public void resume() {
-    	isPaused = false;
-    	pause.release();
     }
 }
 

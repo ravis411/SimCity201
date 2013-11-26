@@ -1,5 +1,6 @@
 package Person;
 
+import gui.Building.ResidenceBuildingPanel;
 import gui.agentGuis.PersonGui;
 import interfaces.Employee;
 
@@ -9,11 +10,16 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Queue;
 
+import residence.HomeRole;
+
+import bank.BankClientRole;
 import trace.AlertLog;
 import trace.AlertTag;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
 import agent.Agent;
+import building.Building;
+import building.BuildingList;
 
 /**
  * @author MSILKJR
@@ -28,7 +34,7 @@ public class PersonAgent extends Agent {
 	private double money;
 	private double moneyNeeded;
 	
-	private int age;
+	private int age = 20; //edited by Byron for testing purposes
 	
 	private int SSN;
 	private int atRestaurant;
@@ -50,7 +56,7 @@ public class PersonAgent extends Agent {
 	public enum StateOfHunger {NotHungry, SlightlyHungry, Hungry, VeryHungry, Starving} 
 	public enum StateOfLocation {AtHome,AtBank,AtMarket,AtRestaurant, InCar,InBus,Walking};
 	public enum StateOfEmployment {Customer,Employee,Idle};
-	public enum PersonState {Idle,NeedsMoney,PayRentNow, PayLoanNow,GettingMoney,NeedsFood,GettingFood }
+	public enum PersonState {Idle,NeedsMoney,PayRentNow, Working, PayLoanNow,GettingMoney,NeedsFood,GettingFood }
 	
 	private List<Item> backpack;
 	
@@ -61,8 +67,10 @@ public class PersonAgent extends Agent {
 	private int hungerLevel;
 	
 	private PersonGui gui;
+	
+	public ResidenceBuildingPanel home;
 
-	public PersonAgent(String name){
+	public PersonAgent(String name, ResidenceBuildingPanel home){
 		SSN = counter++;
 		this.name = name;
 		//initializations
@@ -76,9 +84,12 @@ public class PersonAgent extends Agent {
 		realTime = null;
 		parties = new ArrayList<Party>();
 		prefs = new Preferences();
+		this.home = home;
 		
 		backpack = new ArrayList<Item>();
 		itemsNeeded = new ArrayDeque<Item>();
+		
+		roles.add(new HomeRole(this));
 	}
 	
 //-------------------------------MESSAGES----------------------------------------//
@@ -123,7 +134,7 @@ public class PersonAgent extends Agent {
 	  */
 	public void msgReportForWork(String role){
 		for(Role r: roles){
-			if(r.role==role){
+			if(r.getNameOfRole()==role){
 				r.activate();
 			}
 		}
@@ -218,12 +229,16 @@ public class PersonAgent extends Agent {
 		//cue the Role schedulers
 		boolean outcome = false;
 		for(Role r: roles){
+			boolean somethingIsActive = false;
 			if(r.isActive()){
+				somethingIsActive = true;
 				outcome = r.pickAndExecuteAction() || outcome;
-				
 				if(outcome)
 					return outcome;
 			}
+			
+			if(somethingIsActive)
+				return true;
 		}
 		
 		if(!itemsNeeded.isEmpty()){
@@ -231,7 +246,9 @@ public class PersonAgent extends Agent {
 			return true;
 		}
 		
-		/*if(state != PersonState.Idle){
+
+		if(state != PersonState.Idle && state != PersonState.Working){
+
 			GoHome();
 		}*/
 		
@@ -302,12 +319,12 @@ public class PersonAgent extends Agent {
 		
 		//needs a way to find a bank quite yet
 		GoToLocation("Bank", transport);
-		if(findRole(Role.BANK_CUSTOMER_ROLE) == null){
-			Role r = RoleFactory.roleFromString(Role.BANK_CUSTOMER_ROLE);
+		if(findRole(Role.BANK_CLIENT_ROLE) == null){
+			Role r = RoleFactory.roleFromString(Role.BANK_CLIENT_ROLE);
 			r.activate();
 			addRole(r);
 		}else{
-			findRole(Role.BANK_CUSTOMER_ROLE).activate();
+			findRole(Role.BANK_CLIENT_ROLE).activate();
 		}
 		  /*state = GettingMoney;
 		  Bank b = pickBank();
@@ -335,14 +352,15 @@ public class PersonAgent extends Agent {
 		}
 		
 		//needs a way to find a bank quite yet
-		GoToLocation("Market", transport);
-		if(findRole(Role.MARKET_CUSTOMER_ROLE) == null){
+		GoToLocation("Building 10", transport);
+		/*if(findRole(Role.MARKET_CUSTOMER_ROLE) == null){
 			Role r = RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
 			r.activate();
 			addRole(r);
 		}else{
 			findRole(Role.MARKET_CUSTOMER_ROLE).activate();
-		}
+		}*/
+		GoHome();
 	}
 
 	/**
@@ -433,8 +451,27 @@ public class PersonAgent extends Agent {
 	  	default:
 	  		transport = "ERROR";
 	  }
+//		  for(Building b : BuildingList.getInstance()){
+//			  System.out.println("Building Name: "+b.getName());
+//		  }
+		  GoToLocation(home.getName(), transport);
+		  HomeRole role = (HomeRole) findRole(Role.HOME_ROLE);
+		  BuildingList.findBuildingWithName("House 1").addRole(role);
+		  role.activate();
 		  
-		  GoToLocation("Building 2", transport);
+		  role.msgMakeFood();
+	  
+//	  GoToLocation("Bank", transport);
+//	  bankClientRole role = (bankClientRole) findRole(Role.BANK_CLIENT_ROLE);
+//	  if(role == null){
+//		  role = (bankClientRole) RoleFactory.roleFromString(Role.BANK_CLIENT_ROLE);
+//		  addRole(role);
+//	  }
+	  
+//	  moneyNeeded = 40.00;
+//	  role.setIntent(bankClientRole.withdraw);
+//	  role.activate();
+	  
 	}
 		  
 	//------------------------DO XYZ FUNCTIONS----------------------//
@@ -493,7 +530,7 @@ public class PersonAgent extends Agent {
 	
 	private Role findRole(String role){
 		for(Role r : roles){
-			if(r.getName().equals(role)){
+			if(r.getNameOfRole().equals(role)){
 				return r;
 			}
 		}
@@ -564,6 +601,10 @@ public class PersonAgent extends Agent {
 		this.money=money;
 	}
 	
+	public void setMoneyNeeded(double money){
+		this.moneyNeeded = money;
+	}
+	
 	/**
 	 * Adds a loan/debt to the list of debts
 	 */
@@ -583,6 +624,10 @@ public class PersonAgent extends Agent {
 	 * @param r the role to add
 	 */
 	public void addRole(Role r){
+		if(r instanceof Employee){
+			state = PersonState.Working;
+		}
+		r.setPerson(this);
 		roles.add(r);
 	}
 	
@@ -656,6 +701,10 @@ public class PersonAgent extends Agent {
 	
 	public void setGui(PersonGui gui){
 		this.gui = gui;
+	}
+	
+	public String toString(){
+		return getName();
 	}
 
 }

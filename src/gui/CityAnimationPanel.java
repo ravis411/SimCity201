@@ -1,6 +1,6 @@
 package gui;
 
-import gui.Building.Building;
+import gui.Building.BuildingGui;
 
 import javax.swing.*;
 
@@ -28,12 +28,16 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 
 
 	private List<Gui> guis = new ArrayList<Gui>();
-	private List<Building> buildings = new ArrayList<>(); 
+	private List<BuildingGui> buildings = new ArrayList<>(); 
 
 	private SimCityLayout layout = null;
 
 	public static final Calendar calendar = Calendar.getInstance();
-
+	private float ampmAlpha = 0f;
+	
+	
+	boolean testView = false;
+	
 
 	public CityAnimationPanel(SimCityLayout layout) {
 		WINDOWX = layout.getWINDOWX();
@@ -66,7 +70,7 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
 
-		calendar.add(Calendar.MINUTE, 5);
+		calendar.add(Calendar.MINUTE, 1);
 		//AlertLog.getInstance().logInfo(AlertTag.GENERAL_CITY, "Calendar", calendar.toString());
 		
 		
@@ -97,24 +101,43 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		
 		g2.setColor(Color.orange);
 		
-		for(Building b : buildings){
-			//why would a building not be present? //if(b.isPresent())
-			{
-				b.draw(g2);
-			}
+//		for(Building b : buildings){
+//			//why would a building not be present? //if(b.isPresent())
+//			{
+//			//	b.draw(g2);
+//			}
+//		}
+		
+		
+		//This section makes the city dark at night and draws the clock.
+		if(calendar.get(Calendar.HOUR_OF_DAY) >= 18 && ampmAlpha < .3f){
+			ampmAlpha += 0.001f;
+		}else if(calendar.get(Calendar.HOUR_OF_DAY) <= 6 && ampmAlpha > .01f)
+		{
+			ampmAlpha -= 0.001f;
 		}
-
+		if(!testView){
+			AlphaComposite orig = AlphaComposite.getInstance(AlphaComposite.SRC_OVER);
+			AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ampmAlpha);
+			g2.setComposite(ac);
+			g2.setColor(Color.black);
+			g2.fillRect(0, 0, WINDOWX, WINDOWY);
+			g2.setComposite(orig);
+		}
+		g2.setColor(Color.white);
+		String time = new java.text.SimpleDateFormat("EEEE, MM/dd/yyyy hh:mm a").format(calendar.getTime());
+		g2.drawString(time, g.getClipBounds().width - 200, g.getClipBounds().height - 25);
 	}
 
 	public void addGui(Gui gui) {
 		guis.add(gui);
 	}
 	
-	public void addGui(Building gui){
+	public void addGui(BuildingGui gui){
 		addBuilding(gui);
 	}
 	
-	public void addBuilding(Building b) {
+	public void addBuilding(BuildingGui b) {
 		buildings.add(b);
 		guis.add(b);
 		
@@ -125,6 +148,7 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		for(Gui g : guis){
 			g.setTestView(testView);
 		}
+		this.testView = testView;
 	}
 
 	public void clear(){
@@ -134,7 +158,7 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 	}
 	
 	public void mouseClicked(MouseEvent me) {
-		for(Building b : buildings) {
+		for(BuildingGui b : buildings) {
 			if(b.contains(me.getX(), me.getY())){
 				b.displayBuilding();
 			}
