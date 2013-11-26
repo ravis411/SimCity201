@@ -15,7 +15,6 @@ import gui.agentGuis.VehicleGui;
 import gui.interfaces.BusStop;
 import gui.interfaces.Passenger;
 import gui.interfaces.Bus;
-import Transportation.CopyBusAgent.AgentState;
 import agent.Agent;
 
 public class BusAgent extends Agent implements Bus 
