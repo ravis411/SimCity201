@@ -275,11 +275,15 @@ private void goToLine(int l){
 		atLine.acquire();
 	} catch (InterruptedException e) {
 		e.printStackTrace();
+		System.out.println("Y THIS");
 	}
 	//		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Arrived at line, the teller's myPerson.getName() is " + teller);
 	AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Arrived at line, the teller's name is " + teller);		
 	teller.msgInLine(this);
 	state2 = inLineState.atDesk;
+	if (state1 == bankState.nothing){
+		setIntent("deposit");
+	}
 }
 
 /**
