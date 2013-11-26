@@ -6,6 +6,7 @@ import java.util.List;
 
 import gui.interfaces.BusStop;
 import gui.interfaces.Passenger;
+import gui.interfaces.Bus;
 import agent.Agent;
 
 public class BusStopAgent extends Agent implements BusStop {
@@ -19,8 +20,9 @@ public class BusStopAgent extends Agent implements BusStop {
 		PassengerState ps;
 	}
 	
-	public BusStopAgent() {
+	public BusStopAgent(String name) {
 		state = AgentState.Idle;
+		this.name = name;
 	}
 	
 	private enum PassengerState {waiting, boarded};
@@ -30,7 +32,8 @@ public class BusStopAgent extends Agent implements BusStop {
 	public AgentState state;
 	
 	private List<myPassenger> waitingPassengers = Collections.synchronizedList(new ArrayList<myPassenger>());
-	public BusAgent currentBus;
+	public Bus currentBus;
+	private String name;
 	
 	
 	//Messages
@@ -40,7 +43,7 @@ public class BusStopAgent extends Agent implements BusStop {
 		stateChanged();
 	}
 
-	public void msgAtStop(BusAgent bus) {
+	public void msgAtStop(Bus bus) {
 		//Sent from bus to bus stop
 		currentBus = bus;
 		state = AgentState.BusInStop;
@@ -57,6 +60,7 @@ public class BusStopAgent extends Agent implements BusStop {
 		synchronized(waitingPassengers) {
 			for (myPassenger mp : waitingPassengers) {
 				if (mp.passenger.equals(p)) {
+					print("Passenger has boarded bus");
 					mp.ps = PassengerState.boarded;
 				}
 			}
@@ -65,39 +69,42 @@ public class BusStopAgent extends Agent implements BusStop {
 	
 	//Scheduler
 	@Override
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		if (state == AgentState.BusInStop) {
 			synchronized(waitingPassengers) {
 				for (myPassenger mp : waitingPassengers) {
 					if (mp.ps == PassengerState.waiting) {
-						boardPassenger(mp);
+						boardPassengers();
+						return true;
+					}
+				}
+			}
+			synchronized(waitingPassengers) {
+				for (myPassenger mp : waitingPassengers) {
+					if (mp.ps == PassengerState.boarded) {
+						removePassenger(mp);
+						return true;
 					}
 				}
 			}
 			synchronized(waitingPassengers) {
 				if (waitingPassengers.size() == 0) {
 					releaseBus();
-	
-				}
-			}
-			return true;
-		}
-		synchronized(waitingPassengers) {
-			for (myPassenger mp : waitingPassengers) {
-				if (mp.ps == PassengerState.boarded) {
-					removePassenger(mp);
 					return true;
 				}
 			}
 		}
 		
+		
 		return false;
 	}
 	
 	//Actions
-	private void boardPassenger(myPassenger mp) {
-		print("Boarding passenger " + mp.passenger.getNameOfRole());
-		mp.passenger.msgBusIsHere();
+	private void boardPassengers() {
+		print("Boarding passengers");
+		for (myPassenger mp: waitingPassengers) {
+			mp.passenger.msgBusIsHere();
+		}
 	}
 	
 	private void removePassenger(myPassenger mp) {
@@ -107,4 +114,13 @@ public class BusStopAgent extends Agent implements BusStop {
 	private void releaseBus() {
 		currentBus.msgFreeToLeave();
 	}
+	
+	public int passengerSize() {
+		return waitingPassengers.size();
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
 }

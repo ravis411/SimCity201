@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Transportation.BusAgent;
+import gui.interfaces.Bus;
 import gui.interfaces.BusStop;
 import gui.interfaces.Passenger;
 
@@ -21,7 +22,7 @@ public class MockBusStop extends Mock implements BusStop{
 	}
 
 	@Override
-	public void msgAtStop(BusAgent bus) {
+	public void msgAtStop(Bus bus) {
 		log.add(new LoggedEvent("Bus has arrived at this stop"));
 	}
 

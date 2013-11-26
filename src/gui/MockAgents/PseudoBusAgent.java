@@ -6,14 +6,16 @@ import java.util.Queue;
 
 
 
+
 import trace.AlertLog;
 import trace.AlertTag;
 import gui.LocationInfo;
 import gui.agentGuis.VehicleGui;
-import gui.interfaces.Vehicle;
+import gui.interfaces.Bus;
+import gui.interfaces.Passenger;
 import agent.Agent;
 
-public class PseudoBusAgent extends Agent implements Vehicle {
+public class PseudoBusAgent extends Agent implements Bus {
 
 	
 	String name;
@@ -85,6 +87,30 @@ public class PseudoBusAgent extends Agent implements Vehicle {
 	
 	public String toString(){
 		return "" + name;
+	}
+
+	@Override
+	public void msgGettingOnBus(Passenger p) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgFreeToLeave() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgArrivedAtStop() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgGettingOffBus(Passenger p) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

@@ -15,7 +15,7 @@ public class BusStopTest1 extends TestCase {
 	
 	public void setUp() throws Exception{
 		super.setUp();
-		stop = new BusStopAgent();
+		stop = new BusStopAgent("stop");
 		bus = new MockBus("bus");
 		p1 = new MockPassenger("p1");
 		p2 = new MockPassenger("p2");
@@ -29,7 +29,27 @@ public class BusStopTest1 extends TestCase {
 		stop.msgWaitingForBus(p1);
 		
 		//PostConditions
-		assertFalse("Nothing has changed yet besides the list so the scheduler should return false", )
+		assertFalse("Nothing has changed yet besides the list so the scheduler should return false", stop.pickAndExecuteAnAction());
+		
+		//Bus Arrives
+		stop.msgAtStop(bus);
+		
+		//PostConditions
+		assertEquals("Stop should now have changed state", stop.state, AgentState.BusInStop);
+		
+		//Board the passenger
+		assertTrue("Stop should successfully put passenger on bus", stop.pickAndExecuteAnAction());
+		
+		//Postconditions
+		assertEquals("Stop should only have one passenger. They should not have been deleted yet", stop.passengerSize(), 1);
+		
+		//Removing passenger from the list
+		stop.msgNewPassenger(p1);
+		
+		//PostConditions
+		assertTrue("Stop should successfully delete passenger from list", stop.pickAndExecuteAnAction());
+		assertEquals("Stop should not have passengers.", stop.passengerSize(), 0);
+		
 	}
 	
 }

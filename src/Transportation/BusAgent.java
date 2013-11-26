@@ -12,10 +12,10 @@ import trace.AlertLog;
 import trace.AlertTag;
 import gui.agentGuis.VehicleGui;
 import gui.interfaces.Passenger;
-import gui.interfaces.Vehicle;
+import gui.interfaces.Bus;
 import agent.Agent;
 
-public class BusAgent extends Agent implements Vehicle {
+public class BusAgent extends Agent implements Bus {
 	
 	//May need to modify DoGoToLocation method to implement agent methodology
 

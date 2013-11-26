@@ -6,7 +6,7 @@ package gui.agentGuis;
 import gui.Gui;
 import gui.LocationInfo;
 import gui.SimCityLayout;
-import gui.interfaces.Vehicle;
+import gui.interfaces.Bus;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -30,7 +30,7 @@ import astar.Position;
 
 public class VehicleGui implements Gui {
 
-    private Vehicle agent = null;
+    private Bus agent = null;
     
     
     
@@ -63,7 +63,7 @@ public class VehicleGui implements Gui {
     
     
     
-    public VehicleGui(Vehicle agent, SimCityLayout cityLayout, AStarTraversal aStar, List<LocationInfo> locationList) {
+    public VehicleGui(Bus agent, SimCityLayout cityLayout, AStarTraversal aStar, List<LocationInfo> locationList) {
     	positionMap = new HashMap<Dimension, Dimension>(cityLayout.positionMap);
     	this.agent = agent;
         this.cityLayout = cityLayout;

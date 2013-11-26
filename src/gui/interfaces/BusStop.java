@@ -13,7 +13,7 @@ public interface BusStop {
 	/**
 	 * Lets the BusStop know that a Bus has arrived
 	 */
-	public abstract void msgAtStop(BusAgent bus);
+	public abstract void msgAtStop(Bus bus);
 	
 	/**
 	 * Lets the BusStop know that a passenger has boarded the bus 
