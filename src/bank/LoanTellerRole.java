@@ -27,11 +27,12 @@ import util.Interval;
 public class LoanTellerRole extends Role implements Employee, LoanTeller{
 	private BankClient myClient;
 	private int myClientAge;
-	public enum requestState {open, loan, pending, none, notBeingHelped};
+	public enum requestState {open, loan, repay, pending, none, notBeingHelped};
 	private requestState state = requestState.none;
 	public enum location {entrance, station, breakRoom};
 	public location locationState = location.entrance;
 	double transactionAmount;
+	double loanAmount;
 	private List<Account> Accounts = Database.INSTANCE.sendDatabase();
 	private LoanNumberAnnouncer announcer;
 	private Semaphore atStation = new Semaphore(0,true);
@@ -94,7 +95,12 @@ public class LoanTellerRole extends Role implements Employee, LoanTeller{
 		state = requestState.loan;
 		stateChanged();
 	}
-
+	public void msgRepay(double a, double m){
+		transactionAmount = a;
+		loanAmount = m;
+		state = requestState.repay;
+		stateChanged();
+	}
 
 	//	Scheduler
 	public boolean pickAndExecuteAction() {
@@ -105,6 +111,9 @@ public class LoanTellerRole extends Role implements Employee, LoanTeller{
 				return true;
 			}if (state == requestState.loan){
 				processLoan(myClient, HasLoan);
+				return true;
+			}if (state == requestState.repay){
+				repayLoan(myClient);
 				return true;
 			}
 			if (state == requestState.open){
@@ -196,6 +205,16 @@ public class LoanTellerRole extends Role implements Employee, LoanTeller{
 		state = requestState.notBeingHelped;
 	}
 
+	private void repayLoan(BankClient b){
+		if (loanAmount < transactionAmount){
+			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, myPerson.getName(), "Insufficient fundds for loan repayment.");
+			b.msgTransactionCompleted(0);
+		}
+		else {
+			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, myPerson.getName(), "Loan has been successfully repaid.");
+			b.msgLoanRepaid(-transactionAmount);
+		}
+	}
 
 	//gui
 	private void doGoToStation(){

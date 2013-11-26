@@ -466,6 +466,7 @@ public class PersonAgent extends Agent {
 //		  
 //		  role.msgMakeFood();
 	  
+	  
 	  GoToLocation("Bank", transport);
 	  
 	  BankClientRole role = (BankClientRole) findRole(Role.BANK_CLIENT_ROLE);
