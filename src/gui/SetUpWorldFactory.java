@@ -557,6 +557,8 @@ public class SetUpWorldFactory{
 			v4.location = "Bus Stop 1";
 			AStarTraversal t4 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
 			VehicleGui v4Gui = new VehicleGui( v4, layout, t4, locationMap);
+			v4.location = "Bus Stop 1";
+			v4.currentStop = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 1"))).getBusStopAgent();
 			v4.agentGui = v4Gui;
 			cityPanel.addGui(v4Gui);
 			v4.startThread();

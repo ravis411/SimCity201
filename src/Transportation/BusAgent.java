@@ -28,7 +28,7 @@ public class BusAgent extends Agent implements Bus {
 	private Map<Integer,String> stops = new HashMap<Integer,String>(); //Will change stop names to real names on implementation
 	private Map<String, BusStop> stopAgents = new HashMap<String,BusStop>();
 	private int count, stopSize;
-	private BusStop currentStop;
+	public BusStop currentStop;
 	public VehicleGui agentGui;
 	Queue<String> StopsQueue = new LinkedList<>(); //<--a list of the stops to go to
 	
@@ -138,9 +138,9 @@ public class BusAgent extends Agent implements Bus {
 	
 	private void GoToNextStop(){
 		print("going to next stop");
-		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Going to next stop");
 		currentStop.msgLeavingStop();
 		state = AgentState.inTransit;
+		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Going to next stop");
 		
 		//print("Count is now: " + count);
 		count++;

@@ -36,7 +36,7 @@ public class BusStopBuildingPanel extends BuildingPanel{
 		setBackground( new Color(7,100,7) );
 		this.setLayout(new BorderLayout());
 		JLabel j = new JLabel( myName );
-		add( j,BorderLayout.NORTH );
+		add( j, BorderLayout.NORTH );
 		animationPanel = new BusStopAnimationPanel();
 		add(animationPanel, BorderLayout.CENTER);
 		
