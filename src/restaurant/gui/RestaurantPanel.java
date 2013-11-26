@@ -21,6 +21,7 @@ import restaurant.MarketAgent;
 import restaurant.OldWaiterAgent;
 import restaurant.WaiterAgent;
 import restaurant.interfaces.Waiter;
+import Person.PersonAgent;
 
 /**
  * Panel in frame that contains all the restaurant information,
@@ -29,9 +30,16 @@ import restaurant.interfaces.Waiter;
 public class RestaurantPanel extends JPanel implements ActionListener {
 
     //Host, cook, waiters and customers
-    private HostAgent host = new HostAgent("Sarah");
+	private PersonAgent person1 = new PersonAgent("Person 1",null);
+	private PersonAgent person2 = new PersonAgent("Person 2",null);
+	private PersonAgent person3 = new PersonAgent("Person 3",null);
+	private PersonAgent person4 = new PersonAgent("Person 4",null);
+	private PersonAgent person5 = new PersonAgent("Person 5",null);
+	private PersonAgent person6 = new PersonAgent("Person 6",null);
+	
+    private HostAgent host = new HostAgent();
     private HostGui hostGui = new HostGui(host);
-    private CookAgent cook = new CookAgent("Chef Jim");
+    private CookAgent cook = new CookAgent();
     private CookGui cookGui = new CookGui(cook);
     private CashierAgent cashier = new CashierAgent("Cashier");
     private CashierGui cashierGui = new CashierGui(cashier);
@@ -85,6 +93,11 @@ public class RestaurantPanel extends JPanel implements ActionListener {
         this.gui = gui;
         //host.setGui(hostGui);
         
+        person1.addRole(host);
+        person2.addRole(cook);
+        
+        
+        
         markets.add(market1);
         markets.add(market2);
         markets.add(market3);
@@ -97,9 +110,9 @@ public class RestaurantPanel extends JPanel implements ActionListener {
         gui.animationPanel.addGui(cashierGui);
         gui.animationPanel.addGui(cookGui);
         cook.cookGui = cookGui;
-        host.startThread();
-        cook.startThread();
-        cashier.startThread();
+        person1.startThread();
+        person2.startThread();
+        //cashier.startThread();
         for(MarketAgent market: markets) {
         	market.startThread();
     	}
@@ -135,13 +148,13 @@ public class RestaurantPanel extends JPanel implements ActionListener {
         	System.out.println("Simulation paused. Please allow agents to finish current actions in scheduler.");
         	pauseButton.setEnabled(false);
         	resumeButton.setEnabled(true);
-        	pauseThread();
+        	//pauseThread();
         }
         else if (e.getSource() == resumeButton) {
         	System.out.println("Simulation resumed.");
         	pauseButton.setEnabled(true);
         	resumeButton.setEnabled(false);
-        	resumeThread();
+        	//resumeThread();
         }
     }
 
@@ -154,7 +167,7 @@ public class RestaurantPanel extends JPanel implements ActionListener {
         restLabel.setLayout(new BoxLayout((Container)restLabel, BoxLayout.Y_AXIS));
         //restLabel.setLayout(new BorderLayout());
         label.setText(
-                "<html><h3><u>Tonight's Staff</u></h3><table><tr><td>Host:</td><td>" + host.getName() + "</td></tr></table><h3><u> Menu</u></h3><table><tr><td>Steak</td><td>$15.99</td></tr><tr><td>Chicken</td><td>$10.99</td></tr><tr><td>Salad</td><td>$5.99</td></tr><tr><td>Pizza</td><td>$8.99</td></tr></table><br></html>");
+                "<html><h3><u>Tonight's Staff</u></h3><table><tr><td>Host:</td><td>Host</td></tr></table><h3><u> Menu</u></h3><table><tr><td>Steak</td><td>$15.99</td></tr><tr><td>Chicken</td><td>$10.99</td></tr><tr><td>Salad</td><td>$5.99</td></tr><tr><td>Pizza</td><td>$8.99</td></tr></table><br></html>");
 
         restLabel.setBorder(BorderFactory.createRaisedBevelBorder());
         restLabel.add(label, BorderLayout.CENTER);
@@ -206,7 +219,7 @@ public class RestaurantPanel extends JPanel implements ActionListener {
      * @param type indicates whether the person is a customer or waiter (later)
      * @param name name of person
      */
-    public void addPerson(String type, String name) {
+    /*public void addPerson(String type, String name) {
     	
     	if (type.equals("Customers")) {
     		CustomerAgent c = new CustomerAgent(name);	
@@ -299,6 +312,6 @@ public class RestaurantPanel extends JPanel implements ActionListener {
     	for(MarketAgent market: markets) {
     		market.resumeThread();
     	}
-    }
+    }*/
 
 }

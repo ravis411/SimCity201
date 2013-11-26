@@ -2,6 +2,7 @@ package restaurant.gui;
 
 import restaurant.CustomerAgent;
 import restaurant.WaiterAgent;
+import restaurant.interfaces.Waiter;
 
 import javax.swing.*;
 
@@ -211,14 +212,14 @@ public class RestaurantGui extends JFrame implements ActionListener {
        //     if (c.equals(cust)) {
                 //stateCB.setEnabled(true);
                 //stateCB.setSelected(false);
-            	restPanel.enableCheckBox(c);
+            	//restPanel.enableCheckBox(c);
             //}
         //}
     }
     
     
     public void setWaiterEnabled(Waiter w) {
-    	restPanel.enableCheckBox(w);
+    	//restPanel.enableCheckBox(w);
     }
     
     /**
