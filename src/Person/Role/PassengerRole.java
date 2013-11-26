@@ -19,15 +19,17 @@ public class PassengerRole extends Role implements Passenger{
 	private String name;
 	private String destination; //Remember to set as null upon arrival
 	private String nextLocation;
+	private String startingBusStop;
+	private String destinationBusStop;
 	private PersonGui personGui = null;
 	private Bus currentBus; 
 	
-	public enum AgentState {waitingForBus, busArrived, riding, disembarking, notInTransit};
+	public enum AgentState {notAtStop, waitingForBus, busArrived, riding, disembarking, notInTransit};
 	private AgentState state = AgentState.notInTransit;
 	
 	private static Map<String, BusStop> stops = new HashMap<String, BusStop>();
 	
-	public void addStop(String stop, BusStop agent) {
+	public static void addStop(String stop, BusStop agent) {
 		stops.put(stop, agent);
 	}
 	//Passenger role needs to figure out which bus is the closest one
@@ -35,7 +37,7 @@ public class PassengerRole extends Role implements Passenger{
 	
 	public void setDestination(String d) {
 		destination = d;
-		state = AgentState.waitingForBus;
+		state = AgentState.notAtStop;
 		//setDestination only gets called when at the bus stop
 		stateChanged();
 	}
@@ -53,7 +55,7 @@ public class PassengerRole extends Role implements Passenger{
 	//Scheduler
 	@Override
 	public boolean pickAndExecuteAction() {
-		if(state == AgentState.notInTransit){
+		if(state == AgentState.notAtStop){
 			goToClosestStop();
 		}
 		
@@ -62,7 +64,7 @@ public class PassengerRole extends Role implements Passenger{
 			return true;
 		}
 		if (state == AgentState.riding) {
-			if (nextLocation.equals(destination)) {
+			if (nextLocation.equals(destinationBusStop)) {
 				getOffBus();
 				return true;
 			}
@@ -90,18 +92,15 @@ public class PassengerRole extends Role implements Passenger{
 	 * 
 	 */
 	private void goToClosestStop(){
-		String startingBusStop = personGui.DoGoToClosestBusStop();
+		startingBusStop = personGui.DoGoToClosestBusStop();
 	}
 	
 	/**This teleports the person to the bus stop they need to get off at.
 	 * 
 	 */
-	private void goToDestinationStop(){
-		String destinationStop = personGui.DoRideBusTo(destination);
-	}
-	
 	private void getOnBus() {
 		currentBus.msgGettingOnBus(this);
+		destinationBusStop = personGui.DoRideBusTo(destination);
 	}
 	
 	private void getOffBus() {

@@ -1,22 +1,24 @@
 package restaurant;
 
-import agent.Agent;
 import restaurant.interfaces.*;
 
 import java.text.DecimalFormat;
 import java.util.*;
 
+import Person.Role.Role;
+import agent.Agent;
+
+
 /**
  * Restaurant Cashier Agent
  */
 
-public class CashierAgent extends Agent implements Cashier {
+public class CashierAgent extends Role implements Cashier {
 	private Vector<Check> checks = new Vector<Check>();
 	private Vector<Check> payingCustomers = new Vector<Check>();
 	private Vector<MarketBill> marketBills = new Vector<MarketBill>();
 	private Vector<MarketBill> debts = new Vector<MarketBill>();
 
-	private String name;
 	private Menu menu = new Menu();
 	private double money;
 	DecimalFormat moneyForm = new DecimalFormat("#.##");
@@ -32,13 +34,8 @@ public class CashierAgent extends Agent implements Cashier {
 
 	public CashierAgent(String name) {
 		super();
-		this.name = name;
 		
 		money = 200.00;
-	}
-	
-	public String getName() {
-		return name;
 	}
 	
 	// Messages
@@ -65,7 +62,7 @@ public class CashierAgent extends Agent implements Cashier {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		if(!debts.isEmpty() && money>0.00) {
 			payMarketBill(debts.get(0));
 			debts.remove(0);
@@ -133,7 +130,7 @@ public class CashierAgent extends Agent implements Cashier {
 		return Double.valueOf(moneyForm.format(money));
 	}
 	public boolean pickAndExecuteStatus() {
-		return pickAndExecuteAnAction();
+		return pickAndExecuteAction();
 	}
 	public int getNumberOfChecks() {
 		return checks.size();
@@ -176,6 +173,15 @@ public class CashierAgent extends Agent implements Cashier {
 			this.market = market;
 			this.amount = amount;
 		}
+	}
+	@Override
+	public boolean canGoGetFood() {
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		return "CashierRole";
 	}
 }
 

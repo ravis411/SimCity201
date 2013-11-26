@@ -31,6 +31,7 @@ import astar.AStarTraversal;
 import astar.PersonAStarTraversal;
 import astar.VehicleAStarTraversal;
 
+
 //This class will instantiate and setup everything.
 public class SetUpWorldFactory{
 	public SimCityLayout layout;// = new SimCityLayout(WINDOWX, WINDOWY/2);// <-This holds the grid information
@@ -97,7 +98,7 @@ public class SetUpWorldFactory{
 		location.positionToEnterFromMainGrid = new Dimension(15, 3);
 		location.entranceFromMainGridPosition = new Dimension(14, 3);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Market", "Market", 13, 2, 2, 2, location);
+		addBuilding("Market", "Market 1", 13, 2, 2, 2, location);
 		
 //Building 4
 		location.sector = 1;
@@ -219,8 +220,11 @@ public class SetUpWorldFactory{
 			
 			addPerson("Person 1", buildingsPanels.getResidenceBuildingPanel("House 1"));
 			addPerson("Person 2", buildingsPanels.getResidenceBuildingPanel("House 2"));
-//			addPerson("Person 3");
-			
+			addPerson("Person 3", buildingsPanels.getResidenceBuildingPanel("House 2"));
+			addPerson("Person 4", buildingsPanels.getResidenceBuildingPanel("House 2"));
+			addPerson("Person 5", buildingsPanels.getResidenceBuildingPanel("House 2"));
+			addPerson("Person 6", buildingsPanels.getResidenceBuildingPanel("House 2"));
+			addPerson("Person 7", buildingsPanels.getResidenceBuildingPanel("House 2"));
 		
 	} //end LoadDefault
 	
@@ -647,6 +651,7 @@ public class SetUpWorldFactory{
 			cityPanel.addGui(mb);
 			buildingsPanels.addBuildingPanel(mp);
 		}
+			break;
 		default:
 			return;
 		}

@@ -55,5 +55,10 @@ public class MockCustomer extends Mock implements Customer {
 			// TODO Auto-generated method stub
 			return money;
 		}
+		@Override
+		public void msgFoodAtTable() {
+			// TODO Auto-generated method stub
+			
+		}
 
 }

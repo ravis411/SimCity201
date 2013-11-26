@@ -3,6 +3,7 @@ package Transportation.test.mock;
 import java.util.ArrayList;
 import java.util.List;
 
+import gui.interfaces.Bus;
 import gui.interfaces.Passenger;
 
 public class MockPassenger extends Mock implements Passenger {
@@ -14,7 +15,7 @@ public class MockPassenger extends Mock implements Passenger {
 	}
 	
 	@Override
-	public void msgBusIsHere() {
+	public void msgBusIsHere(Bus bus) {
 		log.add(new LoggedEvent("Received msgBusIsHere from bus stop"));
 	}
 	

@@ -53,4 +53,11 @@ public class MockLoanTeller extends Mock implements LoanTeller{
 			client.msgLoanApproved(a);
 		}
 	}
+
+
+	@Override
+	public void msgRepay(double a, double m) {
+		// TODO Auto-generated method stub
+		
+	}
 }

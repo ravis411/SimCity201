@@ -7,7 +7,10 @@ import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import trace.*;
+import trace.AlertLog;
+import trace.AlertTag;
+import trace.TraceControlPanel;
+import trace.TracePanel;
 
 
 

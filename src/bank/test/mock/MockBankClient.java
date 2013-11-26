@@ -99,4 +99,10 @@ public class MockBankClient extends Mock implements BankClient{
 	public void msgLoanApproved(double n) {
 		log.add(new LoggedEvent("msgLoanApproved received from loanBankTeller. I have been granted a loan of $" + n));
 	}
+
+	@Override
+	public void msgLoanRepaid(double n) {
+		// TODO Auto-generated method stub
+		
+	}
 }

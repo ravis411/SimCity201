@@ -2,11 +2,13 @@ package restaurant;
 
 import restaurant.Menu;
 import restaurant.Menu.Dish;
+import restaurant.interfaces.Customer;
+import restaurant.interfaces.Waiter;
 
 public class Order
 {
-	WaiterAgent waiter;
-	CustomerAgent customer;
+	Waiter waiter;
+	Customer customer;
 	int choice;
 	//Dish choice;
 	int table;
@@ -14,7 +16,7 @@ public class Order
 	private orderStatus status = orderStatus.pending;
 	int cookTime;
 
-	public Order (WaiterAgent waiter, int choice, int table, CustomerAgent customer) {
+	public Order (Waiter waiter, int choice, int table, Customer customer) {
 		this.waiter = waiter;
 		this.choice = choice;
 		this.table = table;
@@ -33,11 +35,11 @@ public class Order
 		return status;
 	}
 	
-	public WaiterAgent getWaiter() {
+	public Waiter getWaiter() {
 		return waiter;
 	}
 	
-	public CustomerAgent getCustomer() {
+	public Customer getCustomer() {
 		return customer;
 	}
 	

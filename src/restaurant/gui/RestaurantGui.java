@@ -1,10 +1,14 @@
 package restaurant.gui;
 
+
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import restaurant.CustomerAgent;
+import restaurant.WaiterAgent;
+import restaurant.interfaces.Waiter;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -221,14 +225,15 @@ public class RestaurantGui extends JFrame implements ActionListener {
        //     if (c.equals(cust)) {
                 //stateCB.setEnabled(true);
                 //stateCB.setSelected(false);
-            	restPanel.enableCheckBox(c);
+            	//restPanel.enableCheckBox(c);
             //}
         //}
     }
     
     
     public void setWaiterEnabled(Waiter w) {
-    	restPanel.enableCheckBox(w);
+
+    	//restPanel.enableCheckBox(w);
     }
     
     /**

@@ -10,6 +10,7 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.JLabel;
 
+import Person.Role.PassengerRole;
 import Person.Role.Role;
 import Transportation.BusStopAgent;
 import Transportation.BusStopAnimationPanel;
@@ -24,7 +25,7 @@ import Transportation.test.BusTest1;
  */
 public class BusStopBuildingPanel extends BuildingPanel{
 	
-	BusStopAgent bustStopAgent = null;
+	BusStopAgent busStopAgent = null;
 	BusStopAnimationPanel animationPanel = null;
 	
 	
@@ -40,12 +41,14 @@ public class BusStopBuildingPanel extends BuildingPanel{
 		animationPanel = new BusStopAnimationPanel();
 		add(animationPanel, BorderLayout.CENTER);
 		
-		bustStopAgent = new BusStopAgent(name);
+		busStopAgent = new BusStopAgent(name);
+		busStopAgent.startThread();
+		PassengerRole.addStop(myName, busStopAgent);
 	}
 	
 	
 	public BusStopAgent getBusStopAgent(){
-		return this.bustStopAgent;
+		return this.busStopAgent;
 	}
 	
 	public BusStopAnimationPanel getBusStopAnimationPanel(){
