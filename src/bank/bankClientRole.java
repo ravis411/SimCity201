@@ -295,9 +295,11 @@ public class bankClientRole extends Role {
 	public String toString() {
 		return "Bank Client " + getName();
 	}
+	
 	public boolean HasLoan(){
 		return hasLoan;
 	}
+	
 	public void setGui(ClientGui gui) {
 		clientGui = gui;
 	}

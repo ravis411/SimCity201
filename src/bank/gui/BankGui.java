@@ -84,12 +84,8 @@ public class BankGui extends JFrame implements ActionListener {
         tellerRole.setGui(tellerGui);
         tellerRole.activate();
         tellerRole.getPerson().startThread();
+             
         
-
-        
-        
-        
-
         loanTellerPerson.addRole(loanTellereRole);
         loanTellereRole.setPerson(loanTellerPerson);
         animationPanel.addGui(loanGui);
