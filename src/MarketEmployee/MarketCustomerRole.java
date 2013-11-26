@@ -182,7 +182,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	private void payAndLeaveMarket() {
 		myPerson.msgAddObjectToBackpack(foodTypeRecieved, foodTypeAmountRecieved);
 		myPerson.setMoney(myPerson.getMoney()-menu.get(foodTypeRecieved)*foodTypeAmountRecieved);
-		print(myPerson.getName()+ " paid $" + menu.get(foodTypeRecieved)*foodTypeAmountRecieved+ "and now has $"+myPerson.getMoney()); 
+		print(myPerson.getName()+ " paid $" + menu.get(foodTypeRecieved)*foodTypeAmountRecieved+ " and now has $"+myPerson.getMoney()); 
 		marketEmployee.msgMarketEmployeePayment(menu.get(foodTypeRecieved)*foodTypeAmountRecieved);
 		leaveMarket();
 		

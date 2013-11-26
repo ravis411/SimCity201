@@ -5,7 +5,6 @@ import market.gui.MarketCustomerGui;
 import market.gui.MarketGui;
 import market.test.mock.MockMarketEmployee;
 import MarketEmployee.MarketCustomerRole;
-import MarketEmployee.MarketCustomerRole.MarketCustomerState;
 import Person.PersonAgent;
 
 /**
