@@ -113,12 +113,27 @@ public class BusAgent extends Agent implements Bus
 		state = AgentState.atStop;
 		//Need some way of notifying bus that we have arrived at next stop
 		currentStop.msgArrivedAtStop(this);
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
 	private void notifyPassenger(myBusPassenger pas) {
 		pas.passenger.msgWeHaveArrived(location);
 		passengers.remove(pas);
+	}
+	
+	
+	/**	Sets the starting bus stop...
+	 * 
+	 * @param start
+	 */
+	public void setStartStopNumber(int start){
+		this.count = start;
 	}
 	
 		

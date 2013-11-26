@@ -28,6 +28,7 @@ import java.util.Queue;
 import residence.HomeRole;
 import Person.PersonAgent;
 import Transportation.BusAgent;
+import Transportation.BusStopAgent;
 import agent.Agent;
 import astar.AStarTraversal;
 import astar.PersonAStarTraversal;
@@ -215,7 +216,7 @@ public class SetUpWorldFactory{
 			location.sector = 2;
 			
 			
-			addVehicle("Bus");
+			addVehicle("");
 			//addVehicle("EvenBus");
 			//addVehicle("OddMockBus");
 			
@@ -533,33 +534,8 @@ public class SetUpWorldFactory{
 			break;
 			
 		case "Bus":
-			BusAgent v3 = new BusAgent("Bus");
-			v3.addBusStop(1, "Bus Stop 1", 
-					((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 1"))).getBusStopAgent());
 			
-			v3.addBusStop(2, "Bus Stop 2",
-					((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 2"))).getBusStopAgent() );
-			
-			v3.addBusStop(3, "Bus Stop 3",
-					((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 3"))).getBusStopAgent());
-			
-			v3.addBusStop(4, "Bus Stop 4", 
-					((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 4"))).getBusStopAgent());
-			
-			v3.addBusStop(5, "Bus Stop 5",
-					((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 5"))).getBusStopAgent());
-			
-			v3.addBusStop(6, "Bus Stop 6", 
-					((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 6"))).getBusStopAgent());
-			AStarTraversal t3 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
-			VehicleGui v3Gui = new VehicleGui( v3, layout, t3, locationMap);
-			v3.agentGui = v3Gui;
-			v3.location = "Bus Stop 1";
-			v3.currentStop = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 1"))).getBusStopAgent();
-			cityPanel.addGui(v3Gui);
-			v3.startThread();
 			break;
-			
 		case "OddBus":
 			BusAgent v4 = new BusAgent("OBus1");
 			v4.addBusStop(1, "Bus Stop 1", 
@@ -579,7 +555,49 @@ public class SetUpWorldFactory{
 			break;
 
 		default:
+			//Lets add a bunch of busses///how about 3
+			BusStopAgent bs1 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 1"))).getBusStopAgent();
+			BusStopAgent bs2 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 2"))).getBusStopAgent();
+			BusStopAgent bs3 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 3"))).getBusStopAgent();
+			BusStopAgent bs4 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 4"))).getBusStopAgent();
+			BusStopAgent bs5 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 5"))).getBusStopAgent();
+			BusStopAgent bs6 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 6"))).getBusStopAgent();
+			
+			
+			BusAgent v3 = new BusAgent("Bus 1");
+			v3.addBusStop(1, "Bus Stop 1", bs1 );
+			v3.addBusStop(2, "Bus Stop 2", bs2 );
+			v3.addBusStop(3, "Bus Stop 3", bs3 );
+			v3.addBusStop(4, "Bus Stop 4", bs4 );
+			v3.addBusStop(5, "Bus Stop 5", bs5 );
+			v3.addBusStop(6, "Bus Stop 6", bs6 );
+			AStarTraversal t3 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
+			VehicleGui v3Gui = new VehicleGui( v3, layout, t3, locationMap);
+			v3.agentGui = v3Gui;
+			//v3.location = "Bus Stop 1";
+			v3.currentStop = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 1"))).getBusStopAgent();
+			cityPanel.addGui(v3Gui);
+			v3.startThread();
+			
+			BusAgent b1 = new BusAgent("Bus 2");
+			b1.addBusStop(6, "Bus Stop 6", bs6 );
+			b1.addBusStop(1, "Bus Stop 1", bs1 );
+			b1.addBusStop(2, "Bus Stop 2", bs2 );
+			b1.addBusStop(3, "Bus Stop 3", bs3 );
+			b1.addBusStop(4, "Bus Stop 4", bs4 );
+			b1.addBusStop(5, "Bus Stop 5", bs5 );
+			
+			AStarTraversal tb1 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
+			VehicleGui vb1Gui = new VehicleGui( b1, layout, tb1, locationMap);
+			b1.agentGui = vb1Gui;
+		//	b1.location = "Bus Stop 5";
+			//b1.currentStop = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 5"))).getBusStopAgent();
+			b1.setStartStopNumber(4);
+			cityPanel.addGui(vb1Gui);
+			b1.startThread();
+			
 			break;
+			
 		}
 
 	}// end addVehicle
