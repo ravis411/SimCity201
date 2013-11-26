@@ -58,10 +58,13 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 		
 		bufferSize = this.getSize();
 		
+		//test
 		testTellerRole.setPerson(testTeller);
 		testLoanTellerRole.setPerson(testLoanTeller);
 		addGuiForRole(testTellerRole);
 		addGuiForRole(testLoanTellerRole);
+		
+		
 		Timer timer = new Timer(TIMERCOUNTmilliseconds, this );
 		timer.start();
 		
