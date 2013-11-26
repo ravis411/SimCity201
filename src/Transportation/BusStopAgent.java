@@ -103,7 +103,7 @@ public class BusStopAgent extends Agent implements BusStop {
 	private void boardPassengers() {
 		print("Boarding passengers");
 		for (myPassenger mp: waitingPassengers) {
-			mp.passenger.msgBusIsHere();
+			mp.passenger.msgBusIsHere(currentBus);
 		}
 	}
 	

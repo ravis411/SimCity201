@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import gui.agentGuis.PersonGui;
+import gui.interfaces.Bus;
 import gui.interfaces.BusStop;
 import gui.interfaces.Passenger;
 
@@ -19,6 +20,7 @@ public class PassengerRole extends Role implements Passenger{
 	private String destination; //Remember to set as null upon arrival
 	private String nextLocation;
 	private PersonGui personGui = null;
+	private Bus currentBus; 
 	
 	public enum AgentState {waitingForBus, busArrived, riding, disembarking, notInTransit};
 	private AgentState state = AgentState.notInTransit;
@@ -38,7 +40,8 @@ public class PassengerRole extends Role implements Passenger{
 		stateChanged();
 	}
 	
-	public void msgBusIsHere() {
+	public void msgBusIsHere(Bus bus) {
+		currentBus = bus;
 		state = AgentState.busArrived;
 		stateChanged();
 	}
@@ -98,10 +101,11 @@ public class PassengerRole extends Role implements Passenger{
 	}
 	
 	private void getOnBus() {
-		//Get onto the bus
+		currentBus.msgGettingOnBus(this);
 	}
 	
 	private void getOffBus() {
+		currentBus.msgGettingOffBus(this);
 		destination = "N/A";
 		state = AgentState.disembarking;
 	}
