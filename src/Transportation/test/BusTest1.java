@@ -15,6 +15,9 @@ public class BusTest1 extends TestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 		bus = new BusAgent("Bus_1");
+		bus.addBusStop(1, "Stop_1");
+		bus.addBusStop(2, "Stop_2");
+		bus.addBusStop(3, "Stop_3");
 		mp1 = new MockPassenger("MP_1");
 		mp2 = new MockPassenger("MP_2");
 		stop = new MockBusStop("Stop");

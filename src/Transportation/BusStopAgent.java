@@ -34,7 +34,7 @@ public class BusStopAgent extends Agent implements BusStop {
 	private List<myPassenger> waitingPassengers = Collections.synchronizedList(new ArrayList<myPassenger>());
 	public Bus currentBus;
 	private String name;
-	
+
 	
 	//Messages
 	public void msgWaitingForBus(Passenger p) {

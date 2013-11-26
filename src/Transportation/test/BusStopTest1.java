@@ -50,6 +50,12 @@ public class BusStopTest1 extends TestCase {
 		assertTrue("Stop should successfully delete passenger from list", stop.pickAndExecuteAnAction());
 		assertEquals("Stop should not have passengers.", stop.passengerSize(), 0);
 		
+		//Bus Leaving
+		stop.msgLeavingStop();
+		
+		//Post Conditions
+		assertEquals("Bus stop should return to being idle", stop.state, AgentState.Idle);
+		
 	}
 	
 }

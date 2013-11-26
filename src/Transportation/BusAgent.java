@@ -25,7 +25,7 @@ public class BusAgent extends Agent implements Bus {
 	boolean goToBusStop3 = false;
 	public String location;
 	private Map<Integer,String> stops = new HashMap<Integer,String>(); //Will change stop names to real names on implementation
-	private int count;
+	private int count, stopSize;
 	public VehicleGui agentGui;
 	Queue<String> StopsQueue = new LinkedList<>(); //<--a list of the stops to go to
 	
@@ -46,14 +46,19 @@ public class BusAgent extends Agent implements Bus {
 	
 	public BusAgent(String name) {
 		super();
-		stops.put(1,"Stop_1");
+		/*stops.put(1,"Stop_1");
 		stops.put(2,"Stop_2");
-		stops.put(3,"Stop_3");
+		stops.put(3,"Stop_3");*/
 		location = "Stop_1";
 		count = 1;
+		stopSize = 3;
 		this.name = name;
 	}
-
+	public void addBusStop(int stopNumber, String stop) {
+		stops.put(stopNumber, stop);
+		stopSize++;
+	}
+	
 	//Messages
 	public void msgGettingOnBus(Passenger p) {
 		state = AgentState.loading;
@@ -124,7 +129,7 @@ public class BusAgent extends Agent implements Bus {
 		
 		//print("Count is now: " + count);
 		count++;
-		location = stops.get(count%3);
+		location = stops.get(count%stopSize);
 		//print("Location is now: " + location);
 		//print("Count is now: " + count);
 		//agentGui.DoGoTo(location);

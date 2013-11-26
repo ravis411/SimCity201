@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Queue;
 
 import Person.PersonAgent;
+import Transportation.BusAgent;
 import agent.Agent;
 import astar.AStarTraversal;
 import astar.PersonAStarTraversal;
@@ -527,6 +528,29 @@ public class SetUpWorldFactory{
 			cityPanel.addGui(v2Gui);
 			v2.startThread();
 			//mockVehicle Added
+			break;
+			
+		case "EvenBus":
+			BusAgent v3 = new BusAgent("EBus1");
+			v3.addBusStop(1, "Bus Stop 2");
+			v3.addBusStop(2, "Bus Stop 4");
+			v3.addBusStop(3, "Bus Stop 6");
+			AStarTraversal t3 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
+			VehicleGui v3Gui = new VehicleGui( v3, layout, t3, locationMap);
+			v3.agentGui = v3Gui;
+			cityPanel.addGui(v3Gui);
+			v3.startThread();
+			
+		case "OddBus":
+			BusAgent v4 = new BusAgent("OBus1");
+			v4.addBusStop(1, "Bus Stop 1");
+			v4.addBusStop(2, "Bus Stop 3");
+			v4.addBusStop(3, "Bus Stop 5");
+			AStarTraversal t4 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
+			VehicleGui v4Gui = new VehicleGui( v4, layout, t4, locationMap);
+			v4.agentGui = v4Gui;
+			cityPanel.addGui(v4Gui);
+			v4.startThread();
 
 		default:
 			break;
