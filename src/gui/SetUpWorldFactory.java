@@ -601,6 +601,7 @@ public class SetUpWorldFactory{
 			v3.agentGui = v3Gui;
 			//v3.location = "Bus Stop 1";
 			v3.currentStop = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 1"))).getBusStopAgent();
+			v3.agentGui.setStartingStates("Bus Stop 1");
 			cityPanel.addGui(v3Gui);
 			v3.startThread();
 			
@@ -615,6 +616,7 @@ public class SetUpWorldFactory{
 			AStarTraversal tb1 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
 			VehicleGui vb1Gui = new VehicleGui( b1, layout, tb1, locationMap);
 			b1.agentGui = vb1Gui;
+			b1.agentGui.setStartingStates("Bus Stop 3");
 		//	b1.location = "Bus Stop 5";
 			//b1.currentStop = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 5"))).getBusStopAgent();
 			b1.setStartStopNumber(4);

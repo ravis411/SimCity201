@@ -95,6 +95,35 @@ public class VehicleGui implements Gui {
         
     }
     
+    /** Will start the gui at the given location. Assumes the gui is not already in the World.
+     * 
+     * @param location	The name of the location for the gui to be at.
+     * @return	True if successful, false otherwise.
+     */
+    public boolean setStartingStates(String location){
+    	LocationInfo i = locations.get(location);
+    	
+    	if(i == null || state != GuiState.none)
+    		return false;
+    	
+    	if(i.positionToEnterFromRoadGrid == null)
+    		return false;
+    	
+    	Dimension d = new Dimension(positionMap.get(i.positionToEnterFromMainGrid));
+    	
+    	currentPosition = new Position(i.positionToEnterFromRoadGrid.width, i.positionToEnterFromRoadGrid.height);
+    	if(!currentPosition.moveInto(aStar.getGrid()))
+    		return false;
+    	
+    	xPos = xDestination = d.width;
+    	yPos = yDestination = d.height;
+    	state = GuiState.inCity;
+    	
+    	System.out.println("" + agent.toString() + location);
+    	
+    	return true;
+    }
+    
     
     public void updatePosition() {
         {
@@ -211,7 +240,7 @@ public class VehicleGui implements Gui {
     		return;
     	
     	while(!entrance.moveInto(aStar.getGrid()) ) {
-    		//System.out.println("EntranceBlocked!!!!!!! waiting 1sec");
+    		System.out.println("EntranceBlocked!!!!!!! waiting 1sec");
     		AlertLog.getInstance().logInfo(AlertTag.VEHICLE_GUI, agent.toString(), "Entrance blocked. Waiting 1 second.");
     		try {
 				Thread.sleep(1000);
