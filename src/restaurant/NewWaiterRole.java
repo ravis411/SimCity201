@@ -64,6 +64,7 @@ public class NewWaiterRole extends Role implements Waiter {
 
 	public NewWaiterRole() {
 		super();
+
 	}
 
 	public String getName() {

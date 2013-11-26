@@ -1,7 +1,9 @@
 package restaurant;
 
+import MarketEmployee.MarketManagerRole;
 import Person.Role.Role;
 import agent.Agent;
+import building.BuildingList;
 import restaurant.Order;
 import restaurant.Menu;
 import restaurant.RestaurantCustomerRole.AgentEvent;
@@ -14,6 +16,7 @@ import restaurant.gui.CookGui;
 import restaurant.gui.WaiterGui;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
+import gui.Building.MarketBuilding;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -26,11 +29,10 @@ import java.util.Random;
 public class CookRole extends Role {
 	public List<Order> orders = new ArrayList<Order>();
 	public List<Food> inventory = new ArrayList<Food>();
-	public List<MarketRole> markets = new ArrayList<MarketRole>();
+	public List<MarketManagerRole> markets = new ArrayList<MarketManagerRole>();
 
 	private RevolvingStand revolvingStand = RevolvingStand.getInstance();
 	
-	private String name;
 	private Menu menu = new Menu();
 	Timer timer = new Timer();
 	Order currentOrder;
@@ -47,17 +49,28 @@ public class CookRole extends Role {
 	public CookRole() {
 		super();
 		
-		for(int i=0; i<4; i++) {
-			inventory.add(new Food(menu.getDishName(i), 5000, 1));
+		for(int i=0; i<3; i++) {
+			inventory.add(new Food(menu.getDishName(i), 5000, 3));
+		}
+		List<Role> inhabitants = BuildingList.findBuildingWithName("Market 1").getInhabitants();
+		for(Role r : inhabitants) {
+			if (r.getNameOfRole() == "MARKET_MANAGER_ROLE") {
+				MarketManagerRole mr = (MarketManagerRole) r;
+				addMarket(mr);
+			}
 		}
 	}
 	
-	public void addMarket(MarketRole market) {
+	public void addMarket(MarketManagerRole market) {
 		markets.add(market);
 	}
 	
+	public void setGui(CookGui cg) {
+		cookGui = cg;
+	}
+	
 	public void clearInventory() {
-		for(int i=0; i<4; i++) {
+		for(int i=0; i<3; i++) {
 			inventory.get(i).inventory = 0;
 		}
 		print("Someone stole all the food!");
@@ -162,8 +175,8 @@ public class CookRole extends Role {
 		int marketChoice;
 		Random randNum = new Random();
 		marketChoice = randNum.nextInt(markets.size());
-		print("Low on " + inventory.get(ingredientNum).getName() + ". Getting more from Market " + (marketChoice+1) + ".");
-		markets.get(marketChoice).msgNeedFood(ingredientNum, 2);
+		print("Low on " + inventory.get(ingredientNum).getName() + ". Getting more from Market 1.");
+		markets.get(0).msgMarketManagerFoodOrder(inventory.get(ingredientNum).getName(), 5, this);
 	}
 
 	//utilities
