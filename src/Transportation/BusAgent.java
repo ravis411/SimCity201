@@ -17,7 +17,8 @@ import gui.interfaces.Passenger;
 import gui.interfaces.Bus;
 import agent.Agent;
 
-public class BusAgent extends Agent implements Bus {
+public class BusAgent extends Agent //implements Bus 
+{
 	
 	//May need to modify DoGoToLocation method to implement agent methodology
 
@@ -25,13 +26,16 @@ public class BusAgent extends Agent implements Bus {
 	String name;
 	public String location;
 	private Map<Integer,String> stops = new HashMap<Integer,String>(); //Will change stop names to real names on implementation
-	//private Map<String, BusStop> stopAgents = new HashMap<String,BusStop>();
+	private Map<String, BusStop> stopAgents = new HashMap<String,BusStop>();
 	private int count, stopSize;
 	public BusStop currentStop;
 	public VehicleGui agentGui;
 	
-	private List<MyBusPassenger> passengers = Collections.synchronizedList(new ArrayList<MyBusPassenger>());
+	private List<myBusPassenger> passengers = Collections.synchronizedList(new ArrayList<myBusPassenger>());
 
+	enum AgentState {none, atStop, readyToLeave, inTransit};
+	AgentState state = AgentState.none;
+	
 	
 	public BusAgent(String name) {
 		super();
@@ -55,7 +59,7 @@ public class BusAgent extends Agent implements Bus {
 	}
 	
 	//Messages
-	public void msgHereArePassengers(List<MyBusPassenger> passengers ){
+	public void msgHereArePassengers(List<myBusPassenger> passengers ){
 		this.passengers.addAll(passengers);
 		stateChanged();
 	}
@@ -64,10 +68,10 @@ public class BusAgent extends Agent implements Bus {
 	//Scheduler
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		MyBusPassenger pas = null;
+		myBusPassenger pas = null;
 		
 		synchronized (passengers) {
-			for(MyBusPassenger p : passengers){
+			for(myBusPassenger p : passengers){
 				if(p.destination == location){
 					pas = p; break; 	}	}
 		}
@@ -91,7 +95,7 @@ public class BusAgent extends Agent implements Bus {
 		
 	}
 	
-	private void notifyPassenger(MyBusPassenger pas) {
+	private void notifyPassenger(myBusPassenger pas) {
 		pas.passenger.msgWeHaveArrived(location);
 		passengers.remove(pas);
 	}
@@ -105,7 +109,7 @@ public class BusAgent extends Agent implements Bus {
 		return name;
 	}
 
-	public List<MyBusPassenger> getPassengers() {
+	public List<myBusPassenger> getPassengers() {
 		return passengers;
 	}
 	
