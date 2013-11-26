@@ -8,8 +8,13 @@
 	int FoodTypeAmount;
 	boolean willTakePartialOrder;
 	enum marketCustomerState =none, waitingForMarketEmployeeToReturn, replyingToEmployee, leaving
+	Semaphore atCounter;
 
 ###Messages
+	void msgMarketCustomerAtCounter(){
+		event=marketCustomerEvent.firstInLine;
+	}
+		
 	msgMarketCustomerOutofStock(String foodType){
 	marketCustomerState= leaving;
 	}

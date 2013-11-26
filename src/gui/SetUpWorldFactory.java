@@ -1,9 +1,19 @@
 package gui;
 
+import gui.Building.ApartmentBuilding;
+import gui.Building.ApartmentBuildingPanel;
+import gui.Building.BankBuilding;
+import gui.Building.BankBuildingPanel;
 import gui.Building.BuildingGui;
 import gui.Building.BuildingPanel;
 import gui.Building.BusStopBuilding;
 import gui.Building.BusStopBuildingPanel;
+import gui.Building.DefaultBuildingPanel;
+import gui.Building.MarketBuilding;
+import gui.Building.MarketBuildingPanel;
+import gui.Building.ResidenceBuilding;
+import gui.Building.ResidenceBuildingPanel;
+import gui.MockAgents.PseudoBusAgent;
 import gui.agentGuis.PersonGui;
 import gui.agentGuis.VehicleGui;
 
@@ -20,23 +30,7 @@ import agent.Agent;
 import astar.AStarTraversal;
 import astar.PersonAStarTraversal;
 import astar.VehicleAStarTraversal;
-import gui.Building.ApartmentBuilding;
-import gui.Building.ApartmentBuildingPanel;
-import gui.Building.BankBuilding;
-import gui.Building.BankBuildingPanel;
-import gui.Building.BuildingGui;
-import gui.Building.BuildingPanel;
-import gui.Building.BusStopBuilding;
-import gui.Building.BusStopBuildingPanel;
-import gui.Building.DefaultBuildingPanel;
-import gui.Building.MarketBuilding;
-import gui.Building.MarketBuildingPanel;
-import gui.Building.ResidenceBuilding;
-import gui.Building.ResidenceBuildingPanel;
-import gui.MockAgents.PseudoBusAgent;
-import gui.MockAgents.PseudoPerson;
-import gui.agentGuis.PersonGui;
-import gui.agentGuis.VehicleGui;
+
 
 //This class will instantiate and setup everything.
 public class SetUpWorldFactory{
@@ -104,7 +98,7 @@ public class SetUpWorldFactory{
 		location.positionToEnterFromMainGrid = new Dimension(15, 3);
 		location.entranceFromMainGridPosition = new Dimension(14, 3);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Market", "Market", 13, 2, 2, 2, location);
+		addBuilding("Market", "Market 1", 13, 2, 2, 2, location);
 		
 //Building 4
 		location.sector = 1;
@@ -226,8 +220,11 @@ public class SetUpWorldFactory{
 			
 			addPerson("Person 1", buildingsPanels.getResidenceBuildingPanel("House 1"));
 			addPerson("Person 2", buildingsPanels.getResidenceBuildingPanel("House 2"));
-//			addPerson("Person 3");
-			
+			addPerson("Person 3", buildingsPanels.getResidenceBuildingPanel("House 2"));
+			addPerson("Person 4", buildingsPanels.getResidenceBuildingPanel("House 2"));
+			addPerson("Person 5", buildingsPanels.getResidenceBuildingPanel("House 2"));
+			addPerson("Person 6", buildingsPanels.getResidenceBuildingPanel("House 2"));
+			addPerson("Person 7", buildingsPanels.getResidenceBuildingPanel("House 2"));
 		
 	} //end LoadDefault
 	
@@ -653,6 +650,7 @@ public class SetUpWorldFactory{
 			cityPanel.addGui(mb);
 			buildingsPanels.addBuildingPanel(mp);
 		}
+			break;
 		default:
 			return;
 		}
