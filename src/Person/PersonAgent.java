@@ -429,6 +429,7 @@ public class PersonAgent extends Agent {
 			  role = (RestaurantCustomerRole) RoleFactory.roleFromString(Role.RESTAURANT_CUSTOMER_ROLE);
 			  addRole(role);
 		  }
+
 		  AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Customer Role = "+role);
 		  BuildingList.findBuildingWithName("Restaurant 1").addRole(role);
 		  Building bdg =  BuildingList.findBuildingWithName("Restaurant 1");
@@ -439,7 +440,8 @@ public class PersonAgent extends Agent {
 			  role.gotHungry();
 			  role.activate();
 		  }
-		  
+		  while(!itemsNeeded.isEmpty())
+			  itemsNeeded.remove();
 		/*if(findRole(Role.MARKET_CUSTOMER_ROLE) == null){
 			Role r = RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
 			r.activate();
