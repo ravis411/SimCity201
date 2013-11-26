@@ -41,13 +41,10 @@ public class ResidenceBuilding extends BuildingGui {
 		}
 		else if (apartment == true)
 		{
-			g.setColor(Color.red);
-			int xs[] = {(int)super.x, (int)(super.x + super.width/2), (int)(super.x + super.width)};
-			int ys[] = {(int)(super.y + super.height/2), (int)(super.y), (int)(super.y + super.height/2)};
-			g.fillPolygon(xs, ys, 3);
-			g.setColor(Color.blue);
-			g.fillRect((int)(super.x), (int)(super.y + super.height/2), (int)super.width, (int)super.height/2);
-			g.setColor(Color.orange);
+			g.setColor(Color.lightGray);
+			g.fillRect((int)(super.x), (int)(super.y), (int)super.width, (int)super.height);
+			g.setColor(Color.black);
+			g.fillRect((int)(super.x)+10, (int)(super.y)+10, (int)super.width-20, (int)super.height-20);
 		}
 		
 	}
