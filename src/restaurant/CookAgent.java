@@ -91,8 +91,6 @@ public class CookAgent extends Role {
 	 */
 	public boolean pickAndExecuteAction() {
 		
-		
-		
 		for(int i=0; i<inventory.size(); i++) {
 			if(inventory.get(i).inventory < 1 && event != AgentEvent.placedOrder) {
 				goToMarket(i);

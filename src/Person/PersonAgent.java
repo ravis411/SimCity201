@@ -10,12 +10,13 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Queue;
 
-import bank.bankClientRole;
+import residence.HomeRole;
 import trace.AlertLog;
 import trace.AlertTag;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
 import agent.Agent;
+import bank.bankClientRole;
 
 /**
  * @author MSILKJR
@@ -85,7 +86,7 @@ public class PersonAgent extends Agent {
 		backpack = new ArrayList<Item>();
 		itemsNeeded = new ArrayDeque<Item>();
 		
-//		roles.add(new HomeRole(this));
+		roles.add(new HomeRole(this));
 	}
 	
 //-------------------------------MESSAGES----------------------------------------//
