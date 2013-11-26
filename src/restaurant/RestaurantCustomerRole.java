@@ -7,6 +7,7 @@ import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
 import Person.Role.Role;
 import agent.Agent;
+import building.BuildingList;
 import restaurant.Menu;
 import restaurant.Menu.Dish;
 
@@ -319,12 +320,14 @@ public class RestaurantCustomerRole extends Role implements Customer {
 		customerGui.DoExitRestaurant();
 		waiter.msgLeavingTable(this);
 		state = AgentState.LeavingEarly;
+		deactivate();
 	}
 	
 	private void LeaveRestaurant() {
 		print("Leaving.");
 		customerGui.DoExitRestaurant();
 		state = AgentState.Leaving;
+		deactivate();
 	}
 	
 	private void LeaveBeforeSeated() {
@@ -332,6 +335,7 @@ public class RestaurantCustomerRole extends Role implements Customer {
 		state = AgentState.Leaving;
 		host.msgRemoveFromWaitlist(this);
 		stayLeave = -1;
+		deactivate();
 	}
 
 	// Accessors, etc.

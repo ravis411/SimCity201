@@ -7,6 +7,7 @@ import bank.LoanTellerRole;
 
 public class Bank extends Building implements Workplace {
 
+	public boolean isOpenSetter = false;
 	public Bank(BuildingPanel panel) {
 		super(panel);
 		// TODO Auto-generated constructor stub
@@ -14,8 +15,7 @@ public class Bank extends Building implements Workplace {
 
 	@Override
 	public void open() {
-		// TODO Auto-generated method stub
-
+		isOpenSetter=true;
 	}
 
 	@Override
@@ -42,8 +42,11 @@ public class Bank extends Building implements Workplace {
 
 	@Override
 	public boolean isOpen() {
-		// TODO Auto-generated method stub
-		return false;
+
+		if (this.isOpenSetter){
+			return true;
+		}
+		else return false;
 	}
 
 }

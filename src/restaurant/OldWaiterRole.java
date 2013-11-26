@@ -1,21 +1,18 @@
 package restaurant;
 
-import Person.Role.Role;
-import agent.Agent;
-import restaurant.gui.HostGui;
-import restaurant.Order;
-import restaurant.Menu;
-import restaurant.RestaurantCustomerRole.AgentEvent;
-import restaurant.RestaurantCustomerRole.AgentState;
-import restaurant.Menu.Dish;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.Vector;
+import java.util.concurrent.Semaphore;
+
 import restaurant.gui.WaiterGui;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
 import trace.AlertLog;
 import trace.AlertTag;
+import Person.Role.Role;
 
-import java.util.*;
-import java.util.concurrent.Semaphore;
+import com.sun.org.apache.xerces.internal.parsers.DOMParser;
 
 /**
  * Restaurant Waiter Agent
@@ -113,31 +110,31 @@ public class OldWaiterRole extends Role implements Waiter {
 	
 	public void msgAtWaitingArea() {
 		atWaitingArea.release();
-		stateChanged();
+		//stateChanged();
 	}
 	
 	public void msgAtTable() {//from animation
 		atTable.release();// = true;
 		state = AgentState.AtTable;
-		stateChanged();
+		//stateChanged();
 	}
 	
 	public void msgAtCookingArea() {
 		atCookingArea.release();
 		state = AgentState.AtTable;
-		stateChanged();
+		//stateChanged();
 	}
 	
 	public void msgAtPlatingArea() {
 		atPlatingArea.release();
 		state = AgentState.AtKitchen;
-		stateChanged();
+		//stateChanged();
 	}
 	
 	public void msgAtFrontDesk() {
 		atFrontDesk.release();
 		state = AgentState.AtFrontDesk;
-		stateChanged();
+		//stateChanged();
 	}
 	
 	public void msgLeavingTable(Customer cust) {
