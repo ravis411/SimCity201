@@ -2,25 +2,31 @@ package Transportation;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import trace.AlertLog;
 import trace.AlertTag;
 import gui.interfaces.BusStop;
 import gui.interfaces.Passenger;
 import gui.interfaces.Bus;
+import Person.PersonAgent;
 import agent.Agent;
 
 public class BusStopAgent extends Agent implements BusStop {
 	//Data
-	private class myPassenger {
-		myPassenger(Passenger p, PassengerState pass) {
-			passenger = p;
-			ps = pass;
-		}
-		Passenger passenger;
-		PassengerState ps;
+	
+	
+	//A map of all the busStop agents.
+	private static Map<String, BusStop> stops = new HashMap<String, BusStop>();
+	
+	public static void addStop(String stop, BusStop agent) {
+		stops.put(stop, agent);
 	}
+	
+	
+	
 	
 	public BusStopAgent(String name) {
 		state = AgentState.Idle;
@@ -39,10 +45,10 @@ public class BusStopAgent extends Agent implements BusStop {
 
 	
 	//Messages
-	public void msgWaitingForBus(Passenger p) {
+	public void msgWaitingForBus(PersonAgent person, String destinationStop) {
 		//Sent from passenger to bus stop
 		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, name, "A new passenger is waiting for the bus");
-		waitingPassengers.add(new myPassenger(p, PassengerState.waiting));
+		waitingPassengers.add(new myPassenger(person, PassengerState.waiting, destinationStop));
 		stateChanged();
 	}
 

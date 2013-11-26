@@ -11,7 +11,7 @@ import gui.interfaces.Passenger;
 import gui.interfaces.Bus;
 import agent.Agent;
 
-public class BusStopAgent extends Agent implements BusStop {
+public class CopyBusStopAgent extends Agent implements BusStop {
 	//Data
 	private class myPassenger {
 		myPassenger(Passenger p, PassengerState pass) {
@@ -22,7 +22,7 @@ public class BusStopAgent extends Agent implements BusStop {
 		PassengerState ps;
 	}
 	
-	public BusStopAgent(String name) {
+	public CopyBusStopAgent(String name) {
 		state = AgentState.Idle;
 		this.name = name;
 	}

@@ -16,7 +16,7 @@ import gui.interfaces.Passenger;
 import gui.interfaces.Bus;
 import agent.Agent;
 
-public class BusAgent extends Agent implements Bus {
+public class CopyBusAgent extends Agent implements Bus {
 	
 	//May need to modify DoGoToLocation method to implement agent methodology
 
@@ -47,7 +47,7 @@ public class BusAgent extends Agent implements Bus {
 	public enum AgentState {inTransit, unloading, loading, loaded, waiting};
 	public AgentState state;
 	
-	public BusAgent(String name) {
+	public CopyBusAgent(String name) {
 		super();
 		//Remember to set initial location and initial stop
 		
