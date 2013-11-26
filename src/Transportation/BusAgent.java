@@ -28,7 +28,7 @@ public class BusAgent extends Agent implements Vehicle {
 	String name;
 	boolean traveled = false;
 	boolean goToBusStop3 = false;
-	String location;
+	private String location;
 	public VehicleGui agentGui;
 	Queue<String> StopsQueue = new LinkedList<>(); //<--a list of the stops to go to
 	
@@ -91,7 +91,7 @@ public class BusAgent extends Agent implements Vehicle {
 	
 	//Scheduler
 	@Override
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		synchronized(passengers) {
 			for (myPassenger mp : passengers) {
 				if (mp.ps == PassengerState.disembarking) {
@@ -123,10 +123,10 @@ public class BusAgent extends Agent implements Vehicle {
 		state = AgentState.inTransit;
 		
 		
-		location = StopsQueue.poll();//<--removes location from front of queue
-		StopsQueue.add(location);//<--adds location to end of queue
+		setLocation(StopsQueue.poll());//<--removes location from front of queue
+		StopsQueue.add(getLocation());//<--adds location to end of queue
 		//print("Going to " + location);
-		agentGui.DoGoTo(location);
+		agentGui.DoGoTo(getLocation());
 	//	print("Arrived at " + location);
 		try {
 			Thread.sleep(500);
@@ -134,13 +134,15 @@ public class BusAgent extends Agent implements Vehicle {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		//Need some way of notifying bus that we have arrived at next stop
 	}
 	
 	private void notifyPassengers() {
 		synchronized(passengers) {
 			for (myPassenger mp : passengers) {
 				if (mp.ps == PassengerState.riding) {
-					mp.passenger.msgArrivedAtDestination(location);
+					mp.passenger.msgArrivedAtDestination(getLocation());
 				}
 			}
 		}
@@ -160,6 +162,14 @@ public class BusAgent extends Agent implements Vehicle {
 
 	public void setPassengers(List<myPassenger> passengers) {
 		this.passengers = passengers;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 	
 	
