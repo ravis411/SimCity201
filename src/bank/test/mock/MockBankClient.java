@@ -102,7 +102,6 @@ public class MockBankClient extends Mock implements BankClient{
 
 	@Override
 	public void msgLoanRepaid(double n) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("msgLoanRepaid received from loanBankTeller. I have paid off my loan of $" + n));
 	}
 }

@@ -2,9 +2,9 @@ package Transportation;
 
 import Person.PersonAgent;
 
-public class MyBusPassenger {
+public class myBusPassenger {
 		
-	MyBusPassenger(PersonAgent p, String destination) {
+	myBusPassenger(PersonAgent p, String destination) {
 			passenger = p;
 		//	ps = pass;
 			this.destination = destination;
