@@ -23,9 +23,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import residence.HomeRole;
 import Person.PersonAgent;
 import Transportation.BusAgent;
-import Transportation.BusStopAgent;
 import agent.Agent;
 import astar.AStarTraversal;
 import astar.PersonAStarTraversal;
@@ -492,6 +492,7 @@ public class SetUpWorldFactory{
 		AStarTraversal t = new PersonAStarTraversal(layout.getAgentGrid(), layout.getCrossWalkGrid(), layout.getRoadGrid());
 		PersonGui g1 = new PersonGui(p1, layout, t, locationMap);
 		p1.setGui(g1);
+		p1.setInitialRole(new HomeRole(p1), "House 1");
 		cityPanel.addGui(g1);
 		p1.startThread();
 	}
