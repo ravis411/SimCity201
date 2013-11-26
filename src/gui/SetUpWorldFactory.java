@@ -218,9 +218,9 @@ public class SetUpWorldFactory{
 			location.sector = 2;
 			
 			
-			addVehicle("OddMockBus");
-			addVehicle("EvenMockBus");
-			addVehicle("OddMockBus");
+			addVehicle("OddBus");
+		//	addVehicle("EvenMockBus");
+			//addVehicle("OddMockBus");
 			
 			
 			addPerson("Person 1", buildingsPanels.getResidenceBuildingPanel("House 1"));
@@ -540,17 +540,20 @@ public class SetUpWorldFactory{
 			v3.agentGui = v3Gui;
 			cityPanel.addGui(v3Gui);
 			v3.startThread();
+			break;
 			
 		case "OddBus":
 			BusAgent v4 = new BusAgent("OBus1");
 			v4.addBusStop(1, "Bus Stop 1");
 			v4.addBusStop(2, "Bus Stop 3");
 			v4.addBusStop(3, "Bus Stop 5");
+			v4.location = "Bus Stop 1";
 			AStarTraversal t4 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
 			VehicleGui v4Gui = new VehicleGui( v4, layout, t4, locationMap);
 			v4.agentGui = v4Gui;
 			cityPanel.addGui(v4Gui);
 			v4.startThread();
+			break;
 
 		default:
 			break;

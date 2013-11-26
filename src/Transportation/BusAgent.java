@@ -49,10 +49,11 @@ public class BusAgent extends Agent implements Bus {
 		/*stops.put(1,"Stop_1");
 		stops.put(2,"Stop_2");
 		stops.put(3,"Stop_3");*/
-		location = "Stop_1";
+		//location = "Stop_1";
 		count = 1;
-		stopSize = 3;
+		stopSize = 0;
 		this.name = name;
+		state = AgentState.loaded;
 	}
 	public void addBusStop(int stopNumber, String stop) {
 		stops.put(stopNumber, stop);
@@ -132,7 +133,7 @@ public class BusAgent extends Agent implements Bus {
 		location = stops.get(count%stopSize);
 		//print("Location is now: " + location);
 		//print("Count is now: " + count);
-		//agentGui.DoGoTo(location);
+		agentGui.DoGoTo(location);
 		//Need some way of notifying bus that we have arrived at next stop
 	}
 	
