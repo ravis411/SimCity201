@@ -150,6 +150,8 @@ public class BusAgent extends Agent implements Bus {
 		//print("Count is now: " + count);
 		agentGui.DoGoTo(location);
 		//Need some way of notifying bus that we have arrived at next stop
+		currentStop.msgAtStop(this);
+		
 	}
 	
 	private void notifyPassengers() {
