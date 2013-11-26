@@ -31,7 +31,7 @@ public class PersonAgent extends Agent {
 	private double money;
 	private double moneyNeeded;
 	
-	private int age;
+	private int age = 20; //edited by Byron for testing purposes
 	
 	private int SSN;
 	private int atRestaurant;
@@ -575,6 +575,10 @@ public class PersonAgent extends Agent {
 	 */
 	public void setMoney(double money){
 		this.money=money;
+	}
+	
+	public void setMoneyNeeded(double money){
+		this.moneyNeeded = money;
 	}
 	
 	/**

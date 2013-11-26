@@ -23,11 +23,12 @@ public class bankClientRole extends Role {
 	private bankTellerRole teller = null;
 	private loanTellerRole loanTeller = null;
 	private numberAnnouncer announcer;
+	private loanNumberAnnouncer loanAnnouncer;
 	private double requestAmount;
 	private boolean hasLoan = false;
 	//	private double amountDue = 0;
-	private int ticketNum = 0;
-	private int loanTicketNum = 0;
+	private int ticketNum;
+	private int loanTicketNum;
 	private int lineNum;
 	private Semaphore atLine = new Semaphore(0,true);
 	private Semaphore atWaitingArea = new Semaphore(0,true);
@@ -55,6 +56,10 @@ public class bankClientRole extends Role {
 	public void setAnnouncer(numberAnnouncer a){
 		this.announcer = a;
 	} 
+	
+	public void setLoanAnnouncer(loanNumberAnnouncer a){
+		this.loanAnnouncer = a;
+	}
 	/**
 	 * initializing bankClientRole
 	 * there is a hack implemented to make sure there are some bank accounts to begin with so that 
@@ -198,6 +203,7 @@ public class bankClientRole extends Role {
 	private void goToWaitingArea(){
 		DoGoToWaitingArea();
 		announcer.msgAddClient(this);
+		loanAnnouncer.msgAddClient(this);
 		try {
 			atWaitingArea.acquire();
 		} catch (InterruptedException e) {
@@ -219,6 +225,7 @@ public class bankClientRole extends Role {
 	}
 	private void goToLoanLine(){
 		DoGoToLine(5);
+		loanAnnouncer.msgOnTheWay();
 		try{
 			atLine.acquire();
 		} catch(InterruptedException e){
@@ -313,7 +320,7 @@ public class bankClientRole extends Role {
 			this.state1 = bankState.loan;
 			loanTicketNum = loanTakeANumberDispenser.INSTANCE.pullTicket();
 //			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + loanTicketNum);
-			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
+			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + loanTicketNum);
 		}
         this.activate();
 

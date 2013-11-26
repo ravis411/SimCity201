@@ -39,6 +39,7 @@ public class loanNumberAnnouncer extends Agent{
 	public void msgLoanComplete(){
 		Do("Recieved done message from loan line.");
 		loanNumber++;
+		onTheWay = false;
 		state = numberState.announceL;
 		stateChanged();
 	}
@@ -53,12 +54,19 @@ public class loanNumberAnnouncer extends Agent{
 	}
 	//actions
 	private void announceNumberLoan(){
-		while(onTheWay == false){
-	//		Do("Calling loan ticket " + loanNumber);
+		while (onTheWay == false){
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Do("Calling loan ticket " + loanNumber);
 			for (bankClientRole b : clients){
 				b.msgCallingLoanTicket(loanNumber, 5, loanTeller);
 			}
 		}
+		state = numberState.pending;
 	}
 
 	public String getName() {

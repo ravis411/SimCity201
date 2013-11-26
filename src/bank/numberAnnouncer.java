@@ -35,12 +35,14 @@ public class numberAnnouncer extends Agent{
 		clients.add(c);
 		stateChanged();
 	}
-	public void msgTransactionComplete(int b, bankTellerRole btr){
+	public void msgTransactionComplete(int b, bankTellerRole btr, bankClientRole bcr){
 		Do("Recieved done message from line " + b);
 		doneTeller = b;
 		openTeller.add(btr);
+		clients.remove(bcr);
 		tellerNumber++;
 		state = numberState.announceB;
+		onTheWay = false;
 		stateChanged();
 	}
 
@@ -55,17 +57,18 @@ public class numberAnnouncer extends Agent{
 	//actions
 	private void announceNumberBank(){
 		while (onTheWay == false){
-			timer.schedule(new TimerTask() {
-				public void run() {			
-					Do("Calling ticket " + tellerNumber);
-				}
-			},5000);
-
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Do("Calling ticket " + tellerNumber);
+			for (bankClientRole b : clients){
+				b.msgCallingTicket(tellerNumber, doneTeller, openTeller.peek());
+			}
+			state = numberState.pending;
 		}
-		for (bankClientRole b : clients){
-			b.msgCallingTicket(tellerNumber, doneTeller, openTeller.peek());
-		}
-		state = numberState.pending;
 	}
 
 	public String getName() {

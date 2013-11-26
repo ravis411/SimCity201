@@ -85,15 +85,10 @@ public class BankGui extends JFrame implements ActionListener {
         tellerRole.activate();
         tellerRole.getPerson().startThread();
         
-        clientRole.setPerson(client);
-        client.addRole(clientRole);
-        animationPanel.addGui(clientGui);
-        clientRole.setAnnouncer(announcer);
-        clientRole.setGui(clientGui);
-        clientRole.setIntent("deposit");
-        client.setMoney(100);
-        clientRole.getPerson().startThread();
-   //     clientRole.setIntent("deposit");
+
+        
+        
+        
 
         loanTellerPerson.addRole(loanTellereRole);
         loanTellereRole.setPerson(loanTellerPerson);
@@ -102,8 +97,19 @@ public class BankGui extends JFrame implements ActionListener {
         loanTellereRole.setGui(loanGui);
         loanTellereRole.activate();
         loanTellereRole.getPerson().startThread();
-/*
- *
+        
+        clientRole.setPerson(client);
+        client.addRole(clientRole);
+        animationPanel.addGui(clientGui);
+        clientRole.setAnnouncer(announcer);
+        clientRole.setLoanAnnouncer(loanAnnouncer);
+        clientRole.setGui(clientGui);
+        clientRole.setIntent("loan");
+        client.setMoney(100);
+        client.setMoneyNeeded(50);
+        clientRole.getPerson().startThread();
+    
+ /*
  
         bankTellerPersons.add(new PersonAgent("Cary"));
         bankTellerRoles.add(new bankTellerRole(bankTellerPersons.get(0).getName(),1));

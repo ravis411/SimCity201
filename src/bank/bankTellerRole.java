@@ -116,7 +116,7 @@ public class bankTellerRole extends Role implements Employee{
 			e.printStackTrace();
 		}
 		announcer.msgAddBankTeller(this);
-		announcer.msgTransactionComplete(LineNum,this);
+		announcer.msgTransactionComplete(LineNum,this, null);
 	}
 	private void receiveClient(bankClientRole b){
 			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Recieving new client");
@@ -132,7 +132,7 @@ public class bankTellerRole extends Role implements Employee{
 					AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"$" + transactionAmount + " has been deposited into the account.");
 				b.msgTransactionCompleted(transactionAmount - (2*transactionAmount));
 				state = requestState.none;
-				announcer.msgTransactionComplete(LineNum,this);
+				announcer.msgTransactionComplete(LineNum,this,b);
 				myClient = null;
 			}
 		}
@@ -149,7 +149,7 @@ public class bankTellerRole extends Role implements Employee{
 					b.msgTransactionCompleted(transactionAmount);
 				}
 				state = requestState.none;
-				announcer.msgTransactionComplete(LineNum,this);
+				announcer.msgTransactionComplete(LineNum,this,b);
 				myClient = null;
 			}
 		}
