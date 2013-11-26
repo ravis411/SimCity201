@@ -8,12 +8,12 @@ public interface BusStop {
 	/**
 	 * Lets the BusStop know there is a Passenger waiting
 	 */
-	public abstract void msgWaitingForBus(Passenger p);
+	public abstract void msgWaitingForBus(Passenger p, String destination);
 	
 	/**
 	 * Lets the BusStop know that a Bus has arrived
 	 */
-	public abstract void msgAtStop(Bus bus);
+	public abstract void msgArrivedAtStop(Bus bus);
 	
 	/**
 	 * Lets the BusStop know that a passenger has boarded the bus 

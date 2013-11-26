@@ -107,5 +107,6 @@ public class PassengerRole extends Role implements Passenger{
 		currentBus.msgGettingOffBus(this);
 		destination = "N/A";
 		state = AgentState.disembarking;
+		myPerson.msgWeHaveArrived(destination);
 	}
 }
