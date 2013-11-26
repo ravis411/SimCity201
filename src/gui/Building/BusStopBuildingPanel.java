@@ -3,12 +3,15 @@ package gui.Building;
 import gui.BuildingsPanels;
 import interfaces.GuiPanel;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.JLabel;
 
 import Person.Role.Role;
+import Transportation.BusStopAnimationPanel;
 
 
 /**
@@ -25,9 +28,10 @@ public class BusStopBuildingPanel extends BuildingPanel{
 		this.removeAll();
 		
 		setBackground( new Color(7,100,7) );
-		
+		this.setLayout(new BorderLayout());
 		JLabel j = new JLabel( myName );
-		add( j );
+		add( j,BorderLayout.NORTH );
+		add(new BusStopAnimationPanel(), BorderLayout.CENTER);
 	}
 	
 	
