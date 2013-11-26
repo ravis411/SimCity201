@@ -10,9 +10,13 @@ import gui.interfaces.Passenger;
 
 public class PassengerRole extends Role implements Passenger{
 	
-	PassengerRole(String name) {
-		this.name = name;
-		personGui = myPerson.getPersonGui();
+	PassengerRole() {
+		//this.name = name;
+		//personGui = myPerson.getPersonGui();
+	}
+	
+	public void setPersonGui(PersonGui gui){
+		this.personGui = gui;
 	}
 	
 	//Data

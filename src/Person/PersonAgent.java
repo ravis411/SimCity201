@@ -13,9 +13,7 @@ import java.util.Queue;
 import residence.HomeRole;
 import trace.AlertLog;
 import trace.AlertTag;
-import MarketEmployee.MarketCustomerRole;
-import MarketEmployee.MarketEmployeeRole;
-import MarketEmployee.MarketManagerRole;
+import Person.Role.PassengerRole;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
 import agent.Agent;
@@ -145,6 +143,7 @@ public class PersonAgent extends Agent {
 	  */
 	public void msgWeHaveArrived(String currentDestination){
 	  //unpause agent, which will be in transit (implementation not necessary here)
+		GoToLocation(currentDestination, "WALK");
 	}
 
 	/**
@@ -396,7 +395,8 @@ public class PersonAgent extends Agent {
 		}
 		
 		//needs a way to find a bank quite yet
-		GoToLocation("Building 10", transport);
+		GoToLocation("Building 10", "BUS");
+		GoToLocation("Building 10", "WALK");
 		/*if(findRole(Role.MARKET_CUSTOMER_ROLE) == null){
 			Role r = RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
 			r.activate();
@@ -462,8 +462,10 @@ public class PersonAgent extends Agent {
 		switch(modeOfTransportation){
 			case Preferences.BUS:
 				if(findRole(Role.PASSENGER_ROLE) == null){
-					Role role = RoleFactory.roleFromString(Role.PASSENGER_ROLE);
+					PassengerRole role = (PassengerRole) RoleFactory.roleFromString(Role.PASSENGER_ROLE);
 					addRole(role);
+					role.setPersonGui(gui);
+					role.setDestination(location);
 					role.activate();
 				}else{
 					findRole(Role.PASSENGER_ROLE).activate();
