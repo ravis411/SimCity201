@@ -583,7 +583,7 @@ public class SetUpWorldFactory{
 			}
 			break;
 		case "Residence":
-			ResidenceBuilding rb = new ResidenceBuilding(building);
+			ResidenceBuilding rb = new ResidenceBuilding(building, false);
 			if(rb != null){
 				BuildingPanel bp = new ResidenceBuildingPanel(rb, name, buildingsPanels);
 				rb.setBuildingPanel(bp);

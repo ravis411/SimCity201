@@ -91,15 +91,17 @@ public class ApartmentAnimationPanel extends JPanel implements MouseListener, Gu
 			}
 		}
         
-        /*g2.setColor(Color.orange);
-        g.fillOval(50, 50, 100, 100);
-        g.fillOval(200, 50, 100, 100);
-        g.fillOval(50, 200, 100, 100);
-        g.fillOval(200, 200, 100, 100);*/
+        g2.setColor(Color.orange);
+        g2.fillRect(300,0,200,400);
 	}
 
 	@Override
 	public void addGuiForRole(Role r) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void removeGuiForRole(Role r) {
 		// TODO Auto-generated method stub
 		
 	}
