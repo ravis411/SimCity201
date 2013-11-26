@@ -150,7 +150,7 @@ public class BusAgent extends Agent implements Bus {
 		
 		//print("Count is now: " + count);
 		count++;
-		location = stops.get(count%stopSize);
+		location = stops.get(count%stopSize +1);
 		currentStop = stopAgents.get(location);
 		//print("Location is now: " + location);
 		//print("Count is now: " + count);
