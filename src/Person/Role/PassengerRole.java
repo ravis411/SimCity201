@@ -27,7 +27,7 @@ public class PassengerRole extends Role implements Passenger{
 	
 	private static Map<String, BusStop> stops = new HashMap<String, BusStop>();
 	
-	public void addStop(String stop, BusStop agent) {
+	public static void addStop(String stop, BusStop agent) {
 		stops.put(stop, agent);
 	}
 	//Passenger role needs to figure out which bus is the closest one
