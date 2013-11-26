@@ -1,25 +1,5 @@
 package gui;
 
-import gui.Building.BuildingGui;
-import gui.Building.BuildingPanel;
-import gui.Building.BusStopBuilding;
-import gui.Building.BusStopBuildingPanel;
-import gui.agentGuis.PersonGui;
-import gui.agentGuis.VehicleGui;
-
-import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-
-import Person.PersonAgent;
-import Transportation.BusAgent;
-import Transportation.BusStopAgent;
-import agent.Agent;
-import astar.AStarTraversal;
-import astar.PersonAStarTraversal;
-import astar.VehicleAStarTraversal;
 import gui.Building.ApartmentBuilding;
 import gui.Building.ApartmentBuildingPanel;
 import gui.Building.BankBuilding;
@@ -34,9 +14,22 @@ import gui.Building.MarketBuildingPanel;
 import gui.Building.ResidenceBuilding;
 import gui.Building.ResidenceBuildingPanel;
 import gui.MockAgents.PseudoBusAgent;
-import gui.MockAgents.PseudoPerson;
 import gui.agentGuis.PersonGui;
 import gui.agentGuis.VehicleGui;
+
+import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+import residence.HomeRole;
+import Person.PersonAgent;
+import Transportation.BusAgent;
+import agent.Agent;
+import astar.AStarTraversal;
+import astar.PersonAStarTraversal;
+import astar.VehicleAStarTraversal;
 
 //This class will instantiate and setup everything.
 public class SetUpWorldFactory{
@@ -495,6 +488,7 @@ public class SetUpWorldFactory{
 		AStarTraversal t = new PersonAStarTraversal(layout.getAgentGrid(), layout.getCrossWalkGrid(), layout.getRoadGrid());
 		PersonGui g1 = new PersonGui(p1, layout, t, locationMap);
 		p1.setGui(g1);
+		p1.setInitialRole(new HomeRole(p1), "House 1");
 		cityPanel.addGui(g1);
 		p1.startThread();
 	}
