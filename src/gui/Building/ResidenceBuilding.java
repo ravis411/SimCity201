@@ -13,11 +13,11 @@ import trace.AlertTag;
 
 public class ResidenceBuilding extends BuildingGui {	
 	
+	boolean apartment;
 	
-	
-	public ResidenceBuilding( BuildingGui b ) {
+	public ResidenceBuilding( BuildingGui b, boolean apartment ) {
 		super( b.x, b.y, b.width, b.height );
-		
+		this.apartment = apartment;
 			
 	}
 	
@@ -27,7 +27,8 @@ public class ResidenceBuilding extends BuildingGui {
 			g.setColor(new Color(100, 180, 200));
 			g.drawString(super.myBuildingPanel.getName(), (int)super.x,(int)super.y);
 			super.draw(g);
-		}else
+		}
+		else if (apartment == false)
 		{
 			g.setColor(new Color(100, 180, 200));
 			int xs[] = {(int)super.x, (int)(super.x + super.width/2), (int)(super.x + super.width)};
@@ -37,6 +38,13 @@ public class ResidenceBuilding extends BuildingGui {
 			g.fillRect((int)(super.x), (int)(super.y + super.height/2), (int)super.width, (int)super.height/2);
 			g.setColor(Color.orange);
 			//super.draw(g);
+		}
+		else if (apartment == true)
+		{
+			g.setColor(Color.lightGray);
+			g.fillRect((int)(super.x), (int)(super.y), (int)super.width, (int)super.height);
+			g.setColor(Color.black);
+			g.fillRect((int)(super.x)+10, (int)(super.y)+10, (int)super.width-20, (int)super.height-20);
 		}
 		
 	}

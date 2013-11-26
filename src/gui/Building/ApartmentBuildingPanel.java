@@ -60,6 +60,7 @@ public class ApartmentBuildingPanel extends BuildingPanel{
 				location.positionToEnterFromMainGrid = new Dimension(10, 3);
 				location.entranceFromMainGridPosition = new Dimension(9, 3);
 				location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+				
 				addBuilding("Residence", "Apartment 2", 100, 50, 50, 50, location);
 				
 		//Apartment 3
@@ -68,6 +69,7 @@ public class ApartmentBuildingPanel extends BuildingPanel{
 				location.entranceFromMainGridPosition = new Dimension(14, 3);
 				location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
 				addBuilding("Residence", "Apartment 3", 150, 50, 50, 50, location);
+
 				
 		//Apartment 4
 				location.sector = 1;
@@ -104,7 +106,7 @@ public class ApartmentBuildingPanel extends BuildingPanel{
 
 		switch (type) {
 		case "Residence":
-			ResidenceBuilding rb = new ResidenceBuilding(building);
+			ResidenceBuilding rb = new ResidenceBuilding(building, true);
 			if(rb != null){
 				BuildingPanel bp = new ResidenceBuildingPanel(rb, name, factory.buildingsPanels);
 				rb.setBuildingPanel(bp);

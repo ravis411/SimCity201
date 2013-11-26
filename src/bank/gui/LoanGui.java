@@ -1,6 +1,6 @@
 package bank.gui;
 
-import bank.loanTellerRole;
+import bank.LoanTellerRole;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -8,7 +8,7 @@ import java.awt.Graphics2D;
 
 public class LoanGui implements Gui {
 
-    private loanTellerRole role = null;
+    private LoanTellerRole role = null;
 
     private int xPos;
     private int yPos;
@@ -25,19 +25,20 @@ public class LoanGui implements Gui {
         private final static int yBreakRoom= 10;
         private int xcounter = 0;
         private int ycounter = 0;
-    BankGui gui;
+    BankAnimationPanel gui;
 
-    public LoanGui(loanTellerRole tellerRole, BankGui gui) {
+    public LoanGui(LoanTellerRole tellerRole, BankAnimationPanel bankAnimationPanel) {
         this.role = tellerRole;
         xPos = xBankEntrance;
         yPos = yBankEntrance-50;
         xDestination = xIntermediateEntrance;
         yDestination = yIntermediateEntrance;
-        this.gui = gui;
+        this.gui = bankAnimationPanel;
         //this.waiterNumber=waiterNumber;
     }
 
-    public void updatePosition() {
+
+	public void updatePosition() {
 		if (xPos < xDestination)
 		{xPos++;
  

@@ -6,6 +6,8 @@ import agent.Agent;
 import residence.ApartmentManagerRole.AgentEvent;
 import residence.gui.HomeRoleGui;
 import residence.interfaces.*;
+import trace.AlertLog;
+import trace.AlertTag;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -18,9 +20,13 @@ public class HomeRole extends Role implements Home {
 	private ApartmentManager landlord;
 	private int rentOwed = 0;
 	private int aptNumber = 0;
-	private boolean leaveHome = false;
-	private boolean enterHome = false;
+
+	public boolean leaveHome = false;
+	public boolean enterHome = false;
+
+	
 	//private Map <String, Integer> inventory = new HashMap<String, Integer>();
+
 	private List <Item> inventory = new ArrayList<Item>();
 	private List <HomeFeature> features = new ArrayList<HomeFeature>(); //includes appliances, toilets, sinks, etc (anything that can break)
 	private List <PersonAgent> partyAttendees = new ArrayList<PersonAgent>();
@@ -38,11 +44,11 @@ public class HomeRole extends Role implements Home {
 
 	public enum AgentState
 	{DoingNothing, Cooking, Sleeping, Leaving};
-	private AgentState state = AgentState.DoingNothing;//The start state
+	public AgentState state = AgentState.DoingNothing;//The start state
 
 	public enum AgentEvent
 	{none, cooking, eating, asleep, leaving};
-	AgentEvent event = AgentEvent.none;
+	public AgentEvent event = AgentEvent.none;
 
 	public HomeRole(PersonAgent myPerson) {
 		this.myPerson = myPerson;
@@ -63,7 +69,12 @@ public class HomeRole extends Role implements Home {
 	public String getNameOfRole() {
 		return "HomeRole";
 	}
-	
+	public List<Item> getInventory(){
+		return inventory;
+	}
+	public List<HomeFeature> getHomeFeatures(){
+		return features;
+	}
 	public boolean canGoGetFood() {
 		return true;
 	}
@@ -71,8 +82,13 @@ public class HomeRole extends Role implements Home {
 	// Messages
 	
 	public void msgRentDue (int amount) {
+
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "I just got charged rent.");
+		setRentOwed(amount);
+
 		print("I just got charged rent.");
 		rentOwed = amount;
+
 		stateChanged();
 	}
 	public void msgTired() { //called by timer
@@ -149,7 +165,7 @@ public class HomeRole extends Role implements Home {
 			enterHome();
 			return true;
 		}
-		if (rentOwed > 0) {
+		if (getRentOwed() > 0) {
 			payRent();
 			return true;
 		}
@@ -254,15 +270,23 @@ public class HomeRole extends Role implements Home {
 		landlord.msgBrokenFeature(brokenFeature.name, this);
 	}
 	private void payRent () {
+
+		if(myPerson.getMoney() >= getRentOwed()) {
+			landlord.msgRentPaid (this, getRentOwed());
+			myPerson.setMoney(myPerson.getMoney()-getRentOwed());
+			setRentOwed(0);
+			AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Paid my rent. I have $" + myPerson.getMoney() + " left.");
+
 		if(myPerson.getMoney() >= rentOwed) {
 			landlord.msgRentPaid (this, rentOwed);
 			myPerson.setMoney(myPerson.getMoney()-rentOwed);
 			rentOwed = 0;
 			print("Paid my rent. I have $" + myPerson.getMoney() + " left.");
+
 		}
 		else {
 			//do nothing
-		}
+		}}
 	}
 	private void goToSleep() {
 		gui.DoGoToCenter();
@@ -331,18 +355,26 @@ public class HomeRole extends Role implements Home {
 		this.landlord = role;
 	}
 	
-	private class HomeFeature {
-		String name;
-		boolean working;
+	public int getRentOwed() {
+		return rentOwed;
+	}
+
+	public void setRentOwed(int rentOwed) {
+		this.rentOwed = rentOwed;
+	}
+
+	public class HomeFeature {
+		public String name;
+		public boolean working;
 		
 		HomeFeature(String name) {
 			this.name = name;
 			working = true;
 		}
 	}
-	private class Item {
-		String name;
-		int quantity;
+	public class Item {
+		public String name;
+		public int quantity;
 		
 		Item(String name, int quantity) {
 			this.name = name;

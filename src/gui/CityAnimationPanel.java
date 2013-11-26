@@ -126,7 +126,7 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		}
 		g2.setColor(Color.white);
 		String time = new java.text.SimpleDateFormat("EEEE, MM/dd/yyyy hh:mm a").format(calendar.getTime());
-		g2.drawString(time, 600, 390);
+		g2.drawString(time, g.getClipBounds().width - 200, g.getClipBounds().height - 25);
 	}
 
 	public void addGui(Gui gui) {

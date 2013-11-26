@@ -1,6 +1,6 @@
 package bank.gui;
 
-import bank.bankClientRole;
+import bank.BankClientRole;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class ClientGui implements Gui {
 
-	private bankClientRole role = null;
+	private BankClientRole role = null;
 
 	private int xPos;
 	private int yPos;
@@ -24,15 +24,15 @@ public class ClientGui implements Gui {
 	private final static int xTellerDesk= 195;
 	private final static int yTellerDesk= 230;
 	private int line;
-	BankGui gui;
+	BankAnimationPanel gui;
 
-	public ClientGui(bankClientRole clientRole, BankGui gui) {
+	public ClientGui(BankClientRole clientRole, BankAnimationPanel bankAnimationPanel) {
 		this.role = clientRole;
 		xDestination=xWaitingArea+50;
 		yDestination = yWaitingArea;//default start position
 		xPos = xBankEntrance;
 		yPos = yBankEntrance-50;
-		this.gui = gui;
+		this.gui = bankAnimationPanel;
 		//this.waiterNumber=waiterNumber;
 	}
 

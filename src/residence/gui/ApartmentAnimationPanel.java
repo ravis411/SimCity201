@@ -79,6 +79,23 @@ public class ApartmentAnimationPanel extends JPanel implements MouseListener, Gu
         g2.setColor(getBackground());
         g2.fillRect(XCOOR, YCOOR, WINDOWX, WINDOWY);
         
+        g2.setColor(new Color(200, 50, 50));
+        g2.fillRect(300,0,200,400);
+        g2.setColor(Color.orange);
+        g2.fillRect(310,0,180,400);
+        
+        
+        g2.setColor(new Color(100, 180, 200));
+        g2.fillOval(290, 140, 40, 40);
+        g2.fillOval(470, 140, 40, 40);
+        g2.fillOval(290, 340, 40, 40);
+        g2.fillOval(470, 340, 40, 40);
+        g2.setColor(Color.yellow);
+        g2.fillOval(300, 150, 20, 20);
+        g2.fillOval(480, 150, 20, 20);
+        g2.fillOval(300, 350, 20, 20);
+        g2.fillOval(480, 350, 20, 20);
+        
         for(Gui gui : guis) {
 			if (gui.isPresent()) {
 				gui.updatePosition();
@@ -91,11 +108,6 @@ public class ApartmentAnimationPanel extends JPanel implements MouseListener, Gu
 			}
 		}
         
-        /*g2.setColor(Color.orange);
-        g.fillOval(50, 50, 100, 100);
-        g.fillOval(200, 50, 100, 100);
-        g.fillOval(50, 200, 100, 100);
-        g.fillOval(200, 200, 100, 100);*/
 	}
 
 	@Override
@@ -104,7 +116,6 @@ public class ApartmentAnimationPanel extends JPanel implements MouseListener, Gu
 		
 	}
 
-	@Override
 	public void removeGuiForRole(Role r) {
 		// TODO Auto-generated method stub
 		

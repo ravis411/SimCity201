@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Queue;
 
 import residence.HomeRole;
+
+import bank.BankClientRole;
 import trace.AlertLog;
 import trace.AlertTag;
 import Person.Role.Role;
