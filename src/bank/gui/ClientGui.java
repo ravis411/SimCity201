@@ -7,6 +7,11 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.Random;
 
+/**
+ * 
+ * @author Byron Choy
+ *
+ */
 
 public class ClientGui implements Gui {
 

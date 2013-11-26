@@ -4,6 +4,11 @@ import bank.BankTellerRole;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+/**
+ * 
+ * @author Byron Choy
+ *
+ */
 
 public class TellerGui implements Gui {
 

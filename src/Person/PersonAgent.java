@@ -456,6 +456,8 @@ public class PersonAgent extends Agent {
 	  }
 	  
 	  moneyNeeded = 40.00;
+	  
+	  
 	  role.setIntent(BankClientRole.withdraw);
 	  role.activate();
 	  

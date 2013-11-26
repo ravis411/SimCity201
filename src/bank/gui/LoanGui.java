@@ -5,6 +5,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
+/**
+ * 
+ * @author Byron Choy
+ *
+ */
 
 public class LoanGui implements Gui {
 
