@@ -104,6 +104,12 @@ public class ClientTest extends TestCase {
 		assertTrue("myPerson should have 100(initial money)+200 dollars as the second loan wasnt granted cause of age",client.getPerson().getMoney()==300);
 		assertTrue("His bankState should be nothing",client.state1==bankState.nothing);
 		assertTrue("He should be leaving",client.state2==inLineState.leaving);
+		loanTeller.msgRepay(100, 100);
+		//client.msgTransactionCompleted(100);
+		assertTrue("He should not have a loan",client.HasLoan()==false);
+		//assertTrue("myPerson should have 300-100 dollars",client.getPerson().getMoney()==200);
+		assertTrue("His bankState should be nothing",client.state1==bankState.nothing);
+		assertTrue("He should be leaving",client.state2==inLineState.leaving);
 
 		
 		
@@ -114,7 +120,7 @@ public class ClientTest extends TestCase {
 		
 		
 	}
-	public void testClientAsANormalClient(){
+	public void testClientAsAClient(){
 		try {
 			setUp();
 		} catch (Exception e) {

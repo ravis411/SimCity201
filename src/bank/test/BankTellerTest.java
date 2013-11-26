@@ -105,7 +105,7 @@ public class BankTellerTest extends TestCase {
         assertTrue("The client should have 0 dollars after the loan",client.getPerson().getMoney()==0);
 		
         teller.msgWithdraw(100);
-        assertTrue("state should be withdray",teller.state==requestState.withdrawal);
+        assertTrue("state should be withdraw",teller.state==requestState.withdrawal);
         assertTrue("Transaction amount should be 100",teller.transactionAmount==100);
         
         //teller.pickAndExecuteAction();
