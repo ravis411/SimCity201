@@ -130,15 +130,15 @@ public class RestaurantPanel extends JPanel implements ActionListener {
         markets.add(market2);
         markets.add(market3);
         
-        for(MarketRole market: markets) {
-        	cook.addMarket(market);
-    	}
+//        for(MarketRole market: markets) {
+//        	cook.addMarket(market);
+//    	}
         
         //gui.animationPanel.addGui(hostGui);
-        gui.animationPanel.addGui(cashierGui);
-        gui.animationPanel.addGui(cookGui);
-        gui.animationPanel.addGui(customerGui);
-        gui.animationPanel.addGui(waiterGui);
+//        gui.animationPanel.addGui(cashierGui);
+//        gui.animationPanel.addGui(cookGui);
+//        gui.animationPanel.addGui(customerGui);
+//        gui.animationPanel.addGui(waiterGui);
         
         cook.cookGui = cookGui;
         person1.startThread();

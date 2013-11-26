@@ -260,6 +260,7 @@ public class HomeRole extends Role implements Home {
 				print("Done eating.");
 				state = AgentState.DoingNothing;
 				event = AgentEvent.none;
+				stateChanged();
 			}
 		},
 		5000);

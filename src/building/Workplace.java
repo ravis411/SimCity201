@@ -2,12 +2,7 @@ package building;
 
 import gui.Building.BuildingPanel;
 
-public abstract class Workplace extends Building {
-
-	public Workplace(BuildingPanel panel) {
-		super(panel);
-		// TODO Auto-generated constructor stub
-	}
+public interface Workplace{
 
 	/**
 	 * Message sent to the workplace that it is time to open

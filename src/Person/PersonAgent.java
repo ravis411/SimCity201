@@ -13,15 +13,20 @@ import java.util.Queue;
 import java.util.concurrent.Semaphore;
 
 import residence.HomeRole;
+import restaurant.HostRole;
+import restaurant.NewWaiterRole;
+import restaurant.OldWaiterRole;
 import restaurant.RestaurantCustomerRole;
+import restaurant.interfaces.Waiter;
 import trace.AlertLog;
 import trace.AlertTag;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
 import Transportation.BusStopAgent;
 import agent.Agent;
-import bank.BankClientRole;
+import building.Building;
 import building.BuildingList;
+import building.Restaurant;
 
 /**
  * @author MSILKJR
@@ -110,9 +115,16 @@ public class PersonAgent extends Agent {
 			hr.activate();
 		}else{
 			addRole(r);
+			if(r instanceof OldWaiterRole || r instanceof NewWaiterRole){
+				Waiter w = (Waiter) r;
+				Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(roleLocation);
+				HostRole role = (HostRole) rest.getHostRole();
+				role.addWaiter(w);
+			}
 			//gui.setStartingStates(roleLocation);
 			gui.setStartingStates(roleLocation);
 			BuildingList.findBuildingWithName(roleLocation).addRole(r);
+			r.activate();
 		}
 	}
 
@@ -286,7 +298,7 @@ public class PersonAgent extends Agent {
 			}
 			
 			if(somethingIsActive)
-				return true;
+				return false;
 		}
 		
 		if(!itemsNeeded.isEmpty()){
@@ -400,7 +412,23 @@ public class PersonAgent extends Agent {
 		}
 		
 		//needs a way to find a bank quite yet
-		GoToLocation("Building 10", "BUS");
+		 GoToLocation("Restaurant 1", transport);
+		  
+		  RestaurantCustomerRole role = (RestaurantCustomerRole) findRole(Role.RESTAURANT_CUSTOMER_ROLE);
+		  if(role == null){
+			  role = (RestaurantCustomerRole) RoleFactory.roleFromString(Role.RESTAURANT_CUSTOMER_ROLE);
+			  addRole(role);
+		  }
+		  BuildingList.findBuildingWithName("Restaurant 1").addRole(role);
+		  Building bdg =  BuildingList.findBuildingWithName("Restaurant 1");
+		  if(bdg instanceof Restaurant){
+			  System.out.println("HERE");
+			  Restaurant rest = (Restaurant) bdg;
+			  rest.getHostRole().msgIWantFood(role);
+			  role.activate();
+		  }
+		  System.err.println("here");
+		  
 		/*if(findRole(Role.MARKET_CUSTOMER_ROLE) == null){
 			Role r = RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
 			r.activate();
@@ -408,7 +436,7 @@ public class PersonAgent extends Agent {
 		}else{
 			findRole(Role.MARKET_CUSTOMER_ROLE).activate();
 		}*/
-		GoHome();
+		//GoHome();
 	}
 
 	/**
@@ -601,9 +629,7 @@ public class PersonAgent extends Agent {
 		  role.activate();
 	  }
 	  */
-
-	  
-	  
+ 
 	  GoToLocation("Restaurant 1", transport);
 	  
 	  RestaurantCustomerRole role = (RestaurantCustomerRole) findRole(Role.RESTAURANT_CUSTOMER_ROLE);
@@ -612,8 +638,8 @@ public class PersonAgent extends Agent {
 		  addRole(role);
 	  }
 	  BuildingList.findBuildingWithName("Restaurant 1").addRole(role);
-	  
-	  moneyNeeded = 40.00;
+	  Restaurant building = (Restaurant) BuildingList.findBuildingWithName("Restaurant 1");
+	  building.getHostRole().msgIWantFood(role);
 	  role.activate();
 	  
 

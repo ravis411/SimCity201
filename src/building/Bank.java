@@ -1,11 +1,11 @@
 package building;
 
+import gui.Building.BuildingPanel;
 import bank.BankClientRole;
 import bank.BankTellerRole;
 import bank.LoanTellerRole;
-import gui.Building.BuildingPanel;
 
-public class Bank extends Workplace {
+public class Bank extends Building implements Workplace {
 
 	public Bank(BuildingPanel panel) {
 		super(panel);
@@ -38,6 +38,12 @@ public class Bank extends Workplace {
 				this.panel.getPanel().removeGuiForRole(loanTeller);
 			}
 		}
+	}
+
+	@Override
+	public boolean isOpen() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

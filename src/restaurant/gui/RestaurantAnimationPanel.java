@@ -133,7 +133,6 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
 			CookGui gui = new CookGui(cr);
 			cr.setGui(gui);
 			guis.add(gui);
-			BuildingPanel bp = (BuildingPanel) this.getParent();
 			//System.out.println("My person is: " + hr.myPerson.getName());
 		}
 		if(r instanceof CashierRole){
@@ -141,7 +140,6 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
 			CashierGui gui = new CashierGui(cr);
 			cr.setGui(gui);
 			guis.add(gui);
-			BuildingPanel bp = (BuildingPanel) this.getParent();
 			//System.out.println("My person is: " + hr.myPerson.getName());
 		}
 		if(r instanceof RestaurantCustomerRole){
@@ -149,7 +147,6 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
 			CustomerGui gui = new CustomerGui(rcr);
 			rcr.setGui(gui);
 			guis.add(gui);
-			BuildingPanel bp = (BuildingPanel) this.getParent();
 			//System.out.println("My person is: " + hr.myPerson.getName());
 		}
 		if(r instanceof NewWaiterRole){
@@ -157,7 +154,6 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
 			WaiterGui gui = new WaiterGui(nwr, waiterCount*50+120, 0);
 			nwr.setGui(gui);
 			guis.add(gui);
-			BuildingPanel bp = (BuildingPanel) this.getParent();
 			//System.out.println("My person is: " + hr.myPerson.getName());
 		}
 		if(r instanceof OldWaiterRole){
@@ -165,7 +161,6 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
 			WaiterGui gui = new WaiterGui(owr, waiterCount*50+120, 0);
 			owr.setGui(gui);
 			guis.add(gui);
-			BuildingPanel bp = (BuildingPanel) this.getParent();
 			//System.out.println("My person is: " + hr.myPerson.getName());
 		}
 	}

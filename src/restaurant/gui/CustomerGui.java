@@ -25,8 +25,11 @@ public class CustomerGui implements Gui{
 
 	public CustomerGui(RestaurantCustomerRole c){ //HostAgent m) {
 		agent = c;
-		xPos = -10;
-		yPos = -20;
+//		xPos = -10;
+//		yPos = -20;
+		
+		xPos = 20;
+		yPos = 20;
 		xDestination = 40;
 		yDestination = 20;
 		//maitreD = m;
