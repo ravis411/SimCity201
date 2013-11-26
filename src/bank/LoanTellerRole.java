@@ -1,8 +1,10 @@
 package bank;
 import bank.BankClientRole;
 import bank.gui.LoanGui;
+import bank.interfaces.LoanTeller;
 import Person.Role.*;
 import interfaces.Employee;
+
 
 
 //import Person.*;
@@ -21,7 +23,7 @@ import util.Interval;
  * @author Byron Choy
  *
  */
-public class LoanTellerRole extends Role implements Employee{
+public class LoanTellerRole extends Role implements Employee, LoanTeller{
 	private BankClientRole myClient;
 	private int myClientAge;
 	public enum requestState {open, loan, pending, none, notBeingHelped};

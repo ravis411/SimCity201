@@ -3,9 +3,10 @@ package bank;
 import Person.Role.Role;
 import bank.BankTellerRole;
 import bank.gui.ClientGui;
+import bank.interfaces.BankClient;
 import building.BuildingList;
 
-import java.util.*;
+//import java.util.*;
 import java.util.concurrent.*;
 
 import trace.AlertLog;
@@ -23,7 +24,7 @@ import trace.AlertTag;
  *
  */
 
-public class BankClientRole extends Role {
+public class BankClientRole extends Role implements BankClient{
 	//	Data
 	public enum bankState {nothing, deposit, withdraw, loan};
 	public static final String loan = "loan";
@@ -48,7 +49,7 @@ public class BankClientRole extends Role {
 	private ClientGui clientGui = null;
 
 	//hack for accounts - to ensure that there are some existing accounts at the beginning of SimCity
-	private int existsBankAccount = new Random().nextInt(10);
+//	private int existsBankAccount = new Random().nextInt(10);
 
 	/**
 	 * hack to establish connection to BankTellerRole
@@ -69,7 +70,7 @@ public class BankClientRole extends Role {
 	public void setAnnouncer(NumberAnnouncer a){
 		this.announcer = a;
 	} 
-	
+
 	public void setLoanAnnouncer(LoanNumberAnnouncer a){
 		this.loanAnnouncer = a;
 	}
@@ -125,7 +126,7 @@ public class BankClientRole extends Role {
 		if (loanTicketNum == loanNumber){
 			state2 = inLineState.goingToLine;
 			lineNum = i;
-//			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "That's my ticket, I need to go to line " + lineNum);
+			//			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "That's my ticket, I need to go to line " + lineNum);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "That's my ticket, I need to go to line " + lineNum);
 			setLoanTeller(loanTeller2);
 			stateChanged();
@@ -166,7 +167,7 @@ public class BankClientRole extends Role {
 		state2 = inLineState.leaving;
 		stateChanged();
 	}
-	
+
 	/**
 	 * sent by the bank teller when a loan is approved. 
 	 * @param n = loan amount
@@ -240,7 +241,7 @@ public class BankClientRole extends Role {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Sends client to the specified line. Sends the announcer a message he is on the way to stop the announcer from sending the same number out.
 	 * Acquires the atLine semaphore.
@@ -255,12 +256,12 @@ public class BankClientRole extends Role {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-//		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Arrived at line, the teller's myPerson.getName() is " + teller);
+		//		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Arrived at line, the teller's myPerson.getName() is " + teller);
 		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Arrived at line, the teller's name is " + teller);		
 		teller.msgInLine(this);
 		state2 = inLineState.atDesk;
 	}
-	
+
 	/**
 	 * Same as the goToLine action, but for the loan line specifically. 
 	 * 
@@ -277,13 +278,13 @@ public class BankClientRole extends Role {
 		loanTeller.msgInLine(this);
 		state2 = inLineState.atDesk;
 	}
-	
+
 	/**
 	 * Sends the teller a message to open a new account.
 	 * 
 	 */
 	private void openAccount(){
-//		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to open an account.");
+		//		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to open an account.");
 		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to open an account.");		
 		teller.msgOpenAccount();
 		state2 = inLineState.transactionProcessing;
@@ -292,7 +293,7 @@ public class BankClientRole extends Role {
 	 * Sends the loan teller a message to open a new account.
 	 */
 	private void loanOpenAccount(){
-//		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to open an account.");
+		//		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to open an account.");
 		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to open an account.");		
 		loanTeller.msgOpenAccount();
 		state2 = inLineState.transactionProcessing;
@@ -350,11 +351,11 @@ public class BankClientRole extends Role {
 	public String toString() {
 		return "Bank Client " + getName();
 	}
-	
+
 	public boolean HasLoan(){
 		return hasLoan;
 	}
-	
+
 	public void setGui(ClientGui gui) {
 		clientGui = gui;
 	}
@@ -367,19 +368,19 @@ public class BankClientRole extends Role {
 		if (trans.equalsIgnoreCase("deposit")){
 			this.state1 = bankState.deposit;
 			ticketNum = TakeANumberDispenser.INSTANCE.pullTicket();
-//			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
+			//			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
 		}
 		if (trans.equalsIgnoreCase("withdraw")){
 			this.state1 = bankState.withdraw;
 			ticketNum = TakeANumberDispenser.INSTANCE.pullTicket();
-//			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
+			//			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
 		}
 		if (trans.equalsIgnoreCase("loan")){
 			this.state1 = bankState.loan;
 			loanTicketNum = LoanTakeANumberDispenser.INSTANCE.pullTicket();
-//			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + loanTicketNum);
+			//			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + loanTicketNum);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + loanTicketNum);
 		}
 
@@ -390,7 +391,7 @@ public class BankClientRole extends Role {
 			myAccount = new Account(this,newMoney);
 			Database.INSTANCE.addToDatabase(myAccount);
 		}
-		*/
+		 */
 
 	}
 
@@ -403,7 +404,6 @@ public class BankClientRole extends Role {
 	}
 	@Override
 	public String getNameOfRole() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

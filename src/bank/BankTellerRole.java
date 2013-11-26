@@ -1,6 +1,7 @@
 package bank;
 import bank.BankClientRole;
 import bank.gui.TellerGui;
+import bank.interfaces.BankTeller;
 import interfaces.Employee;
 
 import java.util.*;
@@ -17,7 +18,7 @@ import Person.Role.Role;
  *
  */
 
-public class BankTellerRole extends Role implements Employee{
+public class BankTellerRole extends Role implements Employee , BankTeller{
 	private BankClientRole myClient;
 	private int LineNum = new Random().nextInt(3)+1; //from 1 to n, with 5 being the loan line, should be assigned in creation
 	public enum requestState {pending, withdrawal, deposit, open, none, notBeingHelped};
