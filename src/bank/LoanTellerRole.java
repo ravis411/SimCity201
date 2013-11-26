@@ -1,9 +1,11 @@
 package bank;
+import bank.BankTellerRole.location;
 import bank.gui.LoanGui;
 import bank.interfaces.BankClient;
 import bank.interfaces.LoanTeller;
 import Person.Role.*;
 import interfaces.Employee;
+
 
 
 
@@ -30,7 +32,7 @@ public class LoanTellerRole extends Role implements Employee, LoanTeller{
 
 	public enum requestState {open, loan, pending, none, notBeingHelped, repay};
 	public requestState state = requestState.none;
-	public enum location {entrance, station, breakRoom};
+	public enum location {entrance, station, breakRoom,closing};
 	public location locationState = location.entrance;
 	public double transactionAmount;
 
@@ -106,10 +108,18 @@ public class LoanTellerRole extends Role implements Employee, LoanTeller{
 		state = requestState.repay;
 		stateChanged();
 	}
-
+	public void bankClosing(){
+		transactionAmount = 0;
+		locationState = location.closing;
+		stateChanged();
+		}	
 	//	Scheduler
 	public boolean pickAndExecuteAction() {
 		Accounts = Database.INSTANCE.sendDatabase();
+		if (locationState == location.closing){
+			Leaving();
+			return true;
+		}
 		if (locationState == location.station){
 			if (state == requestState.notBeingHelped){
 				receiveClient(myClient);
@@ -220,11 +230,20 @@ public class LoanTellerRole extends Role implements Employee, LoanTeller{
 			b.msgLoanRepaid(-transactionAmount);
 		}
 	}
+	private void Leaving(){
+		announcer.msgGoodbye();
+		doLeave();
+	}
+
 
 	//gui
 	private void doGoToStation(){
 		loanGui.DoGoToStation();
 	}
+	private void doLeave(){
+		loanGui.DoLeave();
+	}
+	
 
 
 	//Accesors, etc.

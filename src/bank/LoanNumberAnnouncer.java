@@ -3,8 +3,10 @@ package bank;
 import agent.Agent;
 
 
+import bank.NumberAnnouncer.numberState;
 import bank.interfaces.AnnouncerB;
 import bank.interfaces.BankClient;
+import bank.interfaces.BankTeller;
 import bank.interfaces.LoanTeller;
 
 import java.util.*;
@@ -54,10 +56,17 @@ public class LoanNumberAnnouncer extends Agent implements AnnouncerB{
 		state = numberState.announceL;
 		stateChanged();
 	}
+	public void msgGoodbye(){
+		loanTeller = null;
+		stateChanged();
+	}
 
 	//scheduler
 	protected boolean pickAndExecuteAnAction() {
-		if (state == numberState.announceL){
+		if (loanTeller == null){
+			Reset();
+		}
+		if (loanTeller != null && state == numberState.announceL){
 			announceNumberLoan();
 			return true;
 		}
@@ -77,6 +86,10 @@ public class LoanNumberAnnouncer extends Agent implements AnnouncerB{
 			}
 		}
 		state = numberState.pending;
+	}
+	private void Reset(){
+		state = numberState.pending;
+		loanNumber = 0;
 	}
 
 	public String getName() {
