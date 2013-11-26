@@ -1,8 +1,8 @@
 package building;
 
-import gui.Building.BuildingGui;
 import gui.Building.BuildingPanel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import Person.Role.Role;
@@ -28,6 +28,16 @@ public class Building {
 	public Building(BuildingPanel panel){
 		this.panel = panel;
 		this.name = panel.getName();
+		
+		inhabitants = new ArrayList<Role>();
+	}
+	
+	/**
+	 * Getter for name
+	 * @return name of building
+	 */
+	public String getName(){
+		return this.name;
 	}
 	
 	/**
@@ -36,6 +46,7 @@ public class Building {
 	 */
 	public void addRole(Role r){
 		inhabitants.add(r);
+		this.panel.getPanel().addGuiForRole(r);
 	}
 	
 	/**
@@ -44,5 +55,6 @@ public class Building {
 	 */
 	public void removeRole(Role r){
 		inhabitants.remove(r);
+		this.panel.getPanel().removeGuiForRole(r);
 	}
 }

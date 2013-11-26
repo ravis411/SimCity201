@@ -10,12 +10,14 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Queue;
 
-import bank.bankClientRole;
+import residence.HomeRole;
 import trace.AlertLog;
 import trace.AlertTag;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
 import agent.Agent;
+import building.Building;
+import building.BuildingList;
 
 /**
  * @author MSILKJR
@@ -85,7 +87,7 @@ public class PersonAgent extends Agent {
 		backpack = new ArrayList<Item>();
 		itemsNeeded = new ArrayDeque<Item>();
 		
-//		roles.add(new HomeRole(this));
+		roles.add(new HomeRole(this));
 	}
 	
 //-------------------------------MESSAGES----------------------------------------//
@@ -442,22 +444,26 @@ public class PersonAgent extends Agent {
 	  	default:
 	  		transport = "ERROR";
 	  }
+//		  for(Building b : BuildingList.getInstance()){
+//			  System.out.println("Building Name: "+b.getName());
+//		  }
+		  GoToLocation(home.getName(), transport);
+		  HomeRole role = (HomeRole) findRole(Role.HOME_ROLE);
+		  BuildingList.findBuildingWithName("House 1").addRole(role);
+		  role.activate();
 		  
-//		  GoToLocation(home.getName(), transport);
-//		  HomeRole role = (HomeRole) findRole(Role.HOME_ROLE);
-//		  role.activate();
-//		  role.msgMakeFood();
+		  role.msgMakeFood();
 	  
-	  GoToLocation("Bank", transport);
-	  bankClientRole role = (bankClientRole) findRole(Role.BANK_CLIENT_ROLE);
-	  if(role == null){
-		  role = (bankClientRole) RoleFactory.roleFromString(Role.BANK_CLIENT_ROLE);
-		  addRole(role);
-	  }
+//	  GoToLocation("Bank", transport);
+//	  bankClientRole role = (bankClientRole) findRole(Role.BANK_CLIENT_ROLE);
+//	  if(role == null){
+//		  role = (bankClientRole) RoleFactory.roleFromString(Role.BANK_CLIENT_ROLE);
+//		  addRole(role);
+//	  }
 	  
-	  moneyNeeded = 40.00;
-	  role.setIntent(bankClientRole.withdraw);
-	  role.activate();
+//	  moneyNeeded = 40.00;
+//	  role.setIntent(bankClientRole.withdraw);
+//	  role.activate();
 	  
 	}
 		  

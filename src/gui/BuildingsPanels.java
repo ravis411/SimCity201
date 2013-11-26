@@ -9,6 +9,9 @@ import java.awt.Component;
 
 import javax.swing.JPanel;
 
+import building.Building;
+import building.BuildingList;
+
 
 /** This class holds all the panels for various buildings and displays them if called.
  * 
@@ -37,6 +40,7 @@ public class BuildingsPanels extends JPanel{
 	 * @param buildingPanel
 	 */
 	public void addBuildingPanel(BuildingPanel buildingPanel) {
+		BuildingList.getInstance().add(new Building(buildingPanel));
 		this.add(buildingPanel, buildingPanel.getName());
 	}
 	

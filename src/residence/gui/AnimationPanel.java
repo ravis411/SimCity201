@@ -1,5 +1,7 @@
 package residence.gui;
 
+import gui.Building.BuildingPanel;
+import gui.Building.ResidenceBuildingPanel;
 import interfaces.GuiPanel;
 
 import java.awt.Color;
@@ -17,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import residence.HomeRole;
 import Person.Role.Role;
 
 public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
@@ -62,6 +65,7 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
     }
 
 	public void actionPerformed(ActionEvent e) {
+		ResidenceBuildingPanel bp = (ResidenceBuildingPanel) this.getParent();
 		 for(Gui gui : guis) {
 	            if (gui.isPresent()) {
 	                gui.updatePosition();
@@ -77,7 +81,7 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
         //Clear the screen by painting a rectangle the size of the frame
         g2.setColor(getBackground());
         g2.fillRect(XCOOR, YCOOR, WINDOWX, WINDOWY);
-        
+//        
         //g.drawImage(img, 0, 0, 800, 400, observer);
 
         //Here is the kitchen
@@ -151,7 +155,15 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
 	@Override
 	public void addGuiForRole(Role r) {
 		// TODO Auto-generated method stub
-		
+		if(r instanceof HomeRole){
+			HomeRole hr = (HomeRole) r;
+			HomeRoleGui gui = new HomeRoleGui(hr);
+			hr.setGui(gui);
+			guis.add(gui);
+			BuildingPanel bp = (BuildingPanel) this.getParent();
+			System.out.println("Added to "+bp.getName());
+			//System.out.println("My person is: " + hr.myPerson.getName());
+		}
 	}
 
 	@Override

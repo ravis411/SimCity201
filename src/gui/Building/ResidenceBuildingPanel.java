@@ -44,7 +44,7 @@ public class ResidenceBuildingPanel extends BuildingPanel{
 		return myName;
 	}
 	
-	public GuiPanel getPanel() {
+	public AnimationPanel getPanel() {
 		return residencePanel;
 	}
 

@@ -47,13 +47,17 @@ public class HomeRole extends Role implements Home {
 	public HomeRole(PersonAgent myPerson) {
 		this.myPerson = myPerson;
 		
-		gui = new HomeRoleGui(this);
-		//myPerson.home.getPanel().addGui(gui);
+//		gui = new HomeRoleGui(this);
+//		myPerson.home.getPanel().addGui(gui);
 		
 		inventory.add(new Item("Cooking Ingredient",2));
 		inventory.add(new Item("Cleaning supply", 2));
 		
 		features.add(new HomeFeature("Sink"));
+	}
+	
+	public void setGui(HomeRoleGui gui){
+		this.gui = gui;
 	}
 	
 	public String getNameOfRole() {
