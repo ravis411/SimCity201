@@ -104,7 +104,7 @@ public class ApartmentBuildingPanel extends BuildingPanel{
 
 		switch (type) {
 		case "Residence":
-			ResidenceBuilding rb = new ResidenceBuilding(building);
+			ResidenceBuilding rb = new ResidenceBuilding(building, true);
 			if(rb != null){
 				BuildingPanel bp = new ResidenceBuildingPanel(rb, name, factory.buildingsPanels);
 				rb.setBuildingPanel(bp);
