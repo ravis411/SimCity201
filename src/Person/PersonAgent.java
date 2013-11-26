@@ -250,7 +250,7 @@ public class PersonAgent extends Agent {
 		if(state != PersonState.Idle && state != PersonState.Working){
 
 			GoHome();
-		}*/
+		}
 		
 		return false;
 	}

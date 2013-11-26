@@ -5,7 +5,6 @@ package market.interfaces;
 public interface MarketCustomer {
 	public abstract void msgMarketCustomerAtCounter();
 
-	public abstract String getName();
 		
 	public abstract void msgMarketCustomerReadyToTakeOrder();
 

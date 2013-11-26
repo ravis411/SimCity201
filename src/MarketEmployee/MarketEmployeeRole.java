@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
-import residence.HomeRole;
 import market.data.MarketData;
 import market.gui.MarketEmployeeGui;
 import market.interfaces.MarketCustomer;
@@ -44,10 +43,14 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	 *
 	 */
 	public MarketEmployeeRole(){
-		role="MarketEmployeeRole";
 		activate();
 	}
 
+
+
+	public String getNameOfRole() {
+		return MARKET_EMPLOYEE_ROLE;
+	}
 
 
 
@@ -81,7 +84,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	public void msgMarketEmployeeOrder(String foodType, int FoodTypeAmount, MarketCustomerRole customer, String name){
 		marketCustomerOrder= new Order(foodType, FoodTypeAmount, customer,name);
-		print("Has reieved Order from " + customer.getName()+ ": "+ name +" for "+ FoodTypeAmount+ " " + foodType );
+		print("Has reieved Order from " + customer.getNameOfRole()+ ": "+ name +" for "+ FoodTypeAmount+ " " + foodType );
 		event=MarketEmployeeEvent.gotCustomerOrder;
 		stateChanged();
 	}
@@ -106,7 +109,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	public void msgMarketEmployeeConfirmPartialOrder(boolean tf, MarketCustomerRole customer){
 	marketCustomerOrder.setPartialOrderAcceptable(tf);
 	event=MarketEmployeeEvent.gotReplyFromCustomerIfPartialOrderOkay;
-	print(customer.getName() + " says Partial Order Okay: "+ tf);
+	print(customer.getNameOfRole() + " says Partial Order Okay: "+ tf);
 	stateChanged();
 	}
 	
@@ -179,22 +182,6 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		//nothing to do. So return false to main loop of abstract agent
 		//and wait.
 	}
-
-
-
-
-	
-
-
-
-
-
-
-	@Override
-	public String getName() {
-		return name;
-	}
-
 
 
 	// Actions
@@ -531,6 +518,13 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+
+
+
+
+
+
 
 
 

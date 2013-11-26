@@ -50,7 +50,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	 */
 	public MarketCustomerRole(){
 		activate();
-		role="MarketCustomerRole";
+		
 		menu= new HashMap<String, Integer>();
 		menu.put("Steak",  20);
 		menu.put("Chicken", 10);
@@ -58,12 +58,10 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		willTakePartialOrder = randomx.nextBoolean();
 		}
 	
-	public String getName(){
-		return name;
+	public String getNameOfRole() {
+		return MARKET_CUSTOMER_ROLE;
 	}
 
-
-	
 	// Messages
 	public void msgMarketCustomerAtCounter(){
 		event=MarketCustomerEvent.firstInLine;
@@ -201,7 +199,11 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	@Override
 	public boolean canGoGetFood() {
 		return false;
-	} 
+	}
+
+
+
+
 
 }
 

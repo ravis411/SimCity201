@@ -38,12 +38,12 @@ public class MarketManagerRole extends Role implements MarketManager{
 	 */
 	public MarketManagerRole(){
 		activate();
-		role="Market Manager";
+		
 		}
 	
-	@Override
-	public String getName() {
-		return role;
+
+	public String getNameOfRole() {
+		return MARKET_MANAGER_ROLE;
 	}
 
 
@@ -100,7 +100,7 @@ public class MarketManagerRole extends Role implements MarketManager{
 				myOrders.get(i).setState(Order.OrderState.processed);
 				myOrders.get(i).setAmountReadyToBeShipped(FoodTypeAmount);
 				print("Going to go give delivery truck an order of "+ myOrders.get(i).getAmountReadyToBeShipped() 
-						+ " "+ myOrders.get(i).getFoodType()+" for "+myOrders.get(i).getRole().getName());
+						+ " "+ myOrders.get(i).getFoodType()+" for "+myOrders.get(i).getRole().getNameOfRole());
 				event=MarketEmployeeEvent.needToBringDeliveryTruckOrder;
 				break;
 			}

@@ -9,7 +9,6 @@ import java.util.Vector;
 import javax.swing.JFrame;
 
 import market.data.MarketData;
-import residence.HomeRole;
 import MarketEmployee.MarketCustomerRole;
 import MarketEmployee.MarketEmployeeRole;
 import MarketEmployee.MarketManagerRole;
@@ -29,7 +28,7 @@ public class MarketGui extends JFrame implements ActionListener {
     private Vector<MarketEmployeeRole> marketEmployeeRoles = new Vector<MarketEmployeeRole>();
     private Vector<PersonAgent> marketCustomerPersons = new Vector<PersonAgent>();
     private Vector<MarketCustomerRole> marketCustomerRoles = new Vector<MarketCustomerRole>();
-    private PersonAgent marketManagerPerson= new PersonAgent("Harry");
+ //   private PersonAgent marketManagerPerson= new PersonAgent("Harry");
     private MarketManagerRole marketManagereRole= new MarketManagerRole();
     private MarketData marketData = new MarketData();
     private  MarketCustomerGui marketCustomerGui;

@@ -1,14 +1,19 @@
 package gui;
 
+import gui.Building.ApartmentBuilding;
+import gui.Building.ApartmentBuildingPanel;
+import gui.Building.BankBuilding;
+import gui.Building.BankBuildingPanel;
 import gui.Building.BuildingGui;
 import gui.Building.BuildingPanel;
 import gui.Building.BusStopBuilding;
 import gui.Building.BusStopBuildingPanel;
-<<<<<<< HEAD
+import gui.Building.DefaultBuildingPanel;
+import gui.Building.MarketBuilding;
+import gui.Building.MarketBuildingPanel;
+import gui.Building.ResidenceBuilding;
 import gui.Building.ResidenceBuildingPanel;
-import gui.MockAgents.MockBusAgent;
-=======
->>>>>>> origin/develop
+import gui.MockAgents.PseudoBusAgent;
 import gui.agentGuis.PersonGui;
 import gui.agentGuis.VehicleGui;
 
@@ -23,27 +28,6 @@ import agent.Agent;
 import astar.AStarTraversal;
 import astar.PersonAStarTraversal;
 import astar.VehicleAStarTraversal;
-<<<<<<< HEAD
-import gui.Building.Building;
-=======
-import gui.Building.ApartmentBuilding;
-import gui.Building.ApartmentBuildingPanel;
-import gui.Building.BankBuilding;
-import gui.Building.BankBuildingPanel;
-import gui.Building.BuildingGui;
->>>>>>> origin/develop
-import gui.Building.BuildingPanel;
-import gui.Building.BusStopBuilding;
-import gui.Building.BusStopBuildingPanel;
-import gui.Building.DefaultBuildingPanel;
-import gui.Building.MarketBuilding;
-import gui.Building.MarketBuildingPanel;
-import gui.Building.ResidenceBuilding;
-import gui.Building.ResidenceBuildingPanel;
-import gui.MockAgents.PseudoBusAgent;
-import gui.MockAgents.PseudoPerson;
-import gui.agentGuis.PersonGui;
-import gui.agentGuis.VehicleGui;
 
 
 //This class will instantiate and setup everything.

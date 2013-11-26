@@ -37,9 +37,9 @@ public class MarketCustomerTest extends TestCase
 		gui.animationPanel.addGui(customer.gui);
 		gui.setVisible(true);
         gui.setResizable(false);
-		PersonAgent customerPerson =new PersonAgent("Bob");
-		customer.setPerson(customerPerson);
-		customerPerson.startThread();
+		//PersonAgent customerPerson =new PersonAgent("Bob");
+	//	customer.setPerson(customerPerson);
+		//customerPerson.startThread();
 		
 	}	
 	/**
