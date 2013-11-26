@@ -50,6 +50,7 @@ public class BusAgent extends Agent implements Bus
 		stopSize = 0;
 
 		//stopSize = 3;
+		state = AgentState.readyToLeave;
 
 		this.name = name;
 	}
@@ -82,7 +83,8 @@ public class BusAgent extends Agent implements Bus
 			return true;
 		}
 		
-		if(state == AgentState.readyToLeave){
+		if(state == AgentState.readyToLeave)
+		{
 			GoToNextStop();
 			return true;
 		}
@@ -106,9 +108,10 @@ public class BusAgent extends Agent implements Bus
 		//print("Location is now: " + location);
 		//print("Count is now: " + count);
 		agentGui.DoGoTo(location);
+		state = AgentState.atStop;
 		//Need some way of notifying bus that we have arrived at next stop
 		currentStop.msgArrivedAtStop(this);
-		state = AgentState.atStop;
+		
 	}
 	
 	private void notifyPassenger(myBusPassenger pas) {
