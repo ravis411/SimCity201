@@ -15,10 +15,17 @@ public class ResidenceBuilding extends BuildingGui {
 	
 	boolean apartment;
 	
+	int xs[];
+	int ys[];
+	
 	public ResidenceBuilding( BuildingGui b, boolean apartment ) {
 		super( b.x, b.y, b.width, b.height );
 		this.apartment = apartment;
-			
+		
+		int xss[] = {(int)super.x, (int)(super.x + super.width/2), (int)(super.x + super.width)};
+		int yss[] = {(int)(super.y + super.height/2), (int)(super.y), (int)(super.y + super.height/2)};
+		xs = xss;
+		ys = yss;
 	}
 	
 	@Override
@@ -31,8 +38,6 @@ public class ResidenceBuilding extends BuildingGui {
 		else if (apartment == false)
 		{
 			g.setColor(new Color(100, 180, 200));
-			int xs[] = {(int)super.x, (int)(super.x + super.width/2), (int)(super.x + super.width)};
-			int ys[] = {(int)(super.y + super.height/2), (int)(super.y), (int)(super.y + super.height/2)};
 			g.fillPolygon(xs, ys, 3);
 			g.setColor(Color.blue);
 			g.fillRect((int)(super.x), (int)(super.y + super.height/2), (int)super.width, (int)super.height/2);
