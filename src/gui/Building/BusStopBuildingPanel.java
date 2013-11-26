@@ -9,6 +9,8 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import Person.Role.Role;
+
 
 /**
  * Default class for various gui building panels.
@@ -36,6 +38,13 @@ public class BusStopBuildingPanel extends BuildingPanel{
 
 	public void displayBuildingPanel() {
 		myCity.displayBuildingPanel( this );
+		
+	}
+
+
+	@Override
+	public void addPersonWithRole(Role r) {
+		// TODO Auto-generated method stub
 		
 	}
 

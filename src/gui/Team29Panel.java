@@ -11,6 +11,8 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import Person.Role.Role;
+
 public class Team29Panel extends BuildingPanel{
 	JLabel title = new JLabel("SimCity V0.5     Team 29");
 	static Building b = new Building(0, 0, 0, 0);
@@ -42,6 +44,13 @@ public class Team29Panel extends BuildingPanel{
 	
 	public void displayBuildingPanel() {
 		myCity.displayBuildingPanel( this );
+		
+	}
+
+
+	@Override
+	public void addPersonWithRole(Role r) {
+		// TODO Auto-generated method stub
 		
 	}
 }
