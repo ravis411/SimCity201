@@ -1,6 +1,7 @@
 package gui.interfaces;
 
-import Transportation.BusAgent;
+import Person.PersonAgent;
+
 
 public interface BusStop {
 	
@@ -14,6 +15,8 @@ public interface BusStop {
 	 * Lets the BusStop know that a Bus has arrived
 	 */
 	public abstract void msgArrivedAtStop(Bus bus);
+	
+	void msgAtBusStop(PersonAgent p, String destStop);
 	
 	/**
 	 * Lets the BusStop know that a passenger has boarded the bus 

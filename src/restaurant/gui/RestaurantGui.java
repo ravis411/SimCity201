@@ -6,9 +6,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import restaurant.RestaurantCustomerRole;
-import restaurant.WaiterAgent;
-import restaurant.interfaces.Waiter;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -19,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import residence.gui.AnimationPanel;
 import restaurant.RestaurantCustomerRole;
 import restaurant.WaiterAgent;
 import restaurant.interfaces.Waiter;

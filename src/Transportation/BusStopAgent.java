@@ -18,7 +18,7 @@ public class BusStopAgent implements BusStop {
 	
 	
 	//A map of all the busStop agents.
-	private static Map<String, BusStop> stops = new HashMap<String, BusStop>();
+	public static Map<String, BusStop> stops = new HashMap<String, BusStop>();
 	
 	public static void addStop(String stop, BusStop agent) {
 		stops.put(stop, agent);

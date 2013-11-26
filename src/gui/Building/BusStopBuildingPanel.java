@@ -42,7 +42,7 @@ public class BusStopBuildingPanel extends BuildingPanel{
 		add(animationPanel, BorderLayout.CENTER);
 		
 		busStopAgent = new BusStopAgent(name);
-		busStopAgent.startThread();
+		//busStopAgent.startThread();
 		//PassengerRole.addStop(myName, busStopAgent);
 		BusStopAgent.addStop(name, busStopAgent);
 	}
