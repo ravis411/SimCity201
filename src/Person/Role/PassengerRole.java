@@ -11,7 +11,7 @@ public class PassengerRole extends Role implements Passenger{
 	//Data
 	private String name;
 	private String destination; //Remember to set as null upon arrival
-	private String currentLocation;
+	private String nextLocation;
 	
 	public enum AgentState {waitingForBus, busArrived, riding, disembarking, notInTransit};
 	private AgentState state = AgentState.notInTransit;
@@ -31,8 +31,8 @@ public class PassengerRole extends Role implements Passenger{
 		stateChanged();
 	}
 	
-	public void msgArrivedAtDestination(String location) {
-		currentLocation = location;
+	public void msgNextDestination(String location) {
+		nextLocation = location;
 		stateChanged();
 	}
 	//Scheduler
@@ -43,7 +43,7 @@ public class PassengerRole extends Role implements Passenger{
 			return true;
 		}
 		if (state == AgentState.riding) {
-			if (currentLocation.equals(destination)) {
+			if (nextLocation.equals(destination)) {
 				getOffBus();
 				return true;
 			}
