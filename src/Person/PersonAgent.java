@@ -46,8 +46,8 @@ public class PersonAgent extends Agent {
 	private double loanAmount;
 	
 	public List<Role> roles;
-	private List<PersonAgent> friends;
-	private Calendar realTime;
+	public List<PersonAgent> friends;
+	public Calendar realTime;
 	
 	private Queue<Item> itemsNeeded;
 	

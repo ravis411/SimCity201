@@ -19,14 +19,18 @@ public class BusStopAgent extends Agent implements BusStop {
 		PassengerState ps;
 	}
 	
+	public BusStopAgent() {
+		state = AgentState.Idle;
+	}
+	
 	private enum PassengerState {waiting, boarded};
 	
 	public enum AgentState {Idle, BusInStop};
 	
-	private AgentState state = AgentState.Idle;
+	public AgentState state;
 	
 	private List<myPassenger> waitingPassengers = Collections.synchronizedList(new ArrayList<myPassenger>());
-	private BusAgent currentBus;
+	public BusAgent currentBus;
 	
 	
 	//Messages
