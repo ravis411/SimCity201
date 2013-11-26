@@ -46,14 +46,18 @@ public class BusAgent extends Agent implements Bus {
 	
 	public BusAgent(String name) {
 		super();
-		stops.put(1,"Stop_1");
-		stops.put(2,"Stop_2");
-		stops.put(3,"Stop_3");
+		//stops.put(1,"Stop_1");
+		//stops.put(2,"Stop_2");
+		//stops.put(3,"Stop_3");
 		location = "Stop_1";
 		count = 1;
 		this.name = name;
 	}
 
+	public void addBusStop(int stopNumber, String stop) {
+		stops.put(stopNumber, stop);
+	}
+	
 	//Messages
 	public void msgGettingOnBus(Passenger p) {
 		state = AgentState.loading;
