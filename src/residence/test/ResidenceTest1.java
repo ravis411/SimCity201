@@ -62,6 +62,7 @@ public class ResidenceTest1 extends TestCase {
 		assertTrue("Now the state should be Cooking",homeRole.enterHome==true);
 		homeRole.enterHome=false;
 		homeRole.msgRentDue(100);
+		
 		assertTrue("Amount of rentOwed should be 100",homeRole.getRentOwed()==100);
 		homeRole.pickAndExecuteAction();
 		assertTrue("Amount of rentOwed now should be 0",homeRole.getRentOwed()==0);
