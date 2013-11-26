@@ -1,16 +1,16 @@
 package restaurant.gui;
 
 
-import restaurant.CustomerAgent;
-import restaurant.HostAgent;
-import restaurant.WaiterAgent;
-import restaurant.interfaces.Customer;
+import java.awt.Color;
+import java.awt.Graphics2D;
 
-import java.awt.*;
+import restaurant.CustomerAgent;
+import restaurant.interfaces.Customer;
+import restaurant.interfaces.Waiter;
 
 public class WaiterGui implements Gui {
 
-    private WaiterAgent agent = null;
+    private Waiter agent = null;
     
     RestaurantGui gui;
 
@@ -22,7 +22,7 @@ public class WaiterGui implements Gui {
     private int xPos = 200, yPos = 0;//default waiter position
     private int xDestination = 200, yDestination = 0;//default start position
 
-    public WaiterGui(WaiterAgent agent, RestaurantGui gui, int xHome, int yHome) {
+    public WaiterGui(Waiter agent, RestaurantGui gui, int xHome, int yHome) {
         this.agent = agent;
         this.gui = gui;
         this.xHome = xHome;

@@ -1,6 +1,7 @@
 package restaurant.test.mock;
 
 
+import restaurant.Order;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
@@ -31,4 +32,52 @@ public class MockWaiter extends Mock implements Waiter {
         public void msgCheckReady(Customer customer, double amount){
         	log.add(new LoggedEvent("Received check from waiter for $" + amount + "."));
         }
+
+		@Override
+		public void msgBringFoodToTable(Order o) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void msgOutOfFood(int choice, Customer customer) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void msgBreakReply(boolean b) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void msgAtFrontDesk() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void msgAtWaitingArea() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void msgAtPlatingArea() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void msgAtCookingArea() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void msgAtTable() {
+			// TODO Auto-generated method stub
+			
+		}
 }

@@ -217,7 +217,7 @@ public class RestaurantGui extends JFrame implements ActionListener {
     }
     
     
-    public void setWaiterEnabled(WaiterAgent w) {
+    public void setWaiterEnabled(Waiter w) {
     	restPanel.enableCheckBox(w);
     }
     

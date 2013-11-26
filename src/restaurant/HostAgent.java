@@ -24,7 +24,7 @@ public class HostAgent extends Agent {
 	public List<WaiterAgent> waiters
 	= new ArrayList<WaiterAgent>();*/
 	private Vector<CustomerAgent> waitingCustomers = new Vector<CustomerAgent>();
-	private Vector<WaiterAgent> waiters = new Vector<WaiterAgent>();
+	private Vector<Waiter> waiters = new Vector<Waiter>();
 	public Collection<Table> tables;
 	int waitingCust = 0;
 	//note that tables is typed with Collection semantics.
@@ -194,7 +194,7 @@ public class HostAgent extends Agent {
 		return hostGui;
 	}*/
 	
-	public void addWaiter(WaiterAgent w) {
+	public void addWaiter(Waiter w) {
 		waiters.add(w);
 	}
 

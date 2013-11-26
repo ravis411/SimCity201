@@ -1,18 +1,26 @@
 package restaurant.gui;
 
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Vector;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import restaurant.CashierAgent;
+import restaurant.CookAgent;
 import restaurant.CustomerAgent;
 import restaurant.HostAgent;
-import restaurant.WaiterAgent;
-import restaurant.CookAgent;
-import restaurant.CashierAgent;
 import restaurant.MarketAgent;
-import restaurant.interfaces.Cashier;
-
-import javax.swing.*;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.util.Vector;
+import restaurant.OldWaiterAgent;
+import restaurant.WaiterAgent;
+import restaurant.interfaces.Waiter;
 
 /**
  * Panel in frame that contains all the restaurant information,
@@ -212,7 +220,7 @@ public class RestaurantPanel extends JPanel implements ActionListener {
     		c.startThread();
     	}
     	else if (type.equals("Waiters")) {
-    		WaiterAgent waiter = new WaiterAgent(name);
+    		OldWaiterAgent waiter = new OldWaiterAgent(name);
     	    WaiterGui waiterGui = new WaiterGui(waiter, gui, waiterCount*50+120, 0);
     	    
     	    gui.animationPanel.addGui(waiterGui);
@@ -254,7 +262,7 @@ public class RestaurantPanel extends JPanel implements ActionListener {
         }
     }
     
-    public void enableCheckBox(WaiterAgent w) {
+    public void enableCheckBox(Waiter w) {
     	for (int i = 0; i < waiters.size(); i++) {
             WaiterAgent temp = waiters.get(i);
             if (temp.getName() == w.getName())
