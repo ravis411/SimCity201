@@ -51,6 +51,11 @@ public class MarketAnimationPanel extends JPanel implements ActionListener,GuiPa
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		repaint();  //Will have paintComponent called
+		  for(Gui gui : guis) {
+	            if (gui.isPresent()) {
+	                gui.updatePosition();
+	            }
+	        }
 	}
 
     @Override
@@ -89,11 +94,7 @@ public class MarketAnimationPanel extends JPanel implements ActionListener,GuiPa
 		g2.drawString("Manager's Office", 60, 115);
 		g2.drawString("Store Shelves Area", 510, 20);
 		g2.drawString("Delivery Truck", 10, 20);
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.updatePosition();
-            }
-        }
+      
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {

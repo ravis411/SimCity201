@@ -471,6 +471,28 @@ public class PersonAgent extends Agent {
 //	  moneyNeeded = 40.00;
 //	  role.setIntent(bankClientRole.withdraw);
 //	  role.activate();
+	  if(getName().equals("Person 7")){
+		  GoToLocation("Market 1", transport);
+		  
+		  MarketCustomerRole role = (MarketCustomerRole) findRole(Role.MARKET_CUSTOMER_ROLE);
+		  if(role == null){  
+			  role = (MarketCustomerRole) RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
+			  addRole(role);
+		  }
+		  BuildingList.findBuildingWithName("Market 1").addRole(role);
+		  role.activate();
+	  }
+	  if(getName().equals("Person 6")){
+		  GoToLocation("Market 1", transport);
+		  
+		  MarketCustomerRole role = (MarketCustomerRole) findRole(Role.MARKET_CUSTOMER_ROLE);
+		  if(role == null){  
+			  role = (MarketCustomerRole) RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
+			  addRole(role);
+		  }
+		  BuildingList.findBuildingWithName("Market 1").addRole(role);
+		  role.activate();
+	  }
 	  if(getName().equals("Person 3")){
 		  GoToLocation("Market 1", transport);
 		  
@@ -482,7 +504,28 @@ public class PersonAgent extends Agent {
 		  BuildingList.findBuildingWithName("Market 1").addRole(role);
 		  role.activate();
 	  }
-	  
+	  if(getName().equals("Person 5")){
+		  GoToLocation("Market 1", transport);
+		  
+		  MarketEmployeeRole role = (MarketEmployeeRole) findRole(Role.MARKET_EMPLOYEE_ROLE);
+		  if(role == null){  
+			  role = (MarketEmployeeRole) RoleFactory.roleFromString(Role.MARKET_EMPLOYEE_ROLE);
+			  addRole(role);
+		  }
+		  BuildingList.findBuildingWithName("Market 1").addRole(role);
+		  role.activate();
+	  }
+	  if(getName().equals("Person 4")){
+		  GoToLocation("Market 1", transport);
+		  
+		  MarketEmployeeRole role = (MarketEmployeeRole) findRole(Role.MARKET_EMPLOYEE_ROLE);
+		  if(role == null){  
+			  role = (MarketEmployeeRole) RoleFactory.roleFromString(Role.MARKET_EMPLOYEE_ROLE);
+			  addRole(role);
+		  }
+		  BuildingList.findBuildingWithName("Market 1").addRole(role);
+		  role.activate();
+	  }
 	  if(getName().equals("Person 2")){
 		  GoToLocation("Market 1", transport);
 		  
