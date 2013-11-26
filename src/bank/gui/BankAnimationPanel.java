@@ -202,8 +202,21 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 
 	@Override
 	public void removeGuiForRole(Role r) {
-		// TODO Auto-generated method stub
-		
+		if (r instanceof BankClientRole){
+		    BankClientRole clientRole = (BankClientRole) r;
+		    BankClientRoles.remove(clientRole);
+		    guis.remove(clientRole.getGui());
+
+		}
+		if (r instanceof BankTellerRole){
+		    BankTellerRole tellerRole = (BankTellerRole) r;
+		    BankTellerRoles.remove(tellerRole);
+		    guis.remove(tellerRole.getGui());
+		}
+		if (r instanceof LoanTellerRole){
+		    LoanTellerRole loanTellereRole=(LoanTellerRole) r;
+		    guis.remove(loanTellereRole.getGui());
+		}
 	}
 
 
