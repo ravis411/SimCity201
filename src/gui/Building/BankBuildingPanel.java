@@ -27,7 +27,9 @@ public class BankBuildingPanel extends BuildingPanel{
 		super(r, name, buildingPanels);
 		
 		this.removeAll();
-		
+	    animationPanel.announcer.startThread();
+	    animationPanel.loanAnnouncer.startThread();
+
 		setBackground( Color.yellow );
 	
 		
@@ -35,6 +37,9 @@ public class BankBuildingPanel extends BuildingPanel{
 		
 		JLabel j = new JLabel( myName );
 		add(animationPanel);
+		
+		//
+		
 	}
 	
 	
@@ -52,18 +57,18 @@ public class BankBuildingPanel extends BuildingPanel{
 
 
 	@Override
-	public void addPersonWithRole(Role r) {
+	public GuiPanel getPanel() {
 		// TODO Auto-generated method stub
-		
+		return animationPanel;
 	}
 
 
 
 
 	@Override
-	public GuiPanel getPanel() {
+	public void addPersonWithRole(Role r) {
 		// TODO Auto-generated method stub
-		return animationPanel;
+		
 	}
 
 }

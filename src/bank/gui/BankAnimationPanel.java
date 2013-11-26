@@ -1,6 +1,7 @@
 package bank.gui;
 
 import interfaces.GuiPanel;
+import bank.*;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,10 +13,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import Person.PersonAgent;
 import Person.Role.Role;
 
 public class BankAnimationPanel extends JPanel implements ActionListener, GuiPanel {
@@ -31,16 +34,40 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 	private Image bufferImage;
 	private Dimension bufferSize;
 
+	
+	
+    private Vector<BankTellerRole> BankTellerRoles = new Vector<BankTellerRole>();
+    private Vector<BankClientRole> BankClientRoles = new Vector<BankClientRole>();
+    public NumberAnnouncer announcer = new NumberAnnouncer("NumberBot");
+    public LoanNumberAnnouncer loanAnnouncer = new LoanNumberAnnouncer("LoanBot");
+    
+
+ 
+    //test
+    private PersonAgent testTeller = new PersonAgent("Test Teller", null);
+    private PersonAgent testLoanTeller = new PersonAgent("Test Loan Teller",null);
+    private BankTellerRole testTellerRole = new BankTellerRole();
+    private LoanTellerRole testLoanTellerRole = new LoanTellerRole();
+    
 	private List<Gui> guis = new ArrayList<Gui>();
 
 	public BankAnimationPanel() {
 		setSize(WINDOWX, WINDOWY);
 		setVisible(true);
 
+		
 		bufferSize = this.getSize();
-
+		
+		testTellerRole.setPerson(testTeller);
+		testLoanTellerRole.setPerson(testLoanTeller);
+		addGuiForRole(testTellerRole);
+		addGuiForRole(testLoanTellerRole);
 		Timer timer = new Timer(TIMERCOUNTmilliseconds, this );
 		timer.start();
+		
+
+        
+
 	}
 
 	@Override
@@ -120,7 +147,43 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 	@Override
 	public void addGuiForRole(Role r) {
 		// TODO Auto-generated method stub
-		
+		if (r instanceof BankClientRole){
+		    BankClientRole clientRole = (BankClientRole) r;
+			PersonAgent client = r.getPerson();
+		    BankClientRoles.add(clientRole);
+		    ClientGui clientGui = new ClientGui(clientRole, this);
+	        clientRole.setPerson(client);
+	        client.addRole(clientRole);
+	        this.addGui(clientGui);
+	        client.setMoney(100);
+	        client.setMoneyNeeded(50);
+	        clientRole.setAnnouncer(announcer);
+	        clientRole.setLoanAnnouncer(loanAnnouncer);
+	        clientRole.setGui(clientGui);
+	        client.startThread();
+		}
+		if (r instanceof BankTellerRole){
+		    BankTellerRole tellerRole = (BankTellerRole) r;
+		    PersonAgent teller = r.getPerson();
+		    TellerGui tellerGui = new TellerGui(tellerRole, this, tellerRole.getLine());
+	        teller.addRole(tellerRole);
+	        this.addGui(tellerGui);
+	        tellerRole.setAnnouncer(announcer);
+	        tellerRole.setGui(tellerGui);
+	        tellerRole.activate();
+	        tellerRole.getPerson().startThread();
+		}
+		if (r instanceof LoanTellerRole){
+		    LoanTellerRole loanTellereRole=(LoanTellerRole) r;
+			PersonAgent loanTellerPerson= r.getPerson();
+		    LoanGui loanGui = new LoanGui(loanTellereRole, this);
+	        loanTellerPerson.addRole(loanTellereRole);
+	        this.addGui(loanGui);
+	        loanTellereRole.setAnnouncer(loanAnnouncer);
+	        loanTellereRole.setGui(loanGui);
+	        loanTellereRole.activate();
+	        loanTellereRole.getPerson().startThread();
+		}
 	}
 
 	@Override

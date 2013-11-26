@@ -1,5 +1,5 @@
 package bank;
-import bank.bankClientRole;
+import bank.BankClientRole;
 import bank.gui.LoanGui;
 import Person.Role.*;
 import interfaces.Employee;
@@ -20,8 +20,8 @@ import util.Interval;
  * this specific line
  *
  */
-public class loanTellerRole extends Role implements Employee{
-	private bankClientRole myClient;
+public class LoanTellerRole extends Role implements Employee{
+	private BankClientRole myClient;
 	private int myClientAge;
 	public enum requestState {open, loan, pending, none, notBeingHelped};
 	private requestState state = requestState.none;
@@ -29,17 +29,17 @@ public class loanTellerRole extends Role implements Employee{
 	public location locationState = location.entrance;
 	double transactionAmount;
 	private List<Account> Accounts = Database.INSTANCE.sendDatabase();
-	private loanNumberAnnouncer announcer;
+	private LoanNumberAnnouncer announcer;
 	private Semaphore atStation = new Semaphore(0,true);
 	private Semaphore atIntermediate = new Semaphore(0,true);
 	private LoanGui loanGui = null;
  
-	public loanTellerRole(){
+	public LoanTellerRole(){
 		super();
 		Accounts = Database.INSTANCE.sendDatabase();
 	}
 
-	public void setAnnouncer(loanNumberAnnouncer a){
+	public void setAnnouncer(LoanNumberAnnouncer a){
 		announcer = a;
 	}
 
@@ -55,7 +55,7 @@ public class loanTellerRole extends Role implements Employee{
 		stateChanged();
 	}
 
-	public void msgInLine(bankClientRole b){
+	public void msgInLine(BankClientRole b){
 			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, this.myPerson.getName(),"Greetings customer");
 		myClient = b;
 		state = requestState.notBeingHelped;
@@ -115,12 +115,12 @@ public class loanTellerRole extends Role implements Employee{
 		announcer.msgLoanComplete();
 	}
 
-	private void receiveClient(bankClientRole b){
+	private void receiveClient(BankClientRole b){
 			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, this.myPerson.getName(),"Recieving new client");
 		b.msgMayIHelpYou();
 		state = requestState.pending;
 	}
-	private void processLoan(bankClientRole b){
+	private void processLoan(BankClientRole b){
 			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, this.myPerson.getName(),"Hold on a moment.");
 		for (Account a : Accounts){
 			if (a.client == b){
@@ -148,7 +148,7 @@ public class loanTellerRole extends Role implements Employee{
 			}
 		}
 	}
-	private void openAccount(bankClientRole b){
+	private void openAccount(BankClientRole b){
 		Account a = new Account(b, 0);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, this.myPerson.getName(),"New bank account has been opened for " + b);
 		Database.INSTANCE.addToDatabase(a);

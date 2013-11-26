@@ -1,7 +1,7 @@
 package bank;
 
 import Person.Role.Role;
-import bank.bankTellerRole;
+import bank.BankTellerRole;
 import bank.gui.ClientGui;
 
 import java.util.*;
@@ -10,7 +10,7 @@ import java.util.concurrent.*;
 import trace.AlertLog;
 import trace.AlertTag;
 
-public class bankClientRole extends Role {
+public class BankClientRole extends Role {
 	//	Data
 	public enum bankState {nothing, deposit, withdraw, loan};
 	public static final String loan = "loan";
@@ -20,10 +20,10 @@ public class bankClientRole extends Role {
 	Account myAccount;
 	public enum inLineState{noTicket, waiting, goingToLine, atDesk, beingHelped, transactionProcessing, leaving};
 	inLineState state2 = inLineState.noTicket;
-	private bankTellerRole teller = null;
-	private loanTellerRole loanTeller = null;
-	private numberAnnouncer announcer;
-	private loanNumberAnnouncer loanAnnouncer;
+	private BankTellerRole teller = null;
+	private LoanTellerRole loanTeller = null;
+	private NumberAnnouncer announcer;
+	private LoanNumberAnnouncer loanAnnouncer;
 	private double requestAmount;
 	private boolean hasLoan = false;
 	//	private double amountDue = 0;
@@ -38,30 +38,30 @@ public class bankClientRole extends Role {
 	private int existsBankAccount = new Random().nextInt(10);
 
 	/**
-	 * hack to establish connection to bankTellerRole
+	 * hack to establish connection to BankTellerRole
 	 */
-	public void setTeller(bankTellerRole btr){
+	public void setTeller(BankTellerRole btr){
 		this.teller = btr;
 	}
 	/**
-	 * hack to establish connection to loanTellerRole
+	 * hack to establish connection to LoanTellerRole
 	 */	
-	public void setLoanTeller(loanTellerRole ltr) {
+	public void setLoanTeller(LoanTellerRole ltr) {
 		this.loanTeller = ltr;
 	}
 
 	/**
 	 * establishes connection to the number Announcer
 	 */
-	public void setAnnouncer(numberAnnouncer a){
+	public void setAnnouncer(NumberAnnouncer a){
 		this.announcer = a;
 	} 
 	
-	public void setLoanAnnouncer(loanNumberAnnouncer a){
+	public void setLoanAnnouncer(LoanNumberAnnouncer a){
 		this.loanAnnouncer = a;
 	}
 	/**
-	 * initializing bankClientRole
+	 * initializing BankClientRole
 	 * there is a hack implemented to make sure there are some bank accounts to begin with so that 
 	 * not everyone has to go open an account in the bank
 	 * @param String myPerson.getName() - myPerson.getName()
@@ -69,7 +69,7 @@ public class bankClientRole extends Role {
 	 * @param double ra - request amount
 	 */  
 
-	public bankClientRole() {
+	public BankClientRole() {
 	}
 
 
@@ -90,7 +90,7 @@ public class bankClientRole extends Role {
 	 * @param l = line number
 	 * @param btr = bank teller role
 	 */
-	public void msgCallingTicket(int t, int l, bankTellerRole btr){
+	public void msgCallingTicket(int t, int l, BankTellerRole btr){
 		if (ticketNum == t){
 			state2 = inLineState.goingToLine;
 			lineNum = l;
@@ -108,7 +108,7 @@ public class bankClientRole extends Role {
 	 * @param loanTeller2 = loan teller
 	 */
 	public void msgCallingLoanTicket(int loanNumber, int i,
-			loanTellerRole loanTeller2) {
+			LoanTellerRole loanTeller2) {
 		if (loanTicketNum == loanNumber){
 			state2 = inLineState.goingToLine;
 			lineNum = i;
@@ -260,7 +260,7 @@ public class bankClientRole extends Role {
 
 	}
 	private void IWantALoan(){
-		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want a loan.");
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want a loan for " + requestAmount);
 		loanTeller.msgLoan(requestAmount, this.getPerson().getAge());
 		state2 = inLineState.transactionProcessing;
 
@@ -308,19 +308,19 @@ public class bankClientRole extends Role {
 		requestAmount = myPerson.getMoneyNeeded();
 		if (trans.equalsIgnoreCase("deposit")){
 			this.state1 = bankState.deposit;
-			ticketNum = takeANumberDispenser.INSTANCE.pullTicket();
+			ticketNum = TakeANumberDispenser.INSTANCE.pullTicket();
 //			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
 		}
 		if (trans.equalsIgnoreCase("withdraw")){
 			this.state1 = bankState.withdraw;
-			ticketNum = takeANumberDispenser.INSTANCE.pullTicket();
+			ticketNum = TakeANumberDispenser.INSTANCE.pullTicket();
 //			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
 		}
 		if (trans.equalsIgnoreCase("loan")){
 			this.state1 = bankState.loan;
-			loanTicketNum = loanTakeANumberDispenser.INSTANCE.pullTicket();
+			loanTicketNum = LoanTakeANumberDispenser.INSTANCE.pullTicket();
 //			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + loanTicketNum);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + loanTicketNum);
 		}
