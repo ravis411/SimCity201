@@ -25,12 +25,12 @@ public class TellerGui implements Gui {
 	private final static int yIntermediateEntrance = 180;
 	private final int xTellerDesk= 195;
 	private final int yTellerDesk= 180;
-	private final static int xBreakRoom= 450;
-	private final static int yBreakRoom= 10;
+//	private final static int xBreakRoom= 450;
+//	private final static int yBreakRoom= 10;
 	private int lane;
 	BankAnimationPanel gui;
-	private int xcounter = 0;
-	private int ycounter = 0;
+//	private int xcounter = 0;
+//	private int ycounter = 0;
 	public TellerGui(BankTellerRole tellerRole, BankAnimationPanel bankAnimationPanel, int laneNum) {
 		this.role = tellerRole;
 		lane = laneNum;

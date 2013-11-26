@@ -1,7 +1,7 @@
 package bank;
-import bank.BankClientRole;
 import bank.gui.TellerGui;
 import bank.interfaces.BankTeller;
+import bank.interfaces.*;
 import interfaces.Employee;
 
 import java.util.*;
@@ -19,7 +19,7 @@ import Person.Role.Role;
  */
 
 public class BankTellerRole extends Role implements Employee , BankTeller{
-	private BankClientRole myClient;
+	private BankClient myClient;
 	private int LineNum = new Random().nextInt(3)+1; //from 1 to n, with 5 being the loan line, should be assigned in creation
 	public enum requestState {pending, withdrawal, deposit, open, none, notBeingHelped};
 	public enum location {entrance, station, breakRoom};
@@ -63,17 +63,17 @@ public class BankTellerRole extends Role implements Employee , BankTeller{
 	}
 
 	/**
-	 * message received by a bankClientRole that there is someone at the desk. 
-	 * @param b - bankClientRole being worked with
+	 * message received by a BankClient that there is someone at the desk. 
+	 * @param b - BankClient being worked with
 	 */
-	public void msgInLine(BankClientRole b){
+	public void msgInLine(BankClient b){
 		myClient = b;
 		state = requestState.notBeingHelped;
 		stateChanged();
 	}
 	
 	/**
-	 * message received by bankClientRole asking to open an account.
+	 * message received by BankClient asking to open an account.
 	 */
 	public void msgOpenAccount(){
 		state = requestState.open;
@@ -81,7 +81,7 @@ public class BankTellerRole extends Role implements Employee , BankTeller{
 	}
 
 	/**
-	 * message received by a bankClientRole asking to deposit money into an account.
+	 * message received by a BankClient asking to deposit money into an account.
 	 * @param a - amount of money
 	 */
 	public void msgDeposit(double a){
@@ -90,7 +90,7 @@ public class BankTellerRole extends Role implements Employee , BankTeller{
 		stateChanged();
 	}
 	/**
-	 * message received by a bankClientRole asking to withdraw money from an account.
+	 * message received by a BankClient asking to withdraw money from an account.
 	 * @param a - amount of money
 	 */
 
@@ -152,9 +152,9 @@ public class BankTellerRole extends Role implements Employee , BankTeller{
 	}
 	/**
 	 * Greeting the client
-	 * @param b - bankClientRole
+	 * @param b - BankClient
 	 */
-	private void receiveClient(BankClientRole b){
+	private void receiveClient(BankClient b){
 			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Recieving new client");
 			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Hello " + b + ", how may I help you.");
 		b.msgMayIHelpYou();
@@ -162,9 +162,9 @@ public class BankTellerRole extends Role implements Employee , BankTeller{
 	}
 	/**
 	 * Processes a deposit. If the account exists, deposits the asked amount into the account.
-	 * @param b - bankClientRole
+	 * @param b - BankClient
 	 */
-	private void processDeposit(BankClientRole b){
+	private void processDeposit(BankClient b){
 			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Ok, hold on.");
 		for (Account a : Accounts){
 			if (a.client == b){
@@ -180,9 +180,9 @@ public class BankTellerRole extends Role implements Employee , BankTeller{
 	
 	/**
 	 * Processes a withdrawal. If there is enough money, withdraws that amount. If not, just quits with an error message.
-	 * @param b - bankClientRole
+	 * @param b - BankClient
 	 */
-	private void processWithdrawal(BankClientRole b){
+	private void processWithdrawal(BankClient b){
 		for (Account a : Accounts){
 			if (a.client == b){
 				if (transactionAmount > a.amount){
@@ -201,9 +201,9 @@ public class BankTellerRole extends Role implements Employee , BankTeller{
 	}
 	/**
 	 * Opens new account
-	 * @param b - bankClientRole
+	 * @param b - BankClient
 	 */
-	private void openAccount(BankClientRole b){
+	private void openAccount(BankClient b){
 		Account a = new Account(b,0);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"New bank account has been opened for " + b);
 		Database.INSTANCE.addToDatabase(a);
@@ -262,5 +262,6 @@ public class BankTellerRole extends Role implements Employee , BankTeller{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }

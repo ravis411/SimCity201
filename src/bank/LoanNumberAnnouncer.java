@@ -4,9 +4,10 @@ import agent.Agent;
 
 
 import bank.interfaces.AnnouncerB;
+import bank.interfaces.BankClient;
+import bank.interfaces.LoanTeller;
 
 import java.util.*;
-import java.util.concurrent.Semaphore;
 /**
  * 
  * @author Byron Choy
@@ -14,9 +15,8 @@ import java.util.concurrent.Semaphore;
  */
 
 public class LoanNumberAnnouncer extends Agent implements AnnouncerB{
-	List<BankClientRole> clients = new ArrayList<BankClientRole>();
-	LoanTellerRole loanTeller;
-	private int doneTeller;
+	List<BankClient> clients = new ArrayList<BankClient>();
+	LoanTeller loanTeller;
 	private int loanNumber = 0;
 	public enum numberState{pending, announceL};
 	public numberState state = numberState.pending;
@@ -38,11 +38,11 @@ public class LoanNumberAnnouncer extends Agent implements AnnouncerB{
 		onTheWay = true;
 		stateChanged();
 	}
-	public void msgAddLoanTeller(LoanTellerRole l){
+	public void msgAddLoanTeller(LoanTeller l){
 		loanTeller = l;
 		stateChanged();
 	}
-	public void msgAddClient(BankClientRole c){
+	public void msgAddClient(BankClient c){
 		Do(c + " added.");
 		clients.add(c);
 		stateChanged();
@@ -69,11 +69,10 @@ public class LoanNumberAnnouncer extends Agent implements AnnouncerB{
 			try {
 				Thread.sleep(10000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			Do("Calling loan ticket " + loanNumber);
-			for (BankClientRole b : clients){
+			for (BankClient b : clients){
 				b.msgCallingLoanTicket(loanNumber, 5, loanTeller);
 			}
 		}
@@ -86,5 +85,6 @@ public class LoanNumberAnnouncer extends Agent implements AnnouncerB{
 	public String toString() {
 		return "Bank Teller  " + getName();
 	}
+
 
 }

@@ -2,8 +2,6 @@ package bank.interfaces;
 
 
 import bank.Account;
-import bank.BankTellerRole;
-import bank.LoanTellerRole;
 
 
 /**
@@ -25,7 +23,7 @@ public interface BankClient {
 	 * @param l = line number
 	 * @param btr = bank teller role
 	 */
-	public abstract void msgCallingTicket(int t, int l, BankTellerRole btr);
+	public abstract void msgCallingTicket(int t, int l, BankTeller btr);
 
 	/**
 	 * Same as msgCallingTicket, except for loans
@@ -33,7 +31,7 @@ public interface BankClient {
 	 * @param i = line number 
 	 * @param loanTeller2 = loan teller
 	 */
-	public abstract void msgCallingLoanTicket(int loanNumber, int i, LoanTellerRole loanTeller2);
+	public abstract void msgCallingLoanTicket(int loanNumber, int i, LoanTeller loanTeller2);
 
 	/**
 	 * sent from the gui when the client is at the line

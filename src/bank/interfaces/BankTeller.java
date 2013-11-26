@@ -1,6 +1,5 @@
 package bank.interfaces;
 
-import bank.BankClientRole;
 
 public interface BankTeller {
 	/**
@@ -17,7 +16,7 @@ public interface BankTeller {
 	 * message received by a bankClientRole that there is someone at the desk. 
 	 * @param b - bankClientRole being worked with
 	 */
-	public void msgInLine(BankClientRole b);
+	public void msgInLine(BankClient b);
 	/**
 	 * message received by bankClientRole asking to open an account.
 	 */

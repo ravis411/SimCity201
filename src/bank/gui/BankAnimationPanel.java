@@ -29,6 +29,10 @@ import Person.Role.Role;
  */
 public class BankAnimationPanel extends JPanel implements ActionListener, GuiPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final static int WINDOWX = 800;//
 	private final static int WINDOWY = 400;
 	final static int counterX = 0;//TABLEX and TABLEY describe where the table appears in the panel
