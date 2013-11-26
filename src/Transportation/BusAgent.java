@@ -28,7 +28,7 @@ public class BusAgent extends Agent implements Vehicle {
 	String name;
 	boolean traveled = false;
 	boolean goToBusStop3 = false;
-	private String location;
+	public String location = "N/A";
 	public VehicleGui agentGui;
 	Queue<String> StopsQueue = new LinkedList<>(); //<--a list of the stops to go to
 	
@@ -50,7 +50,7 @@ public class BusAgent extends Agent implements Vehicle {
 	public BusAgent(String name) {
 		super();
 		StopsQueue.add("Bus Stop " + 1);
-		StopsQueue.add("Bus Stop " + 3);
+		StopsQueue.add("Bus Stop 3");
 		StopsQueue.add("Bus Stop " + 5);
 		this.name = name;
 	}
@@ -95,7 +95,7 @@ public class BusAgent extends Agent implements Vehicle {
 		synchronized(passengers) {
 			for (myPassenger mp : passengers) {
 				if (mp.ps == PassengerState.disembarking) {
-					passengers.remove(mp);
+					removePassenger(mp);
 					return true;
 				}
 			}
@@ -119,14 +119,18 @@ public class BusAgent extends Agent implements Vehicle {
 		traveled = true;
 	}
 	
+	private void removePassenger(myPassenger mp) {
+		passengers.remove(mp);
+	}
+	
 	private void GoToNextStop(){
+		print("Going to next stop");
 		state = AgentState.inTransit;
 		
-		
-		setLocation(StopsQueue.poll());//<--removes location from front of queue
-		StopsQueue.add(getLocation());//<--adds location to end of queue
+		location = StopsQueue.poll();//<--removes location from front of queue
+		StopsQueue.add(location);//<--adds location to end of queue
 		//print("Going to " + location);
-		agentGui.DoGoTo(getLocation());
+		agentGui.DoGoTo(location);
 	//	print("Arrived at " + location);
 		try {
 			Thread.sleep(500);
@@ -139,10 +143,11 @@ public class BusAgent extends Agent implements Vehicle {
 	}
 	
 	private void notifyPassengers() {
+		print("Notifying passengers");
 		synchronized(passengers) {
 			for (myPassenger mp : passengers) {
 				if (mp.ps == PassengerState.riding) {
-					mp.passenger.msgArrivedAtDestination(getLocation());
+					mp.passenger.msgArrivedAtDestination(location);
 				}
 			}
 		}
@@ -159,18 +164,5 @@ public class BusAgent extends Agent implements Vehicle {
 	public List<myPassenger> getPassengers() {
 		return passengers;
 	}
-
-	public void setPassengers(List<myPassenger> passengers) {
-		this.passengers = passengers;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
-	
 	
 }
