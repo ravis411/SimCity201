@@ -1,6 +1,5 @@
 package ryansRestaurant.test;
 
-import com.sun.corba.se.impl.interceptors.PICurrent;
 
 import junit.framework.TestCase;
 import ryansRestaurant.CashierAgent;

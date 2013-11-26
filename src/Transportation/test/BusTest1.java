@@ -14,6 +14,7 @@ public class BusTest1 extends TestCase {
 	
 	public void setUp() throws Exception {
 		super.setUp();
+		//will break. need to add support for gui pointers
 		bus = new BusAgent("Bus_1");
 		bus.addBusStop(1, "Stop_1");
 		bus.addBusStop(2, "Stop_2");
