@@ -1,5 +1,7 @@
 package market.gui;
 
+import interfaces.GuiPanel;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -14,7 +16,13 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class MarketAnimationPanel extends JPanel implements ActionListener {
+import market.data.MarketData;
+import MarketEmployee.MarketCustomerRole;
+import MarketEmployee.MarketEmployeeRole;
+import MarketEmployee.MarketManagerRole;
+import Person.Role.Role;
+
+public class MarketAnimationPanel extends JPanel implements ActionListener,GuiPanel {
 
     private final static int WINDOWX = 800;//
     private final static int WINDOWY = 400;
@@ -23,7 +31,7 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
     final static int storeCounterLeftWIDTH= 700;
     final static int storeCounterRightWIDTH= 50;
     final static int storeCounterXHEIGHT = 30;
-    
+    private MarketData marketData = new MarketData();
     final static int TIMERCOUNTmilliseconds = 1;
     private Image bufferImage;
     private Dimension bufferSize;
@@ -103,6 +111,61 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
 	}
 	public void addGui(MarketCustomerGui gui) {
 		guis.add(gui);	
+		
+	}
+
+	@Override
+	public void addGuiForRole(Role r) {
+		if(r instanceof MarketCustomerRole){
+			
+			MarketCustomerRole marketCustomerRole = (MarketCustomerRole) r;
+			 if (marketData.getNumberOfCustomersInALine(0)==marketData.getNumberOfCustomersInALine(1) && marketData.getNumberOfCustomersInALine(0)==marketData.getNumberOfCustomersInALine(2)){
+				 MarketCustomerGui gui = new MarketCustomerGui(marketCustomerRole, 0);
+				 marketCustomerRole.setGui(gui);
+				 marketData.incrementNumerOfCustomersInALine(0);
+				 marketCustomerRole.setCounter(0);
+				 marketCustomerRole.setMarketData(marketData);
+				 guis.add(gui);
+			 }
+			 else if (marketData.getNumberOfCustomersInALine(0)>marketData.getNumberOfCustomersInALine(1) && marketData.getNumberOfCustomersInALine(1)==marketData.getNumberOfCustomersInALine(2)){
+				 MarketCustomerGui gui = new MarketCustomerGui(marketCustomerRole, 1);
+				 marketCustomerRole.setGui(gui);
+				 marketData.incrementNumerOfCustomersInALine(1);
+				 marketCustomerRole.setCounter(1);
+				 marketCustomerRole.setMarketData(marketData);
+				 guis.add(gui);
+			 }
+			 else if (marketData.getNumberOfCustomersInALine(0)==marketData.getNumberOfCustomersInALine(1)){
+				 MarketCustomerGui gui = new MarketCustomerGui(marketCustomerRole, 2);
+				 marketCustomerRole.setGui(gui);
+				 marketData.incrementNumerOfCustomersInALine(2);
+				 marketCustomerRole.setCounter(2);
+				 marketCustomerRole.setMarketData(marketData);
+				 guis.add(gui);
+			 }
+			
+		}
+		if(r instanceof MarketEmployeeRole){
+			MarketEmployeeRole marketEmployeeRole = (MarketEmployeeRole) r;
+			MarketEmployeeGui gui = new MarketEmployeeGui(marketEmployeeRole);
+			marketEmployeeRole.setGui(gui);
+			marketEmployeeRole.setMarketData(marketData);
+			guis.add(gui);
+			
+		}
+		if(r instanceof MarketManagerRole){
+			MarketManagerRole marketManagerRole = (MarketManagerRole) r;
+			MarketManagerGui gui = new MarketManagerGui(marketManagerRole);
+			marketManagerRole.setGui(gui);
+			marketData.setMarketManager(marketManagerRole);
+			marketManagerRole.setMarketData(marketData);
+			guis.add(gui);
+			
+		}
+	}
+	@Override
+	public void removeGuiForRole(Role r) {
+		// TODO Auto-generated method stub
 		
 	}
 

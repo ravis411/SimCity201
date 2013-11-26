@@ -28,9 +28,9 @@ public class MarketCustomerGui implements Gui {
     private int tableNum;
     private String orderBeingCarried = " ";
     private Boolean atCounter=false;
-    MarketGui gui;
+   // MarketGui gui;
 
-    public MarketCustomerGui(MarketCustomer marketCustomer, MarketGui gui, int customerNumber) {
+    public MarketCustomerGui(MarketCustomer marketCustomer, int customerNumber) {
     	this.customerNumber=customerNumber;
         this.role = marketCustomer;
         xCounterCord=395 + 100*(customerNumber%4);
@@ -38,7 +38,7 @@ public class MarketCustomerGui implements Gui {
         yDestination = yResturantEntrance;//default start position
         xPos = xResturantEntrance;
         yPos = yResturantEntrance;
-        this.gui = gui;
+     
     }
 
     public void updatePosition() {

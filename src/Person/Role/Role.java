@@ -7,9 +7,9 @@ public abstract class Role {
 	private boolean isActive = false;
 	protected PersonAgent myPerson;
 	
-	public final static String MARKET_CUSTOMER_ROLE = "MarketCustomerRole";
-	public final static String MARKET_EMPLOYEE_ROLE = "MarketEmployeeRole";
-	public final static String MARKET_MANAGER_ROLE = "MarketManagerRole";
+	public final static String MARKET_CUSTOMER_ROLE = "MarketEmployee.MarketCustomerRole";
+	public final static String MARKET_EMPLOYEE_ROLE = "MarketEmployee.MarketEmployeeRole";
+	public final static String MARKET_MANAGER_ROLE = "MarketEmployee.MarketManagerRole";
 	public final static String BANK_CLIENT_ROLE = "bank.BankClientRole";
 	public final static String PASSENGER_ROLE = "PassengerRole";
 	public final static String HOME_ROLE = "HomeRole";

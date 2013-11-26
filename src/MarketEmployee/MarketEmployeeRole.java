@@ -43,7 +43,6 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	 *
 	 */
 	public MarketEmployeeRole(){
-		activate();
 	}
 
 
@@ -63,6 +62,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	public void msgMarketEmployeeYourCounterNumber(int i) {
 		print("Manager Assigned Me Counter #" +(i+1) );
 		gui.setCounter(i);
+		stateChanged();
 	}
 
 
@@ -79,7 +79,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	}
 	public void msgMarketEmployeetTellMeWhenICanGiveOrder(MarketCustomerRole marketCustomer){
 		tempCustomer= marketCustomer;
-		
+		stateChanged();
 	}
 
 	public void msgMarketEmployeeOrder(String foodType, int FoodTypeAmount, MarketCustomerRole customer, String name){

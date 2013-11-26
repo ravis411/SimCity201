@@ -9,12 +9,14 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
+import market.data.MarketData;
 import market.gui.MarketCustomerGui;
 import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
 import market.test.mock.EventLog;
 import market.test.mock.LoggedEvent;
 import Person.Role.Role;
+import agent.Constants;
 
 /**
  * MarketCustomer Agent
@@ -40,6 +42,8 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	private Map<String, Integer> menu;
 	private Random randomx = new Random(System.nanoTime());
 	public EventLog log= new EventLog();
+	private int counterNumber;
+	private MarketData marketData;
 	
 	
 	/**
@@ -49,7 +53,6 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
 	public MarketCustomerRole(){
-		activate();
 		
 		menu= new HashMap<String, Integer>();
 		menu.put("Steak",  20);
@@ -133,7 +136,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 
 	
 
-	void goToMarketEmployeeToOrder(){
+	synchronized void goToMarketEmployeeToOrder(){
 		
 		gui.DoGoToCounter();//walk to Counter to Order
 		print("Entered Market");
@@ -144,6 +147,49 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		if (counterNumber==0){
+			
+			while(	marketData.getMarketCustomerAtCounter1()==null){
+				try {
+					Thread.sleep(1 * Constants.SECOND);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			marketEmployee=marketData.getMarketCustomerAtCounter1();
+		}
+		if (counterNumber==1){
+			
+				while(	marketData.getMarketCustomerAtCounter2()==null){
+					try {
+						Thread.sleep(1 * Constants.SECOND);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+				
+				marketEmployee=marketData.getMarketCustomerAtCounter2();
+		}
+		
+		if (counterNumber==2){
+		
+				while(	marketData.getMarketCustomerAtCounter3()==null){
+					try {
+						Thread.sleep(1 * Constants.SECOND);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+				marketEmployee=marketData.getMarketCustomerAtCounter3();
+		
+		}
+		
 		marketEmployee.msgMarketEmployeetTellMeWhenICanGiveOrder(this);
 		state=MarketCustomerState.askedEmployeeToTellWhenWhenToOrder;
 	
@@ -194,11 +240,21 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	
 	public void setGui(MarketCustomerGui gui) {
 	this.gui = gui;
-}
+	}
+	public void setMarketData(MarketData marketData) {
+		this.marketData=marketData;
+		
+	}
+
+
 
 	@Override
 	public boolean canGoGetFood() {
 		return false;
+	}
+
+	public void setCounter(int counterNumber) {
+		this.counterNumber=counterNumber;
 	}
 
 

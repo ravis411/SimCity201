@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
+import market.data.MarketData;
 import market.gui.MarketManagerGui;
 import market.interfaces.MarketEmployee;
 import market.interfaces.MarketManager;
@@ -32,13 +33,13 @@ public class MarketManagerRole extends Role implements MarketManager{
 	int marketMoney;
 	int orderNum=0;
 	Random random = new Random(System.nanoTime());
+	private MarketData marketData;
 	/**
 	 * Constructor for MarketManager Role
 	 *
 	 */
 	public MarketManagerRole(){
-		activate();
-		
+				
 		}
 	
 
@@ -68,15 +69,18 @@ public class MarketManagerRole extends Role implements MarketManager{
 		}
 		if (!counter1Occupied){
 			currentEmployeees.add(new CounterStation(0,marketEmployee));
+			marketData.setMarketEmployeeAtCounter1(marketEmployee);
 			event=MarketEmployeeEvent.customerNeedsToBeGivenStation;
 		}
 		else if (!counter2Occupied){
 			currentEmployeees.add(new CounterStation(1,marketEmployee));
+			marketData.setMarketEmployeeAtCounter2(marketEmployee);
 			event=MarketEmployeeEvent.customerNeedsToBeGivenStation;
 
 		}
 		else if (!counter3Occupied){
 			currentEmployeees.add(new CounterStation(2,marketEmployee));
+			marketData.setMarketEmployeeAtCounter3(marketEmployee);
 			event=MarketEmployeeEvent.customerNeedsToBeGivenStation;
 
 		}
@@ -280,23 +284,22 @@ public class MarketManagerRole extends Role implements MarketManager{
 				remove order from myOrders/*
 			}
 			
-
+*/
 	//utilities
-	public void setCook(Cook cook) {
-		this.cook=cook;
-		
-	}
-	*/
+
+	
 	public void setGui(MarketManagerGui gui) {
 		this.gui = gui;
 	}
 
 	@Override
 	public boolean canGoGetFood() {
-		// TODO Auto-generated method stub
 		return false;
 	} 
-	
+	public void setMarketData(MarketData marketData) {
+		this.marketData=marketData;
+	}
+
 	private class CounterStation{
 		int CounterNumber;
 		MarketEmployee EmployeeAssignedToCounter;
@@ -372,6 +375,7 @@ public class MarketManagerRole extends Role implements MarketManager{
 		}
 		
 		}
+
 
 
 

@@ -37,15 +37,15 @@ public class MarketEmployeeGui implements Gui {
     private String orderBeingCarried = " ";
     private boolean atCounter=false;
     private boolean orderForManager=false;
-    MarketGui gui;
 
-    public MarketEmployeeGui(MarketEmployee marketEmployee, MarketGui gui) {
+
+    public MarketEmployeeGui(MarketEmployee marketEmployee) {
         this.role = marketEmployee;
         xDestination=xCounterEntranceCord;
         yDestination = yCounterEntranceCord+100;
         xPos = xResturantEntrance;//default start position
         yPos = yResturantEntrance;
-        this.gui = gui;
+ 
     }
 
     public void updatePosition() {

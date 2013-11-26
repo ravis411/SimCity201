@@ -69,13 +69,13 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 		
 		//test
 		
-		testTellerRole.setPerson(testTeller);
-		testLoanTellerRole.setPerson(testLoanTeller);
-		testClientRole.setPerson(testClient);
-		addGuiForRole(testTellerRole);
-		addGuiForRole(testLoanTellerRole);
-		addGuiForRole(testClientRole);
-		testClientRole.setIntent("deposit");
+//		testTellerRole.setPerson(testTeller);
+//		testLoanTellerRole.setPerson(testLoanTeller);
+//		testClientRole.setPerson(testClient);
+//		addGuiForRole(testTellerRole);
+//		addGuiForRole(testLoanTellerRole);
+//		addGuiForRole(testClientRole);
+//		testClientRole.setIntent("deposit");
 		
 		Timer timer = new Timer(TIMERCOUNTmilliseconds, this );
 		timer.start();

@@ -96,7 +96,7 @@ public class SetUpWorldFactory{
 		location.positionToEnterFromMainGrid = new Dimension(15, 3);
 		location.entranceFromMainGridPosition = new Dimension(14, 3);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Market", "Market", 13, 2, 2, 2, location);
+		addBuilding("Market", "Market 1", 13, 2, 2, 2, location);
 		
 //Building 4
 		location.sector = 1;
@@ -218,7 +218,7 @@ public class SetUpWorldFactory{
 			
 			addPerson("Person 1", buildingsPanels.getResidenceBuildingPanel("House 1"));
 			addPerson("Person 2", buildingsPanels.getResidenceBuildingPanel("House 2"));
-//			addPerson("Person 3");
+			addPerson("Person 3", buildingsPanels.getResidenceBuildingPanel("House 2"));
 			
 		
 	} //end LoadDefault
@@ -611,6 +611,7 @@ public class SetUpWorldFactory{
 			cityPanel.addGui(mb);
 			buildingsPanels.addBuildingPanel(mp);
 		}
+			break;
 		default:
 			return;
 		}

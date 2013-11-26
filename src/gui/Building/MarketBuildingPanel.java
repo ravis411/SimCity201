@@ -50,8 +50,7 @@ public class MarketBuildingPanel extends BuildingPanel{
 
 	@Override
 	public GuiPanel getPanel() {
-		// TODO Auto-generated method stub
-		return null;
+		return animationPanel;
 	}
 
 }

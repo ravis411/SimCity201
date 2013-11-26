@@ -34,15 +34,13 @@ public class MarketManagerGui implements Gui {
     private int waiterNumber=0;
     private int tableNum;
     private String orderBeingCarried = " ";
-    MarketGui gui;
     boolean goToTruck=false;
-    public MarketManagerGui(MarketManagerRole marketManagereRole, MarketGui gui) {
+    public MarketManagerGui(MarketManagerRole marketManagereRole) {
         this.role = marketManagereRole;
         xDestination=xCounterEntranceCord;
         yDestination = yCounterEntranceCord+80;//default start position
         xPos = xResturantEntrance;
         yPos = yResturantEntrance;
-        this.gui = gui;
         //this.waiterNumber=waiterNumber;
     }
 

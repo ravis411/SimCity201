@@ -3,11 +3,15 @@ package market.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import market.interfaces.MarketEmployee;
 import market.interfaces.MarketManager;
 
 public class MarketData {
 	List<Inventory> marketInventory	= new ArrayList<Inventory>();
 	MarketManager currentMarketManager;
+	MarketEmployee currentMarketEmployee1=null;
+	MarketEmployee currentMarketEmployee2=null;
+	MarketEmployee currentMarketEmployee3=null;
 	List<Integer> numberOfCustomersInALine	= new ArrayList<Integer>();
 	double marketMoney=0;
 	public MarketData(){
@@ -52,6 +56,24 @@ public class MarketData {
 	}
 	public MarketManager getMarketManager(){
 		return currentMarketManager;
+	}
+	public void setMarketEmployeeAtCounter1(MarketEmployee marketEmployee){
+		currentMarketEmployee1=marketEmployee;
+	}
+	public MarketEmployee getMarketCustomerAtCounter1(){
+		return currentMarketEmployee1;
+	}
+	public void setMarketEmployeeAtCounter2(MarketEmployee marketEmployee){
+		currentMarketEmployee1=marketEmployee;
+	}
+	public MarketEmployee getMarketCustomerAtCounter2(){
+		return currentMarketEmployee1;
+	}
+	public void setMarketEmployeeAtCounter3(MarketEmployee marketEmployee){
+		currentMarketEmployee1=marketEmployee;
+	}
+	public MarketEmployee getMarketCustomerAtCounter3(){
+		return currentMarketEmployee1;
 	}
 	public int getNumberOfCustomersInALine(int linenumber){
 		return numberOfCustomersInALine.get(linenumber).intValue();

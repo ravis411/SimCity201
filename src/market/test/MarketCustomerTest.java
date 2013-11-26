@@ -33,7 +33,7 @@ public class MarketCustomerTest extends TestCase
 		employee = new MockMarketEmployee("employee");
 		customer.marketEmployee=employee;
 		MarketGui gui= new MarketGui();
-		customer.gui=new MarketCustomerGui(customer, gui, 1);
+		customer.gui=new MarketCustomerGui(customer, 1);
 		gui.animationPanel.addGui(customer.gui);
 		gui.setVisible(true);
         gui.setResizable(false);
