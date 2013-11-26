@@ -448,17 +448,17 @@ public class PersonAgent extends Agent {
 //		  role.activate();
 //		  role.msgMakeFood();
 	  
-	  GoToLocation("Bank", transport);
-	  bankClientRole role = (bankClientRole) findRole(Role.BANK_CLIENT_ROLE);
-	  if(role == null){
-		  role = (bankClientRole) RoleFactory.roleFromString(Role.BANK_CLIENT_ROLE);
-		  addRole(role);
-	  }
-	  
-	  moneyNeeded = 40.00;
-	  role.setIntent(bankClientRole.withdraw);
-	  role.activate();
-	  
+//	  GoToLocation("Bank", transport);
+//	  bankClientRole role = (bankClientRole) findRole(Role.BANK_CLIENT_ROLE);
+//	  if(role == null){
+//		  role = (bankClientRole) RoleFactory.roleFromString(Role.BANK_CLIENT_ROLE);
+//		  addRole(role);
+//	  }
+//	  
+//	  moneyNeeded = 40.00;
+//	  role.setIntent(bankClientRole.withdraw);
+//	  role.activate();
+//	  
 	}
 		  
 	//------------------------DO XYZ FUNCTIONS----------------------//

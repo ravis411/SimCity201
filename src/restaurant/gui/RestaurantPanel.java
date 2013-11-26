@@ -28,7 +28,8 @@ import Person.PersonAgent;
  * including host, cook, waiters, and customers.
  */
 public class RestaurantPanel extends JPanel implements ActionListener {
-
+	private RestaurantGui gui; //reference to main gui
+	
     //Host, cook, waiters and customers
 	private PersonAgent person1 = new PersonAgent("Person 1",null);
 	private PersonAgent person2 = new PersonAgent("Person 2",null);
@@ -43,6 +44,13 @@ public class RestaurantPanel extends JPanel implements ActionListener {
     private CookGui cookGui = new CookGui(cook);
     private CashierAgent cashier = new CashierAgent("Cashier");
     private CashierGui cashierGui = new CashierGui(cashier);
+    private OldWaiterAgent waiter = new OldWaiterAgent();
+    private WaiterGui waiterGui = new WaiterGui(waiter,gui,150,10);
+    private CustomerAgent customer = new CustomerAgent();
+    private CustomerGui customerGui = new CustomerGui(customer,gui);
+    
+    
+    
     private MarketAgent market1 = new MarketAgent("Market 1", cook, cashier);
     private MarketAgent market2 = new MarketAgent("Market 2", cook, cashier);
     private MarketAgent market3 = new MarketAgent("Market 3", cook, cashier);
@@ -62,8 +70,6 @@ public class RestaurantPanel extends JPanel implements ActionListener {
     private JButton resumeButton = new JButton("Resume");
     
     private int waiterCount = 1;
-
-    private RestaurantGui gui; //reference to main gui
     
     public ListPanel getCustomerPanel() {
     	return customerPanel;
@@ -93,9 +99,26 @@ public class RestaurantPanel extends JPanel implements ActionListener {
         this.gui = gui;
         //host.setGui(hostGui);
         
+        customer.setHost(host);
+        customer.setCashier(cashier);
+        host.addWaiter(waiter);
+        
+        waiter.waiterGui = waiterGui;
+        customer.customerGui = customerGui;
+        
         person1.addRole(host);
         person2.addRole(cook);
+        person3.addRole(cashier);
+        person4.addRole(waiter);
+        person5.addRole(customer);
         
+        person1.roles.get(0).activate();
+        person2.roles.get(0).activate();
+        person3.roles.get(0).activate();
+        person4.roles.get(0).activate();
+        person5.roles.get(0).activate();
+        
+       customer.gotHungry();
         
         
         markets.add(market1);
@@ -109,9 +132,15 @@ public class RestaurantPanel extends JPanel implements ActionListener {
         //gui.animationPanel.addGui(hostGui);
         gui.animationPanel.addGui(cashierGui);
         gui.animationPanel.addGui(cookGui);
+        gui.animationPanel.addGui(customerGui);
+        gui.animationPanel.addGui(waiterGui);
+        
         cook.cookGui = cookGui;
         person1.startThread();
         person2.startThread();
+        person3.startThread();
+        person4.startThread();
+        person5.startThread();
         //cashier.startThread();
         for(MarketAgent market: markets) {
         	market.startThread();

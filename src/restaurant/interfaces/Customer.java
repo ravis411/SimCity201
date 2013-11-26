@@ -41,5 +41,14 @@ public interface Customer {
 	public abstract void msgSitAtTable(Menu menu);
 	public abstract void msgWaiterReadyToTakeOrder();
 	public abstract void msgWaiterReadyToRetakeOrder();
+	public abstract int getWaitingLocX();
+	public abstract void setWaitingLocX(int i);
+	public abstract void setWaitingLocY(int i);
+	public abstract void setWaiter(Waiter waiter);
+	public abstract void setTableX(int xCoor);
+	public abstract void setTableY(int yCoor);
+	public abstract void setTableNum(int table);
+	public abstract String getCustomerName();
+	public abstract void msgRestaurantFull();
 
 }

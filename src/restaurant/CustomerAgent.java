@@ -23,7 +23,7 @@ public class CustomerAgent extends Role implements Customer {
 	private String name;
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
-	private CustomerGui customerGui;
+	public CustomerGui customerGui;
 	private int tableNum = -1;
 	private int tableX = -1;
 	private int tableY = -1;
@@ -56,9 +56,8 @@ public class CustomerAgent extends Role implements Customer {
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public CustomerAgent(String name){
+	public CustomerAgent(){
 		super();
-		this.name = name;
 		
 		Random randNum = new Random();
         money = Double.valueOf(moneyForm.format(randNum.nextDouble()*(20.00)));

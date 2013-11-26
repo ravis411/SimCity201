@@ -24,7 +24,7 @@ public class HostAgent extends Role {
 	= new ArrayList<CustomerAgent>();
 	public List<WaiterAgent> waiters
 	= new ArrayList<WaiterAgent>();*/
-	private Vector<CustomerAgent> waitingCustomers = new Vector<CustomerAgent>();
+	private Vector<Customer> waitingCustomers = new Vector<Customer>();
 	private Vector<Waiter> waiters = new Vector<Waiter>();
 	public Collection<Table> tables;
 	int waitingCust = 0;
@@ -63,7 +63,7 @@ public class HostAgent extends Role {
 	}
 	// Messages
 
-	public void msgIWantFood(CustomerAgent cust) {
+	public void msgIWantFood(Customer cust) {
 		waitingCustomers.add(cust);
 		waitingCust++;
 		stateChanged();
@@ -139,7 +139,7 @@ public class HostAgent extends Role {
 
 	// Actions
 
-	private void getWaiter(CustomerAgent customer, int table, int xCoor, int yCoor) {
+	private void getWaiter(Customer customer, int table, int xCoor, int yCoor) {
 		int assignedWaiter = 0;
 		for(int i=0; i<waiters.size(); i++) {
 			if(waiters.get(i).getBreakStatus() == false) {
@@ -173,9 +173,9 @@ public class HostAgent extends Role {
 		requestedBreak = null;
 	}
 	
-	private void notifyCustomerOfWait(CustomerAgent cust) {
-		print(cust.getCustomerName() + ", the restaurant is full. There's a wait to be seated.");
-		cust.msgRestaurantFull();
+	private void notifyCustomerOfWait(Customer customer) {
+		print(customer.getCustomerName() + ", the restaurant is full. There's a wait to be seated.");
+		customer.msgRestaurantFull();
 	}
 	
 	//utilities
@@ -193,7 +193,7 @@ public class HostAgent extends Role {
 	}
 
 	private class Table {
-		CustomerAgent occupiedBy;
+		Customer occupiedBy;
 		int tableNumber;
 		int xCoor;
 		int yCoor;
@@ -208,15 +208,15 @@ public class HostAgent extends Role {
 			this.yCoor = yCoor;
 		}
 
-		void setOccupant(CustomerAgent cust) {
-			occupiedBy = cust;
+		void setOccupant(Customer customer) {
+			occupiedBy = customer;
 		}
 
 		void setUnoccupied() {
 			occupiedBy = null;
 		}
 
-		CustomerAgent getOccupant() {
+		Customer getOccupant() {
 			return occupiedBy;
 		}
 
