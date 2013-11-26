@@ -4,6 +4,8 @@ import restaurant.gui.CustomerGui;
 import restaurant.gui.RestaurantGui;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
+import restaurant.interfaces.Waiter;
+import Person.Role.Role;
 import agent.Agent;
 import restaurant.Menu;
 import restaurant.Menu.Dish;
@@ -17,11 +19,11 @@ import java.util.concurrent.Semaphore;
 /**
  * Restaurant customer agent.
  */
-public class CustomerAgent extends Agent implements Customer {
+public class CustomerAgent extends Role implements Customer {
 	private String name;
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
-	private CustomerGui customerGui;
+	public CustomerGui customerGui;
 	private int tableNum = -1;
 	private int tableX = -1;
 	private int tableY = -1;
@@ -36,7 +38,7 @@ public class CustomerAgent extends Agent implements Customer {
 
 	// agent correspondents
 	private HostAgent host;
-	private WaiterAgent waiter;
+	private Waiter waiter;
 	private Cashier cashier;
 
 	//    private boolean isHungry = false; //hack for gui
@@ -54,9 +56,8 @@ public class CustomerAgent extends Agent implements Customer {
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public CustomerAgent(String name){
+	public CustomerAgent(){
 		super();
-		this.name = name;
 		
 		Random randNum = new Random();
         money = Double.valueOf(moneyForm.format(randNum.nextDouble()*(20.00)));
@@ -69,8 +70,8 @@ public class CustomerAgent extends Agent implements Customer {
 		this.host = host;
 	}
 	
-	public void setWaiter(WaiterAgent waiter) {
-		this.waiter = waiter;
+	public void setWaiter(Waiter waiter2) {
+		this.waiter = waiter2;
 	}
 	
 	public void setCashier(Cashier cashier) {
@@ -159,7 +160,7 @@ public class CustomerAgent extends Agent implements Customer {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		//	CustomerAgent is a finite state machine
 		if (stayLeave == 1) {
 			LeaveBeforeSeated();
@@ -225,21 +226,21 @@ public class CustomerAgent extends Agent implements Customer {
 	// Actions
 
 	private void goToRestaurant() {
-		Do("Going to restaurant");
+		print("Going to restaurant");
 		host.msgIWantFood(this);//send our instance, so he can respond to us
 	}
 
 	private void SitDown() {
 		//Do("Waiting for host");
 		//if (host.atFrontDesk == true) {
-			Do("Being seated. Going to table");
+			print("Being seated. Going to table");
 			customerGui.DoGoToSeat(tableNum);
 		//}
 	}
 	
 	private void LookAtMenu() {
 		if(money >= 5.99) {
-			Do("Looking at menu");
+			print("Looking at menu");
 			timer.schedule(new TimerTask() {
 				public void run() {
 					print("Done looking at menu");
@@ -256,7 +257,7 @@ public class CustomerAgent extends Agent implements Customer {
 	}
 	
 	private void ReadyToOrder() {
-		Do("Ready to order");
+		print("Ready to order");
 		waiter.msgGoTakeOrder();
 	}
 	
@@ -280,7 +281,7 @@ public class CustomerAgent extends Agent implements Customer {
 	}
 
 	private void EatFood() {
-		Do("Eating Food");
+		print("Eating Food");
 		//This next complicated line creates and starts a timer thread.
 		//We schedule a deadline of getHungerLevel()*1000 milliseconds.
 		//When that time elapses, it will call back to the run routine
@@ -301,33 +302,32 @@ public class CustomerAgent extends Agent implements Customer {
 	}
 	
 	private void GoPayCheck() {
-		Do("Leaving table.");
+		print("Leaving table.");
 		waiter.msgLeavingTable(this);
 		customerGui.DoGoPay();
 		event = AgentEvent.goingToCashier;
 	}
 	
 	private void PayCheck() {
-		Do("Paying check.");
+		print("Paying check.");
 		cashier.msgPayingCheck(this, amountSpent);
 		event = AgentEvent.gaveCashierMoney;
 	}
 
 	private void LeaveTableEarly() {
-		Do("Leaving.");
+		print("Leaving.");
 		customerGui.DoExitRestaurant();
 		waiter.msgLeavingTable(this);
 		state = AgentState.LeavingEarly;
 	}
 	
 	private void LeaveRestaurant() {
-		Do("Leaving.");
+		print("Leaving.");
 		customerGui.DoExitRestaurant();
 		state = AgentState.Leaving;
 	}
 	
 	private void LeaveBeforeSeated() {
-		Do("I don't feel like waiting.");
 		customerGui.DoExitRestaurant();
 		state = AgentState.Leaving;
 		host.msgRemoveFromWaitlist(this);
@@ -418,6 +418,16 @@ public class CustomerAgent extends Agent implements Customer {
 	public void setWaitingLocY(int y) {
 		waitingLocY = y;
 		customerGui.waitingAreaPositionY(y);
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		return "RestaurantCustomerRole";
 	}
 }
 

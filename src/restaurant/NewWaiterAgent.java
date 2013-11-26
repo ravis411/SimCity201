@@ -22,7 +22,7 @@ import java.util.concurrent.Semaphore;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the WaiterAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public abstract class WaiterAgent extends Role implements Waiter {
+public class NewWaiterAgent extends Role implements Waiter {
 	/*public List<CustomerAgent> myCustomers
 	= new ArrayList<CustomerAgent>();*/
 	
@@ -43,6 +43,8 @@ public abstract class WaiterAgent extends Role implements Waiter {
 	private Menu menu = new Menu();
 	Timer timer = new Timer();
 	
+	private RevolvingStand revolvingStand = RevolvingStand.getInstance();
+	
 	public enum AgentState
 	{DoingNothing, AtFrontDesk, AtTable, AtKitchen, TakingOrder, TakeOrderToKitchen};
 	private AgentState state = AgentState.AtFrontDesk;//The start state
@@ -60,10 +62,8 @@ public abstract class WaiterAgent extends Role implements Waiter {
 
 	public WaiterGui waiterGui = null;
 
-	public WaiterAgent(String name) {
+	public NewWaiterAgent() {
 		super();
-
-		this.name = name;
 	}
 
 	public String getName() {
@@ -84,7 +84,7 @@ public abstract class WaiterAgent extends Role implements Waiter {
 	
 	//Messages
 	
-	public void msgSeatCustomer(CustomerAgent cust) {
+	public void msgSeatCustomer(Customer cust) {
 		myCustomers.add(new MyCustomer(cust));
 		event = AgentEvent.seatCustomer;
 		stateChanged();
@@ -95,7 +95,7 @@ public abstract class WaiterAgent extends Role implements Waiter {
 		stateChanged();
 	}
 	
-	public void msgTakeOrder(CustomerAgent c, int choice) {
+	public void msgTakeOrder(Customer c, int choice) {
 		for(int i=0; i<myCustomers.size(); i++) {
 			if(myCustomers.get(i).customer == c) {
 				myCustomers.get(i).setMealChoice(choice);
@@ -139,7 +139,7 @@ public abstract class WaiterAgent extends Role implements Waiter {
 		stateChanged();
 	}
 	
-	public void msgLeavingTable(CustomerAgent cust) {
+	public void msgLeavingTable(Customer cust) {
 		for(int i=0; i<myCustomers.size(); i++) {
 			if (cust.getTableNum() == myCustomers.get(i).customer.getTableNum()) {
 				print(cust + " leaving table " + (cust.getTableNum()+1));
@@ -148,7 +148,7 @@ public abstract class WaiterAgent extends Role implements Waiter {
 		stateChanged();
 	}
 	
-	public void msgOutOfFood(int menuItem, CustomerAgent c) {
+	public void msgOutOfFood(int menuItem, Customer c) {
 		print("We're out of " + menu.getDishName(menuItem) + "!");
 		for(int i=0; i<myCustomers.size(); i++) {
 			if(myCustomers.get(i).customer == c) {
@@ -230,8 +230,10 @@ public abstract class WaiterAgent extends Role implements Waiter {
 					return true;
 				}
 				if(myCustomers.get(i).customer.getState() == CustomerAgent.AgentState.WaitingForOrder && state == AgentState.TakeOrderToKitchen && myCustomers.get(i).customer.getEvent() == CustomerAgent.AgentEvent.order){
-					TakeOrderToCook(myCustomers.get(i));
-					return true;
+					if(!revolvingStand.isFull()){
+						TakeOrderToCook(myCustomers.get(i));
+						return true;
+					}
 				}
 				if(state == AgentState.AtTable) {
 					goToIdle();
@@ -335,7 +337,8 @@ public abstract class WaiterAgent extends Role implements Waiter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		cook.msgHereIsAnOrder(this, c.mealChoice, c.customer.getTableNum(), c.customer);
+		//cook.orders.add(new Order(this, c.mealChoice, c.customer.getTableNum(), c.customer));
+		revolvingStand.addIncomingOrder(this, c.customer.getTableNum(), c.mealChoice, c.customer);
 		c.customer.msgOrderOnItsWay();
 	}
 	
@@ -442,13 +445,13 @@ public abstract class WaiterAgent extends Role implements Waiter {
 	}
 
 	private class MyCustomer {
-		public CustomerAgent customer;
+		public Customer customer;
 		private int mealChoice = -1;
 		private boolean orderTaken = false;
 		
 		private CustomerState state = CustomerState.seated;
 		
-		MyCustomer(CustomerAgent c) {
+		MyCustomer(Customer c) {
 			customer = c;
 		}
 		
@@ -465,6 +468,18 @@ public abstract class WaiterAgent extends Role implements Waiter {
 			this.customer = customer;
 			this.amount = amount;
 		}
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return "NewWaiterRole";
 	}
 }
 
