@@ -1,7 +1,7 @@
 package restaurant.gui;
 
-import restaurant.CustomerAgent;
-import restaurant.HostAgent;
+import restaurant.RestaurantCustomerRole;
+import restaurant.HostRole;
 
 import javax.swing.*;
 

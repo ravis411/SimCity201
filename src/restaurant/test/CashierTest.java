@@ -1,7 +1,7 @@
 package restaurant.test;
 
 import junit.framework.TestCase;
-import restaurant.CashierAgent;
+import restaurant.CashierRole;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.MockCustomer;
 import restaurant.test.mock.MockMarket;
@@ -15,7 +15,7 @@ import restaurant.test.mock.MockWaiter;
 public class CashierTest extends TestCase
 {
         //these are instantiated for each test separately via the setUp() method.
-        CashierAgent cashier;
+        CashierRole cashier;
         MockWaiter waiter;
         MockCustomer customer;
         MockMarket market1;
@@ -29,7 +29,7 @@ public class CashierTest extends TestCase
          */
         public void setUp() throws Exception{
                 super.setUp();                
-                cashier = new CashierAgent("cashier");                
+                cashier = new CashierRole("cashier");                
                 customer = new MockCustomer("mockcustomer");                
                 waiter = new MockWaiter("mockwaiter");
                 market1 = new MockMarket("mockmarket 1");

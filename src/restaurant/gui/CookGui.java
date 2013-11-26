@@ -1,14 +1,14 @@
 package restaurant.gui;
 
-import restaurant.CookAgent;
-import restaurant.CustomerAgent;
-import restaurant.HostAgent;
+import restaurant.CookRole;
+import restaurant.RestaurantCustomerRole;
+import restaurant.HostRole;
 
 import java.awt.*;
 
 public class CookGui implements Gui {
 
-    private CookAgent agent = null;
+    private CookRole agent = null;
 
     private int xPos = 405, yPos = 80;//default waiter position
     private int xDestination = 405, yDestination = 80;//default start position
@@ -16,7 +16,7 @@ public class CookGui implements Gui {
     int plate = 0;
     int ingredients = 1;
 
-    public CookGui(CookAgent agent) {
+    public CookGui(CookRole agent) {
         this.agent = agent;
     }
 

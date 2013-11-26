@@ -42,7 +42,7 @@ public class MockBankTeller extends Mock implements BankTeller{
 			client.msgTransactionCompleted(0);
 		} else {
 			log.add(new LoggedEvent("Deposit has been accepted."));
-			client.msgTransactionCompleted(-2*a);
+			client.msgTransactionCompleted(-a);
 		}
 	}
 	@Override

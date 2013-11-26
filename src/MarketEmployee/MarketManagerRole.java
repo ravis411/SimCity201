@@ -93,6 +93,11 @@ public class MarketManagerRole extends Role implements MarketManager{
 		myOrders.add(new Order(foodType, amount,orderNum++, homePerson));
 		stateChanged();
 	}
+	/*public void msgMarketManagerFoodOrder(String foodType, int amount, CookRole cook)
+	{
+		myOrders.add(new Order(foodType, amount, cook);
+		stateChanged();
+	}*/
 	
 	public void msgMarketManagerHereIsAmountWeCanFulfill(String foodType, int FoodTypeAmount, int orderNumber){
 		
@@ -124,10 +129,7 @@ public class MarketManagerRole extends Role implements MarketManager{
 		atTruck.release();
 	}
 	
-//	void msgMarketManagerFoodOrder(String foodType, int amount, Cook cook)
-	//{
-		//myOrders.add(new Order(foodType, amount, cook);
-//	}
+	
 	/*
 	msgMarketManagerFoodOrder(String foodType, int amount, BankManager bankManager)
 	{

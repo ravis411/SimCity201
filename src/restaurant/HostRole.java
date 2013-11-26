@@ -16,7 +16,7 @@ import java.util.concurrent.Semaphore;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class HostAgent extends Role {
+public class HostRole extends Role {
 	static final int NTABLES = 4;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
@@ -36,7 +36,7 @@ public class HostAgent extends Role {
 
 	public HostGui hostGui = null;
 
-	public HostAgent() {
+	public HostRole() {
 		super();
 
 		// make some tables
@@ -90,7 +90,7 @@ public class HostAgent extends Role {
 		stateChanged();
 	}
 	
-	public void msgRemoveFromWaitlist(CustomerAgent c) {
+	public void msgRemoveFromWaitlist(RestaurantCustomerRole c) {
 		for(int i=0; i<waitingCustomers.size(); i++) {
 			if(waitingCustomers.get(i) == c) {
 				waitingCustomers.remove(i);

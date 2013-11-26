@@ -1,21 +1,21 @@
 package restaurant.gui;
 
 
-import restaurant.CustomerAgent;
-import restaurant.HostAgent;
+import restaurant.RestaurantCustomerRole;
+import restaurant.HostRole;
 import restaurant.WaiterAgent;
-import restaurant.CashierAgent;
+import restaurant.CashierRole;
 
 import java.awt.*;
 
 public class CashierGui implements Gui {
 
-    private CashierAgent agent = null;
+    private CashierRole agent = null;
 
     private int xPos = 20, yPos = 100;//default waiter position
     //private int xDestination = -20, yDestination = -20;//default start position
 
-    public CashierGui(CashierAgent agent) {
+    public CashierGui(CashierRole agent) {
         this.agent = agent;
     }
 

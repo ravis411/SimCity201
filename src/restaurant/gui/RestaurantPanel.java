@@ -13,12 +13,12 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import restaurant.CashierAgent;
-import restaurant.CookAgent;
-import restaurant.CustomerAgent;
-import restaurant.HostAgent;
-import restaurant.MarketAgent;
-import restaurant.OldWaiterAgent;
+import restaurant.CashierRole;
+import restaurant.CookRole;
+import restaurant.RestaurantCustomerRole;
+import restaurant.HostRole;
+import restaurant.MarketRole;
+import restaurant.OldWaiterRole;
 import restaurant.WaiterAgent;
 import restaurant.interfaces.Waiter;
 import Person.PersonAgent;
@@ -38,26 +38,26 @@ public class RestaurantPanel extends JPanel implements ActionListener {
 	private PersonAgent person5 = new PersonAgent("Person 5",null);
 	private PersonAgent person6 = new PersonAgent("Person 6",null);
 	
-    private HostAgent host = new HostAgent();
+    private HostRole host = new HostRole();
     private HostGui hostGui = new HostGui(host);
-    private CookAgent cook = new CookAgent();
+    private CookRole cook = new CookRole();
     private CookGui cookGui = new CookGui(cook);
-    private CashierAgent cashier = new CashierAgent("Cashier");
+    private CashierRole cashier = new CashierRole("Cashier");
     private CashierGui cashierGui = new CashierGui(cashier);
-    private OldWaiterAgent waiter = new OldWaiterAgent();
+    private OldWaiterRole waiter = new OldWaiterRole();
     private WaiterGui waiterGui = new WaiterGui(waiter,gui,150,10);
-    private CustomerAgent customer = new CustomerAgent();
+    private RestaurantCustomerRole customer = new RestaurantCustomerRole();
     private CustomerGui customerGui = new CustomerGui(customer,gui);
     
     
     
-    private MarketAgent market1 = new MarketAgent("Market 1", cook, cashier);
-    private MarketAgent market2 = new MarketAgent("Market 2", cook, cashier);
-    private MarketAgent market3 = new MarketAgent("Market 3", cook, cashier);
+    private MarketRole market1 = new MarketRole("Market 1", cook, cashier);
+    private MarketRole market2 = new MarketRole("Market 2", cook, cashier);
+    private MarketRole market3 = new MarketRole("Market 3", cook, cashier);
 
-    private Vector<CustomerAgent> customers = new Vector<CustomerAgent>();
+    private Vector<RestaurantCustomerRole> customers = new Vector<RestaurantCustomerRole>();
     private Vector<WaiterAgent> waiters = new Vector<WaiterAgent>();
-    private Vector<MarketAgent> markets = new Vector<MarketAgent>();
+    private Vector<MarketRole> markets = new Vector<MarketRole>();
 
     private JPanel restLabel = new JPanel();
     private ListPanel customerPanel = new ListPanel(this, "Customers");
@@ -130,7 +130,7 @@ public class RestaurantPanel extends JPanel implements ActionListener {
         markets.add(market2);
         markets.add(market3);
         
-        for(MarketAgent market: markets) {
+        for(MarketRole market: markets) {
         	cook.addMarket(market);
     	}
         
@@ -147,7 +147,7 @@ public class RestaurantPanel extends JPanel implements ActionListener {
         person4.startThread();
         person5.startThread();
         //cashier.startThread();
-        for(MarketAgent market: markets) {
+        for(MarketRole market: markets) {
         	market.startThread();
     	}
         
@@ -222,7 +222,7 @@ public class RestaurantPanel extends JPanel implements ActionListener {
         if (type.equals("Customers")) {
 
             for (int i = 0; i < customers.size(); i++) {
-                CustomerAgent temp = customers.get(i);
+                RestaurantCustomerRole temp = customers.get(i);
                 if (temp.getName() == name)
                     gui.updateInfoPanel(temp);
             }
@@ -232,7 +232,7 @@ public class RestaurantPanel extends JPanel implements ActionListener {
     public void makeHungry(String name, int index) {
     	customerPanel.disableCheckBoxAt(index);
     	for (int i = 0; i < customers.size(); i++) {
-            CustomerAgent temp = customers.get(i);
+            RestaurantCustomerRole temp = customers.get(i);
             if (temp.getName() == name)
                 gui.Hungerize(temp);
         }

@@ -5,8 +5,8 @@ import agent.Agent;
 import restaurant.gui.HostGui;
 import restaurant.Order;
 import restaurant.Menu;
-import restaurant.CustomerAgent.AgentEvent;
-import restaurant.CustomerAgent.AgentState;
+import restaurant.RestaurantCustomerRole.AgentEvent;
+import restaurant.RestaurantCustomerRole.AgentState;
 import restaurant.Menu.Dish;
 import restaurant.gui.WaiterGui;
 import restaurant.interfaces.Customer;
@@ -54,9 +54,9 @@ public abstract class WaiterAgent extends Role implements Waiter {
 	public enum CustomerState
 	{waiting, seated, ordered, needToReorder};
 	
-	private CookAgent cook;
-	private HostAgent host;
-	private CashierAgent cashier;
+	private CookRole cook;
+	private HostRole host;
+	private CashierRole cashier;
 
 	public WaiterGui waiterGui = null;
 
@@ -70,21 +70,21 @@ public abstract class WaiterAgent extends Role implements Waiter {
 		return name;
 	}
 	
-	public void setCook(CookAgent cook) {
+	public void setCook(CookRole cook) {
 		this.cook = cook;
 	}
 	
-	public void setHost(HostAgent host) {
+	public void setHost(HostRole host) {
 		this.host = host;
 	}
 	
-	public void setCashier(CashierAgent cashier) {
+	public void setCashier(CashierRole cashier) {
 		this.cashier = cashier;
 	}
 	
 	//Messages
 	
-	public void msgSeatCustomer(CustomerAgent cust) {
+	public void msgSeatCustomer(RestaurantCustomerRole cust) {
 		myCustomers.add(new MyCustomer(cust));
 		event = AgentEvent.seatCustomer;
 		stateChanged();
@@ -95,7 +95,7 @@ public abstract class WaiterAgent extends Role implements Waiter {
 		stateChanged();
 	}
 	
-	public void msgTakeOrder(CustomerAgent c, int choice) {
+	public void msgTakeOrder(RestaurantCustomerRole c, int choice) {
 		for(int i=0; i<myCustomers.size(); i++) {
 			if(myCustomers.get(i).customer == c) {
 				myCustomers.get(i).setMealChoice(choice);
@@ -139,7 +139,7 @@ public abstract class WaiterAgent extends Role implements Waiter {
 		stateChanged();
 	}
 	
-	public void msgLeavingTable(CustomerAgent cust) {
+	public void msgLeavingTable(RestaurantCustomerRole cust) {
 		for(int i=0; i<myCustomers.size(); i++) {
 			if (cust.getTableNum() == myCustomers.get(i).customer.getTableNum()) {
 				print(cust + " leaving table " + (cust.getTableNum()+1));
@@ -148,7 +148,7 @@ public abstract class WaiterAgent extends Role implements Waiter {
 		stateChanged();
 	}
 	
-	public void msgOutOfFood(int menuItem, CustomerAgent c) {
+	public void msgOutOfFood(int menuItem, RestaurantCustomerRole c) {
 		print("We're out of " + menu.getDishName(menuItem) + "!");
 		for(int i=0; i<myCustomers.size(); i++) {
 			if(myCustomers.get(i).customer == c) {
@@ -205,11 +205,11 @@ public abstract class WaiterAgent extends Role implements Waiter {
 				return true;
 			}
 			for(int i=0; i<myCustomers.size(); i++) {
-				if(myCustomers.get(i).customer.getState() == CustomerAgent.AgentState.LeavingEarly) {
+				if(myCustomers.get(i).customer.getState() == RestaurantCustomerRole.AgentState.LeavingEarly) {
 					CustomerLeaving(myCustomers.get(i));
 					return true;
 				}
-				if(myCustomers.get(i).customer.getState() == CustomerAgent.AgentState.Paying) {
+				if(myCustomers.get(i).customer.getState() == RestaurantCustomerRole.AgentState.Paying) {
 					CustomerLeaving(myCustomers.get(i));
 					return true;
 				}
@@ -217,19 +217,19 @@ public abstract class WaiterAgent extends Role implements Waiter {
 					GoRetakeOrder(myCustomers.get(i));
 					return true;
 				}
-				if(myCustomers.get(i).customer.getState() == CustomerAgent.AgentState.WaitingInRestaurant && state != AgentState.AtFrontDesk && event == AgentEvent.seatCustomer) {
+				if(myCustomers.get(i).customer.getState() == RestaurantCustomerRole.AgentState.WaitingInRestaurant && state != AgentState.AtFrontDesk && event == AgentEvent.seatCustomer) {
 					goToFrontDesk();
 					return true;
 				}
-				if(myCustomers.get(i).customer.getState() == CustomerAgent.AgentState.WaitingInRestaurant && state == AgentState.AtFrontDesk) {
+				if(myCustomers.get(i).customer.getState() == RestaurantCustomerRole.AgentState.WaitingInRestaurant && state == AgentState.AtFrontDesk) {
 					seatCustomer(myCustomers.get(i));
 					return true;
 				}
-				if(myCustomers.get(i).customer.getState() == CustomerAgent.AgentState.WaitingToOrder && myCustomers.get(i).customer.getEvent() == CustomerAgent.AgentEvent.readyToOrder) {
+				if(myCustomers.get(i).customer.getState() == RestaurantCustomerRole.AgentState.WaitingToOrder && myCustomers.get(i).customer.getEvent() == RestaurantCustomerRole.AgentEvent.readyToOrder) {
 					GoTakeOrder(myCustomers.get(i));
 					return true;
 				}
-				if(myCustomers.get(i).customer.getState() == CustomerAgent.AgentState.WaitingForOrder && state == AgentState.TakeOrderToKitchen && myCustomers.get(i).customer.getEvent() == CustomerAgent.AgentEvent.order){
+				if(myCustomers.get(i).customer.getState() == RestaurantCustomerRole.AgentState.WaitingForOrder && state == AgentState.TakeOrderToKitchen && myCustomers.get(i).customer.getEvent() == RestaurantCustomerRole.AgentEvent.order){
 					TakeOrderToCook(myCustomers.get(i));
 					return true;
 				}
@@ -442,13 +442,13 @@ public abstract class WaiterAgent extends Role implements Waiter {
 	}
 
 	private class MyCustomer {
-		public CustomerAgent customer;
+		public RestaurantCustomerRole customer;
 		private int mealChoice = -1;
 		private boolean orderTaken = false;
 		
 		private CustomerState state = CustomerState.seated;
 		
-		MyCustomer(CustomerAgent c) {
+		MyCustomer(RestaurantCustomerRole c) {
 			customer = c;
 		}
 		

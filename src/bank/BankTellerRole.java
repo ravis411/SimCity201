@@ -19,13 +19,13 @@ import Person.Role.Role;
  */
 
 public class BankTellerRole extends Role implements Employee , BankTeller{
-	private BankClient myClient;
+	public BankClient myClient;
 	private int LineNum = new Random().nextInt(3)+1; //from 1 to n, with 5 being the loan line, should be assigned in creation
 	public enum requestState {pending, withdrawal, deposit, open, none, notBeingHelped};
 	public enum location {entrance, station, breakRoom};
 	public location locationState = location.entrance;
-	private requestState state = requestState.none;
-	double transactionAmount;
+	public requestState state = requestState.none;
+	public double transactionAmount;
 	private List<Account> Accounts = Database.INSTANCE.sendDatabase();
 	private String name;
 	private NumberAnnouncer announcer;

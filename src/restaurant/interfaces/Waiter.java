@@ -1,6 +1,6 @@
 package restaurant.interfaces;
 
-import restaurant.CustomerAgent;
+import restaurant.RestaurantCustomerRole;
 import restaurant.Order;
 
 //import restaurant.WaiterAgent.Check;
