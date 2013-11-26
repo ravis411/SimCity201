@@ -45,27 +45,44 @@ public class LoanTellerRole extends Role implements Employee{
 	}
 
 	//	Messages
+	/**
+	 * Message stating that the teller is at his station and ready to take orders. Releases the atStation semaphore.
+	 */
 	public void msgAtStation(){
 		atStation.release();
 		locationState = location.station;
 		stateChanged();
 	}
-
+	/**
+	 * Message that releases the atIntermediate semaphore. Only for aesthetics - makes it so the teller doesn't move through objects
+	 */
 	public void msgAtIntermediate(){
 		atIntermediate.release();
 		stateChanged();
 	}
-
+	/**
+	 * message received by a bankClientRole that there is someone at the desk. 
+	 * @param b - bankClientRole being worked with
+	 */
 	public void msgInLine(BankClientRole b){
 			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, this.myPerson.getName(),"Greetings customer");
 		myClient = b;
 		state = requestState.notBeingHelped;
 		stateChanged();
 	}
+	
+	/**
+	 * message received by bankClientRole asking to open an account.
+	 */
 	public void msgOpenAccount(){
 		state = requestState.open;
 		stateChanged();
 	}
+	/**
+	 * message received by a bankClientRole asking for a loan
+	 * @param a - amount of money
+	 * @param age - age of client
+	 */
 	public void msgLoan(double a, int age){
 		transactionAmount = a;
 		myClientAge = age;
@@ -100,6 +117,10 @@ public class LoanTellerRole extends Role implements Employee{
 
 
 	//	Actions
+	/**
+	 * After getting to the intermediate position, sends the teller to the right station. After he gets there, 
+	 * sends a message to the number announcer enabling him to increment the announcer.
+	 */
 	private void goToStation(){
 		try {
 			atIntermediate.acquire();
@@ -116,11 +137,20 @@ public class LoanTellerRole extends Role implements Employee{
 		announcer.msgLoanComplete();
 	}
 
+	/**
+	 * Greeting the client
+	 * @param b - bankClientRole
+	 */
 	private void receiveClient(BankClientRole b){
 			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, this.myPerson.getName(),"Recieving new client");
 		b.msgMayIHelpYou();
 		state = requestState.pending;
 	}
+	/**
+	 * Processes a loan. If the age of the client is less than 18 or above 85, the client has enough money in his account, or he has an outstanding loan, the loan is denied. 
+	 * Else it is approved. 
+	 * @param b - bankClientRole
+	 */
 	private void processLoan(BankClientRole b){
 			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, this.myPerson.getName(),"Hold on a moment.");
 		for (Account a : Accounts){
@@ -149,6 +179,10 @@ public class LoanTellerRole extends Role implements Employee{
 			}
 		}
 	}
+	/**
+	 * Opens new account
+	 * @param b - bankClientRole
+	 */
 	private void openAccount(BankClientRole b){
 		Account a = new Account(b, 0);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_LOAN_TELLER, this.myPerson.getName(),"New bank account has been opened for " + b);
