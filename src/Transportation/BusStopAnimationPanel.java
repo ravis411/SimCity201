@@ -20,6 +20,10 @@ public class BusStopAnimationPanel extends JPanel implements GuiPanel{
 	
 	
 	
+	
+	
+	
+	
 	@Override
 	public void addGuiForRole(Role r) {
 		// TODO Auto-generated method stub

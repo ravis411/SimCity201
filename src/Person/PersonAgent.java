@@ -13,6 +13,9 @@ import java.util.Queue;
 import residence.HomeRole;
 import trace.AlertLog;
 import trace.AlertTag;
+import MarketEmployee.MarketCustomerRole;
+import MarketEmployee.MarketEmployeeRole;
+import MarketEmployee.MarketManagerRole;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
 import agent.Agent;
@@ -67,6 +70,49 @@ public class PersonAgent extends Agent {
 	private PersonGui gui;
 	
 	public ResidenceBuildingPanel home;
+	
+	public PersonAgent(String name, ResidenceBuildingPanel home, Role initialRole, String roleLocation){
+		SSN = counter++;
+		this.name = name;
+		//initializations
+		money = STARTING_MONEY;
+		moneyNeeded = 0;
+		loanAmount = 0;
+		friends = new ArrayList<PersonAgent>();
+		roles = new ArrayList<Role>();
+		hungerLevel = 0;
+		state=PersonState.GettingFood;
+		realTime = null;
+		parties = new ArrayList<Party>();
+		prefs = new Preferences();
+		this.home = home;
+		
+		backpack = new ArrayList<Item>();
+		itemsNeeded = new ArrayDeque<Item>();
+	}
+	
+	/**
+	 * @precondition must be called after setGui
+	 * @param r
+	 * @param roleLocation
+	 */
+	public void setInitialRole(Role r, String roleLocation){
+		if(r instanceof HomeRole){
+			HomeRole hr = (HomeRole) findRole("HomeRole");
+			if(name.equals("Person 1"))
+				hr.msgMakeFood();
+			else
+				hr.msgTired();
+			gui.setStartingStates(home.getName());
+			BuildingList.findBuildingWithName(home.getName()).addRole(hr);
+			hr.activate();
+		}else{
+			addRole(r);
+			//gui.setStartingStates(roleLocation);
+			gui.setStartingStates(roleLocation);
+			BuildingList.findBuildingWithName(roleLocation).addRole(r);
+		}
+	}
 
 	public PersonAgent(String name, ResidenceBuildingPanel home){
 		SSN = counter++;
@@ -177,12 +223,15 @@ public class PersonAgent extends Agent {
 			if(bo.name.equals(object)){
 				bo.quantity += quantity;
 				added = true;
+				print("Added "+ quantity +" "+ object+ " to backpack. Quantity now: "+bo.quantity);
 				break;
 			}
 		}
 		
 		if(!added){
 			backpack.add(new Item(object, quantity));
+			print("Added "+ quantity +" "+ object+ " to backpack. Quantity now: "+quantity);
+
 		}
 		
 		stateChanged();
@@ -241,7 +290,9 @@ public class PersonAgent extends Agent {
 			return true;
 		}
 		
+
 		if(state != PersonState.Idle && state != PersonState.Working){
+
 			GoHome();
 		}
 		
@@ -453,6 +504,98 @@ public class PersonAgent extends Agent {
 //		  role.activate();
 //		  
 //		  role.msgMakeFood();
+
+//	  
+//	  GoToLocation("Bank", transport);
+//	  bankClientRole role = (bankClientRole) findRole(Role.BANK_CLIENT_ROLE);
+//	  if(role == null){
+//		  role = (bankClientRole) RoleFactory.roleFromString(Role.BANK_CLIENT_ROLE);
+//		  addRole(role);
+//	  }
+	  
+//	  moneyNeeded = 40.00;
+//	  role.setIntent(bankClientRole.withdraw);
+//	  role.activate();
+	/*  if(getName().equals("Person 7")){
+		  GoToLocation("Market 1", transport);
+		  
+		  MarketCustomerRole role = (MarketCustomerRole) findRole(Role.MARKET_CUSTOMER_ROLE);
+		  if(role == null){  
+			  role = (MarketCustomerRole) RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
+			  addRole(role);
+		  }
+		  BuildingList.findBuildingWithName("Market 1").addRole(role);
+		  role.activate();
+	  }
+	  if(getName().equals("Person 6")){
+		  GoToLocation("Market 1", transport);
+		  
+		  MarketCustomerRole role = (MarketCustomerRole) findRole(Role.MARKET_CUSTOMER_ROLE);
+		  if(role == null){  
+			  role = (MarketCustomerRole) RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
+			  addRole(role);
+		  }
+		  BuildingList.findBuildingWithName("Market 1").addRole(role);
+		  role.activate();
+	  }
+	  if(getName().equals("Person 3")){
+		  GoToLocation("Market 1", transport);
+		  
+		  MarketCustomerRole role = (MarketCustomerRole) findRole(Role.MARKET_CUSTOMER_ROLE);
+		  if(role == null){  
+			  role = (MarketCustomerRole) RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
+			  addRole(role);
+		  }
+		  BuildingList.findBuildingWithName("Market 1").addRole(role);
+		  role.activate();
+	  }
+	  if(getName().equals("Person 5")){
+		  GoToLocation("Market 1", transport);
+		  
+		  MarketEmployeeRole role = (MarketEmployeeRole) findRole(Role.MARKET_EMPLOYEE_ROLE);
+		  if(role == null){  
+			  role = (MarketEmployeeRole) RoleFactory.roleFromString(Role.MARKET_EMPLOYEE_ROLE);
+			  addRole(role);
+		  }
+		  BuildingList.findBuildingWithName("Market 1").addRole(role);
+		  role.activate();
+	  }
+	  if(getName().equals("Person 4")){
+		  GoToLocation("Market 1", transport);
+		  
+		  MarketEmployeeRole role = (MarketEmployeeRole) findRole(Role.MARKET_EMPLOYEE_ROLE);
+		  if(role == null){  
+			  role = (MarketEmployeeRole) RoleFactory.roleFromString(Role.MARKET_EMPLOYEE_ROLE);
+			  addRole(role);
+		  }
+		  BuildingList.findBuildingWithName("Market 1").addRole(role);
+		  role.activate();
+	  }
+	  if(getName().equals("Person 2")){
+		  GoToLocation("Market 1", transport);
+		  
+		  MarketEmployeeRole role = (MarketEmployeeRole) findRole(Role.MARKET_EMPLOYEE_ROLE);
+		  if(role == null){  
+			  role = (MarketEmployeeRole) RoleFactory.roleFromString(Role.MARKET_EMPLOYEE_ROLE);
+			  addRole(role);
+		  }
+		  BuildingList.findBuildingWithName("Market 1").addRole(role);
+		  role.activate();
+	  }
+	  if(getName().equals("Person 1")){
+		  GoToLocation("Market 1", transport);
+		  
+		  MarketManagerRole role = (MarketManagerRole) findRole(Role.MARKET_MANAGER_ROLE);
+		  if(role == null){  
+			  role = (MarketManagerRole) RoleFactory.roleFromString(Role.MARKET_MANAGER_ROLE);
+			  addRole(role);
+		  }
+		  BuildingList.findBuildingWithName("Market 1").addRole(role);
+		  role.activate();
+	  }
+	  */
+
+	  
 	  
 	  GoToLocation("Bank", transport);
 	  
@@ -467,6 +610,7 @@ public class PersonAgent extends Agent {
 	  role.setIntent(BankClientRole.withdraw);
 	  role.activate();
 	  
+
 	}
 		  
 	//------------------------DO XYZ FUNCTIONS----------------------//
@@ -696,6 +840,9 @@ public class PersonAgent extends Agent {
 	
 	public void setGui(PersonGui gui){
 		this.gui = gui;
+	}
+	public PersonGui getPersonGui(){
+		return this.gui;
 	}
 	
 	public String toString(){

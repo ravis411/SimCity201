@@ -3,6 +3,7 @@ package residence;
 import Person.PersonAgent;
 import Person.Role.Role;
 import agent.Agent;
+import building.BuildingList;
 import residence.ApartmentManagerRole.AgentEvent;
 import residence.gui.HomeRoleGui;
 import residence.interfaces.*;
@@ -23,6 +24,7 @@ public class HomeRole extends Role implements Home {
 
 	public boolean leaveHome = false;
 	public boolean enterHome = false;
+	public boolean callMarket = false;
 
 	
 	//private Map <String, Integer> inventory = new HashMap<String, Integer>();
@@ -259,23 +261,43 @@ public class HomeRole extends Role implements Home {
 		5000);
 	}
 	private void goToMarket (Item item) {
-		event = AgentEvent.leaving;
-		gui.DoGoToCenter();
-		try {
-			atCenter.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(callMarket == true) {
+			gui.DoGoToCenter();
+			try {
+				atCenter.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			print("Low on " + item.name + ". I'm calling the market.");
+			List<Role> inhabitants = BuildingList.findBuildingWithName("Market 1").getInhabitants();
+			for(Role r : inhabitants) {
+				if (r.getNameOfRole() == "MARKET_MANAGER_ROLE") {
+					MarketManagerRole mr = r;
+					mr.msgMarketManagerFoodOrder("Cooking Ingredient", 5, this);
+				}
+			}
 		}
-		print("Low on " + item.name + ". I'm going to the market.");
-		gui.DoGoToFrontDoor();
-		try {
-			atFrontDoor.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		else if(callMarket == false) {
+			event = AgentEvent.leaving;
+			gui.DoGoToCenter();
+			try {
+				atCenter.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			print("Low on " + item.name + ". I'm going to the market.");
+			gui.DoGoToFrontDoor();
+			try {
+				atFrontDoor.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			myPerson.msgGoToMarket(item.name);
+			callMarket = true;
 		}
-		myPerson.msgGoToMarket(item.name);
 	}
 	private void fileWorkOrder (HomeFeature brokenFeature) {
 		landlord.msgBrokenFeature(brokenFeature.name, this);

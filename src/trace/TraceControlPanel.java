@@ -127,9 +127,11 @@ public class TraceControlPanel extends Panel implements ActionListener {
 			else if(c == showVehicle){
 				if(c.isSelected()){
 					panel.showAlertsWithTag(AlertTag.VEHICLE_GUI);
+					panel.showAlertsWithTag(AlertTag.BUS_STOP);
 				}
 				else{
 					panel.hideAlertsWithTag(AlertTag.VEHICLE_GUI);
+					panel.hideAlertsWithTag(AlertTag.BUS_STOP);
 					showAll.setSelected(false);
 				}
 			}

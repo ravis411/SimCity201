@@ -27,4 +27,10 @@ public interface LoanTeller {
 	 */
 	public void msgLoan(double a, int age, boolean hl);
 
+	/**
+	 * message received by a bankClientRole asking to repay a loan
+	 * @param a - amount of money offered
+	 * @param m - amount of money to be repaid
+	 */
+	public void msgRepay(double a, double m);
 }

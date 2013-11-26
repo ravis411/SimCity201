@@ -1,13 +1,27 @@
 package restaurant.gui;
 
+
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import restaurant.CustomerAgent;
 import restaurant.WaiterAgent;
+import restaurant.interfaces.Waiter;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.File;
+import restaurant.CustomerAgent;
+import restaurant.WaiterAgent;
+import restaurant.interfaces.Waiter;
 
 /**
  * Main GUI class.
@@ -211,14 +225,15 @@ public class RestaurantGui extends JFrame implements ActionListener {
        //     if (c.equals(cust)) {
                 //stateCB.setEnabled(true);
                 //stateCB.setSelected(false);
-            	restPanel.enableCheckBox(c);
+            	//restPanel.enableCheckBox(c);
             //}
         //}
     }
     
     
-    public void setWaiterEnabled(WaiterAgent w) {
-    	restPanel.enableCheckBox(w);
+    public void setWaiterEnabled(Waiter w) {
+
+    	//restPanel.enableCheckBox(w);
     }
     
     /**

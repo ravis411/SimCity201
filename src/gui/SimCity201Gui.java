@@ -7,7 +7,10 @@ import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import trace.*;
+import trace.AlertLog;
+import trace.AlertTag;
+import trace.TraceControlPanel;
+import trace.TracePanel;
 
 
 
@@ -15,7 +18,7 @@ import trace.*;
 
 // If the program is lagging or runs out of memory.
 //It may help to add these to VM Arguments. Run -> Run Configurations -> Arguments -> VM Arguments.
-//-Xms2048M -Xmx2048M -Xss2048
+//-Xms2048M -Xmx2048M -Xss2048M //Or maybe just the first two
 
 
 
