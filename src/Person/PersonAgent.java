@@ -101,10 +101,9 @@ public class PersonAgent extends Agent {
 	public void setInitialRole(Role r, String roleLocation){
 		if(r instanceof HomeRole){
 			HomeRole hr = (HomeRole) findRole("HomeRole");
-			if(name.equals("Person 1"))
+			//if(name.equals("Person 1"))
 				hr.msgMakeFood();
-			else
-				hr.msgTired();
+
 			gui.setStartingStates(home.getName());
 			BuildingList.findBuildingWithName(home.getName()).addRole(hr);
 			hr.activate();
