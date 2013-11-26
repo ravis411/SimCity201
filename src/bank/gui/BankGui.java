@@ -90,6 +90,8 @@ public class BankGui extends JFrame implements ActionListener {
         animationPanel.addGui(clientGui);
         clientRole.setAnnouncer(announcer);
         clientRole.setGui(clientGui);
+        clientRole.setIntent("deposit");
+        client.setMoney(100);
         clientRole.getPerson().startThread();
    //     clientRole.setIntent("deposit");
 

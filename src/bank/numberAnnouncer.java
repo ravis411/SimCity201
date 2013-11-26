@@ -59,6 +59,7 @@ public class numberAnnouncer extends Agent{
 				b.msgCallingTicket(tellerNumber, doneTeller, openTeller.peek());
 			}
 		}
+		state = numberState.pending;
 	}
 
 	public String getName() {

@@ -213,7 +213,7 @@ public class bankClientRole extends Role {
 			e.printStackTrace();
 		}
 //		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Arrived at line, the teller's myPerson.getName() is " + teller);
-		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Arrived at line, the teller's myPerson.getName() is " + teller);		
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Arrived at line, the teller's name is " + teller);		
 		teller.msgInLine(this);
 		state2 = inLineState.atDesk;
 	}
@@ -224,7 +224,7 @@ public class bankClientRole extends Role {
 		} catch(InterruptedException e){
 			e.printStackTrace();
 		}
-		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Arrived at line, the teller's myPerson.getName() is " + teller);		
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Arrived at line, the teller's name is " + teller);		
 		loanTeller.msgInLine(this);
 		state2 = inLineState.atDesk;
 	}
@@ -241,13 +241,13 @@ public class bankClientRole extends Role {
 		state2 = inLineState.transactionProcessing;
 	}
 	private void IWantToDeposit(){
-		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to deposit myPerson.getMoney().");
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to deposit " + requestAmount);
 		teller.msgDeposit(requestAmount);
 		state2 = inLineState.transactionProcessing;
 
 	}
 	private void IWantToWithdraw(){
-		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to withdraw myPerson.getMoney().");
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want to withdraw money.");
 		teller.msgWithdraw(requestAmount);
 		state2 = inLineState.transactionProcessing;
 
@@ -315,7 +315,8 @@ public class bankClientRole extends Role {
 //			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + loanTicketNum);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
 		}
-		this.activate();
+        this.activate();
+
 		/*
 		//hack to ensure there are at least some bank accounts at simulation start
 		if (existsBankAccount > 4){
