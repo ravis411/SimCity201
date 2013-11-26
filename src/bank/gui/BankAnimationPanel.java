@@ -85,6 +85,11 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		repaint();  //Will have paintComponent called
+		for(Gui gui : guis) {
+			if (gui.isPresent()) {
+				gui.updatePosition();
+			}
+		}
 	}
 
 	@Override
@@ -131,11 +136,7 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 		g2.drawString("Entrance",700,40);
 		g2.drawString("Entrance", 700, 370);
 		
-		for(Gui gui : guis) {
-			if (gui.isPresent()) {
-				gui.updatePosition();
-			}
-		}
+		
 
 		for(Gui gui : guis) {
 			if (gui.isPresent()) {
