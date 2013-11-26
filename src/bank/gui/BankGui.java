@@ -30,14 +30,15 @@ public class BankGui extends JFrame implements ActionListener {
     private PersonAgent loanTellerPerson= new PersonAgent("Harry", null);
     private loanTellerRole loanTellereRole= new loanTellerRole();
     private numberAnnouncer announcer = new numberAnnouncer("NumberBot");
+    private loanNumberAnnouncer loanAnnouncer = new loanNumberAnnouncer("LoanBot");
     
     
     //test
-//    private PersonAgent client = new PersonAgent("Test client", null);
+    private PersonAgent client = new PersonAgent("Test client", null);
     private PersonAgent teller = new PersonAgent("Test teller", null);
-//    private bankClientRole clientRole = new bankClientRole(client.getName(),"deposit",100);
+    private bankClientRole clientRole = new bankClientRole();
     private bankTellerRole tellerRole = new bankTellerRole(teller.getName(),1);
-//    private ClientGui clientGui = new ClientGui(clientRole, this);
+    private ClientGui clientGui = new ClientGui(clientRole, this);
     private TellerGui tellerGui = new TellerGui(tellerRole, this, tellerRole.getLine());
     private LoanGui loanGui = new LoanGui(loanTellereRole, this);
     
@@ -58,7 +59,7 @@ public class BankGui extends JFrame implements ActionListener {
 
         setLayout(new BorderLayout());
         announcer.startThread();
-
+        loanAnnouncer.startThread();
         Dimension marketAnimationFrameDim = new Dimension((WINDOWX), (WINDOWY));
         setPreferredSize(marketAnimationFrameDim);
         setMinimumSize(marketAnimationFrameDim);
@@ -83,24 +84,32 @@ public class BankGui extends JFrame implements ActionListener {
         tellerRole.setGui(tellerGui);
         tellerRole.activate();
         tellerRole.getPerson().startThread();
- /*       
-        client.addRole(clientRole);
-        clientRole.setPerson(client);
-        animationPanel.addGui(clientGui);
-        clientRole.setAnnouncer(announcer);
-        clientRole.setGui(clientGui);
-        clientRole.activate();
-        clientRole.getPerson().startThread();
-   */     
+        
+
+        
+        
+        
+
         loanTellerPerson.addRole(loanTellereRole);
         loanTellereRole.setPerson(loanTellerPerson);
         animationPanel.addGui(loanGui);
-        loanTellereRole.setAnnouncer(announcer);
+        loanTellereRole.setAnnouncer(loanAnnouncer);
         loanTellereRole.setGui(loanGui);
         loanTellereRole.activate();
         loanTellereRole.getPerson().startThread();
-/*
- *
+        
+        clientRole.setPerson(client);
+        client.addRole(clientRole);
+        animationPanel.addGui(clientGui);
+        clientRole.setAnnouncer(announcer);
+        clientRole.setLoanAnnouncer(loanAnnouncer);
+        clientRole.setGui(clientGui);
+        clientRole.setIntent("loan");
+        client.setMoney(100);
+        client.setMoneyNeeded(50);
+        clientRole.getPerson().startThread();
+    
+ /*
  
         bankTellerPersons.add(new PersonAgent("Cary"));
         bankTellerRoles.add(new bankTellerRole(bankTellerPersons.get(0).getName(),1));

@@ -17,6 +17,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import Person.Role.Role;
+
 
 /**
  * Default class for various gui building panels.
@@ -113,6 +115,13 @@ public class ApartmentBuildingPanel extends BuildingPanel{
 		//info.name = name;
 		//locationMap.add(new LocationInfo(info));
 		}
+	}
+
+
+	@Override
+	public void addPersonWithRole(Role r) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

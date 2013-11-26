@@ -18,14 +18,14 @@ import Person.Role.Role;
  * 
  *
  */
-public class BusStopBuildingPanel extends BuildingPanel{
+public class MarketBuildingPanel extends BuildingPanel{
 	
-	public BusStopBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels) {
+	public MarketBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels) {
 		super(r, name, buildingPanels);
 		
 		this.removeAll();
 		
-		setBackground( new Color(7,100,7) );
+		setBackground( new Color(100,100,200) );
 		
 		JLabel j = new JLabel( myName );
 		add( j );

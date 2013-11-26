@@ -37,33 +37,19 @@ public class TellerGui implements Gui {
 	}
 
 	public void updatePosition() {
-		if (xPos < xDestination){
-			xcounter++;
-			if (xcounter == 2){
-				xPos++;
-				xcounter = 0;
-			}
-		} 
-		else if (xPos > xDestination){
-			xcounter++;
-			if (xcounter == 2){
-				xPos--;
-				xcounter = 0;
-			}
+		if (xPos < xDestination)
+		{xPos++;
+ 
 		}
-		if (yPos < yDestination){
-			ycounter++;
-			if (ycounter == 2){
-				yPos++;
-				ycounter = 0;
-			}
+		else if (xPos > xDestination)
+		{xPos--;
 		}
-		else if (yPos > yDestination){
-			ycounter++;
-			if (ycounter == 2){
-				yPos--;
-				ycounter = 0;
-			}
+
+		if (yPos < yDestination)
+		{yPos++;
+		}
+		else if (yPos > yDestination)
+		{yPos--;
 		}
 		if (xPos == xDestination && yPos == yDestination && xDestination == xIntermediateEntrance && yDestination == yIntermediateEntrance){
 			role.msgAtIntermediate();

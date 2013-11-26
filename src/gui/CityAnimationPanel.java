@@ -34,6 +34,8 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 
 	public static final Calendar calendar = Calendar.getInstance();
 	private float ampmAlpha = 0f;
+	
+	
 	boolean testView = false;
 	
 
@@ -68,7 +70,7 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
 
-		calendar.add(Calendar.MINUTE, 5);
+		calendar.add(Calendar.MINUTE, 1);
 		//AlertLog.getInstance().logInfo(AlertTag.GENERAL_CITY, "Calendar", calendar.toString());
 		
 		
@@ -108,11 +110,11 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		
 		
 		//This section makes the city dark at night and draws the clock.
-		if(calendar.get(Calendar.HOUR_OF_DAY) >= 17 && ampmAlpha < .25f){
-			ampmAlpha += 0.01f;
-		}else if(calendar.get(Calendar.HOUR_OF_DAY) <= 5 && ampmAlpha > .01f)
+		if(calendar.get(Calendar.HOUR_OF_DAY) >= 18 && ampmAlpha < .3f){
+			ampmAlpha += 0.001f;
+		}else if(calendar.get(Calendar.HOUR_OF_DAY) <= 6 && ampmAlpha > .01f)
 		{
-			ampmAlpha -= 0.01f;
+			ampmAlpha -= 0.001f;
 		}
 		if(!testView){
 			AlphaComposite orig = AlphaComposite.getInstance(AlphaComposite.SRC_OVER);

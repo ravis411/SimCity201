@@ -1,6 +1,10 @@
 package residence.gui;
 
+import gui.Gui;
 import gui.Building.Building;
+import gui.Building.BuildingPanel;
+import gui.Building.ResidenceBuilding;
+import gui.Building.ResidenceBuildingPanel;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -16,7 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class ApartmentAnimationPanel extends JPanel implements MouseListener  {
-	private List<Building> apartments = new ArrayList<>();
+	private List<Gui> guis = new ArrayList<Gui>();
+	private List<ResidenceBuilding> apartments = new ArrayList<>();
 	
 	static final int XCOOR = 0;
 	static final int YCOOR = 0;
@@ -33,17 +38,24 @@ public class ApartmentAnimationPanel extends JPanel implements MouseListener  {
 
 	}
 	
-	/*public void addBuilding(Building b) {
-		buildings.add(b);
-		
-	}*/
-	public void mouseClicked(MouseEvent me) {
-		/*for(Building b : buildings) {
-			if(b.contains(me.getX(), me.getY())){
-				b.displayBuilding();
-			}
-		}*/
+	public void addApartment(ResidenceBuilding b) {
+		apartments.add(b);
+		guis.add(b);
 	}
+	
+	public void addGui(ResidenceBuilding gui){
+		addApartment(gui);
+	}
+
+	
+	public void mouseClicked(MouseEvent me) {
+		for(ResidenceBuilding rb : apartments) {
+			if(rb.contains(me.getX(), me.getY())){
+				rb.displayBuilding();
+			}
+		}
+	}
+	
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		
@@ -70,10 +82,22 @@ public class ApartmentAnimationPanel extends JPanel implements MouseListener  {
         g2.setColor(getBackground());
         g2.fillRect(XCOOR, YCOOR, WINDOWX, WINDOWY);
         
-        g2.setColor(Color.orange);
+        for(Gui gui : guis) {
+			if (gui.isPresent()) {
+				gui.updatePosition();
+			}
+		}
+
+		for(Gui gui : guis) {
+			if (gui.isPresent()) {
+				gui.draw(g2);
+			}
+		}
+        
+        /*g2.setColor(Color.orange);
         g.fillOval(50, 50, 100, 100);
         g.fillOval(200, 50, 100, 100);
         g.fillOval(50, 200, 100, 100);
-        g.fillOval(200, 200, 100, 100);
+        g.fillOval(200, 200, 100, 100);*/
 	}
 }
