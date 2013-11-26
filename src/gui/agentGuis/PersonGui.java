@@ -98,16 +98,23 @@ public class PersonGui implements Gui {
 
 			
         for(LocationInfo i : locationList){
-        	if(i != null)
+        	if(i != null){
         		locations.put(i.name, i);
+        	}
+        	
         }
         
+    }
+    
+    public void setAgent(PersonAgent agent){
+    	this.agent = agent;
     }
     
     
     public boolean setStartingStates(String location){
     	LocationInfo i = locations.get(location);
-    	if(i != null)
+    	System.out.println(location);
+    	if(i == null)
     		return false;
     	
     	currentLocation = i;

@@ -1,5 +1,6 @@
 package residence;
 
+import MarketEmployee.MarketManagerRole;
 import Person.PersonAgent;
 import Person.Role.Role;
 import agent.Agent;
@@ -273,7 +274,7 @@ public class HomeRole extends Role implements Home {
 			List<Role> inhabitants = BuildingList.findBuildingWithName("Market 1").getInhabitants();
 			for(Role r : inhabitants) {
 				if (r.getNameOfRole() == "MARKET_MANAGER_ROLE") {
-					MarketManagerRole mr = r;
+					MarketManagerRole mr = (MarketManagerRole) r;
 					mr.msgMarketManagerFoodOrder("Cooking Ingredient", 5, this);
 				}
 			}

@@ -72,14 +72,45 @@ public class PersonAgent extends Agent {
 	public ResidenceBuildingPanel home;
 	
 	public PersonAgent(String name, ResidenceBuildingPanel home, Role initialRole, String roleLocation){
-		this(name, home);
-		addRole(initialRole);
-		initialRole.activate();
-		gui.setStartingStates(roleLocation);
-		BuildingList.findBuildingWithName(roleLocation).addRole(initialRole);
+		SSN = counter++;
+		this.name = name;
+		//initializations
+		money = STARTING_MONEY;
+		moneyNeeded = 0;
+		loanAmount = 0;
+		friends = new ArrayList<PersonAgent>();
+		roles = new ArrayList<Role>();
+		hungerLevel = 0;
+		state=PersonState.GettingFood;
+		realTime = null;
+		parties = new ArrayList<Party>();
+		prefs = new Preferences();
+		this.home = home;
 		
-		if(!(initialRole instanceof HomeRole)){
-			
+		backpack = new ArrayList<Item>();
+		itemsNeeded = new ArrayDeque<Item>();
+	}
+	
+	/**
+	 * @precondition must be called after setGui
+	 * @param r
+	 * @param roleLocation
+	 */
+	public void setInitialRole(Role r, String roleLocation){
+		if(r instanceof HomeRole){
+			HomeRole hr = (HomeRole) findRole("HomeRole");
+			if(name.equals("Person 1"))
+				hr.msgMakeFood();
+			else
+				hr.msgTired();
+			gui.setStartingStates(home.getName());
+			BuildingList.findBuildingWithName(home.getName()).addRole(hr);
+			hr.activate();
+		}else{
+			addRole(r);
+			//gui.setStartingStates(roleLocation);
+			gui.setStartingStates(roleLocation);
+			BuildingList.findBuildingWithName(roleLocation).addRole(r);
 		}
 	}
 
