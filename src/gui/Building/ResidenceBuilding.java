@@ -28,6 +28,11 @@ public class ResidenceBuilding extends BuildingGui {
 			g.setColor(new Color(100, 180, 200));
 			g.drawString(super.myBuildingPanel.getName(), (int)super.x,(int)super.y);
 			super.draw(g);
+			g.setColor(new Color(100, 180, 200));
+			g.fillPolygon(xs, ys, 3);
+			g.setColor(Color.blue);
+			g.fillRect((int)(super.x), (int)(super.y + super.height/2), (int)super.width, (int)super.height/2);
+			g.setColor(Color.orange);
 		}
 		else if (apartment == false)
 		{

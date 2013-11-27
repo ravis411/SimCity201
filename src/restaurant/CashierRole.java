@@ -82,7 +82,12 @@ public class CashierRole extends Role implements Cashier {
 		marketBills.add(new MarketBill(market,amount));
 		stateChanged();
 	}
-	
+	public void msgReceivedDeposit(double amount){
+		print("Deposited $" + amount + " to bank.");
+		money = money - amount;
+		stateChanged();
+	}
+
 	public void msgEndOfDay() {
 		teller.msgRestaurantDeposit(this, 200);
 	}
