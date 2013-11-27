@@ -295,9 +295,7 @@ public class PersonAgent extends Agent {
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stu
-		if(name.equals("Person 1")){
-			AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "//-------SCHEDULER CALLED--------//");
-		}
+
 		//cue the Role schedulers
 		boolean outcome = false;
 		for(Role r: roles){
@@ -648,18 +646,23 @@ public class PersonAgent extends Agent {
 	  }
 	  */
  
-	  GoToLocation("Restaurant 1", transport);
-	  
-	  RestaurantCustomerRole role = (RestaurantCustomerRole) findRole(Role.RESTAURANT_CUSTOMER_ROLE);
-	  if(role == null){
-		  role = (RestaurantCustomerRole) RoleFactory.roleFromString(Role.RESTAURANT_CUSTOMER_ROLE);
-		  addRole(role);
-	  }
-	  BuildingList.findBuildingWithName("Restaurant 1").addRole(role);
-	  Restaurant building = (Restaurant) BuildingList.findBuildingWithName("Restaurant 1");
-	  building.getHostRole().msgIWantFood(role);
+	  GoToLocation(home.getName(), transport);
+	  HomeRole role = (HomeRole) findRole(Role.HOME_ROLE);
+	  BuildingList.findBuildingWithName(home.getName()).addRole(role);
 	  role.activate();
 	  
+	  role.msgMakeFood();
+	  
+//	  RestaurantCustomerRole role = (RestaurantCustomerRole) findRole(Role.RESTAURANT_CUSTOMER_ROLE);
+//	  if(role == null){
+//		  role = (RestaurantCustomerRole) RoleFactory.roleFromString(Role.RESTAURANT_CUSTOMER_ROLE);
+//		  addRole(role);
+//	  }
+//	  BuildingList.findBuildingWithName("Restaurant 1").addRole(role);
+//	  Restaurant building = (Restaurant) BuildingList.findBuildingWithName("Restaurant 1");
+//	  building.getHostRole().msgIWantFood(role);
+//	  role.activate();
+//	  
 
 	}
 		  

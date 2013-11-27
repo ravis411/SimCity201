@@ -110,7 +110,7 @@ public class SetUpWorldFactory{
 		location.positionToEnterFromMainGrid = new Dimension(20, 3);
 		location.entranceFromMainGridPosition = new Dimension(19, 3);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Apartment", "Building 4", 18, 2, 2, 2, location);
+		addBuilding("Apartment", "ApartmentBuilding", 18, 2, 2, 2, location);
 		
 //Building 5
 		location.sector = 1;
@@ -223,7 +223,7 @@ public class SetUpWorldFactory{
 			//addVehicle("OddMockBus");
 			
 			
-			addPerson("Person 1", buildingsPanels.getResidenceBuildingPanel("House 1"));
+			addPerson("Person 1", buildingsPanels.getResidenceBuildingPanel("Apartment 1"));
 			addPerson("Person 2", buildingsPanels.getResidenceBuildingPanel("House 1"));
 			addPerson("Person 3", buildingsPanels.getResidenceBuildingPanel("House 2"));
 			addPerson("Person 4", buildingsPanels.getResidenceBuildingPanel("House 2"));
@@ -502,6 +502,7 @@ public class SetUpWorldFactory{
 		switch(name){
 			case "Person 1":
 				//p1.setInitialRole(new HomeRole(p1), "House 1");
+				p1.setInitialRole(new HomeRole(p1), "Apartment 1");
 				break;
 			case "Person 2":
 				//p1.setInitialRole(new HomeRole(p1), "House 2");
