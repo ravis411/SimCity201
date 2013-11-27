@@ -1,6 +1,9 @@
 package restaurant.test.mock;
 
 
+import restaurant.CashierRole;
+import restaurant.CookRole;
+import restaurant.HostRole;
 import restaurant.Order;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
@@ -77,6 +80,60 @@ public class MockWaiter extends Mock implements Waiter {
 
 		@Override
 		public void msgAtTable() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void setHost(HostRole hr) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void setCook(CookRole cr) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void setCashier(CashierRole cr) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public boolean getBreakStatus() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public int getNumberOfCustomers() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public void msgGoTakeOrder() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void msgTakeOrder(Customer customerAgent, int mealChoice) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void msgSeatCustomer(Customer customer) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void msgLeavingTable(Customer customerAgent) {
 			// TODO Auto-generated method stub
 			
 		}
