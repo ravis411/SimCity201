@@ -7,6 +7,7 @@ import interfaces.Employee;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import restaurant.CashierRole;
 import restaurant.interfaces.Cashier;
 import trace.AlertLog;
 import trace.AlertTag;
@@ -21,7 +22,7 @@ import Person.Role.Role;
 
 public class BankTellerRole extends Role implements Employee , BankTeller{
 	public BankClient myClient;
-	public Cashier myRestaurant;
+	public CashierRole myRestaurant;
 	private int LineNum = new Random().nextInt(3)+1; //from 1 to n, with 5 being the loan line, should be assigned in creation
 	public enum requestState {pending, withdrawal, deposit, open, none, notBeingHelped, restaurantDeposit};
 	public enum location {entrance, station, breakRoom, closing};
@@ -102,7 +103,7 @@ public class BankTellerRole extends Role implements Employee , BankTeller{
 		stateChanged();
 	}
 
-	public void msgRestaurantDeposit(Cashier r, double a){
+	public void msgRestaurantDeposit(CashierRole r, double a){
 		transactionAmount = a;
 		myRestaurant = r;
 		state = requestState.restaurantDeposit;
@@ -239,13 +240,13 @@ public class BankTellerRole extends Role implements Employee , BankTeller{
 	private void depositRestaurantMoney(){
 		for (Account a : Database.INSTANCE.sendDatabase()){
 			if (a.business == myRestaurant){
-				myRestaurant.msgReceivedDeposit(-transactionAmount);
+				myRestaurant.msgReceivedDeposit(transactionAmount);
 				state = requestState.none;
 				myRestaurant=null;
 			}
 			if (myRestaurant != null){
 				Account b = new Account(myRestaurant,transactionAmount);
-				myRestaurant.msgReceivedDeposit(-transactionAmount);
+				myRestaurant.msgReceivedDeposit(transactionAmount);
 				Database.INSTANCE.addToDatabase(b);
 				state = requestState.none;
 				myRestaurant=null;

@@ -1,7 +1,7 @@
 package bank;
 
 
-import restaurant.interfaces.Cashier;
+import restaurant.CashierRole;
 import bank.interfaces.BankClient;
 
 
@@ -14,7 +14,7 @@ import bank.interfaces.BankClient;
 
 public class Account {
 	public BankClient client = null;
-	public Cashier business = null;
+	public CashierRole business = null;
 	public double amount = 0;
 
 	public Account(BankClient bank, double m){
@@ -22,7 +22,7 @@ public class Account {
 		amount = m;
 	}
 	
-	public Account(Cashier b, double m){
+	public Account(CashierRole b, double m){
 		business = b;
 		amount = m;
 	}
