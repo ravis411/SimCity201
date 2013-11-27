@@ -139,14 +139,14 @@ public class SetUpWorldFactory{
 		location.entranceFromMainGridPosition = new Dimension(29, 3);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
 
-		addBuilding("Residence", "House 3", 28, 2, 2, 2, location);
+		addBuilding("Apartment", "Apartment Building 1", 28, 2, 2, 2, location);
 		
 //Building 7
 		location.sector = 2;
 		location.positionToEnterFromMainGrid = new Dimension(5, 12);
 		location.entranceFromMainGridPosition = new Dimension(4, 12);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Market", "Market 2", 3, 12, 2, 2, location);
+		addBuilding("Apartment", "Apartment Building 4", 3, 12, 2, 2, location);
 		//Building 8
 		location.sector = 2;
 		location.positionToEnterFromMainGrid = new Dimension(10, 12);
@@ -179,7 +179,7 @@ public class SetUpWorldFactory{
 		location.positionToEnterFromMainGrid = new Dimension(30, 12);
 		location.entranceFromMainGridPosition = new Dimension(29, 12);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-
+		addBuilding("Apartment", "Apartment Building 3", 28, 12, 2, 2, location);
 		//file reading
 //		try {
 //			File fXmlFile = new File("scenario1.xml");
@@ -219,7 +219,7 @@ public class SetUpWorldFactory{
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
-		addBuilding("Apartment", "Apartment Building 3", 28, 12, 2, 2, location);
+		
 		
 		
 			
@@ -284,12 +284,19 @@ public class SetUpWorldFactory{
 			
 			addPerson("Person 1", buildingsPanels.getResidenceBuildingPanel("Apartment 1"));
 			addPerson("Person 2", buildingsPanels.getResidenceBuildingPanel("House 1"));
-			addPerson("Person 3", buildingsPanels.getResidenceBuildingPanel("House 2"));
-			addPerson("Person 4", buildingsPanels.getResidenceBuildingPanel("House 2"));
-			
-			addPerson("Person 5", buildingsPanels.getResidenceBuildingPanel("House 2"));
-			addPerson("Person 6", buildingsPanels.getResidenceBuildingPanel("House 2"));
-			addPerson("Person 7", buildingsPanels.getResidenceBuildingPanel("House 2"));
+			addPerson("Person 3", buildingsPanels.getResidenceBuildingPanel("Apartment 2"));
+			addPerson("Person 4", buildingsPanels.getResidenceBuildingPanel("Apartment 3"));
+			addPerson("Person 5", buildingsPanels.getResidenceBuildingPanel("Apartment 4"));
+			addPerson("Person 6", buildingsPanels.getResidenceBuildingPanel("Apartment 5"));
+			addPerson("Person 7", buildingsPanels.getResidenceBuildingPanel("Apartment 6"));
+			addPerson("Person 8", buildingsPanels.getResidenceBuildingPanel("Apartment 7"));
+			addPerson("Person 9", buildingsPanels.getResidenceBuildingPanel("Apartment 8"));
+			addPerson("Person 10", buildingsPanels.getResidenceBuildingPanel("Apartment 9"));
+			addPerson("Person 11", buildingsPanels.getResidenceBuildingPanel("Apartment 10"));
+			addPerson("Person 12", buildingsPanels.getResidenceBuildingPanel("Apartment 11"));
+			addPerson("Person 13", buildingsPanels.getResidenceBuildingPanel("Apartment 12"));
+//			addPerson("Person 14", buildingsPanels.getResidenceBuildingPanel("Apartment 13"));
+//			addPerson("Person 15", buildingsPanels.getResidenceBuildingPanel("House 2"));
 
 		
 	} //end LoadDefault
@@ -578,7 +585,7 @@ public class SetUpWorldFactory{
 				p1.setInitialRole(new HomeRole(p1), s);
 				break;
 			case "Person 2":
-				//p1.setInitialRole(new HomeRole(p1), "House 2");
+				p1.setInitialRole(new HomeRole(p1), p1.home.getName());
 				break;
 			case "Person 6":
 				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_WAITER_ROLE), "Restaurant 1");
@@ -594,6 +601,21 @@ public class SetUpWorldFactory{
 				break;
 			case "Person 7":
 				p1.setInitialRole(RoleFactory.roleFromString(Role.MARKET_MANAGER_ROLE), "Market 1");
+				break;
+			case "Person 8":
+				p1.setInitialRole(RoleFactory.roleFromString(Role.MARKET_EMPLOYEE_ROLE), "Market 1");
+				break;
+			case "Person 9":
+				p1.setInitialRole(RoleFactory.roleFromString(Role.MARKET_EMPLOYEE_ROLE), "Market 1");
+				break;
+			case "Person 10":
+				p1.setInitialRole(new HomeRole(p1), p1.home.getName());
+				break;
+			case "Person 11":
+				
+				break;
+			case "Person 12":
+				
 				break;
 			default:
 				break;
