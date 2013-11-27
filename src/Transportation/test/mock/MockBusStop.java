@@ -1,5 +1,7 @@
 package Transportation.test.mock;
 
+import interfaces.Person;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,23 +19,15 @@ public class MockBusStop extends Mock implements BusStop{
 	}
 
 	@Override
-	public void msgWaitingForBus(Passenger p) {
-		log.add(new LoggedEvent("New passenger at this stop"));
+	public void msgArrivedAtStop(Bus bus) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	public void msgAtStop(Bus bus) {
-		log.add(new LoggedEvent("Bus has arrived at this stop"));
-	}
-
-	@Override
-	public void msgNewPassenger(Passenger p) {
-		log.add(new LoggedEvent("Current bus has acquired a passenger"));
-	}
-
-	@Override
-	public void msgLeavingStop() {
-		log.add(new LoggedEvent("Current bus is leaving stop"));
+	public void msgAtBusStop(Person person, String destinationStop) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -41,13 +41,20 @@ public class BusStopAnimationPanel extends JPanel implements GuiPanel{
 		this.add(passengerPane);		
 	}
 	
-	
+	/**
+	 * Adds a new waiting passenger to the personal passenger list
+	 * @param name
+	 */
 	public void addWaitingPassenger(String name){
 		JButton b = new JButton(name);
 		view.add(b);
 		passengerList.add(b);
 		this.validate();
 	}
+	/**
+	 * Removes a new waiting passenger to the personal passenger list
+	 * @param name
+	 */
 	public void removeWaitingPassenger(String name){
 		for(JButton b : passengerList){
 			if(b.getText() == name){

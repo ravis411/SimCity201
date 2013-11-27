@@ -48,6 +48,13 @@ public class BusAgent extends Agent implements Bus
 
 		this.name = name;
 	}
+	/**
+	 * Utility function for filling in the map of Bus Stops for the Bus Agent. 
+	 * @param stopNumber Internal stop number for the Bus Agent
+	 * @param stop Name of the stop
+	 * @param stopAgent Pointer to the Bus stop agent corresponding to the stop
+	 */
+	
 	public void addBusStop(int stopNumber, String stop, BusStop stopAgent) {
 		stops.put(stopNumber, stop);
 		stopAgents.put(stop, stopAgent);
@@ -55,6 +62,12 @@ public class BusAgent extends Agent implements Bus
 	}
 	
 	//Messages
+	
+	/**
+	 * Message from the bus stop to the bus adding all people waiting
+	 * at the bus stop to the bus's passenger list.
+	 * @param passengers List of the myBusPassenger class sent from bus stop
+	 */
 	public void msgHereArePassengers(List<myBusPassenger> passengers ){
 		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, "BusAgent", "Number of People added: "+passengers.size());
 		if(passengers.size() > 0)
