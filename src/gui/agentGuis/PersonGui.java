@@ -6,6 +6,9 @@ package gui.agentGuis;
 import gui.Gui;
 import gui.LocationInfo;
 import gui.SimCityLayout;
+import gui.MockAgents.PseudoBusAgent;
+import gui.MockAgents.PseudoPerson;
+import interfaces.Person;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -25,6 +28,7 @@ import javax.swing.ImageIcon;
 import trace.AlertLog;
 import trace.AlertTag;
 import Person.PersonAgent;
+import Person.test.mock.MockPerson;
 import astar.AStarNode;
 import astar.AStarTraversal;
 import astar.Position;
@@ -33,7 +37,7 @@ import astar.Position;
 
 public class PersonGui implements Gui {
 
-    private PersonAgent agent = null;
+    private Person agent = null;
     
     private boolean isPresent = true;
     
@@ -105,6 +109,43 @@ public class PersonGui implements Gui {
         }
         
     }
+    
+    
+    //Constructor for mockAgents...everything else is the same
+    public PersonGui(PseudoPerson agent, SimCityLayout cityLayout, AStarTraversal aStar, List<LocationInfo> locationList) {
+    	positionMap = new HashMap<Dimension, Dimension>(cityLayout.positionMap);
+    	this.cityLayout = cityLayout;
+    	this.agent = agent;
+        this.aStar = aStar;
+        
+  
+			//img = new ImageIcon(("movingCar.gif"));
+	
+			try {
+				String s =( this.getClass().getResource("/images/alien.png").getPath() );
+				BufferedImage img = ImageIO.read(new File(s));
+			    if(img == null){
+	        		testView = true;
+	        	} else{
+	        	ImageIcon icon = new ImageIcon(img);
+	        	image = icon.getImage();
+	        	}
+			} catch (Exception e) {
+				AlertLog.getInstance().logWarning(AlertTag.PERSON_GUI, agent.toString(), "Image not found. Switching to test view.");
+				testView = true;
+			}
+			
+
+			
+        for(LocationInfo i : locationList){
+        	if(i != null){
+        		locations.put(i.name, i);
+        	}
+        	
+        }
+        
+    }
+    
     
     public void setAgent(PersonAgent agent){
     	this.agent = agent;
