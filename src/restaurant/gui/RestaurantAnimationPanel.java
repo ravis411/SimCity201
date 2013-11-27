@@ -55,12 +55,19 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
         
         bufferSize = this.getSize();
  
-    	Timer timer = new Timer(20, this );
+    	Timer timer = new Timer(5, this );
     	timer.start();
     }
 
 	public void actionPerformed(ActionEvent e) {
 		repaint();  //Will have paintComponent called
+		
+        for(Gui gui : guis) {
+        	
+            if (gui.isPresent()) {
+                gui.updatePosition();
+            }
+        }
 	}
 
     public void paintComponent(Graphics g) {
@@ -93,15 +100,7 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
         g2.fillRect(370, 130, 30, 40);
         g2.setColor(Color.white);
         g2.fillRect(440, 30, 25, 25);
-        
-
-        for(Gui gui : guis) {
-        	
-            if (gui.isPresent()) {
-                gui.updatePosition();
-            }
-        }
-
+       
         for(Gui gui : guis) {
             if (gui.isPresent()) {
 //            	if(gui instanceof CookGui){

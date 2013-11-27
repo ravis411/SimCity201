@@ -1,20 +1,15 @@
 package restaurant;
 
+import java.text.DecimalFormat;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import restaurant.gui.CustomerGui;
-import restaurant.gui.RestaurantGui;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
 import Person.Role.Role;
-import agent.Agent;
-import restaurant.Menu;
-import restaurant.Menu.Dish;
-
-import java.text.DecimalFormat;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.Random;
-import java.util.concurrent.Semaphore;
 
 /**
  * Restaurant customer agent.
@@ -58,9 +53,8 @@ public class RestaurantCustomerRole extends Role implements Customer {
 	 */
 	public RestaurantCustomerRole(){
 		super();
-		
-		Random randNum = new Random();
-        money = Double.valueOf(moneyForm.format(randNum.nextDouble()*(20.00)));
+
+        money = Double.valueOf(moneyForm.format(myPerson.getMoney()));
 	}
 
 	/**
@@ -319,12 +313,14 @@ public class RestaurantCustomerRole extends Role implements Customer {
 		customerGui.DoExitRestaurant();
 		waiter.msgLeavingTable(this);
 		state = AgentState.LeavingEarly;
+		deactivate();
 	}
 	
 	private void LeaveRestaurant() {
 		print("Leaving.");
 		customerGui.DoExitRestaurant();
 		state = AgentState.Leaving;
+		deactivate();
 	}
 	
 	private void LeaveBeforeSeated() {
@@ -332,6 +328,7 @@ public class RestaurantCustomerRole extends Role implements Customer {
 		state = AgentState.Leaving;
 		host.msgRemoveFromWaitlist(this);
 		stayLeave = -1;
+		deactivate();
 	}
 
 	// Accessors, etc.

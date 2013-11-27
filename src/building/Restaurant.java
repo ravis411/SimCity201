@@ -63,8 +63,17 @@ public class Restaurant extends Building implements Workplace {
 				return (CashierRole) r;
 			}
 		}
-	
-	return null;
+		
+		return null;
+	}
+		
+	public CookRole getCookRole(){
+		for(Role r : inhabitants){
+			if(r instanceof CookRole){
+				return (CookRole) r;
+			}
+		}
+		return null;
 	}
 	
 

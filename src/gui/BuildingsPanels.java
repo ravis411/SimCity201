@@ -25,6 +25,10 @@ import building.Restaurant;
  *
  */
 public class BuildingsPanels extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	CardLayout cardLayout = new CardLayout();
 	
 	
@@ -85,7 +89,7 @@ public class BuildingsPanels extends JPanel{
 		ResidenceBuildingPanel b = null;
 		for(Component c : this.getComponents()){
 			if(c instanceof ResidenceBuildingPanel) {
-				if(c.getName() == name){
+				if(c.getName().equals(name)){
 					b = (ResidenceBuildingPanel) c;
 					break;
 				}

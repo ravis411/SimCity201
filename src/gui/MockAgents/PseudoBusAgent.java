@@ -1,7 +1,9 @@
 package gui.MockAgents;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
+
 
 
 
@@ -13,6 +15,7 @@ import gui.LocationInfo;
 import gui.agentGuis.VehicleGui;
 import gui.interfaces.Bus;
 import gui.interfaces.Passenger;
+import Transportation.myBusPassenger;
 import agent.Agent;
 
 public class PseudoBusAgent extends Agent implements Bus {
@@ -89,26 +92,28 @@ public class PseudoBusAgent extends Agent implements Bus {
 		return "" + name;
 	}
 
-	@Override
 	public void msgGettingOnBus(Passenger p) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void msgFreeToLeave() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void msgArrivedAtStop() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void msgGettingOffBus(Passenger p) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgHereArePassengers(List<myBusPassenger> passengers) {
 		// TODO Auto-generated method stub
 		
 	}

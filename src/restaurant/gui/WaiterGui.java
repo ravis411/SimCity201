@@ -11,8 +11,6 @@ import restaurant.interfaces.Waiter;
 public class WaiterGui implements Gui {
 
     private Waiter agent = null;
-    
-    RestaurantGui gui;
 
     private int xTable = 200;
     private int yTable = 0;
@@ -24,7 +22,6 @@ public class WaiterGui implements Gui {
 
     public WaiterGui(Waiter agent,int xHome, int yHome) {
         this.agent = agent;
-        this.gui = gui;
         this.xHome = xHome;
         this.yHome = yHome;
         xPos = xHome;
@@ -126,7 +123,7 @@ public class WaiterGui implements Gui {
     }
     
     public void DoBackFromBreak() {
-    	gui.setWaiterEnabled(agent);
+    	//gui.setWaiterEnabled(agent);
     }
 
     public int getXPos() {

@@ -11,7 +11,6 @@ import gui.interfaces.Bus;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
@@ -34,7 +33,8 @@ public class VehicleGui implements Gui {
     
     
     
-    private SimCityLayout cityLayout = null;
+    @SuppressWarnings("unused")
+	private SimCityLayout cityLayout = null;
 
 
     //Coordinate Positions
@@ -51,7 +51,7 @@ public class VehicleGui implements Gui {
     ASTARSTATE aStarState = ASTARSTATE.none;
     Semaphore aSem = new Semaphore(0, true);
     
-    private Map<String, LocationInfo> locations = new HashMap<>();//<<-- A Map of locations
+    private Map<String, LocationInfo> locations = new HashMap<String, LocationInfo>();//<<-- A Map of locations
     
     
    

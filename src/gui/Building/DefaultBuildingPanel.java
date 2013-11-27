@@ -17,6 +17,7 @@ import Person.Role.Role;
  * 
  *
  */
+@SuppressWarnings("serial")
 public class DefaultBuildingPanel extends BuildingPanel{
 	
 	public DefaultBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels) {

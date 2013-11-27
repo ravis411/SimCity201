@@ -94,6 +94,7 @@ public abstract class Role {
 	 */
 	public void deactivate(){
 		isActive = false;
+		stateChanged();
 	}
 	
 }

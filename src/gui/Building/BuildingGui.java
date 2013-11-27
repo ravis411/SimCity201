@@ -7,6 +7,10 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 public class BuildingGui extends Rectangle2D.Double implements Gui{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1580400405829679237L;
 	BuildingPanel myBuildingPanel;
 	boolean testView = false;
 
@@ -33,6 +37,10 @@ public class BuildingGui extends Rectangle2D.Double implements Gui{
 		}
 		else
 			g.fill(this);
+	}
+	
+	public String getName(){
+		return myBuildingPanel.getName();
 	}
 
 	public boolean isPresent() {

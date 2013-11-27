@@ -1,7 +1,8 @@
 package restaurant.interfaces;
 
+import restaurant.CashierRole;
+import restaurant.CookRole;
 import restaurant.HostRole;
-import restaurant.RestaurantCustomerRole;
 import restaurant.Order;
 
 //import restaurant.WaiterAgent.Check;
@@ -19,6 +20,8 @@ public interface Waiter {
 	public void msgOutOfFood(int choice, Customer customer);
 	public void msgBreakReply(boolean b);
 	public void setHost(HostRole hr);
+	public void setCook(CookRole cr);
+	public void setCashier(CashierRole cr);
 	
 	void msgAtFrontDesk();
 	void msgAtWaitingArea();

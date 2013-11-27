@@ -4,6 +4,7 @@ import gui.Building.ResidenceBuildingPanel;
 import gui.agentGuis.PersonGui;
 import gui.interfaces.BusStop;
 import interfaces.Employee;
+import interfaces.Person;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ import java.util.Queue;
 import java.util.concurrent.Semaphore;
 
 import residence.HomeRole;
+import restaurant.CashierRole;
+import restaurant.CookRole;
 import restaurant.HostRole;
 import restaurant.NewWaiterRole;
 import restaurant.OldWaiterRole;
@@ -32,7 +35,7 @@ import building.Restaurant;
  * @author MSILKJR
  *
  */
-public class PersonAgent extends Agent {
+public class PersonAgent extends Agent implements Person{
 	
 	private final double STARTING_MONEY = 100.00;
 	private final int HUNGER_THRESHOLD = 50;
@@ -119,8 +122,12 @@ public class PersonAgent extends Agent {
 				Waiter w = (Waiter) r;
 				Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(roleLocation);
 				HostRole role = (HostRole) rest.getHostRole();
+				CookRole cook = (CookRole) rest.getCookRole();
+				CashierRole cashier = (CashierRole) rest.getCashierRole();
 				role.addWaiter(w);
 				w.setHost(role);
+				w.setCook(cook);
+				w.setCashier(cashier);
 			}
 			//gui.setStartingStates(roleLocation);
 			gui.setStartingStates(roleLocation);
@@ -260,7 +267,7 @@ public class PersonAgent extends Agent {
 	/**
 	  * Message sent by the home role to invite the person to a party
 	  */
-	public void msgPartyInvitation(PersonAgent p,Calendar rsvpDeadline,Calendar partyTime){
+	public void msgPartyInvitation(Person p,Calendar rsvpDeadline,Calendar partyTime){
 		Party party = new Party(p, rsvpDeadline, partyTime);
 		party.partyState = PartyState.ReceivedInvite;
 		parties.add(party);
@@ -270,13 +277,13 @@ public class PersonAgent extends Agent {
 	/**
 	  * RSVP message sent by the home role
 	  */
-	public void msgIAmComing(PersonAgent p){
+	public void msgIAmComing(Person p){
 		//findRole("HOME_ROLE").partyAttendees.add(p);
 		//findRole("HOME_ROLE").rsvp.get(p)=true;
 		
 		
 	}
-	public void msgIAmNotComing(PersonAgent p){
+	public void msgIAmNotComing(Person p){
 		//findRole("HOME_ROLE").rsvp.get(p)=true;
 	}
 
@@ -289,7 +296,7 @@ public class PersonAgent extends Agent {
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stu
-		
+
 		//cue the Role schedulers
 		boolean outcome = false;
 		for(Role r: roles){
@@ -311,7 +318,7 @@ public class PersonAgent extends Agent {
 		}
 		
 
-		if(state != PersonState.Idle && state != PersonState.Working){
+		if(state != PersonState.Idle){
 
 			GoHome();
 		}
@@ -399,6 +406,7 @@ public class PersonAgent extends Agent {
 	}
 	
 	private void GoToMarketForItems(){
+		AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "GOING TO MARKET FOR ITEMS");
 		String transport;
 		switch(prefs.get(Preferences.KeyValue.VEHICLE_PREFERENCE)){
 		  	case Preferences.BUS:
@@ -423,6 +431,7 @@ public class PersonAgent extends Agent {
 			  role = (RestaurantCustomerRole) RoleFactory.roleFromString(Role.RESTAURANT_CUSTOMER_ROLE);
 			  addRole(role);
 		  }
+
 		  AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Customer Role = "+role);
 		  BuildingList.findBuildingWithName("Restaurant 1").addRole(role);
 		  Building bdg =  BuildingList.findBuildingWithName("Restaurant 1");
@@ -433,7 +442,10 @@ public class PersonAgent extends Agent {
 			  role.gotHungry();
 			  role.activate();
 		  }
+		  while(!itemsNeeded.isEmpty())
+			  itemsNeeded.remove();
 		  
+		  state = PersonState.GettingFood;
 		/*if(findRole(Role.MARKET_CUSTOMER_ROLE) == null){
 			Role r = RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
 			r.activate();
@@ -635,18 +647,23 @@ public class PersonAgent extends Agent {
 	  }
 	  */
  
-	  GoToLocation("Restaurant 1", transport);
-	  
-	  RestaurantCustomerRole role = (RestaurantCustomerRole) findRole(Role.RESTAURANT_CUSTOMER_ROLE);
-	  if(role == null){
-		  role = (RestaurantCustomerRole) RoleFactory.roleFromString(Role.RESTAURANT_CUSTOMER_ROLE);
-		  addRole(role);
-	  }
-	  BuildingList.findBuildingWithName("Restaurant 1").addRole(role);
-	  Restaurant building = (Restaurant) BuildingList.findBuildingWithName("Restaurant 1");
-	  building.getHostRole().msgIWantFood(role);
+	  GoToLocation(home.getName(), transport);
+	  HomeRole role = (HomeRole) findRole(Role.HOME_ROLE);
+	  BuildingList.findBuildingWithName(home.getName()).addRole(role);
 	  role.activate();
 	  
+	  role.msgMakeFood();
+	  
+//	  RestaurantCustomerRole role = (RestaurantCustomerRole) findRole(Role.RESTAURANT_CUSTOMER_ROLE);
+//	  if(role == null){
+//		  role = (RestaurantCustomerRole) RoleFactory.roleFromString(Role.RESTAURANT_CUSTOMER_ROLE);
+//		  addRole(role);
+//	  }
+//	  BuildingList.findBuildingWithName("Restaurant 1").addRole(role);
+//	  Restaurant building = (Restaurant) BuildingList.findBuildingWithName("Restaurant 1");
+//	  building.getHostRole().msgIWantFood(role);
+//	  role.activate();
+//	  
 
 	}
 		  
@@ -781,6 +798,10 @@ public class PersonAgent extends Agent {
 		this.moneyNeeded = money;
 	}
 	
+	public int getNumParties(){
+		return parties.size();
+	}
+	
 	/**
 	 * Adds a loan/debt to the list of debts
 	 */
@@ -855,7 +876,7 @@ public class PersonAgent extends Agent {
 	 */
 	private class Party{
 		
-		PersonAgent host;
+		Person host;
 		Calendar rsvpDeadline;
 		Calendar dateOfParty;
 		
@@ -868,7 +889,7 @@ public class PersonAgent extends Agent {
 		 * @param rsvpDeadline the RSVP deadline
 		 * @param partyTime the date of the party
 		 */
-		public Party(PersonAgent p, Calendar rsvpDeadline, Calendar partyTime){
+		public Party(Person p, Calendar rsvpDeadline, Calendar partyTime){
 			this.host=p;
 			this.rsvpDeadline = rsvpDeadline;
 			this.dateOfParty = partyTime;

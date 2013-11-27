@@ -4,19 +4,13 @@ import gui.BuildingsPanels;
 import gui.LocationInfo;
 import gui.SetUpWorldFactory;
 import gui.SimCityLayout;
-import residence.gui.AnimationPanel;
 import residence.gui.ApartmentAnimationPanel;
 import interfaces.GuiPanel;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.geom.Rectangle2D;
-
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import Person.Role.Role;
 
@@ -27,13 +21,15 @@ import Person.Role.Role;
  * 
  *
  */
+@SuppressWarnings("serial")
 public class ApartmentBuildingPanel extends BuildingPanel{
 	
 	public ApartmentAnimationPanel apartmentPanel;
 	public SimCityLayout layout;
 	public SetUpWorldFactory factory;
+	public static int APARTMENT_NUMBER = 1;
 	
-	public ApartmentBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels, SetUpWorldFactory factory) {
+	public ApartmentBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels, SetUpWorldFactory factory, LocationInfo locationInfo) {
 		super(r, name, buildingPanels);
 		
 		this.removeAll();
@@ -46,39 +42,36 @@ public class ApartmentBuildingPanel extends BuildingPanel{
 		
 		setLayout(new GridLayout(1,1));
 		
-		LocationInfo location = new LocationInfo();
+		LocationInfo location = (locationInfo);
+		//StringBuilder cat = new StringBuilder("Apartment "+APARTMENT_NUMBER);// + APARTMENT_NUMBER;
+		//cat.append(APARTMENT_NUMBER);
+		//String s= new String();
+		//s= "Apartment "+APARTMENT_NUMBER;
 		
+		
+		//System.out.println(s);
 		//Apartment 1
-			location.sector = 1;
-			location.positionToEnterFromMainGrid = new Dimension(20, 3);
-			location.entranceFromMainGridPosition = new Dimension(19, 3);
-			location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-			addBuilding("Residence", "Apartment 1", 0, 0, 300, 200, location);
-				
-		//Apartment 2
-			location.sector = 1;
-			location.positionToEnterFromMainGrid = new Dimension(20, 3);
-			location.entranceFromMainGridPosition = new Dimension(19, 3);
-			location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-			addBuilding("Residence", "Apartment 2", 0, 200, 300, 200, location);
-				
-		//Apartment 3
-			location.sector = 1;
-			location.positionToEnterFromMainGrid = new Dimension(20, 3);
-			location.entranceFromMainGridPosition = new Dimension(19, 3);
-			location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-			addBuilding("Residence", "Apartment 3", 500, 0, 300, 200, location);
 
-				
+			addBuilding("Residence", "Apartment "+ APARTMENT_NUMBER, 0, 0, 300, 200, new LocationInfo(location));
+			
+			APARTMENT_NUMBER++;
+
+		//Apartment 2
+
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 0, 200, 300, 200, new LocationInfo(location));
+			APARTMENT_NUMBER++;
+			
+		//Apartment 3
+
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 500, 0, 300, 200, new LocationInfo(location));
+			APARTMENT_NUMBER++;
+	
 		//Apartment 4
-			location.sector = 1;
-			location.positionToEnterFromMainGrid = new Dimension(20, 3);
-			location.entranceFromMainGridPosition = new Dimension(19, 3);
-			location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-			addBuilding("Residence", "Apartment 4", 500, 200, 300, 200, location);
-		
-		
-		JLabel j = new JLabel( myName );
+
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 500, 200, 300, 200, new LocationInfo(location));
+			APARTMENT_NUMBER++;
+
+		//JLabel j = new JLabel( myName );
 		add( apartmentPanel );
 	}
 	
@@ -111,6 +104,8 @@ public class ApartmentBuildingPanel extends BuildingPanel{
 				rb.setBuildingPanel(bp);
 				apartmentPanel.addGui(rb);
 				factory.buildingsPanels.addBuildingPanel(bp);
+				info.name = name;
+				factory.addLocationToMap(info);
 			}
 			break;
 
