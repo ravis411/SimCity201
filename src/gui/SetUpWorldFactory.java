@@ -144,7 +144,7 @@ public class SetUpWorldFactory{
 		location.positionToEnterFromMainGrid = new Dimension(15, 12);
 		location.entranceFromMainGridPosition = new Dimension(14, 12);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Default", "Building 9", 13, 12, 2, 2, location);
+		addBuilding("Apartment", "Apartment Building 2", 13, 12, 2, 2, location);
 //Building 10
 		location.sector = 2;
 		location.positionToEnterFromMainGrid = new Dimension(20, 12);
@@ -162,7 +162,7 @@ public class SetUpWorldFactory{
 		location.positionToEnterFromMainGrid = new Dimension(30, 12);
 		location.entranceFromMainGridPosition = new Dimension(29, 12);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Default", "Building 12", 28, 12, 2, 2, location);
+		addBuilding("Apartment", "Apartment Building 3", 28, 12, 2, 2, location);
 		
 		
 			
