@@ -19,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import residence.HomeGuestRole;
 import residence.HomeRole;
 import Person.Role.Role;
 
@@ -159,6 +160,15 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
 			HomeRole hr = (HomeRole) r;
 			HomeRoleGui gui = new HomeRoleGui(hr);
 			hr.setGui(gui);
+			guis.add(gui);
+			BuildingPanel bp = (BuildingPanel) this.getParent();
+			System.out.println("Added to "+bp.getName());
+			//System.out.println("My person is: " + hr.myPerson.getName());
+		}
+		if(r instanceof HomeGuestRole){
+			HomeGuestRole hgr = (HomeGuestRole) r;
+			HomeGuestGui gui = new HomeGuestGui(hgr);
+			hgr.setGui(gui);
 			guis.add(gui);
 			BuildingPanel bp = (BuildingPanel) this.getParent();
 			System.out.println("Added to "+bp.getName());
