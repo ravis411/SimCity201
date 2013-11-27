@@ -68,6 +68,14 @@ public class CashierRole extends Role implements Cashier {
 		stateChanged();
 	}
 	
+	public void msgEndOfDay() {
+		
+	}
+	
+	public void msgBeginningofDay() {
+		
+	}
+	
 	
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.

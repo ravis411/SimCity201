@@ -16,7 +16,11 @@ import Person.test.mock.MockRole;
 public class PartyThrowingTest1 extends TestCase {
 	
 	private PersonAgent myPerson;
-	private MockApartmentManager manager;
+	private PersonAgent friend1;
+	private PersonAgent friend2;
+	private PersonAgent friend3;
+	private PersonAgent friend4;
+	private PersonAgent friend5;
 	private MockHome home;
 	private HomeRole homeRole;
 	private HomeRoleGui gui;
@@ -28,12 +32,14 @@ public class PartyThrowingTest1 extends TestCase {
 	public void setUp() throws Exception{
 		super.setUp();
 		
-		manager=new MockApartmentManager("Mock Manager");
 		home= new MockHome("Mock Home");
 		myPerson= new PersonAgent("PersonAgent",null);
+		friend1 = new PersonAgent("Friend 1", null);
+		friend2 = new PersonAgent("Friend 2", null);
+		friend3 = new PersonAgent("Friend 3", null);
+		friend4 = new PersonAgent("Friend 4", null);
+		friend5 = new PersonAgent("Friend 5", null);
 		homeRole= new HomeRole(myPerson);
-		homeRole.setLandlord(manager);
-		manager.homeRole=homeRole;
 		
 		}
 	//-------------------ELEMENTARY PRECONDITIONS-----------------//
