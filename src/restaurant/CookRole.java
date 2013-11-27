@@ -1,26 +1,23 @@
 package restaurant;
 
-import MarketEmployee.MarketManagerRole;
-import Person.Role.Role;
-import agent.Agent;
-import building.BuildingList;
-import restaurant.Order;
-import restaurant.Menu;
-import restaurant.RestaurantCustomerRole.AgentEvent;
-import restaurant.RestaurantCustomerRole.AgentState;
-import restaurant.Menu.Dish;
-//import restaurant.gui.CookGui;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import market.interfaces.MarketManager;
 import restaurant.Order.orderStatus;
 import restaurant.gui.CookGui;
-import restaurant.gui.WaiterGui;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
-import gui.Building.MarketBuilding;
-
-import java.util.*;
-import java.util.concurrent.Semaphore;
-import java.util.Random;
+import trace.AlertLog;
+import trace.AlertTag;
+import MarketEmployee.MarketManagerRole;
+import Person.Role.Role;
+import agent.Constants;
+import building.BuildingList;
+//import restaurant.gui.CookGui;
 
 /**
  * Restaurant Cook Agent
@@ -52,13 +49,7 @@ public class CookRole extends Role {
 		for(int i=0; i<3; i++) {
 			inventory.add(new Food(menu.getDishName(i), 5000, 3));
 		}
-		List<Role> inhabitants = BuildingList.findBuildingWithName("Market 1").getInhabitants();
-		for(Role r : inhabitants) {
-			if (r.getNameOfRole() == "MARKET_MANAGER_ROLE") {
-				MarketManagerRole mr = (MarketManagerRole) r;
-				addMarket(mr);
-			}
-		}
+		
 	}
 	
 	public void addMarket(MarketManagerRole market) {
@@ -171,11 +162,42 @@ public class CookRole extends Role {
 	
 	private void goToMarket(int ingredientNum) {
 		//print("Num of markets: " + markets.size());
+		List<Role> inhabitants;
+		boolean tempCheck=false;
+		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, getNameOfRole(), "Looking Up Market 1's Manager to Call in order");
+		do{
+		inhabitants=BuildingList.findBuildingWithName("Market 1").getInhabitants();
+			try {
+				Thread.sleep(1 * Constants.SECOND);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			for(Role r1 : inhabitants) {
+				if (r1 instanceof MarketManager){
+					tempCheck=true;
+					break;
+				}
+			}
+		}
+		while(	!tempCheck);
+			
+		inhabitants = BuildingList.findBuildingWithName("Market 1").getInhabitants();
+		for(Role r2 : inhabitants) {
+			if (r2.getNameOfRole() == "MARKET_MANAGER_ROLE") {
+				
+				AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, getNameOfRole(), "Cook has found A restaurant Manager to call");
+				MarketManagerRole mr = (MarketManagerRole) r2;
+				addMarket(mr);
+			}
+		}
 		event = AgentEvent.placedOrder;
 		int marketChoice;
 		Random randNum = new Random();
 		marketChoice = randNum.nextInt(markets.size());
 		print("Low on " + inventory.get(ingredientNum).getName() + ". Getting more from Market 1.");
+
+		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, getNameOfRole(), "Low on " + inventory.get(ingredientNum).getName() + ". Getting more from Market 1.");
 		markets.get(0).msgMarketManagerFoodOrder(inventory.get(ingredientNum).getName(), 5, this);
 	}
 
@@ -189,7 +211,7 @@ public class CookRole extends Role {
 		Food(String name, int cookTime, int inventory) {
 			this.name = name;
 			this.cookTime = cookTime;
-			this.inventory = inventory;
+			this.inventory = 0;
 		}
 		
 		public String getName() {

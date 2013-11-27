@@ -23,6 +23,8 @@ import restaurant.RestaurantCustomerRole;
 import restaurant.interfaces.Waiter;
 import trace.AlertLog;
 import trace.AlertTag;
+import MarketEmployee.MarketEmployeeRole;
+import MarketEmployee.MarketManagerRole;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
 import Transportation.BusStopAgent;
@@ -128,6 +130,10 @@ public class PersonAgent extends Agent implements Person{
 				w.setHost(role);
 				w.setCook(cook);
 				w.setCashier(cashier);
+			}
+			if(r instanceof MarketManagerRole ){
+				 MarketManagerRole role = (MarketManagerRole) findRole(Role.MARKET_MANAGER_ROLE);
+			
 			}
 			//gui.setStartingStates(roleLocation);
 			gui.setStartingStates(roleLocation);
@@ -547,6 +553,29 @@ public class PersonAgent extends Agent implements Person{
 	  	default:
 	  		transport = "ERROR";
 	  }
+	  /* if(getName().equals("Person 7")){
+		  GoToLocation("Market 1", transport);
+		  
+		  MarketManagerRole role = (MarketManagerRole) findRole(Role.MARKET_MANAGER_ROLE);
+		  if(role == null){  
+			  role = (MarketManagerRole) RoleFactory.roleFromString(Role.MARKET_MANAGER_ROLE);
+			  addRole(role);
+		  }
+		  BuildingList.findBuildingWithName("Market 1").addRole(role);
+		  role.activate();
+	  }
+	 if(getName().equals("Person 7")){
+		  GoToLocation("Market 1", transport);
+		  
+		  MarketEmployeeRole role = (MarketEmployeeRole) findRole(Role.MARKET_EMPLOYEE_ROLE);
+		  if(role == null){  
+			  role = (MarketEmployeeRole) RoleFactory.roleFromString(Role.MARKET_EMPLOYEE_ROLE);
+			  addRole(role);
+		  }
+		  BuildingList.findBuildingWithName("Market 1").addRole(role);
+		  role.activate();
+	  }*/
+	
 //		  for(Building b : BuildingList.getInstance()){
 //			  System.out.println("Building Name: "+b.getName());
 //		  }
@@ -623,28 +652,7 @@ public class PersonAgent extends Agent implements Person{
 		  BuildingList.findBuildingWithName("Market 1").addRole(role);
 		  role.activate();
 	  }
-	  if(getName().equals("Person 2")){
-		  GoToLocation("Market 1", transport);
-		  
-		  MarketEmployeeRole role = (MarketEmployeeRole) findRole(Role.MARKET_EMPLOYEE_ROLE);
-		  if(role == null){  
-			  role = (MarketEmployeeRole) RoleFactory.roleFromString(Role.MARKET_EMPLOYEE_ROLE);
-			  addRole(role);
-		  }
-		  BuildingList.findBuildingWithName("Market 1").addRole(role);
-		  role.activate();
-	  }
-	  if(getName().equals("Person 1")){
-		  GoToLocation("Market 1", transport);
-		  
-		  MarketManagerRole role = (MarketManagerRole) findRole(Role.MARKET_MANAGER_ROLE);
-		  if(role == null){  
-			  role = (MarketManagerRole) RoleFactory.roleFromString(Role.MARKET_MANAGER_ROLE);
-			  addRole(role);
-		  }
-		  BuildingList.findBuildingWithName("Market 1").addRole(role);
-		  role.activate();
-	  }
+	 
 	  */
  
 	  GoToLocation(home.getName(), transport);
