@@ -16,6 +16,7 @@ import Person.PersonAgent;
 
 public class BusStopAgent implements BusStop {
 	
+	//May need to refactor and rename something not "Agent"
 	
 	//A map of all the busStop agents.
 	public static Map<String, BusStop> stops = Collections.synchronizedMap(new HashMap<String, BusStop>());
@@ -40,11 +41,10 @@ public class BusStopAgent implements BusStop {
 	
 	public void msgAtBusStop(Person person, String destinationStop) {
 		//Sent from passenger to bus stop
-		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, name, "A new passenger is waiting for the bus\t"+waitingPassengers.size()+" people");
+		//AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, name, "A new passenger is waiting for the bus\t"+waitingPassengers.size()+" people");
 		waitingPassengers.add(new myBusPassenger(person, destinationStop));
 		animationPanel.addWaitingPassenger(person.getName());
 		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, name, "A new passenger is waiting for the bus\t"+waitingPassengers.size()+" people");
-		//stateChanged();
 	}
 
 	public void msgArrivedAtStop(Bus bus) {

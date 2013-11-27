@@ -18,6 +18,13 @@ public interface BusStop {
 	 */
 	public abstract void msgArrivedAtStop(Bus bus);
 	
+	/**
+	 * Let's the BusStop know that a person has arrive and is now
+	 * waiting for the bus.
+	 * @param person
+	 * @param destinationStop
+	 */
+	
 	public abstract void msgAtBusStop(Person person, String destinationStop);
 
 	
