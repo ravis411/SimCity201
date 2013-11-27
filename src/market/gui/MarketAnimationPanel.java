@@ -10,6 +10,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,13 +90,16 @@ public class MarketAnimationPanel extends JPanel implements ActionListener,GuiPa
         g2.drawString("Window #3", 570, 220);
         g2.fillRect(650, 200, 10, 30);
         g2.drawString("Entrance", 380, 395);
-        
-       
+
 		g2.drawString("Manager's Office", 60, 115);
 		g2.drawString("Store Shelves Area", 510, 20);
 		g2.drawString("Delivery Truck", 10, 20);
       
-
+        AffineTransform orig = g2.getTransform();
+        g2.rotate(-Math.PI/2);
+        g2.setColor(Color.BLACK);
+        g2.drawString("Steak", 200,200);
+        g2.setTransform(orig);
         for(Gui gui : guis) {
             if (gui.isPresent()) {
                 gui.draw(g2);
