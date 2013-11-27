@@ -1,5 +1,7 @@
 package residence.interfaces;
 
+import residence.HomeGuestRole.AgentState;
+
 /**
  * HomeGuestRole interface
  *
@@ -8,5 +10,6 @@ package residence.interfaces;
  */
 
 public interface HomeGuest {
-
+	public void msgComeIn();
+	public void msgPartyOver();
 }

@@ -267,7 +267,7 @@ public class PersonAgent extends Agent implements Person{
 	/**
 	  * Message sent by the home role to invite the person to a party
 	  */
-	public void msgPartyInvitation(PersonAgent p,Calendar rsvpDeadline,Calendar partyTime){
+	public void msgPartyInvitation(Person p,Calendar rsvpDeadline,Calendar partyTime){
 		Party party = new Party(p, rsvpDeadline, partyTime);
 		party.partyState = PartyState.ReceivedInvite;
 		parties.add(party);
@@ -277,13 +277,13 @@ public class PersonAgent extends Agent implements Person{
 	/**
 	  * RSVP message sent by the home role
 	  */
-	public void msgIAmComing(PersonAgent p){
+	public void msgIAmComing(Person p){
 		//findRole("HOME_ROLE").partyAttendees.add(p);
 		//findRole("HOME_ROLE").rsvp.get(p)=true;
 		
 		
 	}
-	public void msgIAmNotComing(PersonAgent p){
+	public void msgIAmNotComing(Person p){
 		//findRole("HOME_ROLE").rsvp.get(p)=true;
 	}
 
@@ -872,7 +872,7 @@ public class PersonAgent extends Agent implements Person{
 	 */
 	private class Party{
 		
-		PersonAgent host;
+		Person host;
 		Calendar rsvpDeadline;
 		Calendar dateOfParty;
 		
@@ -885,7 +885,7 @@ public class PersonAgent extends Agent implements Person{
 		 * @param rsvpDeadline the RSVP deadline
 		 * @param partyTime the date of the party
 		 */
-		public Party(PersonAgent p, Calendar rsvpDeadline, Calendar partyTime){
+		public Party(Person p, Calendar rsvpDeadline, Calendar partyTime){
 			this.host=p;
 			this.rsvpDeadline = rsvpDeadline;
 			this.dateOfParty = partyTime;
