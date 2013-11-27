@@ -12,6 +12,8 @@ import market.interfaces.MarketEmployee;
 import market.interfaces.MarketManager;
 import residence.HomeRole;
 import restaurant.CookRole;
+import trace.AlertLog;
+import trace.AlertTag;
 import Person.Role.Role;
 
 /**
@@ -96,7 +98,7 @@ public class MarketManagerRole extends Role implements MarketManager{
 	}
 	public void msgMarketManagerFoodOrder(String foodType, int amount, CookRole cook)
 	{
-		//myOrders.add(new Order(foodType, amount, cook);
+		myOrders.add(new Order(foodType, amount, orderNum++, cook));
 		stateChanged();
 	}
 	
@@ -109,7 +111,7 @@ public class MarketManagerRole extends Role implements MarketManager{
 				if ( myOrders.get(i).getState()!=Order.OrderState.processed ){
 				myOrders.get(i).setState(Order.OrderState.processed);
 				myOrders.get(i).setAmountReadyToBeShipped(FoodTypeAmount);
-				print("Going to go give delivery truck an order of "+ myOrders.get(i).getAmountReadyToBeShipped() 
+				AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "Going to go give delivery truck an order of "+ myOrders.get(i).getAmountReadyToBeShipped() 
 						+ " "+ myOrders.get(i).getFoodType()+" for "+myOrders.get(i).getRole().getNameOfRole());
 				event=MarketEmployeeEvent.needToBringDeliveryTruckOrder;
 				break;
@@ -151,9 +153,19 @@ public class MarketManagerRole extends Role implements MarketManager{
 	 */
 	public boolean pickAndExecuteAction() {
 	
-		if (event==MarketEmployeeEvent.customerNeedsToBeGivenStation){
+		if (event==MarketEmployeeEvent.customerNeedsToBeGivenStation && myOrders.isEmpty()){
 			giveEmployeeAStation();
 			return true;
+		}
+		if (!myOrders.isEmpty() && event==MarketEmployeeEvent.customerNeedsToBeGivenStation){
+			giveEmployeeAStation();
+			for (int i = 0; i<myOrders.size(); i++){
+				if (myOrders.get(i).getState()==Order.OrderState.notGivenToEmployee){
+					giveOrderToMarketEmployee(myOrders.get(i));
+					return true;
+				}
+			return true;
+			}
 		}
 		if (!myOrders.isEmpty() && !currentEmployeees.isEmpty())
 		{
@@ -223,7 +235,7 @@ public class MarketManagerRole extends Role implements MarketManager{
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			print("Tell employee at counter "+(counter+1)+ " to fill an order for him" );
+			AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "Tell employee at counter "+(counter+1)+ " to fill an order for him" );
 			currentEmployeees.get(random.nextInt(currentEmployeees.size())).getEmployeeAssignedToCounter().
 			msgMarketEmployeeAttemptToFillOrder(order.getFoodType(), order.getAmount(),  order.getOrderNumber());
 			order.setState(Order.OrderState.givenToEmployee);
@@ -237,7 +249,41 @@ public class MarketManagerRole extends Role implements MarketManager{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		///needs code to give truck the order to deliver
+		for (int i = 0; i<myOrders.size(); i++)
+			if (myOrders.get(i).getState()==Order.OrderState.processed)
+			{
+				if (myOrders.get(i).getRole() instanceof CookRole){
+					CookRole ck=(CookRole) myOrders.get(i).getRole();
+					if (myOrders.get(i).getAmountReadyToBeShipped()==0)
+					{
+						ck.msgOrderNotFilled(myOrders.get(i).getNumberThatIsAssociatedWithFoodsMenuNumber());
+						AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "Market out of"+ (myOrders.get(i).getFoodType()));
+						myOrders.get(i).setState(Order.OrderState.delivered);
+					}
+					if (myOrders.get(i).getAmountReadyToBeShipped()==myOrders.get(i).getAmount()){
+						ck.msgOrderFilled(myOrders.get(i).getNumberThatIsAssociatedWithFoodsMenuNumber()
+								,myOrders.get(i).getAmountReadyToBeShipped());
+						AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "Market sending full order of "+myOrders.get(i).getAmountReadyToBeShipped()+" "+ (myOrders.get(i).getFoodType()));
+						myOrders.get(i).setState(Order.OrderState.delivered);
+
+					}
+					if (myOrders.get(i).getAmountReadyToBeShipped()<myOrders.get(i).getAmount()){
+						ck.msgOrderPartiallyFilled(myOrders.get(i).getNumberThatIsAssociatedWithFoodsMenuNumber()
+								,myOrders.get(i).getAmountReadyToBeShipped());
+						AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "Market sending partial order of "+myOrders.get(i).getAmountReadyToBeShipped()+" "+ (myOrders.get(i).getFoodType()));
+						myOrders.get(i).setState(Order.OrderState.delivered);
+
+					}
+					
+				}
+				if (myOrders.get(i).getRole() instanceof HomeRole){
+					HomeRole hm=(HomeRole) myOrders.get(i).getRole();
+					hm.msgRestockItem(myOrders.get(i).getFoodType(),myOrders.get(i).getAmountReadyToBeShipped());
+					myOrders.get(i).setState(Order.OrderState.delivered);
+
+				}
+				
+			}
 		event=MarketEmployeeEvent.DeliveryTruckHasBeenBroughtOrder;
 	}
 
@@ -337,9 +383,10 @@ public class MarketManagerRole extends Role implements MarketManager{
 		int orderNumber;
 		int amountReadyToBeShipped;
 		enum OrderState
-		{notGivenToEmployee, givenToEmployee, processed};
+		{notGivenToEmployee, givenToEmployee, processed, delivered};
 		boolean processed;
 		OrderState state;
+		int numberThatIsAssociatedWithFoodsMenuNumber;
 		
 		Order(String foodType,int amount,int orderNumber, Role role){
 			this.foodType=foodType;
@@ -348,12 +395,24 @@ public class MarketManagerRole extends Role implements MarketManager{
 			this.role=role;
 			processed=false;
 			state=OrderState.notGivenToEmployee;
+			if (foodType=="Steak"){
+				numberThatIsAssociatedWithFoodsMenuNumber=0;
+			}
+			if (foodType=="Chicken"){
+				numberThatIsAssociatedWithFoodsMenuNumber=1;
+			}
+			if (foodType=="Burger"){
+				numberThatIsAssociatedWithFoodsMenuNumber=2;
+			}
 		}
 		public int getAmount() {
 			return amount;
 		}
 		String getFoodType(){
 			return foodType;
+		}
+		int getNumberThatIsAssociatedWithFoodsMenuNumber(){
+			return numberThatIsAssociatedWithFoodsMenuNumber;
 		}
 		public void setAmountReadyToBeShipped(int foodTypeAmount) {
 			amountReadyToBeShipped=foodTypeAmount;

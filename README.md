@@ -1,25 +1,22 @@
 team29
 ======
 
-SimCity201 Project Repository for CS 201 students
+Within our project, we initially assigned very specific roles for each team member to be responsible for. However, as development progressed, each team member assisted one another in the assignments we were responsible for, so every team member had a hand in every branch of the project. 
 
+The specific initial emphases of each team member were:
 
-Market Branch
+Ryan: Transportation, overworld GUI
 
-Currently Assigned: Luca Spinazzola
+Jeffrey: Transportation, git-integration
 
-Bank Branch
+Mike: Person, Roles
 
-Currently Assigned: Byron Choy
+Kushaan: Person, Roles
 
-Residence Branch
+Dylan: Residence and Residence GUI, Restaurant integration
 
-Currently Assigned: Dylan Resnik
+Luca: Market and Market GUI
 
-Overworld Branch
+Byron: Bank and Bank GUI
 
-Currently Assigned: Ryan
-
-Restaurant Branch
-
-Currently Assigned:
+Additionally, every member helped each other with design, bug-fixing, and J-Unit testing. We believe the work distribution was overall equal between all 7 of us. 

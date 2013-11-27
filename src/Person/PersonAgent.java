@@ -23,6 +23,7 @@ import restaurant.RestaurantCustomerRole;
 import restaurant.interfaces.Waiter;
 import trace.AlertLog;
 import trace.AlertTag;
+import MarketEmployee.MarketEmployeeRole;
 import MarketEmployee.MarketManagerRole;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
@@ -133,6 +134,10 @@ public class PersonAgent extends Agent implements Person{
 			}
 			if(r instanceof MarketManagerRole ){
 				 MarketManagerRole role = (MarketManagerRole) findRole(Role.MARKET_MANAGER_ROLE);
+			
+			}
+			if(r instanceof MarketEmployeeRole ){
+				MarketEmployeeRole role = (MarketEmployeeRole) findRole(Role.MARKET_EMPLOYEE_ROLE);
 			
 			}
 			//gui.setStartingStates(roleLocation);
