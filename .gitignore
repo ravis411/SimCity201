@@ -23,3 +23,7 @@ Desktop.ini
 
 #Eclipse local files
 bin/
+
+src/.settings/
+src/.classpath
+src/.project
