@@ -271,6 +271,7 @@ public class HomeRole extends Role implements Home {
 		5000);
 	}
 	private void goToMarket (Item item) {
+		callMarket = false;
 		if(callMarket == true) {
 			gui.DoGoToCenter();
 			try {
@@ -287,6 +288,8 @@ public class HomeRole extends Role implements Home {
 					mr.msgMarketManagerFoodOrder("Cooking Ingredient", 5, this);
 				}
 			}
+			myPerson.msgGoToMarket(item.name);
+			callMarket = true;
 		}
 		else if(callMarket == false) {
 			event = AgentEvent.leaving;
@@ -305,6 +308,7 @@ public class HomeRole extends Role implements Home {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			BuildingList.findBuildingWithName(myPerson.home.getName()).removeRole(this);
 			myPerson.msgGoToMarket(item.name);
 			callMarket = true;
 		}
@@ -379,6 +383,7 @@ public class HomeRole extends Role implements Home {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		BuildingList.findBuildingWithName(myPerson.home.getName()).removeRole(this);
 		leaveHome = false;
 	}
 	private void enterHome() {

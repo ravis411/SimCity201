@@ -48,7 +48,7 @@ public class CookRole extends Role {
 		super();
 		
 		for(int i=0; i<3; i++) {
-			inventory.add(new Food(menu.getDishName(i), 5000, 3));
+			inventory.add(new Food(menu.getDishName(i), 5000, 300));
 		}
 		
 	}
@@ -207,7 +207,7 @@ public class CookRole extends Role {
 		Food(String name, int cookTime, int inventory) {
 			this.name = name;
 			this.cookTime = cookTime;
-			this.inventory = 0;
+			this.inventory = inventory;
 		}
 		
 		public String getName() {
