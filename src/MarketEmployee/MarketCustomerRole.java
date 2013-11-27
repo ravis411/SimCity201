@@ -77,6 +77,8 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		
 		AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "Market Employee Says he will take an Order Now");
 		event= MarketCustomerEvent.employeeSaysOrderNow;
+		stateChanged();
+
 	}
 	
 
