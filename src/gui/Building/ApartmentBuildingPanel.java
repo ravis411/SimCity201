@@ -106,6 +106,7 @@ public class ApartmentBuildingPanel extends BuildingPanel{
 				rb.setBuildingPanel(bp);
 				apartmentPanel.addGui(rb);
 				factory.buildingsPanels.addBuildingPanel(bp);
+				info.name = name;
 				factory.addLocationToMap(info);
 			}
 			break;

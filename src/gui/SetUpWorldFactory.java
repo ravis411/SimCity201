@@ -25,6 +25,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import residence.HomeRole;
+import trace.AlertLog;
+import trace.AlertTag;
 import Person.PersonAgent;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
@@ -109,7 +112,7 @@ public class SetUpWorldFactory{
 		location.positionToEnterFromMainGrid = new Dimension(20, 3);
 		location.entranceFromMainGridPosition = new Dimension(19, 3);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Apartment", "ApartmentBuilding", 18, 2, 2, 2, location);
+		addBuilding("Apartment", "Apartment Building", 18, 2, 2, 2, location);
 		
 //Building 5
 		location.sector = 1;
@@ -730,11 +733,16 @@ public class SetUpWorldFactory{
 	}
 	
 	public void addLocationToMap(LocationInfo location){
+		if(location == null)
+			return;
+		
 		for(LocationInfo i : locationMap){
-			if(i.name == location.name)
+			if(i.name.equals(location.name)){
+				AlertLog.getInstance().logWarning(AlertTag.GENERAL_CITY, "SET UP WORLD", ""+ i.name + " already exists. Not adding location to map.");
 				return;
+			}
 		}
-		locationMap.add(location);
+		locationMap.add(new LocationInfo(location));
 	}
 	
 }
