@@ -143,6 +143,11 @@ public class HomeRole extends Role implements Home {
 		enterHome = true;
 		stateChanged();
 	}
+	public void msgThrowParty() {
+		print("I'm planning a party!");
+		partyState = PartyState.sendInvites;
+		stateChanged();
+	}
 	
 	public void msgAtKitchen() {
 		atKitchen.release();

@@ -9,6 +9,7 @@ import restaurant.gui.CustomerGui;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
+import Person.PersonAgent;
 import Person.Role.Role;
 
 /**
@@ -56,10 +57,11 @@ public class RestaurantCustomerRole extends Role implements Customer {
 
         money = Double.valueOf(moneyForm.format(myPerson.getMoney()));
 	}
-
-	/**
-	 * hack to establish connection to Host agent.
-	 */
+	
+	public void setPerson(PersonAgent person) {
+		super.setPerson(person);
+	}
+	
 	public void setHost(HostRole host) {
 		this.host = host;
 	}
