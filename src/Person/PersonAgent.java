@@ -798,6 +798,10 @@ public class PersonAgent extends Agent implements Person{
 		this.moneyNeeded = money;
 	}
 	
+	public int getNumParties(){
+		return parties.size();
+	}
+	
 	/**
 	 * Adds a loan/debt to the list of debts
 	 */
