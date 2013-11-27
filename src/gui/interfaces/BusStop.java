@@ -1,7 +1,7 @@
 package gui.interfaces;
 
+import interfaces.Person;
 import Person.PersonAgent;
-
 import Transportation.BusAgent;
 
 
@@ -18,7 +18,7 @@ public interface BusStop {
 	 */
 	public abstract void msgArrivedAtStop(Bus bus);
 	
-	public abstract void msgAtBusStop(PersonAgent person, String destinationStop);
+	public abstract void msgAtBusStop(Person person, String destinationStop);
 
 	
 	/**

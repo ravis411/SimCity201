@@ -4,6 +4,7 @@ import gui.Building.ResidenceBuildingPanel;
 import gui.agentGuis.PersonGui;
 import gui.interfaces.BusStop;
 import interfaces.Employee;
+import interfaces.Person;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ import building.Restaurant;
  * @author MSILKJR
  *
  */
-public class PersonAgent extends Agent {
+public class PersonAgent extends Agent implements Person{
 	
 	private final double STARTING_MONEY = 100.00;
 	private final int HUNGER_THRESHOLD = 50;
@@ -295,7 +296,9 @@ public class PersonAgent extends Agent {
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stu
-		
+		if(name.equals("Person 1")){
+			AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "//-------SCHEDULER CALLED--------//");
+		}
 		//cue the Role schedulers
 		boolean outcome = false;
 		for(Role r: roles){
@@ -317,7 +320,7 @@ public class PersonAgent extends Agent {
 		}
 		
 
-		if(state != PersonState.Idle && state != PersonState.Working){
+		if(state != PersonState.Idle){
 
 			GoHome();
 		}
@@ -405,6 +408,7 @@ public class PersonAgent extends Agent {
 	}
 	
 	private void GoToMarketForItems(){
+		AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "GOING TO MARKET FOR ITEMS");
 		String transport;
 		switch(prefs.get(Preferences.KeyValue.VEHICLE_PREFERENCE)){
 		  	case Preferences.BUS:
@@ -442,6 +446,8 @@ public class PersonAgent extends Agent {
 		  }
 		  while(!itemsNeeded.isEmpty())
 			  itemsNeeded.remove();
+		  
+		  state = PersonState.GettingFood;
 		/*if(findRole(Role.MARKET_CUSTOMER_ROLE) == null){
 			Role r = RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
 			r.activate();

@@ -2,11 +2,12 @@ package Transportation.test;
 
 import junit.framework.*;
 import Transportation.BusAgent;
-import Transportation.BusAgent.AgentState;
+//import Transportation.BusAgent.AgentState;
 import Transportation.test.mock.MockBusStop;
 import Transportation.test.mock.MockPassenger;
 
 public class BusTest1 extends TestCase {
+	/*
 	BusAgent bus;
 	MockPassenger mp1;
 	MockPassenger mp2;
@@ -60,4 +61,5 @@ public class BusTest1 extends TestCase {
 		
 		
 	}
+	*/
 }
