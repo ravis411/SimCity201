@@ -196,6 +196,7 @@ public class PersonAgent extends Agent implements Person{
 	  */
 	public void msgImHungry(){
 	  state = PersonState.NeedsFood;
+	  stateChanged();
 	}
 
 	/**
@@ -215,6 +216,7 @@ public class PersonAgent extends Agent implements Person{
 	  */
 	public void msgYouHaveALoan(double loan){
 	  loanAmount = loan;
+	  stateChanged();
 	}
 
 	/**
@@ -224,6 +226,8 @@ public class PersonAgent extends Agent implements Person{
 		for(Role r: roles){
 			if(r.getNameOfRole()==role){
 				r.activate();
+				stateChanged();
+				return;
 			}
 		}
 	}
@@ -234,6 +238,7 @@ public class PersonAgent extends Agent implements Person{
 	 */
 	public void msgGoToMarket(String item){
 		itemsNeeded.add(new Item(item, 1));
+		stateChanged();
 	}
 
 	/**
@@ -242,6 +247,7 @@ public class PersonAgent extends Agent implements Person{
 	  */
 	public void msgReceiveSalary(double amount){
 	  money += amount;
+	  stateChanged();
 	}
 
 	/**
@@ -250,6 +256,7 @@ public class PersonAgent extends Agent implements Person{
 	  */
 	public void msgPayBackLoanUrgently(){
 	   state=PersonState.PayLoanNow;
+	   stateChanged();
 	}
 
 	/**
@@ -258,6 +265,7 @@ public class PersonAgent extends Agent implements Person{
 	  */
 	public void msgPayBackRentUrgently(){
 	   state=PersonState.PayRentNow;
+	   stateChanged();
 	}
 	
 	
@@ -346,6 +354,7 @@ public class PersonAgent extends Agent implements Person{
 		
 
 		if(state != PersonState.Idle){
+			AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "////////////IDLE//////////");
 			GoHome();
 		}
 		

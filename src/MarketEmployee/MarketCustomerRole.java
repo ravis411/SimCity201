@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
+import building.BuildingList;
 import trace.AlertLog;
 import trace.AlertTag;
 import market.data.MarketData;
@@ -226,6 +227,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		state= MarketCustomerState.none;
 		gui.DoLeave();//animation for CustomerRole to leave market
 		deactivate();
+		BuildingList.findBuildingWithName("Market 1").removeRole(this);
 		
 	}
 	private void payAndLeaveMarket() {

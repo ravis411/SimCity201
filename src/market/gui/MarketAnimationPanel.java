@@ -175,7 +175,6 @@ public class MarketAnimationPanel extends JPanel implements ActionListener,GuiPa
 	@Override
 	public void removeGuiForRole(Role r) {
 		// TODO Auto-generated method stub
-
 	}
 
 
