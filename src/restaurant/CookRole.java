@@ -174,24 +174,19 @@ public class CookRole extends Role {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			for(Role r1 : inhabitants) {
-				if (r1 instanceof MarketManager){
+			for(Role r : inhabitants) {
+				if (r instanceof MarketManager){
 					tempCheck=true;
+					AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, getNameOfRole(), "Cook has found A restaurant Manager to call");
+					MarketManagerRole mr = (MarketManagerRole) r;
+					addMarket(mr);
 					break;
 				}
 			}
 		}
 		while(	!tempCheck);
 			
-		inhabitants = BuildingList.findBuildingWithName("Market 1").getInhabitants();
-		for(Role r2 : inhabitants) {
-			if (r2.getNameOfRole() == "MARKET_MANAGER_ROLE") {
-				
-				AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, getNameOfRole(), "Cook has found A restaurant Manager to call");
-				MarketManagerRole mr = (MarketManagerRole) r2;
-				addMarket(mr);
-			}
-		}
+
 		event = AgentEvent.placedOrder;
 		int marketChoice;
 		Random randNum = new Random();
