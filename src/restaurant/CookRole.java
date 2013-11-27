@@ -1,26 +1,18 @@
 package restaurant;
 
-import MarketEmployee.MarketManagerRole;
-import Person.Role.Role;
-import agent.Agent;
-import building.BuildingList;
-import restaurant.Order;
-import restaurant.Menu;
-import restaurant.RestaurantCustomerRole.AgentEvent;
-import restaurant.RestaurantCustomerRole.AgentState;
-import restaurant.Menu.Dish;
-//import restaurant.gui.CookGui;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import restaurant.Order.orderStatus;
 import restaurant.gui.CookGui;
-import restaurant.gui.WaiterGui;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
-import gui.Building.MarketBuilding;
-
-import java.util.*;
-import java.util.concurrent.Semaphore;
-import java.util.Random;
+import MarketEmployee.MarketManagerRole;
+import Person.Role.Role;
+import building.BuildingList;
 
 /**
  * Restaurant Cook Agent

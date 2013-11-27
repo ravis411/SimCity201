@@ -1,13 +1,16 @@
 package restaurant;
 
-import restaurant.gui.CashierGui;
-import restaurant.interfaces.*;
-
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.Vector;
 
+import restaurant.gui.CashierGui;
+import restaurant.interfaces.Cashier;
+import restaurant.interfaces.Customer;
+import restaurant.interfaces.Market;
+import restaurant.interfaces.Waiter;
 import Person.Role.Role;
-import agent.Agent;
 
 
 /**
