@@ -223,9 +223,10 @@ public class SetUpWorldFactory{
 			addVehicle("");
 			//addVehicle("EvenBus");
 			//addVehicle("OddMockBus");
+			int a=1;
+			String s= "Apartment "+a;
 			
-			
-			addPerson("Person 1", buildingsPanels.getResidenceBuildingPanel("Apartment 1"));
+			addPerson("Person 1", buildingsPanels.getResidenceBuildingPanel(s));
 			addPerson("Person 2", buildingsPanels.getResidenceBuildingPanel("House 1"));
 			addPerson("Person 3", buildingsPanels.getResidenceBuildingPanel("House 2"));
 			addPerson("Person 4", buildingsPanels.getResidenceBuildingPanel("House 2"));
@@ -504,7 +505,11 @@ public class SetUpWorldFactory{
 		switch(name){
 			case "Person 1":
 				//p1.setInitialRole(new HomeRole(p1), "House 1");
-				p1.setInitialRole(new HomeRole(p1), "Apartment 1");
+				int a=1;
+				String s= new String();
+				s="Apartment "+ a;
+				System.out.println("BUILDING PANEL !!! " + buildingsPanels.getBuildingPanel("Apartment 1"));
+				p1.setInitialRole(new HomeRole(p1), s);
 				break;
 			case "Person 2":
 				//p1.setInitialRole(new HomeRole(p1), "House 2");
@@ -701,7 +706,7 @@ public class SetUpWorldFactory{
 		case "Apartment":
 			ApartmentBuilding ab = new ApartmentBuilding(building);
 			if(ab != null){
-				ApartmentBuildingPanel bp = new ApartmentBuildingPanel(ab, name, buildingsPanels, this);
+				ApartmentBuildingPanel bp = new ApartmentBuildingPanel(ab, name, buildingsPanels, this, new LocationInfo(info));
 				ab.setBuildingPanel(bp);
 				cityPanel.addGui(ab);
 				buildingsPanels.addBuildingPanel(bp);
