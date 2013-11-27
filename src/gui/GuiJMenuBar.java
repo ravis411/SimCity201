@@ -9,6 +9,10 @@ import javax.swing.JMenuItem;
 
 public class GuiJMenuBar extends JMenuBar implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	SimCity201Gui gui = null;
 	JMenu fileMenu, loadSubmenu, viewMenu, viewSettingsSubmenu;
 	//FileMenu Items

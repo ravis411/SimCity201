@@ -2,18 +2,13 @@ package Transportation;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
-
 import trace.AlertLog;
 import trace.AlertTag;
 import gui.agentGuis.VehicleGui;
 import gui.interfaces.BusStop;
-import gui.interfaces.Passenger;
 import gui.interfaces.Bus;
 import agent.Agent;
 

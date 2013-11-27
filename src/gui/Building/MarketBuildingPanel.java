@@ -17,6 +17,7 @@ import Person.Role.Role;
  * 
  *
  */
+@SuppressWarnings("serial")
 public class MarketBuildingPanel extends BuildingPanel{
 	public MarketAnimationPanel animationPanel = new MarketAnimationPanel();
 

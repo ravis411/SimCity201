@@ -5,20 +5,13 @@ import interfaces.GuiPanel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.GridLayout;
 import java.awt.geom.Rectangle2D;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import Person.Role.Role;
 import Transportation.BusStopAgent;
 import Transportation.BusStopAnimationPanel;
-import Transportation.test.BusTest1;
 
 
 /**
@@ -27,6 +20,7 @@ import Transportation.test.BusTest1;
  * 
  *
  */
+@SuppressWarnings("serial")
 public class BusStopBuildingPanel extends BuildingPanel{
 	
 	BusStopAgent busStopAgent = null;

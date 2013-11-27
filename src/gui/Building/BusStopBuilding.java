@@ -4,13 +4,12 @@ package gui.Building;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.geom.Rectangle2D;
-
 import javax.swing.ImageIcon;
 
 import trace.AlertLog;
 import trace.AlertTag;
 
+@SuppressWarnings("serial")
 public class BusStopBuilding extends BuildingGui {	
 	
 	Image image = null;

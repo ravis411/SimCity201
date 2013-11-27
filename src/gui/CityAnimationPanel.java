@@ -4,17 +4,11 @@ import gui.Building.BuildingGui;
 
 import javax.swing.*;
 
-import trace.AlertLog;
-import trace.AlertTag;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
 
 
 
@@ -23,12 +17,16 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 
 
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final int WINDOWX;
 	private final int WINDOWY;
 
 
 	private List<Gui> guis = new ArrayList<Gui>();
-	private List<BuildingGui> buildings = new ArrayList<>(); 
+	private List<BuildingGui> buildings = new ArrayList<BuildingGui>(); 
 
 	private SimCityLayout layout = null;
 
