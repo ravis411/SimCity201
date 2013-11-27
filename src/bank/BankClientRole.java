@@ -209,7 +209,7 @@ public class BankClientRole extends Role implements BankClient{
 			Leaving();
 			return true;
 		}
-		if (!((state2 == inLineState.goingToLine && state1 == bankState.loan) ||(state2 == inLineState.goingToLine && state1 == bankState.repay))){
+		if ((state2 == inLineState.goingToLine && state1 == bankState.withdraw) ||(state2 == inLineState.goingToLine && state1 == bankState.deposit)){
 			goToLine(lineNum);
 			return true;
 		}
