@@ -1,12 +1,13 @@
 package bank;
 import bank.gui.TellerGui;
-import bank.interfaces.BankTeller;
 import bank.interfaces.*;
+import building.Restaurant;
 import interfaces.Employee;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import restaurant.interfaces.Cashier;
 import trace.AlertLog;
 import trace.AlertTag;
 import util.Interval;
@@ -20,8 +21,9 @@ import Person.Role.Role;
 
 public class BankTellerRole extends Role implements Employee , BankTeller{
 	public BankClient myClient;
+	public Cashier myRestaurant;
 	private int LineNum = new Random().nextInt(3)+1; //from 1 to n, with 5 being the loan line, should be assigned in creation
-	public enum requestState {pending, withdrawal, deposit, open, none, notBeingHelped};
+	public enum requestState {pending, withdrawal, deposit, open, none, notBeingHelped, restaurantDeposit};
 	public enum location {entrance, station, breakRoom, closing};
 	public location locationState = location.entrance;
 	public requestState state = requestState.none;
@@ -100,6 +102,13 @@ public class BankTellerRole extends Role implements Employee , BankTeller{
 		stateChanged();
 	}
 
+	public void msgRestaurantDeposit(Cashier r, double a){
+		transactionAmount = a;
+		myRestaurant = r;
+		state = requestState.restaurantDeposit;
+		stateChanged();
+	}
+	
 	public void bankClosing(){
 		transactionAmount = 0;
 		locationState = location.closing;
@@ -125,6 +134,9 @@ public class BankTellerRole extends Role implements Employee , BankTeller{
 			if (state == requestState.open){
 				openAccount(myClient);
 				return true;
+			}
+			if (state == requestState.restaurantDeposit){
+				depositRestaurantMoney();
 			}
 			if (state == requestState.notBeingHelped){
 				receiveClient(myClient);
@@ -219,6 +231,27 @@ public class BankTellerRole extends Role implements Employee , BankTeller{
 		Database.INSTANCE.addToDatabase(a);
 		b.msgAccountOpened(a);
 		state = requestState.notBeingHelped;
+	}
+	
+	/**
+	 * deposits restaurant money
+	 */
+	private void depositRestaurantMoney(){
+		for (Account a : Database.INSTANCE.sendDatabase()){
+			if (a.business == myRestaurant){
+				myRestaurant.msgReceivedDeposit(-transactionAmount);
+				state = requestState.none;
+				myRestaurant=null;
+			}
+			if (myRestaurant != null){
+				Account b = new Account(myRestaurant,transactionAmount);
+				myRestaurant.msgReceivedDeposit(-transactionAmount);
+				Database.INSTANCE.addToDatabase(b);
+				state = requestState.none;
+				myRestaurant=null;
+			}
+		}
+		
 	}
 	
 	private void Leaving(){
