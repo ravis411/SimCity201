@@ -109,7 +109,6 @@ public class ClientGui implements Gui {
 	public void DoLeave() {
 		xDestination = xBankEntrance;
 		yDestination = yBankEntrance;
-
 	}
 
 	public int getXPos() {
