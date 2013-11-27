@@ -1,8 +1,12 @@
 package restaurant.test.mock;
 
 
+import restaurant.Menu;
+import restaurant.RestaurantCustomerRole.AgentEvent;
+import restaurant.RestaurantCustomerRole.AgentState;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
+import restaurant.interfaces.Waiter;
 
 /**
  * MockCustomer built to unit test a CashierAgent
@@ -57,6 +61,81 @@ public class MockCustomer extends Mock implements Customer {
 		}
 		@Override
 		public void msgFoodAtTable() {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void msgOrderOnItsWay() {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public AgentState getState() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		@Override
+		public AgentEvent getEvent() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		@Override
+		public void msgSitAtTable(Menu menu) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void msgWaiterReadyToTakeOrder() {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void msgWaiterReadyToRetakeOrder() {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public int getWaitingLocX() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+		@Override
+		public void setWaitingLocX(int i) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void setWaitingLocY(int i) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void setWaiter(Waiter waiter) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void setTableX(int xCoor) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void setTableY(int yCoor) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void setTableNum(int table) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public String getCustomerName() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		@Override
+		public void msgRestaurantFull() {
 			// TODO Auto-generated method stub
 			
 		}
