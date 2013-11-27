@@ -29,7 +29,7 @@ public class CashierTest extends TestCase
          */
         public void setUp() throws Exception{
                 super.setUp();                
-                cashier = new CashierRole("cashier");                
+                cashier = new CashierRole();                
                 customer = new MockCustomer("mockcustomer");                
                 waiter = new MockWaiter("mockwaiter");
                 market1 = new MockMarket("mockmarket 1");
@@ -41,7 +41,7 @@ public class CashierTest extends TestCase
          */
         public void testOneNormalMarketScenario() throws InterruptedException {
         	//set up
-        	cashier.startThread();
+        	cashier.getPerson().startThread();
         	market1.cashier = cashier;
         	
         	//preconditions
@@ -71,7 +71,7 @@ public class CashierTest extends TestCase
          */
         public void testTwoMarketScenario() throws InterruptedException {
         	//set up
-        	cashier.startThread();
+        	cashier.getPerson().startThread();
         	market1.cashier = cashier;
         	market2.cashier = cashier;
         	
@@ -105,7 +105,7 @@ public class CashierTest extends TestCase
         
         public void testThreeNormalCustomerScenario() throws InterruptedException {
         	//set up
-        	cashier.startThread();
+        	cashier.getPerson().startThread();
         	customer.cashier = cashier;
         	customer.money = 20.00;
         	
@@ -131,8 +131,7 @@ public class CashierTest extends TestCase
         }
 
         public void testFourCustomerCantPayScenario() throws InterruptedException {
-        	cashier.startThread();
-            customer.cashier = cashier;
+        	cashier.getPerson().startThread();            customer.cashier = cashier;
             customer.money = 10.00;
                 
             //check preconditions
@@ -156,8 +155,7 @@ public class CashierTest extends TestCase
         }
         
         public void testFiveRingUpCheckScenario() throws InterruptedException {
-        	cashier.startThread();
-            waiter.cashier = cashier;
+        	cashier.getPerson().startThread();            waiter.cashier = cashier;
             
             //check preconditions
             assertEquals("MockWaiter should have an empty event log. Instead, the MockWaiter's event log reads: " 
@@ -187,7 +185,7 @@ public class CashierTest extends TestCase
         }
         
         public void testSixMultiAgentScenario() throws InterruptedException {
-        	cashier.startThread();
+        	cashier.getPerson().startThread();
         	waiter.cashier = cashier;
         	customer.cashier = cashier;
         	market1.cashier = cashier;

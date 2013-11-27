@@ -30,6 +30,9 @@ public class MarketCustomerTest extends TestCase
 	public void setUp() throws Exception{
 		super.setUp();		
 		customer = new MarketCustomerRole();
+		customerPerson= new MockPerson("fd");
+		customer.setPerson(customerPerson);
+	
 		employee = new MockMarketEmployee("employee");
 		customer.marketEmployee=employee;
 		MarketGui gui= new MarketGui();

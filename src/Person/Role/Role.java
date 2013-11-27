@@ -1,11 +1,12 @@
 package Person.Role;
 
+import interfaces.Person;
 import Person.PersonAgent;
 
 public abstract class Role {
 
 	private boolean isActive = false;
-	protected PersonAgent myPerson;
+	protected Person myPerson;
 	
 	public final static String MARKET_CUSTOMER_ROLE = "MarketEmployee.MarketCustomerRole";
 	public final static String MARKET_EMPLOYEE_ROLE = "MarketEmployee.MarketEmployeeRole";
@@ -63,17 +64,17 @@ public abstract class Role {
 	
 	/**
 	 * Set the person agent
-	 * @param p the new person
+	 * @param customerPerson the new person
 	 */
-	public void setPerson(PersonAgent p){
-		myPerson = p;
+	public void setPerson(Person customerPerson){
+		myPerson = customerPerson;
 	}
 	
 	/**
 	 * Standard accessor for myPerson
 	 * @return the personAgent that owns the Role
 	 */
-	public PersonAgent getPerson(){
+	public Person getPerson(){
 		return myPerson;
 	}
 	

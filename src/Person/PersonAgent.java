@@ -29,6 +29,9 @@ import Person.Role.Role;
 import Person.Role.RoleFactory;
 import Transportation.BusStopAgent;
 import agent.Agent;
+import bank.BankClientRole;
+import bank.BankTellerRole;
+import bank.LoanTellerRole;
 import building.Building;
 import building.BuildingList;
 import building.Restaurant;
@@ -911,4 +914,12 @@ public class PersonAgent extends Agent implements Person{
 		return getName();
 	}
 
+	public Calendar getRealTime(){
+		return realTime;
+	}
+
+	@Override
+	public List<PersonAgent> getFriends() {
+		return friends;
+	}
 }
