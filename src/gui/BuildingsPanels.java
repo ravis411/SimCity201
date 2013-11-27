@@ -76,7 +76,7 @@ public class BuildingsPanels extends JPanel{
 		BuildingPanel b = null;
 		for(Component c : this.getComponents()){
 			if(c instanceof BuildingPanel) {
-				if(c.getName() == name){
+				if(c.getName().equals(name)){
 					b = (BuildingPanel) c;
 					break;
 				}
