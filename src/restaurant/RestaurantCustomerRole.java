@@ -53,9 +53,8 @@ public class RestaurantCustomerRole extends Role implements Customer {
 	 */
 	public RestaurantCustomerRole(){
 		super();
-		
-		Random randNum = new Random();
-        money = Double.valueOf(moneyForm.format(randNum.nextDouble()*(20.00)));
+
+        money = Double.valueOf(moneyForm.format(myPerson.getMoney()));
 	}
 
 	/**
