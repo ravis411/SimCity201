@@ -45,5 +45,30 @@ public class BusStopTest2 extends TestCase {
 		
 	}
 	
+	public void testMultiplePassengers() {
+		//Prerequisites
+		assertEquals("Bus map did not populate correctly", BusStopAgent.stops.get("Stop_2"), stop_2);
+		assertEquals("Bus map did not populate correctly", BusStopAgent.stops.get("Stop_1"), stop_1);
+		
+		//New person arrives
+		stop_1.msgAtBusStop(p1, "Stop_1");
+		
+		//Postconditions
+		assertEquals("Bus did not correctly add the passenger", stop_1.passengerSize(), 1);
+		assertEquals("Did not add the passenger to the correct stop", stop_2.passengerSize(), 0);
+		
+		//Another person arrives
+		stop_1.msgAtBusStop(p2,"Stop_1");
+		
+		//Postconditions
+		assertEquals("Bus did not correctly add the second passenger", stop_1.passengerSize(), 2);
+		assertEquals("Did not add the passenger to the correct stop", stop_2.passengerSize(), 0);
+		
+		//Bus arries at stop
+		stop_1.msgArrivedAtStop(bus);
+		
+		//Postconditions
+		assertEquals("Bus stop did not correctly clear waiting passenger list", stop_1.passengerSize(), 0);
+	}
 	
 }
