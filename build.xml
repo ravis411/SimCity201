@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="SimCity201">
+    <property environment="env"/>
+    <property name="src.link" value="../team29/src"/>
+    <property name="JRE_LIB" value="../../../../../Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/jre/lib/rt.jar"/>
+    <property name="ECLIPSE_HOME" value="../../../Downloads/eclipse 3"/>
+    <property name="junit.output.dir" value="junit"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
+    <path id="Users/MSILKJR/Documents/CS201-Workspace/team29/bin.libraryclasspath"/>
+    <path id="SimCity201.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="${JRE_LIB}"/>
+        <path refid="Users/MSILKJR/Documents/CS201-Workspace/team29/bin.libraryclasspath"/>
+        <pathelement location="../../../../../Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/jre/lib/rt.jar"/>
+        <pathelement location="../../../Downloads/eclipse 3/plugins/org.junit_4.11.0.v201303080030/junit.jar"/>
+        <pathelement location="../../../Downloads/eclipse 3/plugins/org.hamcrest.core_1.3.0.v201303031735.jar"/>
+    </path>
+    <path id="run.PersonTest1.classpath">
+        <pathelement location="${JRE_LIB}"/>
+        <path refid="SimCity201.classpath"/>
+    </path>
+    <path id="run.PersonTest1.bootclasspath"/>
+    <path id="run.PersonTest1.testAddingRole1.classpath">
+        <pathelement location="${JRE_LIB}"/>
+        <path refid="SimCity201.classpath"/>
+    </path>
+    <path id="run.PersonTest1.testAddingRole1.bootclasspath"/>
+    <path id="run.SimCity201Gui.classpath">
+        <pathelement location="${JRE_LIB}"/>
+        <path refid="SimCity201.classpath"/>
+    </path>
+    <path id="run.SimCity201Gui.bootclasspath"/>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="${src.link}">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="${src.link}"/>
+            <classpath refid="SimCity201.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
+    <target name="PersonTest1">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="Person.test.PersonTest1" todir="${junit.output.dir}"/>
+            <classpath refid="run.PersonTest1.classpath"/>
+            <bootclasspath>
+                <path refid="run.PersonTest1.bootclasspath"/>
+            </bootclasspath>
+        </junit>
+    </target>
+    <target name="PersonTest1.testAddingRole1">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="Person.test.PersonTest1" todir="${junit.output.dir}"/>
+            <classpath refid="run.PersonTest1.testAddingRole1.classpath"/>
+            <bootclasspath>
+                <path refid="run.PersonTest1.testAddingRole1.bootclasspath"/>
+            </bootclasspath>
+        </junit>
+    </target>
+    <target name="SimCity201Gui">
+        <java classname="gui.SimCity201Gui" failonerror="true" fork="yes">
+            <classpath refid="run.SimCity201Gui.classpath"/>
+            <bootclasspath>
+                <path refid="run.SimCity201Gui.bootclasspath"/>
+            </bootclasspath>
+        </java>
+    </target>
+    <target name="junitreport">
+        <junitreport todir="${junit.output.dir}">
+            <fileset dir="${junit.output.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.output.dir}"/>
+        </junitreport>
+    </target>
+</project>
