@@ -25,7 +25,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import residence.HomeRole;
 import Person.PersonAgent;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
@@ -42,8 +41,8 @@ public class SetUpWorldFactory{
 	public SimCityLayout layout;// = new SimCityLayout(WINDOWX, WINDOWY/2);// <-This holds the grid information
 	public CityAnimationPanel cityPanel;// = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
 	public BuildingsPanels buildingsPanels;// = new BuildingsPanels();//<-Zoomed in view of buildings
-	List<Agent> agents = new ArrayList<>();
-	List<LocationInfo> locationMap = new ArrayList();//<--a map of strings to LocationInfo
+	List<Agent> agents = new ArrayList<Agent>();
+	List<LocationInfo> locationMap = new ArrayList<LocationInfo>();//<--a map of strings to LocationInfo
 	
 	
 	
@@ -728,6 +727,14 @@ public class SetUpWorldFactory{
 		}
 		info.name = name;
 		locationMap.add(new LocationInfo(info));
+	}
+	
+	public void addLocationToMap(LocationInfo location){
+		for(LocationInfo i : locationMap){
+			if(i.name == location.name)
+				return;
+		}
+		locationMap.add(location);
 	}
 	
 }

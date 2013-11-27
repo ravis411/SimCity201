@@ -17,6 +17,7 @@ import Person.Role.Role;
  * Default class for various gui building panels.
  * BuildingPanel is added to the buildingPanels and is displayed in the zoomed in view of a building.
  */
+@SuppressWarnings("serial")
 public abstract class BuildingPanel extends JPanel{
 	Rectangle2D myRectangle;
 	protected String myName;

@@ -13,7 +13,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +37,8 @@ public class PersonGui implements Gui {
     
     private boolean isPresent = true;
     
-    private SimCityLayout cityLayout = null;
+    @SuppressWarnings("unused")
+	private SimCityLayout cityLayout = null;
 
 
     //Coordinate Positions
@@ -246,12 +246,9 @@ public class PersonGui implements Gui {
     	
     	//Now we've checked all stops; shortestDistance should be the shortest away 
     		//and startStop should be the locationInfo for that stop
-    	if(closestStop != null) {
+    	
     		DoGoTo(closestStop.name);
     		return closestStop.name;
-    	}
-    	
-    	return null;
     }
     
     /**	This will calculate and return the busStop that is closest to a destination.
@@ -260,7 +257,8 @@ public class PersonGui implements Gui {
      * @param destination	//The name of the location to that the Person needs to get to.
      * @return	//The name of the busStop to get off at.
      */
-    public String DoRideBusTo(String destination){
+    @SuppressWarnings("unused")
+	public String DoRideBusTo(String destination){
     	if(state != PersonState.inBuilding)
     		AlertLog.getInstance().logDebug(AlertTag.PERSON_GUI, agent.getName(), "PERSON NOT IN BUILDING");
     	
@@ -381,7 +379,8 @@ public class PersonGui implements Gui {
     
 
    //This will allow the agent to travel to the next sector
-   private void DoGoToSector(int sector){
+   @SuppressWarnings("unused")
+private void DoGoToSector(int sector){
 	   //Need to go to a different sector means we need to cross a road.
 	   String bus = DoGoToClosestBusStop();
 	   System.out.println("IN BUS STOP about t RIDE bus from stop " + bus);

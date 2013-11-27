@@ -4,6 +4,7 @@ import gui.Building.ResidenceBuildingPanel;
 import gui.agentGuis.PersonGui;
 import gui.interfaces.BusStop;
 import interfaces.Employee;
+import interfaces.Person;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ import building.Restaurant;
  * @author MSILKJR
  *
  */
-public class PersonAgent extends Agent {
+public class PersonAgent extends Agent implements Person{
 	
 	private final double STARTING_MONEY = 100.00;
 	private final int HUNGER_THRESHOLD = 50;

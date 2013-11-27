@@ -5,17 +5,16 @@ import gui.Building.BuildingPanel;
 import interfaces.GuiPanel;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.GridLayout;
-import java.awt.geom.Rectangle2D;
-
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import Person.Role.Role;
 
 public class Team29Panel extends BuildingPanel{
-	JLabel title = new JLabel("SimCity V0.5     Team 29");
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	JLabel title = new JLabel("SimCity V 1.0     Team 29");
 	static BuildingGui b = new BuildingGui(0, 0, 0, 0);
 	public Team29Panel(BuildingsPanels panels) {
 		super(b, "Team29", panels ); 

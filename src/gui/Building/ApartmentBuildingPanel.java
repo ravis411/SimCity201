@@ -4,19 +4,13 @@ import gui.BuildingsPanels;
 import gui.LocationInfo;
 import gui.SetUpWorldFactory;
 import gui.SimCityLayout;
-import residence.gui.AnimationPanel;
 import residence.gui.ApartmentAnimationPanel;
 import interfaces.GuiPanel;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.geom.Rectangle2D;
-
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import Person.Role.Role;
 
@@ -27,6 +21,7 @@ import Person.Role.Role;
  * 
  *
  */
+@SuppressWarnings("serial")
 public class ApartmentBuildingPanel extends BuildingPanel{
 	
 	public ApartmentAnimationPanel apartmentPanel;
@@ -78,7 +73,7 @@ public class ApartmentBuildingPanel extends BuildingPanel{
 			addBuilding("Residence", "Apartment 4", 500, 200, 300, 200, location);
 		
 		
-		JLabel j = new JLabel( myName );
+		//JLabel j = new JLabel( myName );
 		add( apartmentPanel );
 	}
 	
@@ -111,6 +106,7 @@ public class ApartmentBuildingPanel extends BuildingPanel{
 				rb.setBuildingPanel(bp);
 				apartmentPanel.addGui(rb);
 				factory.buildingsPanels.addBuildingPanel(bp);
+				factory.addLocationToMap(info);
 			}
 			break;
 

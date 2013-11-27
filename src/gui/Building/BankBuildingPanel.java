@@ -7,17 +7,15 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.geom.Rectangle2D;
 
-import javax.swing.JLabel;
-
 import Person.Role.Role;
 import bank.gui.BankAnimationPanel;
-import bank.*;
 /**
  * Default class for various gui building panels.
  * BuildingPanel is added to the buildingPanels and is displayed in the zoomed in view of a building.
  * 
  *
  */
+@SuppressWarnings("serial")
 public class BankBuildingPanel extends BuildingPanel{
 	
 	BankAnimationPanel animationPanel = new BankAnimationPanel();
@@ -34,7 +32,7 @@ public class BankBuildingPanel extends BuildingPanel{
 		
 		setLayout(new GridLayout(1,1));
 		
-		JLabel j = new JLabel( myName );
+		//JLabel j = new JLabel( myName );
 		add(animationPanel);
 		
 		//

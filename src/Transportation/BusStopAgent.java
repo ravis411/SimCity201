@@ -1,5 +1,7 @@
 package Transportation;
 
+import interfaces.Person;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,10 +11,8 @@ import java.util.Map;
 import trace.AlertLog;
 import trace.AlertTag;
 import gui.interfaces.BusStop;
-import gui.interfaces.Passenger;
 import gui.interfaces.Bus;
 import Person.PersonAgent;
-import agent.Agent;
 
 public class BusStopAgent implements BusStop {
 	
@@ -38,7 +38,7 @@ public class BusStopAgent implements BusStop {
 	private String name;
 
 	
-	public void msgAtBusStop(PersonAgent person, String destinationStop) {
+	public void msgAtBusStop(Person person, String destinationStop) {
 		//Sent from passenger to bus stop
 		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, name, "A new passenger is waiting for the bus\t"+waitingPassengers.size()+" people");
 		waitingPassengers.add(new myBusPassenger(person, destinationStop));

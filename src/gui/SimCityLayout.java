@@ -83,20 +83,6 @@ public class SimCityLayout {
 
 
 
-
-
-
-
-	private Semaphore[][] addAndInitialize0PermitGrid( Semaphore[][] grid) {
-		grid = new Semaphore[numxGrids + 1][numyGrids + 1];
-
-		//Initialize the semaphore grid with 0 permits
-		for (int i=0; i<numxGrids+1 ; i++)
-			for (int j = 0; j<numyGrids+1; j++)
-				grid[i][j]=new Semaphore(0,true);
-
-		return grid;
-	}//end initialize grid
 	private Semaphore[][] addAndInitializeMainGrid( Semaphore[][] grid) {
 		grid = new Semaphore[numxGrids + 1][numyGrids + 1];
 

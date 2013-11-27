@@ -25,6 +25,10 @@ import building.Restaurant;
  *
  */
 public class BuildingsPanels extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	CardLayout cardLayout = new CardLayout();
 	
 	
