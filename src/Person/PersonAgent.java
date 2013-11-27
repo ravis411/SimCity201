@@ -135,6 +135,10 @@ public class PersonAgent extends Agent implements Person{
 				 MarketManagerRole role = (MarketManagerRole) findRole(Role.MARKET_MANAGER_ROLE);
 			
 			}
+			if(r instanceof MarketEmployeeRole ){
+				MarketEmployeeRole role = (MarketEmployeeRole) findRole(Role.MARKET_EMPLOYEE_ROLE);
+			
+			}
 			//gui.setStartingStates(roleLocation);
 			gui.setStartingStates(roleLocation);
 			BuildingList.findBuildingWithName(roleLocation).addRole(r);

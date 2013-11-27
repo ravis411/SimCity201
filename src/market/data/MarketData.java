@@ -15,9 +15,9 @@ public class MarketData {
 	List<Integer> numberOfCustomersInALine	= new ArrayList<Integer>();
 	double marketMoney=0;
 	public MarketData(){
-		marketInventory.add(new Inventory("Steak",1));
-		marketInventory.add(new Inventory("Chicken",1));
-		marketInventory.add(new Inventory("Burger",1));
+		marketInventory.add(new Inventory("Steak",97));
+		marketInventory.add(new Inventory("Chicken",97));
+		marketInventory.add(new Inventory("Burger",97));
 		numberOfCustomersInALine.add(new Integer(0));//line 1
 		numberOfCustomersInALine.add(new Integer(0));//line 2
 		numberOfCustomersInALine.add(new Integer(0));//line 3
