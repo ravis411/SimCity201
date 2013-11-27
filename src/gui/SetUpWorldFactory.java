@@ -223,10 +223,9 @@ public class SetUpWorldFactory{
 			addVehicle("");
 			//addVehicle("EvenBus");
 			//addVehicle("OddMockBus");
-			int a=1;
-			String s= "Apartment "+a;
+		
 			
-			addPerson("Person 1", buildingsPanels.getResidenceBuildingPanel(s));
+			addPerson("Person 1", buildingsPanels.getResidenceBuildingPanel("Apartment 1"));
 			addPerson("Person 2", buildingsPanels.getResidenceBuildingPanel("House 1"));
 			addPerson("Person 3", buildingsPanels.getResidenceBuildingPanel("House 2"));
 			addPerson("Person 4", buildingsPanels.getResidenceBuildingPanel("House 2"));
