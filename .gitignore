@@ -19,3 +19,7 @@ Desktop.ini
 .DS_Store
 .Trashes
 .Trash
+
+
+#Eclipse local files
+.settings
