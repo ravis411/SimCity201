@@ -15,12 +15,11 @@ import javax.swing.JPanel;
 
 import restaurant.CashierRole;
 import restaurant.CookRole;
-import restaurant.RestaurantCustomerRole;
 import restaurant.HostRole;
 import restaurant.MarketRole;
 import restaurant.OldWaiterRole;
+import restaurant.RestaurantCustomerRole;
 import restaurant.WaiterAgent;
-import restaurant.interfaces.Waiter;
 import Person.PersonAgent;
 
 /**

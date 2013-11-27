@@ -4,8 +4,6 @@
  *     with multiple producers and consumers
  */
  
-import restaurant.ProducerConsumerMonitor;
-import restaurant.Order;
 
  
  
