@@ -1,15 +1,16 @@
 package Transportation;
 
+import interfaces.Person;
 import Person.PersonAgent;
 
 public class myBusPassenger {
 		
-	myBusPassenger(PersonAgent p, String destination) {
-			passenger = p;
+	myBusPassenger(Person person, String destination) {
+			passenger = person;
 			this.destination = destination;
 		}
 		String destination;
-		PersonAgent passenger;
+		Person passenger;
 }
 	
 	
