@@ -55,7 +55,7 @@ public class RestaurantCustomerRole extends Role implements Customer {
 	public RestaurantCustomerRole(){
 		super();
 
-        money = Double.valueOf(moneyForm.format(myPerson.getMoney()));
+        money = Double.valueOf(moneyForm.format(20.00));
 	}
 	
 	public void setPerson(PersonAgent person) {

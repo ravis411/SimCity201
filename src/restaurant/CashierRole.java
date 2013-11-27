@@ -48,7 +48,7 @@ public class CashierRole extends Role implements Cashier {
 	public CashierRole() {
 		super();
 		
-		List<Role> inhabitants = BuildingList.findBuildingWithName("Bank 1").getInhabitants();
+		List<Role> inhabitants = BuildingList.findBuildingWithName("Bank").getInhabitants();
 		for(Role r : inhabitants) {
 			if (r.getNameOfRole() == "BANK_TELLER_ROLE") {
 				BankTellerRole bt = (BankTellerRole) r;
@@ -67,7 +67,6 @@ public class CashierRole extends Role implements Cashier {
 	
 	public void msgPrepareCheck(Waiter waiter, Customer customer, int mealChoice) {
 		print("Received check from " + waiter.getName());
-		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "I just got charged rent.");
 		checks.add(new Check(waiter, customer, mealChoice));
 		stateChanged();
 	}
