@@ -1,15 +1,10 @@
 package gui.Building;
 
 import gui.BuildingsPanels;
-import interfaces.GuiPanel;
-
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.geom.Rectangle2D;
 
-import javax.swing.JLabel;
-
-import residence.gui.AnimationPanel;
 import restaurant.gui.RestaurantAnimationPanel;
 import Person.Role.Role;
 
@@ -20,6 +15,7 @@ import Person.Role.Role;
  * 
  *
  */
+@SuppressWarnings("serial")
 public class RestaurantBuildingPanel extends BuildingPanel{
 	
 	RestaurantAnimationPanel restaurantPanel;
@@ -36,7 +32,7 @@ public class RestaurantBuildingPanel extends BuildingPanel{
 		setLayout(new GridLayout(1,1));
 		
 		
-		JLabel j = new JLabel( myName );
+		//JLabel j = new JLabel( myName );
 		add( restaurantPanel );
 	}
 	

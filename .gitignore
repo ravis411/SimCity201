@@ -19,3 +19,11 @@ Desktop.ini
 .DS_Store
 .Trashes
 .Trash
+
+
+#Eclipse local files
+bin/
+
+src/.settings/
+src/.classpath
+src/.project

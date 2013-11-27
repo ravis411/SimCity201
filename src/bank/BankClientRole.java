@@ -1,21 +1,19 @@
 package bank;
 
-import Person.Role.Role;
-import bank.interfaces.AnnouncerA;
-import bank.interfaces.AnnouncerB;
-import bank.interfaces.BankTeller;
-import bank.interfaces.LoanTeller;
-import bank.gui.ClientGui;
-import bank.interfaces.BankClient;
-
-
-
-
 //import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.Semaphore;
 
 import trace.AlertLog;
 import trace.AlertTag;
+import Person.Role.Role;
+import bank.gui.ClientGui;
+import bank.interfaces.AnnouncerA;
+import bank.interfaces.AnnouncerB;
+import bank.interfaces.BankClient;
+import bank.interfaces.BankTeller;
+import bank.interfaces.LoanTeller;
+import building.Bank;
+import building.BuildingList;
 
 
 /**
@@ -187,6 +185,7 @@ public class BankClientRole extends Role implements BankClient{
 		hasLoan = true;
 		amountDue = n;
 		myPerson.setMoney(myPerson.getMoney() + n);
+		myPerson.msgYouHaveALoan(n);
 		state1 = bankState.nothing;
 		state2 = inLineState.leaving;
 		stateChanged();
@@ -208,7 +207,8 @@ public class BankClientRole extends Role implements BankClient{
 			Leaving();
 			return true;
 		}
-		if (!((state2 == inLineState.goingToLine && state1 == bankState.loan) ||(state2 == inLineState.goingToLine && state1 == bankState.repay))){
+
+		if ((state2 == inLineState.goingToLine && state1 == bankState.withdraw) ||(state2 == inLineState.goingToLine && state1 == bankState.deposit)){
 			goToLine(lineNum);
 			return true;
 		}
@@ -360,7 +360,9 @@ public class BankClientRole extends Role implements BankClient{
 		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Thanks, goodbye.");
 		clientGui.DoLeave();
 		state2 = inLineState.noTicket;
+		BuildingList.findBuildingWithName("Bank").removeRole(this);
 		deactivate();
+		myPerson.msgImHungry();
 	}
 
 

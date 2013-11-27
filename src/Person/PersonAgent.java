@@ -138,6 +138,10 @@ public class PersonAgent extends Agent implements Person{
 				 MarketManagerRole role = (MarketManagerRole) findRole(Role.MARKET_MANAGER_ROLE);
 			
 			}
+			if(r instanceof MarketEmployeeRole ){
+				MarketEmployeeRole role = (MarketEmployeeRole) findRole(Role.MARKET_EMPLOYEE_ROLE);
+			
+			}
 			//gui.setStartingStates(roleLocation);
 			gui.setStartingStates(roleLocation);
 			BuildingList.findBuildingWithName(roleLocation).addRole(r);
@@ -166,8 +170,13 @@ public class PersonAgent extends Agent implements Person{
 		
 		roles.add(new HomeRole(this));
 		
-		if(name.equals("Person 1") || name.equals("Person 2"))
-			this.msgGoToMarket(null);
+		if(name.equals("Person 1") || name.equals("Person 2") || name.equals("Person 12"))
+			this.msgImHungry();
+		if(name.equals("Person 10") || name.equals("Person 11"))
+			this.msgINeedMoney(30.00);
+		if(name.equals("Person 13")){
+			this.msgGoToMarket("Steak");
+		}
 	}
 	
 //-------------------------------MESSAGES----------------------------------------//
@@ -189,6 +198,7 @@ public class PersonAgent extends Agent implements Person{
 	  */
 	public void msgImHungry(){
 	  state = PersonState.NeedsFood;
+	  stateChanged();
 	}
 
 	/**
@@ -198,6 +208,7 @@ public class PersonAgent extends Agent implements Person{
 	public void msgINeedMoney(double amountNeeded){
 	  state = PersonState.NeedsMoney;
 	  moneyNeeded += amountNeeded;
+	  stateChanged();
 	}
 
 	/**
@@ -207,6 +218,7 @@ public class PersonAgent extends Agent implements Person{
 	  */
 	public void msgYouHaveALoan(double loan){
 	  loanAmount = loan;
+	  stateChanged();
 	}
 
 	/**
@@ -216,6 +228,8 @@ public class PersonAgent extends Agent implements Person{
 		for(Role r: roles){
 			if(r.getNameOfRole()==role){
 				r.activate();
+				stateChanged();
+				return;
 			}
 		}
 	}
@@ -226,6 +240,7 @@ public class PersonAgent extends Agent implements Person{
 	 */
 	public void msgGoToMarket(String item){
 		itemsNeeded.add(new Item(item, 1));
+		stateChanged();
 	}
 
 	/**
@@ -234,6 +249,7 @@ public class PersonAgent extends Agent implements Person{
 	  */
 	public void msgReceiveSalary(double amount){
 	  money += amount;
+	  stateChanged();
 	}
 
 	/**
@@ -242,6 +258,7 @@ public class PersonAgent extends Agent implements Person{
 	  */
 	public void msgPayBackLoanUrgently(){
 	   state=PersonState.PayLoanNow;
+	   stateChanged();
 	}
 
 	/**
@@ -250,6 +267,7 @@ public class PersonAgent extends Agent implements Person{
 	  */
 	public void msgPayBackRentUrgently(){
 	   state=PersonState.PayRentNow;
+	   stateChanged();
 	}
 	
 	
@@ -276,7 +294,7 @@ public class PersonAgent extends Agent implements Person{
 	/**
 	  * Message sent by the home role to invite the person to a party
 	  */
-	public void msgPartyInvitation(PersonAgent p,Calendar rsvpDeadline,Calendar partyTime){
+	public void msgPartyInvitation(Person p,Calendar rsvpDeadline,Calendar partyTime){
 		Party party = new Party(p, rsvpDeadline, partyTime);
 		party.partyState = PartyState.ReceivedInvite;
 		parties.add(party);
@@ -286,13 +304,13 @@ public class PersonAgent extends Agent implements Person{
 	/**
 	  * RSVP message sent by the home role
 	  */
-	public void msgIAmComing(PersonAgent p){
+	public void msgIAmComing(Person p){
 		//findRole("HOME_ROLE").partyAttendees.add(p);
 		//findRole("HOME_ROLE").rsvp.get(p)=true;
 		
 		
 	}
-	public void msgIAmNotComing(PersonAgent p){
+	public void msgIAmNotComing(Person p){
 		//findRole("HOME_ROLE").rsvp.get(p)=true;
 	}
 
@@ -321,14 +339,24 @@ public class PersonAgent extends Agent implements Person{
 				return false;
 		}
 		
+		if(state == PersonState.NeedsFood){
+			GoGetFood();
+			return true;
+		}
+		
 		if(!itemsNeeded.isEmpty()){
 			GoToMarketForItems();
 			return true;
 		}
 		
+		if(state == PersonState.NeedsMoney && moneyNeeded > 10){
+			GoGetMoney();
+			return true;
+		}
+		
 
 		if(state != PersonState.Idle){
-
+			AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "////////////IDLE//////////");
 			GoHome();
 		}
 		
@@ -360,19 +388,22 @@ public class PersonAgent extends Agent implements Person{
 		  
 		  GoToLocation(location, transport);
 		  
-		  Role role;
-		  /*if(b instanceof Restaurant){
-			  if(findRole(Role.RESTAURANT_CUSTOMER_ROLE) != null){
-				  role = findRole(Role.RESTAURANT_CUSTOMER_ROLE);
-		  	  }else{
-				  role = RoleFactory.roleFromString(Role.RESTAURANT_CUSTOMER_ROLE);
-				  addRole(role);
-			  }
-		  }else if(b instanceof Apartment || b instanceof Home){
-		    role = findRole(Role.HOME_ROLE);
+		  RestaurantCustomerRole role = (RestaurantCustomerRole) findRole(Role.RESTAURANT_CUSTOMER_ROLE);
+		  if(role == null){
+			  role = (RestaurantCustomerRole) RoleFactory.roleFromString(Role.RESTAURANT_CUSTOMER_ROLE);
+			  addRole(role);
 		  }
 
-		  role.activate();*/
+		  AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Customer Role = "+role);
+		  BuildingList.findBuildingWithName("Restaurant 1").addRole(role);
+		  Building bdg =  BuildingList.findBuildingWithName("Restaurant 1");
+		  if(bdg instanceof Restaurant){
+			  Restaurant rest = (Restaurant) bdg;
+			  role.setCashier(rest.getCashierRole());
+			  role.setHost(rest.getHostRole());
+			  role.gotHungry();
+			  role.activate();
+		  }
 	}
 	
 	private String PickFoodLocation(){
@@ -399,19 +430,16 @@ public class PersonAgent extends Agent implements Person{
 		
 		//needs a way to find a bank quite yet
 		GoToLocation("Bank", transport);
-		if(findRole(Role.BANK_CLIENT_ROLE) == null){
-			Role r = RoleFactory.roleFromString(Role.BANK_CLIENT_ROLE);
-			r.activate();
+		Role r = findRole(Role.BANK_CLIENT_ROLE);
+		if(r == null){
+			r = RoleFactory.roleFromString(Role.BANK_CLIENT_ROLE);
 			addRole(r);
-		}else{
-			findRole(Role.BANK_CLIENT_ROLE).activate();
 		}
-		  /*state = GettingMoney;
-		  Bank b = pickBank();
-		  TransportationMode tm = pickTransportMode();
-		  DoGoToBank(b, tm);
-		  BankCustomerRole bcr = getBankCustomerRole();
-		  bcr.activate();*/
+		
+		BankClientRole role = (BankClientRole) r;
+		role.setIntent(BankClientRole.withdraw);
+		BuildingList.findBuildingWithName("Bank").addRole(role);
+		role.activate();
 	}
 	
 	private void GoToMarketForItems(){
@@ -433,36 +461,17 @@ public class PersonAgent extends Agent implements Person{
 		}
 		
 		//needs a way to find a bank quite yet
-		 GoToLocation("Restaurant 1", transport);
-		  
-		  RestaurantCustomerRole role = (RestaurantCustomerRole) findRole(Role.RESTAURANT_CUSTOMER_ROLE);
-		  if(role == null){
-			  role = (RestaurantCustomerRole) RoleFactory.roleFromString(Role.RESTAURANT_CUSTOMER_ROLE);
-			  addRole(role);
-		  }
-
-		  AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Customer Role = "+role);
-		  BuildingList.findBuildingWithName("Restaurant 1").addRole(role);
-		  Building bdg =  BuildingList.findBuildingWithName("Restaurant 1");
-		  if(bdg instanceof Restaurant){
-			  Restaurant rest = (Restaurant) bdg;
-			  role.setCashier(rest.getCashierRole());
-			  role.setHost(rest.getHostRole());
-			  role.gotHungry();
-			  role.activate();
-		  }
-		  while(!itemsNeeded.isEmpty())
-			  itemsNeeded.remove();
-		  
-		  state = PersonState.GettingFood;
-		/*if(findRole(Role.MARKET_CUSTOMER_ROLE) == null){
-			Role r = RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
-			r.activate();
+		 GoToLocation("Market 1", transport);
+		 Role r = findRole(Role.MARKET_CUSTOMER_ROLE);
+		if(r == null){
+			r = RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
 			addRole(r);
+			r.activate();
 		}else{
-			findRole(Role.MARKET_CUSTOMER_ROLE).activate();
-		}*/
-		//GoHome();
+			r.activate();
+		}
+		
+		BuildingList.findBuildingWithName("Market 1").addRole(r);
 	}
 
 	/**
@@ -541,7 +550,7 @@ public class PersonAgent extends Agent implements Person{
 	
 	private void GoHome(){
 		String transport;
-	  //state = PersonState.Idle;
+	  state = PersonState.Idle;
 	  switch(prefs.get(Preferences.KeyValue.VEHICLE_PREFERENCE)){
 	  	case Preferences.BUS:
 	  		transport = Preferences.BUS;
@@ -556,125 +565,13 @@ public class PersonAgent extends Agent implements Person{
 	  	default:
 	  		transport = "ERROR";
 	  }
-	  /* if(getName().equals("Person 7")){
-		  GoToLocation("Market 1", transport);
-		  
-		  MarketManagerRole role = (MarketManagerRole) findRole(Role.MARKET_MANAGER_ROLE);
-		  if(role == null){  
-			  role = (MarketManagerRole) RoleFactory.roleFromString(Role.MARKET_MANAGER_ROLE);
-			  addRole(role);
-		  }
-		  BuildingList.findBuildingWithName("Market 1").addRole(role);
-		  role.activate();
-	  }
-	 if(getName().equals("Person 7")){
-		  GoToLocation("Market 1", transport);
-		  
-		  MarketEmployeeRole role = (MarketEmployeeRole) findRole(Role.MARKET_EMPLOYEE_ROLE);
-		  if(role == null){  
-			  role = (MarketEmployeeRole) RoleFactory.roleFromString(Role.MARKET_EMPLOYEE_ROLE);
-			  addRole(role);
-		  }
-		  BuildingList.findBuildingWithName("Market 1").addRole(role);
-		  role.activate();
-	  }*/
-	
-//		  for(Building b : BuildingList.getInstance()){
-//			  System.out.println("Building Name: "+b.getName());
-//		  }
-//		  GoToLocation(home.getName(), transport);
-//		  HomeRole role = (HomeRole) findRole(Role.HOME_ROLE);
-//		  BuildingList.findBuildingWithName("House 1").addRole(role);
-//		  role.activate();
-//		  
-//		  role.msgMakeFood();
-
-//	  
-//	  GoToLocation("Bank", transport);
-//	  bankClientRole role = (bankClientRole) findRole(Role.BANK_CLIENT_ROLE);
-//	  if(role == null){
-//		  role = (bankClientRole) RoleFactory.roleFromString(Role.BANK_CLIENT_ROLE);
-//		  addRole(role);
-//	  }
-	  
-//	  moneyNeeded = 40.00;
-//	  role.setIntent(bankClientRole.withdraw);
-//	  role.activate();
-	/*  if(getName().equals("Person 7")){
-		  GoToLocation("Market 1", transport);
-		  
-		  MarketCustomerRole role = (MarketCustomerRole) findRole(Role.MARKET_CUSTOMER_ROLE);
-		  if(role == null){  
-			  role = (MarketCustomerRole) RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
-			  addRole(role);
-		  }
-		  BuildingList.findBuildingWithName("Market 1").addRole(role);
-		  role.activate();
-	  }
-	  if(getName().equals("Person 6")){
-		  GoToLocation("Market 1", transport);
-		  
-		  MarketCustomerRole role = (MarketCustomerRole) findRole(Role.MARKET_CUSTOMER_ROLE);
-		  if(role == null){  
-			  role = (MarketCustomerRole) RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
-			  addRole(role);
-		  }
-		  BuildingList.findBuildingWithName("Market 1").addRole(role);
-		  role.activate();
-	  }
-	  if(getName().equals("Person 3")){
-		  GoToLocation("Market 1", transport);
-		  
-		  MarketCustomerRole role = (MarketCustomerRole) findRole(Role.MARKET_CUSTOMER_ROLE);
-		  if(role == null){  
-			  role = (MarketCustomerRole) RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
-			  addRole(role);
-		  }
-		  BuildingList.findBuildingWithName("Market 1").addRole(role);
-		  role.activate();
-	  }
-	  if(getName().equals("Person 5")){
-		  GoToLocation("Market 1", transport);
-		  
-		  MarketEmployeeRole role = (MarketEmployeeRole) findRole(Role.MARKET_EMPLOYEE_ROLE);
-		  if(role == null){  
-			  role = (MarketEmployeeRole) RoleFactory.roleFromString(Role.MARKET_EMPLOYEE_ROLE);
-			  addRole(role);
-		  }
-		  BuildingList.findBuildingWithName("Market 1").addRole(role);
-		  role.activate();
-	  }
-	  if(getName().equals("Person 4")){
-		  GoToLocation("Market 1", transport);
-		  
-		  MarketEmployeeRole role = (MarketEmployeeRole) findRole(Role.MARKET_EMPLOYEE_ROLE);
-		  if(role == null){  
-			  role = (MarketEmployeeRole) RoleFactory.roleFromString(Role.MARKET_EMPLOYEE_ROLE);
-			  addRole(role);
-		  }
-		  BuildingList.findBuildingWithName("Market 1").addRole(role);
-		  role.activate();
-	  }
-	 
-	  */
  
 	  GoToLocation(home.getName(), transport);
-	  HomeRole role = (HomeRole) findRole(Role.HOME_ROLE);
+	  HomeRole role = (HomeRole) findRole("HomeRole");
 	  BuildingList.findBuildingWithName(home.getName()).addRole(role);
 	  role.activate();
 	  
 	  role.msgMakeFood();
-	  
-//	  RestaurantCustomerRole role = (RestaurantCustomerRole) findRole(Role.RESTAURANT_CUSTOMER_ROLE);
-//	  if(role == null){
-//		  role = (RestaurantCustomerRole) RoleFactory.roleFromString(Role.RESTAURANT_CUSTOMER_ROLE);
-//		  addRole(role);
-//	  }
-//	  BuildingList.findBuildingWithName("Restaurant 1").addRole(role);
-//	  Restaurant building = (Restaurant) BuildingList.findBuildingWithName("Restaurant 1");
-//	  building.getHostRole().msgIWantFood(role);
-//	  role.activate();
-//	  
 
 	}
 		  
@@ -809,6 +706,10 @@ public class PersonAgent extends Agent implements Person{
 		this.moneyNeeded = money;
 	}
 	
+	public int getNumParties(){
+		return parties.size();
+	}
+	
 	/**
 	 * Adds a loan/debt to the list of debts
 	 */
@@ -883,7 +784,7 @@ public class PersonAgent extends Agent implements Person{
 	 */
 	private class Party{
 		
-		PersonAgent host;
+		Person host;
 		Calendar rsvpDeadline;
 		Calendar dateOfParty;
 		
@@ -896,7 +797,7 @@ public class PersonAgent extends Agent implements Person{
 		 * @param rsvpDeadline the RSVP deadline
 		 * @param partyTime the date of the party
 		 */
-		public Party(PersonAgent p, Calendar rsvpDeadline, Calendar partyTime){
+		public Party(Person p, Calendar rsvpDeadline, Calendar partyTime){
 			this.host=p;
 			this.rsvpDeadline = rsvpDeadline;
 			this.dateOfParty = partyTime;

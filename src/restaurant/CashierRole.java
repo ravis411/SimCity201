@@ -1,13 +1,22 @@
 package restaurant;
 
-import restaurant.gui.CashierGui;
-import restaurant.interfaces.*;
-
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.Vector;
 
+import bank.BankTellerRole;
+import building.BuildingList;
+import restaurant.gui.CashierGui;
+import restaurant.interfaces.Cashier;
+import restaurant.interfaces.Customer;
+import restaurant.interfaces.Market;
+import restaurant.interfaces.Waiter;
+import trace.AlertLog;
+import trace.AlertTag;
+import MarketEmployee.MarketManagerRole;
 import Person.Role.Role;
-import agent.Agent;
 
 
 /**
@@ -34,9 +43,18 @@ public class CashierRole extends Role implements Cashier {
 	AgentEvent event = AgentEvent.none;
 	
 	CashierGui cashierGui = null;
+	BankTellerRole teller = null;
 
 	public CashierRole() {
 		super();
+		
+		List<Role> inhabitants = BuildingList.findBuildingWithName("Bank").getInhabitants();
+		for(Role r : inhabitants) {
+			if (r.getNameOfRole() == "BANK_TELLER_ROLE") {
+				BankTellerRole bt = (BankTellerRole) r;
+				teller = bt;
+			}
+		}
 		
 		money = 200.00;
 	}
@@ -63,6 +81,19 @@ public class CashierRole extends Role implements Cashier {
 		print("Received bill from market for $" + amount);
 		marketBills.add(new MarketBill(market,amount));
 		stateChanged();
+	}
+	public void msgReceivedDeposit(double amount){
+		print("Deposited $" + amount + " to bank.");
+		money = money - amount;
+		stateChanged();
+	}
+
+	public void msgEndOfDay() {
+		teller.msgRestaurantDeposit(this, 200);
+	}
+	
+	public void msgBeginningofDay() {
+		
 	}
 	
 	

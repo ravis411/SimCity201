@@ -38,6 +38,10 @@ public class BuildingGui extends Rectangle2D.Double implements Gui{
 		else
 			g.fill(this);
 	}
+	
+	public String getName(){
+		return myBuildingPanel.getName();
+	}
 
 	public boolean isPresent() {
 		return true;

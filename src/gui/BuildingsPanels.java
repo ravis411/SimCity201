@@ -76,7 +76,7 @@ public class BuildingsPanels extends JPanel{
 		BuildingPanel b = null;
 		for(Component c : this.getComponents()){
 			if(c instanceof BuildingPanel) {
-				if(c.getName() == name){
+				if(c.getName().equals(name)){
 					b = (BuildingPanel) c;
 					break;
 				}
@@ -89,7 +89,7 @@ public class BuildingsPanels extends JPanel{
 		ResidenceBuildingPanel b = null;
 		for(Component c : this.getComponents()){
 			if(c instanceof ResidenceBuildingPanel) {
-				if(c.getName() == name){
+				if(c.getName().equals(name)){
 					b = (ResidenceBuildingPanel) c;
 					break;
 				}

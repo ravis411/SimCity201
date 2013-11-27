@@ -3,14 +3,8 @@ package gui.Building;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.geom.Rectangle2D;
 
-import javax.swing.ImageIcon;
-
-import trace.AlertLog;
-import trace.AlertTag;
-
+@SuppressWarnings("serial")
 public class RestaurantBuilding extends BuildingGui {	
 	
 	public RestaurantBuilding( BuildingGui b ) {
@@ -24,6 +18,14 @@ public class RestaurantBuilding extends BuildingGui {
 			g.setColor(new Color(100, 180, 200));
 			g.drawString(super.myBuildingPanel.getName(), (int)super.x,(int)super.y);
 			super.draw(g);
+			g.setColor(Color.blue);
+			g.fillRect((int)(super.x), (int)(super.y), (int)super.width, (int)super.height);
+			g.setColor(Color.white);
+			g.fillRect((int)(super.x), (int)(super.y), (int)super.width, (int)super.height/6);
+			g.setColor(new Color(100, 180, 200));
+			g.fillRect((int)(super.x)+17, (int)(super.y)+30, (int)super.width/3, (int)super.height/5);
+			g.fillRect((int)(super.x)+17, (int)(super.y)+40, (int)super.width/3, (int)super.height/5);
+			
 		}
 		else
 		{

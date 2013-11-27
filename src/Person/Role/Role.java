@@ -12,13 +12,17 @@ public abstract class Role {
 	public final static String MARKET_EMPLOYEE_ROLE = "MarketEmployee.MarketEmployeeRole";
 	public final static String MARKET_MANAGER_ROLE = "MarketEmployee.MarketManagerRole";
 	public final static String BANK_CLIENT_ROLE = "bank.BankClientRole";
+	public final static String BANK_TELLER_ROLE = "bank.BankTellerRole";
+	public final static String LOAN_TELLER_ROLE = "bank.LoanTellerRole";
 	public final static String PASSENGER_ROLE = "Person.Role.PassengerRole";
-	public final static String HOME_ROLE = "HomeRole";
+	public final static String HOME_ROLE = "residence.HomeRole";
 	public final static String RESTAURANT_CUSTOMER_ROLE = "restaurant.RestaurantCustomerRole";
 	public final static String RESTAURANT_WAITER_ROLE = "restaurant.OldWaiterRole";
+	public final static String RESTAURANT_NEW_WAITER_ROLE = "restaurant.NewWaiterRole";
 	public final static String RESTAURANT_HOST_ROLE = "restaurant.HostRole";
 	public final static String RESTAURANT_COOK_ROLE = "restaurant.CookRole";
 	public final static String RESTAURANT_CASHIER_ROLE = "restaurant.CashierRole";
+	public final static String APARTMENT_MANAGER_ROLE = "residence.ApartmentManagerRole";
 	
 	/**
 	 * The scheduler function for a particular role

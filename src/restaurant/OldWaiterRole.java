@@ -181,7 +181,6 @@ public class OldWaiterRole extends Role implements Waiter {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAction() {
-		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "Waiter", "WAITER SCHEDULER !!!!!!!");
 		if(requestBreak == true) {
 			requestBreak();
 			return true;

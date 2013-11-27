@@ -112,7 +112,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	public void msgMarketEmployeeConfirmPartialOrder(boolean tf, MarketCustomerRole customer){
 	marketCustomerOrder.setPartialOrderAcceptable(tf);
 	event=MarketEmployeeEvent.gotReplyFromCustomerIfPartialOrderOkay;
-	print(customer.getNameOfRole() + " says Partial Order Okay: "+ tf);
+	AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), customer.getNameOfRole() + " says Partial Order Okay: "+ tf);
 	stateChanged();
 	}
 	
@@ -204,13 +204,13 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 				if (marketData.getFoodType(i) == "Steak"){
 					if (marketData.getAmount(i)>=order.getAmount()){
 						order.setAmountAvailable(order.getAmount());
-						print(marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +order.getAmount() +" off shelf");
+						AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +order.getAmount() +" off shelf");
 						marketData.decrementFoodAmount(i, order.getAmount());
 					}
 					else
 					{
 						order.setAmountAvailable(marketData.getAmount(i));
-						print(marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +order.getAmountAvailable() +" off shelf");
+						AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +order.getAmountAvailable() +" off shelf");
 						marketData.decrementFoodAmount(i,marketData.getAmount(i));
 					}
 				}
@@ -227,13 +227,13 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 				if (marketData.getFoodType(i) == "Chicken"){
 					if (marketData.getAmount(i)>=order.getAmount()){
 						order.setAmountAvailable(order.getAmount());
-						print(marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +order.getAmount() +" off shelf");
+						AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +order.getAmount() +" off shelf");
 						marketData.decrementFoodAmount(i, order.getAmount());
 					}
 					else
 					{
 						order.setAmountAvailable(marketData.getAmount(i));
-						print(marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +order.getAmountAvailable() +" off shelf");
+						AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +order.getAmountAvailable() +" off shelf");
 						marketData.decrementFoodAmount(i,marketData.getAmount(i));
 					}
 				}
@@ -250,23 +250,25 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 				if (marketData.getFoodType(i) == "Burger"){
 					if (marketData.getAmount(i)>=order.getAmount()){
 						order.setAmountAvailable(order.getAmount());
-						print(marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +order.getAmount() +" off shelf");
+						AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +order.getAmount() +" off shelf");
 						marketData.decrementFoodAmount(i,order.getAmount());
 					}
 					else
 					{
 						order.setAmountAvailable(marketData.getAmount(i));
-						print(marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +order.getAmountAvailable() +" off shelf");
+						AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +order.getAmountAvailable() +" off shelf");
 						
 					}
 				}
 			}
 		}
+		AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "Bringing Manager Order #" +order.getOrderNumber());
 		try {
 			atManager.acquire();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		
 		myManager.msgMarketManagerHereIsAmountWeCanFulfill(order.getFoodType(), order.getAmountAvailable(), order.getOrderNumber());
 		try {
 			atCounter.acquire();
@@ -277,7 +279,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		state = MarketEmployeeState.waiting;
 	
 
-		myManager.msgMarketManagerHereIsAmountWeCanFulfill(order.getFoodType(), order.getAmountAvailable(), order.getOrderNumber());
+		//myManager.msgMarketManagerHereIsAmountWeCanFulfill(order.getFoodType(), order.getAmountAvailable(), order.getOrderNumber());
 		myOrdersFromManager.remove(0);
 		}
 	
@@ -297,13 +299,13 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 				if (marketData.getFoodType(i) == "Steak"){
 					if (marketData.getAmount(i)>=marketCustomerOrder.getAmount()){
 						marketCustomerOrder.setAmountAvailable(marketCustomerOrder.getAmount());
-						print(marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +marketCustomerOrder.getAmount() +" off shelf");
+						AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +marketCustomerOrder.getAmount() +" off shelf");
 						marketData.decrementFoodAmount(i, marketCustomerOrder.getAmount());
 					}
 					else
 					{
 						marketCustomerOrder.setAmountAvailable(marketData.getAmount(i));
-						print(marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +marketCustomerOrder.getAmountAvailable() +" off shelf");
+						AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +marketCustomerOrder.getAmountAvailable() +" off shelf");
 						marketData.decrementFoodAmount(i,marketData.getAmount(i));
 					}
 				}
@@ -320,13 +322,13 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 				if (marketData.getFoodType(i) == "Chicken"){
 					if (marketData.getAmount(i)>=marketCustomerOrder.getAmount()){
 						marketCustomerOrder.setAmountAvailable(marketCustomerOrder.getAmount());
-						print(marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +marketCustomerOrder.getAmount() +" off shelf");
+						AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +marketCustomerOrder.getAmount() +" off shelf");
 						marketData.decrementFoodAmount(i, marketCustomerOrder.getAmount());
 					}
 					else
 					{
 						marketCustomerOrder.setAmountAvailable(marketData.getAmount(i));
-						print(marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +marketCustomerOrder.getAmountAvailable() +" off shelf");
+						AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +marketCustomerOrder.getAmountAvailable() +" off shelf");
 						marketData.decrementFoodAmount(i,marketData.getAmount(i));
 					}
 				}
@@ -343,13 +345,13 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 				if (marketData.getFoodType(i) == "Burger"){
 					if (marketData.getAmount(i)>=marketCustomerOrder.getAmount()){
 						marketCustomerOrder.setAmountAvailable(marketCustomerOrder.getAmount());
-						print(marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +marketCustomerOrder.getAmount() +" off shelf");
+						AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +marketCustomerOrder.getAmount() +" off shelf");
 						marketData.decrementFoodAmount(i,marketCustomerOrder.getAmount());
 					}
 					else
 					{
 						marketCustomerOrder.setAmountAvailable(marketData.getAmount(i));
-						print(marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +marketCustomerOrder.getAmountAvailable() +" off shelf");
+						AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), marketData.getAmount(i)+ " " + marketData.getFoodType(i)+" on shelve and took " +marketCustomerOrder.getAmountAvailable() +" off shelf");
 						;
 					}
 				}

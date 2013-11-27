@@ -80,18 +80,14 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 		//test
 		
 
-//		testTellerRole.setPerson(testTeller);
-//		testLoanTellerRole.setPerson(testLoanTeller);
+		testTellerRole.setPerson(testTeller);
+		testLoanTellerRole.setPerson(testLoanTeller);
 //		testClientRole.setPerson(testClient);
-//		addGuiForRole(testTellerRole);
-//		addGuiForRole(testLoanTellerRole);
+		addGuiForRole(testTellerRole);
+		addGuiForRole(testLoanTellerRole);
 //		addGuiForRole(testClientRole);
 //		testClientRole.setIntent("deposit");
 
-		testTellerRole.setPerson(testTeller);
-		testLoanTellerRole.setPerson(testLoanTeller);
-		addGuiForRole(testTellerRole);
-		addGuiForRole(testLoanTellerRole);
 
 		
 		Timer timer = new Timer(TIMERCOUNTmilliseconds, this );
@@ -224,16 +220,21 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 		    BankClientRole clientRole = (BankClientRole) r;
 		    BankClientRoles.remove(clientRole);
 			BuildingList.findBuildingWithName("Bank").removeRole(clientRole);
+			r.deactivate();
 		    guis.remove(clientRole.getGui());
 
 		}
 		if (r instanceof BankTellerRole){
 		    BankTellerRole tellerRole = (BankTellerRole) r;
 		    BankTellerRoles.remove(tellerRole);
+			BuildingList.findBuildingWithName("Bank").removeRole(tellerRole);
+		    r.deactivate();
 		    guis.remove(tellerRole.getGui());
 		}
 		if (r instanceof LoanTellerRole){
 		    LoanTellerRole loanTellereRole=(LoanTellerRole) r;
+			BuildingList.findBuildingWithName("Bank").removeRole(loanTellereRole);
+		    r.deactivate();
 		    guis.remove(loanTellereRole.getGui());
 		}
 	}
