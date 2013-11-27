@@ -1,12 +1,15 @@
 package gui.MockAgents;
 
+import interfaces.Person;
+
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.Queue;
 
 import gui.agentGuis.PersonGui;
 import agent.Agent;
 
-public class PseudoPerson extends Agent{
+public class PseudoPerson extends Agent implements Person{
 
 	String name;
 	PersonGui agentGui = null;
@@ -18,6 +21,9 @@ public class PseudoPerson extends Agent{
 	
 	public PseudoPerson(String name){
 		this.name = name;
+		StopsQueue.offer("Bus Stop 1");
+		StopsQueue.offer("Bus Stop 2");
+		StopsQueue.offer("Bus Stop 3");
 	}
 	
 	protected boolean pickAndExecuteAnAction() {
@@ -29,7 +35,7 @@ public class PseudoPerson extends Agent{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Arrived at: " + agentGui.DoRideBusTo("Building 12"));
+		System.out.println("Arrived at: " + agentGui.DoRideBusTo("Bus Stop 6"));
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
@@ -77,5 +83,84 @@ public class PseudoPerson extends Agent{
 
 	public String toString(){
 		return "" + name;
+	}
+
+	@Override
+	public void msgWeHaveArrived(String currentDestination) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgImHungry() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgINeedMoney(double moneyNeeded) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgYouHaveALoan(double loan) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgReportForWork(String role) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgGoToMarket(String item) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgReceiveSalary(double salary) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgPayBackLoanUrgently() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgPayBackRentUrgently() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgAddObjectToBackpack(String object, int quantity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgPartyInvitation(Person p, Calendar rsvpDeadline,
+			Calendar partyTime) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgIAmComing(Person p) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgIAmNotComing(Person p) {
+		// TODO Auto-generated method stub
+		
 	}
 }

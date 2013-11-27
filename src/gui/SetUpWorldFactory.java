@@ -16,6 +16,7 @@ import gui.Building.ResidenceBuildingPanel;
 import gui.Building.RestaurantBuilding;
 import gui.Building.RestaurantBuildingPanel;
 import gui.MockAgents.PseudoBusAgent;
+import gui.MockAgents.PseudoPerson;
 import gui.agentGuis.PersonGui;
 import gui.agentGuis.VehicleGui;
 
@@ -28,6 +29,7 @@ import java.util.Queue;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
@@ -39,6 +41,7 @@ import trace.AlertTag;
 import Person.PersonAgent;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
+import Person.test.mock.MockPerson;
 import Transportation.BusAgent;
 import Transportation.BusStopAgent;
 import agent.Agent;
@@ -430,6 +433,14 @@ public class SetUpWorldFactory{
 		addVehicle("OddMockBus");
 		addVehicle("EvenMockBus");
 		addVehicle("OddMockBus");
+		
+		PseudoPerson p1 = new PseudoPerson("Mock Person 1");
+		PersonGui g1 = new PersonGui(p1, layout, new PersonAStarTraversal(layout.getAgentGrid(), layout.getCrossWalkGrid(), layout.getRoadGrid()), locationMap);
+		p1.setAgentGui(g1);
+		cityPanel.addGui(g1);
+		p1.startThread();
+		 
+
 
 		//addPerson("Person 1");
 		//addPerson("Person 2");
