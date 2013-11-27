@@ -286,7 +286,7 @@ public class SetUpWorldFactory{
 			
 			addPerson("Person 5", buildingsPanels.getResidenceBuildingPanel("House 2"));
 			addPerson("Person 6", buildingsPanels.getResidenceBuildingPanel("House 2"));
-//			addPerson("Person 7", buildingsPanels.getResidenceBuildingPanel("House 2"));
+			addPerson("Person 7", buildingsPanels.getResidenceBuildingPanel("House 2"));
 
 		
 	} //end LoadDefault
@@ -580,6 +580,9 @@ public class SetUpWorldFactory{
 				break;
 			case "Person 4":
 				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_CASHIER_ROLE), "Restaurant 1");
+				break;
+			case "Person 7":
+				p1.setInitialRole(RoleFactory.roleFromString(Role.MARKET_MANAGER_ROLE), "Market 1");
 				break;
 			default:
 				break;
