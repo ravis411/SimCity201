@@ -187,6 +187,7 @@ public class BankClientRole extends Role implements BankClient{
 		hasLoan = true;
 		amountDue = n;
 		myPerson.setMoney(myPerson.getMoney() + n);
+		myPerson.msgYouHaveALoan(n);
 		state1 = bankState.nothing;
 		state2 = inLineState.leaving;
 		stateChanged();

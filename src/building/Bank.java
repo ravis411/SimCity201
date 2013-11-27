@@ -10,7 +10,6 @@ public class Bank extends Building implements Workplace {
 	public boolean isOpenSetter = false;
 	public Bank(BuildingPanel panel) {
 		super(panel);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
