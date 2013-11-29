@@ -157,9 +157,11 @@ public class PersonGui implements Gui {
     
     public boolean setStartingStates(String location){
     	LocationInfo i = locations.get(location);
-    	System.out.println(location);
-    	if(i == null)
+    	AlertLog.getInstance().logMessage(AlertTag.PERSON_GUI, agent.getName() + " GUI", "Setting initial location to " + location);
+    	if(i == null){
+    		AlertLog.getInstance().logMessage(AlertTag.PERSON_GUI, agent.getName() + " GUI", "" + location + " not found. Returning false.");
     		return false;
+    	}
     	
     	currentLocation = i;
     	xPos = xDestination = i.entranceFromMainGridPosition.width;

@@ -69,9 +69,10 @@ public class BusAgent extends Agent implements Bus
 	 * @param passengers List of the myBusPassenger class sent from bus stop
 	 */
 	public void msgHereArePassengers(List<myBusPassenger> passengers ){
-		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, "BusAgent", "Number of People added: "+passengers.size());
-		if(passengers.size() > 0)
+		if(passengers.size() > 0){
+			AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, "BusAgent", "Number of People added: "+passengers.size());
 			this.passengers.addAll(passengers);
+		}
 		state = AgentState.readyToLeave;
 		stateChanged();
 	}
@@ -105,10 +106,10 @@ public class BusAgent extends Agent implements Bus
 	//Actions
 	
 	private void GoToNextStop(){
-		print("going to next stop");
+		//print("going to next stop");
 		//currentStop.msgLeavingStop();
 		state = AgentState.inTransit;
-		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Going to next stop");
+		//AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Going to next stop");
 		
 		//print("Count is now: " + count);
 		count++;

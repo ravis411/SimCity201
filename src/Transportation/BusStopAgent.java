@@ -34,7 +34,7 @@ public class BusStopAgent implements BusStop {
 	}
 	
 	
-	private List<myBusPassenger> waitingPassengers = new ArrayList<myBusPassenger>();
+	private List<myBusPassenger> waitingPassengers = Collections.synchronizedList(new ArrayList<myBusPassenger>());
 	public Bus currentBus;
 	private String name;
 
@@ -55,16 +55,18 @@ public class BusStopAgent implements BusStop {
 	 * Message received from bus upon arrival at the bus stop
 	 * @param bus 
 	 */
-	public void msgArrivedAtStop(Bus bus) {
+	public synchronized void msgArrivedAtStop(Bus bus) {
 		//Sent from bus to bus stop
-		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, name, "A bus has arrived at the stop for "+waitingPassengers.size()+" people");
-		currentBus = bus;
+			currentBus = bus;
 		currentBus.msgHereArePassengers(waitingPassengers);
-		for(myBusPassenger b : waitingPassengers){
-			animationPanel.removeWaitingPassenger(b.passenger.getName());
+		if(waitingPassengers.size() > 0){
+			AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, name, bus.toString() + " has arrived at the stop for "+waitingPassengers.size()+" people");
+			for(myBusPassenger b : waitingPassengers){
+				animationPanel.removeWaitingPassenger(b.passenger.getName());
+			}
+			waitingPassengers.removeAll(waitingPassengers);
 		}
-		waitingPassengers.removeAll(waitingPassengers);
-	}
+	}//end msgArrivedAtStop
 	
 	
 	
