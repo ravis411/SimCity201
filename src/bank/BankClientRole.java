@@ -50,6 +50,7 @@ public class BankClientRole extends Role implements BankClient{
 	private int lineNum;
 	private Semaphore atLine = new Semaphore(0,true);
 	private Semaphore atWaitingArea = new Semaphore(0,true);
+	private Semaphore atExit = new Semaphore(0,true);
 	private ClientGui clientGui = null;
 
 
@@ -147,6 +148,11 @@ public class BankClientRole extends Role implements BankClient{
 		stateChanged();
 	}
 
+	public void msgAtExit(){
+		atExit.release();
+		stateChanged();
+	}
+	
 	/**
 	 * sent by the bank teller as a greeting to the client to let the client know he can communicate his needs
 	 */
@@ -266,7 +272,6 @@ public class BankClientRole extends Role implements BankClient{
 		try {
 			atWaitingArea.acquire();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -359,10 +364,15 @@ public class BankClientRole extends Role implements BankClient{
 	private void Leaving(){
 		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Thanks, goodbye.");
 		clientGui.DoLeave();
+		try{
+			atExit.acquire();
+		} catch(InterruptedException e){
+			e.printStackTrace();
+		}
 		state2 = inLineState.noTicket;
 		BuildingList.findBuildingWithName("Bank").removeRole(this);
-		deactivate();
 		myPerson.msgImHungry();
+		deactivate();
 	}
 
 
