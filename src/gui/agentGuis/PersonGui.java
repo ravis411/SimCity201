@@ -104,6 +104,9 @@ public class PersonGui implements Gui {
         for(LocationInfo i : locationList){
         	if(i != null){
         		locations.put(i.name, i);
+        		if(i.name.contains("City Entrance")){
+        			currentLocation = new LocationInfo(i);
+        		}
         	}
         	
         }
@@ -144,7 +147,7 @@ public class PersonGui implements Gui {
         	
         }
         
-    }
+    }//endd mockPerson constructor
     
     
     public void setAgent(PersonAgent agent){
@@ -154,9 +157,11 @@ public class PersonGui implements Gui {
     
     public boolean setStartingStates(String location){
     	LocationInfo i = locations.get(location);
-    	System.out.println(location);
-    	if(i == null)
+    	AlertLog.getInstance().logMessage(AlertTag.PERSON_GUI, agent.getName() + " GUI", "Setting initial location to " + location);
+    	if(i == null){
+    		AlertLog.getInstance().logMessage(AlertTag.PERSON_GUI, agent.getName() + " GUI", "" + location + " not found. Returning false.");
     		return false;
+    	}
     	
     	currentLocation = i;
     	xPos = xDestination = i.entranceFromMainGridPosition.width;
@@ -375,6 +380,15 @@ public class PersonGui implements Gui {
      * @param location	The name of the destination to travel to.
      */
     public void DoGoTo(String location){
+    	LocationInfo info = null;
+    	info = locations.get(location); 
+    	if(info == null){
+    		AlertLog.getInstance().logError(AlertTag.PERSON_GUI, agent.getName() + " GUI", "Person trying to DoGoTo() to a location (" + location + ") that doesn't exist.");
+    		return;
+    	}
+    	
+    	
+    	
     	//System.out.println("Going to " + location);
     	if(state == PersonState.none) {
     		//System.out.println("Entering WORLD ");
@@ -385,15 +399,14 @@ public class PersonGui implements Gui {
     	else if(state == PersonState.inBuilding){
     		DoLeaveBuilding();
     	}
-    	LocationInfo info = null;
-    	info = locations.get(location);    	
+    	   	
     	
     	if(info != null){
     		
     		//See if the location is in the same sector otherwise travel to the next sector
-    		if(currentLocation.sector != info.sector){
+    		//if(currentLocation.sector != info.sector){
     			//DoGoToSector(info.sector);
-    		}
+    	//	}
     		
     		
     		Dimension entrance = info.entranceFromMainGridPosition;

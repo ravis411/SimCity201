@@ -405,7 +405,7 @@ public class PersonAgent extends Agent implements Person{
 	}
 	
 	private String PickFoodLocation(){
-		return "HOME";
+		return home.getName();
 	}
 
 	private void GoGetMoney(){
