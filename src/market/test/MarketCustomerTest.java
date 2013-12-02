@@ -1,11 +1,13 @@
 package market.test;
 
+import interfaces.Person;
 import junit.framework.TestCase;
+import market.data.MarketData;
 import market.gui.MarketCustomerGui;
 import market.gui.MarketGui;
 import market.test.mock.MockMarketEmployee;
 import MarketEmployee.MarketCustomerRole;
-import Person.PersonAgent;
+import Person.test.mock.MockPerson;
 
 /**
  * 
@@ -21,6 +23,7 @@ public class MarketCustomerTest extends TestCase
 	//these are instantiated for each test separately via the setUp() method.
 	MarketCustomerRole customer;
 	MockMarketEmployee employee;
+	Person customerPerson;
 	
 	
 	/**
@@ -32,7 +35,9 @@ public class MarketCustomerTest extends TestCase
 		customer = new MarketCustomerRole();
 		customerPerson= new MockPerson("fd");
 		customer.setPerson(customerPerson);
-	
+		MarketData marketData=new MarketData();
+		customer.setMarketData(marketData);
+		marketData.setMarketEmployeeAtCounter1(employee);
 		employee = new MockMarketEmployee("employee");
 		customer.marketEmployee=employee;
 		MarketGui gui= new MarketGui();
