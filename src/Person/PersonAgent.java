@@ -819,8 +819,10 @@ public class PersonAgent extends Agent implements Person{
 		return realTime;
 	}
 
-	@Override
 	public List<PersonAgent> getFriends() {
 		return friends;
+	}
+	public ResidenceBuildingPanel getHome(){
+		return home;
 	}
 }

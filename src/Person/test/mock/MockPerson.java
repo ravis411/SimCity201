@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import building.Building;
+import gui.Building.ResidenceBuildingPanel;
 import interfaces.Person;
 import Person.PersonAgent;
 import Transportation.test.mock.Mock;
@@ -148,6 +149,12 @@ public class MockPerson extends Mock implements Person {
 
 	@Override
 	public List<PersonAgent> getFriends() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResidenceBuildingPanel getHome() {
 		// TODO Auto-generated method stub
 		return null;
 	}

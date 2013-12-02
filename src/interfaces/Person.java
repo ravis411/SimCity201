@@ -1,5 +1,7 @@
 package interfaces;
 
+import gui.Building.ResidenceBuildingPanel;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -9,6 +11,7 @@ import bank.BankClientRole;
 import bank.BankTellerRole;
 import bank.LoanTellerRole;
 import building.Building;
+
 import java.util.Calendar;
 
 
@@ -63,6 +66,8 @@ public interface Person {
 
 
 	public abstract List<PersonAgent> getFriends();
+
+	public abstract ResidenceBuildingPanel getHome();
 
 
 }

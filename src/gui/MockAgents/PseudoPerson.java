@@ -1,12 +1,15 @@
 package gui.MockAgents;
 
+import gui.Building.ResidenceBuildingPanel;
+import gui.agentGuis.PersonGui;
 import interfaces.Person;
 
 import java.util.Calendar;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
-import gui.agentGuis.PersonGui;
+import Person.PersonAgent;
 import agent.Agent;
 
 public class PseudoPerson extends Agent implements Person{
@@ -162,5 +165,58 @@ public class PseudoPerson extends Agent implements Person{
 	public void msgIAmNotComing(Person p) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void setMoney(double d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setMoneyNeeded(double d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public double getMoney() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public void stateChanged(){
+		// TODO Auto-generated method stub
+
+	}
+	@Override
+	
+	public int getAge() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getMoneyNeeded() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Calendar getRealTime() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<PersonAgent> getFriends() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResidenceBuildingPanel getHome() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -308,7 +308,7 @@ public class HomeRole extends Role implements Home {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			BuildingList.findBuildingWithName(myPerson.home.getName()).removeRole(this);
+			BuildingList.findBuildingWithName(myPerson.getHome().getName()).removeRole(this);
 			myPerson.msgGoToMarket(item.name);
 			callMarket = true;
 		}
@@ -383,7 +383,7 @@ public class HomeRole extends Role implements Home {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		BuildingList.findBuildingWithName(myPerson.home.getName()).removeRole(this);
+		BuildingList.findBuildingWithName(myPerson.getHome().getName()).removeRole(this);
 		leaveHome = false;
 	}
 	private void enterHome() {
