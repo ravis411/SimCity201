@@ -45,6 +45,7 @@ public class ControlPanel extends JPanel implements ActionListener {
 	
 	
 	private JButton addTableButton = new JButton("Add Table");//button for adding a table
+	private JButton addAllTables = new JButton("Add All");
 	JComboBox<Integer> tablePosCombo; // ComboBox for table pos/number
 	JComboBox<Integer> numSeatsCB;	//comboBox for table size/ number of seats
 	
@@ -70,6 +71,7 @@ public class ControlPanel extends JPanel implements ActionListener {
 		
 		//add action listener for addTableButton
 		addTableButton.addActionListener(this);
+		addAllTables.addActionListener(this);
 		cancelButton.addActionListener(this);
 		pauseButton.addActionListener(this);
 		marketButton.addActionListener(this);
@@ -233,6 +235,7 @@ public class ControlPanel extends JPanel implements ActionListener {
 			add(tablNumberP);
 			add(numSeatsPanel);
 			add(addTableButton);
+			add(addAllTables);
 			add(cancelButton);
 		}
 		else{
@@ -308,6 +311,16 @@ public class ControlPanel extends JPanel implements ActionListener {
 		else if(state == GUIState.addTable && e.getSource() == addTableButton)
 		{
 			gui.animationPanel.host.msgAddTable((int)tablePosCombo.getSelectedItem(), (int)numSeatsCB.getSelectedItem());
+			state = GUIState.none;
+			showCtrlPanel();
+		}
+		else if(state == GUIState.addTable && e.getSource() == addAllTables){
+			Vector<Integer> tableNumbers = getAvailableTableLocations();
+			if(!tableNumbers.isEmpty()){
+				for(Integer i : tableNumbers){
+					gui.animationPanel.host.msgAddTable((int)i, (int)numSeatsCB.getSelectedItem());
+				}
+			}
 			state = GUIState.none;
 			showCtrlPanel();
 		}

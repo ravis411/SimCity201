@@ -269,7 +269,7 @@ public class WaiterGui implements Gui {
     		else
     		{
     			try {
-					Thread.sleep(500);
+					Thread.sleep(1000);
 					waits++;
 					if(waits > 10){
 						if(aStar.getGrid()[to.getX() + 1][to.getY()].availablePermits() > 0)

@@ -39,13 +39,13 @@ public class RestaurantGui extends JFrame implements ActionListener {
      * Sets up all the gui components.
      */
     public RestaurantGui() {
-        int WINDOWX = 450;
-        int WINDOWY = 350;
+        int WINDOWX = 800;
+        int WINDOWY = 800;
 
        
-        animationPanel.setBounds(new Rectangle(WINDOWX, (int)(WINDOWY*1.5)) );
+        animationPanel.setBounds(new Rectangle(WINDOWX, 500) );
     	    	
-    	setBounds(50, 50, WINDOWX + WINDOWX , WINDOWY + (int)(1.5 * WINDOWY));
+    	setBounds(50, 50, WINDOWX , WINDOWY);
 
         setLayout(new BoxLayout((Container) getContentPane(), 
         		BoxLayout.Y_AXIS));
@@ -54,7 +54,7 @@ public class RestaurantGui extends JFrame implements ActionListener {
         restInfoControlPanel.setLayout(new BoxLayout((Container) restInfoControlPanel,BoxLayout.X_AXIS));
         
 
-        Dimension restDim = new Dimension(WINDOWX + (int)(WINDOWX * .2), (int) (WINDOWY  *.9 ));
+        Dimension restDim = new Dimension((int)(WINDOWX *.7), 300);
         restPanel.setPreferredSize(restDim);
         restPanel.setMinimumSize(restDim);
         restPanel.setMaximumSize(restDim);
@@ -63,7 +63,7 @@ public class RestaurantGui extends JFrame implements ActionListener {
         //restInfoControlPanel.add(controlB);
         //controlB.addActionListener(this);
              
-        Dimension ctrlPDim = new Dimension((int)(WINDOWX * .6), WINDOWY);
+        Dimension ctrlPDim = new Dimension((int)(WINDOWX * .3), 300);
         ctrlP.setMinimumSize(ctrlPDim);
         ctrlP.setPreferredSize(ctrlPDim);
         ctrlP.setMaximumSize(ctrlPDim);

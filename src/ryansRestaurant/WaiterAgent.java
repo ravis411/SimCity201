@@ -367,7 +367,7 @@ public class WaiterAgent extends Agent implements Waiter {
 
 		
 		activity = "Going to bring food.";
-		activity += "\n\n " + customer.choice.charAt(0) + Character.toUpperCase(customer.choice.charAt(1)) + "?";
+		activity += "\n\n " + customer.choice.charAt(0) + Character.toUpperCase(customer.choice.charAt(1)) + "";
         DoGoToTable(customer.tableNumber);
 
 
