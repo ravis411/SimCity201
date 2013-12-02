@@ -154,7 +154,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		}
 		if (counterNumber==0){
 			
-			while(	marketData.getMarketCustomerAtCounter1()==null){
+			while(	marketData.getMarketEmployeeAtCounter1()==null){
 				try {
 					Thread.sleep(1 * Constants.SECOND);
 				} catch (InterruptedException e) {
@@ -163,11 +163,11 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 				}
 			}
 			
-			marketEmployee=marketData.getMarketCustomerAtCounter1();
+			marketEmployee=marketData.getMarketEmployeeAtCounter1();
 		}
 		if (counterNumber==1){
 			
-				while(	marketData.getMarketCustomerAtCounter2()==null){
+				while(	marketData.getMarketEmployeeAtCounter2()==null){
 					try {
 						Thread.sleep(1 * Constants.SECOND);
 					} catch (InterruptedException e) {
@@ -177,12 +177,12 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 				}
 				
 				
-				marketEmployee=marketData.getMarketCustomerAtCounter2();
+				marketEmployee=marketData.getMarketEmployeeAtCounter2();
 		}
 		
 		if (counterNumber==2){
 		
-				while(	marketData.getMarketCustomerAtCounter3()==null){
+				while(	marketData.getMarketEmployeeAtCounter3()==null){
 					try {
 						Thread.sleep(1 * Constants.SECOND);
 					} catch (InterruptedException e) {
@@ -191,7 +191,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 					}
 				}
 				
-				marketEmployee=marketData.getMarketCustomerAtCounter3();
+				marketEmployee=marketData.getMarketEmployeeAtCounter3();
 		
 		}
 		

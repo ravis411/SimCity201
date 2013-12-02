@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Queue;
 
 import Person.PersonAgent;
+import Person.Role.Role;
 import agent.Agent;
 
 public class PseudoPerson extends Agent implements Person{
@@ -218,5 +219,11 @@ public class PseudoPerson extends Agent implements Person{
 	public ResidenceBuildingPanel getHome() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void setInitialRole(Role roleFromString, String string) {
+		// TODO Auto-generated method stub
+		
 	}
 }

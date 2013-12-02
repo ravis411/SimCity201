@@ -8,6 +8,7 @@ import building.Building;
 import gui.Building.ResidenceBuildingPanel;
 import interfaces.Person;
 import Person.PersonAgent;
+import Person.Role.Role;
 import Transportation.test.mock.Mock;
 import Transportation.test.mock.LoggedEvent;
 
@@ -157,6 +158,12 @@ public class MockPerson extends Mock implements Person {
 	public ResidenceBuildingPanel getHome() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void setInitialRole(Role roleFromString, String string) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

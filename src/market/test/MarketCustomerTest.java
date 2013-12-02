@@ -1,5 +1,6 @@
 package market.test;
 
+import gui.SimCity201Gui;
 import interfaces.Person;
 import junit.framework.TestCase;
 import market.data.MarketData;
@@ -24,30 +25,33 @@ public class MarketCustomerTest extends TestCase
 	MarketCustomerRole customer;
 	MockMarketEmployee employee;
 	Person customerPerson;
-	
+
 	
 	/**
 	 * This method is run before each test. You can use it to instantiate the class variables
 	 * for your agent and mocks, etc.
 	 */
 	public void setUp() throws Exception{
+
 		super.setUp();		
+		
+		
 		customer = new MarketCustomerRole();
+		employee = new MockMarketEmployee("CARrrl");
 		customerPerson= new MockPerson("fd");
 		customer.setPerson(customerPerson);
+		customer.setCounter(1);
 		MarketData marketData=new MarketData();
 		customer.setMarketData(marketData);
-		marketData.setMarketEmployeeAtCounter1(employee);
-		employee = new MockMarketEmployee("employee");
-		customer.marketEmployee=employee;
-		MarketGui gui= new MarketGui();
+		marketData.setMarketEmployeeAtCounter2(employee);
+		MarketGui marketgui= new MarketGui();
 		customer.gui=new MarketCustomerGui(customer, 1);
-		gui.animationPanel.addGui(customer.gui);
-		gui.setVisible(true);
-        gui.setResizable(false);
-		//PersonAgent customerPerson =new PersonAgent("Bob");
-	//	customer.setPerson(customerPerson);
-		//customerPerson.startThread();
+		marketgui.animationPanel.addGui(customer.gui);
+		marketgui.setVisible(true);
+		marketgui.setResizable(false);
+		
+		
+
 		
 	}	
 	/**
@@ -110,6 +114,7 @@ public class MarketCustomerTest extends TestCase
 	public void testTwoCustomerScenarioWithPartialOrderInstockAndPartialOrderISAcceptable()
 	{
 		//setUp() runs first before this test!
+		SimCity201Gui gui = new SimCity201Gui();
 		customer.willTakePartialOrder=true;
 		
 		

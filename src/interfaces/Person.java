@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import Person.PersonAgent;
+import Person.Role.Role;
 import bank.BankClientRole;
 import bank.BankTellerRole;
 import bank.LoanTellerRole;
@@ -68,6 +69,8 @@ public interface Person {
 	public abstract List<PersonAgent> getFriends();
 
 	public abstract ResidenceBuildingPanel getHome();
+
+	public abstract void setInitialRole(Role roleFromString, String string);
 
 
 }

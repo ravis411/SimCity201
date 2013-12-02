@@ -1,11 +1,9 @@
 package market.interfaces;
 
-import market.test.mock.EventLog;
 import MarketEmployee.MarketCustomerRole;
 
 public interface MarketEmployee {
 
-	public EventLog log= new EventLog();
 
 	public abstract void msgMarketEmployeeOrder(String foodType, int FoodTypeAmount, MarketCustomerRole customer, String string);
 
