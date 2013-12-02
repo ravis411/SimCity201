@@ -23,10 +23,12 @@ public class ClientGui implements Gui {
 	static final int hostWidth = 20, hostHeight = 20;
 	private int xBankEntrance= 750;
 	private final static int yBankEntrance= 400;
-	private final int xWaitingArea= new Random().nextInt(120);
-	private final int yWaitingArea= new Random().nextInt(160) + 220;
+	private final int xWaitingArea= new Random().nextInt(130);
+	private final int yWaitingArea= new Random().nextInt(130) + 250;
 	private final static int xTellerDesk= 195;
 	private final static int yTellerDesk= 230;
+	private final static int xExit = 800;
+	private final static int yExit = 400;
 	private int line;
 	BankAnimationPanel gui;
 
@@ -63,6 +65,10 @@ public class ClientGui implements Gui {
 		if (xPos == xDestination && yPos == yDestination && 
 				(xDestination == xTellerDesk + (100*(line-1))) && (yDestination == yTellerDesk)) {
 			role.msgAtLine();
+		}
+		if (xPos == xDestination && yPos == yDestination && 
+				(xDestination == xExit) && (yDestination == yExit)) {
+			role.msgAtExit();
 		}
 
 		/*
@@ -107,8 +113,8 @@ public class ClientGui implements Gui {
 		
 	}
 	public void DoLeave() {
-		xDestination = xBankEntrance;
-		yDestination = yBankEntrance;
+		xDestination = xExit;
+		yDestination = yExit;
 	}
 
 	public int getXPos() {
