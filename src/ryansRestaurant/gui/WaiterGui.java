@@ -55,6 +55,11 @@ public class WaiterGui implements Gui {
     ASTARSTATE aStarState = ASTARSTATE.none;
     Semaphore aSem = new Semaphore(0, true);
     
+    /**
+     * This can be used to interrupt certain functions that otherwise would require more time.
+     */
+    public boolean interrupt = false;
+    
     public WaiterGui(WaiterAgent agent, RestaurantGui gui, RestaurantLayout restLayout, AStarTraversal aStar) {
     	positionMap = new HashMap<Dimension, Dimension>(restLayout.positionMap);
     	this.agent = agent;
@@ -198,7 +203,7 @@ public class WaiterGui implements Gui {
     		Dimension d = new Dimension(currentCustomer.waitingPosition);
 //    		xDestination = d.width + 25;
 //    		yDestination = d.height + 25;
-    		guiMoveFromCurrentPostionTo(new Position(d.width + 1, d.height));
+    		guiMoveFromCurrentPostionTo(new Position(d.width, d.height + 1));
     		//state = AgentState.goingToCustomer;
     	}
     }
@@ -273,7 +278,7 @@ public class WaiterGui implements Gui {
     		else
     		{
     			try {
-					Thread.sleep(1000);
+					Thread.sleep(3000);
 					waits++;
 					if(waits > 10){
 						if(aStar.getGrid()[to.getX() + 1][to.getY()].availablePermits() > 0)

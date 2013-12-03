@@ -313,7 +313,7 @@ public class ListPanel extends JPanel implements ActionListener {
     }
     
     public void addWaiter(String name, boolean requestBreak) {
-    	if(waiterList.size() >= 10)
+    	if(waiterList.size() >= 8)
     		return;
     	
     	

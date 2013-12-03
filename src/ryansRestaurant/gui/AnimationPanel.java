@@ -18,7 +18,7 @@ import java.util.HashMap;
 public class AnimationPanel extends JPanel implements ActionListener {
 
     private final int WINDOWX = 800;
-    private final int WINDOWY = (int)(400);
+    private final int WINDOWY = (int)(375);
     private final int GRID_SIZEX = 25;
     private final int GRID_SIZEY = 25;
     public int numxGrids = 0;

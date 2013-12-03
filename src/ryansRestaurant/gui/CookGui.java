@@ -62,7 +62,7 @@ public class CookGui implements Gui {
         Dimension firstGril;
         int x = gui.animationPanel.numxGrids;
         int y = gui.animationPanel.numyGrids;
-        firstGril = new Dimension(6, y - 4);
+        firstGril = new Dimension(6, y - 2);
         //System.out.println("FirstGrill:" + firstGril);
        // System.out.println("Positionmap = " + positionMap);
         numGrills = 5;
@@ -138,7 +138,7 @@ public class CookGui implements Gui {
 
     	Dimension d = new Dimension(layout.cookRefrigeratorXYCoords);
     	xDestination = d.width;
-    	yDestination = d.height;
+    	yDestination = d.height +25;
     	state = AgentState.goingToCook;
     	try {
     		sem.acquire();
