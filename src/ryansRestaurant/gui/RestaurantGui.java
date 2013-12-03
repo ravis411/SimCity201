@@ -40,10 +40,10 @@ public class RestaurantGui extends JFrame implements ActionListener {
      */
     public RestaurantGui() {
         int WINDOWX = 800;
-        int WINDOWY = 800;
+        int WINDOWY = 400;
 
        
-        animationPanel.setBounds(new Rectangle(WINDOWX, 500) );
+        animationPanel.setBounds(new Rectangle(WINDOWX, 400) );
     	    	
     	setBounds(50, 50, WINDOWX , WINDOWY);
 
@@ -54,7 +54,7 @@ public class RestaurantGui extends JFrame implements ActionListener {
         restInfoControlPanel.setLayout(new BoxLayout((Container) restInfoControlPanel,BoxLayout.X_AXIS));
         
 
-        Dimension restDim = new Dimension((int)(WINDOWX *.7), 300);
+        Dimension restDim = new Dimension((int)(WINDOWX *.7), 350);
         restPanel.setPreferredSize(restDim);
         restPanel.setMinimumSize(restDim);
         restPanel.setMaximumSize(restDim);
@@ -63,7 +63,7 @@ public class RestaurantGui extends JFrame implements ActionListener {
         //restInfoControlPanel.add(controlB);
         //controlB.addActionListener(this);
              
-        Dimension ctrlPDim = new Dimension((int)(WINDOWX * .3), 300);
+        Dimension ctrlPDim = new Dimension((int)(WINDOWX * .3), 400);
         ctrlP.setMinimumSize(ctrlPDim);
         ctrlP.setPreferredSize(ctrlPDim);
         ctrlP.setMaximumSize(ctrlPDim);
@@ -72,7 +72,12 @@ public class RestaurantGui extends JFrame implements ActionListener {
         restInfoControlPanel.add(restPanel);
         add(restInfoControlPanel);
         
-        add(animationPanel);
+       // add(animationPanel);
+        
+        JFrame animPanel = new JFrame("Zoomed View");
+        animPanel.setBounds(50, 50 + WINDOWY, 800, 400);
+        animPanel.add(animationPanel);
+        animPanel.setVisible(true);
         
         
         //controlFram.setBounds(50, WINDOWY + 100, WINDOWX, WINDOWY);

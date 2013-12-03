@@ -162,6 +162,9 @@ public class RestaurantPanel extends JPanel {
     		c.startThread();
     	}
     	else if(type.equals("Waiters")) {
+    		if(waiters.size() >= 10)
+    			return;
+    		
     		WaiterAgent w = new WaiterAgent(name, host, cook, cashier);
     		
     		AStarTraversal aStar = new AStarTraversal(grid);

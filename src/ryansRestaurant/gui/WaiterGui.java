@@ -158,7 +158,7 @@ public class WaiterGui implements Gui {
 
     public void DoBringToTable(CustomerAgent customer, int seatnumber) {
        
-    	Dimension dim = new Dimension(AnimationPanel.tableMap.get(seatnumber));
+    	Dimension dim = new Dimension(restLayout.tableXYMap.get(seatnumber));
     	customer.getGui().DoGoToCoords(dim);
     	
     	DoGoToTable(seatnumber);
@@ -191,6 +191,10 @@ public class WaiterGui implements Gui {
     }
     private void doGoToCustomerUtility(){
     	if(currentCustomer != null) {
+    		if(currentCustomer.waitingPosition == null){
+    			guiMoveFromCurrentPostionTo(new Position(3, 2));
+    			return;
+    		}
     		Dimension d = new Dimension(currentCustomer.waitingPosition);
 //    		xDestination = d.width + 25;
 //    		yDestination = d.height + 25;

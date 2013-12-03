@@ -289,10 +289,10 @@ public class WaiterAgent extends Agent implements Waiter {
 			print("ConcurrentModificationException caught. Returning true.");
 			return true;
 		}
-		catch(Exception e) {
-			print("Exception Caught in Scheduler!!!!!!!!!!!!!!!!!" + e);
-			return true;
-		}
+		//catch(Exception e) {
+		////	print("Exception Caught in Scheduler!!!!!!!!!!!!!!!!!" + e);
+	//		return true;
+	//}
 		
 		
 		return false;

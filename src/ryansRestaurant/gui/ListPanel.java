@@ -127,12 +127,12 @@ public class ListPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == addButton || e.getSource() == addPersonTF || e.getSource() == addWaiterTF) {
         	//if they both have text, clear them
-        	if(!addPersonTF.getText().isEmpty() && !addWaiterTF.getText().isEmpty()) {
-        		addPersonTF.setText("");
-        		addWaiterTF.setText("");
-        	}
+        	//if(!addPersonTF.getText().isEmpty() && !addWaiterTF.getText().isEmpty()) {
+        		//addPersonTF.setText("");
+        		//addWaiterTF.setText("");
+        	//}
         	//add a person
-        	else if(!addPersonTF.getText().isEmpty())
+        	if(!addPersonTF.getText().isEmpty())
         	{
         		List<String> custs = numToCustWaiterList(addPersonTF.getText(), "c");//hack to add multiple custs
         		if(custs == null) {
@@ -147,7 +147,7 @@ public class ListPanel extends JPanel implements ActionListener {
     			//addPersonCB.setSelected(false);
         	}
         	//add a waiter
-        	else if(!addWaiterTF.getText().isEmpty()) {
+        	if(!addWaiterTF.getText().isEmpty()) {
         		List<String> waits = numToCustWaiterList(addWaiterTF.getText(), "w");//hack to add multiple custs
         		if(waits == null) {
         			addWaiter(addWaiterTF.getText(), addWaiterCB.isSelected());
@@ -313,6 +313,10 @@ public class ListPanel extends JPanel implements ActionListener {
     }
     
     public void addWaiter(String name, boolean requestBreak) {
+    	if(waiterList.size() >= 10)
+    		return;
+    	
+    	
     	if (name != null) {
             
     		//If the name exists don't add them.

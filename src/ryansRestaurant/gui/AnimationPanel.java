@@ -17,8 +17,8 @@ import java.util.HashMap;
 
 public class AnimationPanel extends JPanel implements ActionListener {
 
-    private final int WINDOWX = 2 * 450;
-    private final int WINDOWY = (int)(350 *1.5);
+    private final int WINDOWX = 800;
+    private final int WINDOWY = (int)(400);
     private final int GRID_SIZEX = 25;
     private final int GRID_SIZEY = 25;
     public int numxGrids = 0;
@@ -43,8 +43,8 @@ public class AnimationPanel extends JPanel implements ActionListener {
 		        put(11, new Dimension(250, 250));
 		        put(12, new Dimension(350, 250));
 			}};*/
-    public final static Map<Integer, Dimension> tableMap = new HashMap<Integer, Dimension>()
-			{{
+    public final Map<Integer, Dimension> tableMap;// = new HashMap<Integer, Dimension>();
+		/**	{{
 				put(1, new Dimension(200, 150));
 				put(2, new Dimension(300, 150));
 		        put(3, new Dimension(400, 150));
@@ -61,7 +61,7 @@ public class AnimationPanel extends JPanel implements ActionListener {
 		        put(12, new Dimension(650, 250));
 		        put(13, new Dimension(750, 250));
 		        put(14, new Dimension(850, 250));
-			}};
+			}};**/
     
     //a map of grid Positions and java x, y Dim coordinates
     //public static Map<Position, Dimension> positionMap = new HashMap<Position, Dimension>();
@@ -104,6 +104,8 @@ public class AnimationPanel extends JPanel implements ActionListener {
     	this.layout = layout;
     	numxGrids = WINDOWX / GRID_SIZEX;
     	numyGrids = WINDOWY / GRID_SIZEY;
+    	
+    	tableMap = layout.tableXYMap;
     	
     	//initialize the positionMap
     	for(int x = 0; x < numxGrids; x++)
