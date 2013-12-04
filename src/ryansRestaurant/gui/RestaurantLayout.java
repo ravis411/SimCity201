@@ -99,10 +99,11 @@ public class RestaurantLayout  {
     	cookRefrigeratorXYCoords = new Dimension(positionMap.get(cookRefrigeratorPosition));
     	
     	//initialize waiterHome Positions
-    	for(int x = 1; x <= 10; x++)
+    	//for(int x = 1; x <= 10; x++)
+    	for(int y = 1; y <= 8; y++)
     	{
-    			waiterHomeXYMap.put(x, new Dimension(positionMap.get(new Dimension(7 + x, 2))));
-    			waiterHomePositionsMap.put(x, new Dimension(x + 7, 2));
+    			waiterHomeXYMap.put(y, new Dimension(positionMap.get(new Dimension(2, y + 4))));
+    			waiterHomePositionsMap.put(y, new Dimension(2, y + 4));
     	}
     	//initialize MywaiterHomePositions
     	for(Integer i : waiterHomeXYMap.keySet()) {
@@ -120,11 +121,12 @@ public class RestaurantLayout  {
 //    	}
     	
     	int numCustPos = 1;
-    	for(int y = 1; y <= 9; y++){
+    	//for(int y = 1; y <= 9; y++)
+    	for(int x = 1; x <= 15; x++){
     		//for(int x = 1; x <= 2; x++)
     		{
-    			customerWaitingPositionMap.put(numCustPos, new Dimension(2, y + 5));
-    			customerWaitingXYMap.put(numCustPos, positionMap.get(new Dimension(2, y + 5)));
+    			customerWaitingPositionMap.put(numCustPos, new Dimension(7 + x, 2));
+    			customerWaitingXYMap.put(numCustPos, positionMap.get(new Dimension(x + 7, 2)));
     			numCustPos++;
     		}
     	}

@@ -102,6 +102,7 @@ public class ControlPanel extends JPanel implements ActionListener {
 		add(marketButton);
 		add(cookButton);
 		add(cashierButton);
+		add(cancelButton);
 		this.repaint();
 		validate();
 	}
@@ -293,7 +294,9 @@ public class ControlPanel extends JPanel implements ActionListener {
 		else if(state == GUIState.none && e.getSource() == marketButton) {
 			showMarketPanel();
 		}
-		
+		else if(state == GUIState.none && e.getSource() == cancelButton) {
+			gui.showInfoPanel(false);
+		}
 		else if(e.getSource() == pauseButton)
 		{
 			pause();
@@ -337,6 +340,7 @@ public class ControlPanel extends JPanel implements ActionListener {
 				}
 			}
 		}
+		
 	}
 	
 	

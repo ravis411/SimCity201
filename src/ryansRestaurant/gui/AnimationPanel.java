@@ -2,47 +2,32 @@ package ryansRestaurant.gui;
 
 import javax.swing.*;
 
-import astar.Position;
 import ryansRestaurant.HostAgent;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collection;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.geom.Rectangle2D;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
 
-public class AnimationPanel extends JPanel implements ActionListener {
+public class AnimationPanel extends JPanel implements MouseListener, ActionListener   {
 
     private final int WINDOWX = 800;
-    private final int WINDOWY = (int)(400);
+    private final int WINDOWY = (int)(375);
     private final int GRID_SIZEX = 25;
     private final int GRID_SIZEY = 25;
     public int numxGrids = 0;
     public int numyGrids = 0;
     
-    //maps a table number to coordinates
-   /* public final static Map<Integer, Dimension> tableMap = new HashMap<Integer, Dimension>()
-			{{
-				
-				put(1, new Dimension(50,50));
-				put(2, new Dimension(150, 50));
-		        put(3, new Dimension(250, 50));
-		        put(4, new Dimension(350, 50));
-		        
-		        put(5, new Dimension(50, 150));
-		        put(6, new Dimension(150, 150));
-		        put(7, new Dimension(250, 150));
-		        put(8, new Dimension(350, 150));
-		        
-		        put(9, new Dimension(50, 250));
-		        put(10, new Dimension(150, 250));
-		        put(11, new Dimension(250, 250));
-		        put(12, new Dimension(350, 250));
-			}};*/
+
+    
+    
     public final Map<Integer, Dimension> tableMap;// = new HashMap<Integer, Dimension>();
 		/**	{{
 				put(1, new Dimension(200, 150));
@@ -97,10 +82,16 @@ public class AnimationPanel extends JPanel implements ActionListener {
     	this.host = host;
     }
     private RestaurantLayout layout = null;
+    
+    //A Button to change to the settings/information view
+    Rectangle2D showPanelButton;
+    RestaurantGui gui;
+    String showPBText = new String("Settings");    
 
-    public AnimationPanel(RestaurantLayout layout) {
+    public AnimationPanel(RestaurantLayout layout, RestaurantGui gui) {
     	setSize(WINDOWX, WINDOWY);
-
+    	addMouseListener(this);
+    	this.gui = gui;
     	this.layout = layout;
     	numxGrids = WINDOWX / GRID_SIZEX;
     	numyGrids = WINDOWY / GRID_SIZEY;
@@ -118,6 +109,9 @@ public class AnimationPanel extends JPanel implements ActionListener {
     	}
     	
     	setVisible(true);
+    	
+    	Dimension d = new Dimension(positionMap.get(new Dimension((numxGrids - 4), 1)));
+    	showPanelButton  = new Rectangle2D.Double(d.getWidth(), d.getHeight(), GRID_SIZEX * 3, GRID_SIZEY);
         
         bufferSize = this.getSize();
         this.setBackground(Color.BLACK);
@@ -128,6 +122,11 @@ public class AnimationPanel extends JPanel implements ActionListener {
     
    	public void actionPerformed(ActionEvent e) {
 		repaint();  //Will have paintComponent called
+		 for(Gui gui : guis) {
+	            if (gui.isPresent()) {
+	                gui.updatePosition();
+	            }
+	        }
 	}
 
     public void paintComponent(Graphics g) {
@@ -138,14 +137,32 @@ public class AnimationPanel extends JPanel implements ActionListener {
         g2.fillRect(0, 0, WINDOWX, WINDOWY );
 
         
-        //Paint some boxes;//and labels
+        //Paint some boxes;//and labels//background
         
-        String p = new String();
         for(Dimension pos : positionMap.keySet()) {
         	Dimension dim = positionMap.get(pos);
         	g2.setColor(Color.DARK_GRAY);
         	g2.fillRect(dim.width, dim.height, 24, 24);
         }
+        
+        
+        
+        
+        
+        //Draw the button    
+        g2.setColor(Color.cyan);
+        g2.draw3DRect( (int)showPanelButton.getX(), (int)showPanelButton.getY(), (int)showPanelButton.getWidth(), (int)showPanelButton.getHeight(), true);
+        g2.drawString(showPBText, (int)showPanelButton.getX(), (int)showPanelButton.getCenterY());
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 //        g2.setColor(Color.gray);
 //        for(Position pos : positionMap.keySet()) {
 //        	Dimension dim = positionMap.get(pos);
@@ -184,14 +201,6 @@ public class AnimationPanel extends JPanel implements ActionListener {
         if(layout != null) {
         	layout.draw(g2);
         }
-        
-        
-        
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.updatePosition();
-            }
-        }
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {
@@ -207,11 +216,48 @@ public class AnimationPanel extends JPanel implements ActionListener {
     }
 
     public void addGui(WaiterGui gui) {
-        //guis.add(gui);
     	guis.add(gui);
     }
     public void addGui(CookGui gui) {
     	guis.add(gui);
     }
+    
+    
+    public void showInformationPanel(){
+    	gui.showInfoPanel(true);
+    }
+
+	
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if(showPanelButton.contains(e.getPoint())){
+			showInformationPanel();
+		}
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
     
 }

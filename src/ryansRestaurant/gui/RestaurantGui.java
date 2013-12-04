@@ -12,10 +12,10 @@ import java.awt.event.*;
  * Contains the main frame and subsequent panels
  */
 @SuppressWarnings("serial")
-public class RestaurantGui extends JFrame implements ActionListener {
+public class RestaurantGui extends JPanel {
     
 	RestaurantLayout layout = new RestaurantLayout();
-	AnimationPanel animationPanel = new AnimationPanel(layout);
+	AnimationPanel animationPanel = new AnimationPanel(layout, this);
 	
 	
     /* restPanel holds 2 panels
@@ -33,6 +33,8 @@ public class RestaurantGui extends JFrame implements ActionListener {
     ControlPanel ctrlP = new ControlPanel(this);
     //JButton controlB = new JButton("Control Panel");
     
+    CardLayout cardLayout = new CardLayout();
+    
     
      /**
      * Constructor for RestaurantGui class.
@@ -45,10 +47,10 @@ public class RestaurantGui extends JFrame implements ActionListener {
        
         animationPanel.setBounds(new Rectangle(WINDOWX, 400) );
     	    	
-    	setBounds(50, 50, WINDOWX , WINDOWY);
+    	
 
-        setLayout(new BoxLayout((Container) getContentPane(), 
-        		BoxLayout.Y_AXIS));
+       // setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setLayout(cardLayout);
         
         restInfoControlPanel = new JPanel();
         restInfoControlPanel.setLayout(new BoxLayout((Container) restInfoControlPanel,BoxLayout.X_AXIS));
@@ -70,15 +72,11 @@ public class RestaurantGui extends JFrame implements ActionListener {
         
         restInfoControlPanel.add(ctrlP);
         restInfoControlPanel.add(restPanel);
-        add(restInfoControlPanel);
-        
+       
+        add(animationPanel, "Animation Panel");
        // add(animationPanel);
-        
-        JFrame animPanel = new JFrame("Zoomed View");
-        animPanel.setBounds(50, 50 + WINDOWY, 800, 400);
-        animPanel.add(animationPanel);
-        animPanel.setVisible(true);
-        
+        add(restInfoControlPanel, "Info Panel");
+     
         
         //controlFram.setBounds(50, WINDOWY + 100, WINDOWX, WINDOWY);
         //controlFram.add(ctrlP);
@@ -88,15 +86,7 @@ public class RestaurantGui extends JFrame implements ActionListener {
     }
    
     
-    @Override
-	public void actionPerformed(ActionEvent e) {
-		
-    	//if(e.getSource() == controlB){
-    		//controlFram.setVisible(true);
-    	//}
-		
-	}
-
+ 
     /**
      * Message sent from a customer gui to enable that customer's
      * "I'm hungry" checkbox.
@@ -119,17 +109,14 @@ public class RestaurantGui extends JFrame implements ActionListener {
     	}
     }
     
-    /**
-     * Main routine to get gui started
-     */
-    public static void main(String[] args) {
-        RestaurantGui gui = new RestaurantGui();
-        gui.setTitle("csci201 Restaurant - Ryan Davis");
-        gui.setVisible(true);
-        gui.setResizable(false);
-        gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    
+    public void showInfoPanel(boolean visible){
+    	if(visible)
+    			cardLayout.show(this, "Info Panel");
+    	else
+    		cardLayout.show(this, "Animation Panel");
     }
-
+  
 
 	
 }
