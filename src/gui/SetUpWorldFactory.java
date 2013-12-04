@@ -13,6 +13,8 @@ import gui.Building.MarketBuilding;
 import gui.Building.MarketBuildingPanel;
 import gui.Building.ResidenceBuilding;
 import gui.Building.ResidenceBuildingPanel;
+import gui.Building.restaurants.KushRestaurantBuilding;
+import gui.Building.restaurants.KushRestaurantBuildingPanel;
 import gui.Building.restaurants.RestaurantBuilding;
 import gui.Building.restaurants.RestaurantBuildingPanel;
 import gui.Building.restaurants.RyansRestaurantBuilding;
@@ -168,7 +170,7 @@ public class SetUpWorldFactory{
 		location.entranceFromMainGridPosition = new Dimension(19, 12);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
 
-		addBuilding("Residence", "House 4", 18, 12, 2, 2, location);
+		addBuilding("KushsRestaurant", "Kush's Restaurant", 18, 12, 2, 2, location);
 //Building 11
 		location.sector = 2;
 		location.positionToEnterFromMainGrid = new Dimension(25, 12);
@@ -580,11 +582,7 @@ public class SetUpWorldFactory{
 
 			case "Person 1":
 				//p1.setInitialRole(new HomeRole(p1), "House 1");
-				int a=1;
-				String s= new String();
-				s="Apartment "+ a;
-				System.out.println("BUILDING PANEL !!! " + buildingsPanels.getBuildingPanel("Apartment 1"));
-				p1.setInitialRole(new HomeRole(p1), s);
+				p1.setInitialRole(new HomeRole(p1), "Apartment 1");
 				break;
 			case "Person 2":
 				p1.setInitialRole(new HomeRole(p1), p1.home.getName());
@@ -832,6 +830,16 @@ public class SetUpWorldFactory{
 				buildingsPanels.addBuildingPanel(restPanel);
 			}
 			break;
+		case "KushsRestaurant":
+			KushRestaurantBuilding restb3 = new KushRestaurantBuilding(building);
+			if(restb3 != null){
+				KushRestaurantBuildingPanel restPanel = new KushRestaurantBuildingPanel(restb3, name, buildingsPanels);
+				restb3.setBuildingPanel(restPanel);
+				cityPanel.addGui(restb3);
+				buildingsPanels.addBuildingPanel(restPanel);
+			}
+			break;
+			
 		default:
 			return;
 		}
