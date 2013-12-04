@@ -13,13 +13,13 @@ import restaurant.gui.luca.CustomerGui;
 import restaurant.interfaces.luca.LucaCustomer;
 import restaurant.interfaces.luca.LucaWaiter;
 import restaurant.test.mock.EventLog;
-import agent.Agent;
+import Person.Role.Role;
 import agent.Constants;
 
 /**
  * Restaurant customer agent.
  */
-public class LucaCustomerAgent extends Agent implements LucaCustomer{
+public class LucaRestaurantCustomerRole extends Role implements LucaCustomer{
 	private String name;
 	private int hungerLevel = 10;        // determines length of meal
 	private boolean isHungry;
@@ -29,9 +29,9 @@ public class LucaCustomerAgent extends Agent implements LucaCustomer{
 	static String orderChoice;
 	private int tableNum;
 	// agent correspondents
-	private LucaHostAgent host;
+	private LucaHostRole host;
 	private LucaWaiter waiter;
-	private LucaCashierAgent cashier;
+	private LucaCashierRole cashier;
 	private int money;
 	private boolean hasEnoughMoney;
 	private int moneyOwedToResturant;
@@ -56,7 +56,7 @@ public class LucaCustomerAgent extends Agent implements LucaCustomer{
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public LucaCustomerAgent(String name){
+	public LucaRestaurantCustomerRole(String name){
 		super();
 		this.name = name;
 		isHungry = false;
@@ -72,13 +72,13 @@ public class LucaCustomerAgent extends Agent implements LucaCustomer{
 	/**
 	 * hack to establish connection to Host agent.
 	 */
-	public void setHost(LucaHostAgent host) {
+	public void setHost(LucaHostRole host) {
 		this.host = host;
 	}
 	public void setWaiter(LucaWaiter waiter) {
 		this.waiter = waiter;
 	}
-	public void setCashier(LucaCashierAgent cashier) {
+	public void setCashier(LucaCashierRole cashier) {
 		this.cashier=cashier;
 		
 	}
@@ -163,7 +163,7 @@ public class LucaCustomerAgent extends Agent implements LucaCustomer{
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	public boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		//	CustomerAgent is a finite state machine
 
 		if (state == AgentState.DoingNothing && event == AgentEvent.gotHungry ){
@@ -231,12 +231,12 @@ public class LucaCustomerAgent extends Agent implements LucaCustomer{
 	// Actions
 
 	private void goToRestaurant() {
-		Do("Going to restaurant");
+		print("Going to restaurant");
 		host.msgIWantFood(this);//send our instance, so he can respond to us
 	}
 
 	private void SitDown() {
-		Do("Being seated. Going to table");
+		print("Being seated. Going to table");
 		customerGui.showMyOrderInAnimation("", "");
 		customerGui.DoGoToSeat(1,tableNum);//hack; only one table
 	}
@@ -291,7 +291,7 @@ public class LucaCustomerAgent extends Agent implements LucaCustomer{
 		customerGui.showMyOrderInAnimation(orderChoice, "");
 		waiter.msgWaiterReadyForCheck(this);
 		print("Thank you for my " + orderChoice + ", can I have my check now?");
-		Do("Eating Food");
+		print("Eating Food");
 		//This next complicated line creates and starts a timer thread.
 		//We schedule a deadline of getHungerLevel()*1000 milliseconds.
 		//When that time elapses, it will call back to the run routine
@@ -314,7 +314,7 @@ public class LucaCustomerAgent extends Agent implements LucaCustomer{
 
 	private void leaveTable() {
 		customerGui.showMyOrderInAnimation("", "");
-		Do("Leaving and paying cashier.");
+		print("Leaving and paying cashier.");
 		waiter.msgDoneLeavingTable(this);
 		isHungry = false;
 		print(this + " is not hungry anymore since he is done eating...or just can't afford anything");
@@ -377,6 +377,18 @@ public class LucaCustomerAgent extends Agent implements LucaCustomer{
 	}
 	public boolean getWillWaitforFood(){
 		return willWaitforFood;
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

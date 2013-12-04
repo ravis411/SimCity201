@@ -8,7 +8,7 @@ import java.util.List;
 import restaurant.interfaces.luca.LucaCustomer;
 import restaurant.interfaces.luca.LucaHost;
 import restaurant.interfaces.luca.LucaWaiter;
-import agent.Agent;
+import Person.Role.Role;
 
 /**
  * Restaurant Host Agent
@@ -17,7 +17,7 @@ import agent.Agent;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class LucaHostAgent extends Agent implements LucaHost{
+public class LucaHostRole extends Role implements LucaHost{
 	static int NTABLES = 4;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
@@ -39,7 +39,7 @@ public class LucaHostAgent extends Agent implements LucaHost{
 
 
 
-	public LucaHostAgent(String name) {
+	public LucaHostRole(String name) {
 		super();
 
 		this.name = name;
@@ -98,7 +98,7 @@ public class LucaHostAgent extends Agent implements LucaHost{
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		/* Think of this next rule as:
             Does there exist a table and customer,
             so that table is unoccupied and customer is waiting.
@@ -270,6 +270,19 @@ public class LucaHostAgent extends Agent implements LucaHost{
 		public int getTableNumber(){
 			return tableNumber;
 		}
+	}
+
+
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

@@ -14,7 +14,7 @@ import restaurant.gui.luca.WaiterGui;
 import restaurant.interfaces.luca.LucaCustomer;
 import restaurant.interfaces.luca.LucaWaiter;
 import restaurant.test.mock.EventLog;
-import agent.Agent;
+import Person.Role.Role;
 
 
 /**
@@ -24,7 +24,7 @@ import agent.Agent;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class LucaWaiterAgent extends Agent implements LucaWaiter{
+public class LucaWaiterRole extends Role implements LucaWaiter{
 	public List<MyCustomers> myCustomers
 	= Collections.synchronizedList(new ArrayList<MyCustomers>());
 	private String name;
@@ -32,9 +32,9 @@ public class LucaWaiterAgent extends Agent implements LucaWaiter{
 	private Semaphore atCook = new Semaphore(0,false);
 	private Semaphore waitForOrder = new Semaphore(0,false);
 	private boolean WaiterAvailable;
-	private LucaCashierAgent cashier;
-	private LucaCookAgent cook;
-	private LucaHostAgent host;
+	private LucaCashierRole cashier;
+	private LucaCookRole cook;
+	private LucaHostRole host;
 	private WaiterGui waiterGui;
 	private RestaurantGui restaurantGui;
 	private boolean onBreak;
@@ -45,7 +45,7 @@ public class LucaWaiterAgent extends Agent implements LucaWaiter{
 	public EventLog log= new EventLog();
 
 	
-	public LucaWaiterAgent(String s){
+	public LucaWaiterRole(String s){
 		super();
 		name=s;
 		onBreak = false;
@@ -206,7 +206,7 @@ public class LucaWaiterAgent extends Agent implements LucaWaiter{
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-		public boolean pickAndExecuteAnAction() {
+		public boolean pickAndExecuteAction() {
 			 try {
 				 if(myCustomers.isEmpty()){
 						if (requestBreak)
@@ -527,15 +527,15 @@ public class LucaWaiterAgent extends Agent implements LucaWaiter{
 		return restaurantGui;
 	}
 	
-	public void setCook(LucaCookAgent Cook)
+	public void setCook(LucaCookRole Cook)
 	{
 		this.cook=Cook;
 	}
-	public void setHost(LucaHostAgent Host)
+	public void setHost(LucaHostRole Host)
 	{
 		this.host=Host;
 	}
-	public void setCashier(LucaCashierAgent cashier)
+	public void setCashier(LucaCashierRole cashier)
 	{
 		this.cashier=cashier;
 	}
@@ -638,6 +638,17 @@ public class LucaWaiterAgent extends Agent implements LucaWaiter{
 		public void setReadyForCheck(boolean readyForCheck) {
 			this.readyForCheck = readyForCheck;
 		}
+	}
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

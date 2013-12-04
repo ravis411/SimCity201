@@ -23,19 +23,10 @@ import gui.agentGuis.PersonGui;
 import gui.agentGuis.VehicleGui;
 
 import java.awt.Dimension;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
-import org.w3c.dom.Element;
 
 import residence.HomeRole;
 import trace.AlertLog;
@@ -43,7 +34,6 @@ import trace.AlertTag;
 import Person.PersonAgent;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
-import Person.test.mock.MockPerson;
 import Transportation.BusAgent;
 import Transportation.BusStopAgent;
 import agent.Agent;
@@ -297,7 +287,9 @@ public class SetUpWorldFactory{
 			addPerson("Person 10", buildingsPanels.getResidenceBuildingPanel("Apartment 9"));
 			addPerson("Person 11", buildingsPanels.getResidenceBuildingPanel("Apartment 10"));
 			addPerson("Person 12", buildingsPanels.getResidenceBuildingPanel("Apartment 11"));
-			addPerson("Person 13", buildingsPanels.getResidenceBuildingPanel("Apartment 12"));
+			//addPerson("Person 13", buildingsPanels.getResidenceBuildingPanel("Apartment 12"));
+			//addPerson("Person 14", buildingsPanels.getResidenceBuildingPanel("Apartment 13"));
+			//addPerson("Person 15", buildingsPanels.getResidenceBuildingPanel("Apartment 14"));
 //			addPerson("Person 14", buildingsPanels.getResidenceBuildingPanel("Apartment 13"));
 //			addPerson("Person 15", buildingsPanels.getResidenceBuildingPanel("House 2"));
 
@@ -615,7 +607,7 @@ public class SetUpWorldFactory{
 				p1.setInitialRole(new HomeRole(p1), p1.home.getName());
 				break;
 			case "Person 11":
-				
+				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_LUCA_COOK_ROLE), "Restaurant 2");
 				break;
 			case "Person 12":
 				

@@ -7,24 +7,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-
 import restaurant.interfaces.luca.LucaCashier;
 import restaurant.interfaces.luca.LucaCustomer;
 import restaurant.interfaces.luca.LucaMarket;
 import restaurant.interfaces.luca.LucaWaiter;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
-import agent.Agent;
+import Person.Role.Role;
 
 
 /**
- * Restaurant Host Agent
+ * Restaurant Cashier Agent
  */
 //We only have 2 types of agents in this prototype. A custome8r and an agent that
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class LucaCashierAgent extends Agent implements LucaCashier {
+public class LucaCashierRole extends Role implements LucaCashier {
 	
 	public List<Tab> Tabs
 	= Collections.synchronizedList(new ArrayList<Tab>());
@@ -41,8 +40,7 @@ public class LucaCashierAgent extends Agent implements LucaCashier {
 	public AgentEvent event = AgentEvent.none;
 	public int restaurantMoney=0;
 	
-	public LucaCashierAgent(String s){
-		super();
+	public LucaCashierRole(String s){
 		name=s;
 		menu= new HashMap<String, Integer>();
 		
@@ -147,7 +145,7 @@ public class LucaCashierAgent extends Agent implements LucaCashier {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-		public boolean pickAndExecuteAnAction() {
+		public boolean pickAndExecuteAction() {
 			if (event ==  AgentEvent.needToPayMarket)
 			{
 				payMarket();
@@ -234,17 +232,17 @@ public class LucaCashierAgent extends Agent implements LucaCashier {
 	{
 		this.waiter=waiter;
 	}
-	public void addMarkets(Vector<LucaMarketAgent> markets) {
+	public void addMarkets(Vector<LucaMarketRole> markets) {
 			for (int i=0; i<markets.size(); i++){
 				this.marketBills.add(new MarketBill(markets.get(i)));		
 		}
 	}
 	
 	public class MarketBill{
-		LucaMarketAgent market;
+		LucaMarketRole market;
 		int moneyOwed=0;
 		
-		public MarketBill(LucaMarketAgent lucaMarketAgent){
+		public MarketBill(LucaMarketRole lucaMarketAgent){
 			this.market= lucaMarketAgent;
 		}
 		void setMoneyOwed(int money){
@@ -253,7 +251,7 @@ public class LucaCashierAgent extends Agent implements LucaCashier {
 		public int getMoneyOwed(){
 			return moneyOwed;
 		}
-		LucaMarketAgent getMarket(){
+		LucaMarketRole getMarket(){
 			return market;
 		}
 		
@@ -347,6 +345,19 @@ public class LucaCashierAgent extends Agent implements LucaCashier {
 			this.waiterMessagedCheckReady = waiterMessagedCheckReady;
 		}
 		}
+
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 
 

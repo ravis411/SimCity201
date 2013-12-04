@@ -11,7 +11,7 @@ import restaurant.interfaces.luca.LucaCook;
 import restaurant.interfaces.luca.LucaWaiter;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
-import agent.Agent;
+import Person.Role.Role;
 import agent.Constants;
 
 /**
@@ -21,7 +21,7 @@ import agent.Constants;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class LucaCookAgent extends Agent implements LucaCook{
+public class LucaCookRole extends Role implements LucaCook{
 	private CookGui cookGui;
 	private Semaphore atRefrigerator = new Semaphore(0,false);
 	private Semaphore atGrill = new Semaphore(0,false);
@@ -33,8 +33,8 @@ public class LucaCookAgent extends Agent implements LucaCook{
 	private int marketCurrentlyBeingAskedForFood;
 	public List<LucaWaiter> waiters
 	= Collections.synchronizedList(new ArrayList<LucaWaiter>());
-	public List<LucaMarketAgent> markets
-	= Collections.synchronizedList(new ArrayList<LucaMarketAgent>());
+	public List<LucaMarketRole> markets
+	= Collections.synchronizedList(new ArrayList<LucaMarketRole>());
 	public List<Food> foodTypes
 	= Collections.synchronizedList(new ArrayList<Food>());
 	public EventLog log= new EventLog();
@@ -50,9 +50,8 @@ public class LucaCookAgent extends Agent implements LucaCook{
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public LucaCookAgent(String name){
+	public LucaCookRole(){
 		super();
-		this.name = name;
 		marketCurrentlyBeingAskedForFood =0;
 		foodTypes.add(new Food("Steak", 7, 1));//Food type, cooktime, quantity
 		foodTypes.add(new Food("Chicken", 3, 1));//Food type, cooktime, quantity
@@ -72,7 +71,7 @@ public class LucaCookAgent extends Agent implements LucaCook{
 	
 	// Messages
 
-	public void msgAddMarket(LucaMarketAgent market) {
+	public void msgAddMarket(LucaMarketRole market) {
 		markets.add(market);
 	}
 
@@ -153,7 +152,7 @@ public class LucaCookAgent extends Agent implements LucaCook{
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	public boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 
 		if (event == AgentEvent.recievedOrder ){
 			checkFoodStockAndUpdate();
@@ -393,6 +392,18 @@ public class LucaCookAgent extends Agent implements LucaCook{
 			this.waiterMessagedFoodDone = waiterMessagedFoodDone;
 		}
 		}
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 
 

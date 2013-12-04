@@ -12,7 +12,7 @@ import restaurant.interfaces.luca.LucaCook;
 import restaurant.interfaces.luca.LucaMarket;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
-import agent.Agent;
+import Person.Role.Role;
 import agent.Constants;
 
 /**
@@ -22,7 +22,7 @@ import agent.Constants;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class LucaMarketAgent extends Agent implements LucaMarket {
+public class LucaMarketRole extends Role implements LucaMarket {
 	private String name;
 	public LucaCook cook;
 	public Collection<Order> myWaitingOrders;
@@ -40,7 +40,7 @@ public class LucaMarketAgent extends Agent implements LucaMarket {
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public LucaMarketAgent(String name){
+	public LucaMarketRole(String name){
 		super();
 		this.name = name;
 		
@@ -117,7 +117,7 @@ public class LucaMarketAgent extends Agent implements LucaMarket {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	public boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		if(state == AgentState.outOfSteak){
 			tellCookWeAreOut("Steak");
 			return true;
@@ -276,6 +276,18 @@ public class LucaMarketAgent extends Agent implements LucaMarket {
 			return itemprice;
 		}
 		}
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
 

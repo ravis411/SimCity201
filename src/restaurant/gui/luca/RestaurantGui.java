@@ -17,9 +17,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
-import restaurant.luca.LucaWaiterAgent;
+import restaurant.luca.LucaWaiterRole;
 import restaurant.interfaces.luca.LucaCustomer;
-import restaurant.luca.LucaCustomerAgent;
+import restaurant.luca.LucaRestaurantCustomerRole;
 /**
  * Main GUI class.
  * Contains the main frame and subsequent panels
@@ -138,8 +138,8 @@ public class RestaurantGui extends JFrame implements ActionListener {
         stateCB.setVisible(true);
         currentPerson = person;
 
-        if (currentPerson instanceof LucaCustomerAgent && ((LucaCustomerAgent) currentPerson).isHungry()) {//to make customer hungry if set as hungry in initial creation
-            LucaCustomerAgent c = (LucaCustomerAgent) currentPerson;
+        if (currentPerson instanceof LucaRestaurantCustomerRole && ((LucaRestaurantCustomerRole) currentPerson).isHungry()) {//to make customer hungry if set as hungry in initial creation
+            LucaRestaurantCustomerRole c = (LucaRestaurantCustomerRole) currentPerson;
             stateCB.setText("Hungry?");
           //Should checkmark be there? 
             stateCB.setSelected(c.isHungry());
@@ -153,8 +153,8 @@ public class RestaurantGui extends JFrame implements ActionListener {
             c.getGui().setHungry();
             }
         }
-        else if (currentPerson instanceof LucaCustomerAgent && !((LucaCustomerAgent) currentPerson).isHungry()) {//to make customer hungry if set as hungry in initial creation
-            LucaCustomerAgent c = (LucaCustomerAgent) currentPerson;
+        else if (currentPerson instanceof LucaRestaurantCustomerRole && !((LucaRestaurantCustomerRole) currentPerson).isHungry()) {//to make customer hungry if set as hungry in initial creation
+            LucaRestaurantCustomerRole c = (LucaRestaurantCustomerRole) currentPerson;
             stateCB.setText("Hungry?");
           //Should checkmark be there? 
             stateCB.setSelected(false);
@@ -164,16 +164,16 @@ public class RestaurantGui extends JFrame implements ActionListener {
             infoLabel.setText(
                "<html><pre>     Name: " + c.getName() + " </pre></html>");
         }
-        else if (currentPerson instanceof LucaWaiterAgent && !((LucaWaiterAgent) currentPerson).isOnBreak()) {//to make customer hungry if set as hungry in initial creation
-        	LucaWaiterAgent	 w = (LucaWaiterAgent) currentPerson;
+        else if (currentPerson instanceof LucaWaiterRole && !((LucaWaiterRole) currentPerson).isOnBreak()) {//to make customer hungry if set as hungry in initial creation
+        	LucaWaiterRole	 w = (LucaWaiterRole) currentPerson;
             stateCB.setText("Break?");            
                     stateCB.setSelected(false);
                     stateCB.setEnabled(true);
                     infoLabel.setText(
                        "<html><pre>     Name: " + w.getName() + " </pre></html>");
         }
-        else if (currentPerson instanceof LucaWaiterAgent && ((LucaWaiterAgent) currentPerson).isOnBreak()) {//to make customer hungry if set as hungry in initial creation
-        	LucaWaiterAgent	 w = (LucaWaiterAgent) currentPerson;
+        else if (currentPerson instanceof LucaWaiterRole && ((LucaWaiterRole) currentPerson).isOnBreak()) {//to make customer hungry if set as hungry in initial creation
+        	LucaWaiterRole	 w = (LucaWaiterRole) currentPerson;
             stateCB.setText("back-to-work?");            
                     stateCB.setSelected(true);
                     stateCB.setEnabled(true);
@@ -190,13 +190,13 @@ public class RestaurantGui extends JFrame implements ActionListener {
      */
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == stateCB) {
-            if (currentPerson instanceof LucaCustomerAgent) {
-                LucaCustomerAgent c = (LucaCustomerAgent) currentPerson;
+            if (currentPerson instanceof LucaRestaurantCustomerRole) {
+                LucaRestaurantCustomerRole c = (LucaRestaurantCustomerRole) currentPerson;
                 c.getGui().setHungry();
                 stateCB.setEnabled(false);
             }
-            else if (currentPerson instanceof LucaWaiterAgent && !((LucaWaiterAgent) currentPerson).isOnBreak()) {
-            	((LucaWaiterAgent) currentPerson).msgWaiterINeedABreak();
+            else if (currentPerson instanceof LucaWaiterRole && !((LucaWaiterRole) currentPerson).isOnBreak()) {
+            	((LucaWaiterRole) currentPerson).msgWaiterINeedABreak();
             	try {
 					waiterOnBreak.acquire();
 				} catch (InterruptedException e1) {
@@ -206,8 +206,8 @@ public class RestaurantGui extends JFrame implements ActionListener {
             	updateInfoPanel(currentPerson);
             	
            }
-            else if (currentPerson instanceof LucaWaiterAgent && ((LucaWaiterAgent) currentPerson).isOnBreak()) {
-            	((LucaWaiterAgent) currentPerson).msgWaiterIamBackFromBreak();
+            else if (currentPerson instanceof LucaWaiterRole && ((LucaWaiterRole) currentPerson).isOnBreak()) {
+            	((LucaWaiterRole) currentPerson).msgWaiterIamBackFromBreak();
             	stateCB.setSelected(false);
             	updateInfoPanel(currentPerson);
 
@@ -233,9 +233,9 @@ public class RestaurantGui extends JFrame implements ActionListener {
      *
      * @param agent reference to the customer
      */
-    public void setCustomerEnabled(LucaCustomerAgent agent) {
-        if (currentPerson instanceof LucaCustomerAgent) {
-            LucaCustomerAgent cust = (LucaCustomerAgent) currentPerson;
+    public void setCustomerEnabled(LucaRestaurantCustomerRole agent) {
+        if (currentPerson instanceof LucaRestaurantCustomerRole) {
+            LucaRestaurantCustomerRole cust = (LucaRestaurantCustomerRole) currentPerson;
             if (agent.equals(cust)) {
                 stateCB.setEnabled(true);
                 stateCB.setSelected(false);

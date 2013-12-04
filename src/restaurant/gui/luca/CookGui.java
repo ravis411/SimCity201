@@ -6,16 +6,16 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 
 import restaurant.interfaces.luca.LucaCook;
-import restaurant.luca.LucaCookAgent;
+import restaurant.luca.LucaCookRole;
 
 public class CookGui implements Gui {
 
     private LucaCook agent = null;
 
-    private int xPos = 450;//default waiter position
+    private int xPos = 700;//default waiter position
 
 	private int yPos = 60;
-    private int xDestination = 450, yDestination = 60;//default start position
+    private int xDestination = 700, yDestination = 60;//default start position
     static final int hostWidth = 20, hostHeight = 20;
     private final static int xCookDefault= 700;
 	private final static int yCookDefault= 60;
@@ -26,13 +26,13 @@ public class CookGui implements Gui {
     public static final int xGrill = 450;
     public static final int yGrill = 20;
     private String orderBeingCarried = " ";
-    RestaurantGui gui;
 
-    public CookGui(LucaCookAgent cook, RestaurantGui gui) {
+
+    public CookGui(LucaCookRole cook) {
         this.agent = cook;
-        xPos = 450;
+        xPos = 700;
         yPos = 60;
-        this.gui = gui;
+
     }
 
    public void updatePosition() {

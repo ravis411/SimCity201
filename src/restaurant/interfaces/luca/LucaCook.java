@@ -1,10 +1,10 @@
 package restaurant.interfaces.luca;
 
-import restaurant.luca.LucaMarketAgent;
+import restaurant.luca.LucaMarketRole;
 
 public interface LucaCook {
 
-	public abstract void msgAddMarket(LucaMarketAgent market);
+	public abstract void msgAddMarket(LucaMarketRole market);
 
 	public abstract void msgCookHeresAnOrder(int customerTableNumber, String customerChoice, LucaWaiter waiterAgent) ;
 	public abstract void msgCookIDoNotHaveFoodSupplyOrdered(String Food);

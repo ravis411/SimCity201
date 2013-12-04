@@ -17,7 +17,16 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import Person.Role.Role;
-import restaurant.luca.LucaHostAgent;
+import restaurant.gui.luca.CookGui;
+import restaurant.gui.luca.CustomerGui;
+import restaurant.gui.luca.WaiterGui;
+import restaurant.luca.LucaCashierRole;
+import restaurant.luca.LucaCookRole;
+import restaurant.luca.LucaHostRole;
+import restaurant.luca.LucaRestaurantCustomerRole;
+import restaurant.luca.LucaWaiterRole;
+import trace.AlertLog;
+import trace.AlertTag;
 
 
 
@@ -47,6 +56,12 @@ public class AnimationPanel extends JPanel implements ActionListener,GuiPanel{
 
 	public void actionPerformed(ActionEvent e) {
 		repaint();  //Will have paintComponent called
+		  
+		for(Gui gui : guis) {
+	            if (gui.isPresent()) {
+	            	gui.updatePosition();
+	            }
+	        }
 	}
 
     public void paintComponent(Graphics g) {
@@ -58,7 +73,7 @@ public class AnimationPanel extends JPanel implements ActionListener,GuiPanel{
 
         //Here is the table
         g2.setColor(Color.ORANGE);
-        for(int i =0; i<LucaHostAgent.getNTABLES(); i++)
+        for(int i =0; i<LucaHostRole.getNTABLES(); i++)
         {
         g2.fillRect(TABLEX+i*60, TABLEY, TABLEWIDTH, TABLEHEIGHT);//200 and 250 need to be table params
         }
@@ -71,15 +86,11 @@ public class AnimationPanel extends JPanel implements ActionListener,GuiPanel{
 		g2.drawString("Refrigerator", 550, 20);
         for(Gui gui : guis) {
             if (gui.isPresent()) {
-                gui.updatePosition();
+            	gui.draw(g2);
             }
         }
 
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.draw(g2);
-            }
-        }
+      
     }
 
     public void addGui(CustomerGui gui) {
@@ -97,7 +108,34 @@ public class AnimationPanel extends JPanel implements ActionListener,GuiPanel{
 
 	@Override
 	public void addGuiForRole(Role r) {
-		// TODO Auto-generated method stub
+		if(r instanceof LucaCookRole){
+			LucaCookRole cr = (LucaCookRole) r;
+			CookGui gui = new CookGui(cr);
+			cr.setGui(gui);
+			guis.add(gui);
+			//System.out.println("My person is: " + hr.myPerson.getName());
+		}
+		if(r instanceof LucaCashierRole){
+			LucaCashierRole cr = (LucaCashierRole) r;
+			
+
+		}
+		if(r instanceof LucaRestaurantCustomerRole){
+			LucaRestaurantCustomerRole rcr = (LucaRestaurantCustomerRole) r;
+			//CustomerGui gui = new CustomerGui(rcr);
+			//rcr.setGui(gui);
+			AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "CustomerGui", "Assigning the Customer Gui ---------");
+			//guis.add(gui);
+			//System.out.println("My person is: " + hr.myPerson.getName());
+		}
+		if(r instanceof LucaWaiterRole){
+			LucaWaiterRole nwr = (LucaWaiterRole) r;
+			//WaiterGui gui = new WaiterGui(nwr, waiterCount*50+120, 0);
+			//nwr.setGui(gui);
+			//guis.add(gui);
+			//System.out.println("My person is: " + hr.myPerson.getName());
+		}
+	
 		
 	}
 

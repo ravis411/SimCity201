@@ -8,12 +8,12 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import restaurant.luca.LucaCashierAgent;
-import restaurant.luca.LucaCookAgent;
-import restaurant.luca.LucaCustomerAgent;
-import restaurant.luca.LucaHostAgent;
-import restaurant.luca.LucaMarketAgent;
-import restaurant.luca.LucaWaiterAgent;
+import restaurant.luca.LucaCashierRole;
+import restaurant.luca.LucaCookRole;
+import restaurant.luca.LucaRestaurantCustomerRole;
+import restaurant.luca.LucaHostRole;
+import restaurant.luca.LucaMarketRole;
+import restaurant.luca.LucaWaiterRole;
 import restaurant.interfaces.luca.LucaWaiter;
 
 /**
@@ -23,13 +23,13 @@ import restaurant.interfaces.luca.LucaWaiter;
 public class RestaurantPanel extends JPanel {
 
     //Host, cook, waiters and customers
-	private LucaHostAgent host = new LucaHostAgent("Cary");
-	private LucaCookAgent cook = new LucaCookAgent("Harry");
-	private LucaCashierAgent cashier = new LucaCashierAgent("Sarah");
-	private Vector<LucaMarketAgent> markets = new Vector<LucaMarketAgent>();
+	private LucaHostRole host = new LucaHostRole("Cary");
+//	private LucaCookRole cook = new LucaCookRole("Harry");
+	private LucaCashierRole cashier = new LucaCashierRole("Sarah");
+	private Vector<LucaMarketRole> markets = new Vector<LucaMarketRole>();
 	
-    private Vector<LucaCustomerAgent> customers = new Vector<LucaCustomerAgent>();
-    private Vector<LucaWaiterAgent> waiters = new Vector<LucaWaiterAgent>();
+    private Vector<LucaRestaurantCustomerRole> customers = new Vector<LucaRestaurantCustomerRole>();
+    private Vector<LucaWaiterRole> waiters = new Vector<LucaWaiterRole>();
     private JPanel restLabel = new JPanel();
     private ListPanel customerPanel = new ListPanel(this, "Customers");
     private ListPanel waiterPanel = new ListPanel(this, "Waiters");
@@ -40,7 +40,7 @@ public class RestaurantPanel extends JPanel {
     private int waiterNumber=0;
 
     public RestaurantPanel(RestaurantGui gui) {
-        this.gui = gui;
+      /*  this.gui = gui;
         CookGui c = new CookGui(cook, gui);
     	
 
@@ -49,15 +49,15 @@ public class RestaurantPanel extends JPanel {
 		cook.setGui(c);
 		//cook.setGui(gui);
         
-        LucaMarketAgent marketStopAndShop = new LucaMarketAgent("Stop & Shop");	
+        LucaMarketRole marketStopAndShop = new LucaMarketRole("Stop & Shop");	
         marketStopAndShop.setCook(cook);
         marketStopAndShop.setCashier(cashier);
 		markets.add(marketStopAndShop);
-		LucaMarketAgent marketShaws = new LucaMarketAgent("Shaws");	
+		LucaMarketRole marketShaws = new LucaMarketRole("Shaws");	
         marketShaws.setCook(cook);
         marketShaws.setCashier(cashier);
 		markets.add(marketShaws);
-		LucaMarketAgent marketRalphs = new LucaMarketAgent("Ralphs");	
+		LucaMarketRole marketRalphs = new LucaMarketRole("Ralphs");	
 		marketRalphs.setCook(cook);
 		marketRalphs.setCashier(cashier);
 		markets.add(marketRalphs);
@@ -83,7 +83,7 @@ public class RestaurantPanel extends JPanel {
 
         initRestLabel();
         add(restLabel);
-        add(group);
+        add(group);*/
     }
 
     /**
@@ -91,7 +91,7 @@ public class RestaurantPanel extends JPanel {
      * and host and cook information
      */
     private void initRestLabel() {
-        JLabel label = new JLabel();
+   /*     JLabel label = new JLabel();
         //restLabel.setLayout(new BoxLayout((Container)restLabel, BoxLayout.Y_AXIS));
         restLabel.setLayout(new BorderLayout());
         label.setText(
@@ -101,7 +101,7 @@ public class RestaurantPanel extends JPanel {
         restLabel.add(label, BorderLayout.CENTER);
         restLabel.add(new JLabel("               "), BorderLayout.EAST);
         restLabel.add(new JLabel("               "), BorderLayout.WEST);
-    }
+   */ }
 
     /**
      * When a customer or waiter is clicked, this function calls
@@ -137,10 +137,10 @@ public class RestaurantPanel extends JPanel {
      * @param name name of person
      */
     public void addPerson(String type, String name, boolean hungry) {
-
+/*
     	if (type.equals("Customers")) {
     		
-    		LucaCustomerAgent c = new LucaCustomerAgent(name);	
+    		LucaRestaurantCustomerRole c = new LucaRestaurantCustomerRole(name);	
     		CustomerGui g = new CustomerGui(c, gui,customerNumber);
 
     		gui.animationPanel.addGui(g);// dw
@@ -155,7 +155,7 @@ public class RestaurantPanel extends JPanel {
     		customerNumber++;
     	}	
     	else if (type.equals("Waiters")) {
-    		LucaWaiterAgent w = new LucaWaiterAgent(name);
+    		LucaWaiterRole w = new LucaWaiterRole(name);
     		WaiterGui x = new WaiterGui(w, gui,waiterNumber);
     	
 
@@ -169,10 +169,10 @@ public class RestaurantPanel extends JPanel {
     		w.startThread();
     		waiterNumber++;
     		w.tellHostIExist();
-    	}	
+    	}	*/
     }
-/*
-	public void restartProgram() {
+
+    /*public void restartProgram() {
 		host.restartAgent();
 		cook.restartAgent();
 		cashier.restartAgent();
