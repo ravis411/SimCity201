@@ -4,7 +4,7 @@ import gui.Building.BankBuildingPanel;
 import gui.Building.BuildingPanel;
 import gui.Building.MarketBuildingPanel;
 import gui.Building.ResidenceBuildingPanel;
-import gui.Building.RestaurantBuildingPanel;
+import gui.Building.restaurants.RestaurantBuildingPanel;
 
 import java.awt.CardLayout;
 import java.awt.Color;

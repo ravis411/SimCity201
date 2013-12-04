@@ -13,8 +13,10 @@ import gui.Building.MarketBuilding;
 import gui.Building.MarketBuildingPanel;
 import gui.Building.ResidenceBuilding;
 import gui.Building.ResidenceBuildingPanel;
-import gui.Building.RestaurantBuilding;
-import gui.Building.RestaurantBuildingPanel;
+import gui.Building.restaurants.RestaurantBuilding;
+import gui.Building.restaurants.RestaurantBuildingPanel;
+import gui.Building.restaurants.RyansRestaurantBuilding;
+import gui.Building.restaurants.RyansRestaurantBuildingPanel;
 import gui.MockAgents.PseudoBusAgent;
 import gui.MockAgents.PseudoPerson;
 import gui.agentGuis.PersonGui;
@@ -173,7 +175,7 @@ public class SetUpWorldFactory{
 		location.entranceFromMainGridPosition = new Dimension(24, 12);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
 
-		addBuilding("Residence", "House 5", 23, 12, 2, 2, location);
+		addBuilding("RyansRestaurant", "Restaurant 2", 23, 12, 2, 2, location);
 //Building 12
 		location.sector = 2;
 		location.positionToEnterFromMainGrid = new Dimension(30, 12);
@@ -818,6 +820,15 @@ public class SetUpWorldFactory{
 				RestaurantBuildingPanel restPanel = new RestaurantBuildingPanel(restb, name, buildingsPanels);
 				restb.setBuildingPanel(restPanel);
 				cityPanel.addGui(restb);
+				buildingsPanels.addBuildingPanel(restPanel);
+			}
+			break;
+		case "RyansRestaurant":
+			RyansRestaurantBuilding restb2 = new RyansRestaurantBuilding(building);
+			if(restb2 != null){
+				RyansRestaurantBuildingPanel restPanel = new RyansRestaurantBuildingPanel(restb2, name, buildingsPanels);
+				restb2.setBuildingPanel(restPanel);
+				cityPanel.addGui(restb2);
 				buildingsPanels.addBuildingPanel(restPanel);
 			}
 			break;

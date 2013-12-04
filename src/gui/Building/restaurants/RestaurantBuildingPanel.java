@@ -1,6 +1,8 @@
-package gui.Building;
+package gui.Building.restaurants;
 
 import gui.BuildingsPanels;
+import gui.Building.BuildingPanel;
+
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.geom.Rectangle2D;

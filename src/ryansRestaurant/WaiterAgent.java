@@ -459,10 +459,10 @@ public class WaiterAgent extends Agent implements Waiter {
 	}
 	
 	private void DoLeaveCustomer() {
-		activity = "Leaving customer";
+		activity = "Leaving area.";
 		waiterGui.DoLeaveCustomer();
 		activity="";
-		state=AgentState.atHome;
+		//state=AgentState.atHome;
 	}
 		
 	private void DoSeatCustomer(CustomerAgent customer, int table) {

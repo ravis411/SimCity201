@@ -122,7 +122,7 @@ public class RestaurantLayout  {
     	
     	int numCustPos = 1;
     	//for(int y = 1; y <= 9; y++)
-    	for(int x = 1; x <= 10; x++){
+    	for(int x = 1; x <= 15; x++){
     		//for(int x = 1; x <= 2; x++)
     		{
     			customerWaitingPositionMap.put(numCustPos, new Dimension(7 + x, 2));

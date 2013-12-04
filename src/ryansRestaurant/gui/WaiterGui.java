@@ -109,6 +109,11 @@ public class WaiterGui implements Gui {
         	aStarState = ASTARSTATE.atDestination;
         	aSem.release();
         }
+        
+        if(state == AgentState.goingToHomePosition && currentPosition.equals(originalPosition)){
+        	state = AgentState.none;
+        	agent.msgAtHome();
+        }
     }
 
     public void draw(Graphics2D g) {
@@ -153,10 +158,12 @@ public class WaiterGui implements Gui {
     		currentPosition = new Position(entrance.getX(), entrance.getY());
             //currentPosition.moveInto(aStar.getGrid());
             originalPosition = new Position(homePosition.width, homePosition.height);
-    		DoGoToHomePosition();
+            // DoGoToHomePosition();
+            guiMoveFromCurrentPostionTo(originalPosition);
     	}
     	}catch(Exception e) {
-    		DoGoToHomePosition();//Sometime entrance can get clogged so try to find a path again
+    		guiMoveFromCurrentPostionTo(originalPosition);
+    		//DoGoToHomePosition();//Sometime entrance can get clogged so try to find a path again
     	}
     	
     }
@@ -238,6 +245,8 @@ public class WaiterGui implements Gui {
     public void DoLeaveCustomer() {
         //xDestination = xCounter;
         //yDestination = yCounter;
+    	interrupt = true;
+    	state = AgentState.goingToHomePosition;
     	DoGoToHomePosition();
     }
     public void DoBeAtHomePosition(){
@@ -339,6 +348,10 @@ public class WaiterGui implements Gui {
          currentPosition.release(aStar.getGrid());
          currentPosition = new Position(tmpPath.getX(), tmpPath.getY ());
          move(currentPosition.getX(), currentPosition.getY());
+         if(interrupt){
+        	 interrupt = false;
+        	 return;
+         }
         }
     }//End A* guiMoveFromCurrent...
 
