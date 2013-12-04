@@ -1,0 +1,204 @@
+package kushrestaurant;
+import java.util.*;
+
+import kushrestaurant.interfaces.*;
+
+import java.util.concurrent.Semaphore;
+
+import agent.Agent;
+
+import javax.swing.*;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import kushrestaurant.CustomerAgent.AgentEvent;
+import kushrestaurant.WaiterAgent.CustomerState;
+import kushrestaurant.WaiterAgent.MyCustomer;
+import kushrestaurant.HostAgent.Table;
+
+public class CashierAgent extends Agent implements Cashier{
+	
+	public String name;
+	private int money=100;
+	public double bill=0;
+	private Map<String, Double> foods = new HashMap<String, Double>();
+	public ArrayList<customer> customers= new ArrayList<customer>();
+	private Timer timer = new Timer();
+	public HashMap <Integer,Integer> givenGiftCards= new HashMap<Integer,Integer>();
+	public enum CState {checkNotReady,checkReady,paid,ChangeReady,Punish,Unpaid,MadeGood};
+	private ArrayList<Bill> bills= new ArrayList<Bill>();
+	int i=1;
+	//public List<Food> inventory = new ArrayList<Food>();
+	public class customer{
+		Customer c;
+		String choice;
+		public double check;
+		double cash;
+		public double change;
+		Waiter w;
+		public CState state= CState.checkNotReady;
+		customer(Customer c,String choice,Waiter w){
+			this.w=w;
+			this.c=c;
+			this.choice=choice;
+			//check=foods.get(choice);
+		}
+		public void setCheck(){
+			check=foods.get(choice);
+			//bill=check;
+		}
+	}
+	public class Bill{
+		int bill;
+		Market m;
+		public CState state=CState.Unpaid;
+		Bill(int b, Market m){
+			bill=b;
+			this.m=m;
+		}
+	}
+enum CashierState {busy,free};
+CashierState cashierState= CashierState.free;
+public double icheck=10.99;
+
+public CashierAgent(String name) {
+	super();
+    
+	this.name = name;
+	// make some tables
+	//tables = new ArrayList<Table>(NTABLES);
+	//for (int ix = 1; ix <= NTABLES; ix++) {
+		//tables.add(new Table(ix));//how you add to a collections
+	cashierState= CashierState.free;
+	foods.put("Steak",15.99);
+	foods.put("Chicken",10.99);
+	foods.put("Salad",5.99);
+	foods.put("Pizza",8.99);
+	
+}
+//map<String,Food> foods;
+public void msgProduceCheck(Customer customer,String choice,Waiter waiter){
+	print("Producing check");
+	customers.add(new customer(customer,choice,waiter));
+	stateChanged();
+}
+public double getMoney(){return money;}
+public void msgHereIsPayment(Customer cust,double check, double cash){
+	for(customer c:customers){
+		if(cash>=check)
+			{if(c.c==cust){
+			 c.change=cash-check;
+			 c.state=CState.ChangeReady;
+			 }
+			}
+		else 
+		{
+				if(c.c==cust){
+					 //c.change=cash-check;
+					 c.state=CState.Punish;
+			}
+			}
+			stateChanged();
+		}
+	}
+public void msgHereIsBill(Market m, int bill){
+	bills.add(new Bill(bill,m));
+	stateChanged();
+}
+//List<WaiterAgent> waiters;
+
+
+public double getBill(){
+	return bill;
+}
+public ArrayList<Bill> getListOfBills(){return bills;}
+public boolean pickAndExecuteAnAction() {
+	/* Think of this next rule as:
+        Does there exist a table and customer,
+        so that table is unoccupied and customer is waiting.
+        If so seat him at the table.
+	 */
+	for (Bill b:bills){
+		if(b.state==CState.Unpaid){
+			
+			PayMarketBill(b);
+			//bills.remove(b);
+			return true;
+			
+		}
+		
+	}
+	for(customer c:customers){
+		if(c.state==CState.checkNotReady){
+			c.setCheck();
+			c.state=CState.checkReady;
+			HereIsCheck(c);
+			return true;
+		}
+	}
+		for(customer c:customers){
+			if(c.state==CState.ChangeReady){
+				
+				ChangeReady(c.c,c.change);
+				c.state=CState.paid;
+				return true;
+			}
+		}
+			for(customer c:customers){
+				if(c.state==CState.Punish){
+					
+					PunishCustomer(c.c);
+					c.state=CState.paid;
+					return true;
+				}
+			}
+	
+	return false;
+}
+public void PayMarketBill(Bill b){
+	if(b.bill>money){
+		print("Dont have enough money, cant pay");
+		if(money==0)
+		  {b.m.msgHereIsGiftCard(b.bill,0);
+		  givenGiftCards.put(i++,b.bill);
+		  money=0;}
+		else
+		{
+			print("Only have "+ money + "dollars so giving this plus a gift card worth the difference");
+			b.m.msgHereIsGiftCard(b.bill-money,money);
+			givenGiftCards.put(i++,b.bill-money );		
+			money=0;}
+		
+		b.state=CState.MadeGood;
+	}
+	else if(b.bill==0){
+		b.m.msgNoPayment();
+		b.state=CState.paid;
+	}
+	else {print("Paying bill of "+b.bill+" to market "+ b.m.getName()+" left with " + (money-b.bill));
+	    b.m.msgHereIsPayment(b.bill);
+	    money=money-b.bill;
+	    b.state=CState.paid;}
+}
+public void ChangeReady(Customer c, double change){
+   print("Heres your change "+change);
+	c.msgHereIsYourChange(change);
+}
+public void PunishCustomer(Customer c){
+	print("Punishing this guy, he has to wash dishes "+c.getName());
+	c.msgWashDishes();
+}
+public void HereIsCheck(customer c){
+	print("Give this check of"+c.check+"to "+c.c.getName());
+	c.w.msgHereIsCheck(c.c,c.check);
+	
+}
+
+
+
+}
