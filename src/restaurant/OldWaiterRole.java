@@ -1,13 +1,14 @@
 package restaurant;
 
+import interfaces.Customer;
+import interfaces.Waiter;
+
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 import java.util.concurrent.Semaphore;
 
 import restaurant.gui.WaiterGui;
-import restaurant.interfaces.Customer;
-import restaurant.interfaces.Waiter;
 import trace.AlertLog;
 import trace.AlertTag;
 import Person.Role.Role;

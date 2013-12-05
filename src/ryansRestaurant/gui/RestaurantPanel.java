@@ -162,6 +162,9 @@ public class RestaurantPanel extends JPanel {
     		c.startThread();
     	}
     	else if(type.equals("Waiters")) {
+    		if(waiters.size() >= 10)
+    			return;
+    		
     		WaiterAgent w = new WaiterAgent(name, host, cook, cashier);
     		
     		AStarTraversal aStar = new AStarTraversal(grid);
@@ -225,18 +228,29 @@ public class RestaurantPanel extends JPanel {
     	}
     }
     
-//    public void pause()
-//    {
-//    	//calls all the agents pause()
-//    	host.pause();
-//    	cook.pause();
-//    	for(CustomerAgent cust : customers) {
-//    		cust.pause();
-//    	}
-//    	for(WaiterAgent waiter : waiters) {
-//    		waiter.pause();
-//    	}
-//    }
+    public void pause()
+    {
+    	//calls all the agents pause()
+    	host.pauseThread();
+    	cook.pauseThread();
+    	for(CustomerAgent cust : customers) {
+    		cust.pauseThread();
+    	}
+    	for(WaiterAgent waiter : waiters) {
+    		waiter.pauseThread();
+    	}
+    }
+    public void resume(){
+    	//calls all the agents resume()
+    	host.resumeThread();
+    	cook.resumeThread();
+    	for(CustomerAgent cust : customers) {
+    		cust.resumeThread();
+    	}
+    	for(WaiterAgent waiter : waiters) {
+    		waiter.resumeThread();
+    	}
+    }
     
     public Vector<MarketAgent> getMarkets() {
     	return markets;

@@ -1,17 +1,18 @@
 package bank;
 
 //import java.util.*;
+import interfaces.AnnouncerA;
+import interfaces.AnnouncerB;
+import interfaces.BankClient;
+import interfaces.BankTeller;
+import interfaces.LoanTeller;
+
 import java.util.concurrent.Semaphore;
 
 import trace.AlertLog;
 import trace.AlertTag;
 import Person.Role.Role;
 import bank.gui.ClientGui;
-import bank.interfaces.AnnouncerA;
-import bank.interfaces.AnnouncerB;
-import bank.interfaces.BankClient;
-import bank.interfaces.BankTeller;
-import bank.interfaces.LoanTeller;
 import building.Bank;
 import building.BuildingList;
 
@@ -388,9 +389,6 @@ public class BankClientRole extends Role implements BankClient{
 		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Going to waiting area");
 		clientGui.doGoToWaitingArea();
 	}
-
-
-
 
 	//other
 	public String getName() {

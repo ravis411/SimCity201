@@ -13,8 +13,12 @@ import gui.Building.MarketBuilding;
 import gui.Building.MarketBuildingPanel;
 import gui.Building.ResidenceBuilding;
 import gui.Building.ResidenceBuildingPanel;
-import gui.Building.RestaurantBuilding;
-import gui.Building.RestaurantBuildingPanel;
+import gui.Building.restaurants.KushRestaurantBuilding;
+import gui.Building.restaurants.KushRestaurantBuildingPanel;
+import gui.Building.restaurants.RestaurantBuilding;
+import gui.Building.restaurants.RestaurantBuildingPanel;
+import gui.Building.restaurants.RyansRestaurantBuilding;
+import gui.Building.restaurants.RyansRestaurantBuildingPanel;
 import gui.MockAgents.PseudoBusAgent;
 import gui.MockAgents.PseudoPerson;
 import gui.agentGuis.PersonGui;
@@ -166,14 +170,14 @@ public class SetUpWorldFactory{
 		location.entranceFromMainGridPosition = new Dimension(19, 12);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
 
-		addBuilding("Residence", "House 4", 18, 12, 2, 2, location);
+		addBuilding("KushsRestaurant", "Kush's Restaurant", 18, 12, 2, 2, location);
 //Building 11
 		location.sector = 2;
 		location.positionToEnterFromMainGrid = new Dimension(25, 12);
 		location.entranceFromMainGridPosition = new Dimension(24, 12);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
 
-		addBuilding("Residence", "House 5", 23, 12, 2, 2, location);
+		addBuilding("RyansRestaurant", "Restaurant 2", 23, 12, 2, 2, location);
 //Building 12
 		location.sector = 2;
 		location.positionToEnterFromMainGrid = new Dimension(30, 12);
@@ -579,11 +583,7 @@ public class SetUpWorldFactory{
 
 			case "Person 1":
 				//p1.setInitialRole(new HomeRole(p1), "House 1");
-				int a=1;
-				String s= new String();
-				s="Apartment "+ a;
-				System.out.println("BUILDING PANEL !!! " + buildingsPanels.getBuildingPanel("Apartment 1"));
-				p1.setInitialRole(new HomeRole(p1), s);
+				p1.setInitialRole(new HomeRole(p1), "Apartment 1");
 				break;
 			case "Person 2":
 				p1.setInitialRole(new HomeRole(p1), p1.home.getName());
@@ -822,6 +822,25 @@ public class SetUpWorldFactory{
 				buildingsPanels.addBuildingPanel(restPanel);
 			}
 			break;
+		case "RyansRestaurant":
+			RyansRestaurantBuilding restb2 = new RyansRestaurantBuilding(building);
+			if(restb2 != null){
+				RyansRestaurantBuildingPanel restPanel = new RyansRestaurantBuildingPanel(restb2, name, buildingsPanels);
+				restb2.setBuildingPanel(restPanel);
+				cityPanel.addGui(restb2);
+				buildingsPanels.addBuildingPanel(restPanel);
+			}
+			break;
+		case "KushsRestaurant":
+			KushRestaurantBuilding restb3 = new KushRestaurantBuilding(building);
+			if(restb3 != null){
+				KushRestaurantBuildingPanel restPanel = new KushRestaurantBuildingPanel(restb3, name, buildingsPanels);
+				restb3.setBuildingPanel(restPanel);
+				cityPanel.addGui(restb3);
+				buildingsPanels.addBuildingPanel(restPanel);
+			}
+			break;
+			
 		default:
 			return;
 		}

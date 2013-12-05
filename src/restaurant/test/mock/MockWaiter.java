@@ -1,13 +1,13 @@
 package restaurant.test.mock;
 
 
+import interfaces.Cashier;
+import interfaces.Customer;
+import interfaces.Waiter;
 import restaurant.CashierRole;
 import restaurant.CookRole;
 import restaurant.HostRole;
 import restaurant.Order;
-import restaurant.interfaces.Cashier;
-import restaurant.interfaces.Customer;
-import restaurant.interfaces.Waiter;
 
 /**
  * A sample MockWaiter built to unit test a CashierAgent.

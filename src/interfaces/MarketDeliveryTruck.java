@@ -1,4 +1,4 @@
-package market.interfaces;
+package interfaces;
 
 public interface MarketDeliveryTruck {
 

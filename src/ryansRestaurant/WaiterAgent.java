@@ -289,10 +289,10 @@ public class WaiterAgent extends Agent implements Waiter {
 			print("ConcurrentModificationException caught. Returning true.");
 			return true;
 		}
-		catch(Exception e) {
-			print("Exception Caught in Scheduler!!!!!!!!!!!!!!!!!" + e);
-			return true;
-		}
+		//catch(Exception e) {
+		////	print("Exception Caught in Scheduler!!!!!!!!!!!!!!!!!" + e);
+	//		return true;
+	//}
 		
 		
 		return false;
@@ -367,7 +367,7 @@ public class WaiterAgent extends Agent implements Waiter {
 
 		
 		activity = "Going to bring food.";
-		activity += "\n\n " + customer.choice.charAt(0) + Character.toUpperCase(customer.choice.charAt(1)) + "?";
+		activity += "\n\n " + customer.choice.charAt(0) + Character.toUpperCase(customer.choice.charAt(1)) + "";
         DoGoToTable(customer.tableNumber);
 
 
@@ -459,10 +459,10 @@ public class WaiterAgent extends Agent implements Waiter {
 	}
 	
 	private void DoLeaveCustomer() {
-		activity = "Leaving customer";
+		activity = "Leaving area.";
 		waiterGui.DoLeaveCustomer();
 		activity="";
-		state=AgentState.atHome;
+		//state=AgentState.atHome;
 	}
 		
 	private void DoSeatCustomer(CustomerAgent customer, int table) {

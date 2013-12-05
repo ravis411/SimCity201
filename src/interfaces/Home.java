@@ -1,4 +1,4 @@
-package residence.interfaces;
+package interfaces;
 
 /**
  * HomeRole interface

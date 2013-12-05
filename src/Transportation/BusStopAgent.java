@@ -1,5 +1,7 @@
 package Transportation;
 
+import interfaces.Bus;
+import interfaces.BusStop;
 import interfaces.Person;
 
 import java.util.ArrayList;
@@ -10,8 +12,6 @@ import java.util.Map;
 
 import trace.AlertLog;
 import trace.AlertTag;
-import gui.interfaces.BusStop;
-import gui.interfaces.Bus;
 import Person.PersonAgent;
 
 public class BusStopAgent implements BusStop {

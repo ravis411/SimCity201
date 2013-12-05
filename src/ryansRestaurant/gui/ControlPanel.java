@@ -45,6 +45,7 @@ public class ControlPanel extends JPanel implements ActionListener {
 	
 	
 	private JButton addTableButton = new JButton("Add Table");//button for adding a table
+	private JButton addAllTables = new JButton("Add All");
 	JComboBox<Integer> tablePosCombo; // ComboBox for table pos/number
 	JComboBox<Integer> numSeatsCB;	//comboBox for table size/ number of seats
 	
@@ -70,6 +71,7 @@ public class ControlPanel extends JPanel implements ActionListener {
 		
 		//add action listener for addTableButton
 		addTableButton.addActionListener(this);
+		addAllTables.addActionListener(this);
 		cancelButton.addActionListener(this);
 		pauseButton.addActionListener(this);
 		marketButton.addActionListener(this);
@@ -100,6 +102,7 @@ public class ControlPanel extends JPanel implements ActionListener {
 		add(marketButton);
 		add(cookButton);
 		add(cashierButton);
+		add(cancelButton);
 		this.repaint();
 		validate();
 	}
@@ -233,6 +236,7 @@ public class ControlPanel extends JPanel implements ActionListener {
 			add(tablNumberP);
 			add(numSeatsPanel);
 			add(addTableButton);
+			add(addAllTables);
 			add(cancelButton);
 		}
 		else{
@@ -269,13 +273,13 @@ public class ControlPanel extends JPanel implements ActionListener {
 		if(pauseButton.getText().equals("Pause"))
 		{
 			pauseButton.setText("Resume");
-		//	gui.restPanel.pause();
+			gui.restPanel.pause();
 			
 		}
 		else
 		{
 			pauseButton.setText("Pause");
-			//gui.restPanel.pause();
+			gui.restPanel.resume();
 		}
 		
 	}
@@ -290,7 +294,9 @@ public class ControlPanel extends JPanel implements ActionListener {
 		else if(state == GUIState.none && e.getSource() == marketButton) {
 			showMarketPanel();
 		}
-		
+		else if(state == GUIState.none && e.getSource() == cancelButton) {
+			gui.showInfoPanel(false);
+		}
 		else if(e.getSource() == pauseButton)
 		{
 			pause();
@@ -311,6 +317,16 @@ public class ControlPanel extends JPanel implements ActionListener {
 			state = GUIState.none;
 			showCtrlPanel();
 		}
+		else if(state == GUIState.addTable && e.getSource() == addAllTables){
+			Vector<Integer> tableNumbers = getAvailableTableLocations();
+			if(!tableNumbers.isEmpty()){
+				for(Integer i : tableNumbers){
+					gui.animationPanel.host.msgAddTable((int)i, (int)numSeatsCB.getSelectedItem());
+				}
+			}
+			state = GUIState.none;
+			showCtrlPanel();
+		}
 		else if( (state == GUIState.addTable || state == GUIState.marketsPanel || state==GUIState.cutomerPanel || state == GUIState.cookPanel || state == GUIState.cashierPanel) && e.getSource() == cancelButton)
 		{
 			state = GUIState.none;
@@ -324,6 +340,7 @@ public class ControlPanel extends JPanel implements ActionListener {
 				}
 			}
 		}
+		
 	}
 	
 	

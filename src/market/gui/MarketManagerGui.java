@@ -1,11 +1,12 @@
 package market.gui;
 
 
+import interfaces.MarketManager;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
-import market.interfaces.MarketManager;
 import MarketEmployee.MarketManagerRole;
 
 public class MarketManagerGui implements Gui {

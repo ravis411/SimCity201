@@ -1,6 +1,9 @@
 package MarketEmployee;
 
 
+import interfaces.MarketCustomer;
+import interfaces.MarketEmployee;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,8 +17,6 @@ import trace.AlertLog;
 import trace.AlertTag;
 import market.data.MarketData;
 import market.gui.MarketCustomerGui;
-import market.interfaces.MarketCustomer;
-import market.interfaces.MarketEmployee;
 import market.test.mock.EventLog;
 import market.test.mock.LoggedEvent;
 import Person.Role.Role;
