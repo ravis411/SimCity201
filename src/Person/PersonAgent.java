@@ -59,7 +59,6 @@ public class PersonAgent extends Agent implements Person{
 	//party variables
 	private List<Party> parties;
 	
-	
 	private double loanAmount;
 	
 	public List<Role> roles;

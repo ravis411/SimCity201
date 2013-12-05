@@ -15,4 +15,7 @@ public interface Employee {
 	 * @return
 	 */
 	Double getSalary();
+	
+	enum ShiftTime {DayShift, NightShift}
+	
 }
