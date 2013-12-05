@@ -1,6 +1,5 @@
 package bank;
 import bank.gui.TellerGui;
-import bank.interfaces.*;
 import building.Restaurant;
 import interfaces.BankClient;
 import interfaces.BankTeller;
