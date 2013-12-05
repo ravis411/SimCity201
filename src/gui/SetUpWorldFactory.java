@@ -840,7 +840,7 @@ public class SetUpWorldFactory{
 		case "Food Court":
 			FoodCourtBuilding food = new FoodCourtBuilding(building);
 			if(food != null){
-				FoodCourtBuildingPanel foodPanel = new FoodCourtBuildingPanel(food, name, buildingsPanels);
+				FoodCourtBuildingPanel foodPanel = new FoodCourtBuildingPanel(food, name, buildingsPanels, this, info);
 				food.setBuildingPanel(foodPanel);
 				cityPanel.addGui(food);
 				buildingsPanels.addBuildingPanel(foodPanel);
@@ -859,7 +859,8 @@ public class SetUpWorldFactory{
 			return;
 		}
 		info.name = name;
-		locationMap.add(new LocationInfo(info));
+		//locationMap.add(new LocationInfo(info));
+		addLocationToMap(info);
 	}
 
 	public void addLocationToMap(LocationInfo location){
