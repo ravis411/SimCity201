@@ -27,7 +27,7 @@ import MarketEmployee.MarketEmployeeRole;
 import MarketEmployee.MarketManagerRole;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
-import Transportation.BusStopAgent;
+import Transportation.BusStopConstruct;
 import agent.Agent;
 import bank.BankClientRole;
 import building.Building;
@@ -528,7 +528,7 @@ public class PersonAgent extends Agent implements Person{
 			case Preferences.BUS:
 				String startStop = gui.DoGoToClosestBusStop();
 				String destStop = gui.DoRideBusTo(location);
-				BusStop startAgent = BusStopAgent.stops.get(startStop);
+				BusStop startAgent = BusStopConstruct.stops.get(startStop);
 				startAgent.msgAtBusStop(this, destStop);
 				try{
 					onBus.acquire();

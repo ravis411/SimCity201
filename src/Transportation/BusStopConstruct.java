@@ -14,7 +14,7 @@ import trace.AlertLog;
 import trace.AlertTag;
 import Person.PersonAgent;
 
-public class BusStopAgent implements BusStop {
+public class BusStopConstruct implements BusStop {
 	
 	//May need to refactor and rename something not "Agent"
 	
@@ -28,7 +28,7 @@ public class BusStopAgent implements BusStop {
 	
 	BusStopAnimationPanel animationPanel = null;
 	
-	public BusStopAgent(String name, BusStopAnimationPanel animationPanel) {
+	public BusStopConstruct(String name, BusStopAnimationPanel animationPanel) {
 		this.name = name;
 		this.animationPanel = animationPanel;
 	}

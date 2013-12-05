@@ -1,6 +1,6 @@
 package Transportation.test;
 
-import Transportation.BusStopAgent;
+import Transportation.BusStopConstruct;
 //import Transportation.BusStopAgent.AgentState;
 import Transportation.test.mock.MockBus;
 import Transportation.test.mock.MockPassenger;

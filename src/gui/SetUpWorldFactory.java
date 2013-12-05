@@ -47,7 +47,7 @@ import Person.Role.Role;
 import Person.Role.RoleFactory;
 import Person.test.mock.MockPerson;
 import Transportation.BusAgent;
-import Transportation.BusStopAgent;
+import Transportation.BusStopConstruct;
 import agent.Agent;
 import astar.AStarTraversal;
 import astar.PersonAStarTraversal;
@@ -681,12 +681,12 @@ public class SetUpWorldFactory{
 
 		default:
 			//Lets add a bunch of busses///how about 3
-			BusStopAgent bs1 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 1"))).getBusStopAgent();
-			BusStopAgent bs2 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 2"))).getBusStopAgent();
-			BusStopAgent bs3 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 3"))).getBusStopAgent();
-			BusStopAgent bs4 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 4"))).getBusStopAgent();
-			BusStopAgent bs5 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 5"))).getBusStopAgent();
-			BusStopAgent bs6 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 6"))).getBusStopAgent();
+			BusStopConstruct bs1 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 1"))).getBusStopAgent();
+			BusStopConstruct bs2 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 2"))).getBusStopAgent();
+			BusStopConstruct bs3 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 3"))).getBusStopAgent();
+			BusStopConstruct bs4 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 4"))).getBusStopAgent();
+			BusStopConstruct bs5 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 5"))).getBusStopAgent();
+			BusStopConstruct bs6 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 6"))).getBusStopAgent();
 
 
 			BusAgent v3 = new BusAgent("Bus 1");
