@@ -32,17 +32,52 @@ public class CarAgent extends Agent implements Car{
 	//Messages
 	
 	public void msgNewDestination(String destination) {
-		
+		this.destination = destination;
+		this.state = CarState.driving;
+		stateChanged();
+	}
+	
+	public void msgParkingCar() {
+		this.state = CarState.parked;
+		stateChanged();
+	}
+	
+	public void msgLeavingCar() {
+		passenger.state = PassengerState.away;
+		stateChanged();
+	}
+	
+	public void msgEnteringCar() {
+		passenger.state = PassengerState.present;
+		stateChanged();
 	}
 	
 	
 	//Scheduler
 	@Override
 	protected boolean pickAndExecuteAnAction() {
-		// TODO Auto-generated method stub
+		if (state == CarState.driving && passenger.state == PassengerState.present) {
+			goToDestination();
+			return true;
+		}
+		
+		if (state == CarState.parked && passenger.state == PassengerState.away) {
+			parkCar();
+			return true;
+		}
+		
 		return false;
 	}
 	
 	//Actions
+	private void goToDestination() {
+		//GUI.doTurnVisible();
+		//GUI.doGoToDestination(destination);
+		//Semaphore.acquire/Thread sleep
+		//Person.weAreHere();
+	}
 	
+	private void parkCar() {
+		//GUI.doTurnInvisible();
+	}
 }
