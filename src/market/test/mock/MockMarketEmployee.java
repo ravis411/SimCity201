@@ -1,6 +1,6 @@
 package market.test.mock;
 
-import market.interfaces.MarketEmployee;
+import interfaces.MarketEmployee;
 import MarketEmployee.MarketCustomerRole;
 
 public class MockMarketEmployee extends Mock implements MarketEmployee {

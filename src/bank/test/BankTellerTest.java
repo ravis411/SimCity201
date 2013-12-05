@@ -1,5 +1,10 @@
 package bank.test;
 
+import interfaces.AnnouncerA;
+import interfaces.AnnouncerB;
+import interfaces.BankClient;
+import interfaces.BankTeller;
+import interfaces.LoanTeller;
 import bank.Account;
 import bank.BankClientRole;
 import bank.BankClientRole.bankState;
@@ -8,11 +13,6 @@ import bank.BankTellerRole;
 import bank.BankTellerRole.location;
 import bank.BankTellerRole.requestState;
 import bank.LoanTellerRole;
-import bank.interfaces.AnnouncerA;
-import bank.interfaces.AnnouncerB;
-import bank.interfaces.BankClient;
-import bank.interfaces.BankTeller;
-import bank.interfaces.LoanTeller;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

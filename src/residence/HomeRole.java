@@ -7,9 +7,10 @@ import agent.Agent;
 import building.BuildingList;
 import residence.ApartmentManagerRole.AgentEvent;
 import residence.gui.HomeRoleGui;
-import residence.interfaces.*;
 import trace.AlertLog;
 import trace.AlertTag;
+import interfaces.ApartmentManager;
+import interfaces.Home;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;

@@ -2,9 +2,10 @@ package Person;
 
 import gui.Building.ResidenceBuildingPanel;
 import gui.agentGuis.PersonGui;
-import gui.interfaces.BusStop;
+import interfaces.BusStop;
 import interfaces.Employee;
 import interfaces.Person;
+import interfaces.Waiter;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -20,7 +21,6 @@ import restaurant.HostRole;
 import restaurant.NewWaiterRole;
 import restaurant.OldWaiterRole;
 import restaurant.RestaurantCustomerRole;
-import restaurant.interfaces.Waiter;
 import trace.AlertLog;
 import trace.AlertTag;
 import MarketEmployee.MarketEmployeeRole;

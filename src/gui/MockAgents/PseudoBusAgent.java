@@ -1,8 +1,12 @@
 package gui.MockAgents;
 
+import interfaces.Bus;
+import interfaces.Passenger;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+
 
 
 
@@ -13,8 +17,6 @@ import trace.AlertLog;
 import trace.AlertTag;
 import gui.LocationInfo;
 import gui.agentGuis.VehicleGui;
-import gui.interfaces.Bus;
-import gui.interfaces.Passenger;
 import Transportation.myBusPassenger;
 import agent.Agent;
 

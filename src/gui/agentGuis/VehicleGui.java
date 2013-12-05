@@ -6,7 +6,7 @@ package gui.agentGuis;
 import gui.Gui;
 import gui.LocationInfo;
 import gui.SimCityLayout;
-import gui.interfaces.Bus;
+import interfaces.Bus;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

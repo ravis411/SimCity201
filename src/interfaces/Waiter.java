@@ -1,4 +1,4 @@
-package restaurant.interfaces;
+package interfaces;
 
 import restaurant.CashierRole;
 import restaurant.CookRole;

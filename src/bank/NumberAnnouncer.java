@@ -1,9 +1,9 @@
 package bank;
 
 import agent.Agent;
-import bank.interfaces.AnnouncerA;
-import bank.interfaces.BankClient;
-import bank.interfaces.BankTeller;
+import interfaces.AnnouncerA;
+import interfaces.BankClient;
+import interfaces.BankTeller;
 
 import java.util.*;
 /**

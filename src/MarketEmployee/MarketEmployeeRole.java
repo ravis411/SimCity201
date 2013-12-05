@@ -1,15 +1,16 @@
 package MarketEmployee;
 
 
+import interfaces.MarketCustomer;
+import interfaces.MarketEmployee;
+import interfaces.MarketManager;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
 import market.data.MarketData;
 import market.gui.MarketEmployeeGui;
-import market.interfaces.MarketCustomer;
-import market.interfaces.MarketEmployee;
-import market.interfaces.MarketManager;
 import market.test.mock.EventLog;
 import trace.AlertLog;
 import trace.AlertTag;
