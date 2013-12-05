@@ -388,9 +388,6 @@ public class BankClientRole extends Role implements BankClient{
 
 	}
 
-
-
-
 	//other
 	public String getName() {
 		return myPerson.getName();
