@@ -326,6 +326,7 @@ public class SetUpWorldFactory{
 		//across middle
 		layout.addRoad(6, 10, 23, 3);
 
+		
 		LocationInfo location = new LocationInfo();
 
 		for(int x = 1; x < 7;x++) {

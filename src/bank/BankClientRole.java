@@ -101,6 +101,7 @@ public class BankClientRole extends Role implements BankClient{
 	public void msgAtWaitingArea(){
 		atWaitingArea.release();
 		state2 = inLineState.waiting;
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "At waiting area");		
 		stateChanged();
 	}
 
@@ -152,7 +153,7 @@ public class BankClientRole extends Role implements BankClient{
 		atExit.release();
 		stateChanged();
 	}
-	
+
 	/**
 	 * sent by the bank teller as a greeting to the client to let the client know he can communicate his needs
 	 */
@@ -213,14 +214,15 @@ public class BankClientRole extends Role implements BankClient{
 			Leaving();
 			return true;
 		}
-
-		if ((state2 == inLineState.goingToLine && state1 == bankState.withdraw) ||(state2 == inLineState.goingToLine && state1 == bankState.deposit)){
-			goToLine(lineNum);
-			return true;
-		}
-		if ((state2 == inLineState.goingToLine && state1 == bankState.loan) ||(state2 == inLineState.goingToLine && state1 == bankState.repay)){
-			goToLoanLine();
-			return true;
+		if (state2 == inLineState.goingToLine){
+			if ((state1 == bankState.withdraw) ||(state1 == bankState.deposit)){
+				goToLine(lineNum);
+				return true;
+			}
+			if ((state1 == bankState.loan) ||(state1 == bankState.repay)){
+				goToLoanLine();
+				return true;
+			}
 		}
 		if (state1 != bankState.nothing){
 			if (state2 == inLineState.noTicket){
@@ -385,7 +387,6 @@ public class BankClientRole extends Role implements BankClient{
 	private void DoGoToWaitingArea(){
 		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Going to waiting area");
 		clientGui.doGoToWaitingArea();
-
 	}
 
 
@@ -465,7 +466,7 @@ public class BankClientRole extends Role implements BankClient{
 	public void setMyAccount(Account myAccount) {
 		this.myAccount = myAccount;
 	}
-	
+
 
 
 }

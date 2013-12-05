@@ -1,123 +1,125 @@
 <?xml version="1.0"?>
-<person>
-	<friends id="Aaron">
-		<name>Barry</name>
-		<name>Chris</name>
-		<name>Danny</name>
-		<name>Ernie</name>
-		<name>Flo</name>
-		<name>George</name>
-		<name>Henry</name>
-		<name>Ingrid</name>
-		<name>Joe</name>
-		<name>Kim</name>
-		<name>stop</name>
-		<role>Role.BANK_TELLER_ROLE</role>	
+<people>
+	<person name="Person 1">
+		<friends>
+			<friend>Person 2</friend>
+			<friend>Person 3</friend>
+			<friend>Person 4</friend>
+			<friend>Person 5</friend>
+			<friend>Person 6</friend>
+			<friend>Person 7</friend>
+			<friend>Person 8</friend>
+			<friend>Person 9</friend>
+			<friend>Person 10</friend>
+			<friend>Person 11</friend>
+			<friend>stop</friend>
+		</friends>
+		<role>Role.BANK_TELLER_ROLE</role>
 		<home>House 1</home>
-	</friends>
-	<friends id="Barry">
-		<name>Aaron</name>
-		<name>Danny</name>
-		<name>Flo</name>
-		<name>Henry</name>
-		<name>Joe</name>
-		<name>stop</name>
+	</person>
+	<person name="Person 2">
+		<friend>Person 1</friend>
+		<friend>Person 4</friend>
+		<friend>Person 6</friend>
+		<friend>Person 8</friend>
+		<friend>Person 10</friend>
+		<friend>stop</friend>
 		<role>Role.LOAN_TELLER_ROLE</role>
 		<home>House 2</home>
-	</friends>
-	<friends id="Chris">
-		<name>Aaron</name>
-		<name>Ernie</name>
-		<name>George</name>
-		<name>Ingrid</name>
-		<name>stop</name>
+	</person>
+	<person name="Person 3">
+		<friend>Person 1</friend>
+		<friend>Person 5</friend>
+		<friend>Person 7</friend>
+		<friend>Person 9</friend>
+		<friend>stop</friend>
 		<role>Role.MARKET_MANAGER_ROLE</role>
-		<home>Apartment 1</home>		
-	</friends>
-	<friends id="Danny">
-		<name>Aaron</name>
-		<name>Barry</name>
-		<name>Henry</name>
-		<name>Ingrid</name>
-		<name>Joe</name>
-		<name>stop</name>
+		<home>Apartment 1</home>
+	</person>
+	<person name="Person 4">
+		<friend>Person 1</friend>
+		<friend>Person 2</friend>
+		<friend>Person 8</friend>
+		<friend>Person 9</friend>
+		<friend>Person 10</friend>
+		<friend>stop</friend>
 		<role>Role.ARKET_EMPLOYEE_ROLE</role>
-		<home>Apartment 2</home>		
-		</friends>
-	<friends id="Ernie">
-		<name>Aaron</name>
-		<name>Chris</name>
-		<name>Flo</name>
-		<name>George</name>
-		<name>Henry</name>
-		<name>Joe</name>
-		<name>stop</name>
+		<home>Apartment 2</home>
+	</person>
+	<person name="Person 5">
+		<friend>Person 1</friend>
+		<friend>Person 3</friend>
+		<friend>Person 6</friend>
+		<friend>Person 7</friend>
+		<friend>Person 8</friend>
+		<friend>Person 10</friend>
+		<friend>stop</friend>
 		<role>Role.RESTAURANT_NEW_WAITER_ROLE</role>
-		<home>Apartment 3</home>		
-		</friends>
-	<friends id="Flo">
-		<name>Aaron</name>
-		<name>Barry</name>
-		<name>Ernie</name>
-		<name>Kim</name>
+		<home>Apartment 3</home>
+	</person>
+	<person name="Person 6">
+		<friend>Person 1</friend>
+		<friend>Person 2</friend>
+		<friend>Person 5</friend>
+		<friend>Person 11</friend>
 		<role>Role.RESTAURANT_COOK_ROLE</role>
-		<name>stop</name>		
-		<home>Apartment 4</home>		
-		</friends>
-	<friends id="George">
-		<name>Aaron</name>
-		<name>Chris</name>
-		<name>Ernie</name>
-		<name>Henry</name>
-		<name>Joe</name>
-		<name>stop</name>		
+		<friend>stop</friend>
+		<home>Apartment 4</home>
+	</person>
+	<person name="Person 7">
+		<friend>Person 1</friend>
+		<friend>Person 3</friend>
+		<friend>Person 5</friend>
+		<friend>Person 8</friend>
+		<friend>Person 10</friend>
+		<friend>stop</friend>
 		<role>Role.RESTAURANT_WAITER_ROLE</role>
-		<home>Apartment 5</home>				
-	</friends>
-	<friends id="Henry">
-		<name>Aaron</name>
-		<name>Barry</name>
-		<name>Danny</name>
-		<name>Ernie</name>
-		<name>George</name>
-		<name>Ingrid</name>
-		<name>stop</name>		
+		<home>Apartment 5</home>
+	</person>
+	<person name="Person 8">
+		<friend>Person 1</friend>
+		<friend>Person 2</friend>
+		<friend>Person 4</friend>
+		<friend>Person 5</friend>
+		<friend>Person 7</friend>
+		<friend>Person 9</friend>
+		<friend>stop</friend>
 		<role>Role.RESTAURANT_CASHIER_ROLE</role>
-		<home>Apartment 6</home>				
-	</friends>
-	<friends id="Ingrid">
-		<name>Aaron</name>
-		<name>Chris</name>
-		<name>Danny</name>
-		<name>Henry</name>
-		<name>Joe</name>
-		<name>Kim</name>
-		<name>stop</name>		
+		<home>Apartment 6</home>
+	</person>
+	<person name="Person 9">
+		<friend>Person 1</friend>
+		<friend>Person 3</friend>
+		<friend>Person 4</friend>
+		<friend>Person 8</friend>
+		<friend>Person 10</friend>
+		<friend>Person 11</friend>
+		<friend>stop</friend>
 		<role>Role.RESTAURANT_HOST_ROLE</role>
-		<home>Apartment 7</home>				
-	</friends>
-	<friends id="Joe">
-		<name>Aaron</name>
-		<name>Barry</name>
-		<name>Danny</name>
-		<name>Ernie</name>
-		<name>George</name>
-		<name>Ingrid</name>
-		<name>Kim</name>
-		<name>stop</name>		
+		<home>Apartment 7</home>
+	</person>
+	<person name="Person 10">
+		<friend>Person 1</friend>
+		<friend>Person 2</friend>
+		<friend>Person 4</friend>
+		<friend>Person 5</friend>
+		<friend>Person 7</friend>
+		<friend>Person 9</friend>
+		<friend>Person 11</friend>
+		<friend>stop</friend>
 		<role>Role.APARTMENT_MANAGER_ROLE</role>
-		<home>Apartment 8</home>				
-	</friends>
-	<friends id="Kim">
-		<name>Aaron</name>
-		<name>Flo</name>
-		<name>Ingrid</name>
-		<name>Joe</name>
-		<name>stop</name>		
+		<home>Apartment 8</home>
+	</person>
+	<person name="Person 11">
+		<friend>Person 1</friend>
+		<friend>Person 6</friend>
+		<friend>Person 9</friend>
+		<friend>Person 10</friend>
+		<friend>stop</friend>
 		<role>Role.RESTAURANT_CUSTOMER_ROLE</role>
-		<home>Apartment 9</home>				
-	</friends>
-</person>
+		<home>Apartment 9</home>
+	</person>
+</people>
 
 
 
