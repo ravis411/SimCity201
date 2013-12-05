@@ -2,7 +2,7 @@ package kushrestaurant.interfaces;
 
 import java.util.ArrayList;
 
-import kushrestaurant.CashierAgent.Bill;
+import kushrestaurant.CashierRole.Bill;
 
 public interface Cashier {
 

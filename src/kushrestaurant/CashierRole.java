@@ -5,6 +5,7 @@ import kushrestaurant.interfaces.*;
 
 import java.util.concurrent.Semaphore;
 
+import Person.Role.Role;
 import agent.Agent;
 
 import javax.swing.*;
@@ -16,12 +17,12 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import kushrestaurant.CustomerAgent.AgentEvent;
-import kushrestaurant.WaiterAgent.CustomerState;
-import kushrestaurant.WaiterAgent.MyCustomer;
-import kushrestaurant.HostAgent.Table;
+import kushrestaurant.CustomerRole.AgentEvent;
+import kushrestaurant.WaiterRole.CustomerState;
+import kushrestaurant.WaiterRole.MyCustomer;
+import kushrestaurant.HostRole.Table;
 
-public class CashierAgent extends Agent implements Cashier{
+public class CashierRole extends Role implements Cashier{
 	
 	public String name;
 	private int money=100;
@@ -66,7 +67,7 @@ enum CashierState {busy,free};
 CashierState cashierState= CashierState.free;
 public double icheck=10.99;
 
-public CashierAgent(String name) {
+public CashierRole(String name) {
 	super();
     
 	this.name = name;
@@ -80,6 +81,20 @@ public CashierAgent(String name) {
 	foods.put("Salad",5.99);
 	foods.put("Pizza",8.99);
 	
+}
+public CashierRole(){
+super();
+    
+	
+	// make some tables
+	//tables = new ArrayList<Table>(NTABLES);
+	//for (int ix = 1; ix <= NTABLES; ix++) {
+		//tables.add(new Table(ix));//how you add to a collections
+	cashierState= CashierState.free;
+	foods.put("Steak",15.99);
+	foods.put("Chicken",10.99);
+	foods.put("Salad",5.99);
+	foods.put("Pizza",8.99);
 }
 //map<String,Food> foods;
 public void msgProduceCheck(Customer customer,String choice,Waiter waiter){
@@ -117,7 +132,7 @@ public double getBill(){
 	return bill;
 }
 public ArrayList<Bill> getListOfBills(){return bills;}
-public boolean pickAndExecuteAnAction() {
+public boolean pickAndExecuteAction() {
 	/* Think of this next rule as:
         Does there exist a table and customer,
         so that table is unoccupied and customer is waiting.
@@ -197,6 +212,17 @@ public void HereIsCheck(customer c){
 	print("Give this check of"+c.check+"to "+c.c.getName());
 	c.w.msgHereIsCheck(c.c,c.check);
 	
+}
+
+@Override
+public boolean canGoGetFood() {
+	// TODO Auto-generated method stub
+	return false;
+}
+@Override
+public String getNameOfRole() {
+	// TODO Auto-generated method stub
+	return "CashierRole";
 }
 
 

@@ -1,9 +1,10 @@
 package kushrestaurant.gui;
 
-import kushrestaurant.CustomerAgent;
-import kushrestaurant.WaiterAgent;
-import kushrestaurant.HostAgent;
-import kushrestaurant.CookAgent;
+import kushrestaurant.CookRole;
+import kushrestaurant.CustomerRole;
+import kushrestaurant.WaiterRole;
+import kushrestaurant.HostRole;
+import kushrestaurant.CookRole;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import javax.swing.JTextArea;
 
 public class CookGui implements Gui{
 
-	private CookAgent agent = null;
+	private CookRole agent = null;
 	private boolean isPresent = true;
 	private boolean isHungry = false;
    public String choice;
@@ -22,8 +23,8 @@ public class CookGui implements Gui{
    public static final int platey=100;
    
 	//private HostAgent host;
-	RestaurantGui gui;
-	private WaiterAgent waiter;
+	//RestaurantGui gui;
+	private WaiterRole waiter;
     private boolean eatingFood=false;
     private int mystate=0;
     private ArrayList<String> choices= new ArrayList<String>();
@@ -43,7 +44,7 @@ public class CookGui implements Gui{
     
 	
     
-	public CookGui(CookAgent c, RestaurantGui gui) {
+	public CookGui(CookRole c) {
 		agent = c;
 		xPos = 250;
 		yPos = 50;
@@ -52,7 +53,7 @@ public class CookGui implements Gui{
 		xDestination=250;
 		yDestination=50;
 		//maitreD = m;
-		this.gui = gui;
+		//this.gui = gui;
 	}
 
 	public void updatePosition() {

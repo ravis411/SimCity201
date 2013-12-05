@@ -1,36 +1,38 @@
 package kushrestaurant;
 
+import Person.Role.Role;
 import agent.Agent;
 import kushrestaurant.interfaces.*;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import kushrestaurant.gui.RestaurantGui;
+
+//import kushrestaurant.gui.RestaurantGui;
 import kushrestaurant.gui.WaiterGui;
 import kushrestaurant.interfaces.Customer;
-import kushrestaurant.HostAgent.Table;
-import kushrestaurant.CookAgent.Order;
-import kushrestaurant.CookAgent.orderstate;
-import kushrestaurant.CookAgent.state;
+import kushrestaurant.HostRole.Table;
+import kushrestaurant.CookRole.Order;
+import kushrestaurant.CookRole.orderstate;
+import kushrestaurant.CookRole.state;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
 import java.util.Random;
 
 
-public class WaiterAgent extends Agent implements Waiter{
+public class WaiterRole extends Role implements Waiter{
 	
 	public List<MyCustomer> customers=new ArrayList<MyCustomer>();
 	public Collection<Table> tables;
 	//note that tables is typed with Collection semantics.
 	//Later we will see how it is implemented
-    private Host host;
+    private HostRole host;
     private Cook cook;
     private Cashier cashier;
     private String notAvailable;
     private Timer timer= new Timer();
-    private RestaurantGui gui;
+  //  private RestaurantGui gui;
 	private String name;
 	private Semaphore atTable = new Semaphore(0,true);
 	private Semaphore atDefault= new Semaphore(0,true);
@@ -48,13 +50,13 @@ public class WaiterAgent extends Agent implements Waiter{
 	public WaiterEvent event = WaiterEvent.none;
 	public WaiterEvent breakevent= WaiterEvent.notOnBreak;
 	private WaiterGui waiterGui= null;
-	private boolean onBreak= false;
-	public WaiterAgent(String name, HostAgent h,CookAgent c,RestaurantGui g) {
+	public boolean onBreak= false;
+	public WaiterRole(String name, HostRole h,CookRole c) {
 		super();
         host=h;
 		this.name = name;
 		cook=c;
-		this.gui=g;
+	//	this.gui=g;
 		
 		// make some tables
 		//tables = new ArrayList<Table>(NTABLES);
@@ -62,9 +64,12 @@ public class WaiterAgent extends Agent implements Waiter{
 			//tables.add(new Table(ix));//how you add to a collections
 		
 	}
-	public WaiterAgent(String name){
+	public WaiterRole(String name){
 		super();
 		this.name=name;
+	}
+	public WaiterRole(){
+		super();
 	}
 
 	public String getMaitreDName() {
@@ -74,7 +79,7 @@ public class WaiterAgent extends Agent implements Waiter{
 	public String getName() {
 		return name;
 	}
-public void setCashier(CashierAgent cashier){
+public void setCashier(CashierRole cashier){
 	this.cashier=cashier;
 }
 	public List getCustomers() {
@@ -103,7 +108,7 @@ public void setCashier(CashierAgent cashier){
 			}
 		}
 	}
-    public void setHost(Host host){
+    public void setHost(HostRole host){
     	this.host=host;
     }
     public void setCook(Cook cook){
@@ -115,6 +120,7 @@ public void setCashier(CashierAgent cashier){
    public void msgAtPlate(){
 	   atPlate.release();
    }
+   
    public void msgAtCashier(){
 	   
 	   atCashier.release();
@@ -125,7 +131,7 @@ public void setCashier(CashierAgent cashier){
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		// (1) Seats Waiting Customers
 		       if(onBreak){
 		    	   return true;
@@ -640,7 +646,7 @@ public void setCashier(CashierAgent cashier){
 		  cstate = CustomerState.Waiting;
 		  amount=0;
 		}
-		MyCustomer(CustomerAgent cust, Table t,int g)
+		MyCustomer(CustomerRole cust, Table t,int g)
 		{ c=cust;
 		  table=t;
 		  cstate = CustomerState.RestFull;
@@ -684,6 +690,19 @@ public void setCashier(CashierAgent cashier){
 		}
 		
 	}
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return "WaiterRole";
+	}
+	
+	
 	
 	
 }

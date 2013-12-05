@@ -1,7 +1,7 @@
 package kushrestaurant.interfaces;
 import kushrestaurant.*;
-import kushrestaurant.HostAgent.Table;
-import kushrestaurant.MarketAgent.Order2;
+import kushrestaurant.HostRole.Table;
+import kushrestaurant.MarketRole.Order2;
 
 public interface Cook {
 

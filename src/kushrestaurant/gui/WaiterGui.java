@@ -1,16 +1,16 @@
 package kushrestaurant.gui;
 
 
-import kushrestaurant.CustomerAgent;
-import kushrestaurant.WaiterAgent;
-import kushrestaurant.HostAgent;
+import kushrestaurant.CustomerRole;
+import kushrestaurant.WaiterRole;
+import kushrestaurant.HostRole;
 import kushrestaurant.interfaces.Customer;
 
 import java.awt.*;
 
 public class WaiterGui implements Gui {
 
-    private WaiterAgent agent = null;
+    private WaiterRole agent = null;
     private boolean takingcust= false;
     private boolean gngfororder=false;
     private boolean takingorder=false;
@@ -23,7 +23,7 @@ public class WaiterGui implements Gui {
     private int tableno=1;
     private int id;
     private int id1;
-   
+   private static int pos=1;
     public int xTable1 = 100;
     public int xTable2= 200;
     public int xTable3 = 300;
@@ -32,11 +32,12 @@ public class WaiterGui implements Gui {
     
     private boolean flag=true;
     
-    public WaiterGui(WaiterAgent agent,int pos) {
+    public WaiterGui(WaiterRole agent) {
         this.agent = agent;
         id=150+((pos*20)-20);
-        id1=pos;
+        id1=pos++;
         xPos=id;
+       
         yPos=0;
         xDestination=id;
         yDestination=0;
@@ -134,7 +135,7 @@ public class WaiterGui implements Gui {
     	xDestination=-40;
     	yDestination=-20;
     }
-    public void GoTakeOrder(CustomerAgent customer) {
+    public void GoTakeOrder(CustomerRole customer) {
     	
         xDestination = customer.getTable()*100 + 20;
         yDestination = yTable - 20;

@@ -2,7 +2,7 @@ package kushrestaurant.interfaces;
 
 import java.util.HashMap;
 
-import kushrestaurant.WaiterAgent.WaiterEvent;
+import kushrestaurant.WaiterRole.WaiterEvent;
 
 public interface Market {
 	

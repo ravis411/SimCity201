@@ -1,6 +1,6 @@
 package kushrestaurant.interfaces;
 
-import kushrestaurant.WaiterAgent.Menu;
+import kushrestaurant.WaiterRole.Menu;
 
 /**
  * A sample Customer interface built to unit test a CashierAgent.

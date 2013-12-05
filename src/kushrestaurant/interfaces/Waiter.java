@@ -1,12 +1,13 @@
 package kushrestaurant.interfaces;
 
-import kushrestaurant.HostAgent.Table;
+import kushrestaurant.HostRole;
+import kushrestaurant.HostRole.Table;
 
 public interface Waiter {
 
 	public abstract String getName();
 	public abstract void msgLeavingTable(Customer cust);
-	public abstract void setHost(Host host);
+	public abstract void setHost(HostRole host);
 	public abstract void setCook(Cook cook);
 	public abstract void msgSeatCustomer(Customer c, Table t);
 	public abstract void msgReadytoOrder(Customer c);
@@ -21,5 +22,6 @@ public interface Waiter {
 	public abstract void msgHereIsCheck(Customer c, double check);
 	public abstract void changeBreakEvent();
 	public abstract void changeBreakEvent2();
+	public abstract boolean isAtBreak();
 	
 }

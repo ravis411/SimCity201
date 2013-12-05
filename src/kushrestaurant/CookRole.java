@@ -2,13 +2,14 @@ package kushrestaurant;
 import java.util.*;
 
 import kushrestaurant.gui.CookGui;
-import kushrestaurant.gui.RestaurantGui;
+//import kushrestaurant.gui.RestaurantGui;
 import kushrestaurant.interfaces.*;
 //import restaurant.Order2;
-import kushrestaurant.MarketAgent.Order2;
+import kushrestaurant.MarketRole.Order2;
 
 import java.util.concurrent.Semaphore;
 
+import Person.Role.Role;
 import agent.Agent;
 
 import javax.swing.*;
@@ -21,19 +22,19 @@ import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import kushrestaurant.CustomerAgent.AgentEvent;
-import kushrestaurant.MarketAgent.MarketStatus;
-import kushrestaurant.WaiterAgent.CustomerState;
-import kushrestaurant.WaiterAgent.MyCustomer;
-import kushrestaurant.HostAgent.Table;
+import kushrestaurant.CustomerRole.AgentEvent;
+import kushrestaurant.MarketRole.MarketStatus;
+import kushrestaurant.WaiterRole.CustomerState;
+import kushrestaurant.WaiterRole.MyCustomer;
+import kushrestaurant.HostRole.Table;
 
-public class CookAgent extends Agent implements Cook {
+public class CookRole extends Role implements Cook {
 	List<Order> orders= new ArrayList<Order>();
 	public String name;
 	private CookGui cookGui=null;
-	private RestaurantGui gui;
+	//private RestaurantGui gui;
 	private int constant=1000;
-	public List<MarketAgent> markets= new ArrayList<MarketAgent>();
+	public List<MarketRole> markets= new ArrayList<MarketRole>();
 	private Map<String, Food> foods = new HashMap<String, Food>();
 	private Timer timer = new Timer();
 	public List<Food> inventory = new ArrayList<Food>();
@@ -57,7 +58,7 @@ public class CookAgent extends Agent implements Cook {
 	}
 enum state {cooking,free,goinggroceryshopping};
 state cookState;
-public void addMarket(MarketAgent m){
+public void addMarket(MarketRole m){
 	markets.add(m);
 }
 enum orderstate {pending,cooking,done,served};
@@ -71,11 +72,32 @@ public int getCookTime(String choice){
 	}
 		
 }
-public CookAgent(String name,RestaurantGui gui) {
+public CookRole(String name) {
 	super();
-	this.gui=gui;
+	//this.gui=gui;
 	
 	this.name = name;
+	// make some tables
+	//tables = new ArrayList<Table>(NTABLES);
+	//for (int ix = 1; ix <= NTABLES; ix++) {
+		//tables.add(new Table(ix));//how you add to a collections
+	cookState= state.free;
+	inventory.add(new Food("Steak",3));
+	inventory.add(new Food("Chicken",0));
+	inventory.add(new Food("Salad",0));
+	inventory.add(new Food("Pizza",3));
+	foods.put("Steak",inventory.get(0));
+	foods.put("Chicken",inventory.get(1));
+	foods.put("Pizza",inventory.get(3));
+	foods.put("Salad",inventory.get(2));
+	
+	
+}
+public CookRole() {
+	super();
+	//this.gui=gui;
+	
+	//this.name = name;
 	// make some tables
 	//tables = new ArrayList<Table>(NTABLES);
 	//for (int ix = 1; ix <= NTABLES; ix++) {
@@ -251,6 +273,21 @@ timer.schedule(new TimerTask() {
 		}
 	},
 	1000);
+}
+@Override
+public boolean pickAndExecuteAction() {
+	// TODO Auto-generated method stub
+	return false;
+}
+@Override
+public boolean canGoGetFood() {
+	// TODO Auto-generated method stub
+	return false;
+}
+@Override
+public String getNameOfRole() {
+	// TODO Auto-generated method stub
+	return "CookRole";
 }
 
 

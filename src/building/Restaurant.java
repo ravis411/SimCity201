@@ -1,11 +1,11 @@
 package building;
 
 import gui.Building.BuildingPanel;
-import restaurant.CashierRole;
-import restaurant.CookRole;
-import restaurant.HostRole;
-import restaurant.NewWaiterRole;
-import restaurant.OldWaiterRole;
+import kushrestaurant.CashierRole;
+import kushrestaurant.CookRole;
+import kushrestaurant.HostRole;
+import kushrestaurant.WaiterRole;
+//import kushrestaurant.OldWaiterRole;
 import Person.Role.Role;
 
 public class Restaurant extends Building implements Workplace {
@@ -38,7 +38,7 @@ public class Restaurant extends Building implements Workplace {
 				hasCook = true;
 			}else if(r instanceof CashierRole){
 				hasCashier = true;
-			}else if(r instanceof OldWaiterRole || r instanceof NewWaiterRole){
+			}else if(r instanceof WaiterRole ){
 				hasWaiter = true;
 			}
 		}

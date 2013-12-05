@@ -1,7 +1,8 @@
 package kushrestaurant;
 
+import Person.Role.Role;
 import agent.Agent;
-import kushrestaurant.WaiterAgent.WaiterEvent;
+import kushrestaurant.WaiterRole.WaiterEvent;
 import kushrestaurant.gui.WaiterGui;
 import kushrestaurant.interfaces.Customer;
 import kushrestaurant.interfaces.Host;
@@ -17,7 +18,7 @@ import java.util.concurrent.Semaphore;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class HostAgent extends Agent implements Host{
+public class HostRole extends Role {
 	static final int NTABLES = 3;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
@@ -26,7 +27,7 @@ public class HostAgent extends Agent implements Host{
 	public Collection<Table> tables;
 	private int waiterCounter=-1;
 	//public List<WaiterAgent> waiters = new ArrayList<WaiterAgent>();
-	private List<WaiterAgent> waiters = Collections.synchronizedList(new ArrayList<WaiterAgent>());
+	private List<Waiter> waiters = Collections.synchronizedList(new ArrayList<Waiter>());
 	//note that tables is typed with Collection semantics.
 	//Later we will see how it is implemented
  //  private Semaphore atTable= new Semaphore(0,true);
@@ -34,8 +35,14 @@ public class HostAgent extends Agent implements Host{
 	//private Semaphore atTable = new Semaphore(0,true);
 
 	//public HostGui hostGui = null;
-
-	public HostAgent(String name) {
+   public HostRole(){
+	   super();
+	   tables = new ArrayList<Table>(NTABLES);
+		for (int ix = 1; ix <= NTABLES; ix++) {
+			tables.add(new Table(ix));//how you add to a collections
+		}
+   }
+	public HostRole(String name) {
 		super();
 
 		this.name = name;
@@ -60,7 +67,7 @@ public class HostAgent extends Agent implements Host{
    public List getWaiterList(){
 	   return waiters;
    }
-   public WaiterAgent getReadyWaiter(){
+   public Waiter getReadyWaiter(){
 	   return waiters.get(waiterCounter);
    }
    public boolean areAllTablesOccupied(){
@@ -72,7 +79,7 @@ public class HostAgent extends Agent implements Host{
 	   }
 	   return flag;
    }
-   public void addWaiter(WaiterAgent waiter){
+   public void addWaiter(Waiter waiter){
 	   waiters.add(waiter);
 	   stateChanged();
    }
@@ -108,7 +115,7 @@ public class HostAgent extends Agent implements Host{
     	if(waiterCounter < waiters.size()){ waiterCounter++; }
 		if(waiterCounter >= waiters.size()){ waiterCounter = 0; }
 		
-	    if(waiters.get(waiterCounter).breakevent == WaiterEvent.onBreak)
+	    if(waiters.get(waiterCounter).isAtBreak())
 	    {
 	    		//print("TEST");
 	    		waiterCounter++;
@@ -130,7 +137,7 @@ public class HostAgent extends Agent implements Host{
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		/* Think of this next rule as:
             Does there exist a table and customer,
             so that table is unoccupied and customer is waiting.
@@ -181,8 +188,8 @@ public class HostAgent extends Agent implements Host{
 	}
 	public void msgAskForBreak(Waiter waiter){
 		 int count=0;
-		 for(WaiterAgent wa: waiters){
-				if(wa.breakevent==WaiterEvent.onBreak){count++;}}
+		 for(Waiter wa: waiters){
+				if(wa.isAtBreak()){count++;}}
 		if(waiters.size()==1 || count==waiters.size()-1){
 			print("You cant go on break");
 			waiter.msgYouCantGoOnBreak();
@@ -191,7 +198,7 @@ public class HostAgent extends Agent implements Host{
 		else
 			{ print("Go on break");
 			  waiter.msgGoOnBreak();
-			  for(WaiterAgent w : waiters){
+			  for(Waiter w : waiters){
 				  if(w==waiter){
 					  waiter.changeBreakEvent2();
 				  }
@@ -271,6 +278,23 @@ public class HostAgent extends Agent implements Host{
 			return "table " + tableNumber;
 		}
 	}
+	
+
+	
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return "HostRole";
+	}
+
+
 	
 	
 }

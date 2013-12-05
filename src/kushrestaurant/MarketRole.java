@@ -1,6 +1,9 @@
 package kushrestaurant;
+import Person.Role.Role;
 import agent.Agent;
 //import restaurant.Order2;
+
+
 
 
 import java.util.ArrayList;
@@ -11,22 +14,22 @@ import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import kushrestaurant.CookAgent.Food;
-import kushrestaurant.CookAgent.Order;
-import kushrestaurant.CookAgent.orderstate;
-import kushrestaurant.CookAgent.state;
-import kushrestaurant.HostAgent.Table;
+import kushrestaurant.CookRole.Food;
+import kushrestaurant.CookRole.Order;
+import kushrestaurant.CookRole.orderstate;
+import kushrestaurant.CookRole.state;
+import kushrestaurant.HostRole.Table;
 import kushrestaurant.interfaces.*;
-public class MarketAgent extends Agent implements Market{
+public class MarketRole extends Role implements Market{
 	private Cook cook;
 	public String name;
 	enum MarketStatus {received,delivering,incomplete,hasnothing,delivered,incompletedelivery,nil};
 	private Map<String, Integer> foods = new HashMap<String, Integer>();
 	private Timer timer = new Timer();
     private Order2 order;
-    public CashierAgent cashier;
+    public CashierRole cashier;
     
-public MarketAgent(String name,CashierAgent c) {
+public MarketRole(String name,CashierRole c) {
 	super();
 	this.name = name;
 	this.cashier=c;
@@ -129,7 +132,7 @@ public void cantReStock()
 	cashier.msgHereIsBill(this,order.getBill());
 	stateChanged();
 }
-protected boolean pickAndExecuteAnAction() {
+public boolean pickAndExecuteAction() {
 	/* Think of this next rule as:
         Does there exist a table and customer,
         so that table is unoccupied and customer is waiting.
@@ -194,6 +197,26 @@ public class Order2{
 	
 	
 	}
+
+
+
+
+
+
+@Override
+public boolean canGoGetFood() {
+	// TODO Auto-generated method stub
+	return false;
+}
+
+
+
+
+@Override
+public String getNameOfRole() {
+	// TODO Auto-generated method stub
+	return "MarketRole";
+}
 
 
 

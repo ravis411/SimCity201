@@ -299,6 +299,7 @@ public class SetUpWorldFactory{
 			addPerson("Person 11", buildingsPanels.getResidenceBuildingPanel("Apartment 10"));
 			addPerson("Person 12", buildingsPanels.getResidenceBuildingPanel("Apartment 11"));
 			addPerson("Person 13", buildingsPanels.getResidenceBuildingPanel("Apartment 12"));
+			
 //			addPerson("Person 14", buildingsPanels.getResidenceBuildingPanel("Apartment 13"));
 //			addPerson("Person 15", buildingsPanels.getResidenceBuildingPanel("House 2"));
 
@@ -588,16 +589,16 @@ public class SetUpWorldFactory{
 				p1.setInitialRole(new HomeRole(p1), p1.home.getName());
 				break;
 			case "Person 6":
-				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_WAITER_ROLE), "Restaurant 1");
+				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_KUSH_WAITER_ROLE), "Kush's Restaurant");
 				break;
 			case "Person 3":
-				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_HOST_ROLE), "Restaurant 1");
+				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_KUSH_HOST_ROLE), "Kush's Restaurant");
 				break;
 			case "Person 5":
-				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_COOK_ROLE), "Restaurant 1");
+				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_KUSH_COOK_ROLE), "Kush's Restaurant");
 				break;
 			case "Person 4":
-				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_CASHIER_ROLE), "Restaurant 1");
+				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_KUSH_CASHIER_ROLE), "Kush's Restaurant");
 				break;
 			case "Person 7":
 				p1.setInitialRole(RoleFactory.roleFromString(Role.MARKET_MANAGER_ROLE), "Market 1");

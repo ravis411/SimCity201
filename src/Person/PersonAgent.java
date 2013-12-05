@@ -5,7 +5,7 @@ import gui.agentGuis.PersonGui;
 import interfaces.BusStop;
 import interfaces.Employee;
 import interfaces.Person;
-import interfaces.Waiter;
+import kushrestaurant.interfaces.Waiter;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -15,12 +15,12 @@ import java.util.Queue;
 import java.util.concurrent.Semaphore;
 
 import residence.HomeRole;
-import restaurant.CashierRole;
-import restaurant.CookRole;
-import restaurant.HostRole;
-import restaurant.NewWaiterRole;
-import restaurant.OldWaiterRole;
-import restaurant.RestaurantCustomerRole;
+import kushrestaurant.CashierRole;
+import kushrestaurant.CookRole;
+import kushrestaurant.HostRole;
+//import restaurant.NewWaiterRole;
+import kushrestaurant.WaiterRole;
+import kushrestaurant.CustomerRole;
 import trace.AlertLog;
 import trace.AlertTag;
 import MarketEmployee.MarketEmployeeRole;
@@ -121,7 +121,7 @@ public class PersonAgent extends Agent implements Person{
 			hr.activate();
 		}else{
 			addRole(r);
-			if(r instanceof OldWaiterRole || r instanceof NewWaiterRole){
+			if(r instanceof WaiterRole ){
 				Waiter w = (Waiter) r;
 				Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(roleLocation);
 				HostRole role = (HostRole) rest.getHostRole();
@@ -130,7 +130,7 @@ public class PersonAgent extends Agent implements Person{
 				role.addWaiter(w);
 				w.setHost(role);
 				w.setCook(cook);
-				w.setCashier(cashier);
+				//w.setCashier(cashier);
 			}
 			if(r instanceof MarketManagerRole ){
 				 MarketManagerRole role = (MarketManagerRole) findRole(Role.MARKET_MANAGER_ROLE);
@@ -386,15 +386,15 @@ public class PersonAgent extends Agent implements Person{
 		  
 		  GoToLocation(location, transport);
 		  
-		  RestaurantCustomerRole role = (RestaurantCustomerRole) findRole(Role.RESTAURANT_CUSTOMER_ROLE);
+		  CustomerRole role = (CustomerRole) findRole(Role.RESTAURANT_KUSH_CUSTOMER_ROLE);
 		  if(role == null){
-			  role = (RestaurantCustomerRole) RoleFactory.roleFromString(Role.RESTAURANT_CUSTOMER_ROLE);
+			  role = (CustomerRole) RoleFactory.roleFromString(Role.RESTAURANT_KUSH_CUSTOMER_ROLE);
 			  addRole(role);
 		  }
 
 		  AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Customer Role = "+role);
-		  BuildingList.findBuildingWithName("Restaurant 1").addRole(role);
-		  Building bdg =  BuildingList.findBuildingWithName("Restaurant 1");
+		  BuildingList.findBuildingWithName("Kush's Restaurant").addRole(role);
+		  Building bdg =  BuildingList.findBuildingWithName("Kush's Restaurant");
 		  if(bdg instanceof Restaurant){
 			  Restaurant rest = (Restaurant) bdg;
 			  role.setCashier(rest.getCashierRole());

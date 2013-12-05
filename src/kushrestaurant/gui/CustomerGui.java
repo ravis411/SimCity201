@@ -1,8 +1,8 @@
 package kushrestaurant.gui;
 
-import kushrestaurant.CustomerAgent;
-import kushrestaurant.WaiterAgent;
-import kushrestaurant.HostAgent;
+import kushrestaurant.CustomerRole;
+import kushrestaurant.WaiterRole;
+import kushrestaurant.HostRole;
 
 import java.awt.*;
 
@@ -10,15 +10,15 @@ import javax.swing.JTextArea;
 
 public class CustomerGui implements Gui{
 
-	private CustomerAgent agent = null;
+	private CustomerRole agent = null;
 	private boolean isPresent = false;
 	private boolean isHungry = false;
    public String choice;
 	//private HostAgent host;
-	RestaurantGui gui;
-	private WaiterAgent waiter;
+	//RestaurantGui gui;
+	private WaiterRole waiter;
     private boolean eatingFood=false;
-    private int pos;
+    
 	public int xPos, yPos;
 	private int xDestination, yDestination;
 	private enum Command {noCommand, GoToSeat, LeaveRestaurant};
@@ -30,18 +30,18 @@ public class CustomerGui implements Gui{
     public static final int yTable2 = 250;
     public static final int xTable3 = 300;
     public static final int yTable3 = 250;
-	
+	private static int pos=0;
     
-	public CustomerGui(CustomerAgent c, RestaurantGui gui, int Pos) {
+	public CustomerGui(CustomerRole c ) {
 		agent = c;
 		xPos = -40;
 		yPos = -40;
-		xDestination = 40+(Pos*10);
-		yDestination = 20+Pos;
-		this.pos=Pos;
+		xDestination = 40+(pos*10);
+		yDestination = 20+pos;
+		pos=pos+2;
 		
 		//maitreD = m;
-		this.gui = gui;
+		//this.gui = gui;
 	}
 
 	public void updatePosition() {
@@ -62,7 +62,7 @@ public class CustomerGui implements Gui{
 				agent.msgAnimationFinishedLeaveRestaurant();
 				System.out.println("about to call gui.setCustomerEnabled(agent);");
 				isHungry = false;
-				gui.setCustomerEnabled(agent);
+			//	gui.setCustomerEnabled(agent);
 			}
 			command=Command.noCommand;
 		
@@ -78,7 +78,9 @@ public class CustomerGui implements Gui{
 		return eatingFood;
 	}
     public void draw(Graphics2D g) {
+    	
     	if(pos%2==0){
+    		
 		g.setColor(Color.GREEN);
 		g.fillRect(xPos, yPos, 20, 20);}
     	else{
@@ -102,7 +104,7 @@ public class CustomerGui implements Gui{
 	}
 
 	public boolean isPresent() {
-		return isPresent;
+		return true;
 	}
 	public void setHungry() {
 		isHungry = true;

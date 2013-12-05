@@ -22,6 +22,11 @@ public abstract class Role {
 	public final static String RESTAURANT_COOK_ROLE = "restaurant.CookRole";
 	public final static String RESTAURANT_CASHIER_ROLE = "restaurant.CashierRole";
 	public final static String APARTMENT_MANAGER_ROLE = "residence.ApartmentManagerRole";
+	 public final static String RESTAURANT_KUSH_CUSTOMER_ROLE = "kushrestaurant.CustomerRole";
+     public final static String RESTAURANT_KUSH_WAITER_ROLE = "kushrestaurant.WaiterRole";
+     public final static String RESTAURANT_KUSH_HOST_ROLE = "kushrestaurant.HostRole";
+     public final static String RESTAURANT_KUSH_COOK_ROLE = "kushrestaurant.CookRole";
+     public final static String RESTAURANT_KUSH_CASHIER_ROLE = "kushrestaurant.CashierRole";
 	
 	/**
 	 * The scheduler function for a particular role

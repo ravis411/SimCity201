@@ -56,7 +56,7 @@ public class KushRestaurantBuildingPanel extends BuildingPanel{
 	@Override
 	public void addPersonWithRole(Role r) {
 		// TODO Auto-generated method stub
-		
+		restaurantPanel.addGuiForRole(r);
 	}
 
 }

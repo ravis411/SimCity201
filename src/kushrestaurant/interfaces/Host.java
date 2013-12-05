@@ -1,6 +1,6 @@
 package kushrestaurant.interfaces;
 
-import kushrestaurant.HostAgent.Table;
+import kushrestaurant.HostRole.Table;
 
 public interface Host {
 
