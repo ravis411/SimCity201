@@ -1,4 +1,4 @@
-package restaurant.interfaces;
+package interfaces;
 
 import java.text.DecimalFormat;
 import java.util.Random;

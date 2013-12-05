@@ -228,18 +228,29 @@ public class RestaurantPanel extends JPanel {
     	}
     }
     
-//    public void pause()
-//    {
-//    	//calls all the agents pause()
-//    	host.pause();
-//    	cook.pause();
-//    	for(CustomerAgent cust : customers) {
-//    		cust.pause();
-//    	}
-//    	for(WaiterAgent waiter : waiters) {
-//    		waiter.pause();
-//    	}
-//    }
+    public void pause()
+    {
+    	//calls all the agents pause()
+    	host.pauseThread();
+    	cook.pauseThread();
+    	for(CustomerAgent cust : customers) {
+    		cust.pauseThread();
+    	}
+    	for(WaiterAgent waiter : waiters) {
+    		waiter.pauseThread();
+    	}
+    }
+    public void resume(){
+    	//calls all the agents resume()
+    	host.resumeThread();
+    	cook.resumeThread();
+    	for(CustomerAgent cust : customers) {
+    		cust.resumeThread();
+    	}
+    	for(WaiterAgent waiter : waiters) {
+    		waiter.resumeThread();
+    	}
+    }
     
     public Vector<MarketAgent> getMarkets() {
     	return markets;

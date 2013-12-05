@@ -1,4 +1,4 @@
-package market.interfaces;
+package interfaces;
 
 import market.test.mock.EventLog;
 import MarketEmployee.MarketCustomerRole;

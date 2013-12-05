@@ -1,4 +1,4 @@
-package gui.interfaces;
+package interfaces;
 
 public interface Passenger {
 	

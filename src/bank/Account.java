@@ -1,8 +1,8 @@
 package bank;
 
 
+import interfaces.BankClient;
 import restaurant.CashierRole;
-import bank.interfaces.BankClient;
 
 
 

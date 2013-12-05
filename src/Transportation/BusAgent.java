@@ -1,15 +1,17 @@
 package Transportation;
 
+import interfaces.Bus;
+import interfaces.BusStop;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import trace.AlertLog;
 import trace.AlertTag;
 import gui.agentGuis.VehicleGui;
-import gui.interfaces.BusStop;
-import gui.interfaces.Bus;
 import agent.Agent;
 
 public class BusAgent extends Agent implements Bus 

@@ -1,10 +1,10 @@
 package restaurant;
 
+import interfaces.Customer;
+import interfaces.Waiter;
+
 import java.util.ArrayDeque;
 import java.util.Queue;
-
-import restaurant.interfaces.Customer;
-import restaurant.interfaces.Waiter;
 
 public class RevolvingStand {
 

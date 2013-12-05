@@ -1,5 +1,8 @@
 package restaurant;
 
+import interfaces.Cashier;
+import interfaces.Market;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -8,8 +11,8 @@ import java.util.TimerTask;
 import restaurant.CookRole.AgentState;
 import restaurant.RestaurantCustomerRole.AgentEvent;
 import agent.Agent;
+
 import java.util.Random;
-import restaurant.interfaces.*;
 
 /**
  * Restaurant Market Agent

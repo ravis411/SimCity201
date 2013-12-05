@@ -3,9 +3,10 @@ package residence;
 import Person.PersonAgent;
 import Person.Role.Role;
 import agent.Agent;
-import residence.interfaces.*;
 import trace.AlertLog;
 import trace.AlertTag;
+import interfaces.ApartmentManager;
+import interfaces.Home;
 
 import java.util.*;
 

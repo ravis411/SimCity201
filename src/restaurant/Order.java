@@ -1,9 +1,9 @@
 package restaurant;
 
+import interfaces.Customer;
+import interfaces.Waiter;
 import restaurant.Menu;
 import restaurant.Menu.Dish;
-import restaurant.interfaces.Customer;
-import restaurant.interfaces.Waiter;
 
 public class Order
 {
