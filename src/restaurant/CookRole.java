@@ -1,17 +1,17 @@
 package restaurant;
 
+import interfaces.Customer;
+import interfaces.MarketManager;
+import interfaces.Waiter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import market.interfaces.MarketManager;
 import restaurant.Order.orderStatus;
 import restaurant.gui.CookGui;
-import restaurant.interfaces.Customer;
-import restaurant.interfaces.Waiter;
-
 import trace.AlertLog;
 import trace.AlertTag;
 import MarketEmployee.MarketManagerRole;

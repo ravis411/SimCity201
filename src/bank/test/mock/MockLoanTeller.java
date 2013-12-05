@@ -1,12 +1,13 @@
 package bank.test.mock;
 
+import interfaces.BankClient;
+import interfaces.LoanTeller;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import Transportation.test.mock.LoggedEvent;
 import bank.Account;
-import bank.interfaces.BankClient;
-import bank.interfaces.LoanTeller;
 
 public class MockLoanTeller extends Mock implements LoanTeller{
 

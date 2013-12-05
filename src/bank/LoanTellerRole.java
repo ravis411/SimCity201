@@ -1,14 +1,15 @@
 package bank;
 import bank.BankTellerRole.location;
 import bank.gui.LoanGui;
-import bank.interfaces.BankClient;
-import bank.interfaces.LoanTeller;
 import Person.Role.*;
+import interfaces.BankClient;
 import interfaces.Employee;
 
 
 
 
+
+import interfaces.LoanTeller;
 
 //import Person.*;
 import java.util.*;

@@ -1,10 +1,10 @@
 package market.data;
 
+import interfaces.MarketEmployee;
+import interfaces.MarketManager;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import market.interfaces.MarketEmployee;
-import market.interfaces.MarketManager;
 
 public class MarketData {
 	List<Inventory> marketInventory	= new ArrayList<Inventory>();

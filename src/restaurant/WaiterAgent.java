@@ -9,8 +9,8 @@ import restaurant.RestaurantCustomerRole.AgentEvent;
 import restaurant.RestaurantCustomerRole.AgentState;
 import restaurant.Menu.Dish;
 import restaurant.gui.WaiterGui;
-import restaurant.interfaces.Customer;
-import restaurant.interfaces.Waiter;
+import interfaces.Customer;
+import interfaces.Waiter;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;

@@ -1,12 +1,12 @@
 package restaurant.test.mock;
 
 
+import interfaces.Cashier;
+import interfaces.Customer;
+import interfaces.Waiter;
 import restaurant.Menu;
 import restaurant.RestaurantCustomerRole.AgentEvent;
 import restaurant.RestaurantCustomerRole.AgentState;
-import restaurant.interfaces.Cashier;
-import restaurant.interfaces.Customer;
-import restaurant.interfaces.Waiter;
 
 /**
  * MockCustomer built to unit test a CashierAgent

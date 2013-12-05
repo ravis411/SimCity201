@@ -1,5 +1,10 @@
 package restaurant;
 
+import interfaces.Cashier;
+import interfaces.Customer;
+import interfaces.Market;
+import interfaces.Waiter;
+
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Timer;
@@ -9,10 +14,6 @@ import java.util.Vector;
 import bank.BankTellerRole;
 import building.BuildingList;
 import restaurant.gui.CashierGui;
-import restaurant.interfaces.Cashier;
-import restaurant.interfaces.Customer;
-import restaurant.interfaces.Market;
-import restaurant.interfaces.Waiter;
 import trace.AlertLog;
 import trace.AlertTag;
 import MarketEmployee.MarketManagerRole;

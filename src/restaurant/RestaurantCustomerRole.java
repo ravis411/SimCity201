@@ -1,14 +1,15 @@
 package restaurant;
 
+import interfaces.Cashier;
+import interfaces.Customer;
+import interfaces.Waiter;
+
 import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import restaurant.gui.CustomerGui;
-import restaurant.interfaces.Cashier;
-import restaurant.interfaces.Customer;
-import restaurant.interfaces.Waiter;
 import Person.PersonAgent;
 import Person.Role.Role;
 

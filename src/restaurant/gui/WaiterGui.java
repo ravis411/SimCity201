@@ -1,12 +1,13 @@
 package restaurant.gui;
 
 
+import interfaces.Customer;
+import interfaces.Waiter;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 
 import restaurant.RestaurantCustomerRole;
-import restaurant.interfaces.Customer;
-import restaurant.interfaces.Waiter;
 
 public class WaiterGui implements Gui {
 

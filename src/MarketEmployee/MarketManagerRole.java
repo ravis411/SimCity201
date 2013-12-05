@@ -1,6 +1,9 @@
 package MarketEmployee;
 
 
+import interfaces.MarketEmployee;
+import interfaces.MarketManager;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -8,8 +11,6 @@ import java.util.concurrent.Semaphore;
 
 import market.data.MarketData;
 import market.gui.MarketManagerGui;
-import market.interfaces.MarketEmployee;
-import market.interfaces.MarketManager;
 import residence.HomeRole;
 import restaurant.CookRole;
 import trace.AlertLog;
