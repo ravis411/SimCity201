@@ -9,17 +9,16 @@
 			<friend>Person 6</friend>
 			<friend>Person 11</friend>
 		</friends>
-		<role>Role.BANK_TELLER_ROLE</role>
+		<role>bank.BankTellerRole</role>
 		<home>House 1</home>
-		<location>Bank 1</location>
+		<location>Bank</location>
 		</person>
 	<person name="Person 2">
 		<friend>Person 1</friend>
 		<friend>Person 4</friend>
 		<friend>Person 6</friend>
-		
-		<role>Role.LOAN_TELLER_ROLE</role>
-		<location>Bank 1</location>
+		<role>bank.LoanTellerRole</role>
+		<location>Bank</location>
 		<home>House 2</home>
 	</person>
 	<person name="Person 3">
@@ -27,7 +26,7 @@
 		<friend>Person 7</friend>
 		<friend>Person 9</friend>
 		
-		<role>Role.MARKET_MANAGER_ROLE</role>
+		<role>MarketEmployee.MarketManagerRole</role>
 		<location>Market 1</location>
 		<home>Apartment 1</home>
 	</person>
@@ -36,7 +35,7 @@
 		<friend>Person 2</friend>
 		<friend>Person 8</friend>
 		<friend>Person 10</friend>
-		<role>Role.MARKET_EMPLOYEE_ROLE</role>
+		<role>MarketEmployee.MarketEmployeeRole</role>
 		<location>Market 1</location>
 		<home>Apartment 2</home>
 	</person>
@@ -45,15 +44,15 @@
 		<friend>Person 3</friend>
 		<friend>Person 6</friend>
 		<friend>Person 10</friend>
-		<role>Role.RESTAURANT_NEW_WAITER_ROLE</role>
 		<location>Restaurant 1</location>
+		<role>restaurant.HostRole</role>
 		<home>Apartment 3</home>
 	</person>
 	<person name="Person 6">
 		<friend>Person 1</friend>
 		<friend>Person 2</friend>
 		<friend>Person 11</friend>
-		<role>Role.RESTAURANT_COOK_ROLE</role>
+		<role>restaurant.CookRole</role>
 		<location>Restaurant 1</location>
 		<home>Apartment 4</home>
 	</person>
@@ -62,7 +61,7 @@
 		<friend>Person 8</friend>
 		<friend>Person 10</friend>
 		<location>Restaurant 1</location>
-		<role>Role.RESTAURANT_WAITER_ROLE</role>
+		<role>restaurant.OldWaiterRole</role>
 		<location>Restaurant 1</location>
 		<home>Apartment 5</home>
 	</person>
@@ -73,7 +72,7 @@
 		<friend>Person 7</friend>
 		<friend>Person 9</friend>
 		<location>Restaurant 1</location>
-		<role>Role.RESTAURANT_CASHIER_ROLE</role>
+		<role>restaurant.CashierRole</role>
 		<home>Apartment 6</home>
 	</person>
 	<person name="Person 9">
@@ -82,8 +81,8 @@
 		<friend>Person 8</friend>
 		<friend>Person 10</friend>
 		<friend>Person 11</friend>
+		<role>restaurant.NewWaiterRole</role>
 		<location>Restaurant 1</location>
-		<role>Role.RESTAURANT_HOST_ROLE</role>
 		<home>Apartment 7</home>
 	</person>
 	<person name="Person 10">
@@ -92,8 +91,8 @@
 		<friend>Person 4</friend>
 		<friend>Person 5</friend>
 		<friend>Person 7</friend>
-		<location></location>
-		<role>Role.APARTMENT_MANAGER_ROLE</role>
+		<location>Apartment 8</location>
+		<role>bank.BankClientRole</role>
 		<home>Apartment 8</home>
 	</person>
 	<person name="Person 11">
@@ -101,7 +100,7 @@
 		<friend>Person 9</friend>
 		<friend>Person 10</friend>
 		<location></location>
-		<role>Role.RESTAURANT_CUSTOMER_ROLE</role>
+		<role>restaurant.RestaurantCustomerRole</role>
 		<home>Apartment 9</home>
 	</person>
 </people>

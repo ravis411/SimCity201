@@ -141,7 +141,7 @@ public class PersonAgent extends Agent implements Person{
 			
 			}
 			//gui.setStartingStates(roleLocation);
-			gui.setStartingStates(roleLocation);
+//			gui.setStartingStates(roleLocation);
 			BuildingList.findBuildingWithName(roleLocation).addRole(r);
 			r.activate();
 		}

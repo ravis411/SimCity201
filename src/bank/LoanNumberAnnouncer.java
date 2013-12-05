@@ -70,7 +70,7 @@ public class LoanNumberAnnouncer extends Agent implements AnnouncerB{
 		if (loanTeller == null){
 			Reset();
 		}
-		if (loanTeller != null && state == numberState.announceL){
+		if (loanTeller != null && state == numberState.announceL && !(clients.isEmpty())){
 			announceNumberLoan();
 			return true;
 		}
