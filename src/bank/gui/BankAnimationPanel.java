@@ -1,8 +1,7 @@
 package bank.gui;
 
 import interfaces.GuiPanel;
-import bank.*;
-import building.BuildingList;
+import interfaces.Person;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -21,6 +20,12 @@ import javax.swing.Timer;
 
 import Person.PersonAgent;
 import Person.Role.Role;
+import bank.BankClientRole;
+import bank.BankTellerRole;
+import bank.LoanNumberAnnouncer;
+import bank.LoanTellerRole;
+import bank.NumberAnnouncer;
+import building.BuildingList;
 
 
 /**
@@ -172,14 +177,14 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 	public void addGuiForRole(Role r) {
 		if (r instanceof BankClientRole){
 		    BankClientRole clientRole = (BankClientRole) r;
-			PersonAgent client = r.getPerson();
+			Person client = r.getPerson();
 		    BankClientRoles.add(clientRole);
 		    ClientGui clientGui = new ClientGui(clientRole, this);
 	        clientRole.setPerson(client);
-	        client.addRole(clientRole);
+	        ((PersonAgent) client).addRole(clientRole);
 	        this.addGui(clientGui);
-	        client.setMoney(100);
-	        client.setMoneyNeeded(50);
+	        client.setMoney((double)100);
+	        client.setMoneyNeeded((double)50);
 	        clientRole.setAnnouncer(announcer);
 	        clientRole.setLoanAnnouncer(loanAnnouncer);
 	        clientRole.setGui(clientGui);
@@ -187,9 +192,9 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 		}
 		if (r instanceof BankTellerRole){
 		    BankTellerRole tellerRole = (BankTellerRole) r;
-		    PersonAgent teller = r.getPerson();
+		    Person teller = r.getPerson();
 		    TellerGui tellerGui = new TellerGui(tellerRole, this, tellerRole.getLine());
-	        teller.addRole(tellerRole);
+		    ((PersonAgent) teller).addRole(tellerRole);
 	        this.addGui(tellerGui);
 	        tellerRole.setAnnouncer(announcer);
 	        tellerRole.setGui(tellerGui);
@@ -198,9 +203,9 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 		}
 		if (r instanceof LoanTellerRole){
 		    LoanTellerRole loanTellereRole=(LoanTellerRole) r;
-			PersonAgent loanTellerPerson= r.getPerson();
+		    Person loanTellerPerson= r.getPerson();
 		    LoanGui loanGui = new LoanGui(loanTellereRole, this);
-	        loanTellerPerson.addRole(loanTellereRole);
+		    ((PersonAgent) loanTellerPerson).addRole(loanTellereRole);
 	        this.addGui(loanGui);
 	        loanTellereRole.setAnnouncer(loanAnnouncer);
 	        loanTellereRole.setGui(loanGui);

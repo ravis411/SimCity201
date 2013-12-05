@@ -30,6 +30,8 @@ import Person.Role.RoleFactory;
 import Transportation.BusStopConstruct;
 import agent.Agent;
 import bank.BankClientRole;
+import bank.BankTellerRole;
+import bank.LoanTellerRole;
 import building.Building;
 import building.BuildingList;
 import building.Restaurant;
@@ -813,4 +815,14 @@ public class PersonAgent extends Agent implements Person{
 		return getName();
 	}
 
+	public Calendar getRealTime(){
+		return realTime;
+	}
+
+	public List<PersonAgent> getFriends() {
+		return friends;
+	}
+	public ResidenceBuildingPanel getHome(){
+		return home;
+	}
 }
