@@ -54,6 +54,12 @@ public class LoanNumberAnnouncer extends Agent implements AnnouncerB{
 		state = numberState.announceL;
 		stateChanged();
 	}
+
+	public void msgRemoveClient(BankClient b){
+		clients.remove(b);
+		stateChanged();
+	}
+
 	public void msgGoodbye(){
 		loanTeller = null;
 		stateChanged();

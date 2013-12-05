@@ -37,7 +37,7 @@ public class BankClientRole extends Role implements BankClient{
 	public static final String withdraw = "withdraw";
 	public bankState state1 = bankState.nothing;
 	private Account myAccount;
-	public enum inLineState{noTicket, waiting, goingToLine, atDesk, beingHelped, transactionProcessing, leaving};
+	public enum inLineState{noTicket, haveTicket, waiting, goingToLine, atDesk, beingHelped, transactionProcessing, leaving};
 	public inLineState state2 = inLineState.noTicket;
 	private BankTeller teller = null;
 	private LoanTeller loanTeller = null;
@@ -102,7 +102,6 @@ public class BankClientRole extends Role implements BankClient{
 	public void msgAtWaitingArea(){
 		atWaitingArea.release();
 		state2 = inLineState.waiting;
-		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "At waiting area");		
 		stateChanged();
 	}
 
@@ -226,7 +225,7 @@ public class BankClientRole extends Role implements BankClient{
 			}
 		}
 		if (state1 != bankState.nothing){
-			if (state2 == inLineState.noTicket){
+			if (state2 == inLineState.haveTicket){
 				goToWaitingArea();
 				return true;
 			}
@@ -291,7 +290,6 @@ public class BankClientRole extends Role implements BankClient{
 			atLine.acquire();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-			System.out.println("Y THIS");
 		}
 		//		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Arrived at line, the teller's myPerson.getName() is " + teller);
 		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Arrived at line, the teller's name is " + teller);		
@@ -366,6 +364,8 @@ public class BankClientRole extends Role implements BankClient{
 	 */
 	private void Leaving(){
 		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Thanks, goodbye.");
+		announcer.msgRemoveClient(this);
+		loanAnnouncer.msgRemoveClient(this);
 		clientGui.DoLeave();
 		try{
 			atExit.acquire();
@@ -414,24 +414,28 @@ public class BankClientRole extends Role implements BankClient{
 		requestAmount = myPerson.getMoneyNeeded();
 		if (trans.equalsIgnoreCase("deposit")){
 			this.state1 = bankState.deposit;
+			this.state2 = inLineState.haveTicket;
 			ticketNum = TakeANumberDispenser.INSTANCE.pullTicket();
 			//			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
 		}
 		if (trans.equalsIgnoreCase("withdraw")){
 			this.state1 = bankState.withdraw;
+			this.state2 = inLineState.haveTicket;
 			ticketNum = TakeANumberDispenser.INSTANCE.pullTicket();
 			//			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
 		}
 		if (trans.equalsIgnoreCase("loan")){
 			this.state1 = bankState.loan;
+			this.state2 = inLineState.haveTicket;
 			loanTicketNum = LoanTakeANumberDispenser.INSTANCE.pullTicket();
 			//			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + loanTicketNum);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + loanTicketNum);
 		}
 		if (trans.equalsIgnoreCase("repay")){
 			this.state1 = bankState.repay;
+			this.state2 = inLineState.haveTicket;
 			loanTicketNum = LoanTakeANumberDispenser.INSTANCE.pullTicket();
 			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER,  myPerson.getName(), "My ticket number is " + loanTicketNum);
 		}
