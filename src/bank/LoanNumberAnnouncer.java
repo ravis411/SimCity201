@@ -1,13 +1,11 @@
 package bank;
 
 import agent.Agent;
-
-
 import bank.NumberAnnouncer.numberState;
-import bank.interfaces.AnnouncerB;
-import bank.interfaces.BankClient;
-import bank.interfaces.BankTeller;
-import bank.interfaces.LoanTeller;
+import interfaces.AnnouncerB;
+import interfaces.BankClient;
+import interfaces.BankTeller;
+import interfaces.LoanTeller;
 
 import java.util.*;
 /**

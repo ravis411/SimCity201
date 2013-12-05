@@ -3,10 +3,10 @@ package restaurant;
 import Person.Role.Role;
 import agent.Agent;
 import restaurant.gui.HostGui;
-import restaurant.interfaces.Customer;
-import restaurant.interfaces.Waiter;
 import trace.AlertLog;
 import trace.AlertTag;
+import interfaces.Customer;
+import interfaces.Waiter;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;

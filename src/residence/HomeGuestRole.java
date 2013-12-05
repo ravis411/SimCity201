@@ -1,11 +1,12 @@
 package residence;
 
+import interfaces.HomeGuest;
+
 import java.util.concurrent.Semaphore;
 
 import residence.HomeRole.AgentEvent;
 import residence.gui.HomeGuestGui;
 import residence.gui.HomeRoleGui;
-import residence.interfaces.HomeGuest;
 import Person.PersonAgent;
 import Person.Role.Role;
 

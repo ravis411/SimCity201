@@ -1,6 +1,5 @@
-package gui.interfaces;
+package interfaces;
 
-import interfaces.Person;
 import Person.PersonAgent;
 import Transportation.BusAgent;
 

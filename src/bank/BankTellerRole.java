@@ -2,13 +2,15 @@ package bank;
 import bank.gui.TellerGui;
 import bank.interfaces.*;
 import building.Restaurant;
+import interfaces.BankClient;
+import interfaces.BankTeller;
+import interfaces.Cashier;
 import interfaces.Employee;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import restaurant.CashierRole;
-import restaurant.interfaces.Cashier;
 import trace.AlertLog;
 import trace.AlertTag;
 import util.Interval;

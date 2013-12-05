@@ -1,4 +1,4 @@
-package bank.interfaces;
+package interfaces;
 
 
 import bank.Account;

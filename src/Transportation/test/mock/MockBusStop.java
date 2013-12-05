@@ -1,14 +1,14 @@
 package Transportation.test.mock;
 
+import interfaces.Bus;
+import interfaces.BusStop;
+import interfaces.Passenger;
 import interfaces.Person;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import Transportation.BusAgent;
-import gui.interfaces.Bus;
-import gui.interfaces.BusStop;
-import gui.interfaces.Passenger;
 
 public class MockBusStop extends Mock implements BusStop{
 	

@@ -1,4 +1,4 @@
-package bank.interfaces;
+package interfaces;
 
 
 public interface AnnouncerA {
