@@ -309,7 +309,7 @@ public class HomeRole extends Role implements Home {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			BuildingList.findBuildingWithName(myPerson.home.getName()).removeRole(this);
+			BuildingList.findBuildingWithName(myPerson.getHome().getName()).removeRole(this);
 			myPerson.msgGoToMarket(item.name);
 			callMarket = true;
 		}
@@ -384,7 +384,7 @@ public class HomeRole extends Role implements Home {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		BuildingList.findBuildingWithName(myPerson.home.getName()).removeRole(this);
+		BuildingList.findBuildingWithName(myPerson.getHome().getName()).removeRole(this);
 		leaveHome = false;
 	}
 	private void enterHome() {
@@ -398,14 +398,14 @@ public class HomeRole extends Role implements Home {
 		enterHome = false;
 	}
 	private void sendOutInvites() {
-		rsvpDate = myPerson.realTime;
+		rsvpDate = myPerson.getRealTime();
 		rsvpDate.add(Calendar.DAY_OF_MONTH, 1);
 		System.out.println(rsvpDate.toString());
-		partyDate = myPerson.realTime;
+		partyDate = myPerson.getRealTime();
 		partyDate.add(Calendar.DAY_OF_MONTH, 3);
 		System.out.println(partyDate.toString());
 		for(int i=0; i<4; i++) {
-			myPerson.friends.get(i).msgPartyInvitation(myPerson, rsvpDate, partyDate);
+			myPerson.getFriends().get(i).msgPartyInvitation(myPerson, rsvpDate, partyDate);
 		}
 	}
 

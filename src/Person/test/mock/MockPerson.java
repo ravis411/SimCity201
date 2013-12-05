@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import building.Building;
+import gui.Building.ResidenceBuildingPanel;
 import interfaces.Person;
+import Person.PersonAgent;
+import Person.Role.Role;
 import Transportation.test.mock.Mock;
 import Transportation.test.mock.LoggedEvent;
 
@@ -94,5 +98,73 @@ public class MockPerson extends Mock implements Person {
 		log.add(new LoggedEvent("Received a negative RSVP"));
 		
 	}
-	
+
+	@Override
+	public void startThread() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setMoney(double d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setMoneyNeeded(double d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void stateChanged() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public double getMoney() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getAge() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getMoneyNeeded() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Calendar getRealTime() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<PersonAgent> getFriends() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResidenceBuildingPanel getHome() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setInitialRole(Role roleFromString, String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 }

@@ -9,6 +9,8 @@ import gui.Building.BuildingPanel;
 import gui.Building.BusStopBuilding;
 import gui.Building.BusStopBuildingPanel;
 import gui.Building.DefaultBuildingPanel;
+import gui.Building.LucaRestaurantBuilding;
+import gui.Building.LucaRestaurantBuildingPanel;
 import gui.Building.MarketBuilding;
 import gui.Building.MarketBuildingPanel;
 import gui.Building.ResidenceBuilding;
@@ -25,19 +27,10 @@ import gui.agentGuis.PersonGui;
 import gui.agentGuis.VehicleGui;
 
 import java.awt.Dimension;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
-import org.w3c.dom.Element;
 
 import residence.HomeRole;
 import trace.AlertLog;
@@ -45,7 +38,6 @@ import trace.AlertTag;
 import Person.PersonAgent;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
-import Person.test.mock.MockPerson;
 import Transportation.BusAgent;
 import Transportation.BusStopConstruct;
 import agent.Agent;
@@ -183,7 +175,8 @@ public class SetUpWorldFactory{
 		location.positionToEnterFromMainGrid = new Dimension(30, 12);
 		location.entranceFromMainGridPosition = new Dimension(29, 12);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Apartment", "Apartment Building 3", 28, 12, 2, 2, location);
+		addBuilding("Luca's Restaurant", "Restaurant 3", 28, 12, 2, 2, location);
+
 		//file reading
 //		try {
 //			File fXmlFile = new File("scenario1.xml");
@@ -298,7 +291,9 @@ public class SetUpWorldFactory{
 			addPerson("Person 10", buildingsPanels.getResidenceBuildingPanel("Apartment 9"));
 			addPerson("Person 11", buildingsPanels.getResidenceBuildingPanel("Apartment 10"));
 			addPerson("Person 12", buildingsPanels.getResidenceBuildingPanel("Apartment 11"));
-			addPerson("Person 13", buildingsPanels.getResidenceBuildingPanel("Apartment 12"));
+			//addPerson("Person 13", buildingsPanels.getResidenceBuildingPanel("Apartment 12"));
+			//addPerson("Person 14", buildingsPanels.getResidenceBuildingPanel("Apartment 13"));
+			//addPerson("Person 15", buildingsPanels.getResidenceBuildingPanel("Apartment 14"));
 //			addPerson("Person 14", buildingsPanels.getResidenceBuildingPanel("Apartment 13"));
 //			addPerson("Person 15", buildingsPanels.getResidenceBuildingPanel("House 2"));
 
@@ -612,7 +607,7 @@ public class SetUpWorldFactory{
 				p1.setInitialRole(new HomeRole(p1), p1.home.getName());
 				break;
 			case "Person 11":
-				
+				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_COOK_ROLE), "Restaurant 3");
 				break;
 			case "Person 12":
 				
@@ -821,6 +816,7 @@ public class SetUpWorldFactory{
 				buildingsPanels.addBuildingPanel(restPanel);
 			}
 			break;
+
 		case "RyansRestaurant":
 			RyansRestaurantBuilding restb2 = new RyansRestaurantBuilding(building);
 			if(restb2 != null){
@@ -839,7 +835,17 @@ public class SetUpWorldFactory{
 				buildingsPanels.addBuildingPanel(restPanel);
 			}
 			break;
-			
+
+		case "Luca's Restaurant":
+			LucaRestaurantBuilding lrestb = new LucaRestaurantBuilding(building);
+			if(lrestb != null){
+				LucaRestaurantBuildingPanel restPanel = new LucaRestaurantBuildingPanel(lrestb, name, buildingsPanels);
+				lrestb.setBuildingPanel(restPanel);
+				cityPanel.addGui(lrestb);
+				buildingsPanels.addBuildingPanel(restPanel);
+			}
+			break;
+
 		default:
 			return;
 		}

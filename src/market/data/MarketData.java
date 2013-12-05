@@ -60,19 +60,19 @@ public class MarketData {
 	public void setMarketEmployeeAtCounter1(MarketEmployee marketEmployee){
 		currentMarketEmployee1=marketEmployee;
 	}
-	public MarketEmployee getMarketCustomerAtCounter1(){
+	public MarketEmployee getMarketEmployeeAtCounter1(){
 		return currentMarketEmployee1;
 	}
 	public void setMarketEmployeeAtCounter2(MarketEmployee marketEmployee){
 		currentMarketEmployee2=marketEmployee;
 	}
-	public MarketEmployee getMarketCustomerAtCounter2(){
+	public MarketEmployee getMarketEmployeeAtCounter2(){
 		return currentMarketEmployee2;
 	}
 	public void setMarketEmployeeAtCounter3(MarketEmployee marketEmployee){
 		currentMarketEmployee3=marketEmployee;
 	}
-	public MarketEmployee getMarketCustomerAtCounter3(){
+	public MarketEmployee getMarketEmployeeAtCounter3(){
 		return currentMarketEmployee3;
 	}
 	public int getNumberOfCustomersInALine(int linenumber){
