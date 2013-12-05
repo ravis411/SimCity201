@@ -581,7 +581,7 @@ public void setCashier(CashierRole cashier){
 	}
 	public void HereIsOrder(MyCustomer c)
 	{
-		print("giving order to cook");
+		print("giving order of "+ c.choice+" to cook");
 		
 		//animation details
 		waiterGui.goToCook();
@@ -702,7 +702,9 @@ public void setCashier(CashierRole cashier){
 		return "WaiterRole";
 	}
 	
-	
+	public void setCashier(Cashier cashier){
+		this.cashier=cashier;
+	}
 	
 	
 }

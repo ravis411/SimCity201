@@ -9,6 +9,7 @@ public interface Waiter {
 	public abstract void msgLeavingTable(Customer cust);
 	public abstract void setHost(HostRole host);
 	public abstract void setCook(Cook cook);
+	public abstract void setCashier(Cashier cashier);
 	public abstract void msgSeatCustomer(Customer c, Table t);
 	public abstract void msgReadytoOrder(Customer c);
 	public abstract void msgHereisChoice(Customer c, String choice);
