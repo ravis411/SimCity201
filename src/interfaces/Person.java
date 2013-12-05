@@ -1,6 +1,20 @@
 package interfaces;
 
+import gui.Building.ResidenceBuildingPanel;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+
+import Person.PersonAgent;
+import Person.Role.Role;
+import bank.BankClientRole;
+import bank.BankTellerRole;
+import bank.LoanTellerRole;
+import building.Building;
+
+import java.util.Calendar;
+
 
 public interface Person {
 	
@@ -32,6 +46,31 @@ public interface Person {
 	public abstract void msgIAmNotComing(Person p);
 
 	public abstract String getName();
-	
+
+
+	public abstract void startThread();
+
+
+	public abstract void setMoney(double d);
+
+	public abstract void setMoneyNeeded(double d);
+
+	public abstract double getMoney();
+
+	public abstract void stateChanged();
+
+	public abstract int getAge();
+
+	public abstract double getMoneyNeeded();
+
+	public abstract Calendar getRealTime();
+
+
+	public abstract List<PersonAgent> getFriends();
+
+	public abstract ResidenceBuildingPanel getHome();
+
+	public abstract void setInitialRole(Role roleFromString, String string);
+
 
 }
