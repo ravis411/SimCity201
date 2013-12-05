@@ -42,7 +42,12 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
     }
 
 	public void actionPerformed(ActionEvent e) {
-		repaint();  //Will have paintComponent called
+		repaint(); 
+		for(Gui gui : guis) {
+            if (gui.isPresent()) {
+                gui.updatePosition();
+            }
+        }//Will have paintComponent called
 	}
 
     public void paintComponent(Graphics g) {
@@ -68,11 +73,7 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
         g.setColor(Color.RED);
 		g.drawString("PLATING AREA", GRILLX, GRILLY+65);
 
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.updatePosition();
-            }
-        }
+        
         for(Gui gui : guis) {
             if (gui.isPresent()) {
                 gui.draw(g2);
