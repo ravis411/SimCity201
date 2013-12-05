@@ -273,13 +273,13 @@ public class ControlPanel extends JPanel implements ActionListener {
 		if(pauseButton.getText().equals("Pause"))
 		{
 			pauseButton.setText("Resume");
-		//	gui.restPanel.pause();
+			gui.restPanel.pause();
 			
 		}
 		else
 		{
 			pauseButton.setText("Pause");
-			//gui.restPanel.pause();
+			gui.restPanel.resume();
 		}
 		
 	}
