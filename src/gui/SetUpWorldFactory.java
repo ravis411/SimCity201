@@ -13,6 +13,8 @@ import gui.Building.MarketBuilding;
 import gui.Building.MarketBuildingPanel;
 import gui.Building.ResidenceBuilding;
 import gui.Building.ResidenceBuildingPanel;
+import gui.Building.restaurants.FoodCourtBuilding;
+import gui.Building.restaurants.FoodCourtBuildingPanel;
 import gui.Building.restaurants.KushRestaurantBuilding;
 import gui.Building.restaurants.KushRestaurantBuildingPanel;
 import gui.Building.restaurants.RestaurantBuilding;
@@ -25,19 +27,10 @@ import gui.agentGuis.PersonGui;
 import gui.agentGuis.VehicleGui;
 
 import java.awt.Dimension;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
-import org.w3c.dom.Element;
 
 import residence.HomeRole;
 import trace.AlertLog;
@@ -45,7 +38,6 @@ import trace.AlertTag;
 import Person.PersonAgent;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
-import Person.test.mock.MockPerson;
 import Transportation.BusAgent;
 import Transportation.BusStopConstruct;
 import agent.Agent;
@@ -176,8 +168,8 @@ public class SetUpWorldFactory{
 		location.positionToEnterFromMainGrid = new Dimension(25, 12);
 		location.entranceFromMainGridPosition = new Dimension(24, 12);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-
-		addBuilding("RyansRestaurant", "Restaurant 2", 23, 12, 2, 2, location);
+		addBuilding("Food Court", "Food Court", 23, 12, 2, 2, location);
+		//addBuilding("RyansRestaurant", "Restaurant 2", 23, 12, 2, 2, location);
 //Building 12
 		location.sector = 2;
 		location.positionToEnterFromMainGrid = new Dimension(30, 12);
@@ -839,6 +831,14 @@ public class SetUpWorldFactory{
 				buildingsPanels.addBuildingPanel(restPanel);
 			}
 			break;
+		case "Food Court":
+			FoodCourtBuilding food = new FoodCourtBuilding(building);
+			if(food != null){
+				FoodCourtBuildingPanel foodPanel = new FoodCourtBuildingPanel(food, name, buildingsPanels);
+				food.setBuildingPanel(foodPanel);
+				cityPanel.addGui(food);
+				buildingsPanels.addBuildingPanel(foodPanel);
+			}
 			
 		default:
 			return;

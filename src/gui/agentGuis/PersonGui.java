@@ -163,6 +163,11 @@ public class PersonGui implements Gui {
     		return false;
     	}
     	
+    	if(state == PersonState.inCity){
+    		return false;
+    	}
+    	
+    	
     	currentLocation = i;
     	xPos = xDestination = i.entranceFromMainGridPosition.width;
     	yPos = yDestination = i.entranceFromMainGridPosition.height;

@@ -60,7 +60,8 @@ public class BusStopAnimationPanel extends JPanel implements GuiPanel{
 			if(b.getText() == name){
 				view.remove(b);
 				passengerList.remove(b);
-				this.validate();
+				this.revalidate();
+				this.repaint();
 				return;
 			}
 		}
