@@ -50,6 +50,7 @@ public class BusStopAnimationPanel extends JPanel implements GuiPanel{
 		view.add(b);
 		passengerList.add(b);
 		this.validate();
+		this.repaint();
 	}
 	/**
 	 * Removes a new waiting passenger to the personal passenger list
@@ -57,7 +58,7 @@ public class BusStopAnimationPanel extends JPanel implements GuiPanel{
 	 */
 	public void removeWaitingPassenger(String name){
 		for(JButton b : passengerList){
-			if(b.getText() == name){
+			if(b.getText().equals(name)){
 				view.remove(b);
 				passengerList.remove(b);
 				this.revalidate();
