@@ -6,11 +6,10 @@ package gui.agentGuis;
 import gui.Gui;
 import gui.LocationInfo;
 import gui.SimCityLayout;
-import interfaces.Bus;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
@@ -41,6 +40,7 @@ public class CarVehicleGui implements Gui {
     //Coordinate Positions
     private int xPos = -20, yPos = -20;
     private int xDestination = 400, yDestination = -20;
+    private boolean isPresent = false;
     
     //A map of Grid Positions to java xy coordinates
     public final Map<Dimension, Dimension> positionMap;
@@ -107,26 +107,44 @@ public class CarVehicleGui implements Gui {
     public boolean setStartingStates(String location){
     	LocationInfo i = locations.get(location);
     	
-    	if(i == null || state != GuiState.none)
+    	if(i == null || state != GuiState.none || state != GuiState.inBuilding)
     		return false;
     	
-    	if(i.positionToEnterFromRoadGrid == null)
+    	if(i.entranceFromRoadGrid == null || i.positionToEnterFromRoadGrid == null)
     		return false;
     	
-    	Dimension d = new Dimension(positionMap.get(i.positionToEnterFromMainGrid));
+    	Dimension d = new Dimension(positionMap.get(i.entranceFromRoadGrid));
     	
-    	currentPosition = new Position(i.positionToEnterFromRoadGrid.width, i.positionToEnterFromRoadGrid.height);
-    	if(!currentPosition.moveInto(aStar.getGrid()))
-    		return false;
     	
+    	currentLocation = i;
     	xPos = xDestination = d.width;
     	yPos = yDestination = d.height;
-    	state = GuiState.inCity;
+    	isPresent = false;
+    	state = GuiState.inBuilding;
     	
     	//System.out.println("" + agent.toString() + location);
     	
     	return true;
     }
+    
+    
+    public String getCurrentLocation(){
+    	if(currentLocation != null){
+    		return currentLocation.name;
+    	}
+    	else
+    		return null;
+    }
+    
+    /**	
+     * @return A list of locations that the gui knows about.
+     */
+    public List<String> getLocations(){
+    	return new ArrayList<>(locations.keySet());
+    }
+    
+    
+    
     
     
     public void updatePosition() {
@@ -181,12 +199,12 @@ public class CarVehicleGui implements Gui {
     
     
     public boolean isPresent() {
-        return true;
+        return isPresent;
     }
     
     
     
-    public void DoGoTo(String location){
+  /*  public void DoGoTo(String location){
     	if(state == GuiState.none){
     		DoEnterWorld();
     	}
@@ -201,7 +219,65 @@ public class CarVehicleGui implements Gui {
     		//System.out.println("About to move to p: " + p);
     		guiMoveFromCurrentPostionTo(p);
     	}
+    }*/
+    
+    /**	This will move the car from their current location to location
+     * When this function returns, the car has arrived or the location does not exist.
+     * 
+     * @param location	The name of the destination to travel to.
+     */
+    public void DoGoTo(String location){
+    	LocationInfo info = null;
+    	info = locations.get(location); 
+    	if(info == null){
+    		AlertLog.getInstance().logError(AlertTag.VEHICLE_GUI, agent.getName() + " GUI", "Car trying to DoGoTo() to a location (" + location + ") that doesn't exist.");
+    		return;
+    	}
+    	
+    	
+    	
+    	//System.out.println("Going to " + location);
+    	if(state == GuiState.none) {
+    		//System.out.println("Entering WORLD ");
+    		DoEnterWorld();
+    	}
+    	else if(currentLocation.name.equals(location))
+    		return;
+    	else if(state == GuiState.inBuilding){
+    		DoLeaveBuilding();
+    	}
+    	   	
+    	
+    	if(info != null){
+    		
+    		//See if the location is in the same sector otherwise travel to the next sector
+    		//if(currentLocation.sector != info.sector){
+    			//DoGoToSector(info.sector);
+    	//	}
+    		
+    		
+    		Dimension entrance = info.entranceFromRoadGrid;
+    		
+    		
+    		Position p = new Position(info.positionToEnterFromRoadGrid.width, info.positionToEnterFromRoadGrid.height);
+    		//Walk To entrance
+    		
+    		while(true){
+    			try {
+    				guiMoveFromCurrentPostionTo(p);
+    				break;
+    			} catch (Exception e) {
+    				//System.out.println("Try again.");
+    				AlertLog.getInstance().logInfo(AlertTag.VEHICLE_GUI, agent.toString(), "Path not found/exception caught. Try again.");
+    			}
+    		}
+    		
+    		DoEnterBuilding(entrance);
+    		currentLocation = info;
+    	}
     }
+    
+    
     
 
 
@@ -214,7 +290,8 @@ public class CarVehicleGui implements Gui {
      * 
      */
     private void DoEnterWorld(){
-    	Dimension tooo = (locations.get("City Entrance").entranceFromRoadGrid);
+    	currentLocation = locations.get("City Entrance");
+    	Dimension tooo = (currentLocation.entranceFromRoadGrid);
     	Position to = new Position(tooo.width, tooo.height);
     	
     	Dimension from = new Dimension(positionMap.get(tooo));
@@ -222,6 +299,36 @@ public class CarVehicleGui implements Gui {
     	
     	DoEnterWorld(from, to);
     }
+    
+    
+    /**The car will leave a building and reenter the grid
+     * 
+     */
+    private void DoLeaveBuilding(){
+    	if(state != GuiState.inBuilding || currentLocation == null)
+    		return;
+    	
+    	Dimension tooo = currentLocation.positionToEnterFromRoadGrid;
+    	Position to = new Position(tooo.width, tooo.height);
+    	Dimension from = new Dimension(positionMap.get(currentLocation.entranceFromRoadGrid));
+    	DoEnterWorld(from, to);
+    }
+    
+    /** This will release the currentPosition grid and move to
+     * 
+     * @param to	The grid position to move to from currentPosition
+     */
+    private void DoEnterBuilding(Dimension to){
+    	if(state != GuiState.inCity){
+    		return;
+    	}
+    	currentPosition.release(aStar.getGrid());
+    	move(to.width, to.height);
+    	state = GuiState.inBuilding;
+    	isPresent = false;
+    }
+    
+    
     
     
     /**This function assumes the Vehicle is not in the world
@@ -244,10 +351,10 @@ public class CarVehicleGui implements Gui {
     		return;
     	
     	while(!entrance.moveInto(aStar.getGrid()) ) {
-    		System.out.println("EntranceBlocked!!!!!!! waiting 1sec");
-    		AlertLog.getInstance().logInfo(AlertTag.VEHICLE_GUI, agent.toString(), "Entrance blocked. Waiting 1 second.");
+    		//System.out.println("EntranceBlocked!!!!!!! waiting 3sec");
+    		AlertLog.getInstance().logInfo(AlertTag.VEHICLE_GUI, agent.toString(), "Entrance blocked. Waiting 3 second.");
     		try {
-				Thread.sleep(1000);
+				Thread.sleep(3000);
 			} catch (InterruptedException e) {
 				//System.out.println("EXCEPTION!!!!!!!!!! caught while waiting for entrance to clear.");
 				AlertLog.getInstance().logError(AlertTag.VEHICLE_GUI, agent.toString(), "Exception caught while waiting for entrance to clear.");
@@ -256,6 +363,7 @@ public class CarVehicleGui implements Gui {
     	}
     	
     	try{
+    	isPresent = true;
     	move(entrance.getX(), entrance.getY());
     	
     	//if(SimCityLayout.addVehicleGui(this))
@@ -284,6 +392,7 @@ public class CarVehicleGui implements Gui {
     void guiMoveFromCurrentPostionTo(Position to){
         
     	//First check to make sure the destination is free otherwise wait
+    	int waits = 0;
     	while(true){
     		if(currentPosition.equals(to) || to.open(aStar.getGrid()) ){
     			break;
@@ -291,10 +400,33 @@ public class CarVehicleGui implements Gui {
     		else
     		{
     			try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					AlertLog.getInstance().logInfo(AlertTag.VEHICLE_GUI, agent.toString(), "Destination acquired. Waiting .5 second.");
-				}
+    				Thread.sleep(500);
+    				waits++;
+    				if(waits > 10){
+    					if(aStar.getGrid()[to.getX() + 1][to.getY()].availablePermits() > 0){
+    						try {
+    							guiMoveFromCurrentPostionTo(new Position(to,1, 0));
+    						} catch (Exception e) {
+    							//error moving to location
+    						}
+    					}if(aStar.getGrid()[to.getX()][to.getY()-1].availablePermits() > 0){
+    						try {
+    							guiMoveFromCurrentPostionTo(new Position(to,0,-1));
+    						} catch (Exception e) {
+    							//error moving to location
+    						}
+    					}if(aStar.getGrid()[to.getX()][to.getY()-1].availablePermits() > 0){
+    						try {
+    							guiMoveFromCurrentPostionTo(new Position(to,0, 1));
+    						} catch (Exception e) {
+    							//error moving to location
+    						}
+    					}
+    					waits = 0;
+    				}
+    			} catch (InterruptedException e) {
+    				AlertLog.getInstance().logInfo(AlertTag.VEHICLE_GUI, agent.toString(), "Destination acquired. Waiting .5 second.");
+    			}
     		}
     	}
     	
@@ -383,7 +515,15 @@ public class CarVehicleGui implements Gui {
      * @param startPos
      * @return
      */
-    public boolean setDefaultStartPosition(Dimension startPos){
+    private boolean setDefaultStartPosition(Dimension startPos){
+    	if(currentPosition != null || startPos == null){
+    		return false;
+    	}
+    	
+    	
+    	currentLocation = null;
+    	
+    	
     	currentPosition = new Position(startPos.width, startPos.height);
     	if(!currentPosition.moveInto(aStar.getGrid())){
     		return false;
@@ -393,6 +533,7 @@ public class CarVehicleGui implements Gui {
     	xPos = xDestination = d.width;
     	yPos = yDestination = d.height;
     	state = GuiState.inCity;
+    	
     	
     	return true;
     }
