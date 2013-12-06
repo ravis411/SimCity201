@@ -402,10 +402,12 @@ public class CarVehicleGui implements Gui {
     		else
     		{
     			try {
-    				Thread.sleep(500);
+    				Thread.sleep(300);
     				waits++;
-    				if(waits > 8){
+    				/*if(waits > 8){
     					if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(to, 1,0)))
+    						guiMoveFromCurrentPostionTo(new Position(to,1, 0));
+    					else if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(to, 0,1)))
     						guiMoveFromCurrentPostionTo(new Position(to,1, 0));
     					else if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(to, 0,-1)))
     						guiMoveFromCurrentPostionTo(new Position(to,0,-1));
@@ -414,6 +416,33 @@ public class CarVehicleGui implements Gui {
     					else if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(to, 1,1)))
     						guiMoveFromCurrentPostionTo(new Position(to,1,1));
     					waits = 0;
+    				}*/
+    				if(waits > 8){
+    					AlertLog.getInstance().logDebug(AlertTag.VEHICLE_GUI, agent.getName() + " GUI", "Destination must be blocked. Trying to move out of the way.");
+    					boolean moved = false;
+    					for(int x = -1; x <=1; x++ ){
+    						for(int y = -1; y<=1; y++){
+    							if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(currentPosition, x,y))){
+    								guiMoveFromCurrentPostionTo(new Position(currentPosition,x, y));
+    								moved = true;break;
+    							}
+    						}
+    						if(moved)
+    							break;
+    					}
+    					
+    					
+//    					if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(currentPosition, 1,0)))
+//    						guiMoveFromCurrentPostionTo(new Position(currentPosition,1, 0));
+//    					else if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(currentPosition, 0,1)))
+//    						guiMoveFromCurrentPostionTo(new Position(currentPosition,1, 0));
+//    					else if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(currentPosition, 0,-1)))
+//    						guiMoveFromCurrentPostionTo(new Position(currentPosition,0,-1));
+//    					else if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(currentPosition, -1,-1)))
+//    						guiMoveFromCurrentPostionTo(new Position(currentPosition,-1,-1));
+//    					else if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(currentPosition, 1,1)))
+//    						guiMoveFromCurrentPostionTo(new Position(currentPosition,1,1));
+//    					waits = 0;
     				}
     			} catch (InterruptedException e) {
     				AlertLog.getInstance().logInfo(AlertTag.VEHICLE_GUI, agent.toString(), "Destination acquired by something. Waiting some seconds.");
