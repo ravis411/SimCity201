@@ -108,7 +108,6 @@ public class PersonGui implements Gui {
         			currentLocation = new LocationInfo(i);
         		}
         	}
-        	
         }
         
     }
@@ -162,6 +161,11 @@ public class PersonGui implements Gui {
     		AlertLog.getInstance().logMessage(AlertTag.PERSON_GUI, agent.getName() + " GUI", "" + location + " not found. Returning false.");
     		return false;
     	}
+    	
+    	if(state == PersonState.inCity){
+    		return false;
+    	}
+    	
     	
     	currentLocation = i;
     	xPos = xDestination = i.entranceFromMainGridPosition.width;
@@ -517,7 +521,7 @@ private void DoGoToSector(int sector){
     	//while( !entrance.moveInto(aStar.getGrid()) ) {
     	while( !to.moveInto(aStar.getGrid()) ) {
     		//System.out.println("EntranceBlocked!!!!!!! waiting 1sec");
-    		AlertLog.getInstance().logInfo(AlertTag.PERSON_GUI, agent.toString(), "Entrance blocked. Waiting 2 seconds for path to clear.");
+    		AlertLog.getInstance().logInfo(AlertTag.PERSON_GUI, agent.toString(), "Entrance blocked. Waiting 3 seconds for path to clear.");
     		try {
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {

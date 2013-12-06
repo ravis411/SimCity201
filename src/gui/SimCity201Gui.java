@@ -45,7 +45,7 @@ public class SimCity201Gui extends JFrame {
 	 * Default Constructor Initializes gui
 	*/
 	public SimCity201Gui() {
-		setTitle("SimCity201 V 1.00000000000000002  - Team 29");
+		setTitle("SimCity201 V 1.000000005  - Team 29");
         setVisible(true);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -74,7 +74,7 @@ public class SimCity201Gui extends JFrame {
 		c.weightx = .8;
 		this.add(tracePanel, c);*/
 		c.gridx = 1; c.gridy = 0;
-		c.ipady = WINDOWY / 7;
+		//c.ipady = WINDOWY / 7;
 		c.gridheight = 2;
 		this.add(new TraceControlPanel(tracePanel), c);
 		
