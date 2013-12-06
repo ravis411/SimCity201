@@ -53,7 +53,7 @@ public class CarVehicleGui implements Gui {
     Semaphore aSem = new Semaphore(0, true);
     
     private Map<String, LocationInfo> locations = new HashMap<String, LocationInfo>();//<<-- A Map of locations
-    
+    LocationInfo currentLocation = null;
     
    
     Image image = null;
@@ -89,9 +89,12 @@ public class CarVehicleGui implements Gui {
 
 			
         for(LocationInfo i : locationList){
-        	if(i != null && i.positionToEnterFromRoadGrid != null)
+        	if(i != null && i.positionToEnterFromRoadGrid != null && i.entranceFromRoadGrid != null){
         		locations.put(i.name, i);
-        	//System.out.println("LOCATION " + i.positionToEnterFromRoadGrid);
+        		if(i.name.contains("City Entrance")){
+        			currentLocation = new LocationInfo(i);
+        		}
+        	}
         }
         
     }

@@ -108,7 +108,6 @@ public class PersonGui implements Gui {
         			currentLocation = new LocationInfo(i);
         		}
         	}
-        	
         }
         
     }
