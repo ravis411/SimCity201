@@ -55,6 +55,7 @@ public class SetUpWorldFactory{
 	public BuildingsPanels buildingsPanels;// = new BuildingsPanels();//<-Zoomed in view of buildings
 
 	List<Agent> agents = new ArrayList<Agent>();
+	List<PersonAgent> people = new ArrayList<PersonAgent>();
 	List<LocationInfo> locationMap = new ArrayList<LocationInfo>();//<--a map of strings to LocationInfo
 	
 	
@@ -583,9 +584,17 @@ public class SetUpWorldFactory{
 			case "Person 1":
 				//p1.setInitialRole(new HomeRole(p1), "House 1");
 				p1.setInitialRole(new HomeRole(p1), "Apartment 1");
+				for(int i=0; i<people.size();i++) {
+					p1.getFriends().add(people.get(i));
+				}
 				break;
 			case "Person 2":
-				p1.setInitialRole(new HomeRole(p1), p1.home.getName());
+				//p1.setInitialRole(new HomeRole(p1), p1.home.getName());
+				p1.setInitialRole(new HomeRole(p1), "House 1");
+				for(int i=0; i<people.size();i++) {
+					p1.getFriends().add(people.get(i));
+				}
+				people.get(0).getFriends().add(p1);
 				break;
 			case "Person 6":
 				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_KUSH_WAITER_ROLE), "Kush's Restaurant");
@@ -622,7 +631,9 @@ public class SetUpWorldFactory{
 		}
 		//p1.setInitialRole(new HomeRole(p1), "House 1");
 		cityPanel.addGui(g1);
+		people.add(p1);
 		p1.startThread();
+		
 	}
 
 
