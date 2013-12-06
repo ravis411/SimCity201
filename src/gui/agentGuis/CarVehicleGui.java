@@ -76,7 +76,7 @@ public class CarVehicleGui implements Gui {
 	
 			try {
 				//BufferedImage img = ImageIO.read(new File("images/UFO.png"));
-				String s =( this.getClass().getResource("/images/UFO.png").getPath() );
+				String s =( this.getClass().getResource("images/UFO.png").getPath() );
 				BufferedImage img = ImageIO.read(new File(s));
 			    if(img != null){
 			    	ImageIcon icon = new ImageIcon(img);

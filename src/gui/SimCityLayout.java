@@ -360,7 +360,7 @@ public class SimCityLayout {
 		//Paint the roads
 		for(Road r : roads) {
 			Dimension d = positionMap.get(r.position);
-			g.setColor(Color.BLACK);
+			g.setColor(Color.GRAY);
 			g.fillRect(d.width, d.height, GRID_SIZEX, GRID_SIZEY);
 			g.setColor(Color.yellow);
 			for(int i = 0; i <GRID_SIZEX; i+=5){
@@ -385,9 +385,11 @@ public class SimCityLayout {
 		for(Dimension d : driveWays){
 			Dimension p = positionMap.get(d);
 			g.setColor(new Color(102,102,0));
-			g.fillRect(p.width, p.height, GRID_SIZEX, GRID_SIZEY);
+			g.fillRect(p.width, p.height+1, GRID_SIZEX, GRID_SIZEY-1);
 			g.setColor(Color.white);
-			g.fillRect(p.width + 5, p.height, GRID_SIZEX - 10, GRID_SIZEY);
+			g.fillRect(p.width, p.height+5, GRID_SIZEX, GRID_SIZEY-10);
+			g.setColor(new Color(102,102,0));
+			g.fillRect(p.width + 5, p.height+1, GRID_SIZEX - 10, GRID_SIZEY-1);
 		}
 		
 		if(testView){
