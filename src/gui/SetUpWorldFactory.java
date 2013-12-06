@@ -25,6 +25,7 @@ import gui.Building.restaurants.RyansRestaurantBuilding;
 import gui.Building.restaurants.RyansRestaurantBuildingPanel;
 import gui.MockAgents.PseudoBusAgent;
 import gui.MockAgents.PseudoPerson;
+import gui.agentGuis.CarVehicleGui;
 import gui.agentGuis.PersonGui;
 import gui.agentGuis.VehicleGui;
 
@@ -42,6 +43,7 @@ import Person.Role.Role;
 import Person.Role.RoleFactory;
 import Transportation.BusAgent;
 import Transportation.BusStopConstruct;
+import Transportation.CarAgent;
 import agent.Agent;
 import astar.AStarTraversal;
 import astar.PersonAStarTraversal;
@@ -85,6 +87,13 @@ public class SetUpWorldFactory{
 		layout.addCrossWalk(20, 5, 2, 5);
 		layout.addCrossWalk(2, 5, 2, 5);
 		layout.addCrossWalk(30, 5, 2, 5);
+		
+		//Some driveways//:
+		//layout.addRoad(4, 4, 1, 1);
+		//layout.addCrossWalk(4, 4, 1, 1);
+		
+		
+		
 
 
 		LocationInfo location = new LocationInfo();
@@ -100,85 +109,135 @@ public class SetUpWorldFactory{
 		location.sector = 1;
 		location.positionToEnterFromMainGrid = new Dimension(5, 3);
 		location.entranceFromMainGridPosition = new Dimension(4, 3);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+		//Some driveways//:	
+		layout.addRoad(4, 4, 1, 1);	layout.addCrossWalk(4, 4, 1, 1);
+		location.entranceFromRoadGrid = new Dimension(4, 3);
+		location.positionToEnterFromRoadGrid = new Dimension(4, 4);
 		addBuilding("Residence", "House 1", 3, 2, 2, 2, location);
 
 		//Building 2
 		location.sector = 1;
-		location.positionToEnterFromMainGrid = new Dimension(10, 3);
+		location.positionToEnterFromMainGrid = new Dimension(11, 3);
 		location.entranceFromMainGridPosition = new Dimension(9, 3);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Residence", "House 2", 8, 2, 2, 2, location);
+		location.entranceFromRoadGrid = new Dimension(9, 3);
+		location.positionToEnterFromRoadGrid = new Dimension(9, 4);
+		//Some driveways//:
+		layout.addRoad(9, 4, 1, 1);	layout.addCrossWalk(9, 4, 1, 1);
+		addBuilding("Residence", "House 2", 8, 2, 3, 2, location);
 
 		//Building 3
 		location.sector = 1;
 		location.positionToEnterFromMainGrid = new Dimension(15, 3);
 		location.entranceFromMainGridPosition = new Dimension(14, 3);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+		location.entranceFromRoadGrid = new Dimension(14, 3);
+		location.positionToEnterFromRoadGrid = new Dimension(14 , 4);
+		//Some driveways//:
+		layout.addRoad(14, 4, 1, 1);	layout.addCrossWalk(14, 4, 1, 1);
 		addBuilding("Market", "Market 1", 13, 2, 2, 2, location);
 
 		//Building 4
 		location.sector = 1;
 		location.positionToEnterFromMainGrid = new Dimension(20, 3);
 		location.entranceFromMainGridPosition = new Dimension(19, 3);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-
+		location.entranceFromRoadGrid = new Dimension(18, 3);
+		location.positionToEnterFromRoadGrid = new Dimension(18, 4);;
+		//Some driveways//:
+		layout.addRoad(18, 4, 1, 1);	layout.addCrossWalk(18, 4, 1, 1);
 		addBuilding("Apartment", "Apartment Building", 18, 2, 2, 2, location);
 		
 //Building 5
 		location.sector = 1;
 		location.positionToEnterFromMainGrid = new Dimension(25, 3);
 		location.entranceFromMainGridPosition = new Dimension(24, 3);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+		location.entranceFromRoadGrid = new Dimension(23, 3);
+		location.positionToEnterFromRoadGrid = new Dimension(23, 4);
+		//Some driveways//:
+		layout.addRoad(23, 4, 1, 1);	layout.addCrossWalk(23, 4, 1, 1);
 		addBuilding("Bank", "Bank", 23, 2, 2, 2, location);
-		//Building 6
+		
+//Building 6
 		location.sector = 1;
 		location.positionToEnterFromMainGrid = new Dimension(30, 3);
 		location.entranceFromMainGridPosition = new Dimension(29, 3);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-
+		location.entranceFromRoadGrid = new Dimension(28, 3);
+		location.positionToEnterFromRoadGrid = new Dimension(28, 4);
+		//Some driveways//:
+		layout.addRoad(28, 4, 1, 1);	layout.addCrossWalk(28, 4, 1, 1);
 		addBuilding("Apartment", "Apartment Building 1", 28, 2, 2, 2, location);
 		
 //Building 7
 		location.sector = 2;
 		location.positionToEnterFromMainGrid = new Dimension(5, 12);
 		location.entranceFromMainGridPosition = new Dimension(4, 12);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+		location.entranceFromRoadGrid = new Dimension(3, 12);
+		location.positionToEnterFromRoadGrid = new Dimension(3, 11);
+		//Some driveways//:
+		layout.addRoad(3, 11, 1, 1);	layout.addCrossWalk(3, 11, 1, 1);
+		layout.addRoad(3, 10, 1, 1);	layout.addCrossWalk(3, 10, 1, 1);
+		layout.addRoad(4, 11, 1, 1);	layout.addCrossWalk(4, 11, 1, 1);
+		layout.addRoad(4, 10, 1, 1);	layout.addCrossWalk(4, 10, 1, 1);
 		addBuilding("Apartment", "Apartment Building 4", 3, 12, 2, 2, location);
-		//Building 8
+		
+		
+//Building 8
 		location.sector = 2;
 		location.positionToEnterFromMainGrid = new Dimension(10, 12);
 		location.entranceFromMainGridPosition = new Dimension(9, 12);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+		location.entranceFromRoadGrid = new Dimension(9, 12);
+		location.positionToEnterFromRoadGrid = new Dimension(9, 11);
+		//Some driveways//:
+		layout.addRoad(9, 11, 1, 1);	layout.addCrossWalk(9, 11, 1, 1);
+		layout.addRoad(9, 10, 1, 1);	layout.addCrossWalk(9, 10, 1, 1);
+		layout.addRoad(8, 11, 1, 1);	layout.addCrossWalk(8, 11, 1, 1);
+		layout.addRoad(8, 10, 1, 1);	layout.addCrossWalk(8, 10, 1, 1);
 		addBuilding("Restaurant", "Restaurant 1", 8, 12, 2, 2, location);
 		
 		//Building 9
 		location.sector = 2;
 		location.positionToEnterFromMainGrid = new Dimension(15, 12);
 		location.entranceFromMainGridPosition = new Dimension(14, 12);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-
+		location.entranceFromRoadGrid = new Dimension(14, 12);
+		location.positionToEnterFromRoadGrid = new Dimension(14, 11);
+		//Some driveways//:
+		layout.addRoad(13, 11, 1, 1);	layout.addCrossWalk(13, 11, 1, 1);
+		layout.addRoad(13, 10, 1, 1);	layout.addCrossWalk(13, 10, 1, 1);
+		layout.addRoad(14, 11, 1, 1);	layout.addCrossWalk(14, 11, 1, 1);
+		layout.addRoad(14, 10, 1, 1);	layout.addCrossWalk(14, 10, 1, 1);
 		addBuilding("Apartment", "Apartment Building 2", 13, 12, 2, 2, location);
 //Building 10
 		location.sector = 2;
 		location.positionToEnterFromMainGrid = new Dimension(20, 12);
 		location.entranceFromMainGridPosition = new Dimension(19, 12);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-
+		location.entranceFromRoadGrid = new Dimension(19, 12);
+				location.positionToEnterFromRoadGrid = new Dimension(19, 11);
+		layout.addRoad(18, 11, 1, 1);	layout.addCrossWalk(18, 11, 1, 1);
+		layout.addRoad(18, 10, 1, 1);	layout.addCrossWalk(18, 10, 1, 1);
+		layout.addRoad(19, 11, 1, 1);	layout.addCrossWalk(19, 11, 1, 1);
+		layout.addRoad(19, 10, 1, 1);	layout.addCrossWalk(19, 10, 1, 1);
 		//addBuilding("KushsRestaurant", "Kush's Restaurant", 18, 12, 2, 2, location);
 		addBuilding("Default", "Default", 18,12,2,2,location);
 //Building 11
 		location.sector = 2;
 		location.positionToEnterFromMainGrid = new Dimension(25, 12);
 		location.entranceFromMainGridPosition = new Dimension(24, 12);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+		location.entranceFromRoadGrid = new Dimension(24, 12);
+				location.positionToEnterFromRoadGrid = new Dimension(24, 11);
+				layout.addRoad(23, 11, 1, 1);	layout.addCrossWalk(23, 11, 1, 1);
+				layout.addRoad(23, 10, 1, 1);	layout.addCrossWalk(23, 10, 1, 1);
+				layout.addRoad(24, 11, 1, 1);	layout.addCrossWalk(24, 11, 1, 1);
+				layout.addRoad(24, 10, 1, 1);	layout.addCrossWalk(24, 10, 1, 1);
 		addBuilding("Food Court", "Food Court", 23, 12, 2, 2, location);
 		//addBuilding("RyansRestaurant", "Restaurant 2", 23, 12, 2, 2, location);
 //Building 12
 		location.sector = 2;
 		location.positionToEnterFromMainGrid = new Dimension(30, 12);
 		location.entranceFromMainGridPosition = new Dimension(29, 12);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+		location.entranceFromRoadGrid = new Dimension(29, 12);
+				location.positionToEnterFromRoadGrid = new Dimension(29, 11);
+				layout.addRoad(28, 11, 1, 1);	layout.addCrossWalk(28, 11, 1, 1);
+				layout.addRoad(28, 10, 1, 1);	layout.addCrossWalk(28, 10, 1, 1);
+				layout.addRoad(29, 11, 1, 1);	layout.addCrossWalk(29, 11, 1, 1);
+				layout.addRoad(29, 10, 1, 1);	layout.addCrossWalk(29, 10, 1, 1);
 		addBuilding("Luca's Restaurant", "Restaurant 3", 28, 12, 2, 2, location);
 		//addBuilding("Default", "Default", 28, 12, 2, 2, location);
 		//file reading
@@ -279,6 +338,11 @@ public class SetUpWorldFactory{
 			
 			
 			addVehicle("");
+			addVehicle("Car");
+			addVehicle("Car");
+			addVehicle("Car");
+			addVehicle("Car");
+			addVehicle("Car");
 			//addVehicle("EvenBus");
 			//addVehicle("OddMockBus");
 		
@@ -625,9 +689,21 @@ public class SetUpWorldFactory{
 		p1.startThread();
 	}
 
-
+	
+	
+	int numCars = 1;
 	private void addVehicle(String type) {
 		switch (type) {
+		case "Car":
+			CarAgent car = new CarAgent("Car " + numCars);
+			AStarTraversal ct = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
+			CarVehicleGui carGui = new CarVehicleGui( car, layout, ct, locationMap);
+			car.setGui(carGui);
+			cityPanel.addGui(carGui);
+			car.startThread();
+		numCars++;
+		break;	
+		
 		case "OddMockBus":
 			//add a mockVehicle
 			Queue<String> OddStopsQueue = new LinkedList<>(); //<--a list of the stops to go to
