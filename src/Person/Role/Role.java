@@ -1,11 +1,11 @@
 package Person.Role;
 
-import Person.PersonAgent;
+import interfaces.Person;
 
 public abstract class Role {
 
 	private boolean isActive = false;
-	protected PersonAgent myPerson;
+	protected Person myPerson;
 	
 	public final static String MARKET_CUSTOMER_ROLE = "MarketEmployee.MarketCustomerRole";
 	public final static String MARKET_EMPLOYEE_ROLE = "MarketEmployee.MarketEmployeeRole";
@@ -21,6 +21,11 @@ public abstract class Role {
 	public final static String RESTAURANT_HOST_ROLE = "restaurant.HostRole";
 	public final static String RESTAURANT_COOK_ROLE = "restaurant.CookRole";
 	public final static String RESTAURANT_CASHIER_ROLE = "restaurant.CashierRole";
+	public final static String RESTAURANT_LUCA_CUSTOMER_ROLE = "restaurant.luca.LucaRestaurantCustomerRole";
+	public final static String RESTAURANT_LUCA_WAITER_ROLE = "restaurant.luca.LucaWaiterRole";
+	public final static String RESTAURANT_LUCA_HOST_ROLE = "restaurant.luca.LucaHostRole";
+	public final static String RESTAURANT_LUCA_COOK_ROLE = "restaurant.luca.LucaCookRole";
+	public final static String RESTAURANT_LUCA_CASHIER_ROLE = "restaurant.luca.LucaCashierRole";
 	public final static String APARTMENT_MANAGER_ROLE = "residence.ApartmentManagerRole";
 	 public final static String RESTAURANT_KUSH_CUSTOMER_ROLE = "kushrestaurant.CustomerRole";
      public final static String RESTAURANT_KUSH_WAITER_ROLE = "kushrestaurant.WaiterRole";
@@ -72,17 +77,17 @@ public abstract class Role {
 	
 	/**
 	 * Set the person agent
-	 * @param p the new person
+	 * @param customerPerson the new person
 	 */
-	public void setPerson(PersonAgent p){
-		myPerson = p;
+	public void setPerson(Person customerPerson){
+		myPerson = customerPerson;
 	}
 	
 	/**
 	 * Standard accessor for myPerson
 	 * @return the personAgent that owns the Role
 	 */
-	public PersonAgent getPerson(){
+	public Person getPerson(){
 		return myPerson;
 	}
 	

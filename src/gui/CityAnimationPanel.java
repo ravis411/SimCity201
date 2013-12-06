@@ -58,7 +58,7 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		this.setBackground(Color.BLACK);
 		addMouseListener(this);
 
-		Timer timer = new Timer(5, this );
+		Timer timer = new Timer(20, this );
 		timer.start();
 	}
 

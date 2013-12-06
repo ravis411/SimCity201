@@ -27,9 +27,11 @@ import MarketEmployee.MarketManagerRole;
 import Person.Role.Employee;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
-import Transportation.BusStopAgent;
+import Transportation.BusStopConstruct;
 import agent.Agent;
 import bank.BankClientRole;
+import bank.BankTellerRole;
+import bank.LoanTellerRole;
 import building.Building;
 import building.BuildingList;
 import building.Restaurant;
@@ -526,7 +528,7 @@ public class PersonAgent extends Agent implements Person{
 			case Preferences.BUS:
 				String startStop = gui.DoGoToClosestBusStop();
 				String destStop = gui.DoRideBusTo(location);
-				BusStop startAgent = BusStopAgent.stops.get(startStop);
+				BusStop startAgent = BusStopConstruct.stops.get(startStop);
 				startAgent.msgAtBusStop(this, destStop);
 				try{
 					onBus.acquire();
@@ -811,4 +813,14 @@ public class PersonAgent extends Agent implements Person{
 		return getName();
 	}
 
+	public Calendar getRealTime(){
+		return realTime;
+	}
+
+	public List<PersonAgent> getFriends() {
+		return friends;
+	}
+	public ResidenceBuildingPanel getHome(){
+		return home;
+	}
 }

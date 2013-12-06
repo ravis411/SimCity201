@@ -36,3 +36,4 @@ The project is best run through the eclipse editor by using the play button to r
 + A* leads to clogging of building entrances and may impact machine performance
 + There is currently no delivery truck
 + There exists a framework for both parties and the new Producer/Consumer model waiters, but neither are implemented due to time constraints. 
++ There is a race condition that may cause the bank to display errors
