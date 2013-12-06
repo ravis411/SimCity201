@@ -12,6 +12,7 @@ import trace.AlertTag;
 import util.MasterTime;
 import interfaces.ApartmentManager;
 import interfaces.Home;
+import interfaces.Person;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -34,7 +35,8 @@ public class HomeRole extends Role implements Home {
 
 	private List <Item> inventory = new ArrayList<Item>();
 	private List <HomeFeature> features = new ArrayList<HomeFeature>(); //includes appliances, toilets, sinks, etc (anything that can break)
-	private List <PersonAgent> partyAttendees = new ArrayList<PersonAgent>();
+	public List <PersonAgent> partyAttendees = new ArrayList<PersonAgent>();
+	public List <PersonAgent> partyInvitees= new ArrayList<PersonAgent>();
 	private Semaphore atKitchen = new Semaphore(0, true);
 	private Semaphore atBedroom = new Semaphore(0, true);
 	private Semaphore atBed = new Semaphore(0, true);
@@ -409,6 +411,7 @@ public class HomeRole extends Role implements Home {
 		
 		for(int i=0; i<4; i++) {
 			myPerson.getFriends().get(i).msgPartyInvitation(myPerson, rsvpDate, partyDate);
+			partyInvitees.add(myPerson.getFriends().get(i));
 		}
 	}
 
