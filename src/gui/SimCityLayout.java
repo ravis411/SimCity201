@@ -362,9 +362,11 @@ public class SimCityLayout {
 			Dimension d = positionMap.get(r.position);
 			g.setColor(Color.BLACK);
 			g.fillRect(d.width, d.height, GRID_SIZEX, GRID_SIZEY);
-			g.setColor(Color.white);
+			g.setColor(Color.yellow);
 			for(int i = 0; i <GRID_SIZEX; i+=5){
-				g.drawLine(d.width + i, d.height, d.width + i + 5, d.height);
+				g.drawLine(d.width + 5 + i, d.height, d.width + i + 10, d.height);
+				g.drawLine(d.width + 5 + i, d.height + GRID_SIZEY, d.width + i + 10, d.height+GRID_SIZEY);
+				i+=5;
 			}
 			
 			
@@ -374,7 +376,7 @@ public class SimCityLayout {
 		for(Dimension c : crosswalks){
 			Dimension d = positionMap.get(c);
 			g.setColor(Color.white);
-			for(int i = 0; i < GRID_SIZEX; i+=5)
+			for(int i = 0; i <= GRID_SIZEX; i+=5)
 				g.drawLine(d.width + i, d.height, d.width + i, d.height + GRID_SIZEY - 1);
 			//g.drawRect(d.width, d.height, getGRID_SIZEX(), GRID_SIZEY);
 		}
@@ -382,7 +384,7 @@ public class SimCityLayout {
 		//Paint the driveWays
 		for(Dimension d : driveWays){
 			Dimension p = positionMap.get(d);
-			g.setColor(Color.red);
+			g.setColor(new Color(102,102,0));
 			g.fillRect(p.width, p.height, GRID_SIZEX, GRID_SIZEY);
 			g.setColor(Color.white);
 			g.fillRect(p.width + 5, p.height, GRID_SIZEX - 10, GRID_SIZEY);

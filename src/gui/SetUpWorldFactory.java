@@ -123,7 +123,8 @@ public class SetUpWorldFactory{
 		location.entranceFromRoadGrid = new Dimension(9, 3);
 		location.positionToEnterFromRoadGrid = new Dimension(9, 4);
 		//Some driveways//:
-		layout.addRoad(9, 4, 1, 1);	layout.addCrossWalk(9, 4, 1, 1);
+		//layout.addRoad(9, 4, 1, 1);	layout.addCrossWalk(9, 4, 1, 1);
+		layout.addDriveway(9, 4, 1, 1);
 		addBuilding("Residence", "House 2", 8, 2, 3, 2, location);
 
 		//Building 3
@@ -133,7 +134,8 @@ public class SetUpWorldFactory{
 		location.entranceFromRoadGrid = new Dimension(14, 3);
 		location.positionToEnterFromRoadGrid = new Dimension(14 , 4);
 		//Some driveways//:
-		layout.addRoad(14, 4, 1, 1);	layout.addCrossWalk(14, 4, 1, 1);
+		//layout.addRoad(14, 4, 1, 1);	layout.addCrossWalk(14, 4, 1, 1);
+		layout.addDriveway(14, 4, 1, 1);
 		addBuilding("Market", "Market 1", 13, 2, 2, 2, location);
 
 		//Building 4
@@ -143,7 +145,7 @@ public class SetUpWorldFactory{
 		location.entranceFromRoadGrid = new Dimension(18, 3);
 		location.positionToEnterFromRoadGrid = new Dimension(18, 4);;
 		//Some driveways//:
-		layout.addRoad(18, 4, 1, 1);	layout.addCrossWalk(18, 4, 1, 1);
+		layout.addDriveway(18, 4, 1, 1);
 		addBuilding("Apartment", "Apartment Building", 18, 2, 2, 2, location);
 		
 //Building 5
@@ -153,7 +155,7 @@ public class SetUpWorldFactory{
 		location.entranceFromRoadGrid = new Dimension(23, 3);
 		location.positionToEnterFromRoadGrid = new Dimension(23, 4);
 		//Some driveways//:
-		layout.addRoad(23, 4, 1, 1);	layout.addCrossWalk(23, 4, 1, 1);
+		layout.addDriveway(23, 4, 1, 1);//	layout.addCrossWalk(23, 4, 1, 1);
 		addBuilding("Bank", "Bank", 23, 2, 2, 2, location);
 		
 //Building 6
@@ -163,7 +165,7 @@ public class SetUpWorldFactory{
 		location.entranceFromRoadGrid = new Dimension(28, 3);
 		location.positionToEnterFromRoadGrid = new Dimension(28, 4);
 		//Some driveways//:
-		layout.addRoad(28, 4, 1, 1);	layout.addCrossWalk(28, 4, 1, 1);
+		layout.addDriveway(28, 4, 1, 1);//	layout.addCrossWalk(28, 4, 1, 1);
 		addBuilding("Apartment", "Apartment Building 1", 28, 2, 2, 2, location);
 		
 //Building 7
@@ -173,10 +175,7 @@ public class SetUpWorldFactory{
 		location.entranceFromRoadGrid = new Dimension(3, 12);
 		location.positionToEnterFromRoadGrid = new Dimension(3, 11);
 		//Some driveways//:
-		layout.addRoad(3, 11, 1, 1);	layout.addCrossWalk(3, 11, 1, 1);
-		layout.addRoad(3, 10, 1, 1);	layout.addCrossWalk(3, 10, 1, 1);
-		layout.addRoad(4, 11, 1, 1);	layout.addCrossWalk(4, 11, 1, 1);
-		layout.addRoad(4, 10, 1, 1);	layout.addCrossWalk(4, 10, 1, 1);
+		layout.addDriveway(3, 10, 2, 2);
 		addBuilding("Apartment", "Apartment Building 4", 3, 12, 2, 2, location);
 		
 		
@@ -187,10 +186,7 @@ public class SetUpWorldFactory{
 		location.entranceFromRoadGrid = new Dimension(9, 12);
 		location.positionToEnterFromRoadGrid = new Dimension(9, 11);
 		//Some driveways//:
-		layout.addRoad(9, 11, 1, 1);	layout.addCrossWalk(9, 11, 1, 1);
-		layout.addRoad(9, 10, 1, 1);	layout.addCrossWalk(9, 10, 1, 1);
-		layout.addRoad(8, 11, 1, 1);	layout.addCrossWalk(8, 11, 1, 1);
-		layout.addRoad(8, 10, 1, 1);	layout.addCrossWalk(8, 10, 1, 1);
+		layout.addDriveway(8, 10, 2, 2);
 		addBuilding("Restaurant", "Restaurant 1", 8, 12, 2, 2, location);
 		
 		//Building 9
@@ -200,10 +196,7 @@ public class SetUpWorldFactory{
 		location.entranceFromRoadGrid = new Dimension(14, 12);
 		location.positionToEnterFromRoadGrid = new Dimension(14, 11);
 		//Some driveways//:
-		layout.addRoad(13, 11, 1, 1);	layout.addCrossWalk(13, 11, 1, 1);
-		layout.addRoad(13, 10, 1, 1);	layout.addCrossWalk(13, 10, 1, 1);
-		layout.addRoad(14, 11, 1, 1);	layout.addCrossWalk(14, 11, 1, 1);
-		layout.addRoad(14, 10, 1, 1);	layout.addCrossWalk(14, 10, 1, 1);
+		layout.addDriveway(13, 10, 2, 2);
 		addBuilding("Apartment", "Apartment Building 2", 13, 12, 2, 2, location);
 //Building 10
 		location.sector = 2;
@@ -211,10 +204,7 @@ public class SetUpWorldFactory{
 		location.entranceFromMainGridPosition = new Dimension(19, 12);
 		location.entranceFromRoadGrid = new Dimension(19, 12);
 				location.positionToEnterFromRoadGrid = new Dimension(19, 11);
-		layout.addRoad(18, 11, 1, 1);	layout.addCrossWalk(18, 11, 1, 1);
-		layout.addRoad(18, 10, 1, 1);	layout.addCrossWalk(18, 10, 1, 1);
-		layout.addRoad(19, 11, 1, 1);	layout.addCrossWalk(19, 11, 1, 1);
-		layout.addRoad(19, 10, 1, 1);	layout.addCrossWalk(19, 10, 1, 1);
+		layout.addDriveway(18, 10, 2, 2);
 		//addBuilding("KushsRestaurant", "Kush's Restaurant", 18, 12, 2, 2, location);
 		addBuilding("Default", "Default", 18,12,2,2,location);
 //Building 11
@@ -223,10 +213,8 @@ public class SetUpWorldFactory{
 		location.entranceFromMainGridPosition = new Dimension(24, 12);
 		location.entranceFromRoadGrid = new Dimension(24, 12);
 				location.positionToEnterFromRoadGrid = new Dimension(24, 11);
-				layout.addRoad(23, 11, 1, 1);	layout.addCrossWalk(23, 11, 1, 1);
-				layout.addRoad(23, 10, 1, 1);	layout.addCrossWalk(23, 10, 1, 1);
-				layout.addRoad(24, 11, 1, 1);	layout.addCrossWalk(24, 11, 1, 1);
-				layout.addRoad(24, 10, 1, 1);	layout.addCrossWalk(24, 10, 1, 1);
+				layout.addDriveway(23, 10, 2, 2);
+
 		addBuilding("Food Court", "Food Court", 23, 12, 2, 2, location);
 		//addBuilding("RyansRestaurant", "Restaurant 2", 23, 12, 2, 2, location);
 //Building 12
@@ -235,10 +223,7 @@ public class SetUpWorldFactory{
 		location.entranceFromMainGridPosition = new Dimension(29, 12);
 		location.entranceFromRoadGrid = new Dimension(29, 12);
 				location.positionToEnterFromRoadGrid = new Dimension(29, 11);
-				layout.addRoad(28, 11, 1, 1);	layout.addCrossWalk(28, 11, 1, 1);
-				layout.addRoad(28, 10, 1, 1);	layout.addCrossWalk(28, 10, 1, 1);
-				layout.addRoad(29, 11, 1, 1);	layout.addCrossWalk(29, 11, 1, 1);
-				layout.addRoad(29, 10, 1, 1);	layout.addCrossWalk(29, 10, 1, 1);
+				layout.addDriveway(28, 10, 2, 2);
 		addBuilding("Luca's Restaurant", "Restaurant 3", 28, 12, 2, 2, location);
 		//addBuilding("Default", "Default", 28, 12, 2, 2, location);
 		//file reading
