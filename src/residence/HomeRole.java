@@ -9,6 +9,7 @@ import residence.ApartmentManagerRole.AgentEvent;
 import residence.gui.HomeRoleGui;
 import trace.AlertLog;
 import trace.AlertTag;
+import util.MasterTime;
 import interfaces.ApartmentManager;
 import interfaces.Home;
 
@@ -42,8 +43,8 @@ public class HomeRole extends Role implements Home {
 	private Semaphore atCenter = new Semaphore(0, true);
 	Timer timer = new Timer();
 	
-	Calendar rsvpDate;
-	Calendar partyDate;
+	private Calendar rsvpDate = Calendar.getInstance();
+	private Calendar partyDate = Calendar.getInstance();
 
 	private String name;
 	
@@ -59,7 +60,7 @@ public class HomeRole extends Role implements Home {
 	
 	public enum PartyState
 	{none, sendInvites, setUp, host};
-	public PartyState partyState = PartyState.none;
+	public PartyState partyState = PartyState.sendInvites;
 
 	public HomeRole(PersonAgent myPerson) {
 		this.myPerson = myPerson;
@@ -175,6 +176,10 @@ public class HomeRole extends Role implements Home {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAction() {
+		if(partyState == PartyState.sendInvites) {
+			sendOutInvites();
+			return true;
+		}
 		if (leaveHome == true) {
 			leaveHome();
 			return true;
@@ -211,10 +216,6 @@ public class HomeRole extends Role implements Home {
 				fileWorkOrder(hf);
 				return true;
 			}
-		}
-		if(partyState == PartyState.sendInvites) {
-			sendOutInvites();
-			return true;
 		}
 		return false;
 	}
@@ -398,12 +399,14 @@ public class HomeRole extends Role implements Home {
 		enterHome = false;
 	}
 	private void sendOutInvites() {
-		rsvpDate = myPerson.getRealTime();
-		rsvpDate.add(Calendar.DAY_OF_MONTH, 1);
-		System.out.println(rsvpDate.toString());
-		partyDate = myPerson.getRealTime();
-		partyDate.add(Calendar.DAY_OF_MONTH, 3);
-		System.out.println(partyDate.toString());
+		rsvpDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH), MasterTime.getInstance().get(Calendar.HOUR_OF_DAY), MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND)); 
+		rsvpDate.add(Calendar.DAY_OF_MONTH, 5);
+		MasterTime.getInstance().registerDateListener(rsvpDate.get(Calendar.MONTH), rsvpDate.get(Calendar.DAY_OF_MONTH), rsvpDate.get(Calendar.HOUR_OF_DAY), rsvpDate.get(Calendar.MINUTE), myPerson);
+		
+		partyDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH), MasterTime.getInstance().get(Calendar.HOUR_OF_DAY), MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND)); 
+		partyDate.add(Calendar.DAY_OF_MONTH, 10);
+		MasterTime.getInstance().registerDateListener(partyDate.get(Calendar.MONTH), partyDate.get(Calendar.DAY_OF_MONTH), partyDate.get(Calendar.HOUR_OF_DAY), partyDate.get(Calendar.MINUTE), myPerson);
+		
 		for(int i=0; i<4; i++) {
 			myPerson.getFriends().get(i).msgPartyInvitation(myPerson, rsvpDate, partyDate);
 		}

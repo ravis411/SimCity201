@@ -22,6 +22,7 @@ import kushrestaurant.WaiterRole;
 import kushrestaurant.CustomerRole;
 import trace.AlertLog;
 import trace.AlertTag;
+import util.DateListener;
 import MarketEmployee.MarketEmployeeRole;
 import MarketEmployee.MarketManagerRole;
 import Person.Role.Employee;
@@ -823,4 +824,10 @@ public class PersonAgent extends Agent implements Person{
 	public ResidenceBuildingPanel getHome(){
 		return home;
 	}
+
+	public void dateAction(int month, int day, int hour, int minute) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

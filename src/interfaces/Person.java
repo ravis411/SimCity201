@@ -12,11 +12,13 @@ import bank.BankClientRole;
 import bank.BankTellerRole;
 import bank.LoanTellerRole;
 import building.Building;
+import util.DateListener;
+import util.MasterTime;
 
 import java.util.Calendar;
 
 
-public interface Person {
+public interface Person extends DateListener{
 	
 	//Transportation functions
 	public abstract void msgWeHaveArrived(String currentDestination);
@@ -71,6 +73,8 @@ public interface Person {
 	public abstract ResidenceBuildingPanel getHome();
 
 	public abstract void setInitialRole(Role roleFromString, String string);
+	
+	public void dateAction(int month, int day, int hour, int minute);
 
 
 }
