@@ -61,6 +61,8 @@ public class VehicleGui implements Gui {
     private enum GuiState {none, inCity, inBuilding};
     private GuiState state = GuiState.none;
     
+    private int waitingPassengers = 0;
+    
     
     
     public VehicleGui(Bus agent, SimCityLayout cityLayout, AStarTraversal aStar, List<LocationInfo> locationList) {
@@ -161,6 +163,23 @@ public class VehicleGui implements Gui {
         	g.fillRect(xPos, yPos, 20, 20);
         	g.setColor(Color.white);
         	g.drawString(agent.toString(), xPos, yPos);
+        	
+        	//Draw some tiny circles for the passengers
+			g.setColor(Color.BLUE);
+			int yOffset = 0;
+			int xOffset = 0;
+			for(int i = 0; i < waitingPassengers; i++){
+				g.fillOval((int)xPos + xOffset *5, (int)yPos + yOffset*5, 5, 5);
+				xOffset++;
+				if(xOffset * 5 >= 20){
+					yOffset++;
+					xOffset =0;
+					if(yOffset * 5 >= 20)
+						break;
+				}
+			}//passenger dots have been drawn
+			
+			
         }
         else
         {
@@ -178,6 +197,15 @@ public class VehicleGui implements Gui {
     
     public boolean isPresent() {
         return true;
+    }
+    
+    
+    /** Sets the number of passengers in the bus so that dots can be drawn.
+     * 
+     * @param numPassengers
+     */
+    public void setNumberPassengers(int numPassengers){
+    	this.waitingPassengers = numPassengers;
     }
     
     

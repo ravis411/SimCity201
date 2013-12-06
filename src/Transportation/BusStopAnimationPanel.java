@@ -29,7 +29,6 @@ public class BusStopAnimationPanel extends JPanel implements GuiPanel{
 	private List<JButton> passengerList = new ArrayList<>();
 	
 	public BusStopAnimationPanel() {
-	//	this.add(new JLabel("BusStopAnimationPanel!!!!!!!!!!!!!"));
 		view.setLayout(new BoxLayout((Container) view, BoxLayout.Y_AXIS));
 		passengerPane.setViewportView(view);
 		
@@ -68,6 +67,13 @@ public class BusStopAnimationPanel extends JPanel implements GuiPanel{
 		}
 	}
 	
+	/**
+	 * 
+	 * @return The number of passengers currently waiting at this stop for a bus.
+	 */
+	public int getNumWaitingPassengers(){
+		return passengerList.size();
+	}
 	
 	
 	@Override

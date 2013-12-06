@@ -49,6 +49,9 @@ public class BusStopBuildingPanel extends BuildingPanel{
 
 	}
 	
+	public int getNumWaitingPassengers(){
+		return animationPanel.getNumWaitingPassengers();
+	}
 	
 	public BusStopConstruct getBusStopAgent(){
 		return this.busStopAgent;
