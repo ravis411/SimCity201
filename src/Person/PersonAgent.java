@@ -24,6 +24,7 @@ import kushrestaurant.CustomerRole;
 import trace.AlertLog;
 import trace.AlertTag;
 import util.DateListener;
+import util.MasterTime;
 import MarketEmployee.MarketEmployeeRole;
 import MarketEmployee.MarketManagerRole;
 import Person.Role.Employee;
@@ -345,17 +346,17 @@ public class PersonAgent extends Agent implements Person{
 			if(p.partyState==PartyState.NeedsResponseUrgently){
 				for(PersonAgent pa:friends){
 					if(pa==p.getHost()){
-						
-							pa.msgIAmComing(this);
-							p.partyState=PartyState.GoingToParty;
-							return true;
-						}
+						pa.msgIAmComing(this);
+						p.partyState=PartyState.GoingToParty;
+						MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY), p.dateOfParty.get(Calendar.MINUTE), this);
+						return true;
+					}
 					else{
 						pa.msgIAmNotComing(this);
 						p.partyState=PartyState.NotGoingToParty;
-					}
-					   
-					}
+						return true;
+					}   
+				}
 			}
 		}
 		if(state == PersonState.NeedsFood){
