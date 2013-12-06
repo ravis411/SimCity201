@@ -9,14 +9,16 @@ import gui.Building.BuildingPanel;
 import gui.Building.BusStopBuilding;
 import gui.Building.BusStopBuildingPanel;
 import gui.Building.DefaultBuildingPanel;
-import gui.Building.LucaRestaurantBuilding;
-import gui.Building.LucaRestaurantBuildingPanel;
 import gui.Building.MarketBuilding;
 import gui.Building.MarketBuildingPanel;
 import gui.Building.ResidenceBuilding;
 import gui.Building.ResidenceBuildingPanel;
+import gui.Building.restaurants.FoodCourtBuilding;
+import gui.Building.restaurants.FoodCourtBuildingPanel;
 import gui.Building.restaurants.KushRestaurantBuilding;
 import gui.Building.restaurants.KushRestaurantBuildingPanel;
+import gui.Building.restaurants.LucaRestaurantBuilding;
+import gui.Building.restaurants.LucaRestaurantBuildingPanel;
 import gui.Building.restaurants.RestaurantBuilding;
 import gui.Building.restaurants.RestaurantBuildingPanel;
 import gui.Building.restaurants.RyansRestaurantBuilding;
@@ -149,6 +151,7 @@ public class SetUpWorldFactory{
 		location.entranceFromMainGridPosition = new Dimension(9, 12);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
 		addBuilding("Restaurant", "Restaurant 1", 8, 12, 2, 2, location);
+		
 		//Building 9
 		location.sector = 2;
 		location.positionToEnterFromMainGrid = new Dimension(15, 12);
@@ -162,21 +165,22 @@ public class SetUpWorldFactory{
 		location.entranceFromMainGridPosition = new Dimension(19, 12);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
 
-		addBuilding("KushsRestaurant", "Kush's Restaurant", 18, 12, 2, 2, location);
+		//addBuilding("KushsRestaurant", "Kush's Restaurant", 18, 12, 2, 2, location);
+		addBuilding("Default", "Default", 18,12,2,2,location);
 //Building 11
 		location.sector = 2;
 		location.positionToEnterFromMainGrid = new Dimension(25, 12);
 		location.entranceFromMainGridPosition = new Dimension(24, 12);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-
-		addBuilding("RyansRestaurant", "Restaurant 2", 23, 12, 2, 2, location);
+		addBuilding("Food Court", "Food Court", 23, 12, 2, 2, location);
+		//addBuilding("RyansRestaurant", "Restaurant 2", 23, 12, 2, 2, location);
 //Building 12
 		location.sector = 2;
 		location.positionToEnterFromMainGrid = new Dimension(30, 12);
 		location.entranceFromMainGridPosition = new Dimension(29, 12);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
 		addBuilding("Luca's Restaurant", "Restaurant 3", 28, 12, 2, 2, location);
-
+		//addBuilding("Default", "Default", 28, 12, 2, 2, location);
 		//file reading
 //		try {
 //			File fXmlFile = new File("scenario1.xml");
@@ -836,7 +840,15 @@ public class SetUpWorldFactory{
 				buildingsPanels.addBuildingPanel(restPanel);
 			}
 			break;
-
+		case "Food Court":
+			FoodCourtBuilding food = new FoodCourtBuilding(building);
+			if(food != null){
+				FoodCourtBuildingPanel foodPanel = new FoodCourtBuildingPanel(food, name, buildingsPanels, this, info);
+				food.setBuildingPanel(foodPanel);
+				cityPanel.addGui(food);
+				buildingsPanels.addBuildingPanel(foodPanel);
+			}
+			break;
 		case "Luca's Restaurant":
 			LucaRestaurantBuilding lrestb = new LucaRestaurantBuilding(building);
 			if(lrestb != null){
@@ -846,12 +858,12 @@ public class SetUpWorldFactory{
 				buildingsPanels.addBuildingPanel(restPanel);
 			}
 			break;
-
 		default:
 			return;
 		}
 		info.name = name;
-		locationMap.add(new LocationInfo(info));
+		//locationMap.add(new LocationInfo(info));
+		addLocationToMap(info);
 	}
 
 	public void addLocationToMap(LocationInfo location){

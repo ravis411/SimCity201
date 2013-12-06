@@ -1,13 +1,15 @@
-package gui.Building;
+package gui.Building.restaurants;
 
+
+import gui.Building.BuildingGui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 
 @SuppressWarnings("serial")
-public class LucaRestaurantBuilding extends BuildingGui {	
+public class FoodCourtBuilding extends BuildingGui {	
 	
-	public LucaRestaurantBuilding( BuildingGui b ) {
+	public FoodCourtBuilding( BuildingGui b ) {
 		super( b.x, b.y, b.width, b.height );
 			
 	}
@@ -18,7 +20,7 @@ public class LucaRestaurantBuilding extends BuildingGui {
 			g.setColor(new Color(100, 180, 200));
 			g.drawString(super.myBuildingPanel.getName(), (int)super.x,(int)super.y);
 			super.draw(g);
-			g.setColor(Color.blue);
+			g.setColor(Color.cyan);
 			g.fillRect((int)(super.x), (int)(super.y), (int)super.width, (int)super.height);
 			g.setColor(Color.white);
 			g.fillRect((int)(super.x), (int)(super.y), (int)super.width, (int)super.height/6);
@@ -29,7 +31,7 @@ public class LucaRestaurantBuilding extends BuildingGui {
 		}
 		else
 		{
-			g.setColor(Color.blue);
+			g.setColor(Color.cyan);
 			g.fillRect((int)(super.x), (int)(super.y), (int)super.width, (int)super.height);
 			g.setColor(Color.white);
 			g.fillRect((int)(super.x), (int)(super.y), (int)super.width, (int)super.height/6);
@@ -39,6 +41,14 @@ public class LucaRestaurantBuilding extends BuildingGui {
 			
 			//super.draw(g);
 		}
+	}
+	
+	
+	@Override
+	public void setTestView(boolean test) {
+		super.setTestView(test);
+		if(myBuildingPanel instanceof FoodCourtBuildingPanel)
+			((FoodCourtBuildingPanel)myBuildingPanel).setTestView(test);
 	}
 	
 }

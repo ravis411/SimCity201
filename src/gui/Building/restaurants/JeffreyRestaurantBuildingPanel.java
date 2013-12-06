@@ -2,15 +2,12 @@ package gui.Building.restaurants;
 
 import gui.BuildingsPanels;
 import gui.Building.BuildingPanel;
-import interfaces.GuiPanel;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.geom.Rectangle2D;
 
-import javax.swing.JLabel;
-
-import ryansRestaurant.gui.RestaurantGui;
+import restaurant.gui.RestaurantAnimationPanel;
 import Person.Role.Role;
 
 
@@ -21,32 +18,34 @@ import Person.Role.Role;
  *
  */
 @SuppressWarnings("serial")
-public class RyansRestaurantBuildingPanel extends BuildingPanel{
+public class JeffreyRestaurantBuildingPanel extends BuildingPanel{
 	
-	RestaurantGui restaurantPanel;
+	RestaurantAnimationPanel restaurantPanel;
 	
-	public RyansRestaurantBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels) {
+	public JeffreyRestaurantBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels) {
 		super(r, name, buildingPanels);
 		
 		this.removeAll();
 		
-		setBackground( Color.gray );
+		setBackground( Color.yellow );
 		
-		restaurantPanel = new RestaurantGui();
+		restaurantPanel = new RestaurantAnimationPanel();
 		
-		setLayout(new BorderLayout());
+		setLayout(new GridLayout(1,1));
 		
 		
-		JLabel j = new JLabel( myName );
-		add(j, BorderLayout.NORTH);
-		add( restaurantPanel, BorderLayout.CENTER );
+		//JLabel j = new JLabel( myName );
+		add( restaurantPanel );
 	}
 	
 	
 	public String getName() {
 		return myName;
 	}
-
+	
+	public RestaurantAnimationPanel getPanel() {
+		return restaurantPanel;
+	}
 
 	public void displayBuildingPanel() {
 		myCity.displayBuildingPanel( this );
@@ -58,12 +57,6 @@ public class RyansRestaurantBuildingPanel extends BuildingPanel{
 	public void addPersonWithRole(Role r) {
 		// TODO Auto-generated method stub
 		
-	}
-
-
-	@Override
-	public GuiPanel getPanel() {
-		return null;
 	}
 
 }
