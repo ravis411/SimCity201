@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Queue;
+import java.util.Random;
 import java.util.concurrent.Semaphore;
 
 import residence.HomeRole;
@@ -35,7 +36,7 @@ import bank.LoanTellerRole;
 import building.Building;
 import building.BuildingList;
 import building.Restaurant;
-
+import residence.HomeRole;
 /**
  * @author MSILKJR
  *
@@ -168,9 +169,9 @@ public class PersonAgent extends Agent implements Person{
 		
 		roles.add(new HomeRole(this));
 		
-		if(name.equals("Person 1") || name.equals("Person 2") || name.equals("Person 12"))
+		if(name.equals("Person 1") || name.equals("Person 2") )
 			this.msgImHungry();
-		if(name.equals("Person 10") || name.equals("Person 11"))
+		if(name.equals("Person 10") || name.equals("Person 11") || name.equals("Person 12"))
 			this.msgINeedMoney(30.00);
 		if(name.equals("Person 13")){
 			this.msgGoToMarket("Steak");
@@ -303,13 +304,16 @@ public class PersonAgent extends Agent implements Person{
 	  * RSVP message sent by the home role
 	  */
 	public void msgIAmComing(Person p){
-		//findRole("HOME_ROLE").partyAttendees.add(p);
-		//findRole("HOME_ROLE").rsvp.get(p)=true;
-		
+		HomeRole hr= (HomeRole) findRole("HOME_ROLE");
+		hr.partyAttendees.add((PersonAgent) p);
+		//hr.rsvp.get(p)=true;
+		hr.partyInvitees.remove((PersonAgent) p);
 		
 	}
 	public void msgIAmNotComing(Person p){
 		//findRole("HOME_ROLE").rsvp.get(p)=true;
+		HomeRole hr= (HomeRole) findRole("HOME_ROLE");
+		hr.partyInvitees.remove((PersonAgent) p);
 	}
 
 	//------------------------------SCHEDULER---------------------------//
@@ -336,7 +340,23 @@ public class PersonAgent extends Agent implements Person{
 			if(somethingIsActive)
 				return false;
 		}
-		
+		for(Party p:parties){
+			if(p.partyState==PartyState.NeedsResponseUrgently){
+				for(PersonAgent pa:friends){
+					if(pa==p.getHost()){
+						
+							pa.msgIAmComing(this);
+							p.partyState=PartyState.GoingToParty;
+							return true;
+						}
+					else{
+						pa.msgIAmNotComing(this);
+						p.partyState=PartyState.NotGoingToParty;
+					}
+					   
+					}
+			}
+		}
 		if(state == PersonState.NeedsFood){
 			GoGetFood();
 			return true;
@@ -351,7 +371,31 @@ public class PersonAgent extends Agent implements Person{
 			GoGetMoney();
 			return true;
 		}
-		
+		if(parties.size()!=0){
+			for(Party p:parties){
+				if(p.partyState==PartyState.ReceivedInvite){
+					for(PersonAgent pa :friends){
+						if(pa==p.getHost()){
+							int i= new Random().nextInt(40);
+							if(i%2==0){
+								pa.msgIAmComing(this);
+								p.partyState=PartyState.GoingToParty;
+								return true;
+							}
+						
+							
+						}
+						
+					}
+					int i= new Random().nextInt(40);
+					if(i%2==0){
+					p.getHost().msgIAmNotComing(this);
+					p.partyState=PartyState.NotGoingToParty;
+					}
+					p.partyState=PartyState.GoingToParty;
+				}
+			}
+		}
 
 		if(state != PersonState.Idle){
 			AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "////////////IDLE//////////");
@@ -764,13 +808,16 @@ public class PersonAgent extends Agent implements Person{
 	 * A class meant to simulate a friend.
 	 * (Essentially a struct which links a person to how good of a friend one is)
 	 */
-	private class Friend {
+	public class Friend {
 		PersonAgent person;
 		boolean goodFriend;
 		
 		public Friend(PersonAgent person, boolean goodFriend){
 			this.person = person;
 			this.goodFriend = goodFriend;
+		}
+		public PersonAgent getPerson(){
+			return person;
 		}
 	}
 	
@@ -799,6 +846,9 @@ public class PersonAgent extends Agent implements Person{
 			this.host=p;
 			this.rsvpDeadline = rsvpDeadline;
 			this.dateOfParty = partyTime;
+		}
+		public Person getHost(){
+			return host;
 		}
 	}
 	

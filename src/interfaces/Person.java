@@ -2,11 +2,13 @@ package interfaces;
 
 import gui.Building.ResidenceBuildingPanel;
 
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import Person.PersonAgent;
+import Person.PersonAgent.Friend;
 import Person.Role.Role;
 import bank.BankClientRole;
 import bank.BankTellerRole;
