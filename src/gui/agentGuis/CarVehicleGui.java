@@ -181,7 +181,7 @@ public class CarVehicleGui implements Gui {
     
     public void draw(Graphics2D g) {
         if(testView){
-        	g.setColor(Color.MAGENTA);
+        	g.setColor(Color.blue);
         	g.fillRect(xPos, yPos, 20, 20);
         	g.setColor(Color.white);
         	g.drawString(agent.toString(), xPos, yPos);
@@ -401,7 +401,7 @@ public class CarVehicleGui implements Gui {
     		}
     		else
     		{
-    			AlertLog.getInstance().logDebug(AlertTag.VEHICLE_GUI, agent.getName() + " GUI", "Destination must be blocked. Trying to move out of the way.");
+    			AlertLog.getInstance().logDebug(AlertTag.VEHICLE_GUI, agent.getName() + " GUI", "Destination must be blocked. Waiting.");
     			try {
     				Thread.sleep(300);
     				waits++;
@@ -425,6 +425,7 @@ public class CarVehicleGui implements Gui {
     						for(int y = -1; y<=1; y++){
     							if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(currentPosition, x,y))){
     								guiMoveFromCurrentPostionTo(new Position(currentPosition,x, y));
+    								AlertLog.getInstance().logDebug(AlertTag.VEHICLE_GUI, agent.getName() + " GUI", "moving + (" + x + ", " + y + ").");
     								moved = true;break;
     						}}
     						if(moved) break;

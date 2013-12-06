@@ -166,6 +166,12 @@ public class CarAgent extends Agent implements Car{
 			e.printStackTrace();
 		}
 		
+		try {
+			Thread.sleep(20000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		if(true)
 			return true;
