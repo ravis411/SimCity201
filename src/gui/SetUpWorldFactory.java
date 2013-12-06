@@ -25,6 +25,7 @@ import gui.Building.restaurants.RyansRestaurantBuilding;
 import gui.Building.restaurants.RyansRestaurantBuildingPanel;
 import gui.MockAgents.PseudoBusAgent;
 import gui.MockAgents.PseudoPerson;
+import gui.agentGuis.CarVehicleGui;
 import gui.agentGuis.PersonGui;
 import gui.agentGuis.VehicleGui;
 
@@ -42,6 +43,7 @@ import Person.Role.Role;
 import Person.Role.RoleFactory;
 import Transportation.BusAgent;
 import Transportation.BusStopConstruct;
+import Transportation.CarAgent;
 import agent.Agent;
 import astar.AStarTraversal;
 import astar.PersonAStarTraversal;
@@ -85,6 +87,13 @@ public class SetUpWorldFactory{
 		layout.addCrossWalk(20, 5, 2, 5);
 		layout.addCrossWalk(2, 5, 2, 5);
 		layout.addCrossWalk(30, 5, 2, 5);
+		
+		//Some driveways//:
+		//layout.addRoad(4, 4, 1, 1);
+		//layout.addCrossWalk(4, 4, 1, 1);
+		
+		
+		
 
 
 		LocationInfo location = new LocationInfo();
@@ -100,15 +109,20 @@ public class SetUpWorldFactory{
 		location.sector = 1;
 		location.positionToEnterFromMainGrid = new Dimension(5, 3);
 		location.entranceFromMainGridPosition = new Dimension(4, 3);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
+		//Some driveways//:	
+		layout.addRoad(4, 4, 1, 1);	layout.addCrossWalk(4, 4, 1, 1);
+		location.entranceFromRoadGrid = new Dimension(4, 3);
+		location.positionToEnterFromRoadGrid = new Dimension(4, 4);
 		addBuilding("Residence", "House 1", 3, 2, 2, 2, location);
 
 		//Building 2
 		location.sector = 1;
-		location.positionToEnterFromMainGrid = new Dimension(10, 3);
+		location.positionToEnterFromMainGrid = new Dimension(11, 3);
 		location.entranceFromMainGridPosition = new Dimension(9, 3);
 		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Residence", "House 2", 8, 2, 2, 2, location);
+		//Some driveways//:
+		layout.addRoad(4, 4, 1, 1);	layout.addCrossWalk(4, 4, 1, 1);
+		addBuilding("Residence", "House 2", 8, 2, 3, 2, location);
 
 		//Building 3
 		location.sector = 1;
@@ -279,6 +293,7 @@ public class SetUpWorldFactory{
 			
 			
 			addVehicle("");
+			addVehicle("Car");
 			//addVehicle("EvenBus");
 			//addVehicle("OddMockBus");
 		
@@ -628,6 +643,16 @@ public class SetUpWorldFactory{
 
 	private void addVehicle(String type) {
 		switch (type) {
+		case "Car":
+			CarAgent car = new CarAgent("Car 1");
+			AStarTraversal ct = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
+			CarVehicleGui carGui = new CarVehicleGui( car, layout, ct, locationMap);
+			car.setGui(carGui);
+			cityPanel.addGui(carGui);
+			car.startThread();
+		
+		break;	
+		
 		case "OddMockBus":
 			//add a mockVehicle
 			Queue<String> OddStopsQueue = new LinkedList<>(); //<--a list of the stops to go to
