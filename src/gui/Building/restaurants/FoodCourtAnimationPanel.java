@@ -71,6 +71,21 @@ public class FoodCourtAnimationPanel extends JPanel implements MouseListener, Ac
 	
 	
 	
+	/**	Sets the test view
+	 * 
+	 * @param test
+	 */
+	public void setTestView(boolean test){
+		for(BuildingGui b : restBuildings){
+			b.setTestView(test);
+		}
+	}
+	
+	
+	
+	
+	
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		for(BuildingGui b : restBuildings){

@@ -54,7 +54,59 @@ public class FoodCourtBuildingPanel extends BuildingPanel{
 		factory.addLocationToMap(locationInfo);
 		animPanel.addBuildingGui(rrb);
 		
+		//Adds Dylan's Restaurant
+		RestaurantBuilding drb = new RestaurantBuilding(new BuildingGui(375, 250, 50, 50));
+		RestaurantBuildingPanel drbp = new RestaurantBuildingPanel(drb, "Dylan's Restaurant", buildingPanels);
+		drb.setBuildingPanel(drbp);
+		buildingPanels.addBuildingPanel(drbp);
+		locationInfo.name = "Dylan's Restaurant";
+		factory.addLocationToMap(locationInfo);
+		animPanel.addBuildingGui(drb);
 		
+		//Adds Kush's Restaurant
+		KushRestaurantBuilding krb = new KushRestaurantBuilding(new BuildingGui(50, 250, 50, 50));
+		KushRestaurantBuildingPanel krbp = new KushRestaurantBuildingPanel(krb, "Kush's Restaurant", buildingPanels);
+		krb.setBuildingPanel(krbp);
+		buildingPanels.addBuildingPanel(krbp);
+		locationInfo.name = "Kush's Restaurant";
+		factory.addLocationToMap(locationInfo);
+		animPanel.addBuildingGui(krb);
+		
+		//Adds Luca's Restaurant
+		LucaRestaurantBuilding lrb = new LucaRestaurantBuilding(new BuildingGui(50, 150, 50, 50));
+		LucaRestaurantBuildingPanel lrbp = new LucaRestaurantBuildingPanel(lrb, "Luca's Restaurant", buildingPanels);
+		lrb.setBuildingPanel(lrbp);
+		buildingPanels.addBuildingPanel(lrbp);
+		locationInfo.name = "Luca's Restaurant";
+		factory.addLocationToMap(locationInfo);
+		animPanel.addBuildingGui(lrb);
+		
+		//Adds Byron's Restaurant
+		ByronRestaurantBuilding brb = new ByronRestaurantBuilding(new BuildingGui(675, 250, 50, 50));
+		ByronRestaurantBuildingPanel brbp = new ByronRestaurantBuildingPanel(brb, "Byron's Restaurant", buildingPanels);
+		brb.setBuildingPanel(brbp);
+		buildingPanels.addBuildingPanel(brbp);
+		locationInfo.name = "Byron's Restaurant";
+		factory.addLocationToMap(locationInfo);
+		animPanel.addBuildingGui(brb);
+		
+		//Adds Jeffrey's Restaurant
+		JeffreyRestaurantBuilding jrb = new JeffreyRestaurantBuilding(new BuildingGui(675, 150, 50, 50));
+		JeffreyRestaurantBuildingPanel jrbp = new JeffreyRestaurantBuildingPanel(jrb, "Jeffrey's Restaurant", buildingPanels);
+		jrb.setBuildingPanel(jrbp);
+		buildingPanels.addBuildingPanel(jrbp);
+		locationInfo.name = "Jeffrey's Restaurant";
+		factory.addLocationToMap(locationInfo);
+		animPanel.addBuildingGui(jrb);
+		
+		//Adds Mike's Restaurant
+		MikeRestaurantBuilding mrb = new MikeRestaurantBuilding(new BuildingGui(675, 50, 50, 50));
+		MikeRestaurantBuildingPanel mrbp = new MikeRestaurantBuildingPanel(mrb, "Mike's Restaurant", buildingPanels);
+		mrb.setBuildingPanel(mrbp);
+		buildingPanels.addBuildingPanel(mrbp);
+		locationInfo.name = "Mike's Restaurant";
+		factory.addLocationToMap(locationInfo);
+		animPanel.addBuildingGui(mrb);
 		
 	}
 	
@@ -71,8 +123,23 @@ public class FoodCourtBuildingPanel extends BuildingPanel{
 	 */
 	public void addRestaurant(BuildingPanel rest){
 		
-		
 	}
+	
+	
+	
+	
+	/**
+	 * 
+	 * Sets the test view
+	 */
+	public void setTestView(boolean test){
+		animPanel.setTestView(test);
+	}
+	
+	
+	
+	
+	
 	
 	
 	public void displayBuildingPanel() {

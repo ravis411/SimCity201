@@ -1,13 +1,15 @@
-package gui.Building;
+package gui.Building.restaurants;
 
+
+import gui.Building.BuildingGui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 
 @SuppressWarnings("serial")
-public class LucaRestaurantBuilding extends BuildingGui {	
+public class MikeRestaurantBuilding extends BuildingGui {	
 	
-	public LucaRestaurantBuilding( BuildingGui b ) {
+	public MikeRestaurantBuilding( BuildingGui b ) {
 		super( b.x, b.y, b.width, b.height );
 			
 	}
