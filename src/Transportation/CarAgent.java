@@ -68,8 +68,71 @@ public class CarAgent extends Agent implements Car{
 	@Override
 	protected boolean pickAndExecuteAnAction() {
 		
+		//Test stuff
 		destination = "House 1";
 		goToDestination();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		destination = "House 2";
+		goToDestination();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		destination = "Market 1";
+		goToDestination();
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		destination = "Apartment Building";
+		goToDestination();
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		destination = "Apartment Building 4";
+		goToDestination();
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		destination = "Restaurant 1";
+		goToDestination();
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		destination = "Apartment 5";
+		goToDestination();
+		if(true)
+			return true;
+		//end Test stuff
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		if (state == CarState.driving && passenger.state == PassengerState.present) {

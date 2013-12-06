@@ -403,29 +403,14 @@ public class CarVehicleGui implements Gui {
     				Thread.sleep(500);
     				waits++;
     				if(waits > 10){
-    					if(aStar.getGrid()[to.getX() + 1][to.getY()].availablePermits() > 0){
-    						try {
-    							guiMoveFromCurrentPostionTo(new Position(to,1, 0));
-    						} catch (Exception e) {
-    							//error moving to location
-    						}
-    					}if(aStar.getGrid()[to.getX()][to.getY()-1].availablePermits() > 0){
-    						try {
-    							guiMoveFromCurrentPostionTo(new Position(to,0,-1));
-    						} catch (Exception e) {
-    							//error moving to location
-    						}
-    					}if(aStar.getGrid()[to.getX()][to.getY()-1].availablePermits() > 0){
-    						try {
-    							guiMoveFromCurrentPostionTo(new Position(to,0, 1));
-    						} catch (Exception e) {
-    							//error moving to location
-    						}
-    					}
+    					if(aStar.getGrid()[to.getX() + 1][to.getY()].availablePermits() > 0)
+    						guiMoveFromCurrentPostionTo(new Position(to,1, 0));
+    					else if(aStar.getGrid()[to.getX()][to.getY()-1].availablePermits() > 0)
+    						guiMoveFromCurrentPostionTo(new Position(to,0,-1));
     					waits = 0;
     				}
     			} catch (InterruptedException e) {
-    				AlertLog.getInstance().logInfo(AlertTag.VEHICLE_GUI, agent.toString(), "Destination acquired. Waiting .5 second.");
+    				AlertLog.getInstance().logInfo(AlertTag.VEHICLE_GUI, agent.toString(), "Destination acquired by something. Waiting some seconds.");
     			}
     		}
     	}
