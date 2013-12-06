@@ -75,10 +75,10 @@ public class CarVehicleGui implements Gui {
         
   
 			//img = new ImageIcon(("movingCar.gif"));
-	
+        String s=new String("none");
 			try {
 				//BufferedImage img = ImageIO.read(new File("images/UFO.png"));
-				String s =( this.getClass().getResource("images/UFO.png").getPath() );
+				 s=( this.getClass().getResource("/images/UFO.png").getPath() );
 				BufferedImage img = ImageIO.read(new File(s));
 			    if(img != null){
 			    	ImageIcon icon = new ImageIcon(img);
@@ -86,7 +86,7 @@ public class CarVehicleGui implements Gui {
 			    }
 			} catch (Exception e) {
 				testView = true;
-				AlertLog.getInstance().logWarning(AlertTag.VEHICLE_GUI, agent.toString(), "Image not found. Switching to Test View");
+				AlertLog.getInstance().logWarning(AlertTag.VEHICLE_GUI, agent.toString(), "Image not found. Switching to Test View"+s);
 			}
 
 			
@@ -401,6 +401,7 @@ public class CarVehicleGui implements Gui {
     		}
     		else
     		{
+    			AlertLog.getInstance().logDebug(AlertTag.VEHICLE_GUI, agent.getName() + " GUI", "Destination must be blocked. Trying to move out of the way.");
     			try {
     				Thread.sleep(300);
     				waits++;
@@ -415,7 +416,7 @@ public class CarVehicleGui implements Gui {
     						guiMoveFromCurrentPostionTo(new Position(to,-1,-1));
     					else if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(to, 1,1)))
     						guiMoveFromCurrentPostionTo(new Position(to,1,1));
-    					waits = 0;
+    					
     				}*/
     				if(waits > 8){
     					AlertLog.getInstance().logDebug(AlertTag.VEHICLE_GUI, agent.getName() + " GUI", "Destination must be blocked. Trying to move out of the way.");
@@ -425,13 +426,11 @@ public class CarVehicleGui implements Gui {
     							if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(currentPosition, x,y))){
     								guiMoveFromCurrentPostionTo(new Position(currentPosition,x, y));
     								moved = true;break;
-    							}
-    						}
-    						if(moved)
-    							break;
+    						}}
+    						if(moved) break;
     					}
     					
-    					
+    					waits = 0;
 //    					if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(currentPosition, 1,0)))
 //    						guiMoveFromCurrentPostionTo(new Position(currentPosition,1, 0));
 //    					else if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(currentPosition, 0,1)))
@@ -444,7 +443,7 @@ public class CarVehicleGui implements Gui {
 //    						guiMoveFromCurrentPostionTo(new Position(currentPosition,1,1));
 //    					waits = 0;
     				}
-    			} catch (InterruptedException e) {
+    			} catch (Exception e) {
     				AlertLog.getInstance().logInfo(AlertTag.VEHICLE_GUI, agent.toString(), "Destination acquired by something. Waiting some seconds.");
     			}
     		}
