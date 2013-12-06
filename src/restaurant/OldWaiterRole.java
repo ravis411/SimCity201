@@ -2,6 +2,10 @@ package restaurant;
 
 import interfaces.Customer;
 import interfaces.Waiter;
+import interfaces.generic_interfaces.GenericCashier;
+import interfaces.generic_interfaces.GenericCook;
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -11,9 +15,7 @@ import java.util.concurrent.Semaphore;
 import restaurant.gui.WaiterGui;
 import trace.AlertLog;
 import trace.AlertTag;
-import Person.Role.Role;
-
-import com.sun.org.apache.xerces.internal.parsers.DOMParser;
+import Person.Role.ShiftTime;
 
 /**
  * Restaurant Waiter Agent
@@ -22,7 +24,7 @@ import com.sun.org.apache.xerces.internal.parsers.DOMParser;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the WaiterAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class OldWaiterRole extends Role implements Waiter {
+public class OldWaiterRole extends GenericWaiter implements Waiter {
 	/*public List<CustomerAgent> myCustomers
 	= new ArrayList<CustomerAgent>();*/
 	
@@ -60,24 +62,24 @@ public class OldWaiterRole extends Role implements Waiter {
 
 	public WaiterGui waiterGui = null;
 
-	public OldWaiterRole() {
-		super();
+	public OldWaiterRole(String workLocation) {
+		super(workLocation);
 	}
 
 	public String getName() {
 		return name;
 	}
 	
-	public void setCook(CookRole cook) {
-		this.cook = cook;
+	public void setCook(GenericCook cook) {
+		this.cook = (CookRole) cook;
 	}
 	
-	public void setHost(HostRole host) {
-		this.host = host;
+	public void setHost(GenericHost host) {
+		this.host = (HostRole) host;
 	}
 	
-	public void setCashier(CashierRole cashier) {
-		this.cashier = cashier;
+	public void setCashier(GenericCashier cashier) {
+		this.cashier = (CashierRole) cashier;
 	}
 	
 	//Messages
@@ -478,5 +480,18 @@ public class OldWaiterRole extends Role implements Waiter {
 		// TODO Auto-generated method stub
 		return "OldWaiterRole";
 	}
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
 

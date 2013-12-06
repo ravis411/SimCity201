@@ -4,13 +4,17 @@ import util.Interval;
 
 public abstract class Employee extends Role{
 	
-	private String workLocation;
-
+	protected String workLocation;
+	
+	protected Employee(String workLocation){
+		this.workLocation = workLocation;
+	}
+	
 	/**
 	 * Returns the interval over which an employee is expected to work
 	 * @return interval over which an employee is expected 
 	 */
-	public abstract Interval getShift();
+	public abstract ShiftTime getShift();
 	
 	/**
 	 * Returns hourly wage of employee
@@ -33,7 +37,5 @@ public abstract class Employee extends Role{
 	public void setWorkLocation(String workLocation){
 		this.workLocation = workLocation;
 	}
-	
-	enum ShiftTime {DayShift, NightShift}
 	
 }

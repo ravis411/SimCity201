@@ -1,28 +1,18 @@
 package kushrestaurant;
-import java.util.*;
+import interfaces.generic_interfaces.GenericCashier;
 
-import kushrestaurant.interfaces.*;
-
-import java.util.concurrent.Semaphore;
-
-import Person.Role.Role;
-import agent.Agent;
-
-import javax.swing.*;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
-import java.util.TimerTask;
 
-import kushrestaurant.CustomerRole.AgentEvent;
-import kushrestaurant.WaiterRole.CustomerState;
-import kushrestaurant.WaiterRole.MyCustomer;
-import kushrestaurant.HostRole.Table;
+import Person.Role.ShiftTime;
+import kushrestaurant.interfaces.Cashier;
+import kushrestaurant.interfaces.Customer;
+import kushrestaurant.interfaces.Market;
+import kushrestaurant.interfaces.Waiter;
 
-public class CashierRole extends Role implements Cashier{
+public class CashierRole extends GenericCashier implements Cashier{
 	
 	public String name;
 	private int money=100;
@@ -67,8 +57,23 @@ enum CashierState {busy,free};
 CashierState cashierState= CashierState.free;
 public double icheck=10.99;
 
+public CashierRole(String workLocation){
+super(workLocation);
+    
+	
+	// make some tables
+	//tables = new ArrayList<Table>(NTABLES);
+	//for (int ix = 1; ix <= NTABLES; ix++) {
+		//tables.add(new Table(ix));//how you add to a collections
+	cashierState= CashierState.free;
+	foods.put("Steak",15.99);
+	foods.put("Chicken",10.99);
+	foods.put("Salad",5.99);
+	foods.put("Pizza",8.99);
+}
+/*
 public CashierRole(String name) {
-	super();
+	//super();
     
 	this.name = name;
 	// make some tables
@@ -81,21 +86,8 @@ public CashierRole(String name) {
 	foods.put("Salad",5.99);
 	foods.put("Pizza",8.99);
 	
-}
-public CashierRole(){
-super();
-    
-	
-	// make some tables
-	//tables = new ArrayList<Table>(NTABLES);
-	//for (int ix = 1; ix <= NTABLES; ix++) {
-		//tables.add(new Table(ix));//how you add to a collections
-	cashierState= CashierState.free;
-	foods.put("Steak",15.99);
-	foods.put("Chicken",10.99);
-	foods.put("Salad",5.99);
-	foods.put("Pizza",8.99);
-}
+}*/
+
 //map<String,Food> foods;
 public void msgProduceCheck(Customer customer,String choice,Waiter waiter){
 	print("Producing check");
@@ -223,6 +215,16 @@ public boolean canGoGetFood() {
 public String getNameOfRole() {
 	// TODO Auto-generated method stub
 	return "CashierRole";
+}
+@Override
+public ShiftTime getShift() {
+	// TODO Auto-generated method stub
+	return null;
+}
+@Override
+public Double getSalary() {
+	// TODO Auto-generated method stub
+	return null;
 }
 
 

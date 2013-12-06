@@ -113,11 +113,6 @@ public class PseudoPerson extends Agent implements Person{
 		
 	}
 
-	@Override
-	public void msgReportForWork(String role) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void msgGoToMarket(String item) {
@@ -202,13 +197,7 @@ public class PseudoPerson extends Agent implements Person{
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
-	@Override
-	public Calendar getRealTime() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	@Override
 	public List<PersonAgent> getFriends() {
 		// TODO Auto-generated method stub
@@ -223,6 +212,18 @@ public class PseudoPerson extends Agent implements Person{
 
 	@Override
 	public void setInitialRole(Role roleFromString, String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgReportForWork() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgYouCanLeave() {
 		// TODO Auto-generated method stub
 		
 	}

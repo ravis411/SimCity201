@@ -1,34 +1,26 @@
 package kushrestaurant;
-import java.util.*;
+import interfaces.generic_interfaces.GenericCook;
 
-import kushrestaurant.gui.CookGui;
-//import kushrestaurant.gui.RestaurantGui;
-import kushrestaurant.interfaces.*;
-//import restaurant.Order2;
-import kushrestaurant.MarketRole.Order2;
-
-import java.util.concurrent.Semaphore;
-
-import Person.Role.Role;
-import agent.Agent;
-
-import javax.swing.*;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import kushrestaurant.CustomerRole.AgentEvent;
-import kushrestaurant.MarketRole.MarketStatus;
-import kushrestaurant.WaiterRole.CustomerState;
-import kushrestaurant.WaiterRole.MyCustomer;
+import Person.Role.ShiftTime;
 import kushrestaurant.HostRole.Table;
+import kushrestaurant.MarketRole.MarketStatus;
+//import restaurant.Order2;
+import kushrestaurant.MarketRole.Order2;
+import kushrestaurant.gui.CookGui;
+//import kushrestaurant.gui.RestaurantGui;
+import kushrestaurant.interfaces.Cook;
+import kushrestaurant.interfaces.Customer;
+import kushrestaurant.interfaces.Waiter;
 
-public class CookRole extends Role implements Cook {
+public class CookRole extends GenericCook implements Cook {
 	List<Order> orders= new ArrayList<Order>();
 	public String name;
 	private CookGui cookGui=null;
@@ -72,6 +64,7 @@ public int getCookTime(String choice){
 	}
 		
 }
+/*
 public CookRole(String name) {
 	super();
 	//this.gui=gui;
@@ -92,9 +85,10 @@ public CookRole(String name) {
 	foods.put("Salad",inventory.get(2));
 	
 	
-}
-public CookRole() {
-	super();
+}*/
+
+public CookRole(String workLocation) {
+	super(workLocation);
 	//this.gui=gui;
 	
 	//this.name = name;
@@ -284,6 +278,16 @@ public boolean canGoGetFood() {
 public String getNameOfRole() {
 	// TODO Auto-generated method stub
 	return "CookRole";
+}
+@Override
+public ShiftTime getShift() {
+	// TODO Auto-generated method stub
+	return null;
+}
+@Override
+public Double getSalary() {
+	// TODO Auto-generated method stub
+	return null;
 }
 
 
