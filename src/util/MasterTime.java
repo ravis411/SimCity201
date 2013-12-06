@@ -42,7 +42,7 @@ public class MasterTime {
 		calendar.add(field, amt);
 		
 		int month = calendar.get(Calendar.MONTH);
-		int day = calendar.get(Calendar.MONTH);
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
 		int hour = calendar.get(Calendar.HOUR_OF_DAY);
 		int minute = calendar.get(Calendar.MINUTE);
 		boolean weekend = calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || 

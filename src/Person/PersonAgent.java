@@ -339,13 +339,14 @@ public class PersonAgent extends Agent implements Person{
 		if(parties.size()!=0){
 			for(Party p:parties){
 				if(p.partyState==PartyState.ReceivedInvite){
+					MasterTime.getInstance().registerDateListener(p.rsvpDeadline.get(Calendar.MONTH), p.rsvpDeadline.get(Calendar.DAY_OF_MONTH), p.rsvpDeadline.get(Calendar.HOUR_OF_DAY), p.rsvpDeadline.get(Calendar.MINUTE), this);
 					for(PersonAgent pa :friends){
 						if(pa==p.getHost()){
 							int i= new Random().nextInt(40);
 							if(i%2==0){
 								pa.msgIAmComing(this);
 								p.partyState=PartyState.GoingToParty;
-								MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY)-1, p.dateOfParty.get(Calendar.MINUTE), this);
+								//MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY)-1, p.dateOfParty.get(Calendar.MINUTE), this);
 								return true;
 							}	
 						}
@@ -415,13 +416,10 @@ public class PersonAgent extends Agent implements Person{
 							if(i%2==0){
 								pa.msgIAmComing(this);
 								p.partyState=PartyState.GoingToParty;
-								MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY)-1, p.dateOfParty.get(Calendar.MINUTE), this);
+								MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY)-1, p.dateOfParty.get(Calendar.MINUTE), this); 
 								return true;
-							}
-						
-							
+							}	
 						}
-						
 					}
 					int i= new Random().nextInt(40);
 					if(i%2==0){
@@ -911,9 +909,8 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	public void dateAction(int month, int day, int hour, int minute) {
-		print("Asdad" + month + day);
 		for(Party p : parties) {
-			if(p.rsvpDeadline.get(Calendar.MONTH) == month && p.rsvpDeadline.get(Calendar.DAY_OF_MONTH) == day && p.rsvpDeadline.get(Calendar.HOUR) == hour && p.rsvpDeadline.get(Calendar.MINUTE) == minute) {
+			if(p.rsvpDeadline.get(Calendar.MONTH) == month && p.rsvpDeadline.get(Calendar.DAY_OF_MONTH) == day && p.rsvpDeadline.get(Calendar.HOUR_OF_DAY) == hour && p.rsvpDeadline.get(Calendar.MINUTE) == minute) {
 				print("LOYDDDDDDDDD!!!!!");
 			}
 		}

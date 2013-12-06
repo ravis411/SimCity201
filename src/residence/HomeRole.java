@@ -413,7 +413,7 @@ public class HomeRole extends Role implements Home {
 			myPerson.getFriends().get(i).msgPartyInvitation(myPerson, rsvpDate, partyDate);
 			partyInvitees.add(myPerson.getFriends().get(i));
 		}
-		//partyState = PartyState.setUp;
+		partyState = PartyState.setUp;
 	}
 
 	//utilities
