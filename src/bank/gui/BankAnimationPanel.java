@@ -63,8 +63,8 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
     private PersonAgent testTeller = new PersonAgent("Test Teller", null);
     private PersonAgent testLoanTeller = new PersonAgent("Test Loan Teller",null);
  //   private PersonAgent testClient = new PersonAgent("Test Client", null);
-    private BankTellerRole testTellerRole = new BankTellerRole();
-    private LoanTellerRole testLoanTellerRole = new LoanTellerRole();
+    private BankTellerRole testTellerRole = new BankTellerRole("Bank");
+    private LoanTellerRole testLoanTellerRole = new LoanTellerRole("Bank");
 //    private BankClientRole testClientRole = new BankClientRole();
     
     

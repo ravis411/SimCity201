@@ -19,9 +19,9 @@ public interface Waiter {
 	public void msgBringFoodToTable(Order o);
 	public void msgOutOfFood(int choice, Customer customer);
 	public void msgBreakReply(boolean b);
-	public void setHost(HostRole hr);
-	public void setCook(CookRole cr);
-	public void setCashier(CashierRole cr);
+//	public void setHost(HostRole hr);
+//	public void setCook(CookRole cr);
+//	public void setCashier(CashierRole cr);
 	
 	void msgAtFrontDesk();
 	void msgAtWaitingArea();

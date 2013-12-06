@@ -7,6 +7,7 @@ import java.util.Calendar;
 
 import trace.AlertLog;
 import trace.AlertTag;
+import util.DateListener;
 import util.MasterTime;
 import util.TimeListener;
 
@@ -18,21 +19,13 @@ public class BuildingList extends ArrayList<Building> implements TimeListener{
 	private static final long serialVersionUID = 1L;
 	private static BuildingList instance = null;
 	
-	private static int DAY_SHIFT_HOUR = 9;
-	private static int DAY_SHIFT_MINUTE = 0;
-	
-	private static int NIGHT_SHIFT_HOUR = 17;
-	private static int NIGHT_SHIFT_MINUTE = 0;
-	
-	private static int END_SHIFT_HOUR = 0;
-	private static int END_SHIFT_MINUTE = 0;
 	
 	protected BuildingList(){
 		super();
 		
-		MasterTime.getInstance().registerTimeListener(DAY_SHIFT_HOUR, DAY_SHIFT_MINUTE, false, this);
-		MasterTime.getInstance().registerTimeListener(NIGHT_SHIFT_HOUR, NIGHT_SHIFT_MINUTE, false, this);
-		MasterTime.getInstance().registerTimeListener(END_SHIFT_HOUR, END_SHIFT_MINUTE, false, this);
+		MasterTime.getInstance().registerTimeListener(Workplace.DAY_SHIFT_HOUR, Workplace.DAY_SHIFT_MIN, false, this);
+		MasterTime.getInstance().registerTimeListener(Workplace.NIGHT_SHIFT_HOUR, Workplace.NIGHT_SHIFT_MIN, false, this);
+		MasterTime.getInstance().registerTimeListener(Workplace.END_SHIFT_HOUR, Workplace.END_SHIFT_MIN, false, this);
 	}
 	
 	@Override
@@ -65,6 +58,7 @@ public class BuildingList extends ArrayList<Building> implements TimeListener{
 		for(Building b : this){
 			if(b instanceof Workplace){
 				Workplace w = (Workplace) b;
+				w.notifyEmployeesTheyCanLeave();
 			}
 		}
 	}
@@ -75,6 +69,12 @@ public class BuildingList extends ArrayList<Building> implements TimeListener{
 	
 	private void endDayShift(){
 		AlertLog.getInstance().logMessage(AlertTag.GENERAL_CITY, "Timing", "Ending the Day Shift");
+		for(Building b : this){
+			if(b instanceof Workplace){
+				Workplace w = (Workplace) b;
+				w.notifyEmployeesTheyCanLeave();
+			}
+		}
 	}
 	
 	private void beginNightShift(){
@@ -85,12 +85,12 @@ public class BuildingList extends ArrayList<Building> implements TimeListener{
 	public void timeAction(int hour, int minute) {
 		// TODO Auto-generated method stub
 		AlertLog.getInstance().logMessage(AlertTag.GENERAL_CITY, "Timing", "ACTION CALLED ---- "+hour+":"+minute);
-		if(hour == DAY_SHIFT_HOUR && minute == DAY_SHIFT_MINUTE){
+		if(hour == Workplace.DAY_SHIFT_HOUR && minute == Workplace.DAY_SHIFT_MIN){
 			beginDayShift();
-		}else if(hour == NIGHT_SHIFT_HOUR && minute == NIGHT_SHIFT_MINUTE){
+		}else if(hour == Workplace.NIGHT_SHIFT_HOUR && minute == Workplace.NIGHT_SHIFT_MIN){
 			endDayShift();
 			beginNightShift();
-		}else if(hour == END_SHIFT_HOUR && minute == END_SHIFT_MINUTE){
+		}else if(hour == Workplace.END_SHIFT_HOUR && minute == Workplace.END_SHIFT_MIN){
 			endNightShift();
 		}
 	}

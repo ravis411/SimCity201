@@ -1,24 +1,27 @@
 package kushrestaurant;
 
-import kushrestaurant.gui.CustomerGui;
-import kushrestaurant.WaiterRole.CustomerState;
-import kushrestaurant.WaiterRole.Menu;
-//import kushrestaurant.gui.RestaurantGui;
-import kushrestaurant.interfaces.Customer;
-import kushrestaurant.interfaces.Waiter;
-import Person.Role.Role;
-import agent.Agent;
+import interfaces.generic_interfaces.GenericCashier;
+import interfaces.generic_interfaces.GenericCook;
+import interfaces.generic_interfaces.GenericCustomer;
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
 
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
+import Person.Role.ShiftTime;
+import kushrestaurant.WaiterRole.Menu;
+import kushrestaurant.gui.CustomerGui;
+//import kushrestaurant.gui.RestaurantGui;
+import kushrestaurant.interfaces.Customer;
+import kushrestaurant.interfaces.Waiter;
+
 /**
  * Restaurant customer agent.
  */
-public class CustomerRole extends Role implements Customer {
+public class CustomerRole extends GenericCustomer implements Customer {
 	private String name;
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
@@ -56,6 +59,7 @@ public class CustomerRole extends Role implements Customer {
 		i++;
 		money=new Random().nextInt(20);
 	}
+	/*
 	public CustomerRole(String name,int id){
 		super();
 		this.name = name;
@@ -75,19 +79,19 @@ public class CustomerRole extends Role implements Customer {
 		}
 		else 
 			money=new Random().nextInt(20);
-	}
+	}*/
 
 	/**
 	 * hack to establish connection to Host agent.
 	 */
-	public void setHost(HostRole host) {
-		this.host = host;
+	public void setHost(GenericHost host) {
+		this.host = (HostRole) host;
 	}
-   public void setWaiter(Waiter waiter){
-	   this.waiter=waiter;
+   public void setWaiter(GenericWaiter waiter){
+	   this.waiter= (Waiter) waiter;
    }
-   public void setCashier(CashierRole cashier){
-	   this.cashier=cashier;
+   public void setCashier(GenericCashier cashier){
+	   this.cashier= (CashierRole) cashier;
    }
    public void setTableNumber(int t)
    {
@@ -376,6 +380,13 @@ public class CustomerRole extends Role implements Customer {
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
 		return "RestaurantCustomerRole";
+	}
+
+	@Override
+	public void setWaiter(Waiter w) {
+		// TODO Auto-generated method stub
+		this.waiter=  w;
+		
 	}
 
 	

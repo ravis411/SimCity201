@@ -1,15 +1,20 @@
 package restaurant;
 
-import Person.Role.Role;
-import agent.Agent;
+import interfaces.Customer;
+import interfaces.Waiter;
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Vector;
+import java.util.concurrent.Semaphore;
+
 import restaurant.gui.HostGui;
 import trace.AlertLog;
 import trace.AlertTag;
-import interfaces.Customer;
-import interfaces.Waiter;
-
-import java.util.*;
-import java.util.concurrent.Semaphore;
+import Person.Role.ShiftTime;
 
 /**
  * Restaurant Host Agent
@@ -18,7 +23,7 @@ import java.util.concurrent.Semaphore;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class HostRole extends Role {
+public class HostRole extends GenericHost {
 	static final int NTABLES = 4;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
@@ -38,8 +43,8 @@ public class HostRole extends Role {
 
 	public HostGui hostGui = null;
 
-	public HostRole() {
-		super();
+	public HostRole(String workLocation) {
+		super(workLocation);
 
 		// make some tables
 		tables = new ArrayList<Table>(NTABLES);
@@ -194,8 +199,8 @@ public class HostRole extends Role {
 		return hostGui;
 	}*/
 	
-	public void addWaiter(Waiter w) {
-		waiters.add(w);
+	public void addWaiter(GenericWaiter w) {
+		waiters.add((Waiter) w);
 	}
 
 	private class Table {
@@ -251,6 +256,18 @@ public class HostRole extends Role {
 	@Override
 	public String getNameOfRole() {
 		return "HostRole";
+	}
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	/*public boolean setFrontDesk() {

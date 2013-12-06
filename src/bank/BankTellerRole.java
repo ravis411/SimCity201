@@ -1,19 +1,17 @@
 package bank;
-import bank.gui.TellerGui;
-import building.Restaurant;
 import interfaces.BankClient;
 import interfaces.BankTeller;
-import interfaces.Cashier;
 
-import java.util.*;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Semaphore;
 
 import restaurant.CashierRole;
 import trace.AlertLog;
 import trace.AlertTag;
-import util.Interval;
 import Person.Role.Employee;
-import Person.Role.Role;
+import Person.Role.ShiftTime;
+import bank.gui.TellerGui;
 
 /**
  * 
@@ -38,8 +36,8 @@ public class BankTellerRole extends Employee implements BankTeller{
 	private TellerGui tellerGui = null;
 
 	
-	public BankTellerRole(){
-		super();
+	public BankTellerRole(String workLocation){
+		super(workLocation);
 		Accounts = Database.INSTANCE.sendDatabase();
 	}
  
@@ -304,7 +302,7 @@ public class BankTellerRole extends Employee implements BankTeller{
 	}
 
 	@Override
-	public Interval getShift() {
+	public ShiftTime getShift() {
 		// TODO Auto-generated method stub
 		return null;
 	}

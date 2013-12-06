@@ -4,6 +4,7 @@ import interfaces.Cashier;
 import interfaces.Customer;
 import interfaces.Market;
 import interfaces.Waiter;
+import interfaces.generic_interfaces.GenericCashier;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -11,20 +12,18 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 
+import restaurant.gui.CashierGui;
+import Person.Role.Role;
+import Person.Role.ShiftTime;
 import bank.BankTellerRole;
 import building.BuildingList;
-import restaurant.gui.CashierGui;
-import trace.AlertLog;
-import trace.AlertTag;
-import MarketEmployee.MarketManagerRole;
-import Person.Role.Role;
 
 
 /**
  * Restaurant Cashier Agent
  */
 
-public class CashierRole extends Role implements Cashier {
+public class CashierRole extends GenericCashier implements Cashier {
 	private Vector<Check> checks = new Vector<Check>();
 	private Vector<Check> payingCustomers = new Vector<Check>();
 	private Vector<MarketBill> marketBills = new Vector<MarketBill>();
@@ -46,8 +45,8 @@ public class CashierRole extends Role implements Cashier {
 	CashierGui cashierGui = null;
 	BankTellerRole teller = null;
 
-	public CashierRole() {
-		super();
+	public CashierRole(String workLocation) {
+		super(workLocation);
 		
 		List<Role> inhabitants = BuildingList.findBuildingWithName("Bank").getInhabitants();
 		for(Role r : inhabitants) {
@@ -221,6 +220,18 @@ public class CashierRole extends Role implements Cashier {
 	@Override
 	public String getNameOfRole() {
 		return "CashierRole";
+	}
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 

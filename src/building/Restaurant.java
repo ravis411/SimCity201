@@ -1,10 +1,14 @@
 package building;
 
 import gui.Building.BuildingPanel;
+import interfaces.generic_interfaces.GenericCashier;
+import interfaces.generic_interfaces.GenericCook;
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
 import kushrestaurant.CashierRole;
 import kushrestaurant.CookRole;
 import kushrestaurant.HostRole;
-import kushrestaurant.WaiterRole;
+import Person.Role.Employee;
 //import kushrestaurant.OldWaiterRole;
 import Person.Role.Role;
 
@@ -34,11 +38,11 @@ public class Restaurant extends Building implements Workplace {
 		for(Role r : inhabitants){
 			if(r instanceof HostRole){
 				hasHost = true;
-			}else if(r instanceof CookRole){
+			}else if(r instanceof GenericCook){
 				hasCook = true;
-			}else if(r instanceof CashierRole){
+			}else if(r instanceof GenericCashier){
 				hasCashier = true;
-			}else if(r instanceof WaiterRole ){
+			}else if(r instanceof GenericWaiter ){
 				hasWaiter = true;
 			}
 		}
@@ -46,33 +50,44 @@ public class Restaurant extends Building implements Workplace {
 		return hasHost && hasCook && hasWaiter && hasCashier;
 	}
 	
-	public HostRole getHostRole(){
+	public GenericHost getHostRole(){
 			for(Role r : inhabitants){
-				if(r instanceof HostRole){
-					return (HostRole) r;
+				if(r instanceof GenericHost){
+					return (GenericHost) r;
 				}
 			}
 		
 		return null;
 	}
 	
-	public CashierRole getCashierRole(){
+	public GenericCashier getCashierRole(){
 		for(Role r : inhabitants){
 			if(r instanceof CashierRole){
-				return (CashierRole) r;
+				return (GenericCashier) r;
 			}
 		}
 		
 		return null;
 	}
 		
-	public CookRole getCookRole(){
+	public GenericCook getCookRole(){
 		for(Role r : inhabitants){
-			if(r instanceof CookRole){
-				return (CookRole) r;
+			if(r instanceof GenericCook){
+				return (GenericCook) r;
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public void notifyEmployeesTheyCanLeave() {
+		// TODO Auto-generated method stub
+		/*for(Role r : inhabitants){
+			if(r instanceof Employee){
+				r.deactivate();
+				r.getPerson().msgYouCanLeave();
+			}
+		}*/
 	}
 	
 
