@@ -6,6 +6,7 @@ package gui.agentGuis;
 import gui.Gui;
 import gui.LocationInfo;
 import gui.SimCityLayout;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -24,6 +25,7 @@ import Transportation.CarAgent;
 import astar.AStarNode;
 import astar.AStarTraversal;
 import astar.Position;
+import astar.VehicleAStarTraversal;
 
 
 
@@ -402,11 +404,15 @@ public class CarVehicleGui implements Gui {
     			try {
     				Thread.sleep(500);
     				waits++;
-    				if(waits > 10){
-    					if(aStar.getGrid()[to.getX() + 1][to.getY()].availablePermits() > 0)
+    				if(waits > 8){
+    					if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(to, 1,0)))
     						guiMoveFromCurrentPostionTo(new Position(to,1, 0));
-    					else if(aStar.getGrid()[to.getX()][to.getY()-1].availablePermits() > 0)
+    					else if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(to, 0,-1)))
     						guiMoveFromCurrentPostionTo(new Position(to,0,-1));
+    					else if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(to, -1,-1)))
+    						guiMoveFromCurrentPostionTo(new Position(to,-1,-1));
+    					else if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(to, 1,1)))
+    						guiMoveFromCurrentPostionTo(new Position(to,1,1));
     					waits = 0;
     				}
     			} catch (InterruptedException e) {

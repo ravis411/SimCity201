@@ -58,5 +58,5 @@ public abstract class GraphTraversal
 						      List<Node> newNodes);
 	public abstract List<Node> expandFunc(Node node); 
 
-	public abstract void printCurrentList();
+	//public abstract void printCurrentList();
 }//end printCurrentList
