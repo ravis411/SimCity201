@@ -4,7 +4,6 @@ import building.Restaurant;
 import interfaces.BankClient;
 import interfaces.BankTeller;
 import interfaces.Cashier;
-import interfaces.Employee;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -13,6 +12,7 @@ import restaurant.CashierRole;
 import trace.AlertLog;
 import trace.AlertTag;
 import util.Interval;
+import Person.Role.Employee;
 import Person.Role.Role;
 
 /**
@@ -21,7 +21,7 @@ import Person.Role.Role;
  *
  */
 
-public class BankTellerRole extends Role implements Employee , BankTeller{
+public class BankTellerRole extends Employee implements BankTeller{
 	public BankClient myClient;
 	public CashierRole myRestaurant;
 	private int LineNum = new Random().nextInt(3)+1; //from 1 to n, with 5 being the loan line, should be assigned in creation

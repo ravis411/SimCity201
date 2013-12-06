@@ -43,7 +43,6 @@ public class Restaurant extends Building implements Workplace {
 			}
 		}
 		
-		System.out.println( hasHost && hasCook && hasWaiter && hasCashier);
 		return hasHost && hasCook && hasWaiter && hasCashier;
 	}
 	

@@ -3,7 +3,6 @@ package Person;
 import gui.Building.ResidenceBuildingPanel;
 import gui.agentGuis.PersonGui;
 import interfaces.BusStop;
-import interfaces.Employee;
 import interfaces.Person;
 import kushrestaurant.interfaces.Waiter;
 
@@ -25,6 +24,7 @@ import trace.AlertLog;
 import trace.AlertTag;
 import MarketEmployee.MarketEmployeeRole;
 import MarketEmployee.MarketManagerRole;
+import Person.Role.Employee;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
 import Transportation.BusStopAgent;
@@ -77,7 +77,6 @@ public class PersonAgent extends Agent implements Person{
 	public PersonState state;
 	private StateOfEmployment stateOfEmployment;
 	private Preferences prefs;
-	//provides a hungerLevel on a normalized 0 to 100 scale
 	private int hungerLevel;
 	
 	private PersonGui gui;

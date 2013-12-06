@@ -84,6 +84,7 @@ public class BuildingList extends ArrayList<Building> implements TimeListener{
 	@Override
 	public void timeAction(int hour, int minute) {
 		// TODO Auto-generated method stub
+		AlertLog.getInstance().logMessage(AlertTag.GENERAL_CITY, "Timing", "ACTION CALLED ---- "+hour+":"+minute);
 		if(hour == DAY_SHIFT_HOUR && minute == DAY_SHIFT_MINUTE){
 			beginDayShift();
 		}else if(hour == NIGHT_SHIFT_HOUR && minute == NIGHT_SHIFT_MINUTE){

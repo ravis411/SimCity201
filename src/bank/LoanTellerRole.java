@@ -3,13 +3,13 @@ import bank.BankTellerRole.location;
 import bank.gui.LoanGui;
 import Person.Role.*;
 import interfaces.BankClient;
-import interfaces.Employee;
 
 
 
 
 
 import interfaces.LoanTeller;
+
 
 //import Person.*;
 import java.util.*;
@@ -27,7 +27,7 @@ import util.Interval;
  * @author Byron Choy
  *
  */
-public class LoanTellerRole extends Role implements Employee, LoanTeller{
+public class LoanTellerRole extends Employee implements LoanTeller{
 	public BankClient myClient;
 	private int myClientAge;
 
@@ -36,7 +36,6 @@ public class LoanTellerRole extends Role implements Employee, LoanTeller{
 	public enum location {entrance, station, breakRoom,closing};
 	public location locationState = location.entrance;
 	public double transactionAmount;
-
 	
 	
 	double loanAmount;
