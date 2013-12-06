@@ -172,9 +172,7 @@ public class HostRole extends Role {
 			{
 			if(!waitingCustomers.isEmpty())
 			{waitingCustomers.get(0).msgWait();
-			if(waitingCustomers.get(0).getName().equals("DoesntWait"))
-				{waitingCustomers.remove(0);
-				}
+			
 				}
 			}
 		

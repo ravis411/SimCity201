@@ -104,8 +104,8 @@ public CookRole() {
 		//tables.add(new Table(ix));//how you add to a collections
 	cookState= state.free;
 	inventory.add(new Food("Steak",3));
-	inventory.add(new Food("Chicken",0));
-	inventory.add(new Food("Salad",0));
+	inventory.add(new Food("Chicken",3));
+	inventory.add(new Food("Salad",3));
 	inventory.add(new Food("Pizza",3));
 	foods.put("Steak",inventory.get(0));
 	foods.put("Chicken",inventory.get(1));
@@ -185,7 +185,7 @@ public void OrderFromMarket(){
 	stateChanged();
 	
 }
-protected boolean pickAndExecuteAnAction() {
+public boolean pickAndExecuteAction() {
 	/* Think of this next rule as:
         Does there exist a table and customer,
         so that table is unoccupied and customer is waiting.
@@ -274,11 +274,7 @@ timer.schedule(new TimerTask() {
 	},
 	1000);
 }
-@Override
-public boolean pickAndExecuteAction() {
-	// TODO Auto-generated method stub
-	return false;
-}
+
 @Override
 public boolean canGoGetFood() {
 	// TODO Auto-generated method stub

@@ -257,48 +257,10 @@ public class CustomerRole extends Role implements Customer {
   private void OrderAction()
   {    //int i=new Random().nextInt(20); 
 		//Randomly Choose a Food
-	  if(Menu.menu.size()>=1){
-		if(money==5.99){
-			choice = "Salad";
-		}
-		else{
-			if(this.name.equals("Chicken") && !orderAgain)
-			{
-				choice= "Chicken";
-				waiter.msgHereisChoice(this, choice);
-				customerGui.orderedFood();
-				
-				stateChanged();
-				return;
-				
-			}
-			else 
-		    {if (i%2==0){choice = "Pizza";}
-		      else {choice="Steak";}
-		    
-		}
-		print("I want " + choice);
-		if(money>=Menu.getPrice(choice) && !badCustomer){
-		waiter.msgHereisChoice(this, choice);
+	  choice="Chicken";
+	    waiter.msgHereisChoice(this, choice);
 		customerGui.orderedFood();
-		stateChanged();}
-		else if(badCustomer)
-		{
-			print("Dont have enough money, still ordering the food as I am a bad customer");
-			waiter.msgHereisChoice(this, choice);
-			customerGui.orderedFood();
-			stateChanged();
-		}
-		else{
-			print("But dont have enough money so leaving");
-			//isHungry=false;
-		    state=AgentState.Leaving;
-		    stateChanged();
-			//leaveTable();
-		}
-		
-	  }}
-	  else leaveTable();
+		stateChanged();
 	}
 	private void EatFood() {
 		print("Eating Food");
@@ -367,11 +329,11 @@ public class CustomerRole extends Role implements Customer {
 		{
 			print("Leaving.");
 			
-			if(!name.equals("DoesntWait"))
-					{waiter.msgDoneEating(this);
-			customerGui.DoExitRestaurant();}
+			
+					waiter.msgDoneEating(this);
+			customerGui.DoExitRestaurant();
 			state = AgentState.DoingNothing;
-		}
+}
 	
 
 	// Accessors, etc.

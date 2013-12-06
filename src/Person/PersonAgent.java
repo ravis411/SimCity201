@@ -128,7 +128,7 @@ public class PersonAgent extends Agent implements Person{
 				role.addWaiter(w);
 				w.setHost(role);
 				w.setCook(cook);
-				//w.setCashier(cashier);
+				w.setCashier(cashier);
 			}
 			if(r instanceof MarketManagerRole ){
 				 MarketManagerRole role = (MarketManagerRole) findRole(Role.MARKET_MANAGER_ROLE);
