@@ -1,4 +1,4 @@
-package restaurant;
+package byronRestaurant;
 
 
 import agent.Agent;
@@ -7,6 +7,8 @@ import byronRestaurant.gui.WaiterGui;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
+
+import restaurant.WaiterAgent;
 
 /**
  * Restaurant Cook Agent

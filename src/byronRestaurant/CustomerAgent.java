@@ -1,4 +1,4 @@
-package restaurant;
+package byronRestaurant;
 
 import agent.Agent;
 import byronRestaurant.WaiterAgent;
