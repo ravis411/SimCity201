@@ -45,10 +45,8 @@ public class HomeRole extends Role implements Home {
 	private Semaphore atCenter = new Semaphore(0, true);
 	Timer timer = new Timer();
 	
-	private Calendar rsvpDate = Calendar.getInstance();
-	private Calendar partyDate = Calendar.getInstance();
-
-	private String name;
+	public Calendar rsvpDate = Calendar.getInstance();
+	public Calendar partyDate = Calendar.getInstance();
 	
 	public HomeRoleGui gui;
 
@@ -61,7 +59,7 @@ public class HomeRole extends Role implements Home {
 	public AgentEvent event = AgentEvent.none;
 	
 	public enum PartyState
-	{none, sendInvites, setUp, host};
+	{none, sendInvites, resendInvites, setUp, host};
 	public PartyState partyState = PartyState.sendInvites;
 
 	public HomeRole(PersonAgent myPerson) {
@@ -152,6 +150,16 @@ public class HomeRole extends Role implements Home {
 		partyState = PartyState.sendInvites;
 		stateChanged();
 	}
+	public void msgResendInvites() {
+		print("Resending invites to those who didn't RSVP yet.");
+		partyState = PartyState.resendInvites;
+		stateChanged();
+	}
+	public void msgHostParty() {
+		print("It's party time at my house!");
+		partyState = PartyState.host;
+		stateChanged();
+	}
 	
 	public void msgAtKitchen() {
 		atKitchen.release();
@@ -178,6 +186,14 @@ public class HomeRole extends Role implements Home {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAction() {
+		if(partyInvitees.size() > 0 && partyState == PartyState.resendInvites) {
+			resendInvites();
+			return true;
+		}
+		if(partyState == PartyState.host) {
+			hostParty();
+			return true;
+		}
 		if(partyState == PartyState.sendInvites) {
 			sendOutInvites();
 			return true;
@@ -403,18 +419,35 @@ public class HomeRole extends Role implements Home {
 	private void sendOutInvites() {
 		rsvpDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH), MasterTime.getInstance().get(Calendar.HOUR_OF_DAY), MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND)); 
 		rsvpDate.add(Calendar.DAY_OF_MONTH, 0);
-		//MasterTime.getInstance().registerDateListener(rsvpDate.get(Calendar.MONTH), rsvpDate.get(Calendar.DAY_OF_MONTH), rsvpDate.get(Calendar.HOUR_OF_DAY), rsvpDate.get(Calendar.MINUTE), myPerson);
+		MasterTime.getInstance().registerDateListener(rsvpDate.get(Calendar.MONTH), rsvpDate.get(Calendar.DAY_OF_MONTH), rsvpDate.get(Calendar.HOUR_OF_DAY), rsvpDate.get(Calendar.MINUTE), myPerson);
 		
 		partyDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH), MasterTime.getInstance().get(Calendar.HOUR_OF_DAY), MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND)); 
 		partyDate.add(Calendar.DAY_OF_MONTH, 1);
-		//MasterTime.getInstance().registerDateListener(partyDate.get(Calendar.MONTH), partyDate.get(Calendar.DAY_OF_MONTH), partyDate.get(Calendar.HOUR_OF_DAY), partyDate.get(Calendar.MINUTE), myPerson);
+		MasterTime.getInstance().registerDateListener(partyDate.get(Calendar.MONTH), partyDate.get(Calendar.DAY_OF_MONTH), partyDate.get(Calendar.HOUR_OF_DAY), partyDate.get(Calendar.MINUTE), myPerson);
 		
 		for(int i=0; i<myPerson.getFriends().size(); i++) {
 			myPerson.getFriends().get(i).msgPartyInvitation(myPerson, rsvpDate, partyDate);
 			partyInvitees.add(myPerson.getFriends().get(i));
-			print("Invited " + myPerson.getFriends().get(i).getName() + " at " + MasterTime.getInstance().get(Calendar.HOUR_OF_DAY)+i);
+			print("Invited " + myPerson.getFriends().get(i).getName() + " at " + MasterTime.getInstance().get(Calendar.HOUR_OF_DAY));
 		}
 		partyState = PartyState.setUp;
+	}
+	private void resendInvites() {
+		for(PersonAgent p : partyInvitees) {
+			p.msgRespondToInviteUrgently(myPerson);
+		}
+	}
+	private void hostParty() {
+		timer.schedule(new TimerTask() {
+			public void run() {
+				partyState = PartyState.none;
+				print("Party's over!");
+				for(PersonAgent p : partyAttendees) {
+					p.msgPartyOver(myPerson);
+				}
+			}
+		},
+		10000);
 	}
 
 	//utilities

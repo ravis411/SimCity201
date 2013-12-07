@@ -2,6 +2,7 @@ package residence;
 
 import interfaces.HomeGuest;
 
+import java.util.Timer;
 import java.util.concurrent.Semaphore;
 
 import residence.HomeRole.AgentEvent;

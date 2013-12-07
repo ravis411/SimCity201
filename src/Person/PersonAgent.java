@@ -343,7 +343,24 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 			hr.partyInvitees.remove((PersonAgent) p);
 		}
 	}
+	public void msgRespondToInviteUrgently(Person host){
+		for(Party p : parties) {
+			if(p.host.getName() == host.getName()) {
+				p.partyState = PartyState.NeedsResponseUrgently;
+			}
+		}
+	}
+	public void msgPartyOver(Person host) {
+		for(Party p : parties) {
+			if(p.host.getName() == host.getName()) {
+				parties.remove(p);
+			}
+		}
+		HomeGuestRole hgr = (HomeGuestRole) findRole(Role.HOME_GUEST_ROLE);
+		hgr.msgPartyOver();
+	}
 
+	
 	//------------------------------SCHEDULER---------------------------//
 	
 	/**
@@ -535,12 +552,6 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		  role.msgComeIn();
 		  BuildingList.findBuildingWithName(location).addRole(role);
 		  role.activate();
-		  
-//		  HomeGuestRole r = (HomeGuestRole) findRole(Role.HOME_GUEST_ROLE);
-//		  BuildingList.findBuildingWithName(location).addRole(r);
-//		  r.activate();
-//		  
-//		  r.msgComeIn();
 	}
 	
 	private void GoToWork(){
@@ -1043,14 +1054,18 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	}
 
 	public void dateAction(int month, int day, int hour, int minute) {
-		print("DATEE CALLED:" + month + day + hour);
-		print("PARTY DATE: " + parties.get(0).dateOfParty.get(Calendar.MONTH) + parties.get(0).dateOfParty.get(Calendar.DAY_OF_MONTH) + (parties.get(0).dateOfParty.get(Calendar.HOUR_OF_DAY)));
+		HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE);
+		if(hr.rsvpDate.get(Calendar.MONTH) == month && hr.rsvpDate.get(Calendar.DAY_OF_MONTH) == day && hr.rsvpDate.get(Calendar.HOUR_OF_DAY) == hour && hr.rsvpDate.get(Calendar.MINUTE) == minute) {
+			hr.msgResendInvites();
+		}
+		if(hr.partyDate.get(Calendar.MONTH) == month && hr.partyDate.get(Calendar.DAY_OF_MONTH) == day && hr.partyDate.get(Calendar.HOUR_OF_DAY) == hour && hr.partyDate.get(Calendar.MINUTE) == minute) {
+			GoHome();
+			hr.msgHostParty();
+		}
 		for(Party p: parties){
-			if(p.dateOfParty.get(Calendar.MONTH) == month && p.dateOfParty.get(Calendar.DAY_OF_MONTH) == day && p.dateOfParty.get(Calendar.HOUR_OF_DAY) == hour) {
-				print("TIME TO GO TO PARTYYYYYYYYYYYYYYYYYYYY!!!!!!!!");
+			if(p.dateOfParty.get(Calendar.MONTH) == month && p.dateOfParty.get(Calendar.DAY_OF_MONTH) == day && p.dateOfParty.get(Calendar.HOUR_OF_DAY) == hour && p.dateOfParty.get(Calendar.MINUTE) == minute) {
 				state = PersonState.GoingToParty;
 				stateChanged();
-				//GoToParty(p.getHost().getHome().getName());
 			}	
 		}
 	}
