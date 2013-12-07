@@ -6,6 +6,7 @@ package gui.agentGuis;
 import gui.Gui;
 import gui.LocationInfo;
 import gui.SimCityLayout;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -24,6 +25,7 @@ import Transportation.CarAgent;
 import astar.AStarNode;
 import astar.AStarTraversal;
 import astar.Position;
+import astar.VehicleAStarTraversal;
 
 
 
@@ -73,10 +75,10 @@ public class CarVehicleGui implements Gui {
         
   
 			//img = new ImageIcon(("movingCar.gif"));
-	
+        String s=new String("none");
 			try {
 				//BufferedImage img = ImageIO.read(new File("images/UFO.png"));
-				String s =( this.getClass().getResource("/images/UFO.png").getPath() );
+				 s=( this.getClass().getResource("/images/UFO.png").getPath() );
 				BufferedImage img = ImageIO.read(new File(s));
 			    if(img != null){
 			    	ImageIcon icon = new ImageIcon(img);
@@ -84,7 +86,7 @@ public class CarVehicleGui implements Gui {
 			    }
 			} catch (Exception e) {
 				testView = true;
-				AlertLog.getInstance().logWarning(AlertTag.VEHICLE_GUI, agent.toString(), "Image not found. Switching to Test View");
+				AlertLog.getInstance().logWarning(AlertTag.VEHICLE_GUI, agent.toString(), "Image not found. Switching to Test View"+s);
 			}
 
 			
@@ -179,7 +181,7 @@ public class CarVehicleGui implements Gui {
     
     public void draw(Graphics2D g) {
         if(testView){
-        	g.setColor(Color.MAGENTA);
+        	g.setColor(Color.blue);
         	g.fillRect(xPos, yPos, 20, 20);
         	g.setColor(Color.white);
         	g.drawString(agent.toString(), xPos, yPos);
@@ -387,9 +389,10 @@ public class CarVehicleGui implements Gui {
      *  
      * 
      *  @param to The Position to move to. 
+     * @throws Exception 
      *  
      */
-    void guiMoveFromCurrentPostionTo(Position to){
+    void guiMoveFromCurrentPostionTo(Position to) throws Exception{
         
     	//First check to make sure the destination is free otherwise wait
     	int waits = 0;
@@ -399,17 +402,50 @@ public class CarVehicleGui implements Gui {
     		}
     		else
     		{
+    			AlertLog.getInstance().logDebug(AlertTag.VEHICLE_GUI, agent.getName() + " GUI", "Destination must be blocked. Waiting.");
     			try {
-    				Thread.sleep(500);
+    				Thread.sleep(300);
     				waits++;
-    				if(waits > 10){
-    					if(aStar.getGrid()[to.getX() + 1][to.getY()].availablePermits() > 0)
+    				/*if(waits > 8){
+    					if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(to, 1,0)))
     						guiMoveFromCurrentPostionTo(new Position(to,1, 0));
-    					else if(aStar.getGrid()[to.getX()][to.getY()-1].availablePermits() > 0)
+    					else if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(to, 0,1)))
+    						guiMoveFromCurrentPostionTo(new Position(to,1, 0));
+    					else if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(to, 0,-1)))
     						guiMoveFromCurrentPostionTo(new Position(to,0,-1));
+    					else if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(to, -1,-1)))
+    						guiMoveFromCurrentPostionTo(new Position(to,-1,-1));
+    					else if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(to, 1,1)))
+    						guiMoveFromCurrentPostionTo(new Position(to,1,1));
+    					
+    				}*/
+    				if(waits > 8){
+    					AlertLog.getInstance().logDebug(AlertTag.VEHICLE_GUI, agent.getName() + " GUI", "Destination must be blocked. Trying to move out of the way.");
+    					boolean moved = false;
+    					for(int x = -1; x <=1; x++ ){
+    						for(int y = -1; y<=1; y++){
+    							if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(currentPosition, x,y))){
+    								guiMoveFromCurrentPostionTo(new Position(currentPosition,x, y));
+    								AlertLog.getInstance().logDebug(AlertTag.VEHICLE_GUI, agent.getName() + " GUI", "moving + (" + x + ", " + y + ").");
+    								moved = true;break;
+    						}}
+    						if(moved) break;
+    					}
+    					
     					waits = 0;
+//    					if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(currentPosition, 1,0)))
+//    						guiMoveFromCurrentPostionTo(new Position(currentPosition,1, 0));
+//    					else if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(currentPosition, 0,1)))
+//    						guiMoveFromCurrentPostionTo(new Position(currentPosition,1, 0));
+//    					else if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(currentPosition, 0,-1)))
+//    						guiMoveFromCurrentPostionTo(new Position(currentPosition,0,-1));
+//    					else if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(currentPosition, -1,-1)))
+//    						guiMoveFromCurrentPostionTo(new Position(currentPosition,-1,-1));
+//    					else if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(currentPosition, 1,1)))
+//    						guiMoveFromCurrentPostionTo(new Position(currentPosition,1,1));
+//    					waits = 0;
     				}
-    			} catch (InterruptedException e) {
+    			} catch (Exception e) {
     				AlertLog.getInstance().logInfo(AlertTag.VEHICLE_GUI, agent.toString(), "Destination acquired by something. Waiting some seconds.");
     			}
     		}

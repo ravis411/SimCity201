@@ -1,6 +1,10 @@
 package jeffreyRestaurant.Gui;
 
+import interfaces.GuiPanel;
+
 import javax.swing.*;
+
+import Person.Role.Role;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,10 +12,16 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.ArrayList;
 
-public class AnimationPanel extends JPanel implements ActionListener {
+import jeffreyRestaurant.CashierAgent;
+import jeffreyRestaurant.CookAgent;
+import jeffreyRestaurant.CustomerAgent;
+import jeffreyRestaurant.HostAgent;
+import jeffreyRestaurant.WaiterAgent;
 
-    private final int WINDOWX = 600;
-    private final int WINDOWY = 350;
+public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
+
+    private final int WINDOWX = 800;
+    private final int WINDOWY = 400;
     private int tableDim = 50;
     private Image bufferImage;
     private Dimension bufferSize;
@@ -77,4 +87,41 @@ public class AnimationPanel extends JPanel implements ActionListener {
     public void addGui(CookGui gui) {
     	guis.add(gui);
     }
+
+	@Override
+	public void addGuiForRole(Role r) {
+		//Agents requiring GUIS
+		if (r instanceof CookAgent) {
+			CookAgent cookrole = (CookAgent) r;
+			CookGui ckGui = new CookGui(cookrole);
+			cookrole.setGui(ckGui);
+			guis.add(ckGui);
+		}
+		if (r instanceof CustomerAgent) {
+			CustomerAgent customerRole = (CustomerAgent) r;
+			CustomerGui cGui = new CustomerGui(customerRole);
+			customerRole.setGui(cGui);
+			guis.add(cGui);
+		}
+		if (r instanceof WaiterAgent) {
+			WaiterAgent waiterRole = (WaiterAgent) r;
+			HostGui wGui = new HostGui(waiterRole);
+			waiterRole.setGui(wGui);
+			guis.add(wGui);
+		}
+		//Agents not requiring GUIS
+		if (r instanceof CashierAgent) {
+			CashierAgent cashierRole = (CashierAgent) r;
+		}
+		if (r instanceof HostAgent) {
+			HostAgent hostRole = (HostAgent) r;
+		}
+		
+	}
+
+	@Override
+	public void removeGuiForRole(Role r) {
+		// TODO Auto-generated method stub
+		
+	}
 }

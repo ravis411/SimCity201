@@ -7,8 +7,10 @@ import java.util.concurrent.Semaphore;
 import java.util.Map;
 import java.util.HashMap;
 
+import Person.Role.Role;
 import jeffreyRestaurant.Gui.CookGui;
 import jeffreyRestaurant.Gui.HostGui;
+import jeffreyRestaurant.interfaces.Cook;
 
 /**
  * Restaurant Host Agent
@@ -17,7 +19,7 @@ import jeffreyRestaurant.Gui.HostGui;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class CookAgent extends Agent {
+public class CookAgent extends Role implements Cook{
 	
 	public void addMarket(MarketAgent m) {
 		markets.add(new myMarket(m));
@@ -25,15 +27,16 @@ public class CookAgent extends Agent {
 	
 	//Data
 	public CookAgent() {//Default, never called
+		super();
 		//Foods
 		food.put("Steak", new food("Steak", 1, 6));
-		print("Just created Steak for " + food.get("Steak"));
+		//print("Just created Steak for " + food.get("Steak"));
 		food.put("Chicken", new food ("Chicken", 1, 5));
-		print("Just created Chicken for " + food.get("Steak"));
+		//print("Just created Chicken for " + food.get("Steak"));
 		food.put("Salad", new food("Salad", 1, 2));
-		print("Just created salad for " + food.get("Salad"));
+		//print("Just created salad for " + food.get("Salad"));
 		food.put("Pizza", new food("Pizza", 1, 7));
-		print("Just created Pizza for " + food.get("Pizza"));
+		//print("Just created Pizza for " + food.get("Pizza"));
 	}
 	private class order {
 		order(WaiterAgent waiter, String c, int tableNum) {
@@ -45,7 +48,7 @@ public class CookAgent extends Agent {
 		state s = state.pending;
 		Timer foodTimer = new Timer();
 		void cookFood(Integer time, final order o) {
-			print("Time is " + time);
+			//print("Time is " + time);
 			foodTimer.schedule(new TimerTask() {
 				public void run() {
 					foodDone(o);
@@ -159,7 +162,7 @@ public class CookAgent extends Agent {
 	}
 	//Scheduler
 	@Override
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		if (orders != null) {
 			synchronized(orders) {
 				for (order o : orders) {
@@ -252,6 +255,18 @@ public class CookAgent extends Agent {
 	
 	public void setGui(CookGui gui) {
 		this.gui = gui;
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

@@ -1,5 +1,6 @@
 package jeffreyRestaurant;
 
+import Person.Role.Role;
 import agent.Agent;
 
 import java.util.*;
@@ -16,7 +17,7 @@ import jeffreyRestaurant.interfaces.Waiter;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class WaiterAgent extends Agent implements Waiter{
+public class WaiterAgent extends Role implements Waiter{
 	static final int NTABLES = 3;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
@@ -217,7 +218,7 @@ public class WaiterAgent extends Agent implements Waiter{
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		/* Think of this next rule as:
             Does there exist a table and customer,
             so that table is unoccupied and customer is waiting.
@@ -433,6 +434,18 @@ public class WaiterAgent extends Agent implements Waiter{
 
 	public Integer howManyCustomers() {
 		return Customers.size();
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 

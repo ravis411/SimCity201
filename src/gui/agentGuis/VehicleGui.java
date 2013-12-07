@@ -61,6 +61,8 @@ public class VehicleGui implements Gui {
     private enum GuiState {none, inCity, inBuilding};
     private GuiState state = GuiState.none;
     
+    private int waitingPassengers = 0;
+    
     
     
     public VehicleGui(Bus agent, SimCityLayout cityLayout, AStarTraversal aStar, List<LocationInfo> locationList) {
@@ -161,6 +163,23 @@ public class VehicleGui implements Gui {
         	g.fillRect(xPos, yPos, 20, 20);
         	g.setColor(Color.white);
         	g.drawString(agent.toString(), xPos, yPos);
+        	
+        	//Draw some tiny circles for the passengers
+			g.setColor(Color.BLUE);
+			int yOffset = 0;
+			int xOffset = 0;
+			for(int i = 0; i < waitingPassengers; i++){
+				g.fillOval((int)xPos + xOffset *5, (int)yPos + yOffset*5, 5, 5);
+				xOffset++;
+				if(xOffset * 5 >= 20){
+					yOffset++;
+					xOffset =0;
+					if(yOffset * 5 >= 20)
+						break;
+				}
+			}//passenger dots have been drawn
+			
+			
         }
         else
         {
@@ -181,6 +200,15 @@ public class VehicleGui implements Gui {
     }
     
     
+    /** Sets the number of passengers in the bus so that dots can be drawn.
+     * 
+     * @param numPassengers
+     */
+    public void setNumberPassengers(int numPassengers){
+    	this.waitingPassengers = numPassengers;
+    }
+    
+    
     
     public void DoGoTo(String location){
     	if(state == GuiState.none){
@@ -195,7 +223,11 @@ public class VehicleGui implements Gui {
     		
     		Position p = new Position(info.positionToEnterFromRoadGrid.width, info.positionToEnterFromRoadGrid.height);
     		//System.out.println("About to move to p: " + p);
-    		guiMoveFromCurrentPostionTo(p);
+    		try {
+				guiMoveFromCurrentPostionTo(p);
+			} catch (Exception e) {
+				AlertLog.getInstance().logError(AlertTag.VEHICLE_GUI, agent.toString() + " GUI", "Exception caught... most likely due to an excessive \"nodes\" size in GraphTraversal.java");
+			}
     	}
     }
     
@@ -275,9 +307,10 @@ public class VehicleGui implements Gui {
      *  
      * 
      *  @param to The Position to move to. 
+     * @throws Exception 
      *  
      */
-    void guiMoveFromCurrentPostionTo(Position to){
+    void guiMoveFromCurrentPostionTo(Position to) throws Exception{
         
     	//First check to make sure the destination is free otherwise wait
     	while(true){

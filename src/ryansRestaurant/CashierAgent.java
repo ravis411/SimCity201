@@ -27,11 +27,11 @@ public class CashierAgent extends Agent implements Cashier {
 	
 	@SuppressWarnings("serial")
 	private static final Map<String, Double> prices = new HashMap<String,Double>() {{
-		put("Cookie", 2.00);
-		put("Steak", 15.99);
-		put("Chicken", 10.99);
-		put("Salad", 5.99);
-		put("Pizza", 8.99);
+		put("Oreo Cookie", 2.00);
+		put("Oreo Cake", 15.99);
+		put("Oreo Milkshake", 10.99);
+		put("Cookies n Cream", 5.99);
+		put("Dirt n Worms", 8.99);
 	}};
 	
 	private List<Order> orders = Collections.synchronizedList( new ArrayList<Order>() );

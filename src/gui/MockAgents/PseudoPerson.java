@@ -227,4 +227,10 @@ public class PseudoPerson extends Agent implements Person{
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void dateAction(int month, int day, int hour, int minute) {
+		// TODO Auto-generated method stub
+		
+	}
 }

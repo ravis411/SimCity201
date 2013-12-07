@@ -22,14 +22,13 @@ import interfaces.GuiPanel;
 public class BusStopAnimationPanel extends JPanel implements GuiPanel{
 
 	private JScrollPane passengerPane =
-            new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+            new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	private JPanel view = new JPanel();
 	
 	private List<JButton> passengerList = new ArrayList<>();
 	
 	public BusStopAnimationPanel() {
-	//	this.add(new JLabel("BusStopAnimationPanel!!!!!!!!!!!!!"));
 		view.setLayout(new BoxLayout((Container) view, BoxLayout.Y_AXIS));
 		passengerPane.setViewportView(view);
 		
@@ -68,6 +67,13 @@ public class BusStopAnimationPanel extends JPanel implements GuiPanel{
 		}
 	}
 	
+	/**
+	 * 
+	 * @return The number of passengers currently waiting at this stop for a bus.
+	 */
+	public int getNumWaitingPassengers(){
+		return passengerList.size();
+	}
 	
 	
 	@Override
