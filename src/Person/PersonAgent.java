@@ -337,6 +337,24 @@ public class PersonAgent extends Agent implements Person{
 	 */
 	@Override
 	public boolean pickAndExecuteAnAction() {
+		if(parties.size()!=0){
+		for(Party p:parties){
+			if(p.partyState==PartyState.NeedsResponseUrgently){
+				for(PersonAgent pa:friends){
+					if(pa==p.getHost()){
+						pa.msgIAmComing(this);
+						p.partyState=PartyState.GoingToParty;
+						MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY)-1, p.dateOfParty.get(Calendar.MINUTE), this);
+						
+					}
+					else{
+						pa.msgIAmNotComing(this);
+						p.partyState=PartyState.NotGoingToParty;
+						
+					}   
+				}
+			}
+		}}
 		
 		if(parties.size()!=0){
 			for(Party p:parties){
@@ -349,14 +367,19 @@ public class PersonAgent extends Agent implements Person{
 								pa.msgIAmComing(this);
 								p.partyState=PartyState.GoingToParty;
 								//MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY)-1, p.dateOfParty.get(Calendar.MINUTE), this);
-								return true;
-							}	
+								//return true;
+							}
+							else{p.partyState=PartyState.notRSVPed;}
 						}
+						
 					}
 					int i= new Random().nextInt(40);
-					if(i%2==0){
-						p.getHost().msgIAmNotComing(this);
-						p.partyState=PartyState.NotGoingToParty;
+					if(p.partyState==PartyState.ReceivedInvite){
+						if(i%2==0){
+							p.getHost().msgIAmNotComing(this);
+							p.partyState=PartyState.NotGoingToParty;
+						}
+						else{p.partyState=PartyState.notRSVPed;
 					}
 				}
 			}
@@ -364,6 +387,7 @@ public class PersonAgent extends Agent implements Person{
 		
 		if(state == PersonState.GoingToParty) {
 			GoToParty(parties.get(0).getHost().getHome().getName());
+			return true;
 		}
 		
 
@@ -382,23 +406,7 @@ public class PersonAgent extends Agent implements Person{
 			if(somethingIsActive)
 				return false;
 		}
-		for(Party p:parties){
-			if(p.partyState==PartyState.NeedsResponseUrgently){
-				for(PersonAgent pa:friends){
-					if(pa==p.getHost()){
-						pa.msgIAmComing(this);
-						p.partyState=PartyState.GoingToParty;
-						MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY)-1, p.dateOfParty.get(Calendar.MINUTE), this);
-						return true;
-					}
-					else{
-						pa.msgIAmNotComing(this);
-						p.partyState=PartyState.NotGoingToParty;
-						return true;
-					}   
-				}
-			}
-		}
+		
 		if(state == PersonState.NeedsFood){
 			GoGetFood();
 			return true;
@@ -413,29 +421,7 @@ public class PersonAgent extends Agent implements Person{
 			GoGetMoney();
 			return true;
 		}
-		if(parties.size()!=0){
-			for(Party p:parties){
-				if(p.partyState==PartyState.ReceivedInvite){
-					for(PersonAgent pa :friends){
-						if(pa==p.getHost()){
-							int i= new Random().nextInt(40);
-							if(i%2==0){
-								pa.msgIAmComing(this);
-								p.partyState=PartyState.GoingToParty;
-								MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY)-1, p.dateOfParty.get(Calendar.MINUTE), this); 
-								return true;
-							}	
-						}
-					}
-					int i= new Random().nextInt(40);
-					if(i%2==0){
-						p.getHost().msgIAmNotComing(this);
-						p.partyState=PartyState.NotGoingToParty;
-					}
-					p.partyState=PartyState.GoingToParty;
-				}
-			}
-		}
+		
 
 		if(state != PersonState.Idle){
 			AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "////////////IDLE//////////");
@@ -516,15 +502,16 @@ public class PersonAgent extends Agent implements Person{
 		  
 		  HomeGuestRole role = (HomeGuestRole) findRole(Role.HOME_GUEST_ROLE);
 		  if(role == null){
+			 roles.get(1).deactivate();
 			  role = (HomeGuestRole) RoleFactory.roleFromString(Role.HOME_GUEST_ROLE);
 			  addRole(role);
 		  }
 
 		  AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Home Guest Role = "+role);
-		  BuildingList.findBuildingWithName(location).addRole(role);
-		  
-		  role.activate();
 		  role.msgComeIn();
+		  BuildingList.findBuildingWithName(location).addRole(role);
+		  role.activate();
+		  
 		  
 		  
 		  
@@ -906,7 +893,7 @@ public class PersonAgent extends Agent implements Person{
 		}
 	}
 	
-	enum PartyState {Host, ReceivedInvite, NeedsResponseUrgently, RSVPed, GoingToParty, NotGoingToParty}
+	enum PartyState {Host, ReceivedInvite, NeedsResponseUrgently, RSVPed, GoingToParty, NotGoingToParty, notRSVPed}
 	
 	/**
 	 * A class meant to simulate a Party
