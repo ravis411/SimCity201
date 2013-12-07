@@ -106,7 +106,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		prefs = new Preferences();
 		this.home = home;
 		
-		this.myCar = new CarAgent("Herbie");
+		this.myCar = new CarAgent(this, name+" car");
 		
 		backpack = new ArrayList<Item>();
 		itemsNeeded = new ArrayDeque<Item>();
@@ -174,9 +174,11 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		prefs = new Preferences();
 		this.home = home;
 		
+		this.myCar = new CarAgent(this, name+" car");
+		
 		backpack = new ArrayList<Item>();
 		itemsNeeded = new ArrayDeque<Item>();
-		
+		stateOfLocation = StateOfLocation.Walking;
 		roles.add(new HomeRole(this));
 		
 		if(name.equals("Person 1") || name.equals("Person 2") )
@@ -201,6 +203,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		//------------------ILLEGAL CHANGE OR DELETE---------------------------------//
 		if(stateOfLocation == StateOfLocation.InCar){
 			myCar.msgLeavingCar();
+			stateOfLocation = StateOfLocation.Walking;
 		}
 		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Arrived at Destination!!");
 	}
@@ -631,8 +634,9 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	}
 	
 	private void GoToLocation(String location, String modeOfTransportation){
+		modeOfTransportation = "WALK";
 		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Going to "+location+" via + "+modeOfTransportation);
-		modeOfTransportation = "CAR";
+		
 		switch(modeOfTransportation){
 			case Preferences.BUS:
 				String startStop = gui.DoGoToClosestBusStop();
@@ -647,15 +651,16 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 				GoToLocation(location, "WALK");
 				break;
 			case Preferences.CAR:
+				
 				myCar.msgEnteringCar();
 				myCar.msgNewDestination(location);
 				stateOfLocation = StateOfLocation.InCar;
-			try {
-				onBus.acquire();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				try {
+					onBus.acquire();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				break;
 			case Preferences.WALK:
 				System.err.println("Trying to walk to "+location);
