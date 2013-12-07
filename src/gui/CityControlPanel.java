@@ -1,8 +1,9 @@
-package gui.Building;
+package gui;
 
 import javax.swing.*;
 
-import gui.BuildingsPanels;
+import gui.Building.BuildingGui;
+import gui.Building.BuildingPanel;
 import interfaces.GuiPanel;
 
 import java.awt.Container;
@@ -15,7 +16,11 @@ import java.util.List;
 import javax.swing.JButton;
 
 import Person.Role.Role;
-
+/**
+ * Singleton GUI class for controlling the city.
+ * @author JEFFREY
+ *
+ */
 public class CityControlPanel extends BuildingPanel {
 	
 	public List<JButton> peopleList = new ArrayList<JButton>();
@@ -26,10 +31,11 @@ public class CityControlPanel extends BuildingPanel {
     private JPanel personView = new JPanel();
     private JLabel focusInfo = new JLabel();
     private JPanel moreControls = new JPanel();
+    static BuildingGui defaultGui = new BuildingGui(0,0,0,0);
 	
 	
-	public CityControlPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels) {
-		super(r, name, buildingPanels);
+	public CityControlPanel(BuildingsPanels buildingPanels) {
+		super(defaultGui, "Controls", buildingPanels);
 		
 		setLayout(new GridLayout(1,3));
 		
