@@ -38,6 +38,10 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
     private JPanel moreControls = new JPanel();
     static BuildingGui defaultGui = new BuildingGui(0,0,0,0);
     private SetUpWorldFactory parent; 
+    
+    //Right Side Control Buttons
+    JButton plusControlsB;
+    JButton findAgentB;
 	
 	
 	public CityControlPanel(BuildingsPanels buildingPanels, SetUpWorldFactory parent) {
@@ -54,14 +58,26 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 		focusInfo.setText("<html><pre> <u> Person Info goes here </u> </pre></html>");
 		add(focusInfo);
 		
+		plusControlsB = new JButton("Additional Controls");
+		plusControlsB.addActionListener(this);
+		
+		findAgentB = new JButton("Zoom to Agent");
+		findAgentB.addActionListener(this);
+		
 		moreControls.setLayout(new GridLayout(2,1)); //Modify number of rows to add more buttons
-		moreControls.add(new JButton("Test"));
-		moreControls.add(new JButton("Test2"));
+		moreControls.add(plusControlsB);
+		moreControls.add(findAgentB);
 		add(moreControls);
 		//Add buttons to the controls here
 	}
 	
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == plusControlsB) {
+			//Create new control window
+		}
+		if (e.getSource() == findAgentB) {
+			//Gui.showAgent'sCurrentLocation
+		}
 		
 		//Iterate through people list
 		for (JButton person : peopleList) {
@@ -76,7 +92,11 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 		}
 		
 	}
-	
+	/**
+	 * GUI function to update the info panel with the current information
+	 * of the agent it is passed. 
+	 * @param agent Agent taken directly from SetUpWorldFactory list of agents
+	 */
 	private void showInfo(PersonAgent agent) {
 		//Update Center text field
 		/*
@@ -111,7 +131,7 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 		JButton newPerson = new JButton(a.getName());
 		newPerson.setBackground(Color.WHITE);
 		
-		Dimension buttonSize = new Dimension(260, 30);
+		Dimension buttonSize = new Dimension(240, 30);
 		newPerson.setPreferredSize(buttonSize);
 		newPerson.setMinimumSize(buttonSize);
 		newPerson.setMaximumSize(buttonSize);
@@ -119,6 +139,7 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 		peopleList.add(newPerson);
 		personView.add(newPerson);
 		//Hacked so that it adds through the config file and then shows up here second. 
+		//Control panel references a public list of agents in the SetUpWorldFactory construct
 		
 		validate();
 	}
