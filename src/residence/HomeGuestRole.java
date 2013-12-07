@@ -62,7 +62,6 @@ public class HomeGuestRole extends Role implements HomeGuest {
 	//scheduler
 	
 	public boolean pickAndExecuteAction() {
-		print("GUESTTTT");
 		if(state == AgentState.WalkingIn) {
 			enterHome();
 			return true;

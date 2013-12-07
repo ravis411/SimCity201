@@ -955,9 +955,7 @@ public class PersonAgent extends Agent implements Person{
 				state = PersonState.GoingToParty;
 				stateChanged();
 				//GoToParty(p.getHost().getHome().getName());
+			}	
 		}
-		
 	}
-
-}
 }
