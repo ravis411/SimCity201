@@ -83,7 +83,7 @@ public class HomeRole extends Role implements Home {
 	}
 	
 	public String getNameOfRole() {
-		return "HomeRole";
+		return "residence.HomeRole";
 	}
 	public List<Item> getInventory(){
 		return inventory;

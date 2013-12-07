@@ -34,7 +34,7 @@ public class HomeGuestRole extends Role implements HomeGuest {
 	} 
 	
 	public String getNameOfRole() {
-		return "HomeGuestRole";
+		return "residence.HomeGuestRole";
 	}
 	
 	public boolean canGoGetFood() {
