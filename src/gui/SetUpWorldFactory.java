@@ -55,6 +55,7 @@ public class SetUpWorldFactory{
 	public static SimCityLayout layout;// = new SimCityLayout(WINDOWX, WINDOWY/2);// <-This holds the grid information
 	public static CityAnimationPanel cityPanel;// = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
 	public static BuildingsPanels buildingsPanels;// = new BuildingsPanels();//<-Zoomed in view of buildings
+	public static CityControlPanel controls;
 
 	public static List<Agent> agents = new ArrayList<Agent>();
 	public static List<LocationInfo> locationMap = new ArrayList<LocationInfo>();//<--a map of strings to LocationInfo
@@ -77,9 +78,10 @@ public class SetUpWorldFactory{
 		layout = new SimCityLayout(WINDOWX, WINDOWY/2, GRIDSIZEX, GRIDSIZEY);// <-This holds the grid information
 		cityPanel = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
 		buildingsPanels = new BuildingsPanels();//<-Zoomed in view of buildings
+		controls = new CityControlPanel(buildingsPanels);
 
 		buildingsPanels.addBuildingPanel(new Team29Panel(buildingsPanels));
-		buildingsPanels.addBuildingPanel(new CityControlPanel(buildingsPanels));
+		buildingsPanels.addBuildingPanel(controls);
 
 		//across middle
 		layout.addRoad(1, 5, 32, 5);
@@ -346,6 +348,9 @@ public class SetUpWorldFactory{
 			addPerson("Person 10", buildingsPanels.getResidenceBuildingPanel("Apartment 9"));
 			addPerson("Person 11", buildingsPanels.getResidenceBuildingPanel("Apartment 10"));
 			addPerson("Person 12", buildingsPanels.getResidenceBuildingPanel("Apartment 11"));
+			
+			//Need to add people to the GUI controls here as well; 
+			controls.addPerson(agents.get(0));
 
 			//addPerson("Person 13", buildingsPanels.getResidenceBuildingPanel("Apartment 12"));
 			//addPerson("Person 14", buildingsPanels.getResidenceBuildingPanel("Apartment 13"));
@@ -672,8 +677,10 @@ public class SetUpWorldFactory{
 				break;
 		}
 		//p1.setInitialRole(new HomeRole(p1), "House 1");
+		
 		cityPanel.addGui(g1);
 		p1.startThread();
+		agents.add(p1);
 	}
 
 	
