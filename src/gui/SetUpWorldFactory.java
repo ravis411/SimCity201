@@ -79,6 +79,7 @@ public class SetUpWorldFactory{
 		buildingsPanels = new BuildingsPanels();//<-Zoomed in view of buildings
 
 		buildingsPanels.addBuildingPanel(new Team29Panel(buildingsPanels));
+		buildingsPanels.addBuildingPanel(new CityControlPanel(buildingsPanels));
 
 		//across middle
 		layout.addRoad(1, 5, 32, 5);
