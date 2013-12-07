@@ -8,7 +8,6 @@ import interfaces.generic_interfaces.GenericCashier;
 import interfaces.generic_interfaces.GenericCook;
 import interfaces.generic_interfaces.GenericCustomer;
 import interfaces.generic_interfaces.GenericHost;
-import interfaces.generic_interfaces.GenericWaiter;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -18,14 +17,11 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
-import kushrestaurant.CashierRole;
-import kushrestaurant.interfaces.Waiter;
 import residence.HomeRole;
 import trace.AlertLog;
 import trace.AlertTag;
 import util.MasterTime;
 import util.TimeListener;
-import util.DateListener;
 import MarketEmployee.MarketEmployeeRole;
 import MarketEmployee.MarketManagerRole;
 import Person.Role.Employee;
@@ -33,6 +29,7 @@ import Person.Role.Role;
 import Person.Role.RoleFactory;
 import Person.Role.ShiftTime;
 import Transportation.BusStopConstruct;
+import Transportation.CarAgent;
 import agent.Agent;
 import bank.BankClientRole;
 import building.Building;
@@ -40,8 +37,6 @@ import building.BuildingList;
 import building.Restaurant;
 import building.Workplace;
 //import restaurant.NewWaiterRole;
-
-import residence.HomeRole;
 /**
  * @author MSILKJR
  *
@@ -72,6 +67,8 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	public List<Role> roles;
 	public List<PersonAgent> friends;
 	
+	private CarAgent myCar;
+	
 	private Queue<Item> itemsNeeded;
 	
 	public enum StateOfHunger {NotHungry, SlightlyHungry, Hungry, VeryHungry, Starving} 
@@ -84,6 +81,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	
 	private ShiftTime currentShift;
 	public PersonState state;
+	public StateOfLocation stateOfLocation;
 	public WorkState workState;
 	private StateOfEmployment stateOfEmployment;
 	private Preferences prefs;
@@ -107,6 +105,8 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		parties = new ArrayList<Party>();
 		prefs = new Preferences();
 		this.home = home;
+		
+		this.myCar = new CarAgent("Herbie");
 		
 		backpack = new ArrayList<Item>();
 		itemsNeeded = new ArrayDeque<Item>();
@@ -198,8 +198,14 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	public void msgWeHaveArrived(String currentDestination){
 	  //unpause agent, which will be in transit (implementation not necessary here)
 		onBus.release();
+		//------------------ILLEGAL CHANGE OR DELETE---------------------------------//
+		if(stateOfLocation == StateOfLocation.InCar){
+			myCar.msgLeavingCar();
+		}
 		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Arrived at Destination!!");
 	}
+	
+	
 
 	/**
 	  * Message probably sent by an outside GUI to force hunger on the 
@@ -626,6 +632,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	
 	private void GoToLocation(String location, String modeOfTransportation){
 		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Going to "+location+" via + "+modeOfTransportation);
+		modeOfTransportation = "CAR";
 		switch(modeOfTransportation){
 			case Preferences.BUS:
 				String startStop = gui.DoGoToClosestBusStop();
@@ -640,6 +647,15 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 				GoToLocation(location, "WALK");
 				break;
 			case Preferences.CAR:
+				myCar.msgEnteringCar();
+				myCar.msgNewDestination(location);
+				stateOfLocation = StateOfLocation.InCar;
+			try {
+				onBus.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 				break;
 			case Preferences.WALK:
 				System.err.println("Trying to walk to "+location);
