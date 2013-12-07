@@ -42,6 +42,7 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
     //Right Side Control Buttons
     JButton plusControlsB;
     JButton findAgentB;
+    JButton addPersonB;
 	
 	
 	public CityControlPanel(BuildingsPanels buildingPanels, SetUpWorldFactory parent) {
@@ -63,6 +64,9 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 		
 		findAgentB = new JButton("Zoom to Agent");
 		findAgentB.addActionListener(this);
+		
+		addPersonB = new JButton("Add a Person");
+		addPersonB.addActionListener(this);
 		
 		moreControls.setLayout(new GridLayout(2,1)); //Modify number of rows to add more buttons
 		moreControls.add(plusControlsB);
@@ -124,6 +128,7 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 				"</tr><tr> Hunger Level: " + agent.getHungerLevel() + 
 				"</tr><tr> Current Loan: " + agent.getLoan() + 
 				"</tr><tr> Number of Parties: " + agent.getNumParties() +
+				"</tr><tr> Current Location: " + agent.getCurrentLocation() + 
 				"</tr></table></html>");
 	}
 	

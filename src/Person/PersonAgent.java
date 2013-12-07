@@ -987,4 +987,39 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	public String getCurrentJobString() {
 		return findMyJob().getNameOfRole();
 	}
+	
+	public String getCurrentLocation() {
+		String location  = "N/A";
+		switch (stateOfLocation) {
+		case AtHome:
+			location = "Home";
+			break;
+			
+		case AtBank:
+			location = "Bank";
+			break;
+		
+		case AtMarket:
+			location = "Market";
+			break;
+			
+		case AtRestaurant:
+			location = "Restaurant";
+			break;
+			
+		case InCar: 
+			location = "City";
+			break;
+			
+		case InBus:
+			location = "City";
+			break;
+			
+		case Walking:
+			location = "City";
+			break;
+		}
+		
+		return location;
+	}
 }
