@@ -55,7 +55,7 @@ public class SetUpWorldFactory{
 	public static BuildingsPanels buildingsPanels;// = new BuildingsPanels();//<-Zoomed in view of buildings
 	public static CityControlPanel controls;
 
-	public static List<Agent> agents = new ArrayList<Agent>();
+	public static List<PersonAgent> agents = new ArrayList<PersonAgent>();
 	public static List<LocationInfo> locationMap = new ArrayList<LocationInfo>();//<--a map of strings to LocationInfo
 	
 	

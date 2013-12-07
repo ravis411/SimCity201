@@ -19,6 +19,7 @@ import java.util.List;
 import javax.swing.JButton;
 
 import agent.Agent;
+import Person.PersonAgent;
 import Person.Role.Role;
 /**
  * Singleton GUI class for controlling the city.
@@ -66,7 +67,7 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 		for (JButton person : peopleList) {
 			if (e.getSource() == person) {
 				//Display info for that person
-				for (Agent a : parent.agents) {
+				for (PersonAgent a : parent.agents) {
 					if (a.getName().equalsIgnoreCase(person.getText())) {
 						showInfo(a);
 					}
@@ -76,7 +77,7 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 		
 	}
 	
-	private void showInfo(Agent agent) {
+	private void showInfo(PersonAgent agent) {
 		//Update Center text field
 		/*
 		String carStatus;
@@ -86,13 +87,23 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 		else {
 			carStatus = "No";
 		}*/
+		String currentJob;
+		try {
+			currentJob = agent.getCurrentJobString();
+		}
+		catch (Exception e) {
+			currentJob = "N/A";
+		}
+		
 		focusInfo.setText("<html> <u> " + agent.getName() + 
-				"</u> <table><tr> Current Job: " + "/*agent.getJob()*/" + 
-				"</tr><tr> SSN: " + "/*agent.getSSN()*/" +
+				"</u> <table><tr> Current Job: " + currentJob + 
+				"</tr><tr> Age: " + agent.getAge() + 
+				"</tr><tr> SSN: " + agent.getSSN() +
 				"</tr><tr> Owns car: " + "/*carStatus*/" + 
-				"</tr><tr> Current money: " + "/*agent.getCurrentMoney()*/" + 
-				"</tr><tr> Hunger Level: " + "/*agent.getHungerLevel()*/" + 
-				"</tr><tr> Current Loan: " + "/*agent.getCurrentLoan()*/" + 
+				"</tr><tr> Current money: " + agent.getMoney() + 
+				"</tr><tr> Hunger Level: " + agent.getHungerLevel() + 
+				"</tr><tr> Current Loan: " + agent.getLoan() + 
+				"</tr><tr> Number of Parties: " + agent.getNumParties() +
 				"</tr></table></html>");
 	}
 	
@@ -100,9 +111,8 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 		JButton newPerson = new JButton(a.getName());
 		newPerson.setBackground(Color.WHITE);
 		
-		Dimension paneSize = pane.getSize();
 		Dimension buttonSize = new Dimension(260, 30);
-		//newPerson.setPreferredSize(buttonSize);
+		newPerson.setPreferredSize(buttonSize);
 		newPerson.setMinimumSize(buttonSize);
 		newPerson.setMaximumSize(buttonSize);
 		newPerson.addActionListener(this);

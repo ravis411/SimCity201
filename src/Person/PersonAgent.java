@@ -979,6 +979,12 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		// TODO Auto-generated method stub
 		
 	}
-
-
+	//Control Panel Information Access Functions
+		//Only include what hasn't already been done
+	public int getHungerLevel() {
+		return hungerLevel;
+	}
+	public String getCurrentJobString() {
+		return findMyJob().getNameOfRole();
+	}
 }
