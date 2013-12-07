@@ -11,13 +11,12 @@ import Person.PersonAgent;
 import Person.Role.Role;
 
 /**
- * Home Role
+ * Home Guest Role
  */
 
 public class HomeGuestRole extends Role implements HomeGuest {
 	
 	HomeGuestGui gui = null;
-	PersonAgent myPerson;
 	private Semaphore atFrontDoor = new Semaphore(0, true);
 	private Semaphore atCenter = new Semaphore(0, true);
 	
@@ -25,8 +24,8 @@ public class HomeGuestRole extends Role implements HomeGuest {
 	{DoingNothing, WalkingIn, Leaving};
 	private AgentState state = AgentState.DoingNothing;
 	
-	public HomeGuestRole(PersonAgent myPerson) {
-		this.myPerson = myPerson;
+	public HomeGuestRole() {
+		super();
 	}
 	
 	public void setGui(HomeGuestGui gui){
@@ -63,6 +62,7 @@ public class HomeGuestRole extends Role implements HomeGuest {
 	//scheduler
 	
 	public boolean pickAndExecuteAction() {
+		print("GUESTTTT");
 		if(state == AgentState.WalkingIn) {
 			enterHome();
 			return true;
