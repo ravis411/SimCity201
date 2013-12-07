@@ -36,7 +36,7 @@ public class LoadGui extends JFrame implements ActionListener{
 	
 	JLabel loadTimeLabel = new JLabel();
 	boolean load = true;
-	int defaultWaitTime = 10;//<<-The default time to wait before loading config.
+	int defaultWaitTime = 5;//<<-The default time to wait before loading config.
 	int time = 0;
 	Timer timer = new Timer();
 	
@@ -81,6 +81,7 @@ public class LoadGui extends JFrame implements ActionListener{
 		populateLoadingPanel();
 		this.revalidate();
 		this.repaint();
+		this.setVisible(true);
 	}
 
 	

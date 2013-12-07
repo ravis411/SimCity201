@@ -156,6 +156,7 @@ public class SimCity201Gui extends JFrame {
 	
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		SimCity201Gui gui = new SimCity201Gui("Default");
+		//SimCity201Gui gui = new SimCity201Gui("Default");
+		LoadGui gui = new LoadGui();
 	}
 }
