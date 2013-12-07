@@ -1,15 +1,24 @@
 package byronRestaurant;
 
 
+import Person.Role.ShiftTime;
 import agent.Agent;
+import interfaces.generic_interfaces.GenericCashier;
+import interfaces.generic_interfaces.GenericCook;
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import trace.AlertLog;
+import trace.AlertTag;
+
+
 /**
  * Restaurant Cashier Agent
  */
-public class CashierRole extends Agent {
+public class CashierRole extends GenericCashier {
 	HostRole h;
 	String name;
 	public enum checkState {created, requested};
@@ -53,9 +62,8 @@ public class CashierRole extends Agent {
 	private List<Double> MarketBills = Collections.synchronizedList(new ArrayList<Double>());
 
 	//Initialize CashierRole
-	public CashierRole(String name){
-		super();
-		this.name = name;
+	public CashierRole(String location){
+		super(location);
 	}
 
 	public void setHost(HostRole host){
@@ -63,14 +71,16 @@ public class CashierRole extends Agent {
 	}
 
 	//messages
-	public void msgHereIsOrder(int i, String s, WaiterRole w){
-		Do("Recieving order from waiter.");
-		PendingOrders.add(new WaiterCheck(i,s,w));
+
+	public void msgHereIsOrder(int table, String choice, WaiterRole waiterRole) {
+		AlertLog.getInstance().logMessage(AlertTag.CASHIER_ROLE, myPerson.getName(),"Recieving order from waiter.");
+		PendingOrders.add(new WaiterCheck(table,choice,waiterRole));
 		stateChanged();
 	}
 
+	
 	public void msgINeedCheck(int i){
-		Do("Giving bill to waiter.");
+		AlertLog.getInstance().logMessage(AlertTag.CASHIER_ROLE, myPerson.getName(),"Giving bill to waiter.");
 		synchronized(PendingOrders){
 			for (WaiterCheck w : PendingOrders){
 				if (w.tableNum == i){
@@ -82,7 +92,7 @@ public class CashierRole extends Agent {
 	}
 
 	public void msgPayForFood(double a, double s, CustomerRole c){
-		Do("Customer is paying for food.");
+		AlertLog.getInstance().logMessage(AlertTag.CASHIER_ROLE, myPerson.getName(),"Customer is paying for food.");
 		CompletedOrders.add(new CustomerCheck(a,s,c));
 		stateChanged();
 	}
@@ -93,7 +103,7 @@ public class CashierRole extends Agent {
 	}
 
 	// Scheduler
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		synchronized(CompletedOrders){
 			for (CustomerCheck c : CompletedOrders){
 				if (c.amount <= c.wallet){
@@ -138,12 +148,36 @@ public class CashierRole extends Agent {
 	private void payBill(double b){
 		register = register - b;
 		MarketBills.remove(b); 
-		Do("Paying Market for order, total left in register is $" + register);
+		AlertLog.getInstance().logMessage(AlertTag.CASHIER_ROLE, myPerson.getName(),"Paying Market for order, total left in register is $" + register);
 	}
 
 	//Utilities
 	public String getName(){
 		return name;
+	}
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

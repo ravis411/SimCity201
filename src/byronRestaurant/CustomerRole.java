@@ -5,13 +5,19 @@ import byronRestaurant.WaiterRole;
 import byronRestaurant.gui.CustomerGui;
 import byronRestaurant.gui.RestaurantGui;
 import byronRestaurant.interfaces.Customer;
+import interfaces.generic_interfaces.GenericCashier;
+import interfaces.generic_interfaces.GenericCustomer;
+import interfaces.generic_interfaces.GenericHost;
 
 import java.util.*;
+
+import trace.AlertLog;
+import trace.AlertTag;
 
 /**
  * Restaurant customer agent.
  */
-public class CustomerRole extends Agent {
+public class CustomerRole extends GenericCustomer {
 	private String name;
 	private double money = (Math.random() * 50);
 	private double cost = 0;
@@ -137,8 +143,7 @@ public class CustomerRole extends Agent {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	@Override
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		//	CustomerRole is a finite state machine
 
 		if (state == AgentState.DoingNothing && event == AgentEvent.gotHungry ){
@@ -197,12 +202,12 @@ public class CustomerRole extends Agent {
 
 	// Actions
 	private void enterRestaurant(){
-		Do("Entering byronRestaurant");
+		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT_CUSTOMER_ROLE, myPerson.getName(),"Entering byronRestaurant");
 		customerGui.DoGoToWaitingArea();		
 	}
 	
 	private void goToRestaurant() {
-		Do("Going to byronRestaurant");
+		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT_CUSTOMER_ROLE, myPerson.getName(),"Going to byronRestaurant");
 		host.msgIWantFood(this);//send our instance, so he can respond to us
 	}
  
@@ -237,7 +242,7 @@ public class CustomerRole extends Agent {
 	}
 	
 	private void eatFood() {
-		Do("Eating Food");
+		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT_CUSTOMER_ROLE, myPerson.getName(),"Eating Food");
 		//This next complicated line creates and starts a timer thread.
 		//We schedule a deadline of getHungerLevel()*1000 milliseconds.
 		//When that time elapses, it will call back to the run routine
@@ -260,26 +265,25 @@ public class CustomerRole extends Agent {
 	}
 	
 	private void goToCashier(){
-		Do("Going to cashier.");
+		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT_CUSTOMER_ROLE, myPerson.getName(),"Going to cashier.");
 		waiter.msgLeaving(this);
 		customerGui.DoGoToLobby();
 	}
 	
 	private void payForFood(){
-		Do("Paying for food.");
+		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT_CUSTOMER_ROLE, myPerson.getName(),"Paying for food.");
 		cashier.msgPayForFood(cost, money, this);
 		
 	}
 	
 	private void leaveRestaurant() {
-		Do("Leaving.");
+		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT_CUSTOMER_ROLE, myPerson.getName(),"Leaving.");
 		cost = 0;
 		customerGui.DoExitRestaurant();
 	}
 
 	// Accessors, etc.
 
-	@Override
 	public String getName() {
 		return name;
 	}
@@ -295,6 +299,36 @@ public class CustomerRole extends Agent {
 
 	public CustomerGui getGui() {
 		return customerGui;
+	}
+
+	@Override
+	public void setCashier(GenericCashier c) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setHost(GenericHost h) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void gotHungry() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 

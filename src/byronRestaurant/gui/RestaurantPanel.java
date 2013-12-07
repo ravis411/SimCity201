@@ -6,7 +6,6 @@ import byronRestaurant.CashierRole;
 import byronRestaurant.CookRole;
 import byronRestaurant.CustomerRole;
 import byronRestaurant.HostRole;
-import byronRestaurant.MarketAgent;
 import byronRestaurant.WaiterRole;
 
 import java.awt.*;
@@ -24,7 +23,7 @@ public class RestaurantPanel extends JPanel {
     private HostRole host = new HostRole("Host");
     private CookRole cook = new CookRole("cook");
     private CookGui a = new CookGui(cook);
-    private MarketAgent market = new MarketAgent("Market");
+//    private MarketAgent market = new MarketAgent("Market");
     private CashierRole cashier = new CashierRole("Cashier");
     private Vector<CustomerRole> customers = new Vector<CustomerRole>();
     private Vector<WaiterRole> waiters = new Vector<WaiterRole>();
@@ -40,19 +39,19 @@ public class RestaurantPanel extends JPanel {
   //      waiter.setGui(waiterGui);
 
   //      gui.animationPanel.addWaiterGui(waiterGui);
-        host.startThread();
+        host.getPerson().startThread();
 //        waiter.startThread();
-        cook.startThread();
-        market.startThread();
-        cashier.startThread();
+        cook.getPerson().startThread();
+//        market.startThread();
+        cashier.getPerson().startThread();
 //        host.addWaiter(waiter);
 //        waiter.setHost(host);
 //        waiter.setCook(cook);
         setLayout(new GridLayout(1, 2, 20, 20));
-        market.setCook(cook);
-        market.setCashier(cashier);
+//        market.setCook(cook);
+//        market.setCashier(cashier);
         cashier.setHost(host);
-        cook.AddMarket(market);
+//        cook.AddMarket(market);
         cook.setGui(a);
         gui.animationPanel.addCookGui(a);
         group.setLayout(new GridLayout(1, 2, 10, 10));
@@ -128,7 +127,7 @@ public class RestaurantPanel extends JPanel {
                     c.setCashier(cashier);
                     c.setGui(g);
                     customers.add(c);
-                    c.startThread();
+                    c.getPerson().startThread();
             }
             if (type.equals("Waiters")){
                     WaiterRole w = new WaiterRole(name);
@@ -141,7 +140,7 @@ public class RestaurantPanel extends JPanel {
                     w.setCashier(cashier);
                     w.setGui(h);
                     waiters.add(w);
-                    w.startThread();
+                    w.getPerson().startThread();
             }
     }
 

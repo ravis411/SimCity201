@@ -374,7 +374,6 @@ public class BankClientRole extends Role implements BankClient{
 		}
 		state2 = inLineState.noTicket;
 		BuildingList.findBuildingWithName("Bank").removeRole(this);
-		myPerson.msgImHungry();
 		deactivate();
 	}
 

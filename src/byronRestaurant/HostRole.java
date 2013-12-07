@@ -1,7 +1,10 @@
 package byronRestaurant;
 
+import Person.Role.ShiftTime;
 import agent.Agent;
 import byronRestaurant.gui.WaiterGui;
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -9,7 +12,7 @@ import java.util.concurrent.Semaphore;
 /**
  * Restaurant Host Agent
  */
-public class HostRole extends Agent {
+public class HostRole extends GenericHost {
 	/*
 	 * data
 	 */
@@ -18,8 +21,8 @@ public class HostRole extends Agent {
 		public boolean onBreak;
 		public boolean atLobby;
 
-		MyWaiter(WaiterRole w){
-			waiter = w;
+		MyWaiter(GenericWaiter w){
+			waiter = (WaiterRole) w;
 			onBreak = false;
 			atLobby = true;
 		}
@@ -61,10 +64,9 @@ public class HostRole extends Agent {
 	private String name;
 
 	// create an instance of HostRole
-	public HostRole(String name) { 
-		super();
+	public HostRole(String location) { 
+		super(location);
 
-		this.name = name;
 		// make some tables
 		synchronized(tables){
 			for (int ix = 1; ix <= NTABLES; ix++) {
@@ -85,10 +87,12 @@ public class HostRole extends Agent {
 		tables.get(tableNum-1).setUnoccupied();
 		stateChanged();
 	}
+	public void addWaiter(GenericWaiter waiter) {
+		waiters.add(new MyWaiter(waiter));
+		stateChanged();		
+	}
 
 	public void addWaiter(WaiterRole waiter){
-		waiters.add(new MyWaiter(waiter));
-		stateChanged();
 	}
 	public void msgPayUsBackLater(CustomerRole cust){
 		redList.add(cust);
@@ -97,7 +101,7 @@ public class HostRole extends Agent {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		try{
 		for (Table table : tables){
 			if (!table.isOccupied()){
@@ -142,6 +146,30 @@ public class HostRole extends Agent {
 	//utilities
 	public String getName(){
 		return name;
+	}
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

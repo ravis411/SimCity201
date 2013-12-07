@@ -1,14 +1,22 @@
 package byronRestaurant;
 
+import Person.Role.ShiftTime;
 import agent.Agent;
 import byronRestaurant.gui.WaiterGui;
+import interfaces.generic_interfaces.GenericCashier;
+import interfaces.generic_interfaces.GenericCook;
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
+
+import trace.AlertLog;
+import trace.AlertTag;
 /**
  * Restaurant Waiter Agent
  */
-public class WaiterRole extends Agent {
+public class WaiterRole extends GenericWaiter {
 	public enum CustomerState{noAction,notSeated, readyToOrder, orderPending, orderReady, doneEating, gotCheck, isDone, orderNotAvailable};
 	Timer timer;
 	public List<String>menu = new ArrayList<String>();{
@@ -54,23 +62,22 @@ public class WaiterRole extends Agent {
 	private Semaphore atLobby = new Semaphore(0,true);
 	public WaiterGui waiterGui = null;
 
-	public WaiterRole(String name) {
-		super();
-
-		this.name = name;
+	public WaiterRole(String location) {
+		super(location);
 	}
 
-	public void setCook(CookRole c){
-		this.cook = c;
+	public void setCook(GenericCook cook) {
+		this.cook = (CookRole) cook;
 	}
 
-	public void setHost(HostRole h){
-		this.host = h;
+	public void setHost(GenericHost host) {
+		this.host = (HostRole) host;
 	}
 
-	public void setCashier(CashierRole c){
-		this.cashier = c;
+	public void setCashier(GenericCashier cashier) {
+		this.cashier = (CashierRole) cashier;
 	}
+
 
 	// Messages
 	public void msgSitCustomerAtTable(CustomerRole cust, int tableNum){
@@ -144,7 +151,7 @@ public class WaiterRole extends Agent {
 	}
 
 	public void msgRestockedItem(String o){
-		Do("Recieved order from cook that " + o + " is restocked");
+		AlertLog.getInstance().logMessage(AlertTag.WAITER_ROLE, myPerson.getName(),"Recieved order from cook that " + o + " is restocked");
 		menu.add(o);
 		stateChanged();
 	}
@@ -168,7 +175,8 @@ public class WaiterRole extends Agent {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+
+	public boolean pickAndExecuteAction() {
 		try {
 			for (MyCustomer customer : Customers){
 				if (customer.state == CustomerState.orderNotAvailable){
@@ -212,6 +220,7 @@ public class WaiterRole extends Agent {
 		}
 	}
 
+
 	// Actions
 
 	private void outOfStock(MyCustomer customer){
@@ -227,14 +236,13 @@ public class WaiterRole extends Agent {
 			} 
 		}
 	}
-	
+
 	private void seatCustomer(MyCustomer customer){
 		customer.cust.msgFollowMeToTable(this, customer.table, menu);
 		DoSeatCustomer(customer.cust, customer.table);
 		try {
 			atTable.acquire();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		customer.state = CustomerState.noAction;
@@ -246,7 +254,6 @@ public class WaiterRole extends Agent {
 		try {
 			atTable.acquire();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		customer.state = CustomerState.noAction;
@@ -254,7 +261,7 @@ public class WaiterRole extends Agent {
 	}
 
 	private void giveOrderToCook(MyCustomer customer){
-		Do("Giving " + customer.cust + "'s choice of " + customer.choice + " to cook");
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(),"Giving " + customer.cust + "'s choice of " + customer.choice + " to cook");
 		customer.state = CustomerState.noAction;
 		cook.msgHereIsAnOrder(this, customer.table, customer.choice);
 		cashier.msgHereIsOrder(customer.table, customer.choice, this);
@@ -362,6 +369,25 @@ public class WaiterRole extends Agent {
 
 	public WaiterGui getGui() {
 		return waiterGui;
+	}
+
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

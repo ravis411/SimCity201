@@ -1,14 +1,18 @@
 package byronRestaurant;
 
 
+import Person.Role.ShiftTime;
 import agent.Agent;
 import byronRestaurant.gui.CookGui;
 import byronRestaurant.gui.WaiterGui;
+import interfaces.generic_interfaces.GenericCook;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
-import restaurant.WaiterAgent;
+import trace.AlertLog;
+import trace.AlertTag;
+
 
 /**
  * Restaurant Cook Agent
@@ -16,9 +20,8 @@ import restaurant.WaiterAgent;
  * 
  * 
  */
-public class CookRole extends Agent {
+public class CookRole extends GenericCook {
 	private List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
-	private MarketAgent market;
 	public enum cookStatus {pending, cooking, done};
 	private String name;
 	private int foodThreshold = 3;
@@ -28,13 +31,13 @@ public class CookRole extends Agent {
 	private Semaphore atKitchen = new Semaphore(0,true);
 	private Semaphore atDefault = new Semaphore(0,true);
 	private class Order{
-		public WaiterAgent waiter;
+		public WaiterRole waiter;
 		public int table;
 		public String choice;
 		public cookStatus status;
 		
-		Order(WaiterAgent w, int t, String c, cookStatus s){
-			waiter = w;
+		Order(WaiterRole waiterRole, int t, String c, cookStatus s){
+			waiter = waiterRole;
 			table = t;
 			choice = c;
 			status = s;
@@ -61,20 +64,19 @@ public class CookRole extends Agent {
 
 
 	//Initialize Cook
-	public CookRole(String name) { 
-		super();
+	public CookRole(String location) { 
+		super(location);
 
-		this.name = name;
 	}
 
-	public void AddMarket(MarketAgent m){
-		market = m;
-	}
+//	public void AddMarket(MarketAgent m){
+//		market = m;
+//	}
 
 	// messages
-	public void msgHereIsAnOrder(WaiterAgent waiter, int table, String choice){
-		orders.add(new Order(waiter, table, choice, cookStatus.pending));
-		print("Receiving new order from " + waiter.getName());
+	public void msgHereIsAnOrder(WaiterRole waiterRole, int table, String choice){
+		orders.add(new Order(waiterRole, table, choice, cookStatus.pending));
+		print("Receiving new order from " + waiterRole.getName());
 		stateChanged();
 	}
 	public void msgfoodDone(Order o){
@@ -95,7 +97,7 @@ public class CookRole extends Agent {
 	}
 
 	public void msgNotEnoughFood(String s){
-		Do("Market has run out, keep " + s + " off the menu.");
+		AlertLog.getInstance().logMessage(AlertTag.COOK_ROLE, myPerson.getName(),"Market has run out, keep " + s + " off the menu.");
 	}
 	public void msgTakingFood(){
 		cookGui.setOnPlate(false);
@@ -114,7 +116,7 @@ public class CookRole extends Agent {
 	}
 	
 	// Scheduler
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		synchronized(orders){
 			for (Order o : orders){
 				if (o.status == cookStatus.done){
@@ -153,7 +155,7 @@ public class CookRole extends Agent {
 	private void cookOrder(final Order o){
 			if (inventory.get(o.choice).amount == foodThreshold){
 //				o.waiter.msgOutOfStock(o.choice, o.table);
-				market.msgIWantFood(o.choice, (foodMaximum-inventory.get(o.choice).amount));
+//				market.msgIWantFood(o.choice, (foodMaximum-inventory.get(o.choice).amount));
 //				orders.remove(o);
 			}else if (inventory.get(o.choice).amount == 0){
 				o.waiter.msgOutOfStock(o.choice, o.table);
@@ -191,6 +193,30 @@ public class CookRole extends Agent {
 
 	public CookGui getGui() {
 		return cookGui;
+	}
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

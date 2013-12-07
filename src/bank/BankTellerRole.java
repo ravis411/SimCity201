@@ -36,11 +36,12 @@ public class BankTellerRole extends Employee implements BankTeller{
 	private TellerGui tellerGui = null;
 
 	
-	public BankTellerRole(String workLocation){
+ 
+	public BankTellerRole(String workLocation) {
 		super(workLocation);
 		Accounts = Database.INSTANCE.sendDatabase();
 	}
- 
+
 	public void setAnnouncer(NumberAnnouncer a){
 		this.announcer = a;
 	}
