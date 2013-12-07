@@ -7,6 +7,7 @@ import interfaces.BankClient;
 import interfaces.BankTeller;
 import interfaces.LoanTeller;
 
+import java.util.Random;
 import java.util.concurrent.Semaphore;
 
 import trace.AlertLog;
@@ -30,7 +31,7 @@ import building.BuildingList;
 
 public class BankClientRole extends Role implements BankClient{
 	//	Data
-	public enum bankState {nothing, deposit, withdraw, loan, repay, closing};
+	public enum bankState {nothing, deposit, withdraw, loan, repay, closing,steal};
 	public static final String loan = "loan";
 	public static final String repay = "repay";
 	public static final String deposit = "deposit";
@@ -214,7 +215,9 @@ public class BankClientRole extends Role implements BankClient{
 			Leaving();
 			return true;
 		}
-
+        if (state1==bankState.steal){
+        	stealMoney();
+        }
 		if ((state2 == inLineState.goingToLine && state1 == bankState.withdraw) ||(state2 == inLineState.goingToLine && state1 == bankState.deposit)){
 			goToLine(lineNum);
 			return true;
@@ -348,6 +351,14 @@ public class BankClientRole extends Role implements BankClient{
 		state2 = inLineState.transactionProcessing;
 
 	}
+	private void stealMoney(){
+		int i= new Random().nextInt(10)+1;
+		double stealAmount= i *10000;
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Why so serious? Im just robbing bro");
+		teller.msgStealingMoney(stealAmount);
+		state2 = inLineState.transactionProcessing;
+		
+	}
 	private void IWantALoan(){
 		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want a loan for " + requestAmount);
 		loanTeller.msgLoan(requestAmount, this.getPerson().getAge(), hasLoan);
@@ -433,6 +444,11 @@ public class BankClientRole extends Role implements BankClient{
 			this.state1 = bankState.repay;
 			loanTicketNum = LoanTakeANumberDispenser.INSTANCE.pullTicket();
 			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER,  myPerson.getName(), "My ticket number is " + loanTicketNum);
+		}
+		if (trans.equalsIgnoreCase("steal")){
+			this.state1 = bankState.steal;
+			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER,  myPerson.getName(), "Robbing this bank");
+			stateChanged();
 		}
 
 		/*
