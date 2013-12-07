@@ -31,14 +31,15 @@ import building.BuildingList;
 
 public class BankClientRole extends Role implements BankClient{
 	//	Data
-	public enum bankState {nothing, deposit, withdraw, loan, repay, closing,steal};
+	public enum bankState {nothing, deposit, withdraw, loan, repay, closing, steal};
 	public static final String loan = "loan";
 	public static final String repay = "repay";
 	public static final String deposit = "deposit";
 	public static final String withdraw = "withdraw";
+	public static final String steal = "steal";
 	public bankState state1 = bankState.nothing;
 	private Account myAccount;
-	public enum inLineState{noTicket, waiting, goingToLine, atDesk, beingHelped, transactionProcessing, leaving};
+	public enum inLineState{noTicket, robbingBank, atInterim, waiting, goingToLine, atDesk, beingHelped, transactionProcessing, leaving};
 	public inLineState state2 = inLineState.noTicket;
 	private BankTeller teller = null;
 	private LoanTeller loanTeller = null;
@@ -50,6 +51,7 @@ public class BankClientRole extends Role implements BankClient{
 	private int ticketNum;
 	private int loanTicketNum;
 	private int lineNum;
+	private Semaphore atInterim = new Semaphore(0,true);
 	private Semaphore atLine = new Semaphore(0,true);
 	private Semaphore atWaitingArea = new Semaphore(0,true);
 	private Semaphore atExit = new Semaphore(0,true);
@@ -92,7 +94,6 @@ public class BankClientRole extends Role implements BankClient{
 	 */  
 
 	public BankClientRole() {
-
 	}
 
 
@@ -101,11 +102,18 @@ public class BankClientRole extends Role implements BankClient{
 	 * Message sent by the GUI releasing the semaphore when the client reaches the waiting area
 	 */
 	public void msgAtWaitingArea(){
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "At waiting area");		
 		atWaitingArea.release();
 		state2 = inLineState.waiting;
 		stateChanged();
 	}
 
+	public void msgAtInterim(){
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "At interim point");		
+		atInterim.release();
+		state2 = inLineState.atInterim;
+		stateChanged();
+	}
 	/**
 	 * 
 	 * Sent by the number announcer. If the number matches the client's ticket, the client should go to the proper line
@@ -146,6 +154,7 @@ public class BankClientRole extends Role implements BankClient{
 	 * sent from the gui when the client is at the line
 	 */
 	public void msgAtLine(){ //from gui
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "At line");		
 		atLine.release();
 		stateChanged();
 	}
@@ -208,6 +217,18 @@ public class BankClientRole extends Role implements BankClient{
 		stateChanged();
 	}
 
+	public void msgFreeze() {
+		stateChanged();
+	}
+
+	public void msgHereIsTeller(BankTeller bankTeller) {
+		teller = bankTeller;
+		System.out.println("Got the new teller");
+		state2 = inLineState.robbingBank;
+		stateChanged();
+		
+	}
+
 
 	//Scheduler
 	public boolean pickAndExecuteAction() {
@@ -215,9 +236,16 @@ public class BankClientRole extends Role implements BankClient{
 			Leaving();
 			return true;
 		}
-        if (state1==bankState.steal){
-        	stealMoney();
-        }
+
+		if (state1 == bankState.steal){
+			if (state2 == inLineState.atInterim){
+				robBank();
+			}
+			if (state2 == inLineState.robbingBank){
+				stealMoney();
+			}
+		}
+
 		if ((state2 == inLineState.goingToLine && state1 == bankState.withdraw) ||(state2 == inLineState.goingToLine && state1 == bankState.deposit)){
 			goToLine(lineNum);
 			return true;
@@ -228,6 +256,10 @@ public class BankClientRole extends Role implements BankClient{
 		}
 		if (state1 != bankState.nothing){
 			if (state2 == inLineState.noTicket){
+				goToInterim();
+				return true;
+			}
+			if (state2 == inLineState.atInterim && state1 != bankState.steal){
 				goToWaitingArea();
 				return true;
 			}
@@ -292,7 +324,6 @@ public class BankClientRole extends Role implements BankClient{
 			atLine.acquire();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-			System.out.println("Y THIS");
 		}
 		//		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Arrived at line, the teller's myPerson.getName() is " + teller);
 		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Arrived at line, the teller's name is " + teller);		
@@ -303,6 +334,14 @@ public class BankClientRole extends Role implements BankClient{
 		}
 	}
 
+	private void goToInterim(){
+		DoGoToInterim();
+		try {
+			atInterim.acquire();
+		} catch(InterruptedException e){
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * Same as the goToLine action, but for the loan line specifically. 
 	 * 
@@ -351,12 +390,17 @@ public class BankClientRole extends Role implements BankClient{
 		state2 = inLineState.transactionProcessing;
 
 	}
+	private void robBank(){
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Robbing bank");		
+		announcer.msgRobbingBank(this);
+	}
+	
 	private void stealMoney(){
 		int i= new Random().nextInt(10)+1;
 		double stealAmount= i *10000;
 		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Why so serious? Im just robbing bro");
-		teller.msgStealingMoney(stealAmount);
 		state2 = inLineState.transactionProcessing;
+		teller.msgStealingMoney(stealAmount);
 		
 	}
 	private void IWantALoan(){
@@ -399,6 +443,15 @@ public class BankClientRole extends Role implements BankClient{
 		clientGui.doGoToWaitingArea();
 
 	}
+	
+	private void DoGoToInterim(){
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Going to interim point");
+		if (state1 == bankState.steal){
+		clientGui.doGoToInterim(true);
+		}
+		else clientGui.doGoToInterim(false);
+	}
+		
 
 	//other
 	public String getName() {
@@ -448,7 +501,6 @@ public class BankClientRole extends Role implements BankClient{
 		if (trans.equalsIgnoreCase("steal")){
 			this.state1 = bankState.steal;
 			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER,  myPerson.getName(), "Robbing this bank");
-			stateChanged();
 		}
 
 		/*
@@ -471,7 +523,7 @@ public class BankClientRole extends Role implements BankClient{
 	}
 	@Override
 	public String getNameOfRole() {
-		return null;
+		return "Bank Client Role";
 	}
 	public Account getMyAccount() {
 		return myAccount;

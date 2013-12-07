@@ -394,7 +394,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		}
 		
 		if(state == PersonState.NeedsMoney && moneyNeeded > 10){
-			GoGetMoney();
+			GoRobBank();
 			return true;
 		}
 		if(parties.size()!=0){

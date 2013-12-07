@@ -36,4 +36,6 @@ public interface BankTeller {
 
 	public void msgStealingMoney(double stealAmount);
 
+	public void msgFreeze();
+
 }
