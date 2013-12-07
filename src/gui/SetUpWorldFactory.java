@@ -52,12 +52,12 @@ import astar.VehicleAStarTraversal;
 
 //This class will instantiate and setup everything.
 public class SetUpWorldFactory{
-	public SimCityLayout layout;// = new SimCityLayout(WINDOWX, WINDOWY/2);// <-This holds the grid information
-	public CityAnimationPanel cityPanel;// = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
-	public BuildingsPanels buildingsPanels;// = new BuildingsPanels();//<-Zoomed in view of buildings
+	public static SimCityLayout layout;// = new SimCityLayout(WINDOWX, WINDOWY/2);// <-This holds the grid information
+	public static CityAnimationPanel cityPanel;// = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
+	public static BuildingsPanels buildingsPanels;// = new BuildingsPanels();//<-Zoomed in view of buildings
 
-	List<Agent> agents = new ArrayList<Agent>();
-	List<LocationInfo> locationMap = new ArrayList<LocationInfo>();//<--a map of strings to LocationInfo
+	public static List<Agent> agents = new ArrayList<Agent>();
+	public static List<LocationInfo> locationMap = new ArrayList<LocationInfo>();//<--a map of strings to LocationInfo
 	
 	
 	
