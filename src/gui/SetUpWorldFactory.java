@@ -42,7 +42,6 @@ import Person.Role.Role;
 import Person.Role.RoleFactory;
 import Transportation.BusAgent;
 import Transportation.BusStopConstruct;
-import agent.Agent;
 import astar.AStarTraversal;
 import astar.PersonAStarTraversal;
 import astar.VehicleAStarTraversal;
@@ -55,7 +54,7 @@ public class SetUpWorldFactory{
 	public static BuildingsPanels buildingsPanels;// = new BuildingsPanels();//<-Zoomed in view of buildings
 	public static CityControlPanel controls;
 
-	public static List<Agent> agents = new ArrayList<Agent>();
+	public static List<PersonAgent> agents = new ArrayList<PersonAgent>();
 	public static List<LocationInfo> locationMap = new ArrayList<LocationInfo>();//<--a map of strings to LocationInfo
 	
 	
@@ -76,7 +75,7 @@ public class SetUpWorldFactory{
 		layout = new SimCityLayout(WINDOWX, WINDOWY/2, GRIDSIZEX, GRIDSIZEY);// <-This holds the grid information
 		cityPanel = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
 		buildingsPanels = new BuildingsPanels();//<-Zoomed in view of buildings
-		controls = new CityControlPanel(buildingsPanels);
+		controls = new CityControlPanel(buildingsPanels, this);
 
 		buildingsPanels.addBuildingPanel(new Team29Panel(buildingsPanels));
 		buildingsPanels.addBuildingPanel(controls);
@@ -150,8 +149,8 @@ public class SetUpWorldFactory{
 		location.positionToEnterFromRoadGrid = new Dimension(23, 4);
 		//Some driveways//:
 		layout.addDriveway(23, 4, 1, 1);//	layout.addCrossWalk(23, 4, 1, 1);
-		addBuilding("Bank", "Bank", 23, 2, 2, 2, location);
-		
+		//addBuilding("Bank", "Bank", 23, 2, 2, 2, location);
+		addBuilding("Bank", "Bank", 22, 2, 3, 2, location);
 //Building 6
 		location.sector = 1;
 		location.positionToEnterFromMainGrid = new Dimension(30, 3);
@@ -335,6 +334,17 @@ public class SetUpWorldFactory{
 			
 			//Need to add people to the GUI controls here as well; 
 			controls.addPerson(agents.get(0));
+			controls.addPerson(agents.get(1));
+			controls.addPerson(agents.get(2));
+			controls.addPerson(agents.get(3));
+			controls.addPerson(agents.get(4));
+			controls.addPerson(agents.get(5));
+			controls.addPerson(agents.get(6));
+			controls.addPerson(agents.get(7));
+			controls.addPerson(agents.get(8));
+			controls.addPerson(agents.get(9));
+			controls.addPerson(agents.get(10));
+			controls.addPerson(agents.get(11));
 
 			//addPerson("Person 13", buildingsPanels.getResidenceBuildingPanel("Apartment 12"));
 			//addPerson("Person 14", buildingsPanels.getResidenceBuildingPanel("Apartment 13"));
