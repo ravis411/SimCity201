@@ -108,6 +108,7 @@ public class BusAgent extends Agent implements Bus
 	//Actions
 	
 	private void GoToNextStop(){
+		agentGui.setNumberPassengers(passengers.size());
 		//print("going to next stop");
 		//currentStop.msgLeavingStop();
 		state = AgentState.inTransit;
@@ -135,6 +136,7 @@ public class BusAgent extends Agent implements Bus
 	private void notifyPassenger(myBusPassenger pas) {
 		pas.passenger.msgWeHaveArrived(location);
 		passengers.remove(pas);
+		agentGui.setNumberPassengers(passengers.size());
 	}
 	
 	

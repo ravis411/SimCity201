@@ -1,6 +1,8 @@
 package building;
 
 import gui.Building.BuildingPanel;
+import Person.Role.Employee;
+import Person.Role.Role;
 import bank.BankClientRole;
 import bank.BankTellerRole;
 import bank.LoanTellerRole;
@@ -46,6 +48,16 @@ public class Bank extends Building implements Workplace {
 			return true;
 		}
 		else return false;
+	}
+	
+	@Override
+	public void notifyEmployeesTheyCanLeave() {
+		// TODO Auto-generated method stub
+		for(Role r : inhabitants){
+			if(r instanceof Employee){
+				r.deactivate();
+			}
+		}
 	}
 
 }

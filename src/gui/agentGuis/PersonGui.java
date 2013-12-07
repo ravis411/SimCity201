@@ -108,7 +108,6 @@ public class PersonGui implements Gui {
         			currentLocation = new LocationInfo(i);
         		}
         	}
-        	
         }
         
     }
@@ -522,7 +521,7 @@ private void DoGoToSector(int sector){
     	//while( !entrance.moveInto(aStar.getGrid()) ) {
     	while( !to.moveInto(aStar.getGrid()) ) {
     		//System.out.println("EntranceBlocked!!!!!!! waiting 1sec");
-    		AlertLog.getInstance().logInfo(AlertTag.PERSON_GUI, agent.toString(), "Entrance blocked. Waiting 2 seconds for path to clear.");
+    		AlertLog.getInstance().logInfo(AlertTag.PERSON_GUI, agent.toString(), "Entrance blocked. Waiting 3 seconds for path to clear.");
     		try {
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
@@ -558,9 +557,10 @@ private void DoGoToSector(int sector){
      *  
      * 
      *  @param to The Position to move to. 
+     * @throws Exception 
      *  
      */
-    void guiMoveFromCurrentPostionTo(Position to){
+    void guiMoveFromCurrentPostionTo(Position to) throws Exception{
         
     	//First check to make sure the destination is free otherwise wait
     	int waits = 0;

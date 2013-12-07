@@ -31,7 +31,7 @@ public interface Person extends DateListener{
 	
 	public abstract void msgYouHaveALoan(double loan);
 	
-	public abstract void msgReportForWork(String role);
+	public abstract void msgReportForWork();
 	
 	public abstract void msgGoToMarket(String item);
 	
@@ -48,6 +48,8 @@ public interface Person extends DateListener{
 	public abstract void msgIAmComing(Person p);
 	
 	public abstract void msgIAmNotComing(Person p);
+	
+	void msgYouCanLeave();
 
 	public abstract String getName();
 
@@ -66,9 +68,6 @@ public interface Person extends DateListener{
 	public abstract int getAge();
 
 	public abstract double getMoneyNeeded();
-
-	public abstract Calendar getRealTime();
-
 
 	public abstract List<PersonAgent> getFriends();
 

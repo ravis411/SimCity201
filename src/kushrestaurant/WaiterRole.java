@@ -1,27 +1,29 @@
 package kushrestaurant;
 
-import Person.Role.Role;
-import agent.Agent;
-import kushrestaurant.interfaces.*;
+import interfaces.generic_interfaces.GenericCashier;
+import interfaces.generic_interfaces.GenericCook;
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Semaphore;
 
-
+import Person.Role.ShiftTime;
+import kushrestaurant.HostRole.Table;
 //import kushrestaurant.gui.RestaurantGui;
 import kushrestaurant.gui.WaiterGui;
+import kushrestaurant.interfaces.Cashier;
+import kushrestaurant.interfaces.Cook;
 import kushrestaurant.interfaces.Customer;
-import kushrestaurant.HostRole.Table;
-import kushrestaurant.CookRole.Order;
-import kushrestaurant.CookRole.orderstate;
-import kushrestaurant.CookRole.state;
-
-import java.util.*;
-import java.util.concurrent.Semaphore;
-import java.util.Random;
+import kushrestaurant.interfaces.Waiter;
 
 
-public class WaiterRole extends Role implements Waiter{
+public class WaiterRole extends GenericWaiter implements Waiter{
 	
 	public List<MyCustomer> customers=new ArrayList<MyCustomer>();
 	public Collection<Table> tables;
@@ -51,6 +53,8 @@ public class WaiterRole extends Role implements Waiter{
 	public WaiterEvent breakevent= WaiterEvent.notOnBreak;
 	private WaiterGui waiterGui= null;
 	public boolean onBreak= false;
+	
+	/*
 	public WaiterRole(String name, HostRole h,CookRole c) {
 		super();
         host=h;
@@ -63,13 +67,17 @@ public class WaiterRole extends Role implements Waiter{
 		//for (int ix = 1; ix <= NTABLES; ix++) {
 			//tables.add(new Table(ix));//how you add to a collections
 		
-	}
+	}*/
+	
+	/*
 	public WaiterRole(String name){
 		super();
 		this.name=name;
-	}
-	public WaiterRole(){
-		super();
+	}*/
+	
+	
+	public WaiterRole(String workLocation){
+		super(workLocation);
 	}
 
 	public String getMaitreDName() {
@@ -79,8 +87,8 @@ public class WaiterRole extends Role implements Waiter{
 	public String getName() {
 		return name;
 	}
-public void setCashier(CashierRole cashier){
-	this.cashier=cashier;
+public void setCashier(GenericCashier cashier){
+	this.cashier=(CashierRole) cashier;
 }
 	public List getCustomers() {
 		return customers;
@@ -108,11 +116,11 @@ public void setCashier(CashierRole cashier){
 			}
 		}
 	}
-    public void setHost(HostRole host){
-    	this.host=host;
+    public void setHost(GenericHost host){
+    	this.host=(HostRole) host;
     }
-    public void setCook(Cook cook){
-    	this.cook =cook;
+    public void setCook(GenericCook cook){
+    	this.cook = (CookRole) cook;
     }
 	public void msgAtCook(){
 		atCook.release();
@@ -704,6 +712,16 @@ public void setCashier(CashierRole cashier){
 	
 	public void setCashier(Cashier cashier){
 		this.cashier=cashier;
+	}
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

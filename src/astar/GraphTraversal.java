@@ -15,7 +15,7 @@ public abstract class GraphTraversal
 	}
 	public Object getStartingState() {return startingState;}
 	public Object getEndingState() {return endingState;}
-	public Node generalSearch(Object start, Object end) {
+	public Node generalSearch(Object start, Object end) throws Exception {
 	    //set starting Pos 
 	    startingState = start;	    
 	    //set ending Pos
@@ -43,7 +43,9 @@ public abstract class GraphTraversal
 			//printMessage("Path Found.", first); 
 			return first;
 		    }else{
-			queueFn(nodes, expandFunc(first)); 
+			queueFn(nodes, expandFunc(first));
+			if(nodes.size() >= 2000000)
+				throw new Exception();
 		    }		
 		}
 	    }
@@ -58,5 +60,5 @@ public abstract class GraphTraversal
 						      List<Node> newNodes);
 	public abstract List<Node> expandFunc(Node node); 
 
-	public abstract void printCurrentList();
+	//public abstract void printCurrentList();
 }//end printCurrentList

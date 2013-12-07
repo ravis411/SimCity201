@@ -47,8 +47,8 @@ public class LoanTellerRole extends Employee implements LoanTeller{
 	private LoanGui loanGui = null;
 	public boolean HasLoan = false;
  
-	public LoanTellerRole(){
-		super();
+	public LoanTellerRole(String workLocation){
+		super(workLocation);
 		Accounts = Database.INSTANCE.sendDatabase();
 	}
 
@@ -273,7 +273,7 @@ public class LoanTellerRole extends Employee implements LoanTeller{
 	}
 
 	@Override
-	public Interval getShift() {
+	public ShiftTime getShift() {
 
 		return null;
 	}

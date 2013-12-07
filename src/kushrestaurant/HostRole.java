@@ -1,15 +1,17 @@
 package kushrestaurant;
 
-import Person.Role.Role;
-import agent.Agent;
-import kushrestaurant.WaiterRole.WaiterEvent;
-import kushrestaurant.gui.WaiterGui;
-import kushrestaurant.interfaces.Customer;
-import kushrestaurant.interfaces.Host;
-import kushrestaurant.interfaces.Waiter;
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
 
-import java.util.*;
-import java.util.concurrent.Semaphore;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import jeffreyRestaurant.interfaces.Host;
+import Person.Role.ShiftTime;
+import kushrestaurant.interfaces.Customer;
+import kushrestaurant.interfaces.Waiter;
 
 /**
  * Restaurant Host Agent
@@ -18,7 +20,7 @@ import java.util.concurrent.Semaphore;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class HostRole extends Role {
+public class HostRole extends GenericHost implements Host{
 	static final int NTABLES = 3;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
@@ -35,13 +37,14 @@ public class HostRole extends Role {
 	//private Semaphore atTable = new Semaphore(0,true);
 
 	//public HostGui hostGui = null;
-   public HostRole(){
-	   super();
+   public HostRole(String workLocation){
+	   super(workLocation);
 	   tables = new ArrayList<Table>(NTABLES);
 		for (int ix = 1; ix <= NTABLES; ix++) {
 			tables.add(new Table(ix));//how you add to a collections
 		}
    }
+   /*
 	public HostRole(String name) {
 		super();
 
@@ -51,7 +54,7 @@ public class HostRole extends Role {
 		for (int ix = 1; ix <= NTABLES; ix++) {
 			tables.add(new Table(ix));//how you add to a collections
 		}
-	}
+	}*/
 
 	public String getMaitreDName() {
 		return name;
@@ -79,10 +82,7 @@ public class HostRole extends Role {
 	   }
 	   return flag;
    }
-   public void addWaiter(Waiter waiter){
-	   waiters.add(waiter);
-	   stateChanged();
-   }
+
 	public Collection getTables() {
 		return tables;
 	}
@@ -90,7 +90,6 @@ public class HostRole extends Role {
 
 	public void msgIWantFood(Customer cust) {
 		waitingCustomers.add(cust);
-		
 		//cust.setWaiter(waiter);
 		stateChanged();
 	}
@@ -290,6 +289,23 @@ public class HostRole extends Role {
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
 		return "HostRole";
+	}
+	@Override
+	public void addWaiter(GenericWaiter waiter) {
+		// TODO Auto-generated method stub
+		 waiters.add((Waiter) waiter);
+		   stateChanged();
+		
+	}
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

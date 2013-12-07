@@ -36,6 +36,8 @@ public class SimCityLayout {
 	private List<Road> roads = new ArrayList<>();
 	//A List of crosswalks
 	private List<Dimension> crosswalks = new ArrayList<>();
+	//A List of driveways
+	private List<Dimension> driveWays = new ArrayList<>();
 	
 
 	//The main Semaphore Grid a position is acquired if there is an agent there or building
@@ -165,6 +167,64 @@ public class SimCityLayout {
 		}
 		return successfull;
 	}//end addCrossWalk
+	
+	
+	/**Adds a Driveway to the city. A driveway is a road with a crosswalk.
+	 * 
+	 * @param xPos 	The starting x grid Position of the road
+	 * @param yPos     The starting y grid Position of the road
+	 * @param width	The number of grid positions across
+	 * @param height	The number of grid positions high
+	 * @return True if successful False if at least one of the Roads was unsuccessful
+	 */
+	public boolean addDriveway(int xPos, int yPos, int width, int height){
+		Dimension d = new Dimension(xPos, yPos);
+		List<Dimension> drives = new ArrayList<>();
+		boolean successfull = true;
+		
+		//Dimension cross;
+
+		//This loop will create a list of positions that we want to add
+		for(int x = 0; x < width;x++) {
+			for(int y = 0; y < height; y++ ) {
+				drives.add(new Dimension(d));
+				d.height++;
+			}
+			d.width++;
+			d.height = yPos;
+		}
+		
+		//This loop trys to add the crosses to the grid
+		for(Dimension dd: drives) {
+			try {
+				//Make sure the mainGrid is free
+				if(agentGrid[dd.width][dd.height].availablePermits() > 0){
+
+					//check to make sure there are permits for this road position...if there isn't something is wrong
+					if(roadGrid[dd.width][dd.height].tryAcquire())
+					{
+						if(roadGrid[dd.width][dd.height].availablePermits() == 0){
+							//check to make sure there aren't permits for this road position...if there are something is wrong
+							if(crossWalkGrid[dd.width][dd.height].tryAcquire())
+								driveWays.add(new Dimension(dd));
+							else
+								successfull = false;
+						}
+						else
+							successfull = false;
+					}
+					else
+						successfull = false;
+				}
+				else
+					successfull = false;
+			} catch (Exception e) {
+				successfull = false;
+			}
+		}
+		return successfull;
+		
+	}//end addDriveWay
 	
 	/**Adds a Road to the city.
 	 * 
@@ -300,17 +360,36 @@ public class SimCityLayout {
 		//Paint the roads
 		for(Road r : roads) {
 			Dimension d = positionMap.get(r.position);
-			g.setColor(Color.LIGHT_GRAY);
+			g.setColor(Color.GRAY);
 			g.fillRect(d.width, d.height, GRID_SIZEX, GRID_SIZEY);
+			g.setColor(Color.yellow);
+			for(int i = 0; i <GRID_SIZEX; i+=5){
+				g.drawLine(d.width + 5 + i, d.height, d.width + i + 10, d.height);
+				g.drawLine(d.width + 5 + i, d.height + GRID_SIZEY, d.width + i + 10, d.height+GRID_SIZEY);
+				i+=5;
+			}
+			
+			
 		}//Roads painted
 		
 		//Paint the crosswalks
 		for(Dimension c : crosswalks){
 			Dimension d = positionMap.get(c);
 			g.setColor(Color.white);
-			for(int i = 0; i < GRID_SIZEX; i+=5)
-				g.drawLine(d.width + i, d.height, d.width + i, d.height + GRID_SIZEY);
+			for(int i = 0; i <= GRID_SIZEX; i+=5)
+				g.drawLine(d.width + i, d.height, d.width + i, d.height + GRID_SIZEY - 1);
 			//g.drawRect(d.width, d.height, getGRID_SIZEX(), GRID_SIZEY);
+		}
+		
+		//Paint the driveWays
+		for(Dimension d : driveWays){
+			Dimension p = positionMap.get(d);
+			g.setColor(new Color(102,102,0));
+			g.fillRect(p.width, p.height+1, GRID_SIZEX, GRID_SIZEY-1);
+			g.setColor(Color.white);
+			g.fillRect(p.width, p.height+5, GRID_SIZEX, GRID_SIZEY-10);
+			g.setColor(new Color(102,102,0));
+			g.fillRect(p.width + 5, p.height+1, GRID_SIZEX - 10, GRID_SIZEY-1);
 		}
 		
 		if(testView){

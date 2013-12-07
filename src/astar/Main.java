@@ -12,7 +12,12 @@ public class Main
 	    //grid[1][0] =1; //test not found    
 	    AStarTraversal aStarTraversal =
 		new AStarTraversal(grid);
-	    AStarNode a = (AStarNode)aStarTraversal.generalSearch(new Position(0,0),new Position(3,3));
+	    try {
+			AStarNode a = (AStarNode)aStarTraversal.generalSearch(new Position(0,0),new Position(3,3));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -71,12 +71,12 @@ public class RestaurantPanel extends JPanel {
         cook.startThread();
         gui.animationPanel.setHost(host);
         
-        markets.get(0).addToInventory("Cookie", 5);
-        markets.get(0).addToInventory("Salad", 15);
-        markets.get(1).addToInventory("Cookie", 15);
-        markets.get(1).addToInventory("Chicken", 20);
-        markets.get(2).addToInventory("Steak", 10);
-        markets.get(2).addToInventory("Pizza", 20);
+        markets.get(0).addToInventory("Oreo Cookie", 5);
+        markets.get(0).addToInventory("Cookies n Cream", 15);
+        markets.get(1).addToInventory("Oreo Cookie", 15);
+        markets.get(1).addToInventory("Oreo Milkshake", 20);
+        markets.get(2).addToInventory("Oreo Cake", 10);
+        markets.get(2).addToInventory("Dirt n Worms", 20);
 
         //Add a waiter
        /* waiters.add(new WaiterAgent("Mary", host, cook));
@@ -114,7 +114,7 @@ public class RestaurantPanel extends JPanel {
         //restLabel.setLayout(new BoxLayout((Container)restLabel, BoxLayout.Y_AXIS));
         restLabel.setLayout(new BorderLayout());
         label.setText(
-                "<html><h3><u>Tonight's Staff</u></h3><table><tr><td>host:</td><td>" + host.getName() + "</td></tr><tr><td>cook:</td><td>" + cook.getName() + "</td></tr></table><h3><u> Menu</u></h3><table><tr><td>Steak</td><td>$15.99</td></tr><tr><td>Chicken</td><td>$10.99</td></tr><tr><td>Salad</td><td>$5.99</td></tr><tr><td>Pizza</td><td>$8.99</td></tr><tr><td>Cookie</td><td>$2.00</td></tr></table><br></html>");
+                "<html><h3><u>Tonight's Staff</u></h3><table><tr><td>host:</td><td>" + host.getName() + "</td></tr><tr><td>cook:</td><td>" + cook.getName() + "</td></tr></table><h3><u> Menu</u></h3><table><tr><td>Oreo Cake</td><td>$15.99</td></tr><tr><td>Oreo Milkshake</td><td>$10.99</td></tr><tr><td>CookiesnCream</td><td>$5.99</td></tr><tr><td>DirtnWorms</td><td>$8.99</td></tr><tr><td>Oreo Cookie</td><td>$2.00</td></tr></table><br></html>");
 
         restLabel.setBorder(BorderFactory.createRaisedBevelBorder());
         restLabel.add(label, BorderLayout.CENTER);

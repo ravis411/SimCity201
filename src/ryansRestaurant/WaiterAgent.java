@@ -306,7 +306,11 @@ public class WaiterAgent extends Agent implements Waiter {
 	// Actions
 	private void EnterRestaurant() {
 		print("Entering Restaurant");
-		waiterGui.DoEnterRestaurant();
+		try {
+			waiterGui.DoEnterRestaurant();
+		} catch (Exception e) {
+			EnterRestaurant();
+		}
 		state=AgentState.atHome;
 	}
 	
@@ -319,7 +323,10 @@ public class WaiterAgent extends Agent implements Waiter {
 		//waiterGui.DoGoToCounter();
 		
 		activity = "Going to sit " + c.customer;
-		waiterGui.DoGoToCustomer(c.customer);
+		try {
+			waiterGui.DoGoToCustomer(c.customer);
+		} catch (Exception e) {
+		}
 		
 		
 		activity = "Seating " + c.customer;
@@ -343,7 +350,10 @@ public class WaiterAgent extends Agent implements Waiter {
 	
 	private void Order(MyCustomer c) {
 		activity = "Going to order food for " + c.customer;
-		waiterGui.DoGoToCook();
+		try {
+			waiterGui.DoGoToCook();
+		} catch (Exception e1) {
+		}
 		state=AgentState.atCook;
 		
 		activity = "" + c.customer + " would like " + c.choice;
@@ -450,17 +460,26 @@ public class WaiterAgent extends Agent implements Waiter {
 	
 	// The animation DoXYZ() routines
 	private void DoGoToTable(int tableNumber) {
-		waiterGui.DoGoToTable(tableNumber);
+		try {
+			waiterGui.DoGoToTable(tableNumber);
+		} catch (Exception e) {
+		}
 		state=AgentState.atTable;
 	}
 	
 	private void DoGoToGrill(int grillNumber){
-		waiterGui.DoGoToGrill(grillNumber);
+		try {
+			waiterGui.DoGoToGrill(grillNumber);
+		} catch (Exception e) {
+		}
 	}
 	
 	private void DoLeaveCustomer() {
 		activity = "Leaving area.";
-		waiterGui.DoLeaveCustomer();
+		try {
+			waiterGui.DoLeaveCustomer();
+		} catch (Exception e) {
+		}
 		activity="";
 		//state=AgentState.atHome;
 	}
@@ -469,13 +488,19 @@ public class WaiterAgent extends Agent implements Waiter {
 		//Notice how we print "customer" directly. It's toString method will do it.
 		//Same with "table"
 		print("Seating " + customer + " at " + table);
-		waiterGui.DoBringToTable(customer, table);
+		try {
+			waiterGui.DoBringToTable(customer, table);
+		} catch (Exception e) {
+		}
 		state=AgentState.atTable;
 
 	}
 	
 	private void DoGoToCashier() {
-		waiterGui.DoGoToCashier();
+		try {
+			waiterGui.DoGoToCashier();
+		} catch (Exception e) {
+		}
 	}
 
 	//utilities

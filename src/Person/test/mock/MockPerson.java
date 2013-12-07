@@ -46,7 +46,7 @@ public class MockPerson extends Mock implements Person {
 	}
 
 	@Override
-	public void msgReportForWork(String role) {
+	public void msgReportForWork() {
 		log.add(new LoggedEvent("Told to go to work"));
 		
 	}
@@ -143,12 +143,6 @@ public class MockPerson extends Mock implements Person {
 	}
 
 	@Override
-	public Calendar getRealTime() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public List<PersonAgent> getFriends() {
 		// TODO Auto-generated method stub
 		return null;
@@ -162,6 +156,12 @@ public class MockPerson extends Mock implements Person {
 
 	@Override
 	public void setInitialRole(Role roleFromString, String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgYouCanLeave() {
 		// TODO Auto-generated method stub
 		
 	}

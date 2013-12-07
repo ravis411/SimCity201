@@ -84,23 +84,23 @@ public class MockWaiter extends Mock implements Waiter {
 			
 		}
 
-		@Override
-		public void setHost(HostRole hr) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void setCook(CookRole cr) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void setCashier(CashierRole cr) {
-			// TODO Auto-generated method stub
-			
-		}
+//		@Override
+//		public void setHost(HostRole hr) {
+//			// TODO Auto-generated method stub
+//			
+//		}
+//
+//		@Override
+//		public void setCook(CookRole cr) {
+//			// TODO Auto-generated method stub
+//			
+//		}
+//
+//		@Override
+//		public void setCashier(CashierRole cr) {
+//			// TODO Auto-generated method stub
+//			
+//		}
 
 		@Override
 		public boolean getBreakStatus() {

@@ -1,5 +1,6 @@
 package jeffreyRestaurant;
 
+import Person.Role.Role;
 import agent.Agent;
 
 import java.util.Random;
@@ -14,7 +15,7 @@ import jeffreyRestaurant.interfaces.Customer;
 /**
  * Restaurant customer agent.
  */
-public class CustomerAgent extends Agent implements Customer{
+public class CustomerAgent extends Role implements Customer{
 	private String name;
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
@@ -186,7 +187,7 @@ public class CustomerAgent extends Agent implements Customer{
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		//	CustomerAgent is a finite state machine
 
 		if (state == AgentState.DoingNothing && event == AgentEvent.gotHungry ){
@@ -245,17 +246,17 @@ public class CustomerAgent extends Agent implements Customer{
 	// Actions
 
 	private void goToRestaurant() {
-		Do("Going to restaurant");
+		//Do("Going to restaurant");
 		host.msgIWantFood(this);//send our instance, so he can respond to us
 	}
 
 	private void SitDown() {
-		Do("Being seated. Going to table");
+		//Do("Being seated. Going to table");
 		customerGui.DoGoToSeat(tableNum);
 	}
 	
 	private void callWaiter(WaiterAgent w) {
-		Do("Calling the waiter over");
+		//Do("Calling the waiter over");
 		w.msgReadyToOrder(this);
 		//choice = menu.randomFood();
 	}
@@ -267,7 +268,7 @@ public class CustomerAgent extends Agent implements Customer{
 	}
 	
 	private void EatFood() {
-		Do("Eating Food");
+		//Do("Eating Food");
 		//This next complicated line creates and starts a timer thread.
 		//We schedule a deadline of getHungerLevel()*1000 milliseconds.
 		//When that time elapses, it will call back to the run routine
@@ -288,11 +289,11 @@ public class CustomerAgent extends Agent implements Customer{
 		10000);//getHungerLevel() * 1000);//how long to wait before running task
 	}
 	private void goPay() {
-		Do("Paying");
+		//Do("Paying");
 		waiter.msgDone(this);
 	}
 	private void payCheck() {
-		Do("Going to pay " + tab + " for my " + choice);
+		//Do("Going to pay " + tab + " for my " + choice);
 		customerGui.DoGoPay();
 		try {
 			inProgress.acquire();
@@ -316,7 +317,7 @@ public class CustomerAgent extends Agent implements Customer{
 		//stateChanged();
 	}
 	private void leaveTable() {
-		Do("Leaving.");
+		//Do("Leaving.");
 		waiter.msgLeavingTable(this);
 		event = AgentEvent.doneLeaving;
 		//stateChanged();
@@ -349,6 +350,16 @@ public class CustomerAgent extends Agent implements Customer{
 
 	public CustomerGui getGui() {
 		return customerGui;
+	}
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 

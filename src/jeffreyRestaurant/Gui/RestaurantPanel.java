@@ -14,8 +14,8 @@ import jeffreyRestaurant.MarketAgent;
 import jeffreyRestaurant.WaiterAgent;
 
 /**
- * Panel in frame that contains all the restaurant information,
- * including host, cook, waiters, and customers.
+ * Old Restaurant GUI panel for the restaurant project. 
+ * Obsolete file in SimCity201.
  */
 public class RestaurantPanel extends JPanel {
 	private int ROWS = 1;
@@ -56,16 +56,16 @@ public class RestaurantPanel extends JPanel {
         //waiter.setCook(cook);
         cook.setGui(cookGui);
         gui.animationPanel.addGui(cookGui);
-        host.startThread();
+        //host.startThread();
         //waiter.startThread();
-        cook.startThread();
+        //cook.startThread();
         cook.addMarket(m1);
         cook.addMarket(m2);
         cook.addMarket(m3);
-        m1.startThread();
-        m2.startThread();
-        m3.startThread();
-        cashier.startThread();
+        //m1.startThread();
+        //m2.startThread();
+        //m3.startThread();
+        //cashier.startThread();
 
         setLayout(new GridLayout(ROWS, COLLUMNS, hgap2, vgap2));
         group.setLayout(new GridLayout(ROWS, COLLUMNS, hgap1, vgap1));
@@ -170,7 +170,7 @@ public class RestaurantPanel extends JPanel {
     			g.setHungry();
     		}
     		customers.add(c);
-    		c.startThread();
+    		//c.startThread();
     	}
     	if (type.equals("Waiters")) {
     		WaiterAgent w = new WaiterAgent(name);
@@ -183,7 +183,7 @@ public class RestaurantPanel extends JPanel {
     		w.setCashier(cashier);
     		w.setGui(wg);
     		waiters.add(w);
-    		w.startThread();
+    		//w.startThread();
     		
     		host.addWaiter(w);
     	}

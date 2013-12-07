@@ -1,5 +1,6 @@
 package jeffreyRestaurant;
 
+import Person.Role.Role;
 import agent.Agent;
 
 import java.util.*;
@@ -20,9 +21,10 @@ import jeffreyRestaurant.interfaces.Waiter;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class CashierAgent extends Agent implements Cashier {
+public class CashierAgent extends Role implements Cashier {
 	//Constructor
 	public CashierAgent(String name) {
+		super();
 		this.name = name;
 		menu = new HashMap<String,Double>();
 		menu.put("Steak", 15.99);
@@ -130,7 +132,7 @@ public class CashierAgent extends Agent implements Cashier {
 	
 	//Scheduler
 	@Override
-	public boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		synchronized(checks) {
 			for (Check c : getChecks()) {
 				if (c.getState() == CheckState.untouched) {
@@ -210,6 +212,18 @@ public class CashierAgent extends Agent implements Cashier {
 
 	public void setOrders(List<Order> orders) {
 		this.orders = orders;
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
