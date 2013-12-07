@@ -118,7 +118,7 @@ public class PersonAgent extends Agent implements Person{
 		if(r instanceof HomeRole){
 			HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE);
 			//if(name.equals("Person 1"))
-				hr.msgMakeFood();
+			//	hr.msgMakeFood();
 
 			gui.setStartingStates(home.getName());
 			BuildingList.findBuildingWithName(home.getName()).addRole(hr);
@@ -172,13 +172,13 @@ public class PersonAgent extends Agent implements Person{
 		
 		roles.add(new HomeRole(this));
 		
-		if(name.equals("Person 1") || name.equals("Person 2") )
-			this.msgImHungry();
-		if(name.equals("Person 10") || name.equals("Person 11") || name.equals("Person 12"))
-			this.msgINeedMoney(30.00);
-		if(name.equals("Person 13")){
-			this.msgGoToMarket("Steak");
-		}
+//		if(name.equals("Person 1") || name.equals("Person 2") )
+//			this.msgImHungry();
+//		if(name.equals("Person 10") || name.equals("Person 11") || name.equals("Person 12"))
+//			this.msgINeedMoney(30.00);
+//		if(name.equals("Person 13")){
+//			this.msgGoToMarket("Steak");
+//		}
 	}
 	
 //-------------------------------MESSAGES----------------------------------------//
@@ -344,7 +344,7 @@ public class PersonAgent extends Agent implements Person{
 						if(pa==p.getHost()){
 							pa.msgIAmComing(this);
 							p.partyState=PartyState.GoingToParty;
-							MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY)-1, p.dateOfParty.get(Calendar.MINUTE), this);	
+							MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY), p.dateOfParty.get(Calendar.MINUTE), this);	
 						}
 						else{
 							pa.msgIAmNotComing(this);
@@ -359,18 +359,26 @@ public class PersonAgent extends Agent implements Person{
 		if(parties.size()!=0){
 			for(Party p:parties){
 				if(p.partyState==PartyState.ReceivedInvite){
-					MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY)-1, p.dateOfParty.get(Calendar.MINUTE), this);
 					for(PersonAgent pa :friends){
 						if(pa==p.getHost()){
 							int i= new Random().nextInt(40);
-							if(i%2==0){
+							//if(i%2==0){
 								pa.msgIAmComing(this);
 								p.partyState=PartyState.GoingToParty;
-								//MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY)-1, p.dateOfParty.get(Calendar.MINUTE), this);
+								int w = 0;
+								if(name == "Person 2")
+									w = 1;
+								if(MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), (p.dateOfParty.get(Calendar.HOUR_OF_DAY)+w), p.dateOfParty.get(Calendar.MINUTE), this)){ 
+									print("Set date listener");
+								}
+								print("Month: " + p.dateOfParty.get(Calendar.MONTH));
+								print("Day: " + p.dateOfParty.get(Calendar.DAY_OF_MONTH));
+								print("Hour: " + p.dateOfParty.get(Calendar.HOUR_OF_DAY));
+								print("Minute: " + p.dateOfParty.get(Calendar.MINUTE));
 								//return true;
-							}
-							else{p.partyState=PartyState.notRSVPed;
-							}
+							//}
+							//else{p.partyState=PartyState.notRSVPed;
+							//}
 						
 						}
 					}
@@ -504,9 +512,12 @@ public class PersonAgent extends Agent implements Person{
 		  
 		  HomeGuestRole role = (HomeGuestRole) findRole(Role.HOME_GUEST_ROLE);
 		  if(role == null){
-			 roles.get(1).deactivate();
 			  role = (HomeGuestRole) RoleFactory.roleFromString(Role.HOME_GUEST_ROLE);
 			  addRole(role);
+		  }
+		  
+		  for(Role r : roles) {
+			  r.deactivate();
 		  }
 
 		  AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Home Guest Role = "+role);
@@ -949,8 +960,10 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	public void dateAction(int month, int day, int hour, int minute) {
+		print("DATEE CALLED:" + month + day + hour);
+		print("PARTY DATE: " + parties.get(0).dateOfParty.get(Calendar.MONTH) + parties.get(0).dateOfParty.get(Calendar.DAY_OF_MONTH) + (parties.get(0).dateOfParty.get(Calendar.HOUR_OF_DAY)));
 		for(Party p: parties){
-			if(p.dateOfParty.get(Calendar.MONTH) == month && p.dateOfParty.get(Calendar.DAY_OF_MONTH) == day && p.dateOfParty.get(Calendar.HOUR_OF_DAY)-1 == hour && p.dateOfParty.get(Calendar.MINUTE) == minute) {
+			if(p.dateOfParty.get(Calendar.MONTH) == month && p.dateOfParty.get(Calendar.DAY_OF_MONTH) == day && p.dateOfParty.get(Calendar.HOUR_OF_DAY) == hour) {
 				print("TIME TO GO TO PARTYYYYYYYYYYYYYYYYYYYY!!!!!!!!");
 				state = PersonState.GoingToParty;
 				stateChanged();
