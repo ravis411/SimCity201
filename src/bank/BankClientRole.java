@@ -364,11 +364,6 @@ public class BankClientRole extends Role implements BankClient{
 		state2 = inLineState.transactionProcessing;
 
 	}
-	private void robBank(){
-		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Robbing bank");		
-		announcer.msgRobbingBank(this);
-	}
-	
 	private void stealMoney(){
 		int i= new Random().nextInt(10)+1;
 		double stealAmount= i *10000;

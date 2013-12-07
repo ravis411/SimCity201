@@ -65,6 +65,4 @@ public interface BankClient {
 	 */
 	public abstract void msgLoanRepaid(double n);
 
-	public abstract void msgHereIsTeller(BankTeller bankTeller);
-
 }

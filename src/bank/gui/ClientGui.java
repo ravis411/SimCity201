@@ -70,7 +70,7 @@ public class ClientGui implements Gui {
 		}
 		if (xPos == xDestination && yPos == yDestination
 				& (xDestination == xInterim) & (yDestination == yInterim) && interimCounter == 0) {
-			role.msgAtInterim();
+//			role.msgAtInterim();
 			if (isRobber == true){
 				maskOn = true;
 			}
