@@ -380,16 +380,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 							//if(i%2==0){
 								pa.msgIAmComing(this);
 								p.partyState=PartyState.GoingToParty;
-								int w = 0;
-								if(name == "Person 2")
-									w = 1;
-								if(MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), (p.dateOfParty.get(Calendar.HOUR_OF_DAY)+w), p.dateOfParty.get(Calendar.MINUTE), this)){ 
-									print("Set date listener");
-								}
-								print("Month: " + p.dateOfParty.get(Calendar.MONTH));
-								print("Day: " + p.dateOfParty.get(Calendar.DAY_OF_MONTH));
-								print("Hour: " + p.dateOfParty.get(Calendar.HOUR_OF_DAY));
-								print("Minute: " + p.dateOfParty.get(Calendar.MINUTE));
+								MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), (p.dateOfParty.get(Calendar.HOUR_OF_DAY)), p.dateOfParty.get(Calendar.MINUTE), this); 
 								//return true;
 							//}
 							//else{p.partyState=PartyState.notRSVPed;

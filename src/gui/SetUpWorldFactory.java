@@ -333,7 +333,7 @@ public class SetUpWorldFactory{
 			addPerson("Person 12", buildingsPanels.getResidenceBuildingPanel("Apartment 11"));
 			
 			//Need to add people to the GUI controls here as well; 
-			controls.addPerson(agents.get(0));
+			//controls.addPerson(agents.get(0));
 
 			//addPerson("Person 13", buildingsPanels.getResidenceBuildingPanel("Apartment 12"));
 			//addPerson("Person 14", buildingsPanels.getResidenceBuildingPanel("Apartment 13"));
