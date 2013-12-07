@@ -40,7 +40,7 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 	
 	public CityControlPanel(BuildingsPanels buildingPanels) {
 		super(defaultGui, "Controls", buildingPanels);
-		
+		this.removeAll();
 		setLayout(new GridLayout(1,3));
 		
 		personView.setLayout(new BoxLayout((Container) personView, BoxLayout.Y_AXIS));
