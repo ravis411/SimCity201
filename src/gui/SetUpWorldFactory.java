@@ -150,8 +150,8 @@ public class SetUpWorldFactory{
 		location.positionToEnterFromRoadGrid = new Dimension(23, 4);
 		//Some driveways//:
 		layout.addDriveway(23, 4, 1, 1);//	layout.addCrossWalk(23, 4, 1, 1);
-		addBuilding("Bank", "Bank", 23, 2, 2, 2, location);
-		
+		//addBuilding("Bank", "Bank", 23, 2, 2, 2, location);
+		addBuilding("Bank", "Bank", 22, 2, 3, 2, location);
 //Building 6
 		location.sector = 1;
 		location.positionToEnterFromMainGrid = new Dimension(30, 3);
