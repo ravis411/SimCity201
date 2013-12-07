@@ -25,7 +25,6 @@ import gui.Building.restaurants.RyansRestaurantBuilding;
 import gui.Building.restaurants.RyansRestaurantBuildingPanel;
 import gui.MockAgents.PseudoBusAgent;
 import gui.MockAgents.PseudoPerson;
-import gui.agentGuis.CarVehicleGui;
 import gui.agentGuis.PersonGui;
 import gui.agentGuis.VehicleGui;
 
@@ -43,7 +42,6 @@ import Person.Role.Role;
 import Person.Role.RoleFactory;
 import Transportation.BusAgent;
 import Transportation.BusStopConstruct;
-import Transportation.CarAgent;
 import agent.Agent;
 import astar.AStarTraversal;
 import astar.PersonAStarTraversal;
@@ -89,13 +87,6 @@ public class SetUpWorldFactory{
 		layout.addCrossWalk(2, 5, 2, 5);
 		layout.addCrossWalk(30, 5, 2, 5);
 		
-		//Some driveways//:
-		//layout.addRoad(4, 4, 1, 1);
-		//layout.addCrossWalk(4, 4, 1, 1);
-		
-		
-		
-
 
 		LocationInfo location = new LocationInfo();
 
@@ -325,13 +316,6 @@ public class SetUpWorldFactory{
 			
 			
 			addVehicle("");
-			addVehicle("Car");
-			addVehicle("Car");
-			addVehicle("Car");
-			addVehicle("Car");
-			addVehicle("Car");
-			//addVehicle("EvenBus");
-			//addVehicle("OddMockBus");
 		
 			
 			addPerson("Person 1", buildingsPanels.getResidenceBuildingPanel("Apartment 1"));
@@ -355,57 +339,6 @@ public class SetUpWorldFactory{
 
 		
 	} //end LoadDefault
-
-	/** Loads the second configuration
-	 * 
-	 */
-	public void LoadDefault2(){
-		final int WINDOWX = 800;
-		final int WINDOWY = 800;
-		final int GRIDSIZEX = 25;
-		final int GRIDSIZEY = 25;
-
-
-		layout = new SimCityLayout(WINDOWX, WINDOWY/2, GRIDSIZEX, GRIDSIZEY);// <-This holds the grid information
-		cityPanel = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
-		buildingsPanels = new BuildingsPanels();//<-Zoomed in view of buildings
-
-		//down left
-		layout.addRoad(6, 4, 3, 6);
-		// across top
-		layout.addRoad(9, 4, 20, 3);
-		//down right
-		layout.addRoad(26, 7, 3, 3);
-		//down middle
-		layout.addRoad(16, 1, 2, 10);
-		//across middle
-		layout.addRoad(6, 10, 23, 3);
-
-		LocationInfo location = new LocationInfo();
-
-		for(int x = 1; x < 7;x++) {
-			for(int y = 1; y < 5; y++){
-				addBuilding("Default", "Building " + x + y, x * 5 - 2, (y * 4)-3, 2, 2, location );
-			}
-		}
-
-		location.positionToEnterFromRoadGrid=new Dimension(16, 2);
-		addBuilding("Bus Stop", "Bus Stop 1", 15, 2, 1, 1, location);
-		location.positionToEnterFromRoadGrid=new Dimension(6, 12);
-		addBuilding("Bus Stop", "Bus Stop 2", 5, 12, 1, 1,location);
-		location.positionToEnterFromRoadGrid=new Dimension(28, 12);
-		addBuilding("Bus Stop", "Bus Stop 3", 29, 12, 1, 1, location);
-		location.positionToEnterFromRoadGrid=new Dimension(14, 10);
-		addBuilding("Bus Stop", "Bus Stop 4", 14, 9, 1, 1, location);
-		location.positionToEnterFromRoadGrid=new Dimension(17, 12);
-		addBuilding("Bus Stop", "Bus Stop 5", 17, 13, 1, 1, location);
-		location.positionToEnterFromRoadGrid=new Dimension(26, 8);
-		addBuilding("Bus Stop", "Bus Stop 6", 25, 8, 1, 1, location);
-
-		addVehicle("OddMockBus");
-		addVehicle("EvenMockBus");
-
-	} //end LoadDefault2
 
 	public void LoadGUITest1(){
 		final int WINDOWX = 800;
@@ -502,123 +435,7 @@ public class SetUpWorldFactory{
 		cityPanel.addGui(g1);
 		p1.startThread();
 		 
-
-
-		//addPerson("Person 1");
-		//addPerson("Person 2");
-		//addPerson("Person 3");
 	}
-	public void LoadGUITest2(){
-
-	}
-
-	/*	
-	public void LoadGUITest1(){
-		final int WINDOWX = 800;
-		final int WINDOWY = 800;
-		final int GRIDSIZEX = 20;
-		final int GRIDSIZEY = 20;
-
-
-		layout = new SimCityLayout(WINDOWX, WINDOWY/2, GRIDSIZEX, GRIDSIZEY);// <-This holds the grid information
-		cityPanel = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
-		buildingsPanels = new BuildingsPanels();//<-Zoomed in view of buildings
-
-		//down left
-		layout.addRoad(6, 4, 3, 14);
-		// across top
-		layout.addRoad(9, 4, 26, 3);
-		 //down right
-		layout.addRoad(32, 7, 3, 11);
-		//down middle
-		layout.addRoad(16, 1, 2, 14);
-		//across middle
-			layout.addRoad(9, 11, 23, 2);
-		//across bottom
-		layout.addRoad(9, 15, 23, 3);
-
-
-
-
-		LocationInfo location = new LocationInfo();
-
-			for(int x = 1; x < 9;x++) {
-				for(int y = 1; y < 6; y++){
-					addBuilding("Default", "Building " + x + y, x * 5 - 2, (y * 4)-3, 2, 2,location );
-				}
-			}
-
-
-
-			location.positionToEnterFromRoadGrid=new Dimension(16, 2);
-			addBuilding("Bus Stop", "Bus Stop 1", 15, 2, 1, 1, location);
-			location.positionToEnterFromRoadGrid=new Dimension(6, 16);
-			addBuilding("Bus Stop", "Bus Stop 2", 5, 16, 1, 1, location);
-			location.positionToEnterFromRoadGrid=new Dimension(34, 12);
-			addBuilding("Bus Stop", "Bus Stop 3", 35, 12, 1, 1,location);
-			location.positionToEnterFromRoadGrid=new Dimension(15, 6);
-			addBuilding("Bus Stop", "Bus Stop 4", 15, 7, 1, 1,location);
-			location.positionToEnterFromRoadGrid=new Dimension(28, 17);
-			addBuilding("Bus Stop", "Bus Stop 5", 28, 18, 1, 1,location);
-			location.positionToEnterFromRoadGrid=new Dimension(32, 7);
-			addBuilding("Bus Stop", "Bus Stop 6", 31, 7, 1, 1,location);
-
-			addVehicle("OddMockBus");
-			addVehicle("EvenMockBus");
-
-	} //end LoadGUITest1
-	 */	
-
-	/*	
-	public void LoadGUITest2(){
-		final int WINDOWX = 800;
-		final int WINDOWY = 800;
-		final int GRIDSIZEX = 20;
-		final int GRIDSIZEY = 20;
-
-
-		layout = new SimCityLayout(WINDOWX, WINDOWY/2, GRIDSIZEX, GRIDSIZEY);// <-This holds the grid information
-		cityPanel = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
-		buildingsPanels = new BuildingsPanels();//<-Zoomed in view of buildings
-
-		//down left
-		layout.addRoad(6, 4, 3, 14);
-		// across top
-		layout.addRoad(9, 4, 20, 3);
-		 //down right
-		layout.addRoad(26, 7, 3, 11);
-		//down middle
-		layout.addRoad(16, 1, 2, 7);
-		//across middle
-		layout.addRoad(9, 15, 18, 3);
-		LocationInfo location = new LocationInfo();
-			for(int x = 1; x < 8;x++) {
-				for(int y = 1; y < 6; y++){
-					addBuilding("Default", "Building " + x + y, x * 5 - 2, (y * 4)-3, 2, 2,location );
-				}
-			}
-
-
-
-			location.positionToEnterFromRoadGrid=new Dimension(16, 2);
-			addBuilding("Bus Stop", "Bus Stop 1", 15, 2, 1, 1, location);
-			location.positionToEnterFromRoadGrid=new Dimension(6, 16);
-			addBuilding("Bus Stop", "Bus Stop 2", 5, 16, 1, 1, location);
-			location.positionToEnterFromRoadGrid=new Dimension(28, 12);
-			addBuilding("Bus Stop", "Bus Stop 3", 29, 12, 1, 1,location);
-			location.positionToEnterFromRoadGrid=new Dimension(15, 6);
-			addBuilding("Bus Stop", "Bus Stop 4", 15, 7, 1, 1,location);
-			location.positionToEnterFromRoadGrid=new Dimension(18, 17);
-			addBuilding("Bus Stop", "Bus Stop 5", 18, 18, 1, 1,location);
-			location.positionToEnterFromRoadGrid=new Dimension(26, 8);
-			addBuilding("Bus Stop", "Bus Stop 6", 25, 8, 1, 1,location);
-
-			addVehicle("OddMockBus");
-			addVehicle("EvenMockBus");
-
-	} //end LoadGUITest2
-
-	 */
 
 
 
@@ -678,17 +495,12 @@ public class SetUpWorldFactory{
 
 	
 	
-	int numCars = 1;
+	//int numCars = 1;
 	private void addVehicle(String type) {
 		switch (type) {
 		case "Car":
-			CarAgent car = new CarAgent("Car " + numCars);
-			AStarTraversal ct = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
-			CarVehicleGui carGui = new CarVehicleGui( car, layout, ct, locationMap);
-			car.setGui(carGui);
-			cityPanel.addGui(carGui);
-			car.startThread();
-		numCars++;
+			//CarAgent car = new CarAgent("Car " + numCars);
+		//numCars++;
 		break;	
 		
 		case "OddMockBus":
