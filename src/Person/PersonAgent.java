@@ -132,19 +132,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 			hr.activate();
 		}else{
 			addRole(r);
-				//System.err.println("AAAAAAAAAAAAAAAAAA");
-			/*
-			if(r instanceof GenericWaiter ){
-				GenericWaiter w = (GenericWaiter) r;
-				Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(roleLocation);
-				GenericHost role = (GenericHost) rest.getHostRole();
-				GenericCook cook = (GenericCook) rest.getCookRole();
-				GenericCashier cashier = (GenericCashier) rest.getCashierRole();
-				role.addWaiter(w);
-				w.setHost(role);
-				w.setCook(cook);
-				w.setCashier(cashier);
-			}*/
+
 			if(r instanceof MarketManagerRole ){
 				 MarketManagerRole role = (MarketManagerRole) findRole(Role.MARKET_MANAGER_ROLE);
 			
@@ -634,7 +622,10 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	}
 	
 	private void GoToLocation(String location, String modeOfTransportation){
-		modeOfTransportation = "WALK";
+		//if the Person has a Car use it
+		if(myCar != null){
+			modeOfTransportation = Preferences.CAR;
+		}
 		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Going to "+location+" via + "+modeOfTransportation);
 		
 		switch(modeOfTransportation){
