@@ -338,23 +338,23 @@ public class PersonAgent extends Agent implements Person{
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		if(parties.size()!=0){
-		for(Party p:parties){
-			if(p.partyState==PartyState.NeedsResponseUrgently){
-				for(PersonAgent pa:friends){
-					if(pa==p.getHost()){
-						pa.msgIAmComing(this);
-						p.partyState=PartyState.GoingToParty;
-						MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY)-1, p.dateOfParty.get(Calendar.MINUTE), this);
+			for(Party p:parties){
+				if(p.partyState==PartyState.NeedsResponseUrgently){
+					for(PersonAgent pa:friends){
+						if(pa==p.getHost()){
+							pa.msgIAmComing(this);
+							p.partyState=PartyState.GoingToParty;
+							MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY)-1, p.dateOfParty.get(Calendar.MINUTE), this);	
+						}
+						else{
+							pa.msgIAmNotComing(this);
+							p.partyState=PartyState.NotGoingToParty;
 						
+						}   
 					}
-					else{
-						pa.msgIAmNotComing(this);
-						p.partyState=PartyState.NotGoingToParty;
-						
-					}   
 				}
 			}
-		}}
+		}
 		
 		if(parties.size()!=0){
 			for(Party p:parties){
@@ -369,9 +369,10 @@ public class PersonAgent extends Agent implements Person{
 								//MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY)-1, p.dateOfParty.get(Calendar.MINUTE), this);
 								//return true;
 							}
-							else{p.partyState=PartyState.notRSVPed;}
-						}
+							else{p.partyState=PartyState.notRSVPed;
+							}
 						
+						}
 					}
 					int i= new Random().nextInt(40);
 					if(p.partyState==PartyState.ReceivedInvite){
@@ -380,6 +381,7 @@ public class PersonAgent extends Agent implements Person{
 							p.partyState=PartyState.NotGoingToParty;
 						}
 						else{p.partyState=PartyState.notRSVPed;
+						}
 					}
 				}
 			}
