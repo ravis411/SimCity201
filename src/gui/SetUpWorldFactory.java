@@ -57,7 +57,7 @@ public class SetUpWorldFactory{
 
 	List<Agent> agents = new ArrayList<Agent>();
 	List<PersonAgent> people = new ArrayList<PersonAgent>();
-	List<LocationInfo> locationMap = new ArrayList<LocationInfo>();//<--a map of strings to LocationInfo
+	public static List<LocationInfo> locationMap = new ArrayList<LocationInfo>();//<--a map of strings to LocationInfo
 	
 	SetUpWorldFactory() {
 	}
