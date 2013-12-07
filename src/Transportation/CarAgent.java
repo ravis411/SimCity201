@@ -10,10 +10,18 @@ import interfaces.Car;
 import interfaces.Person;
 
 public class CarAgent extends Agent implements Car{
-	CarAgent(Person person) {
+	public CarAgent(Person person, String name) {
 		passenger = new myPassenger(person);
 		destination = "N/A";
 		state = CarState.parked;
+		this.name = name;
+		
+		AStarTraversal ct = new VehicleAStarTraversal(SetUpWorldFactory.layout.getAgentGrid(), SetUpWorldFactory.layout.getRoadGrid());
+		CarVehicleGui carGui = new CarVehicleGui( this, SetUpWorldFactory.layout, ct, SetUpWorldFactory.locationMap);
+		this.setGui(carGui);
+		SetUpWorldFactory.cityPanel.addGui(carGui);
+		this.startThread();
+		
 	}
 	/**
 	 * Default Constructor
@@ -21,6 +29,7 @@ public class CarAgent extends Agent implements Car{
 	public CarAgent(String name){
 		super();
 		this.name = name;
+		state = CarState.parked;
 		
 		AStarTraversal ct = new VehicleAStarTraversal(SetUpWorldFactory.layout.getAgentGrid(), SetUpWorldFactory.layout.getRoadGrid());
 		CarVehicleGui carGui = new CarVehicleGui( this, SetUpWorldFactory.layout, ct, SetUpWorldFactory.locationMap);
@@ -97,6 +106,7 @@ public class CarAgent extends Agent implements Car{
 		agentGui.DoGoTo(destination);
 		//Semaphore.acquire/Thread sleep
 		//Person.weAreHere();
+		passenger.p.msgWeHaveArrived(destination);
 	}
 	
 	private void parkCar() {

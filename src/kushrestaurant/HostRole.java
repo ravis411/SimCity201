@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import jeffreyRestaurant.interfaces.Host;
 import Person.Role.ShiftTime;
 import kushrestaurant.interfaces.Customer;
 import kushrestaurant.interfaces.Waiter;
@@ -19,7 +20,7 @@ import kushrestaurant.interfaces.Waiter;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class HostRole extends GenericHost {
+public class HostRole extends GenericHost implements Host{
 	static final int NTABLES = 3;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
@@ -81,11 +82,7 @@ public class HostRole extends GenericHost {
 	   }
 	   return flag;
    }
-   public void addWaiter(Waiter waiter){
-	   
-	   waiters.add(waiter);
-	   stateChanged();
-   }
+
 	public Collection getTables() {
 		return tables;
 	}
