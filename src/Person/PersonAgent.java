@@ -14,6 +14,7 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
+import residence.HomeGuestRole;
 import residence.HomeRole;
 import kushrestaurant.CashierRole;
 import kushrestaurant.CookRole;
@@ -75,7 +76,7 @@ public class PersonAgent extends Agent implements Person{
 	public enum StateOfHunger {NotHungry, SlightlyHungry, Hungry, VeryHungry, Starving} 
 	public enum StateOfLocation {AtHome,AtBank,AtMarket,AtRestaurant, InCar,InBus,Walking};
 	public enum StateOfEmployment {Customer,Employee,Idle};
-	public enum PersonState {Idle,NeedsMoney,PayRentNow, Working, PayLoanNow,GettingMoney,NeedsFood,GettingFood }
+	public enum PersonState {Idle,NeedsMoney,PayRentNow, Working, PayLoanNow,GettingMoney,NeedsFood,GettingFood,GoingToParty }
 	
 	private List<Item> backpack;
 	
@@ -485,7 +486,44 @@ public class PersonAgent extends Agent implements Person{
 	private String PickFoodLocation(){
 		return home.getName();
 	}
+	private void GoToParty(String location){
+		  state = PersonState.GoingToParty;
+		  //Building b = PickFoodLocation();
+		  String transport;
+		  switch(prefs.get(Preferences.KeyValue.VEHICLE_PREFERENCE)){
+		  	case Preferences.BUS:
+		  		transport = Preferences.BUS;
+		  		break;
+		  	case Preferences.CAR:
+		  		transport = Preferences.CAR;
+		  		break;
+		  	case Preferences.WALK:
+		  		transport = Preferences.WALK;
+		  		break;
+		  		
+		  	default:
+		  		transport = "ERROR";
+		  }
+		  
+		  
+		  
+		  GoToLocation(location, transport);
+		  
+		  HomeGuestRole role = (HomeGuestRole) findRole(Role.HOME_GUEST_ROLE);
+		  if(role == null){
+			  role = (HomeGuestRole) RoleFactory.roleFromString(Role.HOME_GUEST_ROLE);
+			  addRole(role);
+		  }
 
+		  AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Home Guest Role = "+role);
+		  BuildingList.findBuildingWithName(location).addRole(role);
+		  
+			  role.activate();
+			  role.msgComeIn();
+		  }
+	
+	
+   
 	private void GoGetMoney(){
 		
 		String transport;
@@ -909,12 +947,13 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	public void dateAction(int month, int day, int hour, int minute) {
-		for(Party p : parties) {
-			if(p.rsvpDeadline.get(Calendar.MONTH) == month && p.rsvpDeadline.get(Calendar.DAY_OF_MONTH) == day && p.rsvpDeadline.get(Calendar.HOUR_OF_DAY) == hour && p.rsvpDeadline.get(Calendar.MINUTE) == minute) {
-				print("LOYDDDDDDDDD!!!!!");
-			}
+		
+		for(Party p: parties){
+			if(p.dateOfParty.get(Calendar.MONTH) == month && p.dateOfParty.get(Calendar.DAY_OF_MONTH) == day && p.dateOfParty.get(Calendar.HOUR_OF_DAY) == hour && p.rsvpDeadline.get(Calendar.MINUTE) == minute) {
+				GoToParty(p.getHost().getHome().getName());
 		}
 		
 	}
 
+}
 }
