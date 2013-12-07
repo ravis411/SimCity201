@@ -7,11 +7,11 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import mikeRestaurant.CookAgent;
+import mikeRestaurant.CookRole;
 
 public class CookGui implements Gui {
 
-	private CookAgent agent;
+	private CookRole agent;
 	
 	private int xPos;
 	private int yPos;
@@ -22,27 +22,27 @@ public class CookGui implements Gui {
 	private final int WIDTH = 30;
 	private final int HEIGHT = 30;
 	
-	private final int COOKING_X = 275;
-	private final int COOKING_Y = 450;
+	private final int COOKING_X = 675;
+	private final int COOKING_Y = 175;
 	
-	private final int GRILL_INITIAL_X = 275;
-	private final int GRILL_INITIAL_Y = 425;
+	private final int GRILL_INITIAL_X = 675;
+	private final int GRILL_INITIAL_Y = 175;
 	private final int GRILL_WIDTH = 25;
 	
-	public final static int PICKUP_X = 130;
-	public final static int PICKUP_Y = 450;
+	public final static int PICKUP_X = 530;
+	public final static int PICKUP_Y = 175;
 	
-	public final int FRIDGE_X = 400;
-	public final int FRIDGE_Y = 450;
+	public final int FRIDGE_X = 800;
+	public final int FRIDGE_Y = 175;
 	
-	public final int LABEL_HEIGHT = 410;
+	public final int LABEL_HEIGHT = 165;
 	
 	private boolean moving;
-	private RestaurantGui gui;
+	//private RestaurantGui gui;
 	
 	private List<FoodGui> foods;
 	
-	public CookGui(CookAgent agent, RestaurantGui gui){
+	public CookGui(CookRole agent){
 		this.agent = agent;
 		
 		xPos = COOKING_X;
@@ -53,7 +53,7 @@ public class CookGui implements Gui {
 		
 		moving = false;
 		
-		this.gui = gui;
+		//this.gui = gui;
 		foods = new ArrayList<FoodGui>();
 		
 	}
@@ -151,9 +151,9 @@ public class CookGui implements Gui {
 		for(int i = foods.size()-1; i >=0; i--){
 			FoodGui fg = foods.get(i);
 			if(fg.state == FoodGuiState.Cooking){
-				fg.icon.paintIcon(this.gui, g, GRILL_INITIAL_X+fg.grillPosition*GRILL_WIDTH, GRILL_INITIAL_Y);
+				//fg.icon.paintIcon(this., g, GRILL_INITIAL_X+fg.grillPosition*GRILL_WIDTH, GRILL_INITIAL_Y);
 			}else if(fg.state == FoodGuiState.Plated){
-				fg.icon.paintIcon(this.gui, g, PICKUP_X+fg.grillPosition*GRILL_WIDTH, GRILL_INITIAL_Y);
+				//fg.icon.paintIcon(this.gui, g, PICKUP_X+fg.grillPosition*GRILL_WIDTH, GRILL_INITIAL_Y);
 			}else if(fg.state == FoodGuiState.InTransit){
 				//do nothing
 			}else if(fg.state == FoodGuiState.Done){

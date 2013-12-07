@@ -3,8 +3,8 @@ package mikeRestaurant.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import mikeRestaurant.CustomerAgent;
-import mikeRestaurant.WaiterAgent;
+import mikeRestaurant.CustomerRole;
+import mikeRestaurant.WaiterRole;
 
 public class WaiterGui implements Gui {
 	
@@ -43,17 +43,15 @@ public class WaiterGui implements Gui {
 	private final static int WIDTH = 50;
 	private final static int HEIGHT = 50;
 	
-	private WaiterAgent agent = null;
+	private WaiterRole agent = null;
 	
-	RestaurantGui gui;
+//	RestaurantGui gui;
 	
 	private boolean isPresent;
 	private boolean moving;
 	
 	private static int idCounter = 0;
 	private final int ID;
-	
-	private CookGui cookGui;
 	
 	private static final int PADDING = 10;
 	
@@ -62,9 +60,9 @@ public class WaiterGui implements Gui {
 	 * @param wtr the associated waiter agent
 	 * @param gui parent gui
 	 */
-	public WaiterGui(WaiterAgent wtr, CookGui cookGui, RestaurantGui gui){
+	public WaiterGui(WaiterRole wtr){
 		agent = wtr;
-		this.gui = gui;
+//		this.gui = gui;
 		
 		isPresent = false;
 		moving = false;
@@ -79,39 +77,37 @@ public class WaiterGui implements Gui {
 		
 		IDLE_X = INITIAL_IDLE_X+(WIDTH+PADDING)*col;
 		IDLE_Y = INITIAL_IDLE_Y+(HEIGHT+PADDING)*row;
-		
-		this.cookGui = cookGui;
 	}
 	
-	/**
-	 * Shows a pending order in the form of a text icon + a ? underneath the specified table
-	 * @param selection the text to show
-	 * @param tableNumber the table number associated with the icon
-	 */
-	public void showPendingOrderOnScreen(String selection, int tableNumber){
-		gui.animationPanel.paintLabelAtTable(selection+"?", tableNumber);
-	}
+//	/**
+//	 * Shows a pending order in the form of a text icon + a ? underneath the specified table
+//	 * @param selection the text to show
+//	 * @param tableNumber the table number associated with the icon
+//	 */
+//	public void showPendingOrderOnScreen(String selection, int tableNumber){
+//		gui.animationPanel.paintLabelAtTable(selection+"?", tableNumber);
+//	}
 	
 	/**
 	 * Shows a delivered order in the form of a text icon underneath a specified table
 	 * @param selection the text to show
 	 * @param tableNumber the table number associated with the icon
 	 */
-	public void showDeliveredOrderOnScreen(String selection, int tableNumber){
-		gui.animationPanel.paintLabelAtTable(selection, tableNumber);
-	}
-	
-	/**
-	 * Clears the icon beneath a particular table number
-	 * @param tableNumber the table to clear
-	 */
-	public void clearOrderOnScreen(int tableNumber){
-		gui.animationPanel.paintLabelAtTable("", tableNumber);
-	}
-	
-	public void cannotGoOnBreak(){
-		gui.restPanel.waiterCannotGoOnBreak(agent.getName());
-	}
+//	public void showDeliveredOrderOnScreen(String selection, int tableNumber){
+//		gui.animationPanel.paintLabelAtTable(selection, tableNumber);
+//	}
+//	
+//	/**
+//	 * Clears the icon beneath a particular table number
+//	 * @param tableNumber the table to clear
+//	 */
+//	public void clearOrderOnScreen(int tableNumber){
+//		gui.animationPanel.paintLabelAtTable("", tableNumber);
+//	}
+//	
+//	public void cannotGoOnBreak(){
+//		gui.restPanel.waiterCannotGoOnBreak(agent.getName());
+//	}
 
 	@Override
 	/**
@@ -142,7 +138,7 @@ public class WaiterGui implements Gui {
 					//do nothing here
 				}else if(xPos == CASHIER_X && yPos == CASHIER_Y){
 					 agent.msgGuiAtCashier();
-				}else if(xPos < AnimationPanel.TABLE_X){
+				}else if(xPos < MikeAnimationPanel.TABLE_X){
 					agent.msgGuiAtStart();
 				}else {
 					agent.msgGuiAtTable();
@@ -190,7 +186,7 @@ public class WaiterGui implements Gui {
 		moving = true;
 	}
 	
-	public void DoGoToCustomer(CustomerAgent customer){
+	public void DoGoToCustomer(CustomerRole customer){
 		xDestination = customer.getGui().getHomePosition().x;
 		yDestination = customer.getGui().getHomePosition().y;
 		
@@ -202,11 +198,11 @@ public class WaiterGui implements Gui {
 	 * @param customer customer to send
 	 * @param table table to go to
 	 */
-    public void DoBringToTable(CustomerAgent customer, int table) {
-    	int col = (table-1) % AnimationPanel.NUM_COLUMNS;
-    	int row = (table-1) / AnimationPanel.NUM_COLUMNS;
-        xDestination = AnimationPanel.TABLE_X + col*AnimationPanel.TABLE_PADDING*2 + WIDTH; //+ icon.getIconWidth();
-        yDestination = AnimationPanel.TABLE_Y + row*AnimationPanel.TABLE_PADDING*2 - HEIGHT;//- icon.getIconHeight();
+    public void DoBringToTable(CustomerRole customer, int table) {
+    	int col = (table-1) % MikeAnimationPanel.NUM_COLUMNS;
+    	int row = (table-1) / MikeAnimationPanel.NUM_COLUMNS;
+        xDestination = MikeAnimationPanel.TABLE_X + col*MikeAnimationPanel.TABLE_PADDING*2 + WIDTH; //+ icon.getIconWidth();
+        yDestination = MikeAnimationPanel.TABLE_Y + row*MikeAnimationPanel.TABLE_PADDING*2 - HEIGHT;//- icon.getIconHeight();
         moving = true;
         
         customer.getGui().DoGoToLocation(xDestination - WIDTH, yDestination + HEIGHT);
@@ -218,10 +214,10 @@ public class WaiterGui implements Gui {
      * @param table table to go to
      */
     public void DoGoToTable(int table){
-    	int col = (table-1) % AnimationPanel.NUM_COLUMNS;
-    	int row = (table-1) / AnimationPanel.NUM_COLUMNS;
-        xDestination = AnimationPanel.TABLE_X + col*AnimationPanel.TABLE_PADDING*2 + WIDTH; //+ icon.getIconWidth();
-        yDestination = AnimationPanel.TABLE_Y + row*AnimationPanel.TABLE_PADDING*2 - HEIGHT;//- icon.getIconHeight();
+    	int col = (table-1) % MikeAnimationPanel.NUM_COLUMNS;
+    	int row = (table-1) / MikeAnimationPanel.NUM_COLUMNS;
+        xDestination = MikeAnimationPanel.TABLE_X + col*MikeAnimationPanel.TABLE_PADDING*2 + WIDTH; //+ icon.getIconWidth();
+        yDestination = MikeAnimationPanel.TABLE_Y + row*MikeAnimationPanel.TABLE_PADDING*2 - HEIGHT;//- icon.getIconHeight();
         moving = true;
     }
     
@@ -231,9 +227,9 @@ public class WaiterGui implements Gui {
 		moving = true;
     }
     
-    public void pickedUpFood(int grillPosition){
-    	cookGui.foodPickedUp(grillPosition);
-    }
+//    public void pickedUpFood(int grillPosition){
+//    	cookGui.foodPickedUp(grillPosition);
+//    }
     
     /**
      * Sets the starting location as the destination

@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.geom.Rectangle2D;
 
+import mikeRestaurant.gui.MikeAnimationPanel;
 import restaurant.gui.RestaurantAnimationPanel;
 import Person.Role.Role;
 
@@ -20,7 +21,7 @@ import Person.Role.Role;
 @SuppressWarnings("serial")
 public class MikeRestaurantBuildingPanel extends BuildingPanel{
 	
-	RestaurantAnimationPanel restaurantPanel;
+	MikeAnimationPanel restaurantPanel;
 	
 	public MikeRestaurantBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels) {
 		super(r, name, buildingPanels);
@@ -29,7 +30,7 @@ public class MikeRestaurantBuildingPanel extends BuildingPanel{
 		
 		setBackground( Color.yellow );
 		
-		restaurantPanel = new RestaurantAnimationPanel();
+		restaurantPanel = new MikeAnimationPanel();
 		
 		setLayout(new GridLayout(1,1));
 		
@@ -43,7 +44,7 @@ public class MikeRestaurantBuildingPanel extends BuildingPanel{
 		return myName;
 	}
 	
-	public RestaurantAnimationPanel getPanel() {
+	public MikeAnimationPanel getPanel() {
 		return restaurantPanel;
 	}
 
@@ -52,11 +53,10 @@ public class MikeRestaurantBuildingPanel extends BuildingPanel{
 		
 	}
 
-
 	@Override
 	public void addPersonWithRole(Role r) {
 		// TODO Auto-generated method stub
-		
+		this.getPanel().addGuiForRole(r);
 	}
 
 }

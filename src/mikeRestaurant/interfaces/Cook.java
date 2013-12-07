@@ -1,8 +1,8 @@
 package mikeRestaurant.interfaces;
 
-import mikeRestaurant.MarketAgent;
+import mikeRestaurant.MarketRole;
 import mikeRestaurant.Table;
-import mikeRestaurant.WaiterAgent;
+import mikeRestaurant.WaiterRole;
 
 public interface Cook extends AgentInterface {
 

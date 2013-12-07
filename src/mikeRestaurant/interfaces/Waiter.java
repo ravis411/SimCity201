@@ -2,9 +2,9 @@ package mikeRestaurant.interfaces;
 
 import java.util.Set;
 
-import mikeRestaurant.CustomerAgent;
+import mikeRestaurant.CustomerRole;
 import mikeRestaurant.Table;
-import mikeRestaurant.WaiterAgent;
+import mikeRestaurant.WaiterRole;
 
 public interface Waiter extends AgentInterface{
 

@@ -3,9 +3,9 @@ package mikeRestaurant.interfaces;
 import java.text.DecimalFormat;
 import java.util.Map;
 
-import mikeRestaurant.WaiterAgent;
-import mikeRestaurant.CustomerAgent.CustomerEvent;
-import mikeRestaurant.CustomerAgent.CustomerState;
+import mikeRestaurant.WaiterRole;
+import mikeRestaurant.CustomerRole.CustomerEvent;
+import mikeRestaurant.CustomerRole.CustomerState;
 
 
 public interface Customer extends AgentInterface{
@@ -65,7 +65,7 @@ public interface Customer extends AgentInterface{
 	/**
 	 * Message sent by the gui when the customer has arrived at jail
 	 */
-	public void msgArrivedAtJail();
+	public void msgArrivedAtStart();
 	
 	/**
 	 * Message sent by the WaiterAgent to deliver a check to the customer

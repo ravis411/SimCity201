@@ -1,6 +1,6 @@
 package mikeRestaurant.interfaces;
 
-import mikeRestaurant.CashierAgent.Bill;
+import mikeRestaurant.CashierRole.Bill;
 
 public interface Cashier extends AgentInterface {
 

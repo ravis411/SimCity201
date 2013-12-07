@@ -62,7 +62,7 @@ public class Restaurant extends Building implements Workplace {
 	
 	public GenericCashier getCashierRole(){
 		for(Role r : inhabitants){
-			if(r instanceof CashierRole){
+			if(r instanceof GenericCashier){
 				return (GenericCashier) r;
 			}
 		}
