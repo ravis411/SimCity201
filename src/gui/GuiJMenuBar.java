@@ -31,9 +31,9 @@ public class GuiJMenuBar extends JMenuBar implements ActionListener {
 		//Set up the "Load" submenu
 		loadSubmenu = new JMenu("Load");
 		fileMenu.add(loadSubmenu);
-		loadDefault = new JMenuItem("Load Default");
-		loadDefault.addActionListener(this);
-		loadSubmenu.add(loadDefault);
+		//loadDefault = new JMenuItem("Load Default");
+		//loadDefault.addActionListener(this);
+		//loadSubmenu.add(loadDefault);
 		loadGuiTest1 = new JMenuItem("Load Gui Test 1");
 		loadGuiTest1.addActionListener(this);
 		loadSubmenu.add(loadGuiTest1);
