@@ -5,6 +5,7 @@ import gui.Building.BuildingPanel;
 import gui.Building.MarketBuildingPanel;
 import gui.Building.ResidenceBuildingPanel;
 import gui.Building.restaurants.KushRestaurantBuildingPanel;
+import gui.Building.restaurants.LucaRestaurantBuildingPanel;
 import gui.Building.restaurants.RestaurantBuildingPanel;
 
 import java.awt.CardLayout;
@@ -56,6 +57,9 @@ public class BuildingsPanels extends JPanel{
 		}else if(buildingPanel instanceof MarketBuildingPanel){
 			BuildingList.getInstance().add(new Market(buildingPanel));
 		}else if(buildingPanel instanceof KushRestaurantBuildingPanel){
+			BuildingList.getInstance().add(new Restaurant(buildingPanel));
+		}
+		else if(buildingPanel instanceof LucaRestaurantBuildingPanel){
 			BuildingList.getInstance().add(new Restaurant(buildingPanel));
 		}else{
 			BuildingList.getInstance().add(new Building(buildingPanel));

@@ -224,7 +224,7 @@ public class SetUpWorldFactory{
 		location.entranceFromRoadGrid = new Dimension(29, 12);
 				location.positionToEnterFromRoadGrid = new Dimension(29, 11);
 				layout.addDriveway(28, 10, 2, 2);
-		addBuilding("Luca's Restaurant", "Restaurant 3", 28, 12, 2, 2, location);
+		addBuilding("Luca's Restaurant", "Luca's Restaurant", 28, 12, 2, 2, location);
 		//addBuilding("Default", "Default", 28, 12, 2, 2, location);
 		//file reading
 //		try {
@@ -345,8 +345,7 @@ public class SetUpWorldFactory{
 			addPerson("Person 10", buildingsPanels.getResidenceBuildingPanel("Apartment 9"));
 			addPerson("Person 11", buildingsPanels.getResidenceBuildingPanel("Apartment 10"));
 			addPerson("Person 12", buildingsPanels.getResidenceBuildingPanel("Apartment 11"));
-
-			//addPerson("Person 13", buildingsPanels.getResidenceBuildingPanel("Apartment 12"));
+			addPerson("Person 13", buildingsPanels.getResidenceBuildingPanel("Apartment 13"));
 			//addPerson("Person 14", buildingsPanels.getResidenceBuildingPanel("Apartment 13"));
 			//addPerson("Person 15", buildingsPanels.getResidenceBuildingPanel("Apartment 14"));
 //			addPerson("Person 14", buildingsPanels.getResidenceBuildingPanel("Apartment 13"));
@@ -662,10 +661,13 @@ public class SetUpWorldFactory{
 				p1.setInitialRole(new HomeRole(p1), p1.home.getName());
 				break;
 			case "Person 11":
-				p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_COOK_ROLE, "Restaurant 3"), "Restaurant 3");
+				p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_LUCA_COOK_ROLE, "Luca's Restaurant"), "Luca's Restaurant");
 				break;
 			case "Person 12":
-				
+				p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_LUCA_HOST_ROLE, "Luca's Restaurant"), "Luca's Restaurant");
+				break;
+			case "Person 13":
+				p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_LUCA_WAITER_ROLE, "Luca's Restaurant"), "Luca's Restaurant");
 				break;
 			default:
 				break;

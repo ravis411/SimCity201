@@ -16,6 +16,7 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import building.BuildingList;
 import Person.Role.Role;
 import restaurant.gui.luca.CookGui;
 import restaurant.gui.luca.CustomerGui;
@@ -43,7 +44,9 @@ public class AnimationPanel extends JPanel implements ActionListener,GuiPanel{
     private Dimension bufferSize;
 
     private List<Gui> guis = new ArrayList<Gui>();
-
+    private LucaHostRole host;
+    private int customerNumber=0;
+    private int waiterNumber=0;
     public AnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
@@ -115,6 +118,11 @@ public class AnimationPanel extends JPanel implements ActionListener,GuiPanel{
 			guis.add(gui);
 			//System.out.println("My person is: " + hr.myPerson.getName());
 		}
+		if(r instanceof LucaHostRole){
+			host= new LucaHostRole("Cary");
+			
+
+		}
 		if(r instanceof LucaCashierRole){
 			LucaCashierRole cr = (LucaCashierRole) r;
 			
@@ -130,9 +138,34 @@ public class AnimationPanel extends JPanel implements ActionListener,GuiPanel{
 		}
 		if(r instanceof LucaWaiterRole){
 			LucaWaiterRole nwr = (LucaWaiterRole) r;
-			//WaiterGui gui = new WaiterGui(nwr, waiterCount*50+120, 0);
-			//nwr.setGui(gui);
-			//guis.add(gui);
+			WaiterGui gui = new WaiterGui(nwr, waiterNumber*50+120);
+			nwr.setGui(gui);
+			for (Role role :BuildingList.findBuildingWithName(nwr.getWorkLocation()).getInhabitants())
+			{
+				if (role instanceof LucaCookRole){
+					LucaCookRole cook = (LucaCookRole) role;
+					nwr.setCook(cook);
+					break;
+				}
+			}
+			for (Role role :BuildingList.findBuildingWithName(nwr.getWorkLocation()).getInhabitants())
+			{
+				if (role instanceof LucaHostRole){
+					LucaHostRole host = (LucaHostRole) role;
+					nwr.setHost(host);
+					break;
+				}
+			}
+			for (Role role :BuildingList.findBuildingWithName(nwr.getWorkLocation()).getInhabitants())
+			{
+				if (role instanceof LucaCashierRole){
+					LucaCashierRole cashier = (LucaCashierRole) role;
+					nwr.setCashier(cashier);
+					break;
+				}
+			}
+			waiterNumber++;
+			guis.add(gui);
 			//System.out.println("My person is: " + hr.myPerson.getName());
 		}
 	
