@@ -23,7 +23,7 @@ public class BankTellerRole extends Employee implements BankTeller{
 	public BankClient myClient;
 	public CashierRole myRestaurant;
 	private int LineNum = new Random().nextInt(3)+1; //from 1 to n, with 5 being the loan line, should be assigned in creation
-	public enum requestState {pending, withdrawal, deposit, open, none, notBeingHelped, restaurantDeposit};
+	public enum requestState {pending, withdrawal, deposit, open, none, notBeingHelped, restaurantDeposit, steal};
 	public enum location {entrance, station, breakRoom, closing};
 	public location locationState = location.entrance;
 	public requestState state = requestState.none;
@@ -92,6 +92,11 @@ public class BankTellerRole extends Employee implements BankTeller{
 		state = requestState.deposit;
 		stateChanged();
 	}
+	public void msgStealingMoney(double a){
+		transactionAmount= a;
+		state=requestState.steal;
+		stateChanged();
+	}
 	/**
 	 * message received by a BankClient asking to withdraw money from an account.
 	 * @param a - amount of money
@@ -122,6 +127,9 @@ public class BankTellerRole extends Employee implements BankTeller{
 		if (locationState == location.closing){
 			Leaving();
 			return true;
+		}
+		if(state==requestState.steal){
+			Robbed(myClient);
 		}
 		if (locationState == location.station){
 			if (state == requestState.deposit){
@@ -223,6 +231,15 @@ public class BankTellerRole extends Employee implements BankTeller{
 		}
 	}
 	/**
+	 * Robs Bank
+	 * @param b - BankClient
+	 */
+	private void Robbed(BankClient b){
+		b.msgTransactionCompleted(transactionAmount);
+		state=requestState.none;
+		myClient=null;
+	}
+	/**
 	 * Opens new account
 	 * @param b - BankClient
 	 */
@@ -312,6 +329,12 @@ public class BankTellerRole extends Employee implements BankTeller{
 	public Double getSalary() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void msgFreeze() {
+		// TODO Auto-generated method stub
+		
 	}
 
 

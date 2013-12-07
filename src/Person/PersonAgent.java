@@ -390,7 +390,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		}
 		
 		if(state == PersonState.NeedsMoney && moneyNeeded > 10){
-			GoGetMoney();
+			GoRobBank();
 			return true;
 		}
 		if(parties.size()!=0){
@@ -534,6 +534,23 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		
 		BankClientRole role = (BankClientRole) r;
 		role.setIntent(BankClientRole.withdraw);
+		BuildingList.findBuildingWithName("Bank").addRole(role);
+		role.activate();
+	}
+private void GoRobBank(){
+		
+		
+		
+		//needs a way to find a bank quite yet
+		GoToLocation("Bank", getTransportPreference());
+		Role r = findRole(Role.BANK_CLIENT_ROLE);
+		if(r == null){
+			r = RoleFactory.roleFromString(Role.BANK_CLIENT_ROLE);
+			addRole(r);
+		}
+		
+		BankClientRole role = (BankClientRole) r;
+		role.setIntent(BankClientRole.steal);
 		BuildingList.findBuildingWithName("Bank").addRole(role);
 		role.activate();
 	}

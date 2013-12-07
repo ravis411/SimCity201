@@ -64,4 +64,7 @@ public interface BankClient {
 	 * @param n - repayment amount
 	 */
 	public abstract void msgLoanRepaid(double n);
+
+	public abstract void msgHereIsTeller(BankTeller bankTeller);
+
 }
