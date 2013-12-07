@@ -22,8 +22,8 @@ import interfaces.GuiPanel;
 public class BusStopAnimationPanel extends JPanel implements GuiPanel{
 
 	private JScrollPane passengerPane =
-            new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+            new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	private JPanel view = new JPanel();
 	
 	private List<JButton> passengerList = new ArrayList<>();

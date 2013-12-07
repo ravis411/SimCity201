@@ -44,7 +44,7 @@ public class SimCity201Gui extends JFrame {
 	/**
 	 * Default Constructor Initializes gui
 	*/
-	public SimCity201Gui() {
+	public SimCity201Gui(String config) {
 		setTitle("SimCity201 V 1.000000005  - Team 29");
         setVisible(true);
         setResizable(false);
@@ -52,8 +52,9 @@ public class SimCity201Gui extends JFrame {
 		
         menuBar = new GuiJMenuBar(this);
 		this.setJMenuBar(menuBar);
-        
+             
         setBounds(50, 50, (int)(WINDOWX * 1.5), (WINDOWY + 50));
+		//setBounds(50, 50, WINDOWX, WINDOWY);
 		//setLayout(new GridLayout(1, 2));
 		setLayout(new GridBagLayout());
 		
@@ -91,9 +92,15 @@ public class SimCity201Gui extends JFrame {
 		//add(tracePanel);
 	
 		
-		loadConfig("Default");
+		loadConfig(config);
 		//loadConfig("GUI Test 1");
 	}
+	
+	
+	
+	
+	
+	
 	
 	
 	/** Loads the config
@@ -149,6 +156,6 @@ public class SimCity201Gui extends JFrame {
 	
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		SimCity201Gui gui = new SimCity201Gui();
+		SimCity201Gui gui = new SimCity201Gui("Default");
 	}
 }
