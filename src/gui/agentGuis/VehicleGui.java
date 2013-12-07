@@ -223,7 +223,11 @@ public class VehicleGui implements Gui {
     		
     		Position p = new Position(info.positionToEnterFromRoadGrid.width, info.positionToEnterFromRoadGrid.height);
     		//System.out.println("About to move to p: " + p);
-    		guiMoveFromCurrentPostionTo(p);
+    		try {
+				guiMoveFromCurrentPostionTo(p);
+			} catch (Exception e) {
+				AlertLog.getInstance().logError(AlertTag.VEHICLE_GUI, agent.toString() + " GUI", "Exception caught... most likely due to an excessive \"nodes\" size in GraphTraversal.java");
+			}
     	}
     }
     
@@ -303,9 +307,10 @@ public class VehicleGui implements Gui {
      *  
      * 
      *  @param to The Position to move to. 
+     * @throws Exception 
      *  
      */
-    void guiMoveFromCurrentPostionTo(Position to){
+    void guiMoveFromCurrentPostionTo(Position to) throws Exception{
         
     	//First check to make sure the destination is free otherwise wait
     	while(true){

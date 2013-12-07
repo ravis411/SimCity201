@@ -3,12 +3,8 @@ package gui;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -24,6 +20,7 @@ import javax.swing.JScrollPane;
  * @author Team29
  *
  */
+@SuppressWarnings("serial")
 public class LoadGui extends JFrame implements ActionListener{
 
 	LoadGui thisFrame = null;
@@ -32,7 +29,7 @@ public class LoadGui extends JFrame implements ActionListener{
             new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	private JPanel view = new JPanel();
-	private List<JButton> configList = new ArrayList<>();
+	//private List<JButton> configList = new ArrayList<>();
 	
 	JLabel loadTimeLabel = new JLabel();
 	boolean load = true;
