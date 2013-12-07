@@ -76,7 +76,7 @@ public class SetUpWorldFactory{
 		layout = new SimCityLayout(WINDOWX, WINDOWY/2, GRIDSIZEX, GRIDSIZEY);// <-This holds the grid information
 		cityPanel = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
 		buildingsPanels = new BuildingsPanels();//<-Zoomed in view of buildings
-		controls = new CityControlPanel(buildingsPanels);
+		controls = new CityControlPanel(buildingsPanels, this);
 
 		buildingsPanels.addBuildingPanel(new Team29Panel(buildingsPanels));
 		buildingsPanels.addBuildingPanel(controls);
@@ -335,6 +335,17 @@ public class SetUpWorldFactory{
 			
 			//Need to add people to the GUI controls here as well; 
 			controls.addPerson(agents.get(0));
+			controls.addPerson(agents.get(1));
+			controls.addPerson(agents.get(2));
+			controls.addPerson(agents.get(3));
+			controls.addPerson(agents.get(4));
+			controls.addPerson(agents.get(5));
+			controls.addPerson(agents.get(6));
+			controls.addPerson(agents.get(7));
+			controls.addPerson(agents.get(8));
+			controls.addPerson(agents.get(9));
+			controls.addPerson(agents.get(10));
+			controls.addPerson(agents.get(11));
 
 			//addPerson("Person 13", buildingsPanels.getResidenceBuildingPanel("Apartment 12"));
 			//addPerson("Person 14", buildingsPanels.getResidenceBuildingPanel("Apartment 13"));

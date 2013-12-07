@@ -36,26 +36,28 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
     private JLabel focusInfo = new JLabel();
     private JPanel moreControls = new JPanel();
     static BuildingGui defaultGui = new BuildingGui(0,0,0,0);
+    private SetUpWorldFactory parent; 
 	
 	
-	public CityControlPanel(BuildingsPanels buildingPanels) {
+	public CityControlPanel(BuildingsPanels buildingPanels, SetUpWorldFactory parent) {
 		super(defaultGui, "Controls", buildingPanels);
 		this.removeAll();
 		setLayout(new GridLayout(1,3));
+		setBackground(Color.WHITE);
+		this.parent = parent;
 		
 		personView.setLayout(new BoxLayout((Container) personView, BoxLayout.Y_AXIS));
 		pane.setViewportView(personView);
 		add(pane);
 		
-		focusInfo.setText("<html><pre> <u> Person </u> </pre></html>");
+		focusInfo.setText("<html><pre> <u> Person Info goes here </u> </pre></html>");
 		add(focusInfo);
 		
-		moreControls.setLayout(new GridLayout(2,1));
+		moreControls.setLayout(new GridLayout(2,1)); //Modify number of rows to add more buttons
 		moreControls.add(new JButton("Test"));
 		moreControls.add(new JButton("Test2"));
 		add(moreControls);
 		//Add buttons to the controls here
-		//add(new JButton("Test"));//Fills screen
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -63,14 +65,35 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 		//Iterate through people list
 		for (JButton person : peopleList) {
 			if (e.getSource() == person) {
-				
+				//Display info for that person
+				for (Agent a : parent.agents) {
+					if (a.getName().equalsIgnoreCase(person.getText())) {
+						showInfo(a);
+					}
+				}
 			}
 		}
 		
 	}
 	
-	private void showInfo() {
+	private void showInfo(Agent agent) {
 		//Update Center text field
+		/*
+		String carStatus;
+		if (agent.hasCar()) {
+			carStatus = "Yes";
+		}
+		else {
+			carStatus = "No";
+		}*/
+		focusInfo.setText("<html> <u> " + agent.getName() + 
+				"</u> <table><tr> Current Job: " + "/*agent.getJob()*/" + 
+				"</tr><tr> SSN: " + "/*agent.getSSN()*/" +
+				"</tr><tr> Owns car: " + "/*carStatus*/" + 
+				"</tr><tr> Current money: " + "/*agent.getCurrentMoney()*/" + 
+				"</tr><tr> Hunger Level: " + "/*agent.getHungerLevel()*/" + 
+				"</tr><tr> Current Loan: " + "/*agent.getCurrentLoan()*/" + 
+				"</tr></table></html>");
 	}
 	
 	public void addPerson(Agent a) {
@@ -78,10 +101,10 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 		newPerson.setBackground(Color.WHITE);
 		
 		Dimension paneSize = pane.getSize();
-		/*Dimension buttonSize = new Dimension(paneSize.width - 20, (int) (paneSize.height / 7));
-		newPerson.setPreferredSize(buttonSize);
+		Dimension buttonSize = new Dimension(260, 30);
+		//newPerson.setPreferredSize(buttonSize);
 		newPerson.setMinimumSize(buttonSize);
-		newPerson.setMaximumSize(buttonSize);*/
+		newPerson.setMaximumSize(buttonSize);
 		newPerson.addActionListener(this);
 		peopleList.add(newPerson);
 		personView.add(newPerson);
@@ -89,6 +112,9 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 		
 		validate();
 	}
+	
+	//Add function to realtime update infopanel
+	
 	
 	
 	@Override
