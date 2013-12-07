@@ -13,7 +13,6 @@ public class CustomerGui implements Gui{
 	private boolean isHungry = false;
 
 	//private HostRole host;
-	RestaurantGui gui;
 	private int count;
 	private int xPos, yPos;
 	private int xDestination, yDestination;
@@ -30,14 +29,13 @@ public class CustomerGui implements Gui{
 		put(3, new Dimension(xTable+200, yTable));
 	}};
 
-	public CustomerGui(CustomerRole c, RestaurantGui gui, int i){ //HostRole m) {
+	public CustomerGui(CustomerRole c, int i){ 
 		agent = c;
 		xPos = 40 + (10*i);
 		yPos = 20;
 		xDestination = 40 + (10*i);
 		yDestination = 20;
 		//maitreD = m;
-		this.gui = gui;
 		width = 20;
 		length = 20;
 		count = i;
@@ -67,7 +65,6 @@ public class CustomerGui implements Gui{
 			else if (command==Command.LeaveRestaurant) {
 				System.out.println("about to call gui.setCustomerEnabled(agent);");
 				isHungry = false;
-				gui.setCustomerEnabled(agent);
 			}
 			command=Command.noCommand;
 		}

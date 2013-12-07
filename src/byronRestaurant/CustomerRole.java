@@ -3,7 +3,6 @@ package byronRestaurant;
 import agent.Agent;
 import byronRestaurant.WaiterRole;
 import byronRestaurant.gui.CustomerGui;
-import byronRestaurant.gui.RestaurantGui;
 import byronRestaurant.interfaces.Customer;
 import interfaces.generic_interfaces.GenericCashier;
 import interfaces.generic_interfaces.GenericCustomer;

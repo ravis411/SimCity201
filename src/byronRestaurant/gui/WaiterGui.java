@@ -19,12 +19,10 @@ public class WaiterGui implements Gui {
 	public static final int yTable = 200;
 	public static int xLobby = 180, yLobby = 40;
 	private static int xKitchen = 580, yKitchen = 20;
-	private RestaurantGui gui;
 	private ArrayList<Integer> tableNums = new ArrayList<Integer>();
 
-	public WaiterGui(WaiterRole w, RestaurantGui gui, int c) {
+	public WaiterGui(WaiterRole w, int c) {
 		this.agent = w;
-		this.gui = gui;
 		counter = c;
 		yPos = 60 + (20*c);
 		yDestination = 60 + (20*c);

@@ -1,6 +1,14 @@
 package byronRestaurant.gui;
 
+import interfaces.GuiPanel;
+
 import javax.swing.*;
+
+import byronRestaurant.*;
+import byronRestaurant.gui.*;
+import trace.AlertLog;
+import trace.AlertTag;
+import Person.Role.Role;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,7 +16,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.ArrayList;
 
-public class AnimationPanel extends JPanel implements ActionListener {
+public class AnimationPanel extends JPanel implements ActionListener,GuiPanel {
 	//global variables that are necessary
 
     private final int WINDOWX = 800;
@@ -18,7 +26,9 @@ public class AnimationPanel extends JPanel implements ActionListener {
     private final int DIM = 50;
     private Image bufferImage;
     private Dimension bufferSize;
-
+    private int customerCount;
+    private int waiterCount;
+    
     private List<Gui> guis = new ArrayList<Gui>();
 
     public AnimationPanel() {
@@ -80,14 +90,47 @@ public class AnimationPanel extends JPanel implements ActionListener {
     }
 
     public void addGui(CustomerGui gui) {
-        guis.add(gui);
+        guis.add((Gui) gui);
     }
 
     public void addWaiterGui(WaiterGui gui2) {
-        guis.add(gui2);
+        guis.add((Gui) gui2);
     }
     
     public void addCookGui(CookGui gui){
-    	guis.add(gui);
-    }	
+    	guis.add((Gui) gui);
+    }
+
+	@Override
+	public void addGuiForRole(Role r) {
+		if(r instanceof CookRole){
+			CookRole cr = (CookRole) r;
+			CookGui gui = new CookGui(cr);
+			cr.setGui(gui);
+			guis.add((Gui) gui);
+			//System.out.println("My person is: " + hr.myPerson.getName());
+		}
+		if(r instanceof CustomerRole){
+			CustomerRole rcr = (CustomerRole) r;
+			customerCount++;
+			CustomerGui gui = new CustomerGui(rcr,customerCount);
+			rcr.setGui(gui);
+			guis.add((Gui) gui);
+			//System.out.println("My person is: " + hr.myPerson.getName());
+		}
+		if(r instanceof WaiterRole){
+			WaiterRole wr = (WaiterRole) r;
+			waiterCount++;
+			WaiterGui gui = new WaiterGui(wr, waiterCount);
+			wr.setGui(gui);
+			guis.add((Gui) gui);
+			//System.out.println("My person is: " + hr.myPerson.getName());
+		}		
+	}
+
+	@Override
+	public void removeGuiForRole(Role r) {
+		// TODO Auto-generated method stub
+		
+	}	
 }
