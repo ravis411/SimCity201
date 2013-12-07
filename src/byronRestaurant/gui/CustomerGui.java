@@ -3,16 +3,16 @@ package byronRestaurant.gui;
 import java.awt.*;
 import java.util.*;
 
-import byronRestaurant.CustomerAgent;
-import byronRestaurant.HostAgent;
+import byronRestaurant.CustomerRole;
+import byronRestaurant.HostRole;
 
 public class CustomerGui implements Gui{
 
-	private CustomerAgent agent = null;
+	private CustomerRole agent = null;
 	private boolean isPresent = false;
 	private boolean isHungry = false;
 
-	//private HostAgent host;
+	//private HostRole host;
 	RestaurantGui gui;
 	private int count;
 	private int xPos, yPos;
@@ -30,7 +30,7 @@ public class CustomerGui implements Gui{
 		put(3, new Dimension(xTable+200, yTable));
 	}};
 
-	public CustomerGui(CustomerAgent c, RestaurantGui gui, int i){ //HostAgent m) {
+	public CustomerGui(CustomerRole c, RestaurantGui gui, int i){ //HostRole m) {
 		agent = c;
 		xPos = 40 + (10*i);
 		yPos = 20;

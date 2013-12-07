@@ -5,7 +5,7 @@ import byronRestaurant.interfaces.Cashier;
 import byronRestaurant.interfaces.Customer;
 
 /**
- * A sample MockCustomer built to unit test a CashierAgent.
+ * A sample MockCustomer built to unit test a CashierRole.
  *
  * @author Monroe Ekilah
  *

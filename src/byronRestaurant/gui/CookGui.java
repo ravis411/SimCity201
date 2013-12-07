@@ -5,12 +5,12 @@ import java.awt.*;
 import java.awt.List;
 import java.util.*;
 
-import byronRestaurant.CookAgent;
-import byronRestaurant.CustomerAgent;
-import byronRestaurant.WaiterAgent;
+import byronRestaurant.CookRole;
+import byronRestaurant.CustomerRole;
+import byronRestaurant.WaiterRole;
 public class CookGui implements Gui {
 
-	private CookAgent agent = null;	
+	private CookRole agent = null;	
 	private int counter;
 	private boolean isPresent = false;
 	private int xPos = 650, yPos = 60;//default waiter position
@@ -23,7 +23,7 @@ public class CookGui implements Gui {
 	private boolean onPlate = false;
 	
 	
-	public CookGui(CookAgent w) {
+	public CookGui(CookRole w) {
 		this.agent = w;
 	}
 

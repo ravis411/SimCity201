@@ -8,7 +8,7 @@ import java.util.concurrent.Semaphore;
 /**
  * Restaurant Waiter Agent
  */
-public class WaiterAgent extends Agent {
+public class WaiterRole extends Agent {
 	public enum CustomerState{noAction,notSeated, readyToOrder, orderPending, orderReady, doneEating, gotCheck, isDone, orderNotAvailable};
 	Timer timer;
 	public List<String>menu = new ArrayList<String>();{
@@ -19,18 +19,18 @@ public class WaiterAgent extends Agent {
 	}
 	private class MyCustomer{
 		public CustomerState state;
-		public CustomerAgent cust;
+		public CustomerRole cust;
 		public String choice;
 		public int table;
 		public double cost;
 
-		MyCustomer(CustomerState s, CustomerAgent c, int t){
+		MyCustomer(CustomerState s, CustomerRole c, int t){
 			state = s;
 			cust = c;
 			table = t;
 		}
 
-		public boolean find(CustomerAgent c){
+		public boolean find(CustomerRole c){
 			if (this.cust == c){
 				return true;
 			}
@@ -45,40 +45,40 @@ public class WaiterAgent extends Agent {
 		}
 	}
 	public List<MyCustomer> Customers = new ArrayList<MyCustomer>();
-	private HostAgent host;
-	private CookAgent cook;
-	private CashierAgent cashier;
+	private HostRole host;
+	private CookRole cook;
+	private CashierRole cashier;
 	private String name;
 	private Semaphore atTable = new Semaphore(0,true);
 	private Semaphore atKitchen = new Semaphore(0, true);
 	private Semaphore atLobby = new Semaphore(0,true);
 	public WaiterGui waiterGui = null;
 
-	public WaiterAgent(String name) {
+	public WaiterRole(String name) {
 		super();
 
 		this.name = name;
 	}
 
-	public void setCook(CookAgent c){
+	public void setCook(CookRole c){
 		this.cook = c;
 	}
 
-	public void setHost(HostAgent h){
+	public void setHost(HostRole h){
 		this.host = h;
 	}
 
-	public void setCashier(CashierAgent c){
+	public void setCashier(CashierRole c){
 		this.cashier = c;
 	}
 
 	// Messages
-	public void msgSitCustomerAtTable(CustomerAgent cust, int tableNum){
+	public void msgSitCustomerAtTable(CustomerRole cust, int tableNum){
 		Customers.add(new MyCustomer(CustomerState.notSeated, cust, tableNum)); 
 		stateChanged();
 	}
 
-	public void msgReadyToOrder(CustomerAgent cust){
+	public void msgReadyToOrder(CustomerRole cust){
 		for (MyCustomer customer : Customers){
 			if (customer.find(cust)){
 				customer.state = CustomerState.readyToOrder;
@@ -87,7 +87,7 @@ public class WaiterAgent extends Agent {
 		stateChanged();
 	}
 
-	public void msgHereIsMyChoice(CustomerAgent cust, String choice){
+	public void msgHereIsMyChoice(CustomerRole cust, String choice){
 		for (MyCustomer customer : Customers){
 			if (customer.find(cust)){
 				customer.choice = choice;
@@ -106,7 +106,7 @@ public class WaiterAgent extends Agent {
 		stateChanged();
 	}
 
-	public void msgDoneEating(CustomerAgent cust){
+	public void msgDoneEating(CustomerRole cust){
 		for (MyCustomer customer : Customers){
 			if (customer.find(cust)){
 				customer.state = CustomerState.doneEating;
@@ -124,7 +124,7 @@ public class WaiterAgent extends Agent {
 		stateChanged();
 
 	}
-	public void msgLeaving(CustomerAgent cust){
+	public void msgLeaving(CustomerRole cust){
 		for (MyCustomer customer : Customers){
 			if (customer.find(cust)){
 				customer.state = CustomerState.isDone;
@@ -320,7 +320,7 @@ public class WaiterAgent extends Agent {
 	}
 
 	// The animation DoXYZ() routines
-	private void DoSeatCustomer(CustomerAgent customer, int table) {
+	private void DoSeatCustomer(CustomerRole customer, int table) {
 		//Notice how we print "customer" directly. It's toString method will do it.
 		//Same with "table"
 		print("Seating " + customer + " at table " + table);

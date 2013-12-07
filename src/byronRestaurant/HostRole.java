@@ -9,28 +9,28 @@ import java.util.concurrent.Semaphore;
 /**
  * Restaurant Host Agent
  */
-public class HostAgent extends Agent {
+public class HostRole extends Agent {
 	/*
 	 * data
 	 */
 	private class MyWaiter{
-		public WaiterAgent waiter;
+		public WaiterRole waiter;
 		public boolean onBreak;
 		public boolean atLobby;
 
-		MyWaiter(WaiterAgent w){
+		MyWaiter(WaiterRole w){
 			waiter = w;
 			onBreak = false;
 			atLobby = true;
 		}
 	}
 	private class Table {
-		CustomerAgent occupiedBy;
+		CustomerRole occupiedBy;
 		int tableNumber;
 		Table(int tableNumber) {
 			this.tableNumber = tableNumber;
 		}
-		void setOccupant(CustomerAgent cust) {
+		void setOccupant(CustomerRole cust) {
 			occupiedBy = cust;
 		}
 
@@ -38,7 +38,7 @@ public class HostAgent extends Agent {
 			occupiedBy = null;
 		}
 
-		CustomerAgent getOccupant() {
+		CustomerRole getOccupant() {
 			return occupiedBy;
 		}
 		boolean isOccupied() {
@@ -50,9 +50,9 @@ public class HostAgent extends Agent {
 	}
 	private int NTABLES = 3;
 	//list of customers
-	private List<CustomerAgent> waitingCustomers = Collections.synchronizedList(new ArrayList<CustomerAgent>());
+	private List<CustomerRole> waitingCustomers = Collections.synchronizedList(new ArrayList<CustomerRole>());
 	//list of customers with debt
-	private List<CustomerAgent> redList = Collections.synchronizedList(new ArrayList<CustomerAgent>());
+	private List<CustomerRole> redList = Collections.synchronizedList(new ArrayList<CustomerRole>());
 	//list of tables
 	private List<Table> tables = Collections.synchronizedList(new ArrayList<Table>());
 	//List of waiters
@@ -60,8 +60,8 @@ public class HostAgent extends Agent {
 	private int nextWaiter = 0;
 	private String name;
 
-	// create an instance of HostAgent
-	public HostAgent(String name) { 
+	// create an instance of HostRole
+	public HostRole(String name) { 
 		super();
 
 		this.name = name;
@@ -76,7 +76,7 @@ public class HostAgent extends Agent {
 
 	// Messages
 
-	public void msgIWantFood(CustomerAgent cust) {
+	public void msgIWantFood(CustomerRole cust) {
 		waitingCustomers.add(cust);
 		stateChanged();
 	}
@@ -86,11 +86,11 @@ public class HostAgent extends Agent {
 		stateChanged();
 	}
 
-	public void addWaiter(WaiterAgent waiter){
+	public void addWaiter(WaiterRole waiter){
 		waiters.add(new MyWaiter(waiter));
 		stateChanged();
 	}
-	public void msgPayUsBackLater(CustomerAgent cust){
+	public void msgPayUsBackLater(CustomerRole cust){
 		redList.add(cust);
 		stateChanged();
 	}
@@ -104,8 +104,8 @@ public class HostAgent extends Agent {
 				for (MyWaiter waiter : waiters){
 					if (waiter.atLobby == true && waiter.onBreak == false){
 						if (!waitingCustomers.isEmpty()){
-							for (CustomerAgent c : redList){
-								for (CustomerAgent c1 : waitingCustomers){
+							for (CustomerRole c : redList){
+								for (CustomerRole c1 : waitingCustomers){
 									if (c.getCustomerName() == c1.getCustomerName()){
 										payBackDebt(c1);
 									}
@@ -126,7 +126,7 @@ public class HostAgent extends Agent {
 
 	// Actions
 
-	private void sitCustomerAtTable(CustomerAgent c, int t){
+	private void sitCustomerAtTable(CustomerRole c, int t){
 		print("Telling " + waiters.get(nextWaiter).waiter.getName() + " to seat " + c + " at table " + (t));
 		waiters.get(nextWaiter).waiter.msgSitCustomerAtTable(c, t);
 		tables.get(t-1).setOccupant(c);
@@ -135,7 +135,7 @@ public class HostAgent extends Agent {
 	}
 
 
-	private void payBackDebt(CustomerAgent c){
+	private void payBackDebt(CustomerRole c){
 		return;
 	}
 

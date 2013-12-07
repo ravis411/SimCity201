@@ -1,7 +1,7 @@
 package byronRestaurant;
 
 import agent.Agent;
-import byronRestaurant.WaiterAgent;
+import byronRestaurant.WaiterRole;
 import byronRestaurant.gui.CustomerGui;
 import byronRestaurant.gui.RestaurantGui;
 import byronRestaurant.interfaces.Customer;
@@ -11,7 +11,7 @@ import java.util.*;
 /**
  * Restaurant customer agent.
  */
-public class CustomerAgent extends Agent {
+public class CustomerRole extends Agent {
 	private String name;
 	private double money = (Math.random() * 50);
 	private double cost = 0;
@@ -19,9 +19,9 @@ public class CustomerAgent extends Agent {
 	private CustomerGui customerGui;
 	private List<String> menu = new ArrayList<String>();
 	// agent correspondents
-	private WaiterAgent waiter;
-	private HostAgent host;
-	private CashierAgent cashier;
+	private WaiterRole waiter;
+	private HostRole host;
+	private CashierRole cashier;
 	//    private boolean isHungry = false; //hack for gui
 	public enum AgentState
 	{DoingNothing, EnteringRestaurant, WaitingInRestaurant, Seated, WaiterCalled, WaitingForFood, Eating, requestingCheck, GoingToCashier, Paying};
@@ -32,12 +32,12 @@ public class CustomerAgent extends Agent {
 	AgentEvent event = AgentEvent.none;
 
 	/**
-	 * Constructor for CustomerAgent class
+	 * Constructor for CustomerRole class
 	 *
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public CustomerAgent(String name){
+	public CustomerRole(String name){
 		super();
 		this.name = name;
 	}
@@ -45,13 +45,13 @@ public class CustomerAgent extends Agent {
 	/**
 	 * hack to establish connection to Host agent.
 	 */
-	public void setHost(HostAgent host){
+	public void setHost(HostRole host){
 		this.host = host;
 	}
-	public void setCashier(CashierAgent cashier){
+	public void setCashier(CashierRole cashier){
 		this.cashier = cashier;
 	}
-	public void setWaiter(WaiterAgent waiter) {
+	public void setWaiter(WaiterRole waiter) {
 		this.waiter = waiter;
 	}
 
@@ -66,7 +66,7 @@ public class CustomerAgent extends Agent {
 		stateChanged();
 	}
 	
-	public void msgFollowMeToTable(WaiterAgent w, int n, List<String> m){
+	public void msgFollowMeToTable(WaiterRole w, int n, List<String> m){
 		setWaiter(w);
 		print("Going to seat");
 		event = AgentEvent.followingWaiter;
@@ -139,7 +139,7 @@ public class CustomerAgent extends Agent {
 	 */
 	@Override
 	protected boolean pickAndExecuteAnAction() {
-		//	CustomerAgent is a finite state machine
+		//	CustomerRole is a finite state machine
 
 		if (state == AgentState.DoingNothing && event == AgentEvent.gotHungry ){
 			state = AgentState.EnteringRestaurant;

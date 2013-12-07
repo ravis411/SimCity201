@@ -1,7 +1,7 @@
 package byronRestaurant.interfaces;
 
 /**
- * A sample Customer interface built to unit test a CashierAgent.
+ * A sample Customer interface built to unit test a CashierRole.
  *
  * @author Monroe Ekilah
  *

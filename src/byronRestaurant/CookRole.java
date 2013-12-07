@@ -16,7 +16,7 @@ import restaurant.WaiterAgent;
  * 
  * 
  */
-public class CookAgent extends Agent {
+public class CookRole extends Agent {
 	private List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
 	private MarketAgent market;
 	public enum cookStatus {pending, cooking, done};
@@ -61,7 +61,7 @@ public class CookAgent extends Agent {
 
 
 	//Initialize Cook
-	public CookAgent(String name) { 
+	public CookRole(String name) { 
 		super();
 
 		this.name = name;

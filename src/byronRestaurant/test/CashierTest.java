@@ -1,15 +1,15 @@
 package byronRestaurant.test;
 
-import byronRestaurant.CashierAgent;
-import byronRestaurant.CashierAgent.cashierBillState;
-import byronRestaurant.WaiterAgent.Bill;
+import byronRestaurant.CashierRole;
+import byronRestaurant.CashierRole.cashierBillState;
+import byronRestaurant.WaiterRole.Bill;
 import byronRestaurant.test.mock.MockCustomer;
 import byronRestaurant.test.mock.MockWaiter;
 import junit.framework.*;
 
 /**
  * 
- * This class is a JUnit test class to unit test the CashierAgent's basic interaction
+ * This class is a JUnit test class to unit test the CashierRole's basic interaction
  * with waiters, customers, and the host.
  * It is provided as an example to students in CS201 for their unit testing lab.
  *
@@ -18,7 +18,7 @@ import junit.framework.*;
 public class CashierTest extends TestCase
 {
 	//these are instantiated for each test separately via the setUp() method.
-	CashierAgent cashier;
+	CashierRole cashier;
 	MockWaiter waiter;
 	MockCustomer customer;
 	
@@ -29,7 +29,7 @@ public class CashierTest extends TestCase
 	 */
 	public void setUp() throws Exception{
 		super.setUp();		
-		cashier = new CashierAgent("cashier");		
+		cashier = new CashierRole("cashier");		
 		customer = new MockCustomer("mockcustomer");		
 		waiter = new MockWaiter("mockwaiter");
 	}	
@@ -44,7 +44,7 @@ public class CashierTest extends TestCase
 		
 		//check preconditions
 		assertEquals("Cashier should have 0 bills in it. It doesn't.",cashier.bills.size(), 0);		
-		assertEquals("CashierAgent should have an empty event log before the Cashier's HereIsBill is called. Instead, the Cashier's event log reads: "
+		assertEquals("CashierRole should have an empty event log before the Cashier's HereIsBill is called. Instead, the Cashier's event log reads: "
 						+ cashier.log.toString(), 0, cashier.log.size());
 		
 		//step 1 of the test

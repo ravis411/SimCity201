@@ -9,8 +9,8 @@ import java.util.concurrent.Semaphore;
 /**
  * Restaurant Cashier Agent
  */
-public class CashierAgent extends Agent {
-	HostAgent h;
+public class CashierRole extends Agent {
+	HostRole h;
 	String name;
 	public enum checkState {created, requested};
 	private double register = 10000;
@@ -25,9 +25,9 @@ public class CashierAgent extends Agent {
 	class WaiterCheck{
 		int tableNum;
 		double amount;
-		WaiterAgent waiter;
+		WaiterRole waiter;
 		checkState state;
-		WaiterCheck(int t, String s, WaiterAgent w){
+		WaiterCheck(int t, String s, WaiterRole w){
 			tableNum = t;
 			amount = menu.get(s);
 			waiter = w;
@@ -39,8 +39,8 @@ public class CashierAgent extends Agent {
 	class CustomerCheck{
 		double amount;
 		double wallet;
-		CustomerAgent cust;
-		CustomerCheck(double a, double w, CustomerAgent c){
+		CustomerRole cust;
+		CustomerCheck(double a, double w, CustomerRole c){
 			amount = a;
 			wallet = w;
 			cust = c;
@@ -52,18 +52,18 @@ public class CashierAgent extends Agent {
 	//list of bills from the markets for the cashier to pay
 	private List<Double> MarketBills = Collections.synchronizedList(new ArrayList<Double>());
 
-	//Initialize CashierAgent
-	public CashierAgent(String name){
+	//Initialize CashierRole
+	public CashierRole(String name){
 		super();
 		this.name = name;
 	}
 
-	public void setHost(HostAgent host){
+	public void setHost(HostRole host){
 		h = host;
 	}
 
 	//messages
-	public void msgHereIsOrder(int i, String s, WaiterAgent w){
+	public void msgHereIsOrder(int i, String s, WaiterRole w){
 		Do("Recieving order from waiter.");
 		PendingOrders.add(new WaiterCheck(i,s,w));
 		stateChanged();
@@ -81,7 +81,7 @@ public class CashierAgent extends Agent {
 		stateChanged();
 	}
 
-	public void msgPayForFood(double a, double s, CustomerAgent c){
+	public void msgPayForFood(double a, double s, CustomerRole c){
 		Do("Customer is paying for food.");
 		CompletedOrders.add(new CustomerCheck(a,s,c));
 		stateChanged();

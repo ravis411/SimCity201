@@ -2,8 +2,8 @@ package byronRestaurant.gui;
 
 import javax.swing.*;
 
-import byronRestaurant.CustomerAgent;
-import byronRestaurant.WaiterAgent;
+import byronRestaurant.CustomerRole;
+import byronRestaurant.WaiterRole;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -115,9 +115,9 @@ public class RestaurantGui extends JFrame implements ActionListener {
     public void updateInfoPanel(Object person) {
         currentPerson = person;
 
-        if (person instanceof CustomerAgent) {
+        if (person instanceof CustomerRole) {
             stateCB.setVisible(true);
-            CustomerAgent customer = (CustomerAgent) person;
+            CustomerRole customer = (CustomerRole) person;
             stateCB.setText("Hungry?");
           //Should checkmark be there? 
             stateCB.setSelected(customer.getGui().isHungry());
@@ -127,9 +127,9 @@ public class RestaurantGui extends JFrame implements ActionListener {
             infoLabel.setText(
                "<html><pre>     Name: " + customer.getName() + " </pre></html>");
         }
-        if (person instanceof WaiterAgent){
+        if (person instanceof WaiterRole){
         	stateCB.setVisible(false);
-        	WaiterAgent waiter = (WaiterAgent) person;
+        	WaiterRole waiter = (WaiterRole) person;
         	infoLabel.setText(
                "<html><pre>     Name: " + waiter.getName() + " </pre></html>");
         }
@@ -142,15 +142,15 @@ public class RestaurantGui extends JFrame implements ActionListener {
      */
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == stateCB) {
-            if (currentPerson instanceof CustomerAgent) {
-                CustomerAgent c = (CustomerAgent) currentPerson;
+            if (currentPerson instanceof CustomerRole) {
+                CustomerRole c = (CustomerRole) currentPerson;
                 c.getGui().setHungry();
                 stateCB.setEnabled(false);
             }
         }
         if (e.getSource() == restPanel.customerPanel.hungry){
-        	if (currentPerson instanceof CustomerAgent){
-        		CustomerAgent c = (CustomerAgent) currentPerson;
+        	if (currentPerson instanceof CustomerRole){
+        		CustomerRole c = (CustomerRole) currentPerson;
         		c.getGui().setHungry();
         		stateCB.setEnabled(false);
         		stateCB.setSelected(true);
@@ -163,9 +163,9 @@ public class RestaurantGui extends JFrame implements ActionListener {
      *
      * @param c reference to the customer
      */
-    public void setCustomerEnabled(CustomerAgent c) {
-        if (currentPerson instanceof CustomerAgent) {
-            CustomerAgent cust = (CustomerAgent) currentPerson;
+    public void setCustomerEnabled(CustomerRole c) {
+        if (currentPerson instanceof CustomerRole) {
+            CustomerRole cust = (CustomerRole) currentPerson;
             if (c.equals(cust)) {
                 stateCB.setEnabled(true);
                 stateCB.setSelected(false);

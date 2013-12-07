@@ -5,11 +5,11 @@ import java.awt.*;
 import java.awt.List;
 import java.util.*;
 
-import byronRestaurant.CustomerAgent;
-import byronRestaurant.WaiterAgent;
+import byronRestaurant.CustomerRole;
+import byronRestaurant.WaiterRole;
 public class WaiterGui implements Gui {
 
-	private WaiterAgent agent = null;	
+	private WaiterRole agent = null;	
 	private int counter;
 	private boolean isPresent = false;
 	private int xPos = 0, yPos = 60;//default waiter position
@@ -22,7 +22,7 @@ public class WaiterGui implements Gui {
 	private RestaurantGui gui;
 	private ArrayList<Integer> tableNums = new ArrayList<Integer>();
 
-	public WaiterGui(WaiterAgent w, RestaurantGui gui, int c) {
+	public WaiterGui(WaiterRole w, RestaurantGui gui, int c) {
 		this.agent = w;
 		this.gui = gui;
 		counter = c;
@@ -68,7 +68,7 @@ public class WaiterGui implements Gui {
 		isPresent = p; 
 	}
 
-	public void DoBringToTable(CustomerAgent customer, int n) {
+	public void DoBringToTable(CustomerRole customer, int n) {
 		tableNums.add(n);
 		xDestination = xTable + (100*(n-1)) + 20;
 		yDestination = yTable - 20;

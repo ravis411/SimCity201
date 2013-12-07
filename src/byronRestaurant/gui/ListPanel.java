@@ -2,8 +2,8 @@ package byronRestaurant.gui;
 
 import javax.swing.*;
 
-import byronRestaurant.CustomerAgent;
-import byronRestaurant.HostAgent;
+import byronRestaurant.CustomerRole;
+import byronRestaurant.HostRole;
 
 import java.awt.*;
 import java.awt.event.*;
