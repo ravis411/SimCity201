@@ -5,6 +5,7 @@ package gui.agentGuis;
 
 import gui.Gui;
 import gui.LocationInfo;
+import gui.SetUpWorldFactory;
 import gui.SimCityLayout;
 import gui.MockAgents.PseudoBusAgent;
 import gui.MockAgents.PseudoPerson;
@@ -31,6 +32,7 @@ import Person.PersonAgent;
 import Person.test.mock.MockPerson;
 import astar.AStarNode;
 import astar.AStarTraversal;
+import astar.PersonAStarTraversal;
 import astar.Position;
 
 
@@ -60,8 +62,6 @@ public class PersonGui implements Gui {
     Semaphore aSem = new Semaphore(0, true);
     private Map<String, LocationInfo> locations = new HashMap<>();//<<-- A Map of locations
     
-    
-    
     Image image = null;
     boolean testView = false;
     
@@ -73,15 +73,14 @@ public class PersonGui implements Gui {
     
     
     
-    
-    
-    public PersonGui(PersonAgent agent, SimCityLayout cityLayout, AStarTraversal aStar, List<LocationInfo> locationList) {
-    	positionMap = new HashMap<Dimension, Dimension>(cityLayout.positionMap);
+    public PersonGui(PersonAgent agent) {
     	this.agent = agent;
-        this.cityLayout = cityLayout;
-    
-        this.aStar = aStar;
-        
+    	this.cityLayout = SetUpWorldFactory.layout;
+    	
+    	this.aStar = new PersonAStarTraversal(cityLayout.getAgentGrid(), cityLayout.getCrossWalkGrid(), cityLayout.getRoadGrid());
+    	
+    	positionMap = new HashMap<Dimension, Dimension>(cityLayout.positionMap);
+    	
   
 			//img = new ImageIcon(("movingCar.gif"));
 	
@@ -99,9 +98,9 @@ public class PersonGui implements Gui {
 				testView = true;
 			}
 			
-
+			List<LocationInfo> info = SetUpWorldFactory.locationMap;
 			
-        for(LocationInfo i : locationList){
+        for(LocationInfo i : info){
         	if(i != null){
         		locations.put(i.name, i);
         		if(i.name.contains("City Entrance")){

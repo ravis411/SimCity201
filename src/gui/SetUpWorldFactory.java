@@ -457,8 +457,7 @@ public class SetUpWorldFactory{
 	private void addPerson(String name, ResidenceBuildingPanel home){
 		//PersonAgent p1 = new PersonAgent(name);
 		PersonAgent p1 = new PersonAgent(name, home);
-		AStarTraversal t = new PersonAStarTraversal(layout.getAgentGrid(), layout.getCrossWalkGrid(), layout.getRoadGrid());
-		PersonGui g1 = new PersonGui(p1, layout, t, locationMap);
+		PersonGui g1 = new PersonGui(p1);
 		p1.setGui(g1);
 
 		switch(name){
