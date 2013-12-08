@@ -1,11 +1,16 @@
 package ryansRestaurant;
 
+import Person.Role.ShiftTime;
 import agent.Agent;
 import ryansRestaurant.gui.WaiterGui;
 import ryansRestaurant.interfaces.RyansCashier;
 import ryansRestaurant.interfaces.RyansCustomer;
 import ryansRestaurant.interfaces.RyansHost;
 import ryansRestaurant.interfaces.RyansWaiter;
+import interfaces.generic_interfaces.GenericCashier;
+import interfaces.generic_interfaces.GenericCook;
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
 
 import java.awt.Dimension;
 import java.util.*;
@@ -18,7 +23,7 @@ import java.util.concurrent.Semaphore;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the RyansHostRole. A RyansHost is the manager of a ryansRestaurant who sees that all
 //is proceeded as he wishes.
-public class RyansWaiterRole extends Agent implements RyansWaiter {
+public class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 	public List<MyCustomer> myCustomers	= new ArrayList<MyCustomer>();
 	
 	private String name = new String("RyansWaiter");
@@ -40,8 +45,8 @@ public class RyansWaiterRole extends Agent implements RyansWaiter {
 	private Timer timer = new Timer();
 	
 	
-	public RyansWaiterRole(String name, RyansHost host, RyansCookRole cook, RyansCashier cashier) {
-		super();
+	public RyansWaiterRole(String name, RyansHost host, RyansCookRole cook, RyansCashier cashier, String workLocation) {
+		super(workLocation);
 		this.name = name;
 		this.host = host;
 		this.cook = cook;
@@ -198,7 +203,7 @@ public class RyansWaiterRole extends Agent implements RyansWaiter {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		
 		try {
 			if(state == AgentState.outSide )
@@ -545,6 +550,57 @@ public class RyansWaiterRole extends Agent implements RyansWaiter {
 			this.tableNumber = tableNumber;
 			this.s = CustomerState.waiting;
 		}
+	}
+
+	
+	
+	
+	@Override
+	public void setCook(GenericCook c) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void setCashier(GenericCashier c) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void setHost(GenericHost h) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	
