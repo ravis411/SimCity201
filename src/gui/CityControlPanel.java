@@ -9,18 +9,15 @@ import interfaces.GuiPanel;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.GraphicsConfiguration;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
 
-import sun.awt.X11.Screen;
 import agent.Agent;
 import Person.PersonAgent;
 import Person.Role.Role;
