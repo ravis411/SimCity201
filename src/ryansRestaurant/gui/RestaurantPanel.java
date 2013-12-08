@@ -1,11 +1,11 @@
 package ryansRestaurant.gui;
 
-import ryansRestaurant.CashierAgent;
-import ryansRestaurant.CookAgent;
-import ryansRestaurant.CustomerAgent;
-import ryansRestaurant.HostAgent;
-import ryansRestaurant.MarketAgent;
-import ryansRestaurant.WaiterAgent;
+import ryansRestaurant.RyansCashierRole;
+import ryansRestaurant.RyansCookRole;
+import ryansRestaurant.RyansCustomerRole;
+import ryansRestaurant.RyansHostRole;
+import ryansRestaurant.RyansMarketRole;
+import ryansRestaurant.RyansWaiterRole;
 
 import javax.swing.*;
 
@@ -22,15 +22,15 @@ import java.util.concurrent.Semaphore;
  */
 public class RestaurantPanel extends JPanel {
 
-    //Host, cook, waiters and customers
-    private HostAgent host = new HostAgent("Sarah");
-    private CashierAgent cashier = new CashierAgent("Cashier");
-    private CookAgent cook;
+    //RyansHost, cook, waiters and customers
+    private RyansHostRole host = new RyansHostRole("Sarah", "Ryan's Restaurant");
+    private RyansCashierRole cashier = new RyansCashierRole("RyansCashier", "Ryan's Restaurant");
+    private RyansCookRole cook;
     
 
-    protected Vector<CustomerAgent> customers = new Vector<CustomerAgent>();
-    private Vector<WaiterAgent> waiters = new Vector<WaiterAgent>();
-    private Vector<MarketAgent> markets = new Vector<MarketAgent>();
+    protected Vector<RyansCustomerRole> customers = new Vector<RyansCustomerRole>();
+    private Vector<RyansWaiterRole> waiters = new Vector<RyansWaiterRole>();
+    private Vector<RyansMarketRole> markets = new Vector<RyansMarketRole>();
 
     private JPanel restLabel = new JPanel();
     private ListPanel customerPanel = new ListPanel(this, "Customers");
@@ -52,23 +52,23 @@ public class RestaurantPanel extends JPanel {
         grid = restLayout.addAndInitializeMainGrid(grid);
         
         
-        host.startThread();
-        cashier.startThread();
+       // host.startThread();
+       // cashier.startThread();
         
         
-        cook = new CookAgent("Cook", cashier);
+        cook = new RyansCookRole("Cook", cashier, "Ryan's Restaurant");
         
         CookGui cookGui = new CookGui(cook, gui);
         cook.setGui(cookGui);
         gui.animationPanel.addGui(cookGui);
         
         for(int i = 1; i <=3; i++) {
-        	MarketAgent m = new MarketAgent("Market" + i);
+        	RyansMarketRole m = new RyansMarketRole("RyansMarket" + i);
         	m.startThread();
         	cook.addMarket(m);
         	markets.add(m);
         }        
-        cook.startThread();
+        //cook.startThread();
         gui.animationPanel.setHost(host);
         
         markets.get(0).addToInventory("Oreo Cookie", 5);
@@ -79,7 +79,7 @@ public class RestaurantPanel extends JPanel {
         markets.get(2).addToInventory("Dirt n Worms", 20);
 
         //Add a waiter
-       /* waiters.add(new WaiterAgent("Mary", host, cook));
+       /* waiters.add(new RyansWaiterRole("Mary", host, cook));
         waiters.get(0).startThread();
         WaiterGui wGui = new WaiterGui(waiters.get(0));
         waiters.get(0).setGui(wGui);
@@ -136,7 +136,7 @@ public class RestaurantPanel extends JPanel {
 //        if (type.equals("Customers")) {
 //
 //            for (int i = 0; i < customers.size(); i++) {
-//                CustomerAgent temp = customers.get(i);
+//                RyansCustomerRole temp = customers.get(i);
 //                if (temp.getName() == name)
 //                    gui.updateInfoPanel(temp);
 //            }
@@ -152,20 +152,20 @@ public class RestaurantPanel extends JPanel {
     public void addPerson(String type, String name) {
 
     	if (type.equals("Customers")) {
-    		CustomerAgent c = new CustomerAgent(name);	
+    		RyansCustomerRole c = new RyansCustomerRole(name);	
     		CustomerGui g = new CustomerGui(c, gui);
 
     		gui.animationPanel.addGui(g);// dw
-    		c.setHost(host);
+    		//c.setHost(host);
     		c.setGui(g);
     		customers.add(c);
-    		c.startThread();
+    		//c.startThread();
     	}
     	else if(type.equals("Waiters")) {
     		if(waiters.size() >= 10)
     			return;
     		
-    		WaiterAgent w = new WaiterAgent(name, host, cook, cashier);
+    		RyansWaiterRole w = new RyansWaiterRole(name, host, cook, cashier, "Ryan's Restaurant");
     		
     		AStarTraversal aStar = new AStarTraversal(grid);
     		
@@ -176,7 +176,7 @@ public class RestaurantPanel extends JPanel {
             
             host.msgAddWaiter(w);
             waiters.add(w);
-    		w.startThread();
+    		//w.startThread();
     	}
     }
     
@@ -191,7 +191,7 @@ public class RestaurantPanel extends JPanel {
     /** Called when a customer's checkbox is selected*/
     public void checkBoxed(String name)
     {
-    	for(CustomerAgent temp:customers)
+    	for(RyansCustomerRole temp:customers)
     	{
     		if(temp.getName() == name)
     		{
@@ -206,7 +206,7 @@ public class RestaurantPanel extends JPanel {
     }
     
     public void giveMeABreak(String name) {
-    	for(WaiterAgent w:waiters) {
+    	for(RyansWaiterRole w:waiters) {
     		if(w.getName().equals(name)) {
     			customerPanel.setWaiterBB(name, Color.gray, false, "Negotiating...", "Requesting a break...");
     			w.msgRequestABreak();
@@ -220,7 +220,7 @@ public class RestaurantPanel extends JPanel {
      * @param name
      */
     public void backToWork(String name) {
-    	for(WaiterAgent w:waiters) {
+    	for(RyansWaiterRole w:waiters) {
     		if(w.getName().equals(name)) {
     			w.msgBackToWork();
     			return;
@@ -231,34 +231,34 @@ public class RestaurantPanel extends JPanel {
     public void pause()
     {
     	//calls all the agents pause()
-    	host.pauseThread();
-    	cook.pauseThread();
-    	for(CustomerAgent cust : customers) {
-    		cust.pauseThread();
+    	//host.pauseThread();
+    	//cook.pauseThread();
+    	for(RyansCustomerRole cust : customers) {
+    	//	cust.pauseThread();
     	}
-    	for(WaiterAgent waiter : waiters) {
-    		waiter.pauseThread();
+    	for(RyansWaiterRole waiter : waiters) {
+    	//	waiter.pauseThread();
     	}
     }
     public void resume(){
     	//calls all the agents resume()
-    	host.resumeThread();
-    	cook.resumeThread();
-    	for(CustomerAgent cust : customers) {
-    		cust.resumeThread();
+    //	host.resumeThread();
+    	//cook.resumeThread();
+    	for(RyansCustomerRole cust : customers) {
+    	//	cust.resumeThread();
     	}
-    	for(WaiterAgent waiter : waiters) {
-    		waiter.resumeThread();
+    	for(RyansWaiterRole waiter : waiters) {
+    	//	waiter.resumeThread();
     	}
     }
     
-    public Vector<MarketAgent> getMarkets() {
+    public Vector<RyansMarketRole> getMarkets() {
     	return markets;
     }
-    public CookAgent getCook() {
+    public RyansCookRole getCook() {
     	return cook;
     }
-    public CashierAgent getCashier(){
+    public RyansCashierRole getCashier(){
     	return cashier;
     }
 

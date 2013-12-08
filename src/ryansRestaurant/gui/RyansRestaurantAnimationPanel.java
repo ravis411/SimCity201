@@ -2,7 +2,7 @@ package ryansRestaurant.gui;
 
 import javax.swing.*;
 
-import ryansRestaurant.HostAgent;
+import ryansRestaurant.RyansHostRole;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 
-public class AnimationPanel extends JPanel implements MouseListener, ActionListener   {
+public class RyansRestaurantAnimationPanel extends JPanel implements MouseListener, ActionListener   {
 
     private final int WINDOWX = 800;
     private final int WINDOWY = (int)(375);
@@ -77,8 +77,8 @@ public class AnimationPanel extends JPanel implements MouseListener, ActionListe
     private Dimension bufferSize;
 
     private List<Gui> guis = new ArrayList<Gui>();
-    protected HostAgent host = null;
-    public void setHost(HostAgent host) {
+    protected RyansHostRole host = null;
+    public void setHost(RyansHostRole host) {
     	this.host = host;
     }
     private RestaurantLayout layout = null;
@@ -88,7 +88,7 @@ public class AnimationPanel extends JPanel implements MouseListener, ActionListe
     RestaurantGui gui;
     String showPBText = new String("Settings");    
 
-    public AnimationPanel(RestaurantLayout layout, RestaurantGui gui) {
+    public RyansRestaurantAnimationPanel(RestaurantLayout layout, RestaurantGui gui) {
     	setSize(WINDOWX, WINDOWY);
     	addMouseListener(this);
     	this.gui = gui;
@@ -172,8 +172,8 @@ public class AnimationPanel extends JPanel implements MouseListener, ActionListe
 //        }
         
         //Here are the tables
-        List<HostAgent.aTable> tables = host.getTableNumbers();
-        for( HostAgent.aTable tempTable: tables)
+        List<RyansHostRole.aTable> tables = host.getTableNumbers();
+        for( RyansHostRole.aTable tempTable: tables)
         {
         	int xCoord = tableMap.get(tempTable.getTableNumber()).width;
         	int yCoord = tableMap.get(tempTable.getTableNumber()).height;

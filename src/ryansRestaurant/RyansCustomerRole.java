@@ -1,13 +1,16 @@
 package ryansRestaurant;
 
-import ryansRestaurant.HostAgent.Table;
+import ryansRestaurant.RyansHostRole.Table;
 import ryansRestaurant.gui.CustomerGui;
 import ryansRestaurant.gui.RestaurantGui;
-import ryansRestaurant.interfaces.Cashier;
-import ryansRestaurant.interfaces.Customer;
-import ryansRestaurant.interfaces.Host;
-import ryansRestaurant.interfaces.Waiter;
+import ryansRestaurant.interfaces.RyansCashier;
+import ryansRestaurant.interfaces.RyansCustomer;
+import ryansRestaurant.interfaces.RyansHost;
+import ryansRestaurant.interfaces.RyansWaiter;
 import agent.Agent;
+import interfaces.generic_interfaces.GenericCashier;
+import interfaces.generic_interfaces.GenericCustomer;
+import interfaces.generic_interfaces.GenericHost;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +22,7 @@ import java.util.concurrent.Semaphore;
 /**
  * Restaurant customer agent.
  */
-public class CustomerAgent extends Agent implements Customer {
+public class RyansCustomerRole extends GenericCustomer implements RyansCustomer {
 	private String name;
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
@@ -33,10 +36,10 @@ public class CustomerAgent extends Agent implements Customer {
 	double wallet = 16;	// the customers wallet or how much money he currently has.
 	
 	// agent correspondents
-	private Host host;
-	private Waiter waiter;
-	private Cashier cashier;
-	Customer cust = this;
+	private RyansHost host;
+	private RyansWaiter waiter;
+	private RyansCashier cashier;
+	RyansCustomer cust = this;
 
 	//    private boolean isHungry = false; //hack for gui
 	public enum AgentState
@@ -52,12 +55,12 @@ public class CustomerAgent extends Agent implements Customer {
 	protected boolean leaves = false;
 	
 	/**
-	 * Constructor for CustomerAgent class
+	 * Constructor for RyansCustomerRole class
 	 *
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public CustomerAgent(String name){
+	public RyansCustomerRole(String name){
 		super();
 		this.name = name;
 		
@@ -86,9 +89,9 @@ public class CustomerAgent extends Agent implements Customer {
 	}
 
 	/**
-	 * hack to establish connection to Host agent.
+	 * hack to establish connection to RyansHost agent.
 	 */
-	public void setHost(Host host) {
+	public void setHost(RyansHost host) {
 		this.host = host;
 	}
 	
@@ -105,12 +108,12 @@ public class CustomerAgent extends Agent implements Customer {
 		stateChanged();
 	}
 	
-	public void msgIntroduceWaiter(Waiter waiter) {
+	public void msgIntroduceWaiter(RyansWaiter waiter) {
 		this.waiter = waiter;
 		stateChanged();
 	}
 
-	public void msgSitAtTable(List<String> menu, Cashier cashier) {
+	public void msgSitAtTable(List<String> menu, RyansCashier cashier) {
 		event = AgentEvent.followWaiter;
 		print("Received msgSitAtTable");
 		this.menu = menu;
@@ -177,8 +180,10 @@ public class CustomerAgent extends Agent implements Customer {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
-		//	CustomerAgent is a finite state machine
+	
+	
+	public boolean pickAndExecuteAction() {
+		//	RyansCustomerRole is a finite state machine
 
 		if (state == AgentState.DoingNothing && event == AgentEvent.gotHungry ){
 			state = AgentState.WaitPatientlyInRestaurant;
@@ -255,7 +260,7 @@ public class CustomerAgent extends Agent implements Customer {
 	// Actions
 
 	private void goToRestaurant() {
-		Do("Going to ryansRestaurant");
+	//	Do("Going to ryansRestaurant");
 		customerGui.DoEnterRestaurant();
 		host.msgIWantFood(this);//send our instance, so he can respond to us
 	}
@@ -285,7 +290,7 @@ public class CustomerAgent extends Agent implements Customer {
 	}
 	
 	private void SitDown() {
-		Do("Being seated. Going to table");
+		//Do("Being seated. Going to table");
 		activity = "Sitting down.";
 		customerGui.DoGoToSeat();
 	}
@@ -311,7 +316,7 @@ public class CustomerAgent extends Agent implements Customer {
 				
 				choice = menu.get( (new Random().nextInt(menu.size()))  );
 
-				Map<String, Double> prices = ((CashierAgent)cashier).getMenuPrices();
+				Map<String, Double> prices = ((RyansCashierRole)cashier).getMenuPrices();
 
 				//This if block checks to make sure customer can afford menu item. If they aren't a flake.
 				if(!flake && wallet < prices.get(choice) ) {
@@ -346,7 +351,7 @@ public class CustomerAgent extends Agent implements Customer {
 	}
 
 	private void Order() {
-		Do("May I please have: " + choice);
+		//Do("May I please have: " + choice);
 		activity = "" + choice;
 		
 		try {
@@ -473,6 +478,40 @@ public class CustomerAgent extends Agent implements Customer {
 		return this.leaves; }
 	public void setLeaves(boolean leave) {
 		this.leaves = leave;}
+
+	
+	
+	
+	
+	
+	
+	
+	@Override
+	public void setCashier(GenericCashier c) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+	@Override
+	public void setHost(GenericHost h) {
+		if( h instanceof RyansHostRole) {
+			this.host = (RyansHost)h;
+		}
+		
+	}
 
 	
 }

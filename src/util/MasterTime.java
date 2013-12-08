@@ -58,7 +58,7 @@ public class MasterTime {
 			}
 		}
 		
-		List<MyDateListener> toRemove = new ArrayList<>();
+		List<MyDateListener> toRemove = new ArrayList<>();//<--to hold the dl to remove
 		synchronized (dateListeners) {
 			for(MyDateListener dl : dateListeners){
 				if(dl.month == month && dl.day == day && dl.hour == hour && dl.minute == minute){
@@ -68,6 +68,7 @@ public class MasterTime {
 				}
 			}
 		}
+		//now remove dl to prevent ConcurrentModificationExceptions.
 		for(MyDateListener dl : toRemove){
 			dateListeners.remove(dl);
 		}

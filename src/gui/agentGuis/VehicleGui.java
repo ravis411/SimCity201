@@ -29,6 +29,93 @@ import astar.Position;
 
 public class VehicleGui implements Gui {
 
+	
+	//PUBLIC FUNCTIONS FOR PERSON AGENT
+	
+	
+	
+	/** Sets the current location of the GUI
+	 * 
+	 * @param location The location to be at.
+	 * @return True if the GUI is at location. False otherwise.
+	 */
+	public boolean setCurrentLocation(String location){
+		return setStartingStates(location);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//END PUBLIC FUNCTIONS FOR USE BY PERSON AGENT
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
     private Bus agent = null;
     
     
@@ -111,7 +198,7 @@ public class VehicleGui implements Gui {
     	if(i.positionToEnterFromRoadGrid == null)
     		return false;
     	
-    	Dimension d = new Dimension(positionMap.get(i.positionToEnterFromMainGrid));
+    	Dimension d = new Dimension(positionMap.get(i.positionToEnterFromRoadGrid));
     	
     	currentPosition = new Position(i.positionToEnterFromRoadGrid.width, i.positionToEnterFromRoadGrid.height);
     	if(!currentPosition.moveInto(aStar.getGrid()))

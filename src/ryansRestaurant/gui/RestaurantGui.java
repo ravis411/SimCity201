@@ -1,7 +1,7 @@
 package ryansRestaurant.gui;
 
-import ryansRestaurant.CustomerAgent;
-import ryansRestaurant.WaiterAgent;
+import ryansRestaurant.RyansCustomerRole;
+import ryansRestaurant.RyansWaiterRole;
 
 import javax.swing.*;
 
@@ -15,13 +15,13 @@ import java.awt.event.*;
 public class RestaurantGui extends JPanel {
     
 	RestaurantLayout layout = new RestaurantLayout();
-	AnimationPanel animationPanel = new AnimationPanel(layout, this);
+	RyansRestaurantAnimationPanel animationPanel = new RyansRestaurantAnimationPanel(layout, this);
 	
 	
     /* restPanel holds 2 panels
      * 1) the staff listing, menu, and lists of current customers all constructed
      *    in RestaurantPanel()
-     * 2) the infoPanel about the clicked Customer (created just below)
+     * 2) the infoPanel about the clicked RyansCustomer (created just below)
      */    
     RestaurantPanel restPanel = new RestaurantPanel(this);
     
@@ -93,11 +93,11 @@ public class RestaurantGui extends JPanel {
      *
      * @param c reference to the customer
      */
-    public void setCustomerEnabled(CustomerAgent c) {
+    public void setCustomerEnabled(RyansCustomerRole c) {
         restPanel.setCustomerBox(c.getName(), false, true);
     }
     
-    public void setWaiterBreakStatus(WaiterAgent w, String status) {
+    public void setWaiterBreakStatus(RyansWaiterRole w, String status) {
     	if(status.equalsIgnoreCase("none")) {
     		restPanel.setWaiterBB(w.getName(), Color.green, true, "Break?", "Working. Request a Break?");
     	}

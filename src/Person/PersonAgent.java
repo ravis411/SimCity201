@@ -8,7 +8,6 @@ import interfaces.generic_interfaces.GenericCashier;
 import interfaces.generic_interfaces.GenericCook;
 import interfaces.generic_interfaces.GenericCustomer;
 import interfaces.generic_interfaces.GenericHost;
-import interfaces.generic_interfaces.GenericWaiter;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -18,14 +17,11 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
-import kushrestaurant.CashierRole;
-import kushrestaurant.interfaces.Waiter;
 import residence.HomeRole;
 import trace.AlertLog;
 import trace.AlertTag;
 import util.MasterTime;
 import util.TimeListener;
-import util.DateListener;
 import MarketEmployee.MarketEmployeeRole;
 import MarketEmployee.MarketManagerRole;
 import Person.Role.Employee;
@@ -33,6 +29,7 @@ import Person.Role.Role;
 import Person.Role.RoleFactory;
 import Person.Role.ShiftTime;
 import Transportation.BusStopConstruct;
+import Transportation.CarAgent;
 import agent.Agent;
 import bank.BankClientRole;
 import building.Building;
@@ -40,8 +37,6 @@ import building.BuildingList;
 import building.Restaurant;
 import building.Workplace;
 //import restaurant.NewWaiterRole;
-
-import residence.HomeRole;
 /**
  * @author MSILKJR
  *
@@ -72,6 +67,8 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	public List<Role> roles;
 	public List<PersonAgent> friends;
 	
+	private CarAgent myCar;
+	
 	private Queue<Item> itemsNeeded;
 	
 	public enum StateOfHunger {NotHungry, SlightlyHungry, Hungry, VeryHungry, Starving} 
@@ -84,6 +81,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	
 	private ShiftTime currentShift;
 	public PersonState state;
+	public StateOfLocation stateOfLocation;
 	public WorkState workState;
 	private StateOfEmployment stateOfEmployment;
 	private Preferences prefs;
@@ -108,12 +106,17 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		prefs = new Preferences();
 		this.home = home;
 		
+		this.myCar = new CarAgent(this, name+" car");
+		
 		backpack = new ArrayList<Item>();
 		itemsNeeded = new ArrayDeque<Item>();
 		
 		MasterTime.getInstance().registerTimeListener(Workplace.DAY_SHIFT_HOUR, Workplace.DAY_SHIFT_MIN, false, this);
 		MasterTime.getInstance().registerTimeListener(Workplace.NIGHT_SHIFT_HOUR, Workplace.NIGHT_SHIFT_MIN, false, this);
 		MasterTime.getInstance().registerTimeListener(Workplace.END_SHIFT_HOUR, Workplace.END_SHIFT_MIN, false, this);
+	
+		//Add the gui
+		setGui(new PersonGui(this));
 	}
 	
 	/**
@@ -132,19 +135,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 			hr.activate();
 		}else{
 			addRole(r);
-				//System.err.println("AAAAAAAAAAAAAAAAAA");
-			/*
-			if(r instanceof GenericWaiter ){
-				GenericWaiter w = (GenericWaiter) r;
-				Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(roleLocation);
-				GenericHost role = (GenericHost) rest.getHostRole();
-				GenericCook cook = (GenericCook) rest.getCookRole();
-				GenericCashier cashier = (GenericCashier) rest.getCashierRole();
-				role.addWaiter(w);
-				w.setHost(role);
-				w.setCook(cook);
-				w.setCashier(cashier);
-			}*/
+
 			if(r instanceof MarketManagerRole ){
 				 MarketManagerRole role = (MarketManagerRole) findRole(Role.MARKET_MANAGER_ROLE);
 			
@@ -174,9 +165,11 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		prefs = new Preferences();
 		this.home = home;
 		
+		this.myCar = new CarAgent(this, name+" car");
+		
 		backpack = new ArrayList<Item>();
 		itemsNeeded = new ArrayDeque<Item>();
-		
+		stateOfLocation = StateOfLocation.Walking;
 		roles.add(new HomeRole(this));
 		
 		if(name.equals("Person 1") || name.equals("Person 2") )
@@ -186,6 +179,9 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		if(name.equals("Person 13")){
 			this.msgGoToMarket("Steak");
 		}
+		
+		//Add the gui
+		setGui(new PersonGui(this));
 	}
 	
 //-------------------------------MESSAGES----------------------------------------//
@@ -198,8 +194,15 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	public void msgWeHaveArrived(String currentDestination){
 	  //unpause agent, which will be in transit (implementation not necessary here)
 		onBus.release();
+		//------------------ILLEGAL CHANGE OR DELETE---------------------------------//
+		if(stateOfLocation == StateOfLocation.InCar){
+			myCar.msgLeavingCar();
+			stateOfLocation = StateOfLocation.Walking;
+		}
 		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Arrived at Destination!!");
 	}
+	
+	
 
 	/**
 	  * Message probably sent by an outside GUI to force hunger on the 
@@ -455,18 +458,18 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		  String location = PickFoodLocation();
 		  GoToLocation(location, transport);
 		  
-		  GenericCustomer role = (GenericCustomer) findRole(Role.RESTAURANT_KUSH_CUSTOMER_ROLE);
+		  GenericCustomer role = (GenericCustomer) findRole(Role.RESTAURANT_MIKE_CUSTOMER_ROLE);
 		  if(role == null){
-			  role = (GenericCustomer) RoleFactory.roleFromString(Role.RESTAURANT_KUSH_CUSTOMER_ROLE);
+			  role = (GenericCustomer) RoleFactory.roleFromString(Role.RESTAURANT_MIKE_CUSTOMER_ROLE);
 			  addRole(role);
 		  }
 
 		  AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Customer Role = "+role);
-		  BuildingList.findBuildingWithName("Kush's Restaurant").addRole(role);
-		  Building bdg =  BuildingList.findBuildingWithName("Kush's Restaurant");
+		  BuildingList.findBuildingWithName("Mike's Restaurant").addRole(role);
+		  Building bdg =  BuildingList.findBuildingWithName("Mike's Restaurant");
 		  if(bdg instanceof Restaurant){
 			  Restaurant rest = (Restaurant) bdg;
-			  role.setupCustomer("Kush's Restaurant");
+			  role.setupCustomer("Mike's Restaurant");
 //			  role.setCashier(rest.getCashierRole());
 //			  role.setHost(rest.getHostRole());
 			  
@@ -625,7 +628,12 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	}
 	
 	private void GoToLocation(String location, String modeOfTransportation){
+		//if the Person has a Car use it
+		if(myCar != null){
+			modeOfTransportation = Preferences.CAR;
+		}
 		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Going to "+location+" via + "+modeOfTransportation);
+		
 		switch(modeOfTransportation){
 			case Preferences.BUS:
 				String startStop = gui.DoGoToClosestBusStop();
@@ -640,6 +648,16 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 				GoToLocation(location, "WALK");
 				break;
 			case Preferences.CAR:
+				
+				myCar.msgEnteringCar();
+				myCar.msgNewDestination(location);
+				stateOfLocation = StateOfLocation.InCar;
+				try {
+					onBus.acquire();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				break;
 			case Preferences.WALK:
 				System.err.println("Trying to walk to "+location);
@@ -967,6 +985,47 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		// TODO Auto-generated method stub
 		
 	}
-
-
+	//Control Panel Information Access Functions
+		//Only include what hasn't already been done
+	public int getHungerLevel() {
+		return hungerLevel;
+	}
+	public String getCurrentJobString() {
+		return findMyJob().getNameOfRole();
+	}
+	
+	public String getCurrentLocation() {
+		String location  = "N/A";
+		switch (stateOfLocation) {
+		case AtHome:
+			location = "Home";
+			break;
+			
+		case AtBank:
+			location = "Bank";
+			break;
+		
+		case AtMarket:
+			location = "Market";
+			break;
+			
+		case AtRestaurant:
+			location = "Restaurant";
+			break;
+			
+		case InCar: 
+			location = "City";
+			break;
+			
+		case InBus:
+			location = "City";
+			break;
+			
+		case Walking:
+			location = "City";
+			break;
+		}
+		
+		return location;
+	}
 }

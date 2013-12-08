@@ -5,14 +5,14 @@ import java.util.List;
 
 
 
-public interface Customer {
+public interface RyansCustomer {
 	
 
 	public abstract void gotHungry();
 	
-	public abstract void msgIntroduceWaiter(Waiter waiter);
+	public abstract void msgIntroduceWaiter(RyansWaiter waiter);
 
-	public abstract void msgSitAtTable(List<String> menu, Cashier cashier);
+	public abstract void msgSitAtTable(List<String> menu, RyansCashier cashier);
 	
 	public abstract void msgWhatWouldYouLike();
 	

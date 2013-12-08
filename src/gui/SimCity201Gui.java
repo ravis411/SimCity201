@@ -23,8 +23,6 @@ import trace.TracePanel;
 
 
 
-
-
 @SuppressWarnings("serial")
 public class SimCity201Gui extends JFrame {
 
@@ -45,7 +43,7 @@ public class SimCity201Gui extends JFrame {
 	 * Default Constructor Initializes gui
 	*/
 	public SimCity201Gui(String config) {
-		setTitle("SimCity201 V 1.000000005  - Team 29");
+		setTitle("SimCity201 V 1.00005  - Team 29");
         setVisible(true);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -54,8 +52,6 @@ public class SimCity201Gui extends JFrame {
 		this.setJMenuBar(menuBar);
              
         setBounds(50, 50, (int)(WINDOWX * 1.5), (WINDOWY + 50));
-		//setBounds(50, 50, WINDOWX, WINDOWY);
-		//setLayout(new GridLayout(1, 2));
 		setLayout(new GridBagLayout());
 		
 		
@@ -120,22 +116,16 @@ public class SimCity201Gui extends JFrame {
 		switch (config) {
 		case "Default":
 			factory.LoadDefault();
-			layout = factory.layout;
-			cityPanel = factory.cityPanel;
-			buildingsPanels = factory.buildingsPanels;
+			layout = SetUpWorldFactory.layout;
+			cityPanel = SetUpWorldFactory.cityPanel;
+			buildingsPanels = SetUpWorldFactory.buildingsPanels;
 			break;
 			
 		case "GUI Test 1":
 			factory.LoadGUITest1();
-			layout = factory.layout;
-			cityPanel = factory.cityPanel;
-			buildingsPanels = factory.buildingsPanels;
-			break;
-		case"GUI Test 2":
-			factory.LoadGUITest2();
-			layout = factory.layout;
-			cityPanel = factory.cityPanel;
-			buildingsPanels = factory.buildingsPanels;
+			layout = SetUpWorldFactory.layout;
+			cityPanel = SetUpWorldFactory.cityPanel;
+			buildingsPanels = SetUpWorldFactory.buildingsPanels;
 			break;
 		default:
 			AlertLog.getInstance().logError(AlertTag.GENERAL_CITY, "City", "Error loading " + config + " configuration.");

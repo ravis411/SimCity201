@@ -3,22 +3,22 @@ package ryansRestaurant.test.mock;
 
 import java.util.List;
 
-import ryansRestaurant.interfaces.Cashier;
-import ryansRestaurant.interfaces.Customer;
-import ryansRestaurant.interfaces.Waiter;
+import ryansRestaurant.interfaces.RyansCashier;
+import ryansRestaurant.interfaces.RyansCustomer;
+import ryansRestaurant.interfaces.RyansWaiter;
 
 /**
- * A sample MockCustomer built to unit test a CashierAgent.
+ * A sample MockCustomer built to unit test a RyansCashierRole.
  *
  * @author Monroe Ekilah
  *
  */
-public class MockCustomer extends Mock implements Customer {
+public class MockCustomer extends Mock implements RyansCustomer {
 
 	/**
-	 * Reference to the Cashier under test that can be set by the unit test.
+	 * Reference to the RyansCashier under test that can be set by the unit test.
 	 */
-	public Cashier cashier;
+	public RyansCashier cashier;
 	public EventLog log = new EventLog();
 	
 	
@@ -58,7 +58,7 @@ public class MockCustomer extends Mock implements Customer {
 	}
 
 	@Override
-	public void msgSitAtTable(List<String> menu, Cashier cashier) {
+	public void msgSitAtTable(List<String> menu, RyansCashier cashier) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -82,7 +82,7 @@ public class MockCustomer extends Mock implements Customer {
 	}
 
 	@Override
-	public void msgIntroduceWaiter(Waiter waiter) {
+	public void msgIntroduceWaiter(RyansWaiter waiter) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -1,11 +1,11 @@
 package ryansRestaurant.gui;
 
 
-import ryansRestaurant.CookAgent;
-import ryansRestaurant.CustomerAgent;
-import ryansRestaurant.HostAgent;
-import ryansRestaurant.WaiterAgent;
-import ryansRestaurant.interfaces.Customer;
+import ryansRestaurant.RyansCookRole;
+import ryansRestaurant.RyansCustomerRole;
+import ryansRestaurant.RyansHostRole;
+import ryansRestaurant.RyansWaiterRole;
+import ryansRestaurant.interfaces.RyansCustomer;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -18,7 +18,7 @@ import astar.*;
 
 public class WaiterGui implements Gui {
 
-    private WaiterAgent agent = null;
+    private RyansWaiterRole agent = null;
     private CookGui cook = null;
     private CustomerGui currentCustomer = null;
     
@@ -60,7 +60,7 @@ public class WaiterGui implements Gui {
      */
     public boolean interrupt = false;
     
-    public WaiterGui(WaiterAgent agent, RestaurantGui gui, RestaurantLayout restLayout, AStarTraversal aStar) {
+    public WaiterGui(RyansWaiterRole agent, RestaurantGui gui, RestaurantLayout restLayout, AStarTraversal aStar) {
     	positionMap = new HashMap<Dimension, Dimension>(restLayout.positionMap);
     	this.agent = agent;
     	this.cook = agent.cook.getGui();
@@ -136,8 +136,9 @@ public class WaiterGui implements Gui {
     /**
      * This function assumes the waiter is not in the ryansRestaurant...
      * Will enter the ryansRestaurant and request a home position. Will then GoToHomePostition();
+     * @throws Exception 
      */
-    public void DoEnterRestaurant() {
+    public void DoEnterRestaurant() throws Exception {
     	
     	Position entrance = new Position(1, 1);
     	
@@ -168,7 +169,7 @@ public class WaiterGui implements Gui {
     	
     }
 
-    public void DoBringToTable(CustomerAgent customer, int seatnumber) {
+    public void DoBringToTable(RyansCustomerRole customer, int seatnumber) throws Exception {
        
     	Dimension dim = new Dimension(restLayout.tableXYMap.get(seatnumber));
     	customer.getGui().DoGoToCoords(dim);
@@ -176,7 +177,7 @@ public class WaiterGui implements Gui {
     	DoGoToTable(seatnumber);
     }
     
-    public void DoGoToTable(int seatnumber) {
+    public void DoGoToTable(int seatnumber) throws Exception {
     	Dimension p = restLayout.tablePositionMap.get(seatnumber);
     	Position pos = new Position(p.width, p.height - 1);
     	//System.out.println("Table Position!!!" + pos);
@@ -185,7 +186,7 @@ public class WaiterGui implements Gui {
        // state = AgentState.goingToTable;
     }
 
-    public void DoGoToCook() {
+    public void DoGoToCook() throws Exception {
     	//state = AgentState.goingToCook;
     	Dimension d = restLayout.cookOrderCounterPosition;
     	Position p = new Position(d.width, d.height - 1);
@@ -193,15 +194,15 @@ public class WaiterGui implements Gui {
     }
     
     
-    public void DoGoToCustomer(Customer cust) {
-    	currentCustomer = ((CustomerAgent)cust).getGui();
+    public void DoGoToCustomer(RyansCustomer cust) throws Exception {
+    	currentCustomer = ((RyansCustomerRole)cust).getGui();
     	doGoToCustomerUtility();
 //    	try {
 //			sem.acquire();
 //		} catch (InterruptedException e) {
 //		}
     }
-    private void doGoToCustomerUtility(){
+    private void doGoToCustomerUtility() throws Exception{
     	if(currentCustomer != null) {
     		if(currentCustomer.waitingPosition == null){
     			guiMoveFromCurrentPostionTo(new Position(3, 2));
@@ -221,7 +222,7 @@ public class WaiterGui implements Gui {
 //		Dimension d = new Dimension(cook.grillPostionMap.get(grillNumber));
 //		DoGoToGrillCoords(d);	
 //	}
-    public void DoGoToGrill(int grillNumber) {
+    public void DoGoToGrill(int grillNumber) throws Exception {
 		Dimension d = new Dimension(cook.grillPositionMap.get(grillNumber));
 		guiMoveFromCurrentPostionTo(new Position(d.width, d.height - 2));
 		//state = AgentState.goingToGrill;
@@ -234,7 +235,7 @@ public class WaiterGui implements Gui {
 //    	}
 //    }
     
-    public void DoGoToCashier() {
+    public void DoGoToCashier() throws Exception {
     	//xDestination = restLayout.cashierXYCoords.width;
     //	state = AgentState.goingToCashier;
     	//yDestination = restLayout.cashierXYCoords.height - 25;
@@ -242,7 +243,7 @@ public class WaiterGui implements Gui {
     	guiMoveFromCurrentPostionTo(new Position(d.width + 1, d.height));
     }
 
-    public void DoLeaveCustomer() {
+    public void DoLeaveCustomer() throws Exception {
         //xDestination = xCounter;
         //yDestination = yCounter;
     	interrupt = true;
@@ -254,7 +255,7 @@ public class WaiterGui implements Gui {
     //	state = AgentState.goingToHomePosition;
     	yPos = yDestination = homeCoordinates.height;
     }
-    public void DoGoToHomePosition() {
+    public void DoGoToHomePosition() throws Exception {
 //    	xDestination = homeCoordinates.width;
 //    	yDestination = homeCoordinates.height;
     	guiMoveFromCurrentPostionTo(originalPosition);
@@ -274,9 +275,10 @@ public class WaiterGui implements Gui {
      *  
      * 
      *  @param to The Position to move to. 
+     * @throws Exception 
      *  
      */
-    void guiMoveFromCurrentPostionTo(Position to){
+    void guiMoveFromCurrentPostionTo(Position to) throws Exception{
         
     	//First check to make sure the destination is free otherwise wait
     	int waits = 0;
