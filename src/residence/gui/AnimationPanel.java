@@ -93,8 +93,8 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
         g2.fillRect(500, 30, 30, 95);
         g2.setColor(Color.black); //fridge
         g2.fillRect(500, 80, 30, 25);
-        g2.fillRect(497, 86, 2, 3);
-        g2.fillRect(497, 96, 2, 3);
+        g2.fillRect(498, 88, 2, 3);
+        g2.fillRect(498, 94, 2, 3);
         g2.setColor(Color.white);
         g2.fillRect(502, 82, 26, 21);
         g2.setColor(Color.black); //range
