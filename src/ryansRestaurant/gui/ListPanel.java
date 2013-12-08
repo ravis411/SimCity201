@@ -1,7 +1,7 @@
 package ryansRestaurant.gui;
 
 import ryansRestaurant.CustomerAgent;
-import ryansRestaurant.HostAgent;
+import ryansRestaurant.RyansHostRole;
 
 import javax.swing.*;
 

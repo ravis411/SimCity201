@@ -1,6 +1,6 @@
 package ryansRestaurant;
 
-import ryansRestaurant.HostAgent.Table;
+import ryansRestaurant.RyansHostRole.Table;
 import ryansRestaurant.gui.CustomerGui;
 import ryansRestaurant.gui.RestaurantGui;
 import ryansRestaurant.interfaces.Cashier;

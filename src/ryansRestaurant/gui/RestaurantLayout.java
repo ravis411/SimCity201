@@ -4,7 +4,7 @@ import javax.swing.*;
 
 import agent.Agent;
 import astar.Position;
-import ryansRestaurant.HostAgent;
+import ryansRestaurant.RyansHostRole;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

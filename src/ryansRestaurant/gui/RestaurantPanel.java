@@ -3,7 +3,7 @@ package ryansRestaurant.gui;
 import ryansRestaurant.CashierAgent;
 import ryansRestaurant.CookAgent;
 import ryansRestaurant.CustomerAgent;
-import ryansRestaurant.HostAgent;
+import ryansRestaurant.RyansHostRole;
 import ryansRestaurant.MarketAgent;
 import ryansRestaurant.WaiterAgent;
 
@@ -23,7 +23,7 @@ import java.util.concurrent.Semaphore;
 public class RestaurantPanel extends JPanel {
 
     //Host, cook, waiters and customers
-    private HostAgent host = new HostAgent("Sarah");
+    private RyansHostRole host = new RyansHostRole("Sarah");
     private CashierAgent cashier = new CashierAgent("Cashier");
     private CookAgent cook;
     

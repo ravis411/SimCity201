@@ -2,7 +2,7 @@ package ryansRestaurant.gui;
 
 import javax.swing.*;
 
-import ryansRestaurant.HostAgent;
+import ryansRestaurant.RyansHostRole;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -77,8 +77,8 @@ public class AnimationPanel extends JPanel implements MouseListener, ActionListe
     private Dimension bufferSize;
 
     private List<Gui> guis = new ArrayList<Gui>();
-    protected HostAgent host = null;
-    public void setHost(HostAgent host) {
+    protected RyansHostRole host = null;
+    public void setHost(RyansHostRole host) {
     	this.host = host;
     }
     private RestaurantLayout layout = null;
@@ -172,8 +172,8 @@ public class AnimationPanel extends JPanel implements MouseListener, ActionListe
 //        }
         
         //Here are the tables
-        List<HostAgent.aTable> tables = host.getTableNumbers();
-        for( HostAgent.aTable tempTable: tables)
+        List<RyansHostRole.aTable> tables = host.getTableNumbers();
+        for( RyansHostRole.aTable tempTable: tables)
         {
         	int xCoord = tableMap.get(tempTable.getTableNumber()).width;
         	int yCoord = tableMap.get(tempTable.getTableNumber()).height;

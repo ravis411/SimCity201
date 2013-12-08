@@ -3,7 +3,7 @@ package ryansRestaurant.gui;
 
 import ryansRestaurant.CookAgent;
 import ryansRestaurant.CustomerAgent;
-import ryansRestaurant.HostAgent;
+import ryansRestaurant.RyansHostRole;
 import ryansRestaurant.WaiterAgent;
 
 import java.awt.*;

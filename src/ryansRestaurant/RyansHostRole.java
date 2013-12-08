@@ -14,7 +14,7 @@ import ryansRestaurant.interfaces.Waiter;
  * Restaurant Host Agent
  */
 
-public class HostAgent extends Agent implements Host {
+public class RyansHostRole extends Agent implements Host {
 	private int NTABLES = 2;//a global for the number of tables. // there's only one host changing from static
 
 	private List<Customer> waitingCustomers = Collections.synchronizedList(new ArrayList<Customer>());
@@ -29,7 +29,7 @@ public class HostAgent extends Agent implements Host {
 	private String name;
 	private Semaphore atTable = new Semaphore(0,true);
 
-	public HostAgent(String name) {
+	public RyansHostRole(String name) {
 		super();
 
 		this.name = name;

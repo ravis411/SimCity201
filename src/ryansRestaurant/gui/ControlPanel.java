@@ -31,7 +31,7 @@ import ryansRestaurant.CashierAgent;
 import ryansRestaurant.CookAgent;
 import ryansRestaurant.CustomerAgent;
 import ryansRestaurant.MarketAgent;
-import ryansRestaurant.HostAgent.aTable;
+import ryansRestaurant.RyansHostRole.aTable;
 
 public class ControlPanel extends JPanel implements ActionListener {
 

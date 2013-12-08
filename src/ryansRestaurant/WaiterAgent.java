@@ -16,7 +16,7 @@ import java.util.concurrent.Semaphore;
  */
 //We only have 2 types of agents in this prototype. A customer and an agent that
 //does all the rest. Rather than calling the other agent a waiter, we called him
-//the HostAgent. A Host is the manager of a ryansRestaurant who sees that all
+//the RyansHostRole. A Host is the manager of a ryansRestaurant who sees that all
 //is proceeded as he wishes.
 public class WaiterAgent extends Agent implements Waiter {
 	public List<MyCustomer> myCustomers	= new ArrayList<MyCustomer>();
@@ -513,7 +513,7 @@ public class WaiterAgent extends Agent implements Waiter {
 		return waiterGui;
 	}
 	
-	public void setHost(HostAgent host) {
+	public void setHost(RyansHostRole host) {
 		this.host = host;
 	}
 	
