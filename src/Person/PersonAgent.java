@@ -315,11 +315,10 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	  * Message sent by the home role to invite the person to a party
 	  */
 	public void msgPartyInvitation(Person p,Calendar rsvpDeadline,Calendar partyTime){
-		print("Received a party invitation!");
+		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Received a party invitation!");
 		Party party = new Party(p, rsvpDeadline, partyTime);
 		party.partyState = PartyState.ReceivedInvite;
 		parties.add(party);
-		print("The party's on the " + party.dateOfParty.get(Calendar.DAY_OF_MONTH) + "th at " + party.dateOfParty.get(Calendar.HOUR_OF_DAY));
 		stateChanged();
 	}
 	
@@ -327,7 +326,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	  * RSVP message sent by the home role
 	  */
 	public void msgIAmComing(Person p){
-		print(p.getName() + " IS COMING");
+		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), p.getName() + " is coming to the party.");
 		HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE);
 
 		if(hr != null) {
@@ -338,7 +337,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		
 	}
 	public void msgIAmNotComing(Person p){
-		print(p.getName() + " is NOT COMING");
+		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), p.getName() + " is not coming to the party.");
 		//findRole("HOME_ROLE").rsvp.get(p)=true;
 		HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE);
 
@@ -397,15 +396,15 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 					for(PersonAgent pa :friends){
 						if(pa==p.getHost()){
 							int i= new Random().nextInt(40);
-							//if(i%2==0){
+							if(i%2==0){
 								pa.msgIAmComing(this);
 								p.partyState=PartyState.GoingToParty;
 								MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY), p.dateOfParty.get(Calendar.MINUTE), this); 
 								//return true;
-							//}
-							//else{ 
-							//	p.partyState=PartyState.notRSVPed;
-							//}
+							}
+							else{ 
+								p.partyState=PartyState.notRSVPed;
+							}
 						}
 					}
 					int i= new Random().nextInt(40);
@@ -860,8 +859,8 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	  BuildingList.findBuildingWithName(home.getName()).addRole(role);
 	  role.activate();
 	  
-	  //role.msgMakeFood();
-	  role.msgEnterBuilding();
+	  role.msgMakeFood();
+	  //role.msgEnterBuilding();
 
 	}
 	

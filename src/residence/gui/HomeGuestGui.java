@@ -4,6 +4,7 @@ import residence.HomeGuestRole;
 import residence.HomeRole;
 
 import java.awt.*;
+import java.util.Random;
 
 import building.BuildingList;
 
@@ -13,6 +14,7 @@ public class HomeGuestGui implements Gui {
 
     private int xPos = 801, yPos = 150;//default position
     private int xDestination = 801, yDestination = 150;//default start position
+    private int xRand = -1, yRand = -1;
 
     public HomeGuestGui(HomeGuestRole agent) {
         this.agent = agent;
@@ -33,8 +35,12 @@ public class HomeGuestGui implements Gui {
         if (xPos == 805 && yPos == 150) {
             agent.msgAtFrontDoor();
         }
-        if (xPos == 375 && yPos == 150) {
+        if (xPos == 600 && yPos == 150) {
         	agent.msgAtCenter();
+        	DoMingle();
+        }
+        if (xPos == xRand && yPos == yRand) {
+        	DoGoToCenter();
         }
     }
 
@@ -45,13 +51,21 @@ public class HomeGuestGui implements Gui {
     }
     
     public void DoGoToCenter() {
-    	xDestination = 375;
+    	xDestination = 600;
     	yDestination = 150;
     }
     
     public void DoGoToFrontDoor() {
     	xDestination = 805;
     	yDestination = 150;
+    }
+    
+    public void DoMingle() {
+    	 Random rand = new Random();
+    	 xRand = rand.nextInt((600 - 500) + 1) + 600;
+    	 yRand = rand.nextInt((250 - 150) + 1) + 150;
+    	 xDestination = xRand;
+    	 yDestination = yRand;
     }
     
     public boolean isPresent() {
