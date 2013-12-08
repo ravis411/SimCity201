@@ -13,6 +13,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
+import building.BuildingList;
+import building.Restaurant;
 import Person.Role.ShiftTime;
 import kushrestaurant.HostRole.Table;
 //import kushrestaurant.gui.RestaurantGui;
@@ -722,6 +724,17 @@ public void setCashier(GenericCashier cashier){
 	public Double getSalary() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void workplaceIsOpen() {
+		// TODO Auto-generated method stub
+		//super(workLocation);
+		Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(this.getWorkLocation());
+		this.setHost(rest.getHostRole());
+		rest.getHostRole().addWaiter(this);
+		this.setCashier(rest.getCashierRole());
+		this.setCook(rest.getCookRole());
 	}
 	
 	

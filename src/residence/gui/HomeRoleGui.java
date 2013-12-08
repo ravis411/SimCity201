@@ -57,6 +57,7 @@ public class HomeRoleGui implements Gui {
         if(xPos == 375 && yPos == 65) {
         	g.setColor(Color.black);
             g.fillOval(372, 47, 11, 11);
+            g.fillRect(377, 58, 2, 4);
         }
         if(xPos > 150 && xPos < 250 && yPos > 100 && yPos < 200) { //bedroom door
         	g.setColor(Color.orange);

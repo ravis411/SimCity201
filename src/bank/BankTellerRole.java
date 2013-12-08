@@ -333,6 +333,10 @@ public class BankTellerRole extends Employee implements BankTeller{
 	@Override
 	public void msgFreeze() {
 		// TODO Auto-generated method stub
+	}
+	public void workplaceIsOpen() {
+		// TODO Auto-generated method stub
+		this.activate();
 		
 	}
 

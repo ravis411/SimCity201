@@ -12,6 +12,7 @@ import interfaces.generic_interfaces.GenericHost;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
@@ -314,11 +315,10 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	  * Message sent by the home role to invite the person to a party
 	  */
 	public void msgPartyInvitation(Person p,Calendar rsvpDeadline,Calendar partyTime){
-		print("Received a party invitation!");
+		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Received a party invitation!");
 		Party party = new Party(p, rsvpDeadline, partyTime);
 		party.partyState = PartyState.ReceivedInvite;
 		parties.add(party);
-		print("The party's on the " + party.dateOfParty.get(Calendar.DAY_OF_MONTH) + "th at " + party.dateOfParty.get(Calendar.HOUR_OF_DAY));
 		stateChanged();
 	}
 	
@@ -326,7 +326,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	  * RSVP message sent by the home role
 	  */
 	public void msgIAmComing(Person p){
-		print(p.getName() + " IS COMING");
+		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), p.getName() + " is coming to the party.");
 		HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE);
 
 		if(hr != null) {
@@ -337,7 +337,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		
 	}
 	public void msgIAmNotComing(Person p){
-		print(p.getName() + " is NOT COMING");
+		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), p.getName() + " is not coming to the party.");
 		//findRole("HOME_ROLE").rsvp.get(p)=true;
 		HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE);
 
@@ -528,7 +528,29 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	}
 	
 	private String PickFoodLocation(){
+//		ArrayList<Building> b= new ArrayList<Building>();
+//		b= BuildingList.findBuildingsWithType("Bank");
+//		Collections.shuffle(b);
+//		String destination= "null";
+//		
+//		for(Building dest: b){
+//			 Workplace w= (Workplace) b;
+//			 if (w.isOpen()==false){
+//				 AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", ""
+//				 		+ "WORKPLACE IS CLOSED SO NOT GOING THERE");
+//			 }
+//			 if(w.isOpen()){
+//				 destination= dest.getName();
+//				 break;
+//			 }
+//			 
+//		}
+//		//needs a way to find a bank quite yet
+//		if(destination=="null"){
+//			return home.getName();
+//		}
 		return home.getName();
+		
 	}
 
 	private void GoToParty(String location){
@@ -571,7 +593,31 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	private void GoToWork(){
 		if(getCurrentJob() == null)
 			return;
-		
+		if(BuildingList.findBuildingWithName(getCurrentJob().getWorkLocation()) instanceof Workplace ){
+			 Workplace w= (Workplace) BuildingList.findBuildingWithName(getCurrentJob().getWorkLocation());
+			 if (w.isOpen()==false){
+				 AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", ""
+				 		+ "WORKPLACE IS CLOSED SO NOT GOING");
+				 String workLocation = getCurrentJob().getWorkLocation();
+					GoToLocation(workLocation, getTransportPreference());
+					Role r = getCurrentJob();
+					if(r instanceof GenericHost){
+						Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(workLocation);
+						addRole(rest.getHostRole());
+					}else if(r instanceof GenericCook){
+						Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(workLocation);
+						addRole(rest.getCookRole());
+					}else if(r instanceof GenericCashier){
+						Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(workLocation);
+						addRole(rest.getCashierRole());
+					}else{
+						BuildingList.findBuildingWithName(workLocation).addRole(r);
+						addRole(getCurrentJob());
+					}
+				 return;
+			 }
+			
+		}
 		String workLocation = getCurrentJob().getWorkLocation();
 		GoToLocation(workLocation, getTransportPreference());
 		Role r = getCurrentJob();
@@ -614,11 +660,28 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	}
 
 	private void GoGetMoney(){
+		ArrayList<Building> b= new ArrayList<Building>();
+		b= BuildingList.findBuildingsWithType("Bank");
+		Collections.shuffle(b);
+		String destination= "null";
 		
-		
-		
+		for(Building dest: b){
+			 Workplace w= (Workplace) b;
+			 if (w.isOpen()==false){
+				 AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", ""
+				 		+ "WORKPLACE IS CLOSED SO NOT GOING THERE");
+			 }
+			 if(w.isOpen()){
+				 destination= dest.getName();
+				 break;
+			 }
+			 return;
+		}
 		//needs a way to find a bank quite yet
-		GoToLocation("Bank", getTransportPreference());
+		if(destination=="null"){
+			return;
+		}
+		GoToLocation(destination, getTransportPreference());
 		Role r = findRole(Role.BANK_CLIENT_ROLE);
 		if(r == null){
 			r = RoleFactory.roleFromString(Role.BANK_CLIENT_ROLE);
@@ -665,9 +728,30 @@ private void GoRobBank(){
 		  	default:
 		  		transport = "ERROR";
 		}
+		ArrayList<Building> b= new ArrayList<Building>();
+		b= BuildingList.findBuildingsWithType("Market");
+		Collections.shuffle(b);
+		String destination= "null";
+		for(Building dest: b){
+			 Workplace w= (Workplace) b;
+			 if (w.isOpen()==false){
+				 AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", ""
+				 		+ "MARKET IS CLOSED SO NOT GOING THERE");
+			 }
+			 if(w.isOpen()){
+				 destination= dest.getName();
+				 break;
+			 }
+			 AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", ""
+				 		+ "ALL MARKETS ARE CLOSED");
+			 return;
+		}
 		
-		//needs a way to find a bank quite yet
-		 GoToLocation("Market 1", transport);
+		if(destination=="null"){
+			return;
+		}
+		
+		 GoToLocation(destination, transport);
 		 Role r = findRole(Role.MARKET_CUSTOMER_ROLE);
 		if(r == null){
 			r = RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
@@ -792,8 +876,8 @@ private void GoRobBank(){
 	  BuildingList.findBuildingWithName(home.getName()).addRole(role);
 	  role.activate();
 	  
-	  //role.msgMakeFood();
-	  role.msgEnterBuilding();
+	  role.msgMakeFood();
+	  //role.msgEnterBuilding();
 
 	}
 	

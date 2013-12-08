@@ -109,13 +109,13 @@ public class HomeRole extends Role implements Home {
 
 		stateChanged();
 	}
-	public void msgTired() { //called by timer
-		print("I'm tired.");
+	public void msgTired() {
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "I'm tired.");
 		state = AgentState.Sleeping;
 		stateChanged();
 	}
 	public void msgRestockItem (String itemName, int quantity) {
-		print("Just received " + quantity + " " + itemName + "s.");
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Just received " + quantity + " " + itemName + "s.");
 		event = AgentEvent.none;
 		for(Item i : inventory) {
 			if(i.name == itemName) {
@@ -125,6 +125,7 @@ public class HomeRole extends Role implements Home {
 		stateChanged();
 	}
 	public void msgFixedFeature (String name) {
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), name + " is fixed.");
 		for (HomeFeature hf : features) {
 			if (name == hf.name) {
 				hf.working = true;
@@ -133,34 +134,34 @@ public class HomeRole extends Role implements Home {
 		stateChanged();
 	}
 	public void msgMakeFood() {
-		print("I'm eating at home.");
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "I'm eating at home.");
 		state = AgentState.Cooking;
 		stateChanged();
 	}
 	public void msgLeaveBuilding() {
-		print("Leaving home.");
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Leaving home.");
 		event = AgentEvent.leaving;
 		leaveHome = true;
 		stateChanged();
 	}
 	public void msgEnterBuilding() {
-		print("Home sweet home!");
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Home sweet home!");
 		event = AgentEvent.none;
 		enterHome = true;
 		stateChanged();
 	}
 	public void msgThrowParty() {
-		print("I'm planning a party!");
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "I'm planning a party!");
 		partyState = PartyState.sendInvites;
 		stateChanged();
 	}
 	public void msgResendInvites() {
-		print("Resending invites to those who didn't RSVP yet.");
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Resending invites to those who didn't RSVP.");
 		partyState = PartyState.resendInvites;
 		stateChanged();
 	}
 	public void msgHostParty() {
-		print("It's party time at my house!");
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "There's a party at my house soon!");
 		partyState = PartyState.host;
 		stateChanged();
 	}
@@ -231,8 +232,7 @@ public class HomeRole extends Role implements Home {
 				if(i.quantity < 2 && state == AgentState.DoingNothing && event == AgentEvent.none) {
 					goToMarket(i);
 					return true;
-				}
-				
+				}	
 			}
 			for (HomeFeature hf : features) {
 				if(!hf.working) {
@@ -297,7 +297,6 @@ public class HomeRole extends Role implements Home {
 		5000);
 	}
 	private void goToMarket (Item item) {
-		callMarket = false;
 		if(callMarket == true) {
 			gui.DoGoToCenter();
 			try {
@@ -306,7 +305,7 @@ public class HomeRole extends Role implements Home {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			print("Low on " + item.name + ". I'm calling the market.");
+			AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Low on " + item.name + ". I'm calling the market.");
 			List<Role> inhabitants = BuildingList.findBuildingWithName("Market 1").getInhabitants();
 			for(Role r : inhabitants) {
 				if (r.getNameOfRole() == "MARKET_MANAGER_ROLE") {
@@ -315,7 +314,7 @@ public class HomeRole extends Role implements Home {
 				}
 			}
 			myPerson.msgGoToMarket(item.name);
-			callMarket = true;
+			callMarket = false;
 		}
 		else if(callMarket == false) {
 			event = AgentEvent.leaving;
@@ -326,7 +325,7 @@ public class HomeRole extends Role implements Home {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			print("Low on " + item.name + ". I'm going to the market.");
+			AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Low on " + item.name + ". I'm going to the market.");
 			gui.DoGoToFrontDoor();
 			try {
 				atFrontDoor.acquire();
@@ -355,7 +354,7 @@ public class HomeRole extends Role implements Home {
 			landlord.msgRentPaid (this, rentOwed);
 			myPerson.setMoney(myPerson.getMoney()-rentOwed);
 			rentOwed = 0;
-			print("Paid my rent. I have $" + myPerson.getMoney() + " left.");
+			AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Paid my rent. I have $" + myPerson.getMoney() + " left.");
 		}
 		else {
 			//do nothing
@@ -388,7 +387,7 @@ public class HomeRole extends Role implements Home {
 			public void run() {
 				state = AgentState.DoingNothing;
 				event = AgentEvent.none;
-				print("I'm awake!");
+				AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "I'm awake!");
 				stateChanged();
 			}
 		},
@@ -431,10 +430,10 @@ public class HomeRole extends Role implements Home {
 		partyDate.add(Calendar.DAY_OF_MONTH, 1);
 		MasterTime.getInstance().registerDateListener(partyDate.get(Calendar.MONTH), partyDate.get(Calendar.DAY_OF_MONTH), partyDate.get(Calendar.HOUR_OF_DAY), partyDate.get(Calendar.MINUTE), myPerson);
 		
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Inviting friends to my party.");
 		for(int i=0; i<myPerson.getFriends().size(); i++) {
 			myPerson.getFriends().get(i).msgPartyInvitation(myPerson, rsvpDate, partyDate);
 			partyInvitees.add(myPerson.getFriends().get(i));
-			print("Invited " + myPerson.getFriends().get(i).getName() + " at " + MasterTime.getInstance().get(Calendar.HOUR_OF_DAY));
 		}
 		partyState = PartyState.setUp;
 	}
@@ -449,19 +448,19 @@ public class HomeRole extends Role implements Home {
 		timer.schedule(new TimerTask() {
 			public void run() {
 				partyState = PartyState.none;
-				print("Party's over!");
+				AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Party's over! Thanks for coming!");
 				for(PersonAgent p : partyAttendees) {
 					p.msgPartyOver(myPerson);
 				}
 			}
 		},
-		10000);
-//		timer.schedule(new TimerTask() {
-//			public void run() {
-//				gui.hostingParty = false;
-//			}
-//		},
-//		5000);
+		20000);
+		timer.schedule(new TimerTask() {
+			public void run() {
+				gui.hostingParty = false;
+			}
+		},
+		30000);
 	}
 
 	//utilities

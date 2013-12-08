@@ -51,7 +51,29 @@ public class BuildingList extends ArrayList<Building> implements TimeListener{
 		
 		return null;
 	}
-	
+	public synchronized static ArrayList<Building> findBuildingsWithType(String name){
+	    ArrayList<Building> buildings = new ArrayList<Building>();
+	    
+		for(Building b : getInstance()){
+			if(name.equals("Bank")){
+				if(b instanceof Bank){
+					buildings.add(b);
+				}
+				}
+			if(name.equals("Restaurant")){
+				if(b instanceof Restaurant){
+					buildings.add(b);
+				}
+			}
+			if(name.equals("Market")){
+				if(b instanceof Market){
+					buildings.add(b);
+				}
+			}
+		}
+		
+		return buildings;
+	}
 	
 	private void endNightShift(){
 		AlertLog.getInstance().logMessage(AlertTag.GENERAL_CITY, "Timing", "Ending the Night Shift");
