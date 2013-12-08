@@ -42,10 +42,6 @@ public class HomeGuestGui implements Gui {
     	
         g.setColor(Color.GREEN);
         g.fillRect(xPos, yPos, 20, 20);
-        if(xPos == 375 && yPos == 65) {
-        	g.setColor(Color.black);
-            g.fillOval(372, 47, 11, 11);
-        }
     }
     
     public void DoGoToCenter() {

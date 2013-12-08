@@ -76,7 +76,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	public enum StateOfHunger {NotHungry, SlightlyHungry, Hungry, VeryHungry, Starving} 
 	public enum StateOfLocation {AtHome,AtBank,AtMarket,AtRestaurant, InCar,InBus,Walking};
 	public enum StateOfEmployment {Customer,Employee,Idle};
-	public enum PersonState {Idle,NeedsMoney,PayRentNow, Working, PayLoanNow,GettingMoney,NeedsFood,GettingFood,HostParty,GoingToParty,Partying}
+	public enum PersonState {Idle,NeedsMoney,PayRentNow, Working, PayLoanNow,GettingMoney,NeedsFood,GettingFood,HostParty,GoingToParty,HostingParty,Partying}
 	public enum WorkState {None, GoToWork, GoingToWork, AtWork}
 
 	
@@ -127,8 +127,10 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	public void setInitialRole(Role r, String roleLocation){
 		if(r instanceof HomeRole){
 			HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE);
-			//if(name.equals("Person 1"))
-			//	hr.msgMakeFood();
+			if(name.equals("Person 10")) {
+				hr.msgEnterBuilding();
+				hr.msgThrowParty();
+			}
 
 			gui.setStartingStates(home.getName());
 			BuildingList.findBuildingWithName(home.getName()).addRole(hr);
@@ -423,10 +425,19 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 			return true;
 		}
 		if(state == PersonState.HostParty) {
-			GoHome();
+			boolean atHome = false;
+			for(Role r : roles){
+				if(r.getNameOfRole().equals(Role.HOME_ROLE) && r.isActive()){
+					atHome = true;
+					break;
+				}
+			}
+			if(!atHome){
+				GoHome();
+			}
+			HostParty();
 			return true;
 		}
-
 
 		//cue the Role schedulers
 		boolean outcome = false;
@@ -764,8 +775,15 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	  BuildingList.findBuildingWithName(home.getName()).addRole(role);
 	  role.activate();
 	  
-	  role.msgMakeFood();
+	  //role.msgMakeFood();
+	  role.msgEnterBuilding();
 
+	}
+	
+	private void HostParty(){
+		state = PersonState.HostingParty;
+		HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE);
+		hr.msgHostParty();
 	}
 		  
 	//------------------------DO XYZ FUNCTIONS----------------------//
@@ -1063,7 +1081,6 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		}
 		if(hr.partyDate.get(Calendar.MONTH) == month && hr.partyDate.get(Calendar.DAY_OF_MONTH) == day && hr.partyDate.get(Calendar.HOUR_OF_DAY) == hour && hr.partyDate.get(Calendar.MINUTE) == minute) {
 			state = PersonState.HostParty;
-			hr.msgHostParty();
 			stateChanged();
 		}
 		for(Party p: parties){

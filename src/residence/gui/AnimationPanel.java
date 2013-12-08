@@ -143,6 +143,20 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
         g2.fillRect(10, 10, 750, 5);
         g2.fillRect(760, 10, 5, 110);
         g2.fillRect(760, 210, 5, 95);
+        
+        if(guis.isEmpty()) { //front door
+        	g.setColor(Color.orange);
+            g.fillRect(760, 120, 5, 45);
+            g.fillRect(760, 165, 5, 45);
+            g.setColor(Color.black);
+            g.fillRect(760, 163, 5, 2);
+            
+            g.setColor(Color.orange); //bedroom door
+            g.fillRect(200, 110, 5, 45);
+            g.fillRect(200, 155, 5, 45);
+            g.setColor(Color.black);
+            g.fillRect(200, 153, 5, 2);
+        }
 
         synchronized (guis) {
         	for(Gui gui : guis) {
@@ -151,10 +165,6 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
         		}
         	}
         }
-    }
-
-    public void addGui(HomeRoleGui gui) {
-        guis.add(gui);
     }
 
 	@Override

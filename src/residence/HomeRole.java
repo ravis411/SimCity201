@@ -60,7 +60,7 @@ public class HomeRole extends Role implements Home {
 	
 	public enum PartyState
 	{none, sendInvites, resendInvites, setUp, host, cleanUp};
-	public PartyState partyState = PartyState.sendInvites;
+	public PartyState partyState = PartyState.none;
 
 	public HomeRole(PersonAgent myPerson) {
 		this.myPerson = myPerson;
@@ -74,6 +74,10 @@ public class HomeRole extends Role implements Home {
 		
 		features.add(new HomeFeature("Sink"));
 		features.add(new HomeFeature("Stove"));
+		
+		if(myPerson.getName() == "Person 10") {
+			partyState = PartyState.sendInvites;
+		}
 	}
 	
 	public void setGui(HomeRoleGui gui){
@@ -198,41 +202,43 @@ public class HomeRole extends Role implements Home {
 			sendOutInvites();
 			return true;
 		}
-		if (leaveHome == true) {
-			leaveHome();
-			return true;
-		}
-		if (enterHome == true) {
-			enterHome();
-			return true;
-		}
-		if (getRentOwed() > 0) {
-			payRent();
-			return true;
-		}
-		if (state == AgentState.Cooking && event == AgentEvent.none) {
-			cook();
-			return true;
-		}
-		/*if (Person.stateOfNourishment == hungry) {
-			eat()
-			return true;
-		}*/
-		if (state == AgentState.Sleeping && event == AgentEvent.none) {
-			goToSleep();
-			return true;
-		}
-		for(Item i : inventory) {
-			if(i.quantity < 2 && state == AgentState.DoingNothing && event == AgentEvent.none) {
-				goToMarket(i);
+		if(partyState != PartyState.host) {
+			if (leaveHome == true) {
+				leaveHome();
 				return true;
 			}
-			
-		}
-		for (HomeFeature hf : features) {
-			if(!hf.working) {
-				fileWorkOrder(hf);
+			if (enterHome == true) {
+				enterHome();
 				return true;
+			}
+			if (getRentOwed() > 0) {
+				payRent();
+				return true;
+			}
+			if (state == AgentState.Cooking && event == AgentEvent.none) {
+				cook();
+				return true;
+			}
+			/*if (Person.stateOfNourishment == hungry) {
+				eat()
+				return true;
+			}*/
+			if (state == AgentState.Sleeping && event == AgentEvent.none) {
+				goToSleep();
+				return true;
+			}
+			for(Item i : inventory) {
+				if(i.quantity < 2 && state == AgentState.DoingNothing && event == AgentEvent.none) {
+					goToMarket(i);
+					return true;
+				}
+				
+			}
+			for (HomeFeature hf : features) {
+				if(!hf.working) {
+					fileWorkOrder(hf);
+					return true;
+				}
 			}
 		}
 		return false;
@@ -439,6 +445,7 @@ public class HomeRole extends Role implements Home {
 	}
 	private void hostParty() {
 		partyState = PartyState.cleanUp;
+		gui.hostingParty = true;
 		timer.schedule(new TimerTask() {
 			public void run() {
 				partyState = PartyState.none;
@@ -449,6 +456,12 @@ public class HomeRole extends Role implements Home {
 			}
 		},
 		10000);
+//		timer.schedule(new TimerTask() {
+//			public void run() {
+//				gui.hostingParty = false;
+//			}
+//		},
+//		5000);
 	}
 
 	//utilities
