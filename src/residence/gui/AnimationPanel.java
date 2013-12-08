@@ -124,7 +124,7 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
         g2.setColor(Color.cyan);
         g2.fillRect(453, 35, 24, 20);
         g2.setColor(Color.lightGray);
-        g2.fillRect(463, 33, 4, 10);
+        g2.fillRect(463, 33, 4, 9);
         g2.setColor(Color.yellow); //table
         g2.fillRect(370, 220, 75, 55);
         g2.setColor(Color.orange); //chairs
@@ -133,8 +133,18 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
         g2.fillRect(421, 195, 20, 20);
         
         //bedroom
-        g2.setColor(Color.white); //bed
+        g2.setColor(Color.black); //bed
         g2.fillRect(50,70,70,60);
+        g2.setColor(Color.white);
+        g2.fillRect(53,73,64,54);
+        g2.setColor(Color.blue);
+        g2.fillRect(75,73,42,54);
+        g2.setColor(Color.black); //pillows
+        g2.fillRoundRect(55, 77, 15, 20, 5, 5);
+        g2.fillRoundRect(55, 100, 15, 20, 5, 5);
+        g2.setColor(Color.white);
+        g2.fillRoundRect(57, 79, 11, 16, 5, 5);
+        g2.fillRoundRect(57, 102, 11, 16, 5, 5);
         
         //living room
         g2.setColor(Color.darkGray); //rug
