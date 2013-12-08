@@ -159,12 +159,12 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
         g2.fillRoundRect(585, 69, 27, 42, 5, 5);
         g2.fillRoundRect(685, 69, 17, 12, 5, 5);
         g2.fillRoundRect(685, 99, 17, 12, 5, 5);
-        g2.setColor(Color.cyan); //coffee table
-        g2.fillRect(637, 72, 15, 30);
-        g2.setColor(Color.black);
-        g2.fillRect(637, 102, 3, 6);
-        g2.fillRect(653, 72, 3, 6);
-        g2.fillRect(652, 102, 3, 6);
+//        g2.setColor(Color.black); //coffee table
+//        g2.fillRect(637, 102, 3, 6);
+//        g2.fillRect(651, 74, 3, 6);
+//        g2.fillRect(651, 102, 3, 6);
+//        g2.setColor(Color.cyan);
+//        g2.fillRect(637, 72, 15, 30);
         
         
         //walls

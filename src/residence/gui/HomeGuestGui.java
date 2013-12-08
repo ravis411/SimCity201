@@ -11,6 +11,7 @@ import building.BuildingList;
 public class HomeGuestGui implements Gui {
 
     private HomeGuestRole agent = null;
+    public boolean leaveParty = false;
 
     private int xPos = 801, yPos = 150;//default position
     private int xDestination = 801, yDestination = 150;//default start position
@@ -33,14 +34,19 @@ public class HomeGuestGui implements Gui {
             yPos--;
 
         if (xPos == 805 && yPos == 150) {
-            agent.msgAtFrontDoor();
+        	agent.msgAtFrontDoor();
         }
-        if (xPos == 600 && yPos == 150) {
-        	agent.msgAtCenter();
-        	DoMingle();
+        if (leaveParty == true) {
+        	DoGoToFrontDoor();
         }
-        if (xPos == xRand && yPos == yRand) {
-        	DoGoToCenter();
+        else {
+	        if (xPos == 600 && yPos == 150) {
+	        	agent.msgAtCenter();
+	        	DoMingle();
+	        }
+	        if (xPos == xRand && yPos == yRand) {
+	        	DoGoToCenter();
+	        }
         }
     }
 
@@ -62,8 +68,8 @@ public class HomeGuestGui implements Gui {
     
     public void DoMingle() {
     	 Random rand = new Random();
-    	 xRand = rand.nextInt((600 - 500) + 1) + 600;
-    	 yRand = rand.nextInt((250 - 150) + 1) + 150;
+    	 xRand = rand.nextInt((600 - 475) + 1) + 475;
+    	 yRand = rand.nextInt((275 - 200) + 1) + 200;
     	 xDestination = xRand;
     	 yDestination = yRand;
     }

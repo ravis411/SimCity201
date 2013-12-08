@@ -430,10 +430,10 @@ public class HomeRole extends Role implements Home {
 		partyDate.add(Calendar.DAY_OF_MONTH, 1);
 		MasterTime.getInstance().registerDateListener(partyDate.get(Calendar.MONTH), partyDate.get(Calendar.DAY_OF_MONTH), partyDate.get(Calendar.HOUR_OF_DAY), partyDate.get(Calendar.MINUTE), myPerson);
 		
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Inviting friends to my party.");
 		for(int i=0; i<myPerson.getFriends().size(); i++) {
 			myPerson.getFriends().get(i).msgPartyInvitation(myPerson, rsvpDate, partyDate);
 			partyInvitees.add(myPerson.getFriends().get(i));
-			AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Invited friends to my party.");
 		}
 		partyState = PartyState.setUp;
 	}

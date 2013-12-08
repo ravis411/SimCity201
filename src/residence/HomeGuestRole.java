@@ -53,14 +53,12 @@ public class HomeGuestRole extends Role implements HomeGuest {
 	}
 
 	public void msgAtFrontDoor() {
+		gui.leaveParty = false;
 		deactivate();
 		atFrontDoor.release();
 	}
 	public void msgAtCenter() {
 		atCenter.release();
-	}
-	public void msgMingling() {
-		
 	}
 	
 	//scheduler
@@ -89,7 +87,7 @@ public class HomeGuestRole extends Role implements HomeGuest {
 		}
 	}
 	private void leaveHome() {
-		gui.DoGoToFrontDoor();
+		gui.leaveParty = true;
 		try {
 			atFrontDoor.acquire();
 		} catch (InterruptedException e) {
