@@ -24,7 +24,7 @@ public class CashierTest extends TestCase
 	 */
 	public void setUp() throws Exception{
 		super.setUp();		
-		cashier = new RyansCashierRole("cashier");		
+		cashier = new RyansCashierRole("cashier", "HERE");		
 		customer = new MockCustomer("mockcustomer");		
 		waiter = new MockWaiter("mockwaiter");
 		market1 = new MockMarket("market1");

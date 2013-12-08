@@ -156,7 +156,7 @@ public class RestaurantPanel extends JPanel {
     		CustomerGui g = new CustomerGui(c, gui);
 
     		gui.animationPanel.addGui(g);// dw
-    		c.setHost(host);
+    		//c.setHost(host);
     		c.setGui(g);
     		customers.add(c);
     		//c.startThread();
@@ -165,7 +165,7 @@ public class RestaurantPanel extends JPanel {
     		if(waiters.size() >= 10)
     			return;
     		
-    		RyansWaiterRole w = new RyansWaiterRole(name, host, cook, cashier);
+    		RyansWaiterRole w = new RyansWaiterRole(name, host, cook, cashier, "Ryan's Restaurant");
     		
     		AStarTraversal aStar = new AStarTraversal(grid);
     		
@@ -176,7 +176,7 @@ public class RestaurantPanel extends JPanel {
             
             host.msgAddWaiter(w);
             waiters.add(w);
-    		w.startThread();
+    		//w.startThread();
     	}
     }
     
