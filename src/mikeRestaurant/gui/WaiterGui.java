@@ -3,6 +3,8 @@ package mikeRestaurant.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import javax.swing.ImageIcon;
+
 import mikeRestaurant.CustomerRole;
 import mikeRestaurant.WaiterRole;
 
@@ -20,8 +22,12 @@ public class WaiterGui implements Gui {
 	private final static int X_INITIAL = -100;
 	private final static int Y_INITIAL = -100;
 	
+	//height and width of the actual waiter box
+	private final static int WIDTH = 50;
+	private final static int HEIGHT = 50;
+	
 	//cook location
-	private final static int COOK_X = CookGui.PICKUP_X;
+	private final static int COOK_X = CookGui.PICKUP_X-WIDTH;
 	private final static int COOK_Y = CookGui.PICKUP_Y;
 	
 	//cashier location
@@ -37,15 +43,11 @@ public class WaiterGui implements Gui {
 	
 	private final int NUM_WAITER_COLUMNS = 5;
 	
-	
-	
-	//height and width of the actual waiter box
-	private final static int WIDTH = 50;
-	private final static int HEIGHT = 50;
-	
+	private ImageIcon icon;
+
 	private WaiterRole agent = null;
 	
-//	RestaurantGui gui;
+	MikeAnimationPanel gui;
 	
 	private boolean isPresent;
 	private boolean moving;
@@ -60,10 +62,9 @@ public class WaiterGui implements Gui {
 	 * @param wtr the associated waiter agent
 	 * @param gui parent gui
 	 */
-	public WaiterGui(WaiterRole wtr){
+	public WaiterGui(WaiterRole wtr, MikeAnimationPanel gui){
 		agent = wtr;
-//		this.gui = gui;
-		
+		this.gui = gui;
 		isPresent = false;
 		moving = false;
 		
@@ -77,37 +78,40 @@ public class WaiterGui implements Gui {
 		
 		IDLE_X = INITIAL_IDLE_X+(WIDTH+PADDING)*col;
 		IDLE_Y = INITIAL_IDLE_Y+(HEIGHT+PADDING)*row;
+		
+		icon = new ImageIcon(this.getClass().getResource("/mikeRestaurant/res/waitress.png"));
 	}
 	
-//	/**
-//	 * Shows a pending order in the form of a text icon + a ? underneath the specified table
-//	 * @param selection the text to show
-//	 * @param tableNumber the table number associated with the icon
-//	 */
-//	public void showPendingOrderOnScreen(String selection, int tableNumber){
-//		gui.animationPanel.paintLabelAtTable(selection+"?", tableNumber);
-//	}
+	/**
+	 * Shows a pending order in the form of a text icon + a ? underneath the specified table
+	 * @param selection the text to show
+	 * @param tableNumber the table number associated with the icon
+	 */
+	public void showPendingOrderOnScreen(String selection, int tableNumber){
+		gui.paintLabelAtTable(selection+"?", tableNumber);
+	}
 	
 	/**
 	 * Shows a delivered order in the form of a text icon underneath a specified table
 	 * @param selection the text to show
 	 * @param tableNumber the table number associated with the icon
 	 */
-//	public void showDeliveredOrderOnScreen(String selection, int tableNumber){
-//		gui.animationPanel.paintLabelAtTable(selection, tableNumber);
-//	}
-//	
-//	/**
-//	 * Clears the icon beneath a particular table number
-//	 * @param tableNumber the table to clear
-//	 */
-//	public void clearOrderOnScreen(int tableNumber){
-//		gui.animationPanel.paintLabelAtTable("", tableNumber);
-//	}
+	public void showDeliveredOrderOnScreen(String selection, int tableNumber){
+		gui.paintLabelAtTable(selection, tableNumber);
+	}
+	
+	/**
+	 * Clears the icon beneath a particular table number
+	 * @param tableNumber the table to clear
+	 */
+	public void clearOrderOnScreen(int tableNumber){
+		gui.paintLabelAtTable("", tableNumber);
+	}
 //	
 //	public void cannotGoOnBreak(){
 //		gui.restPanel.waiterCannotGoOnBreak(agent.getName());
 //	}
+	
 
 	@Override
 	/**
@@ -155,8 +159,11 @@ public class WaiterGui implements Gui {
 	 */
 	public void draw(Graphics2D g) {
 		// TODO Auto-generated method stub
-		g.setColor(Color.CYAN);
-		g.fillRect(xPos, yPos, WIDTH, HEIGHT);
+//		g.setColor(Color.CYAN);
+//		g.fillRect(xPos, yPos, WIDTH, HEIGHT);
+		
+		icon.paintIcon(this.gui, g, xPos, yPos);
+		
 	}
 
 	@Override

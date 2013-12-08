@@ -20,7 +20,7 @@ public class CustomerGui implements Gui{
 	private ImageIcon icon;
 	
 	//private HostAgent host;
-//	RestaurantGui gui;
+	MikeAnimationPanel gui;
 
 	private int xPos, yPos;
 	private int xDestination, yDestination;
@@ -52,16 +52,16 @@ public class CustomerGui implements Gui{
 	
 	private static final int NUM_COLUMNS = 2;
 	
-	private static final String IMAGE_PATH = "diner.png";
+	private static final String IMAGE_PATH = "/mikeRestaurant/res/diner.png";
 	
 	private static int idCounter = 0;
 	private final int ID;
 
-	public CustomerGui(CustomerRole c){
+	public CustomerGui(CustomerRole c, MikeAnimationPanel gui){
 		
 		agent = c;
 		
-		//icon = new ImageIcon(IMAGE_PATH);
+		icon = new ImageIcon(this.getClass().getResource(IMAGE_PATH));
 		
 		ID = idCounter++;
 		
@@ -120,10 +120,10 @@ public class CustomerGui implements Gui{
 	}
 
 	public void draw(Graphics2D g) {
-		//icon.paintIcon(gui, g, xPos, yPos);
+		icon.paintIcon(gui, g, xPos, yPos);
 		
-		g.setColor(Color.BLUE);
-		g.fillRect(xPos, yPos, WIDTH, HEIGHT);
+//		g.setColor(Color.BLUE);
+//		g.fillRect(xPos, yPos, WIDTH, HEIGHT);
 	}
 
 	public boolean isPresent() {

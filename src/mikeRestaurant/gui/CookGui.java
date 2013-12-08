@@ -26,7 +26,7 @@ public class CookGui implements Gui {
 	private final int COOKING_Y = 175;
 	
 	private final int GRILL_INITIAL_X = 675;
-	private final int GRILL_INITIAL_Y = 175;
+	private final int GRILL_INITIAL_Y = 150;
 	private final int GRILL_WIDTH = 25;
 	
 	public final static int PICKUP_X = 530;
@@ -35,14 +35,14 @@ public class CookGui implements Gui {
 	public final int FRIDGE_X = 800;
 	public final int FRIDGE_Y = 175;
 	
-	public final int LABEL_HEIGHT = 165;
+	public final int LABEL_HEIGHT = 135;
 	
 	private boolean moving;
-	//private RestaurantGui gui;
+	private MikeAnimationPanel gui;
 	
 	private List<FoodGui> foods;
 	
-	public CookGui(CookRole agent){
+	public CookGui(CookRole agent, MikeAnimationPanel gui){
 		this.agent = agent;
 		
 		xPos = COOKING_X;
@@ -53,7 +53,7 @@ public class CookGui implements Gui {
 		
 		moving = false;
 		
-		//this.gui = gui;
+		this.gui = gui;
 		foods = new ArrayList<FoodGui>();
 		
 	}
@@ -142,6 +142,10 @@ public class CookGui implements Gui {
 	@Override
 	public void draw(Graphics2D g) {
 		// TODO Auto-generated method stub
+		g.setColor(Color.PINK);
+		g.fillRect(PICKUP_X, PICKUP_Y, 400, 200);
+		g.setColor(Color.decode("#0EBFE9"));
+		g.fillRect(FRIDGE_X-20, FRIDGE_Y, 20, 50);
 		g.setColor(Color.GREEN);
 		g.fillRect(xPos, yPos, WIDTH, HEIGHT);
 		g.setColor(Color.BLACK);
@@ -151,9 +155,9 @@ public class CookGui implements Gui {
 		for(int i = foods.size()-1; i >=0; i--){
 			FoodGui fg = foods.get(i);
 			if(fg.state == FoodGuiState.Cooking){
-				//fg.icon.paintIcon(this., g, GRILL_INITIAL_X+fg.grillPosition*GRILL_WIDTH, GRILL_INITIAL_Y);
+				fg.icon.paintIcon(this.gui, g, GRILL_INITIAL_X+fg.grillPosition*GRILL_WIDTH, GRILL_INITIAL_Y);
 			}else if(fg.state == FoodGuiState.Plated){
-				//fg.icon.paintIcon(this.gui, g, PICKUP_X+fg.grillPosition*GRILL_WIDTH, GRILL_INITIAL_Y);
+				fg.icon.paintIcon(this.gui, g, PICKUP_X+fg.grillPosition*GRILL_WIDTH, GRILL_INITIAL_Y);
 			}else if(fg.state == FoodGuiState.InTransit){
 				//do nothing
 			}else if(fg.state == FoodGuiState.Done){
@@ -185,22 +189,22 @@ public class CookGui implements Gui {
 			
 			switch(type){
 				case "Steak":
-					filepath = "steak.png";
+					filepath = "/mikeRestaurant/res/steak.png";
 					break;
 				case "Salad":
-					filepath = "salad.png";
+					filepath = "/mikeRestaurant/res/salad.png";
 					break;
 				case "Chicken":
-					filepath = "chicken.png";
+					filepath = "/mikeRestaurant/res/chicken.png";
 					break;
 				case "Pizza":
-					filepath = "pizza.png";
+					filepath = "/mikeRestaurant/res/pizza.png";
 					break;
 				default:
 					filepath = "default.png";
 			}
 			
-			icon = new ImageIcon(filepath);
+			icon = new ImageIcon(this.getClass().getResource(filepath));
 			this.grillPosition = grillPosition;
 		}
 	}

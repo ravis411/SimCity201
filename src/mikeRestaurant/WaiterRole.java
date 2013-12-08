@@ -220,7 +220,8 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 				 * 
 				 * action cannot be called from CustomerAgent (sender) because table number is required
 				 */
-				//waiterGui.showPendingOrderOnScreen(customer.choice, customer.table.tableNumber);
+				
+				waiterGui.showPendingOrderOnScreen(customer.choice, customer.table.tableNumber);
 				stateChanged();
 				return;
 			}
@@ -269,7 +270,7 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 				 * 
 				 * action cannot be called from CustomerAgent (sender) because table number is required
 				 */
-				//waiterGui.clearOrderOnScreen(customer.table.tableNumber);
+				waiterGui.clearOrderOnScreen(customer.table.tableNumber);
 				stateChanged();
 				return;
 			}
@@ -553,7 +554,7 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 		}
 		
 		order.orderStatus = Order.OrderStatus.OrderDelivered;
-		//waiterGui.showDeliveredOrderOnScreen(order.getChoice(), order.getTable().tableNumber);
+		waiterGui.showDeliveredOrderOnScreen(order.getChoice(), order.getTable().tableNumber);
 		for(MyCustomer customer : customers){
 			if(order.getTable() == customer.table){
 				customer.state = CustomerState.CustomerServed;

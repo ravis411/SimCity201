@@ -146,19 +146,19 @@ public class MikeAnimationPanel extends JPanel implements ActionListener, GuiPan
 		// TODO Auto-generated method stub
 		if(r instanceof CustomerRole){
 			CustomerRole cr = (CustomerRole) r;
-			CustomerGui gui = new CustomerGui(cr);
+			CustomerGui gui = new CustomerGui(cr, this);
 			cr.setGui(gui);
 			guis.add(gui);
 		}else if(r instanceof CookRole){
 			CookRole cr = (CookRole) r;
-			CookGui gui = new CookGui(cr);
+			CookGui gui = new CookGui(cr, this);
 			cr.setGui(gui);
 			guis.add(gui);
 		}else if(r instanceof CashierRole){
 			//CashierRole cr = (CashierRole) r;
 		}else if(r instanceof WaiterRole){
 			WaiterRole wr = (WaiterRole) r;
-			WaiterGui gui = new WaiterGui(wr);
+			WaiterGui gui = new WaiterGui(wr, this);
 			wr.setGui(gui);
 			guis.add(gui);
 		}else if(r instanceof HostRole){
