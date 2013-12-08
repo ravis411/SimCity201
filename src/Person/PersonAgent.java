@@ -396,15 +396,15 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 					for(PersonAgent pa :friends){
 						if(pa==p.getHost()){
 							int i= new Random().nextInt(40);
-							//if(i%2==0){
+							if(i%2==0){
 								pa.msgIAmComing(this);
 								p.partyState=PartyState.GoingToParty;
 								MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY), p.dateOfParty.get(Calendar.MINUTE), this); 
 								//return true;
-							//}
-							//else{ 
-							//	p.partyState=PartyState.notRSVPed;
-							//}
+							}
+							else{ 
+								p.partyState=PartyState.notRSVPed;
+							}
 						}
 					}
 					int i= new Random().nextInt(40);
@@ -775,8 +775,8 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	  BuildingList.findBuildingWithName(home.getName()).addRole(role);
 	  role.activate();
 	  
-	  //role.msgMakeFood();
-	  role.msgEnterBuilding();
+	  role.msgMakeFood();
+	  //role.msgEnterBuilding();
 
 	}
 	
