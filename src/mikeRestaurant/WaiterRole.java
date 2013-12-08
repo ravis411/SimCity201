@@ -28,19 +28,19 @@ import mikeRestaurant.interfaces.Waiter;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class WaiterRole extends GenericWaiter implements Waiter{
+public abstract class WaiterRole extends GenericWaiter implements Waiter{
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
 	
 	//note that tables is typed with Collection semantics.
 	//Later we will see how it is implemented
-	private String name;
+	protected String name;
 	
 	//semaphores used for sleeping the thread for various animations
-	private Semaphore atTable = new Semaphore(0,true);
-	private Semaphore atStart = new Semaphore(0, true);
-	private Semaphore atCook = new Semaphore(0, true);
-	private Semaphore atCashier = new Semaphore(0, true);
+	protected Semaphore atTable = new Semaphore(0,true);
+	protected Semaphore atStart = new Semaphore(0, true);
+	protected Semaphore atCook = new Semaphore(0, true);
+	protected Semaphore atCashier = new Semaphore(0, true);
 	
 	public boolean readyToSeatCustomer;
 
@@ -64,7 +64,7 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 	 * while also keeping track of the state of that customer
 	 *
 	 */
-	private class MyCustomer {
+	protected class MyCustomer {
 		  CustomerRole customer;
 		  Table table;
 		  String choice;
@@ -93,22 +93,22 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 	}
 	
 	//these Agents are singletons, so a list of each is not needed
-	private HostRole host;
-	private CookRole cook;
-	private CashierRole cashier;
+	protected HostRole host;
+	protected CookRole cook;
+	protected CashierRole cashier;
 
 	//list of customers that this waiter is handling
-	private List<MyCustomer> customers;
+	protected List<MyCustomer> customers;
 	//list of orders that are given by the 
-	private List<Order> ordersForDelivery;
+	protected List<Order> ordersForDelivery;
 	
 	public enum CustomerState {CustomerWaiting, CustomerSeated, CustomerReadyToOrder, CustomerNeedsNewMenu, CustomerGivingOrder, CustomerOrdered, CustomerWaitingForFood, 
 		CustomerServed, CustomerWantsCheck, CustomerWaitingForCheck, CustomerNeedsCheckDelivered, CustomerCheckDelivered, CustomerLeft};
 	
 	//really the only state for the waiter -- all else is handled by semaphores
-	private boolean isIdle;
+	protected boolean isIdle;
 	public enum BreakState {NoState, WantsToGoOnBreak, AskedToGoOnBreak, CanGoOnBreak, OnBreak};
-	private BreakState breakState;
+	protected BreakState breakState;
 	
 //	/**
 //	 * Constructor for the Waiter
@@ -132,7 +132,7 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 //		breakState = BreakState.NoState;
 //	}
 	
-	public WaiterRole(String workLocation){
+	protected WaiterRole(String workLocation){
 		super(workLocation);
 		
 		ordersForDelivery = Collections.synchronizedList(new ArrayList<Order>());
@@ -471,10 +471,10 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 	//---------------------ACTIONS-------------------//
 	
 	/**
-	 * Private method called by the scheduler to seat the customer
+	 * protected method called by the scheduler to seat the customer
 	 * @param customer the Customer to seat
 	 */
-	private void seatCustomer(MyCustomer customer){
+	protected void seatCustomer(MyCustomer customer){
 		DoSeatCustomer(customer.customer ,customer.table);
 		customer.state = CustomerState.CustomerSeated;
 		customer.customer.msgFollowMeToTable(customer.menu, this);
@@ -489,11 +489,11 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 	}
 	
 	/**
-	 * Private method called by the scheduler to request the bill for a customer
+	 * protected method called by the scheduler to request the bill for a customer
 	 * from the lone CashierAgent
 	 * @param cust the customer whose bill is needed
 	 */
-	private void getCheckFromCashier(MyCustomer cust){
+	protected void getCheckFromCashier(MyCustomer cust){
 		DoGetCheckFromCashier(cust);
 		cashier.msgComputeBill(cust.choice, cust.customer, this);
 		cust.state = CustomerState.CustomerWaitingForCheck;
@@ -501,38 +501,26 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 
 	
 	/**
-	 * Private method called by the scheduler to ask the host to go on break
+	 * protected method called by the scheduler to ask the host to go on break
 	 */
-	private void wantToGoOnBreak(){
+	protected void wantToGoOnBreak(){
 		DoWantToGoOnBreak();
 		host.msgWantToGoOnBreak(this);
 		//stateChanged();
 	}
 	
 	/**
-	 * Private method called by the scheduler to deliver an order to the cook
+	 * protected method called by the scheduler to deliver an order to the cook
 	 * @param customer the Customer whose order should be delivered
 	 */
-	private void giveOrderToCook(MyCustomer customer){
-		DoGiveOrderToCook(customer);
-		//wait for the gui to get to the cook
-		try {
-			atCook.acquire();
-		}catch (InterruptedException e){
-			e.printStackTrace();
-		}
-		cook.msgHereIsAnOrder(this, customer.choice, customer.table);
-		customer.state = CustomerState.CustomerWaitingForFood;
-		
-		//stateChanged();
-	}
+	protected abstract void giveOrderToCook(MyCustomer customer);
 	
 	/**
-	 * Private method called by the scheduler to deliver a new menu to a customer,
+	 * protected method called by the scheduler to deliver a new menu to a customer,
 	 * presumably because the cook was out of a particular item that the customer ordered
 	 * @param cust the customer to deliver a new menu
 	 */
-	private void deliverNewMenu(MyCustomer cust){
+	protected void deliverNewMenu(MyCustomer cust){
 		DoDeliverNewMenu(cust);
 		cust.customer.msgWaiterAtTable();
 		cust.customer.msgHereIsNewMenu(cust.menu);
@@ -541,10 +529,10 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 	}
 
 	/**
-	 * Private method called by the scheduler to deliver an order from the cook to a customer
+	 * protected method called by the scheduler to deliver an order from the cook to a customer
 	 * @param order the order to deliver
 	 */
-	private void deliverOrder(Order order){
+	protected void deliverOrder(Order order){
 		DoDeliverOrder(order);
 		//wait for the waiter to get to the table
 		try {
@@ -568,10 +556,10 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 	}
 	
 	/**
-	 * Private method called by the scheduler to take an order from a customer
+	 * protected method called by the scheduler to take an order from a customer
 	 * @param customer the customer to take an order from
 	 */
-	private void takeOrder(MyCustomer customer){
+	protected void takeOrder(MyCustomer customer){
 		DoTakeOrder(customer);
 		//wait for the Waiter to get to the table
 		customer.state = CustomerState.CustomerGivingOrder;
@@ -579,11 +567,11 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 	}
 	
 	/**
-	 * Private method called by the scheduler so the waiter can tell the
+	 * protected method called by the scheduler so the waiter can tell the
 	 * host that a table has been freed up
 	 * @param customer the leaving customer
 	 */
-	private void notifyHost(MyCustomer customer){
+	protected void notifyHost(MyCustomer customer){
 		DoNotifyHost(customer);
 		host.msgTableIsFree(customer.table);
 		customers.remove(customer);
@@ -592,9 +580,9 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 	}
 	
 	/**
-	 * Private method called by the scheduler to make the waiter Idle
+	 * protected method called by the scheduler to make the waiter Idle
 	 */
-	private void becomeIdle(boolean onBreak){
+	protected void becomeIdle(boolean onBreak){
 		DoBecomeIdle(onBreak);
 		isIdle = true;
 		if(onBreak)
@@ -603,10 +591,10 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 	}
 	
 	/**
-	 * Private method called by the scheduler to deliver a check to a customer
+	 * protected method called by the scheduler to deliver a check to a customer
 	 * @param cust the customer to deliver a check to
 	 */
-	private void deliverCheck(MyCustomer cust){
+	protected void deliverCheck(MyCustomer cust){
 		DoDeliverCheck(cust);
 		cust.customer.msgHereIsCheck(cust.check);
 		cust.state = CustomerState.CustomerCheckDelivered;
@@ -619,11 +607,11 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 	 * with the difference that they don't affect Agent data, but instead implement gui 
 	 * motion and also print statements to the console.
 	 */
-	private void DoWantToGoOnBreak(){
+	protected void DoWantToGoOnBreak(){
 		print("wants to go on break");
 	}
 	
-	private void DoGetCheckFromCashier(MyCustomer cust){
+	protected void DoGetCheckFromCashier(MyCustomer cust){
 		print("Getting check for "+cust.customer.getName()+" from cashier");
 		waiterGui.DoGoToCashier();
 		try {
@@ -634,7 +622,7 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 		}
 	}
 	
-	private void DoSeatCustomer(CustomerRole customer, Table table) {
+	protected void DoSeatCustomer(CustomerRole customer, Table table) {
 		//Notice how we print "customer" directly. It's toString method will do it.
 		//Same with "table"
 
@@ -651,12 +639,12 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 		
 	}
 	
-	private void DoGiveOrderToCook(MyCustomer cust){
+	protected void DoGiveOrderToCook(MyCustomer cust){
 		print("giving order for " + cust.customer.getName() + " to cook");
 		waiterGui.DoGoToCook();
 	}
 	
-	private void DoBecomeIdle(boolean onBreak){
+	protected void DoBecomeIdle(boolean onBreak){
 		if(onBreak)
 			print("is now on break");
 		else
@@ -664,7 +652,7 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 		waiterGui.DoGoToIdle();
 	}
 	
-	private void DoDeliverOrder(Order order){
+	protected void DoDeliverOrder(Order order){
 		print("delivering order " + order);
 		waiterGui.DoGoToCook();
 		//wait until he gets to cook
@@ -678,7 +666,7 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 		waiterGui.DoGoToTable(order.getTable().tableNumber);
 	}
 	
-	private void DoDeliverNewMenu(MyCustomer cust){
+	protected void DoDeliverNewMenu(MyCustomer cust){
 		waiterGui.DoGoToTable(cust.table.tableNumber);
 		try{
 			atTable.acquire();
@@ -688,7 +676,7 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 	}
 	
 	
-	private void DoTakeOrder(MyCustomer cust){
+	protected void DoTakeOrder(MyCustomer cust){
 		print("taking order for "+cust.customer.getName());
 		waiterGui.DoGoToTable(cust.table.tableNumber);	
 		try {
@@ -700,12 +688,12 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 		cust.customer.msgWaiterAtTable();
 	}
 	
-	private void DoNotifyHost(MyCustomer cust){
+	protected void DoNotifyHost(MyCustomer cust){
 		print("notifying host that "+cust.customer.getName()+ " is leaving");
 		
 	}
 	
-	private void DoDeliverCheck(MyCustomer cust){
+	protected void DoDeliverCheck(MyCustomer cust){
 		print("Delivering check to "+cust.customer.getName());
 		waiterGui.DoGoToTable(cust.table.tableNumber);
 		try {
@@ -722,7 +710,7 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 	 * A static class to simulate an order
 	 *
 	 */
-    private static class Order {
+    protected static class Order {
 		   
 		public enum OrderStatus {NewOrder, OrderPending, OrderCooking, OrderReady, OrderDelivered};
 		
