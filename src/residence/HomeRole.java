@@ -455,13 +455,13 @@ public class HomeRole extends Role implements Home {
 				}
 			}
 		},
-		10000);
+		20000);
 		timer.schedule(new TimerTask() {
 			public void run() {
 				gui.hostingParty = false;
 			}
 		},
-		20000);
+		30000);
 	}
 
 	//utilities

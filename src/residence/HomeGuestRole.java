@@ -59,6 +59,9 @@ public class HomeGuestRole extends Role implements HomeGuest {
 	public void msgAtCenter() {
 		atCenter.release();
 	}
+	public void msgMingling() {
+		
+	}
 	
 	//scheduler
 	

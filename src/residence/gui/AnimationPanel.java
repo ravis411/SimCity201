@@ -90,8 +90,14 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
         //Here is the kitchen
         g2.setColor(Color.lightGray); //counter top
         g2.fillRect(320, 30, 180, 30);
-        g2.fillRect(500, 30, 30, 100);
-        g2.setColor(Color.white); //range
+        g2.fillRect(500, 30, 30, 95);
+        g2.setColor(Color.black); //fridge
+        g2.fillRect(500, 80, 30, 25);
+        g2.fillRect(497, 86, 2, 3);
+        g2.fillRect(497, 96, 2, 3);
+        g2.setColor(Color.white);
+        g2.fillRect(502, 82, 26, 21);
+        g2.setColor(Color.black); //range
         g2.fillRect(370, 30, 30, 30);
         g2.setColor(Color.red);
         g.fillOval(370, 30, 15, 15);
@@ -117,6 +123,8 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
         g2.fillRect(450, 32, 30, 26);
         g2.setColor(Color.cyan);
         g2.fillRect(453, 35, 24, 20);
+        g2.setColor(Color.lightGray);
+        g2.fillRect(463, 33, 4, 10);
         g2.setColor(Color.yellow); //table
         g2.fillRect(370, 220, 75, 55);
         g2.setColor(Color.orange); //chairs
@@ -129,10 +137,25 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
         g2.fillRect(50,70,70,60);
         
         //living room
-        g2.setColor(Color.black); //tv
-        g2.fillRect(625, 50, 40, 20);
-        g2.setColor(Color.ORANGE); //rug
-        g2.fillRect(620, 100, 50, 50);
+        g2.setColor(Color.darkGray); //rug
+        g2.fillOval(620, 70, 50, 40);
+        g2.setColor(Color.orange);
+        g2.fillOval(625, 75, 40, 30);
+        g2.setColor(Color.blue);
+        g2.fillRoundRect(582, 65, 30, 50, 5, 5); //couches
+        g2.fillRoundRect(685, 65, 20, 20, 5, 5);
+        g2.fillRoundRect(685, 95, 20, 20, 5, 5);
+        g2.setColor(Color.black);
+        g2.fillRoundRect(585, 69, 27, 42, 5, 5);
+        g2.fillRoundRect(685, 69, 17, 12, 5, 5);
+        g2.fillRoundRect(685, 99, 17, 12, 5, 5);
+        g2.setColor(Color.cyan); //coffee table
+        g2.fillRect(637, 72, 15, 30);
+        g2.setColor(Color.black);
+        g2.fillRect(637, 102, 3, 6);
+        g2.fillRect(653, 72, 3, 6);
+        g2.fillRect(652, 102, 3, 6);
+        
         
         //walls
         g2.setColor(Color.lightGray);
