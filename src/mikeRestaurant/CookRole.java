@@ -44,6 +44,8 @@ public class CookRole extends GenericCook implements Cook{
 	private Queue<String> reorders;
 	private int marketIndex;
 	
+	private RevolvingStand revolvingStand;
+	
 	private Semaphore atCookingLocation = new Semaphore(0, true);
 	private Semaphore atPickupLocation = new Semaphore(0, true);
 	private Semaphore atFridge = new Semaphore(0, true);
@@ -79,6 +81,19 @@ public class CookRole extends GenericCook implements Cook{
 				stateChanged();
 			}
 		}
+		revolvingStand = new RevolvingStand();
+		
+		Timer checkRevolvingStand = new Timer(15000, new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub	
+				stateChanged();
+			}
+			
+		});
+		
+		checkRevolvingStand.start();
 	}
 	
 	public void setGui(CookGui gui){
@@ -285,6 +300,15 @@ public class CookRole extends GenericCook implements Cook{
 //				return true;
 //			}
 			
+			if(!revolvingStand.isEmpty()){
+				WaiterRole.Order order = revolvingStand.getLastOrder();
+				Order newOrder = new Order(order.getWaiter(), order.getChoice(), order.getTable());
+				newOrder.orderStatus = Order.OrderStatus.OrderPending;
+				orders.add(newOrder);
+				cookOrder(newOrder);
+				return true;
+			}
+			
 			//cook the ready orders
 			for(Order order : orders){
 				if(order.orderStatus == Order.OrderStatus.OrderPending){
@@ -480,6 +504,10 @@ public class CookRole extends GenericCook implements Cook{
 		print("Food stores cleared");
 	}
 	
+	public RevolvingStand getRevolvingStand(){
+		return revolvingStand;
+	}
+	
 //	/**
 //	 * Hack that clears all inventories of the markets held by this CookAgent
 //	 */
@@ -503,6 +531,7 @@ public class CookRole extends GenericCook implements Cook{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
+			
 			((Timer) e.getSource()).stop();
 			msgDone(order); //msg the cook that this is done
 		}
