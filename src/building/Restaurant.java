@@ -5,15 +5,16 @@ import interfaces.generic_interfaces.GenericCashier;
 import interfaces.generic_interfaces.GenericCook;
 import interfaces.generic_interfaces.GenericHost;
 import interfaces.generic_interfaces.GenericWaiter;
-import kushrestaurant.CashierRole;
-import kushrestaurant.CookRole;
+
+import java.util.Collection;
+import java.util.Collections;
+
 import kushrestaurant.HostRole;
-import Person.Role.Employee;
 //import kushrestaurant.OldWaiterRole;
 import Person.Role.Role;
 
 public class Restaurant extends Building implements Workplace {
-
+	
 	public Restaurant(BuildingPanel panel) {
 		super(panel);
 		// TODO Auto-generated constructor stub
@@ -89,6 +90,4 @@ public class Restaurant extends Building implements Workplace {
 			}
 		}*/
 	}
-	
-
 }
