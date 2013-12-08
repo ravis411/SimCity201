@@ -7,20 +7,22 @@ import jeffreyRestaurant.CookAgent;
 import jeffreyRestaurant.CustomerAgent;
 import jeffreyRestaurant.HostAgent;
 import jeffreyRestaurant.WaiterAgent;
+import jeffreyRestaurant.interfaces.Cook;
 
 public class CookGui implements Gui {
 
-    private CookAgent agent = null;
+    private Cook agent = null;
 
     private int xPos = 160, yPos = 5;//default cook position
     private int xDestination = 160, yDestination = 5;//default start position
     private int xHome = 180, yHome = 5;
 
 	
-    public CookGui(CookAgent agent) {
+    public CookGui(Cook agent) {
         this.agent = agent;
         xPos = xHome;
     }
+    
 
     public void updatePosition() {
         if (xPos < xDestination)

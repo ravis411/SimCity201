@@ -48,11 +48,11 @@ public class CookAgent extends Agent {
 	
 	 public final static List<String> Defaultmenu = new ArrayList<String>()
 			 {{
-				add("Cookie");
-				add("Steak");
-				add("Chicken");
-				add("Salad");
-				add("Pizza");
+				add("Oreo Cookie");
+				add("Oreo Cake");
+				add("Oreo Milkshake");
+				add("Cookies n Cream");
+				add("Dirt n Worms");
 			 }};
 	
 	
@@ -66,11 +66,11 @@ public class CookAgent extends Agent {
 		this.name = name;
 		this.cashier = cashier;
 		
-		inventory.put("Cookie", new Food("Cookie", 1000, 1, 3, 40) );
-		inventory.put("Steak", new Food("Steak", 10000, 3, 5, 11) );
-		inventory.put("Chicken" , new Food("Chicken", 9000, 9, 5, 10 ));
-		inventory.put("Salad", new Food("Salad", 3000, 4, 3, 10 ));
-		inventory.put("Pizza", new Food("Pizza", 5000, 3, 3, 10));
+		inventory.put("Oreo Cookie", new Food("Oreo Cookie", 1000, 1, 3, 40) );
+		inventory.put("Oreo Cake", new Food("Oreo Cake", 10000, 3, 5, 11) );
+		inventory.put("Oreo Milkshake" , new Food("Oreo Milkshake", 9000, 9, 5, 10 ));
+		inventory.put("Cookies n Cream", new Food("Cookies n Cream", 3000, 4, 3, 10 ));
+		inventory.put("Dirt n Worms", new Food("Dirt n Worms", 5000, 3, 3, 10));
 		
 		updateMenu();
 		

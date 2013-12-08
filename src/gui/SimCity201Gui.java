@@ -23,8 +23,6 @@ import trace.TracePanel;
 
 
 
-
-
 @SuppressWarnings("serial")
 public class SimCity201Gui extends JFrame {
 
@@ -44,17 +42,16 @@ public class SimCity201Gui extends JFrame {
 	/**
 	 * Default Constructor Initializes gui
 	*/
-	public SimCity201Gui() {
-		setTitle("SimCity201 V 1.000000005  - Team 29");
+	public SimCity201Gui(String config) {
+		setTitle("SimCity201 V 1.00005  - Team 29");
         setVisible(true);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
         menuBar = new GuiJMenuBar(this);
 		this.setJMenuBar(menuBar);
-        
+             
         setBounds(50, 50, (int)(WINDOWX * 1.5), (WINDOWY + 50));
-		//setLayout(new GridLayout(1, 2));
 		setLayout(new GridBagLayout());
 		
 		
@@ -91,9 +88,15 @@ public class SimCity201Gui extends JFrame {
 		//add(tracePanel);
 	
 		
-		loadConfig("Default");
+		loadConfig(config);
 		//loadConfig("GUI Test 1");
 	}
+	
+	
+	
+	
+	
+	
 	
 	
 	/** Loads the config
@@ -113,22 +116,16 @@ public class SimCity201Gui extends JFrame {
 		switch (config) {
 		case "Default":
 			factory.LoadDefault();
-			layout = factory.layout;
-			cityPanel = factory.cityPanel;
-			buildingsPanels = factory.buildingsPanels;
+			layout = SetUpWorldFactory.layout;
+			cityPanel = SetUpWorldFactory.cityPanel;
+			buildingsPanels = SetUpWorldFactory.buildingsPanels;
 			break;
 			
 		case "GUI Test 1":
 			factory.LoadGUITest1();
-			layout = factory.layout;
-			cityPanel = factory.cityPanel;
-			buildingsPanels = factory.buildingsPanels;
-			break;
-		case"GUI Test 2":
-			factory.LoadGUITest2();
-			layout = factory.layout;
-			cityPanel = factory.cityPanel;
-			buildingsPanels = factory.buildingsPanels;
+			layout = SetUpWorldFactory.layout;
+			cityPanel = SetUpWorldFactory.cityPanel;
+			buildingsPanels = SetUpWorldFactory.buildingsPanels;
 			break;
 		default:
 			AlertLog.getInstance().logError(AlertTag.GENERAL_CITY, "City", "Error loading " + config + " configuration.");
@@ -149,6 +146,7 @@ public class SimCity201Gui extends JFrame {
 	
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		SimCity201Gui gui = new SimCity201Gui();
+		//SimCity201Gui gui = new SimCity201Gui("Default");
+		LoadGui gui = new LoadGui();
 	}
 }

@@ -2,6 +2,7 @@ package util;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 public class MasterTime {
@@ -19,8 +20,8 @@ public class MasterTime {
 	}
 	
 	protected MasterTime(){
-		dateListeners = new ArrayList<MyDateListener>();
-		timeListeners = new ArrayList<MyTimeListener>();
+		dateListeners = Collections.synchronizedList(new ArrayList<MyDateListener>());
+		timeListeners = Collections.synchronizedList(new ArrayList<MyTimeListener>());
 	}
 	
 	/**
@@ -48,18 +49,28 @@ public class MasterTime {
 		
 		boolean weekend = calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || 
 				calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY;
-		
-		for(MyTimeListener tl : timeListeners){
-			if(tl.hour == hour && tl.minute == minute && tl.weekend == weekend){
-				tl.listener.timeAction(hour, minute);
+
+		synchronized (timeListeners) {
+			for(MyTimeListener tl : timeListeners){
+				if(tl.hour == hour && tl.minute == minute && tl.weekend == weekend){
+					tl.listener.timeAction(hour, minute);
+				}
 			}
 		}
 		
-		for(MyDateListener dl : dateListeners){
-			if(dl.month == month && dl.day == day && dl.hour == hour && dl.minute == minute){
-				dl.listener.dateAction(month, day, hour, minute);
-				dateListeners.remove(dl);
+		List<MyDateListener> toRemove = new ArrayList<>();//<--to hold the dl to remove
+		synchronized (dateListeners) {
+			for(MyDateListener dl : dateListeners){
+				if(dl.month == month && dl.day == day && dl.hour == hour && dl.minute == minute){
+					dl.listener.dateAction(month, day, hour, minute);
+					//dateListeners.remove(dl);
+					toRemove.add(dl);
+				}
 			}
+		}
+		//now remove dl to prevent ConcurrentModificationExceptions.
+		for(MyDateListener dl : toRemove){
+			dateListeners.remove(dl);
 		}
 	}
 	
@@ -72,10 +83,12 @@ public class MasterTime {
 	 * @return true if the registration worked, false if such a registration already exists
 	 */
 	public boolean registerTimeListener(int hour, int minute, boolean weekend, TimeListener sender){
+		synchronized (timeListeners) {
 		for(MyTimeListener tl : timeListeners){
 			if(tl.listener == sender && tl.hour == hour && tl.minute == minute && tl.weekend == weekend){
 				return false;
 			}
+		}
 		}
 		timeListeners.add(new MyTimeListener(hour, minute, weekend, sender));
 		return true;
@@ -91,11 +104,13 @@ public class MasterTime {
 	 * @return true if the registration worked, false if such a registration already exists
 	 */
 	public boolean registerDateListener(int month, int day, int hour, int minute, DateListener sender){
+		synchronized (dateListeners) {
 		for(MyDateListener dl : dateListeners){
 			if(dl.listener == sender && dl.month == month && dl.day == day && 
 					dl.hour == hour && dl.minute == minute){
 				return false;
 			}
+		}
 		}
 		dateListeners.add(new MyDateListener(month, day, hour, minute, sender));
 		return true;

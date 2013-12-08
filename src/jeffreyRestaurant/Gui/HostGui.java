@@ -32,6 +32,12 @@ public class HostGui implements Gui {
         xHome = 50 + 30*homeNumber;
         xPos = xHome;
     }
+    
+    public HostGui(WaiterAgent agent) {
+    	this.agent = agent;
+    	xHome = 50;
+    	xPos = xHome;
+    }
 
     public void updatePosition() {
         if (xPos < xDestination)

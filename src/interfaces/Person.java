@@ -75,7 +75,7 @@ public interface Person extends DateListener{
 
 	public abstract void setInitialRole(Role roleFromString, String string);
 	
-	public void dateAction(int month, int day, int hour, int minute);
+	public abstract void dateAction(int month, int day, int hour, int minute);
 
 
 }

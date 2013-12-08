@@ -8,7 +8,6 @@ import interfaces.generic_interfaces.GenericCashier;
 import interfaces.generic_interfaces.GenericCook;
 import interfaces.generic_interfaces.GenericCustomer;
 import interfaces.generic_interfaces.GenericHost;
-import interfaces.generic_interfaces.GenericWaiter;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -18,14 +17,13 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
-import kushrestaurant.CashierRole;
-import kushrestaurant.interfaces.Waiter;
+import residence.HomeGuestRole;
 import residence.HomeRole;
 import trace.AlertLog;
 import trace.AlertTag;
+import util.DateListener;
 import util.MasterTime;
 import util.TimeListener;
-import util.DateListener;
 import MarketEmployee.MarketEmployeeRole;
 import MarketEmployee.MarketManagerRole;
 import Person.Role.Employee;
@@ -33,6 +31,7 @@ import Person.Role.Role;
 import Person.Role.RoleFactory;
 import Person.Role.ShiftTime;
 import Transportation.BusStopConstruct;
+import Transportation.CarAgent;
 import agent.Agent;
 import bank.BankClientRole;
 import building.Building;
@@ -40,8 +39,6 @@ import building.BuildingList;
 import building.Restaurant;
 import building.Workplace;
 //import restaurant.NewWaiterRole;
-
-import residence.HomeRole;
 /**
  * @author MSILKJR
  *
@@ -72,18 +69,22 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	public List<Role> roles;
 	public List<PersonAgent> friends;
 	
+	private CarAgent myCar;
+	
 	private Queue<Item> itemsNeeded;
 	
 	public enum StateOfHunger {NotHungry, SlightlyHungry, Hungry, VeryHungry, Starving} 
 	public enum StateOfLocation {AtHome,AtBank,AtMarket,AtRestaurant, InCar,InBus,Walking};
 	public enum StateOfEmployment {Customer,Employee,Idle};
-	public enum PersonState {Idle,NeedsMoney,PayRentNow, Working, PayLoanNow,GettingMoney,NeedsFood,GettingFood }
+	public enum PersonState {Idle,NeedsMoney,PayRentNow, Working, PayLoanNow,GettingMoney,NeedsFood,GettingFood,HostParty,GoingToParty,HostingParty,Partying}
 	public enum WorkState {None, GoToWork, GoingToWork, AtWork}
+
 	
 	private List<Item> backpack;
 	
 	private ShiftTime currentShift;
 	public PersonState state;
+	public StateOfLocation stateOfLocation;
 	public WorkState workState;
 	private StateOfEmployment stateOfEmployment;
 	private Preferences prefs;
@@ -108,6 +109,8 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		prefs = new Preferences();
 		this.home = home;
 		
+		this.myCar = new CarAgent(this, name+" car");
+		
 		backpack = new ArrayList<Item>();
 		itemsNeeded = new ArrayDeque<Item>();
 		
@@ -123,28 +126,18 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	 */
 	public void setInitialRole(Role r, String roleLocation){
 		if(r instanceof HomeRole){
-			HomeRole hr = (HomeRole) findRole("HomeRole");
-			//if(name.equals("Person 1"))
-				hr.msgMakeFood();
+			HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE);
+			if(name.equals("Person 10")) {
+				hr.msgEnterBuilding();
+				hr.msgThrowParty();
+			}
 
 			gui.setStartingStates(home.getName());
 			BuildingList.findBuildingWithName(home.getName()).addRole(hr);
 			hr.activate();
 		}else{
 			addRole(r);
-				//System.err.println("AAAAAAAAAAAAAAAAAA");
-			/*
-			if(r instanceof GenericWaiter ){
-				GenericWaiter w = (GenericWaiter) r;
-				Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(roleLocation);
-				GenericHost role = (GenericHost) rest.getHostRole();
-				GenericCook cook = (GenericCook) rest.getCookRole();
-				GenericCashier cashier = (GenericCashier) rest.getCashierRole();
-				role.addWaiter(w);
-				w.setHost(role);
-				w.setCook(cook);
-				w.setCashier(cashier);
-			}*/
+
 			if(r instanceof MarketManagerRole ){
 				 MarketManagerRole role = (MarketManagerRole) findRole(Role.MARKET_MANAGER_ROLE);
 			
@@ -174,18 +167,20 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		prefs = new Preferences();
 		this.home = home;
 		
+		this.myCar = new CarAgent(this, name+" car");
+		
 		backpack = new ArrayList<Item>();
 		itemsNeeded = new ArrayDeque<Item>();
-		
+		stateOfLocation = StateOfLocation.Walking;
 		roles.add(new HomeRole(this));
 		
-		if(name.equals("Person 1") || name.equals("Person 2") )
-			this.msgImHungry();
-		if(name.equals("Person 10") || name.equals("Person 11") || name.equals("Person 12"))
-			this.msgINeedMoney(30.00);
-		if(name.equals("Person 13")){
-			this.msgGoToMarket("Steak");
-		}
+//		if(name.equals("Person 1") || name.equals("Person 2") )
+//			this.msgImHungry();
+//		if(name.equals("Person 10") || name.equals("Person 11") || name.equals("Person 12"))
+//			this.msgINeedMoney(30.00);
+//		if(name.equals("Person 13")){
+//			this.msgGoToMarket("Steak");
+//		}
 	}
 	
 //-------------------------------MESSAGES----------------------------------------//
@@ -198,8 +193,15 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	public void msgWeHaveArrived(String currentDestination){
 	  //unpause agent, which will be in transit (implementation not necessary here)
 		onBus.release();
+		//------------------ILLEGAL CHANGE OR DELETE---------------------------------//
+		if(stateOfLocation == StateOfLocation.InCar){
+			myCar.msgLeavingCar();
+			stateOfLocation = StateOfLocation.Walking;
+		}
 		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Arrived at Destination!!");
 	}
+	
+	
 
 	/**
 	  * Message probably sent by an outside GUI to force hunger on the 
@@ -312,9 +314,11 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	  * Message sent by the home role to invite the person to a party
 	  */
 	public void msgPartyInvitation(Person p,Calendar rsvpDeadline,Calendar partyTime){
+		print("Received a party invitation!");
 		Party party = new Party(p, rsvpDeadline, partyTime);
 		party.partyState = PartyState.ReceivedInvite;
 		parties.add(party);
+		print("The party's on the " + party.dateOfParty.get(Calendar.DAY_OF_MONTH) + "th at " + party.dateOfParty.get(Calendar.HOUR_OF_DAY));
 		stateChanged();
 	}
 	
@@ -322,18 +326,43 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	  * RSVP message sent by the home role
 	  */
 	public void msgIAmComing(Person p){
-		HomeRole hr= (HomeRole) findRole("HOME_ROLE");
-		hr.partyAttendees.add((PersonAgent) p);
-		//hr.rsvp.get(p)=true;
-		hr.partyInvitees.remove((PersonAgent) p);
+		print(p.getName() + " IS COMING");
+		HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE);
+
+		if(hr != null) {
+			hr.partyAttendees.add((PersonAgent) p);
+			//hr.rsvp.get(p)=true;
+			hr.partyInvitees.remove((PersonAgent) p);
+		}
 		
 	}
 	public void msgIAmNotComing(Person p){
+		print(p.getName() + " is NOT COMING");
 		//findRole("HOME_ROLE").rsvp.get(p)=true;
-		HomeRole hr= (HomeRole) findRole("HOME_ROLE");
-		hr.partyInvitees.remove((PersonAgent) p);
+		HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE);
+
+		if(hr != null) {
+			hr.partyInvitees.remove((PersonAgent) p);
+		}
+	}
+	public void msgRespondToInviteUrgently(Person host){
+		for(Party p : parties) {
+			if(p.host.getName() == host.getName()) {
+				p.partyState = PartyState.NeedsResponseUrgently;
+			}
+		}
+	}
+	public void msgPartyOver(Person host) {
+		for(Party p : parties) {
+			if(p.host.getName() == host.getName()) {
+				//parties.remove(p);
+			}
+		}
+		HomeGuestRole hgr = (HomeGuestRole) findRole(Role.HOME_GUEST_ROLE);
+		hgr.msgPartyOver();
 	}
 
+	
 	//------------------------------SCHEDULER---------------------------//
 	
 	/**
@@ -342,7 +371,73 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	 */
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		// TODO Auto-generated method stu
+		if(parties.size()!=0){
+			for(Party p:parties){
+				if(p.partyState==PartyState.NeedsResponseUrgently){
+					for(PersonAgent pa:friends){
+						if(pa==p.getHost()){
+							pa.msgIAmComing(this);
+							p.partyState=PartyState.GoingToParty;
+							MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY), p.dateOfParty.get(Calendar.MINUTE), this);	
+						}
+						else{
+							pa.msgIAmNotComing(this);
+							p.partyState=PartyState.NotGoingToParty;
+						
+						}   
+					}
+				}
+			}
+		}
+		
+		if(parties.size()!=0){
+			for(Party p:parties){
+				if(p.partyState==PartyState.ReceivedInvite){
+					for(PersonAgent pa :friends){
+						if(pa==p.getHost()){
+							int i= new Random().nextInt(40);
+							//if(i%2==0){
+								pa.msgIAmComing(this);
+								p.partyState=PartyState.GoingToParty;
+								MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY), p.dateOfParty.get(Calendar.MINUTE), this); 
+								//return true;
+							//}
+							//else{ 
+							//	p.partyState=PartyState.notRSVPed;
+							//}
+						}
+					}
+					int i= new Random().nextInt(40);
+					if(p.partyState==PartyState.ReceivedInvite){
+						if(i%2==0){
+							p.getHost().msgIAmNotComing(this);
+							p.partyState=PartyState.NotGoingToParty;
+						}
+						else{p.partyState=PartyState.notRSVPed;
+						}
+					}
+				}
+			}
+		}
+		
+		if(state == PersonState.GoingToParty) {
+			GoToParty(parties.get(0).getHost().getHome().getName());
+			return true;
+		}
+		if(state == PersonState.HostParty) {
+			boolean atHome = false;
+			for(Role r : roles){
+				if(r.getNameOfRole().equals(Role.HOME_ROLE) && r.isActive()){
+					atHome = true;
+					break;
+				}
+			}
+			if(!atHome){
+				GoHome();
+			}
+			HostParty();
+			return true;
+		}
 
 		//cue the Role schedulers
 		boolean outcome = false;
@@ -358,31 +453,12 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 			if(somethingIsActive)
 				return false;
 		}
-		
+
 		if(workState == WorkState.GoToWork){
 			GoToWork();
 			return true;
 		}
 		
-
-		for(Party p:parties){
-			if(p.partyState==PartyState.NeedsResponseUrgently){
-				for(PersonAgent pa:friends){
-					if(pa==p.getHost()){
-						
-							pa.msgIAmComing(this);
-							p.partyState=PartyState.GoingToParty;
-							return true;
-						}
-					else{
-						pa.msgIAmNotComing(this);
-						p.partyState=PartyState.NotGoingToParty;
-					}
-					   
-					}
-			}
-		}
-
 		if(state == PersonState.NeedsFood){
 			GoGetFood();
 			return true;
@@ -397,31 +473,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 			GoRobBank();
 			return true;
 		}
-		if(parties.size()!=0){
-			for(Party p:parties){
-				if(p.partyState==PartyState.ReceivedInvite){
-					for(PersonAgent pa :friends){
-						if(pa==p.getHost()){
-							int i= new Random().nextInt(40);
-							if(i%2==0){
-								pa.msgIAmComing(this);
-								p.partyState=PartyState.GoingToParty;
-								return true;
-							}
-						
-							
-						}
-						
-					}
-					int i= new Random().nextInt(40);
-					if(i%2==0){
-					p.getHost().msgIAmNotComing(this);
-					p.partyState=PartyState.NotGoingToParty;
-					}
-					p.partyState=PartyState.GoingToParty;
-				}
-			}
-		}
+		
 
 		if(state != PersonState.Idle){
 			AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "////////////IDLE//////////");
@@ -477,6 +529,43 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	
 	private String PickFoodLocation(){
 		return home.getName();
+	}
+
+	private void GoToParty(String location){
+		  state = PersonState.Partying;
+		  //Building b = PickFoodLocation();
+		  String transport;
+		  switch(prefs.get(Preferences.KeyValue.VEHICLE_PREFERENCE)){
+		  	case Preferences.BUS:
+		  		transport = Preferences.BUS;
+		  		break;
+		  	case Preferences.CAR:
+		  		transport = Preferences.CAR;
+		  		break;
+		  	case Preferences.WALK:
+		  		transport = Preferences.WALK;
+		  		break;
+		  		
+		  	default:
+		  		transport = "ERROR";
+		  }
+		  
+		  GoToLocation(location, transport);
+		  
+		  HomeGuestRole role = (HomeGuestRole) findRole(Role.HOME_GUEST_ROLE);
+		  if(role == null){
+			  role = (HomeGuestRole) RoleFactory.roleFromString(Role.HOME_GUEST_ROLE);
+			  addRole(role);
+		  }
+		  
+		  for(Role r : roles) {
+			  r.deactivate();
+		  }
+
+		  AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Home Guest Role = "+role);
+		  role.msgComeIn();
+		  BuildingList.findBuildingWithName(location).addRole(role);
+		  role.activate();
 	}
 	
 	private void GoToWork(){
@@ -642,7 +731,12 @@ private void GoRobBank(){
 	}
 	
 	private void GoToLocation(String location, String modeOfTransportation){
+		//if the Person has a Car use it
+		if(myCar != null){
+			modeOfTransportation = Preferences.CAR;
+		}
 		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Going to "+location+" via + "+modeOfTransportation);
+		
 		switch(modeOfTransportation){
 			case Preferences.BUS:
 				String startStop = gui.DoGoToClosestBusStop();
@@ -657,6 +751,16 @@ private void GoRobBank(){
 				GoToLocation(location, "WALK");
 				break;
 			case Preferences.CAR:
+				
+				myCar.msgEnteringCar();
+				myCar.msgNewDestination(location);
+				stateOfLocation = StateOfLocation.InCar;
+				try {
+					onBus.acquire();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				break;
 			case Preferences.WALK:
 				System.err.println("Trying to walk to "+location);
@@ -684,12 +788,19 @@ private void GoRobBank(){
 	  }
  
 	  GoToLocation(home.getName(), transport);
-	  HomeRole role = (HomeRole) findRole("HomeRole");
+	  HomeRole role = (HomeRole) findRole(Role.HOME_ROLE);
 	  BuildingList.findBuildingWithName(home.getName()).addRole(role);
 	  role.activate();
 	  
-	  role.msgMakeFood();
+	  //role.msgMakeFood();
+	  role.msgEnterBuilding();
 
+	}
+	
+	private void HostParty(){
+		state = PersonState.HostingParty;
+		HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE);
+		hr.msgHostParty();
 	}
 		  
 	//------------------------DO XYZ FUNCTIONS----------------------//
@@ -903,7 +1014,7 @@ private void GoRobBank(){
 		}
 	}
 	
-	enum PartyState {Host, ReceivedInvite, NeedsResponseUrgently, RSVPed, GoingToParty, NotGoingToParty}
+	enum PartyState {Host, ReceivedInvite, NeedsResponseUrgently, RSVPed, GoingToParty, NotGoingToParty, notRSVPed}
 	
 	/**
 	 * A class meant to simulate a Party
@@ -981,9 +1092,19 @@ private void GoRobBank(){
 	}
 
 	public void dateAction(int month, int day, int hour, int minute) {
-		// TODO Auto-generated method stub
-		
+		HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE);
+		if(hr.rsvpDate.get(Calendar.MONTH) == month && hr.rsvpDate.get(Calendar.DAY_OF_MONTH) == day && hr.rsvpDate.get(Calendar.HOUR_OF_DAY) == hour && hr.rsvpDate.get(Calendar.MINUTE) == minute) {
+			hr.msgResendInvites();
+		}
+		if(hr.partyDate.get(Calendar.MONTH) == month && hr.partyDate.get(Calendar.DAY_OF_MONTH) == day && hr.partyDate.get(Calendar.HOUR_OF_DAY) == hour && hr.partyDate.get(Calendar.MINUTE) == minute) {
+			state = PersonState.HostParty;
+			stateChanged();
+		}
+		for(Party p: parties){
+			if(p.dateOfParty.get(Calendar.MONTH) == month && p.dateOfParty.get(Calendar.DAY_OF_MONTH) == day && p.dateOfParty.get(Calendar.HOUR_OF_DAY) == hour && p.dateOfParty.get(Calendar.MINUTE) == minute) {
+				state = PersonState.GoingToParty;
+				stateChanged();
+			}	
+		}
 	}
-
-
 }

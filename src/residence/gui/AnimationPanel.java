@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -35,7 +36,7 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
     ImageObserver observer;
     private Dimension bufferSize;
 
-    private List<Gui> guis = new ArrayList<Gui>();
+    private List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
 
     public AnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
@@ -67,12 +68,13 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
 
 	public void actionPerformed(ActionEvent e) {
 		ResidenceBuildingPanel bp = (ResidenceBuildingPanel) this.getParent();
-		 for(Gui gui : guis) {
-	            if (gui.isPresent()) {
-	                gui.updatePosition();
-	            }
-	        }
-		 
+		synchronized (guis) {
+			for(Gui gui : guis) {
+				if (gui.isPresent()) {
+					gui.updatePosition();
+				}
+			}
+		}
 		repaint();  //Will have paintComponent called
 	}
 
@@ -141,16 +143,28 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
         g2.fillRect(10, 10, 750, 5);
         g2.fillRect(760, 10, 5, 110);
         g2.fillRect(760, 210, 5, 95);
-
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.draw(g2);
-            }
+        
+        if(guis.isEmpty()) { //front door
+        	g.setColor(Color.orange);
+            g.fillRect(760, 120, 5, 45);
+            g.fillRect(760, 165, 5, 45);
+            g.setColor(Color.black);
+            g.fillRect(760, 163, 5, 2);
+            
+            g.setColor(Color.orange); //bedroom door
+            g.fillRect(200, 110, 5, 45);
+            g.fillRect(200, 155, 5, 45);
+            g.setColor(Color.black);
+            g.fillRect(200, 153, 5, 2);
         }
-    }
 
-    public void addGui(HomeRoleGui gui) {
-        guis.add(gui);
+        synchronized (guis) {
+        	for(Gui gui : guis) {
+        		if (gui.isPresent()) {
+        			gui.draw(g2);
+        		}
+        	}
+        }
     }
 
 	@Override
@@ -178,7 +192,9 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
 
 	public void removeGuiForRole(Role r) {
 		// TODO Auto-generated method stub
-		guis.clear();
+		synchronized (guis) {
+			guis.clear();
+		}
 	}
     
 }

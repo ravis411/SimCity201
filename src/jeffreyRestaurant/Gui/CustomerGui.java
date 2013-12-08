@@ -38,6 +38,14 @@ public class CustomerGui implements Gui{
 		//maitreD = m;
 		this.gui = gui;
 	}
+	
+	public CustomerGui(CustomerAgent c) {
+		agent = c;
+		xPos = -40;
+		yPos = -40;
+		xDestination = 40;
+		yDestination = 60;
+	}
 
 	public void updatePosition() {
 		if (xPos < xDestination)
@@ -56,7 +64,7 @@ public class CustomerGui implements Gui{
 				agent.msgAnimationFinishedLeaveRestaurant();
 				System.out.println("about to call gui.setCustomerEnabled(agent);");
 				isHungry = false;
-				gui.setCustomerEnabled(agent);
+				//gui.setCustomerEnabled(agent);
 			}
 			if (command==Command.GoPay) {
 				agent.msgDoneAnimation();

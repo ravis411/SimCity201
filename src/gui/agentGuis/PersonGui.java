@@ -557,9 +557,10 @@ private void DoGoToSector(int sector){
      *  
      * 
      *  @param to The Position to move to. 
+     * @throws Exception 
      *  
      */
-    void guiMoveFromCurrentPostionTo(Position to){
+    void guiMoveFromCurrentPostionTo(Position to) throws Exception{
         
     	//First check to make sure the destination is free otherwise wait
     	int waits = 0;
