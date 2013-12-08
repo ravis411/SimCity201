@@ -69,7 +69,7 @@ public class FoodCourtBuildingPanel extends BuildingPanel{
 		locationInfo.name = "Kush's Restaurant";
 		factory.addLocationToMap(locationInfo);
 		animPanel.addBuildingGui(krb);
-		/*
+		
 		//Adds Luca's Restaurant
 		LucaRestaurantBuilding lrb = new LucaRestaurantBuilding(new BuildingGui(50, 150, 50, 50));
 		LucaRestaurantBuildingPanel lrbp = new LucaRestaurantBuildingPanel(lrb, "Luca's Restaurant", buildingPanels);
@@ -78,7 +78,7 @@ public class FoodCourtBuildingPanel extends BuildingPanel{
 		locationInfo.name = "Luca's Restaurant";
 		factory.addLocationToMap(locationInfo);
 		animPanel.addBuildingGui(lrb);
-		*/
+		
 		//Adds Byron's Restaurant
 		ByronRestaurantBuilding brb = new ByronRestaurantBuilding(new BuildingGui(675, 250, 50, 50));
 		ByronRestaurantBuildingPanel brbp = new ByronRestaurantBuildingPanel(brb, "Byron's Restaurant", buildingPanels);

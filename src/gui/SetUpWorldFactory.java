@@ -218,14 +218,14 @@ public class SetUpWorldFactory{
 		addBuilding("Food Court", "Food Court", 23, 12, 2, 2, location);
 		//addBuilding("RyansRestaurant", "Restaurant 2", 23, 12, 2, 2, location);
 //Building 12
-		location.sector = 2;
+/*		location.sector = 2;
 		location.positionToEnterFromMainGrid = new Dimension(30, 12);
 		location.entranceFromMainGridPosition = new Dimension(29, 12);
 		location.entranceFromRoadGrid = new Dimension(29, 12);
 				location.positionToEnterFromRoadGrid = new Dimension(29, 11);
 				layout.addDriveway(28, 10, 2, 2);
 		addBuilding("Luca's Restaurant", "Luca's Restaurant", 28, 12, 2, 2, location);
-		//addBuilding("Default", "Default", 28, 12, 2, 2, location);
+		//addBuilding("Default", "Default", 28, 12, 2, 2, location);*/
 		//file reading
 //		try {
 //			File fXmlFile = new File("scenario1.xml");
