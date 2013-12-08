@@ -455,10 +455,8 @@ public class SetUpWorldFactory{
 
 
 	private void addPerson(String name, ResidenceBuildingPanel home){
-		//PersonAgent p1 = new PersonAgent(name);
+		
 		PersonAgent p1 = new PersonAgent(name, home);
-		PersonGui g1 = new PersonGui(p1);
-		p1.setGui(g1);
 
 		switch(name){
 
@@ -504,7 +502,6 @@ public class SetUpWorldFactory{
 		}
 		//p1.setInitialRole(new HomeRole(p1), "House 1");
 		
-		cityPanel.addGui(g1);
 		p1.startThread();
 		agents.add(p1);
 	}
