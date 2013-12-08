@@ -76,7 +76,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	public enum StateOfHunger {NotHungry, SlightlyHungry, Hungry, VeryHungry, Starving} 
 	public enum StateOfLocation {AtHome,AtBank,AtMarket,AtRestaurant, InCar,InBus,Walking};
 	public enum StateOfEmployment {Customer,Employee,Idle};
-	public enum PersonState {Idle,NeedsMoney,PayRentNow, Working, PayLoanNow,GettingMoney,NeedsFood,GettingFood,GoingToParty,Partying}
+	public enum PersonState {Idle,NeedsMoney,PayRentNow, Working, PayLoanNow,GettingMoney,NeedsFood,GettingFood,HostParty,GoingToParty,Partying}
 	public enum WorkState {None, GoToWork, GoingToWork, AtWork}
 
 	
@@ -353,7 +353,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	public void msgPartyOver(Person host) {
 		for(Party p : parties) {
 			if(p.host.getName() == host.getName()) {
-				parties.remove(p);
+				//parties.remove(p);
 			}
 		}
 		HomeGuestRole hgr = (HomeGuestRole) findRole(Role.HOME_GUEST_ROLE);
@@ -397,12 +397,12 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 							//if(i%2==0){
 								pa.msgIAmComing(this);
 								p.partyState=PartyState.GoingToParty;
-								MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), (p.dateOfParty.get(Calendar.HOUR_OF_DAY)), p.dateOfParty.get(Calendar.MINUTE), this); 
+								MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY), p.dateOfParty.get(Calendar.MINUTE), this); 
 								//return true;
 							//}
-							//else{p.partyState=PartyState.notRSVPed;
+							//else{ 
+							//	p.partyState=PartyState.notRSVPed;
 							//}
-						
 						}
 					}
 					int i= new Random().nextInt(40);
@@ -422,7 +422,10 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 			GoToParty(parties.get(0).getHost().getHome().getName());
 			return true;
 		}
-		
+		if(state == PersonState.HostParty) {
+			GoHome();
+			return true;
+		}
 
 
 		//cue the Role schedulers
@@ -1059,8 +1062,9 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 			hr.msgResendInvites();
 		}
 		if(hr.partyDate.get(Calendar.MONTH) == month && hr.partyDate.get(Calendar.DAY_OF_MONTH) == day && hr.partyDate.get(Calendar.HOUR_OF_DAY) == hour && hr.partyDate.get(Calendar.MINUTE) == minute) {
-			GoHome();
+			state = PersonState.HostParty;
 			hr.msgHostParty();
+			stateChanged();
 		}
 		for(Party p: parties){
 			if(p.dateOfParty.get(Calendar.MONTH) == month && p.dateOfParty.get(Calendar.DAY_OF_MONTH) == day && p.dateOfParty.get(Calendar.HOUR_OF_DAY) == hour && p.dateOfParty.get(Calendar.MINUTE) == minute) {

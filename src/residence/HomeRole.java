@@ -59,7 +59,7 @@ public class HomeRole extends Role implements Home {
 	public AgentEvent event = AgentEvent.none;
 	
 	public enum PartyState
-	{none, sendInvites, resendInvites, setUp, host};
+	{none, sendInvites, resendInvites, setUp, host, cleanUp};
 	public PartyState partyState = PartyState.sendInvites;
 
 	public HomeRole(PersonAgent myPerson) {
@@ -438,6 +438,7 @@ public class HomeRole extends Role implements Home {
 		}
 	}
 	private void hostParty() {
+		partyState = PartyState.cleanUp;
 		timer.schedule(new TimerTask() {
 			public void run() {
 				partyState = PartyState.none;
