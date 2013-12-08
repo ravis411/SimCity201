@@ -666,7 +666,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		String destination= "null";
 		
 		for(Building dest: b){
-			 Workplace w= (Workplace) b;
+			 Workplace w= (Workplace) dest;
 			 if (w.isOpen()==false){
 				 AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", ""
 				 		+ "WORKPLACE IS CLOSED SO NOT GOING THERE");
@@ -716,7 +716,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		Collections.shuffle(b);
 		String destination= "null";
 		for(Building dest: b){
-			 Workplace w= (Workplace) b;
+			 Workplace w= (Workplace) dest;
 			 if (w.isOpen()==false){
 				 AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", ""
 				 		+ "MARKET IS CLOSED SO NOT GOING THERE");
@@ -1146,7 +1146,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	@Override
 	public void timeAction(int hour, int minute) {
 		// TODO Auto-generated method stub
-		/*if(hour == Workplace.DAY_SHIFT_HOUR && minute == Workplace.DAY_SHIFT_MIN){
+		/*if(hour == Workplace.DAY_SHIFT_HOUR && minute == .DAY_SHIFT_MIN){
 			currentShift = ShiftTime.DAY_SHIFT;
 			if(getCurrentJob().getShift() == ShiftTime.DAY_SHIFT){
 				msgReportForWork();
