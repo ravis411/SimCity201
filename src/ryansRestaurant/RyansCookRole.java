@@ -1,31 +1,33 @@
 package ryansRestaurant;
 
+import Person.Role.ShiftTime;
 import agent.Agent;
+import interfaces.generic_interfaces.GenericCook;
 
 import java.awt.Dimension;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
-import ryansRestaurant.MarketAgent;
-import ryansRestaurant.MarketAgent.Food;
-import ryansRestaurant.MarketAgent.MarketOrder;
+import ryansRestaurant.RyansMarketRole;
+import ryansRestaurant.RyansMarketRole.Food;
+import ryansRestaurant.RyansMarketRole.MarketOrder;
 import ryansRestaurant.gui.CookGui;
 import ryansRestaurant.gui.Gui;
-import ryansRestaurant.interfaces.Cashier;
+import ryansRestaurant.interfaces.RyansCashier;
 
 /**
  * Restaurant Cook Agent
  */
 
-public class CookAgent extends Agent {
+public class RyansCookRole extends GenericCook {
 	
 	
 	private List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
 	//private List<Order> orders = (new ArrayList<Order>());
-	private List<MarketAgent> markets = Collections.synchronizedList(new ArrayList<MarketAgent>());
-	//private List<MarketAgent> markets = (new ArrayList<MarketAgent>());
+	private List<RyansMarketRole> markets = Collections.synchronizedList(new ArrayList<RyansMarketRole>());
+	//private List<RyansMarketRole> markets = (new ArrayList<RyansMarketRole>());
 	private int currentMarket = -1;
-	private Cashier cashier;
+	private RyansCashier cashier;
 	
 	private String name;
 	private enum OrderState {pending, cooking, doneCooking, finished, ordered, none};
@@ -61,8 +63,8 @@ public class CookAgent extends Agent {
 	public static List<String> menu = (new ArrayList<String>());
 	
 	
-	public CookAgent(String name, Cashier cashier) {
-		super();
+	public RyansCookRole(String name, RyansCashier cashier, String workplace) {
+		super(workplace);
 		this.name = name;
 		this.cashier = cashier;
 		
@@ -87,7 +89,7 @@ public class CookAgent extends Agent {
 
 	// Messages
 
-	public void msgHereIsOrder(WaiterAgent waiter, String choice, int tableNumber) {
+	public void msgHereIsOrder(RyansWaiterRole waiter, String choice, int tableNumber) {
 		orders.add(new Order(waiter, choice, tableNumber));
 		stateChanged();
 		print("New order " + waiter + " " + choice + " Table: " + tableNumber);
@@ -111,7 +113,7 @@ public class CookAgent extends Agent {
 	
 	
 	/**
-	 * Called from a MarketAgent when an order is finished
+	 * Called from a RyansMarketRole when an order is finished
 	 * @param orders	contains the type of food and how many were fulfilled
 	 */
 	public void msgOrderFulfilled(List<MarketOrder> orders) {
@@ -127,15 +129,15 @@ public class CookAgent extends Agent {
 	}
 	
 	
-	public void addMarket(MarketAgent market) {
-		markets.add(market);
-		stateChanged();
+	public void addMarket(RyansMarketRole market) {
+		//markets.add(market);
+		//stateChanged();
 	}
 
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		try {
 			if(newInventory) {
 				updateMenu();
@@ -277,7 +279,7 @@ public class CookAgent extends Agent {
 			print("Nothing to order. Inventory fine.");
 			return;
 		}
-		MarketAgent m = chooseAMarket();
+		RyansMarketRole m = chooseAMarket();
 		
 		if(m != null) {
 			m.msgOrder(order, this, cashier);
@@ -289,7 +291,7 @@ public class CookAgent extends Agent {
 		}
 	}
 	
-	private MarketAgent chooseAMarket() {
+	private RyansMarketRole chooseAMarket() {
 		if(!markets.isEmpty()) {
 			currentMarket = (currentMarket + 1) % markets.size();
 			return markets.get(currentMarket);
@@ -359,14 +361,14 @@ public class CookAgent extends Agent {
 	 * 
 	 */
 	class Order {
-		WaiterAgent waiter;
+		RyansWaiterRole waiter;
 		String choice;
 		int tableNumber;
 		int cookingTime = -1;
 		OrderState state;
 		Grill grill = null;
 		
-		Order(WaiterAgent waiter, String choice, int tableNumber) {
+		Order(RyansWaiterRole waiter, String choice, int tableNumber) {
 			this.waiter = waiter;
 			this.choice = choice;
 			this.tableNumber = tableNumber;
@@ -482,5 +484,46 @@ public class CookAgent extends Agent {
 	public CookGui getGui() {
 		return agentGui;
 	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return ShiftTime.DAY_SHIFT;
+	}
+
+
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return 42.00;
+	}
+
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return "Ryan's Cook";
+	}
+
 }
 

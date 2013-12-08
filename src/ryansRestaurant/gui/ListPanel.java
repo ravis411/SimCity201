@@ -1,6 +1,6 @@
 package ryansRestaurant.gui;
 
-import ryansRestaurant.CustomerAgent;
+import ryansRestaurant.RyansCustomerRole;
 import ryansRestaurant.RyansHostRole;
 
 import javax.swing.*;
@@ -174,7 +174,7 @@ public class ListPanel extends JPanel implements ActionListener {
         }
         //A button
         else if(e.getSource() instanceof JButton) {
-        	//Waiter Break button
+        	//RyansWaiter Break button
         	for(JButton temp:wBreakButtonList) {
         		if(e.getSource() == temp) {
         			if(temp.getBackground() == Color.green) {
@@ -190,7 +190,7 @@ public class ListPanel extends JPanel implements ActionListener {
         		}
         	}
         	
-        	//Customer info button
+        	//RyansCustomer info button
         	for(JButton temp : customerList) {
         		if(e.getSource() == temp) {
         			restPanel.gui.ctrlP.showCustomerInfo(temp.getText());

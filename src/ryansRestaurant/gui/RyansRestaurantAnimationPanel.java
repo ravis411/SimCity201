@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 
-public class AnimationPanel extends JPanel implements MouseListener, ActionListener   {
+public class RyansRestaurantAnimationPanel extends JPanel implements MouseListener, ActionListener   {
 
     private final int WINDOWX = 800;
     private final int WINDOWY = (int)(375);
@@ -88,7 +88,7 @@ public class AnimationPanel extends JPanel implements MouseListener, ActionListe
     RestaurantGui gui;
     String showPBText = new String("Settings");    
 
-    public AnimationPanel(RestaurantLayout layout, RestaurantGui gui) {
+    public RyansRestaurantAnimationPanel(RestaurantLayout layout, RestaurantGui gui) {
     	setSize(WINDOWX, WINDOWY);
     	addMouseListener(this);
     	this.gui = gui;

@@ -300,7 +300,7 @@ public class RestaurantLayout  {
     
     class MyHomePosition {
     	int number = 0;
-    	String type = "Waiter";
+    	String type = "RyansWaiter";
     	Dimension positionCoords = null;
     	Dimension xyCoords = null;
     	Gui agentGui = null;

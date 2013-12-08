@@ -27,10 +27,10 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.text.TabExpander;
 
-import ryansRestaurant.CashierAgent;
-import ryansRestaurant.CookAgent;
-import ryansRestaurant.CustomerAgent;
-import ryansRestaurant.MarketAgent;
+import ryansRestaurant.RyansCashierRole;
+import ryansRestaurant.RyansCookRole;
+import ryansRestaurant.RyansCustomerRole;
+import ryansRestaurant.RyansMarketRole;
 import ryansRestaurant.RyansHostRole.aTable;
 
 public class ControlPanel extends JPanel implements ActionListener {
@@ -56,7 +56,7 @@ public class ControlPanel extends JPanel implements ActionListener {
 	private List<JButton> markets = new ArrayList<>();
 	
 	private JButton cookButton = new JButton("Cook Info");
-	private JButton cashierButton = new JButton("Cashier Info");
+	private JButton cashierButton = new JButton("RyansCashier Info");
 	
 	//sets the state of the panel
 	private enum GUIState {none, addTable, marketsPanel, cookPanel, cutomerPanel, cashierPanel};
@@ -109,7 +109,7 @@ public class ControlPanel extends JPanel implements ActionListener {
 	
 	
 	public void showCustomerInfo(String name) {
-		for( CustomerAgent cust : gui.restPanel.customers) {
+		for( RyansCustomerRole cust : gui.restPanel.customers) {
 			if(cust.getName().equals(name)) {
 				this.removeAll();
 				state = GUIState.cutomerPanel;
@@ -148,9 +148,9 @@ public class ControlPanel extends JPanel implements ActionListener {
 		this.removeAll();
 		this.setLayout(new FlowLayout());
 		//find the market
-		MarketAgent market = null;
+		RyansMarketRole market = null;
 		
-		for(MarketAgent m : gui.restPanel.getMarkets()) {
+		for(RyansMarketRole m : gui.restPanel.getMarkets()) {
 			if(m.getName().equals(button.getText())) {
 				market = m;
 			}
@@ -179,7 +179,7 @@ public class ControlPanel extends JPanel implements ActionListener {
         marketListPane.setMinimumSize(paneSize);
         
         markets.clear();
-        for(MarketAgent m : gui.restPanel.getMarkets()) {
+        for(RyansMarketRole m : gui.restPanel.getMarkets()) {
         	JButton button = new JButton(m.getName());
             button.setBackground(Color.white);
             Dimension buttonSize = new Dimension( (int)((paneSize.width) *.9),
@@ -348,14 +348,14 @@ public class ControlPanel extends JPanel implements ActionListener {
 	
 	
 	/**
-	 * Customer Info Class
+	 * RyansCustomer Info Class
 	 * @author
 	 *
 	 */
 	private class CustomerInfo extends JPanel implements ActionListener{
 
 		private JLabel label;
-		private CustomerAgent customer;
+		private RyansCustomerRole customer;
 		private JButton saveB = new JButton("Save");
 		private JButton refreshB = new JButton("Refresh");
 		private JButton popB = new JButton("Pop-out");
@@ -365,7 +365,7 @@ public class ControlPanel extends JPanel implements ActionListener {
 		private JCheckBox flakeCB = new JCheckBox("Flake");
 		private JCheckBox leavesCB = new JCheckBox("Leaves");
 		
-		public CustomerInfo(CustomerAgent customer) {
+		public CustomerInfo(RyansCustomerRole customer) {
 			this.customer = customer;
 			
 			setLayout(new GridLayout(6, 0));
@@ -473,12 +473,12 @@ public class ControlPanel extends JPanel implements ActionListener {
 		private JButton popB = new JButton("Pop-out");
 		private JPanel popCancelP = new JPanel();
 		private JButton refreshB = new JButton("Refresh");
-		public CookAgent cook = null;
+		public RyansCookRole cook = null;
 		
 				
 		
 		
-		public CookInfo(CookAgent cook) {
+		public CookInfo(RyansCookRole cook) {
 			this.cook = cook;
 			JPanel panel = new JPanel();
 			//panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
@@ -644,10 +644,10 @@ public class ControlPanel extends JPanel implements ActionListener {
 		private JButton saveB = new JButton("Save");
 		private JButton maximizeB = new JButton("Pop-out");
 		private JButton refreshB = new JButton("Refresh");
-		public MarketAgent market = null;
+		public RyansMarketRole market = null;
 		
 		
-		public MarketInfo(MarketAgent market) {
+		public MarketInfo(RyansMarketRole market) {
 			this.market = market;
 			
 			updateInfo();
@@ -761,10 +761,10 @@ public class ControlPanel extends JPanel implements ActionListener {
 		private JButton saveB = new JButton("Save");
 		private JButton maximizeB = new JButton("Pop-out");
 		private JButton refreshB = new JButton("Refresh");
-		public CashierAgent cashier = null;
+		public RyansCashierRole cashier = null;
 		
 		
-		public CashierInfo(CashierAgent cashier) {
+		public CashierInfo(RyansCashierRole cashier) {
 			this.cashier = cashier;
 			
 			updateInfo();

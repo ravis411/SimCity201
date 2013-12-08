@@ -2,30 +2,30 @@ package ryansRestaurant;
 
 import agent.Agent;
 import ryansRestaurant.gui.WaiterGui;
-import ryansRestaurant.interfaces.Cashier;
-import ryansRestaurant.interfaces.Customer;
-import ryansRestaurant.interfaces.Host;
-import ryansRestaurant.interfaces.Waiter;
+import ryansRestaurant.interfaces.RyansCashier;
+import ryansRestaurant.interfaces.RyansCustomer;
+import ryansRestaurant.interfaces.RyansHost;
+import ryansRestaurant.interfaces.RyansWaiter;
 
 import java.awt.Dimension;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
 /**
- * Restaurant Host Agent
+ * Restaurant RyansHost Agent
  */
 //We only have 2 types of agents in this prototype. A customer and an agent that
 //does all the rest. Rather than calling the other agent a waiter, we called him
-//the RyansHostRole. A Host is the manager of a ryansRestaurant who sees that all
+//the RyansHostRole. A RyansHost is the manager of a ryansRestaurant who sees that all
 //is proceeded as he wishes.
-public class WaiterAgent extends Agent implements Waiter {
+public class RyansWaiterRole extends Agent implements RyansWaiter {
 	public List<MyCustomer> myCustomers	= new ArrayList<MyCustomer>();
 	
-	private String name = new String("Waiter");
+	private String name = new String("RyansWaiter");
 	private Semaphore atTable = new Semaphore(0,true);
-	private Host host = null;
-	public CookAgent cook = null;
-	private Cashier cashier = null;
+	private RyansHost host = null;
+	public RyansCookRole cook = null;
+	private RyansCashier cashier = null;
 	
 	private enum CustomerState {waiting, seated, readyToOrder, ordering, askedToOrder, ordered, orderOut, waitingForOrder, OrderReady, eating, billReady, billed, leaving,  done};
 	private enum AgentState {outSide, atTable, atCook, atCounter, atCashier, none, atHome};
@@ -40,7 +40,7 @@ public class WaiterAgent extends Agent implements Waiter {
 	private Timer timer = new Timer();
 	
 	
-	public WaiterAgent(String name, Host host, CookAgent cook, Cashier cashier) {
+	public RyansWaiterRole(String name, RyansHost host, RyansCookRole cook, RyansCashier cashier) {
 		super();
 		this.name = name;
 		this.host = host;
@@ -57,12 +57,12 @@ public class WaiterAgent extends Agent implements Waiter {
 
 	// Messages
 
-	public void msgSitAtTable(Customer cust, int tableNumber) {
+	public void msgSitAtTable(RyansCustomer cust, int tableNumber) {
 		myCustomers.add(new MyCustomer(cust, tableNumber));
 		stateChanged();
 	}
 
-	public void msgReadyToOrder(Customer customer) {
+	public void msgReadyToOrder(RyansCustomer customer) {
 		for(MyCustomer c : myCustomers) {
 			if(c.customer == customer)
 			{
@@ -72,7 +72,7 @@ public class WaiterAgent extends Agent implements Waiter {
 		}
 	}
 	
-	public void msgHereIsMyChoice(Customer customer, String choice) {
+	public void msgHereIsMyChoice(RyansCustomer customer, String choice) {
 		for(MyCustomer c : myCustomers) {
 			if(c.customer == customer)
 			{
@@ -106,7 +106,7 @@ public class WaiterAgent extends Agent implements Waiter {
 		}
 	}
 	
-	public void msgHereIsCheck(Customer cust, double total) {
+	public void msgHereIsCheck(RyansCustomer cust, double total) {
 		for(MyCustomer c : myCustomers) {
 			if(c.customer == cust) {
 				c.bill = total;
@@ -117,7 +117,7 @@ public class WaiterAgent extends Agent implements Waiter {
 		stateChanged();
 	}
 	
-	public void msgDoneEatingLeaving(Customer customer) {
+	public void msgDoneEatingLeaving(RyansCustomer customer) {
 		for(MyCustomer c : myCustomers) {
 			if(c.customer == customer)
 			{
@@ -331,10 +331,10 @@ public class WaiterAgent extends Agent implements Waiter {
 		
 		activity = "Seating " + c.customer;
 		c.customer.msgSitAtTable(cook.getMenu(), cashier);
-		DoSeatCustomer((CustomerAgent) c.customer, c.tableNumber);
+		DoSeatCustomer((RyansCustomerRole) c.customer, c.tableNumber);
 		
 		c.s = CustomerState.seated;
-		activity = "Customer seated.";
+		activity = "RyansCustomer seated.";
 	}
 	
 	private void takeOrder(MyCustomer c) {
@@ -484,7 +484,7 @@ public class WaiterAgent extends Agent implements Waiter {
 		//state=AgentState.atHome;
 	}
 		
-	private void DoSeatCustomer(CustomerAgent customer, int table) {
+	private void DoSeatCustomer(RyansCustomerRole customer, int table) {
 		//Notice how we print "customer" directly. It's toString method will do it.
 		//Same with "table"
 		print("Seating " + customer + " at " + table);
@@ -530,17 +530,17 @@ public class WaiterAgent extends Agent implements Waiter {
 	 */
 	class MyCustomer {
 		public int grillNumber;
-		Customer customer = null;
+		RyansCustomer customer = null;
 		int tableNumber = 0;
 		String choice = null;
 		CustomerState s = null;
 		double bill = 0;
 		
-		MyCustomer(Customer customer) {
+		MyCustomer(RyansCustomer customer) {
 		this.customer = customer;
 		}
 
-		MyCustomer(Customer cust, int tableNumber) {
+		MyCustomer(RyansCustomer cust, int tableNumber) {
 			this.customer = cust;
 			this.tableNumber = tableNumber;
 			this.s = CustomerState.waiting;

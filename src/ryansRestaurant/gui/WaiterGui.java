@@ -1,11 +1,11 @@
 package ryansRestaurant.gui;
 
 
-import ryansRestaurant.CookAgent;
-import ryansRestaurant.CustomerAgent;
+import ryansRestaurant.RyansCookRole;
+import ryansRestaurant.RyansCustomerRole;
 import ryansRestaurant.RyansHostRole;
-import ryansRestaurant.WaiterAgent;
-import ryansRestaurant.interfaces.Customer;
+import ryansRestaurant.RyansWaiterRole;
+import ryansRestaurant.interfaces.RyansCustomer;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -18,7 +18,7 @@ import astar.*;
 
 public class WaiterGui implements Gui {
 
-    private WaiterAgent agent = null;
+    private RyansWaiterRole agent = null;
     private CookGui cook = null;
     private CustomerGui currentCustomer = null;
     
@@ -60,7 +60,7 @@ public class WaiterGui implements Gui {
      */
     public boolean interrupt = false;
     
-    public WaiterGui(WaiterAgent agent, RestaurantGui gui, RestaurantLayout restLayout, AStarTraversal aStar) {
+    public WaiterGui(RyansWaiterRole agent, RestaurantGui gui, RestaurantLayout restLayout, AStarTraversal aStar) {
     	positionMap = new HashMap<Dimension, Dimension>(restLayout.positionMap);
     	this.agent = agent;
     	this.cook = agent.cook.getGui();
@@ -169,7 +169,7 @@ public class WaiterGui implements Gui {
     	
     }
 
-    public void DoBringToTable(CustomerAgent customer, int seatnumber) throws Exception {
+    public void DoBringToTable(RyansCustomerRole customer, int seatnumber) throws Exception {
        
     	Dimension dim = new Dimension(restLayout.tableXYMap.get(seatnumber));
     	customer.getGui().DoGoToCoords(dim);
@@ -194,8 +194,8 @@ public class WaiterGui implements Gui {
     }
     
     
-    public void DoGoToCustomer(Customer cust) throws Exception {
-    	currentCustomer = ((CustomerAgent)cust).getGui();
+    public void DoGoToCustomer(RyansCustomer cust) throws Exception {
+    	currentCustomer = ((RyansCustomerRole)cust).getGui();
     	doGoToCustomerUtility();
 //    	try {
 //			sem.acquire();

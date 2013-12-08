@@ -1,6 +1,6 @@
 package ryansRestaurant.gui;
 
-import ryansRestaurant.CustomerAgent;
+import ryansRestaurant.RyansCustomerRole;
 import ryansRestaurant.RyansHostRole;
 
 import java.awt.*;
@@ -8,7 +8,7 @@ import java.util.concurrent.Semaphore;
 
 public class CustomerGui implements Gui{
 
-	private CustomerAgent agent = null;
+	private RyansCustomerRole agent = null;
 	private boolean isPresent = false;
 	private boolean isHungry = false;
 	
@@ -35,7 +35,7 @@ public class CustomerGui implements Gui{
 	RestaurantLayout layout = null;
 
 
-	public CustomerGui(CustomerAgent c, RestaurantGui gui){ //RyansHostRole m) {
+	public CustomerGui(RyansCustomerRole c, RestaurantGui gui){ //RyansHostRole m) {
 		agent = c;
 		xPos = -40;
 		yPos = -40;

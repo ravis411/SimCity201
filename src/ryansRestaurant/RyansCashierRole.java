@@ -1,22 +1,24 @@
 package ryansRestaurant;
 
+import Person.Role.ShiftTime;
 import agent.Agent;
+import interfaces.generic_interfaces.GenericCashier;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import ryansRestaurant.interfaces.Cashier;
-import ryansRestaurant.interfaces.Customer;
-import ryansRestaurant.interfaces.Market;
-import ryansRestaurant.interfaces.Waiter;
+import ryansRestaurant.interfaces.RyansCashier;
+import ryansRestaurant.interfaces.RyansCustomer;
+import ryansRestaurant.interfaces.RyansMarket;
+import ryansRestaurant.interfaces.RyansWaiter;
 import ryansRestaurant.test.mock.EventLog;
 import ryansRestaurant.test.mock.LoggedEvent;
 
 /**
- * Restaurant Cashier Agent
+ * Restaurant RyansCashier Agent
  */
 
-public class CashierAgent extends Agent implements Cashier {
+public class RyansCashierRole extends GenericCashier implements RyansCashier {
 	
 		
 	private String name;
@@ -39,8 +41,8 @@ public class CashierAgent extends Agent implements Cashier {
 	
 	private List<MarketBill> marketBills = Collections.synchronizedList(new LinkedList<MarketBill>());
 	
-	public CashierAgent(String name) {
-		super();
+	public RyansCashierRole(String name, String workplace) {
+		super(workplace);
 
 		this.name = name;
 
@@ -53,7 +55,7 @@ public class CashierAgent extends Agent implements Cashier {
 
 	// Messages
 
-	public void msgComputeBill(Waiter waiter, String choice, Customer customer) {
+	public void msgComputeBill(RyansWaiter waiter, String choice, RyansCustomer customer) {
 		log.add(new LoggedEvent("Received msgComputeBill"));
 		synchronized (orders) {
 			if(!orders.isEmpty()) {
@@ -76,7 +78,7 @@ public class CashierAgent extends Agent implements Cashier {
 
 	
 	
-	public void msgHereIsPayment(double cash, Customer cust) {
+	public void msgHereIsPayment(double cash, RyansCustomer cust) {
 		log.add(new LoggedEvent("Recieved msgHereIsPayment: " + cash));
 		synchronized (orders) {
 		for(Order o : orders) {
@@ -92,7 +94,7 @@ public class CashierAgent extends Agent implements Cashier {
 	
 	
 	//msg from market for cashier to pay market bill
-	public void msgMarketBill(Market market, double total) {
+	public void msgMarketBill(RyansMarket market, double total) {
 		log.add(new LoggedEvent("Received msgMarketBill " + market + " total = " + total));
 		synchronized (marketBills) {
 			if(!marketBills.isEmpty()) {
@@ -240,15 +242,15 @@ public class CashierAgent extends Agent implements Cashier {
 	
 	
 	class Order {
-		Waiter waiter;
-		Customer customer;
+		RyansWaiter waiter;
+		RyansCustomer customer;
 		String choice;
 		double total = 0;
 		double paid = 0;
 		double change = 0;
 		BillState state = BillState.newBill;
 		
-		Order(Waiter waiter, Customer customer, String choice) {
+		Order(RyansWaiter waiter, RyansCustomer customer, String choice) {
 			this.waiter = waiter;
 			this.customer = customer;
 			this.choice = choice;
@@ -256,12 +258,46 @@ public class CashierAgent extends Agent implements Cashier {
 	}
 	
 	class MarketBill {
-		Market market;
+		RyansMarket market;
 		double total = 0;
-		public MarketBill(Market market, double total) {
+		public MarketBill(RyansMarket market, double total) {
 			this.market = market;
 			this.total = total;
 		}
+	}
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public boolean pickAndExecuteAction() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

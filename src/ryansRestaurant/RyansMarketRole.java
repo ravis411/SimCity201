@@ -6,14 +6,14 @@ import java.awt.Dimension;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
-import ryansRestaurant.interfaces.Cashier;
-import ryansRestaurant.interfaces.Market;
+import ryansRestaurant.interfaces.RyansCashier;
+import ryansRestaurant.interfaces.RyansMarket;
 
 /**
- * Restaurant Market Agent
+ * Restaurant RyansMarket Agent
  */
 
-public class MarketAgent extends Agent implements Market{
+public class RyansMarketRole extends Agent implements RyansMarket{
 	
 	private List<MyOrder> orders = (new ArrayList<MyOrder>());
 	
@@ -26,7 +26,7 @@ public class MarketAgent extends Agent implements Market{
 	private Map<String, Food> inventory = (new HashMap<String, Food>());
 	
 	
-	public MarketAgent(String name) {
+	public RyansMarketRole(String name) {
 		super();
 
 		this.name = name;
@@ -43,11 +43,11 @@ public class MarketAgent extends Agent implements Market{
 	
 	//from cashier agent
 	//markets are rich...we dont care about money...but thanks
-	public void msgHereIsPayment(Cashier cashier, double total) {
+	public void msgHereIsPayment(RyansCashier cashier, double total) {
 		print("" + cashier + "paid " + total);	
 	}
 	
-	public void msgOrder(List<MarketOrder> order, CookAgent cook, Cashier cashier) {
+	public void msgOrder(List<MarketOrder> order, RyansCookRole cook, RyansCashier cashier) {
 		MyOrder o = new MyOrder();
 		
 		o.cook = cook;
@@ -228,8 +228,8 @@ public class MarketAgent extends Agent implements Market{
 	 * 
 	 */
 	class MyOrder {
-		CookAgent cook;
-		Cashier cashier;
+		RyansCookRole cook;
+		RyansCashier cashier;
 		List<MarketOrder> order;
 		OrderState state;
 	}
