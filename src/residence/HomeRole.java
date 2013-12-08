@@ -456,12 +456,12 @@ public class HomeRole extends Role implements Home {
 			}
 		},
 		10000);
-//		timer.schedule(new TimerTask() {
-//			public void run() {
-//				gui.hostingParty = false;
-//			}
-//		},
-//		5000);
+		timer.schedule(new TimerTask() {
+			public void run() {
+				gui.hostingParty = false;
+			}
+		},
+		20000);
 	}
 
 	//utilities
