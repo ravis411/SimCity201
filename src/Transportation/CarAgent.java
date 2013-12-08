@@ -16,30 +16,16 @@ public class CarAgent extends Agent implements Car{
 		state = CarState.parked;
 		this.name = name;
 		
-		AStarTraversal ct = new VehicleAStarTraversal(SetUpWorldFactory.layout.getAgentGrid(), SetUpWorldFactory.layout.getRoadGrid());
-		CarVehicleGui carGui = new CarVehicleGui( this, SetUpWorldFactory.layout, ct, SetUpWorldFactory.locationMap);
-		this.setGui(carGui);
-		SetUpWorldFactory.cityPanel.addGui(carGui);
-		this.startThread();
 		
-	}
-	/**
-	 * Default Constructor
-	 */
-	public CarAgent(String name){
-		super();
-		this.name = name;
-		state = CarState.parked;
-		
-		AStarTraversal ct = new VehicleAStarTraversal(SetUpWorldFactory.layout.getAgentGrid(), SetUpWorldFactory.layout.getRoadGrid());
-		CarVehicleGui carGui = new CarVehicleGui( this, SetUpWorldFactory.layout, ct, SetUpWorldFactory.locationMap);
-		this.setGui(carGui);
-		SetUpWorldFactory.cityPanel.addGui(carGui);
+		this.setGui(new CarVehicleGui(this));
 		this.startThread();
 		
 	}
 	
-		
+	
+	
+	
+	
 	//Data
 	String name = null;
 	private CarVehicleGui agentGui = null;

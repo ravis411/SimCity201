@@ -755,6 +755,12 @@ public class SetUpWorldFactory{
 		addLocationToMap(info);
 	}
 
+	
+	/** This can be used to add LocationInfos to the city. 
+	 * MUST be called BEFORE addPerson and addVehicle of any agent GUIs
+	 * 
+	 * @param location
+	 */
 	public void addLocationToMap(LocationInfo location){
 		if(location == null)
 			return;
