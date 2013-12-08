@@ -29,6 +29,7 @@ public abstract class Employee extends Role{
 	public String getWorkLocation(){
 		return workLocation;
 	}
+	public abstract void workplaceIsOpen();
 	
 	/**
 	 * Mutator for the Work Location
