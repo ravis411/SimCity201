@@ -34,6 +34,8 @@ public class MarketManagerRole extends Role implements MarketManager{
 	List<Order> myOrders = new ArrayList<Order>();
 	private Semaphore atDesk = new Semaphore(0,false);
 	private Semaphore atTruck = new Semaphore(0,false);
+	private Semaphore truckAvailable = new Semaphore(0,false);
+	private Semaphore atTruckAtDestination = new Semaphore(0,false);
 	MarketManagerGui gui;
 	int marketMoney;
 	int orderNum=0;
@@ -134,22 +136,17 @@ public class MarketManagerRole extends Role implements MarketManager{
 	public void msgMarketEmployeeAtTruck(){
 		atTruck.release();
 	}
-	
-	
-	/*
-	msgMarketManagerFoodOrder(String foodType, int amount, BankManager bankManager)
-	{
-		myOrders.add(new Order(foodType, amount, bankManager);
+
+	public void msgDeliveryTruckAtDestination() {
+		atTruckAtDestination.release();
+	}
+
+
+	public void msgDeliveryTruckBackAtMarket() {
+		truckAvailable.release();
 	}
 	
-	
-	
-	msgMarketManagerHereIsPayment(int moneyPayment)
-	{
-		marketMoney= marketMoney+moneyPayment;
-	}
-	
-*/
+
 
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
@@ -267,7 +264,12 @@ public class MarketManagerRole extends Role implements MarketManager{
 						ck.msgOrderFilled(myOrders.get(i).getNumberThatIsAssociatedWithFoodsMenuNumber()
 								,myOrders.get(i).getAmountReadyToBeShipped());
 						AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "Market sending full order of "+myOrders.get(i).getAmountReadyToBeShipped()+" "+ (myOrders.get(i).getFoodType()));
-						deliveryTruck.msgNewDestination("Food Court");
+						deliveryTruck.msgNewDestination("Food Court",this);
+						try {
+							atTruck.acquire();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 						myOrders.get(i).setState(Order.OrderState.delivered);
 
 					}
@@ -275,7 +277,7 @@ public class MarketManagerRole extends Role implements MarketManager{
 						ck.msgOrderPartiallyFilled(myOrders.get(i).getNumberThatIsAssociatedWithFoodsMenuNumber()
 								,myOrders.get(i).getAmountReadyToBeShipped());
 						AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "Market sending partial order of "+myOrders.get(i).getAmountReadyToBeShipped()+" "+ (myOrders.get(i).getFoodType()));
-						deliveryTruck.msgNewDestination("Food Court");
+						deliveryTruck.msgNewDestination("Food Court",this);
 						myOrders.get(i).setState(Order.OrderState.delivered);
 
 					}
@@ -446,6 +448,8 @@ public class MarketManagerRole extends Role implements MarketManager{
 		}
 		
 		}
+
+
 
 
 

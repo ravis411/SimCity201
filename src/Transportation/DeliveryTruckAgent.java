@@ -1,15 +1,17 @@
 package Transportation;
 
+import gui.agentGuis.TruckVehicleGui;
+import interfaces.MarketDeliveryTruck;
+import interfaces.MarketManager;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
 import trace.AlertLog;
 import trace.AlertTag;
 import agent.Agent;
-import gui.agentGuis.TruckVehicleGui;
-import interfaces.Car;
 
-public class DeliveryTruckAgent extends Agent implements Car{
+public class DeliveryTruckAgent extends Agent implements MarketDeliveryTruck{
 	
 	
 	/** Constructor for Delivery Truck
@@ -36,7 +38,7 @@ public class DeliveryTruckAgent extends Agent implements Car{
 	private Queue<String> destination = new LinkedList<>(); 
 	private CarState state;
 	public enum CarState {parked, driving, atDestination};
-	
+	private MarketManager marketManager;
 	
 	//Messages
 	
@@ -44,9 +46,10 @@ public class DeliveryTruckAgent extends Agent implements Car{
 	/** Will add the destination to the queue of places to go.
 	 * 
 	 */
-	public void msgNewDestination(String destination) {
+	public void msgNewDestination(String destination, MarketManager marketManager) {
 		this.destination.offer(destination);
 		this.state = CarState.driving;
+		this.marketManager=marketManager;
 		stateChanged();
 	}
 	
@@ -59,6 +62,10 @@ public class DeliveryTruckAgent extends Agent implements Car{
 			goToDestination();
 			return true;
 		}
+		if (state == CarState.parked) {
+			tellManagerTruckAvailable();
+			return true;
+		}
 		if (state == CarState.atDestination){
 			
 			goHome();
@@ -69,6 +76,12 @@ public class DeliveryTruckAgent extends Agent implements Car{
 	}
 	
 	//Actions
+	private void tellManagerTruckAvailable() {
+		marketManager.msgDeliveryTruckBackAtMarket();
+		
+	}
+
+
 	private void goToDestination() {
 		
 		if(destination.size() == 0){
@@ -82,10 +95,12 @@ public class DeliveryTruckAgent extends Agent implements Car{
 		
 		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Going to " + dest );
 		agentGui.DoGoTo(dest);
+		marketManager.msgDeliveryTruckAtDestination();
 		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Arrived at " + dest);
+		
 		state = CarState.atDestination;
 	}
-	
+
 	private void goHome(){
 		String dest;
 		dest = homeMarket;
@@ -93,6 +108,7 @@ public class DeliveryTruckAgent extends Agent implements Car{
 		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Going to " + dest );
 		agentGui.DoGoTo(dest);
 		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Arrived at " + dest);
+		marketManager.msgDeliveryTruckBackAtMarket();
 		state = CarState.parked;
 	}
 	
@@ -116,5 +132,10 @@ public class DeliveryTruckAgent extends Agent implements Car{
 	public String getName(){
 		return name;
 	}
-	
+
+
+
+
+
+
 }
