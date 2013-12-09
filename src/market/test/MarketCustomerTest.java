@@ -114,7 +114,7 @@ public class MarketCustomerTest extends TestCase
 	public void testTwoCustomerScenarioWithPartialOrderInstockAndPartialOrderISAcceptable()
 	{
 		//setUp() runs first before this test!
-		SimCity201Gui gui = new SimCity201Gui();
+		SimCity201Gui gui = new SimCity201Gui("Default");
 		customer.willTakePartialOrder=true;
 		
 		

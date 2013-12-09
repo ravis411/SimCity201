@@ -1,5 +1,7 @@
 package restaurant.luca;
 
+import interfaces.generic_interfaces.GenericCashier;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,7 +15,7 @@ import restaurant.interfaces.luca.LucaMarket;
 import restaurant.interfaces.luca.LucaWaiter;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
-import Person.Role.Role;
+import Person.Role.ShiftTime;
 
 
 /**
@@ -23,12 +25,10 @@ import Person.Role.Role;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class LucaCashierRole extends Role implements LucaCashier {
+public class LucaCashierRole extends GenericCashier implements LucaCashier {
 	
 	public List<Tab> Tabs
 	= Collections.synchronizedList(new ArrayList<Tab>());
-
-	private String name;
 
 	private LucaWaiter waiter;
 	public Vector<MarketBill> marketBills = new Vector<MarketBill>();
@@ -40,8 +40,8 @@ public class LucaCashierRole extends Role implements LucaCashier {
 	public AgentEvent event = AgentEvent.none;
 	public int restaurantMoney=0;
 	
-	public LucaCashierRole(String s){
-		name=s;
+	public LucaCashierRole(String restLocation){
+		super(restLocation);
 		menu= new HashMap<String, Integer>();
 		
 		menu.put("Steak",  20);
@@ -52,7 +52,7 @@ public class LucaCashierRole extends Role implements LucaCashier {
 	}
 
 	public String getName() {
-		return name;
+		return myPerson.getName();
 	}
 
 
@@ -355,6 +355,18 @@ public class LucaCashierRole extends Role implements LucaCashier {
 
 	@Override
 	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
 		// TODO Auto-generated method stub
 		return null;
 	}

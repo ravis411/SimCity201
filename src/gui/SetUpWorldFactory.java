@@ -29,10 +29,20 @@ import gui.agentGuis.PersonGui;
 import gui.agentGuis.VehicleGui;
 
 import java.awt.Dimension;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import residence.HomeRole;
 import trace.AlertLog;
@@ -217,8 +227,7 @@ public class SetUpWorldFactory{
 		location.entranceFromRoadGrid = new Dimension(29, 12);
 				location.positionToEnterFromRoadGrid = new Dimension(29, 11);
 				layout.addDriveway(28, 10, 2, 2);
-		addBuilding("Luca's Restaurant", "Restaurant 3", 28, 12, 2, 2, location);
-		//addBuilding("Default", "Default", 28, 12, 2, 2, location);
+		addBuilding("Default", "Default 1", 28, 12, 2, 2, location);
 		//file reading
 //		try {
 //			File fXmlFile = new File("scenario1.xml");
@@ -331,6 +340,7 @@ public class SetUpWorldFactory{
 			addPerson("Person 10", buildingsPanels.getResidenceBuildingPanel("Apartment 9"));
 			addPerson("Person 11", buildingsPanels.getResidenceBuildingPanel("Apartment 10"));
 			addPerson("Person 12", buildingsPanels.getResidenceBuildingPanel("Apartment 11"));
+			addPerson("Person 13", buildingsPanels.getResidenceBuildingPanel("Apartment 12"));
 			
 			//Need to add people to the GUI controls here as well; 
 			controls.addPerson(agents.get(0));
@@ -346,7 +356,7 @@ public class SetUpWorldFactory{
 			controls.addPerson(agents.get(10));
 			controls.addPerson(agents.get(11));
 
-			//addPerson("Person 13", buildingsPanels.getResidenceBuildingPanel("Apartment 12"));
+		
 			//addPerson("Person 14", buildingsPanels.getResidenceBuildingPanel("Apartment 13"));
 			//addPerson("Person 15", buildingsPanels.getResidenceBuildingPanel("Apartment 14"));
 //			addPerson("Person 14", buildingsPanels.getResidenceBuildingPanel("Apartment 13"));
@@ -492,10 +502,13 @@ public class SetUpWorldFactory{
 				p1.setInitialRole(new HomeRole(p1), p1.home.getName());
 				break;
 			case "Person 11":
-				p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_COOK_ROLE, "Restaurant 3"), "Restaurant 3");
+				p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_LUCA_COOK_ROLE, "Luca's Restaurant"), "Luca's Restaurant");
 				break;
 			case "Person 12":
-				
+				p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_LUCA_HOST_ROLE, "Luca's Restaurant"), "Luca's Restaurant");
+				break;
+			case "Person 13":
+				p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_LUCA_WAITER_ROLE, "Luca's Restaurant"), "Luca's Restaurant");
 				break;
 			default:
 				break;
@@ -773,5 +786,101 @@ public class SetUpWorldFactory{
 		}
 		locationMap.add(new LocationInfo(location));
 	}
-	
+
+	public void loadXMLFile(String filepath){
+		try{
+			File xmlFile = new File(this.getClass().getResource(filepath).toURI());
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(xmlFile);
+			//setup the document for easier reading
+			doc.getDocumentElement().normalize();
+			NodeList masterList = doc.getDocumentElement().getChildNodes();
+			for(int i = 0; i < masterList.getLength(); i++){
+				Node iNode = masterList.item(i);
+				if(iNode.getNodeType() == Node.ELEMENT_NODE){
+					Element iElement = (Element) iNode;
+					switch(iElement.getNodeName()){
+						case Config.PERSON_NODE:
+							//get attributes
+							String iName = null, iHome = null, iJob = null, iLocation = null;
+							String iShift = null;
+							boolean iHasCar = false;
+					
+							NamedNodeMap iMap = iElement.getAttributes();
+							for(int j = 0; j < iMap.getLength(); j++){
+								Node jNode = iMap.item(j);
+								switch(jNode.getNodeName()){
+									case Config.NAME_ATTRIBUTE:
+										iName = jNode.getNodeValue();
+										break;
+									case Config.HOME_ATTRIBUTE:
+										iHome = jNode.getNodeValue();
+										break;
+									case Config.JOB_ATTRIBUTE:
+										iJob = jNode.getNodeValue();
+										break;
+									case Config.LOCATION_ATTRIBUTE:
+										iLocation = jNode.getNodeValue();
+										break;
+									case Config.CAR_ATTRIBUTE:
+										iHasCar = Boolean.parseBoolean(jNode.getNodeValue());
+									case Config.SHIFT_ATTRIBUTE:
+										iShift = jNode.getNodeValue();
+										break;
+								}
+							}
+							
+							System.out.println("Person Name="+iName+", Home="+iHome+", Job="+iJob+
+									", Location="+iLocation+", HasCar="+iHasCar);
+							//get children
+							NodeList personChildren = iElement.getChildNodes();
+							for(int j = 0; j < personChildren.getLength(); j++){
+								Node jNode = personChildren.item(j);
+								if(jNode.getNodeType() == Node.ELEMENT_NODE){
+									Element jElement = (Element) jNode;
+									//get attributes
+									String jName = null;
+									//get children
+									switch(jElement.getNodeName()){
+										
+										case Config.FRIENDS_NODE:
+											//get attributes
+											//get children
+											NodeList jChildren = jElement.getChildNodes();
+											for(int k = 0; k < jChildren.getLength(); k++){
+												Node kNode = jChildren.item(k);
+												if(kNode.getNodeType() == Node.ELEMENT_NODE){
+													Element kElement = (Element) kNode;
+													switch(kNode.getNodeName()){
+														case Config.FRIEND_NODE:
+															//get attributes
+															String kName = null;
+															NamedNodeMap kMap = kElement.getAttributes();
+															for(int l = 0; l < kMap.getLength(); l++){
+																Node lNode = kMap.item(l);
+																switch(lNode.getNodeName()){
+																	case Config.NAME_ATTRIBUTE:
+																		kName = lNode.getNodeValue();
+																		break;
+																}
+															}
+															System.out.println("\t"+kName);
+															break;
+													}
+												}
+											}
+									}
+									
+								}
+							}
+							break;
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 }
