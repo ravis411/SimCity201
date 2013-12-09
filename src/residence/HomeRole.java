@@ -191,6 +191,7 @@ public class HomeRole extends Role implements Home {
 	public boolean pickAndExecuteAction() {
 		if(partyInvitees.size() > 0 && partyState == PartyState.resendInvites) {
 			resendInvites();
+			partyState=PartyState.none;
 			return true;
 		}
 		if(partyState == PartyState.host) {

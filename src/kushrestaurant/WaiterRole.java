@@ -25,7 +25,7 @@ import kushrestaurant.interfaces.Customer;
 import kushrestaurant.interfaces.Waiter;
 
 
-public class WaiterRole extends GenericWaiter implements Waiter{
+public abstract class WaiterRole extends GenericWaiter implements Waiter{
 	
 	public List<MyCustomer> customers=new ArrayList<MyCustomer>();
 	public Collection<Table> tables;
@@ -78,7 +78,7 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 	}*/
 	
 	
-	public WaiterRole(String workLocation){
+	protected WaiterRole(String workLocation){
 		super(workLocation);
 	}
 

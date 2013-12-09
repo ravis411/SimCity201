@@ -394,6 +394,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 					for(PersonAgent pa:friends){
 						if(pa==p.getHost()){
 							rsvpYes(pa,p);	
+							//return true;
 						}
 						else{
 							rsvpNo(pa,p);
@@ -650,8 +651,8 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			r.activate();
 	}
 	private void rsvpYes(PersonAgent pa, Party p){
-		pa.msgIAmComing(this);
 		p.partyState=PartyState.GoingToParty;
+		pa.msgIAmComing(this);
 		MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY), p.dateOfParty.get(Calendar.MINUTE), this);
 		
 	}
