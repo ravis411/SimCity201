@@ -1,5 +1,8 @@
 package Transportation;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import trace.AlertLog;
 import trace.AlertTag;
 import agent.Agent;
@@ -7,11 +10,15 @@ import gui.agentGuis.TruckVehicleGui;
 import interfaces.Car;
 
 public class DeliveryTruckAgent extends Agent implements Car{
+	
+	
+	/** Constructor for Delivery Truck
+	 * 
+	 * @param name
+	 */
 	public DeliveryTruckAgent(String name) {
-		destination = "N/A";
 		state = CarState.parked;
 		this.name = name;
-		
 		
 		this.setGui(new TruckVehicleGui(name));
 		this.startThread();
@@ -22,7 +29,7 @@ public class DeliveryTruckAgent extends Agent implements Car{
 	String name = null;
 	private TruckVehicleGui agentGui = null;
 	
-	private String destination = new String(); 
+	private Queue<String> destination = new LinkedList<>(); 
 	private CarState state;
 	public enum CarState {parked, driving};
 	
@@ -30,7 +37,7 @@ public class DeliveryTruckAgent extends Agent implements Car{
 	//Messages
 	
 	public void msgNewDestination(String destination) {
-		this.destination = destination;
+		this.destination.offer(destination);
 		this.state = CarState.driving;
 		stateChanged();
 	}
@@ -50,8 +57,15 @@ public class DeliveryTruckAgent extends Agent implements Car{
 	
 	//Actions
 	private void goToDestination() {
+		if(destination.size() == 0){
+			state = CarState.parked;
+			return;
+		}
 		
-		agentGui.DoGoTo(destination);
+		String dest;
+		dest = destination.poll();
+		
+		agentGui.DoGoTo(dest);
 		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Arrived at " + destination);
 		
 	}
