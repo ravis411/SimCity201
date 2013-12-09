@@ -427,7 +427,7 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 	@Override
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
-		return null;
+		return "Ryan's Host";
 	}
 }
 
