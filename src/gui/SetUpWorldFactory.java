@@ -838,6 +838,29 @@ public class SetUpWorldFactory{
 		locationMap.add(new LocationInfo(location));
 	}
 	
+	public static void addPerson(String name, String residenceName, String initialRole){
+		try{
+			PersonAgent person = new PersonAgent(name, buildingsPanels.getResidenceBuildingPanel(residenceName));
+			
+			if(initialRole == null){
+				//person.setInitialRole(RoleFactory.roleFromString(Role.HOME_ROLE), iHome);
+			}else {
+				Class e = Employee.class;
+				Class c = Class.forName(initialRole);
+				if(e.isAssignableFrom(c)){
+					person.setInitialRole(RoleFactory.employeeFromString(initialRole, initialRole), initialRole);
+				}else{
+					person.setInitialRole(RoleFactory.roleFromString(initialRole), initialRole);
+				}
+			}
+			
+			person.startThread();
+			agents.add(person);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
 	private class MyPerson {
 		PersonAgent person;
 		ArrayList<String> friends;
