@@ -91,6 +91,8 @@ public class RyansRestaurantAnimationPanel extends JPanel implements MouseListen
 
     private List<Gui> guis = new ArrayList<Gui>();
     protected RyansHostRole host = null;
+    protected RyansCashierRole cashier = null;
+    protected RyansCookRole cook = null;
     
     public void setHost(RyansHostRole host) {
     	this.host = host;
@@ -289,8 +291,12 @@ public class RyansRestaurantAnimationPanel extends JPanel implements MouseListen
 			CookGui gui = new CookGui(cr, this.gui);
 			cr.setGui(gui);
 			guis.add(gui);
+			cook = cr;
+			this.gui.restPanel.setRyansCookRole(cook);
 		}else if(r instanceof RyansCashierRole){
 			//CashierRole cr = (CashierRole) r;
+			cashier = (RyansCashierRole) r;
+			gui.restPanel.setRyansCashierRole(cashier);
 		}else if(r instanceof RyansWaiterRole){
 			RyansWaiterRole wr = (RyansWaiterRole) r;
 			WaiterGui gui = new WaiterGui(wr, this.gui, this.gui.layout, new AStarTraversal(this.gui.restPanel.grid) );
