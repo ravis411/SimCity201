@@ -36,7 +36,7 @@ public class Restaurant extends Building implements Workplace {
 		// TODO Auto-generated method stub
 		boolean hasHost = false, hasCook = false, hasWaiter = false, hasCashier = false;
 		for(Role r : inhabitants){
-			if(r instanceof HostRole){
+			if(r instanceof GenericHost){
 				hasHost = true;
 			}else if(r instanceof GenericCook){
 				hasCook = true;
