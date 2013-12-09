@@ -4,6 +4,7 @@ package restaurant.test.mock;
 import interfaces.Cashier;
 import interfaces.Customer;
 import interfaces.Waiter;
+import interfaces.generic_interfaces.GenericWaiter;
 import restaurant.Menu;
 import restaurant.RestaurantCustomerRole.AgentEvent;
 import restaurant.RestaurantCustomerRole.AgentState;
@@ -109,11 +110,7 @@ public class MockCustomer extends Mock implements Customer {
 			// TODO Auto-generated method stub
 			
 		}
-		@Override
-		public void setWaiter(Waiter waiter) {
-			// TODO Auto-generated method stub
-			
-		}
+
 		@Override
 		public void setTableX(int xCoor) {
 			// TODO Auto-generated method stub
@@ -136,6 +133,11 @@ public class MockCustomer extends Mock implements Customer {
 		}
 		@Override
 		public void msgRestaurantFull() {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void setWaiter(GenericWaiter waiter) {
 			// TODO Auto-generated method stub
 			
 		}
