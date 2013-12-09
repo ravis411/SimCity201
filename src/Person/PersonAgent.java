@@ -868,7 +868,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	}
 	
 	public void homeThrowParty() {
-		HomeRole role = (HomeRole) findRole("HomeRole");
+		HomeRole role = (HomeRole) findRole(Role.HOME_ROLE);
 		role.msgThrowParty();
 	}
 	
