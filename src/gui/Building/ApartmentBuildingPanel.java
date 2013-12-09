@@ -10,6 +10,8 @@ import interfaces.GuiPanel;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import Person.Role.Role;
 
@@ -27,6 +29,7 @@ public class ApartmentBuildingPanel extends BuildingPanel{
 	public SimCityLayout layout;
 	public SetUpWorldFactory factory;
 	public static int APARTMENT_NUMBER = 1;
+	private List<String> nameList = new ArrayList<String>();
 	
 	public ApartmentBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels, SetUpWorldFactory factory, LocationInfo locationInfo) {
 		super(r, name, buildingPanels);
@@ -111,9 +114,14 @@ public class ApartmentBuildingPanel extends BuildingPanel{
 		//info.name = name;
 		//locationMap.add(new LocationInfo(info));
 		}
+		nameList.add(name);
 	}
 
 
+	public List<String> getNameList() {
+		return nameList;
+	}
+	
 	@Override
 	public void addPersonWithRole(Role r) {
 		// TODO Auto-generated method stub
