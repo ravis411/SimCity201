@@ -25,8 +25,8 @@ import gui.Building.restaurants.RyansRestaurantBuilding;
 import gui.Building.restaurants.RyansRestaurantBuildingPanel;
 import gui.MockAgents.PseudoBusAgent;
 import gui.MockAgents.PseudoPerson;
-import gui.agentGuis.DeadCarAgent;
-import gui.agentGuis.DeadPersonGui;
+import gui.agentGuis.DrunkDriverAgent;
+import gui.agentGuis.DrunkPersonGui;
 import gui.agentGuis.PersonGui;
 import gui.agentGuis.BusGui;
 
@@ -442,7 +442,7 @@ public class SetUpWorldFactory{
                                 
                                 @Override
                                 public void run() {
-                                        DeadPersonGui ddp = new DeadPersonGui("AAAAaaaahhhhAAaaaa");
+                                        DrunkPersonGui ddp = new DrunkPersonGui("AAAAaaaahhhhAAaaaa");
                                         ddp.DoGetHitByCar();
                                 }
                         }, 1500);
@@ -451,8 +451,8 @@ public class SetUpWorldFactory{
                             
                             @Override
                             public void run() {
-                                    DeadCarAgent dca = new DeadCarAgent("LIKE OMG");
-                                  	dca.msgGoTo("Food Court");
+                                    DrunkDriverAgent dca = new DrunkDriverAgent("LIKE OMG");
+                                  	dca.msgGoTo("Bus Stop 5");
                                   	dca.msgRunIntoTheRoad();
                             }
                     }, 1500);

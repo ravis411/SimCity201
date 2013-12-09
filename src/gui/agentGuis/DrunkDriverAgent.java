@@ -1,5 +1,7 @@
 package gui.agentGuis;
 
+import trace.AlertLog;
+import trace.AlertTag;
 import agent.Agent;
 
 
@@ -9,11 +11,11 @@ import agent.Agent;
  * @author Ryan
  *
  */
-public class DeadCarAgent extends Agent{
+public class DrunkDriverAgent extends Agent{
 
 	
 	
-	public DeadCarAgent(String name) {
+	public DrunkDriverAgent(String name) {
 		this.name = name;
 		agentGui = new DeadCarVehicleGui(name);
 		this.startThread();
@@ -51,7 +53,7 @@ public class DeadCarAgent extends Agent{
 			DoGoTo(destination);
 		}
 		if(state == AgentState.spazzing){
-			DoGoGetKilled();
+			DoDrunkDrive();
 			return true;
 		}
 		if(state == AgentState.dead){
@@ -64,9 +66,12 @@ public class DeadCarAgent extends Agent{
 
 	
 	//Actions
-	private void DoGoGetKilled(){
+	private void DoDrunkDrive(){
 		state = AgentState.dead;
-		agentGui.DoGetHitByCar();
+		agentGui.DoDrunkDrive();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {	}
 	}
 	
 	private void TeleportToDestination(String destination){
@@ -75,7 +80,7 @@ public class DeadCarAgent extends Agent{
 	}
 	
 	private void DoGoTo(String destination){
-		
+		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Drrrrvng to " + destination);
 		agentGui.DoGoTo(destination);
 		if(this.destination.equals(destination)){
 			goTo = false;
