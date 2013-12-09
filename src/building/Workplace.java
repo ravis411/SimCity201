@@ -2,16 +2,21 @@ package building;
 
 import gui.Building.BuildingPanel;
 
-public interface Workplace{
+public abstract class Workplace extends Building{
 	
-	int DAY_SHIFT_HOUR = 9;
-	int DAY_SHIFT_MIN = 0;
+	protected Workplace(BuildingPanel panel) {
+		super(panel);
+		// TODO Auto-generated constructor stub
+	}
+
+	public static int DAY_SHIFT_HOUR = 9;
+	public static int DAY_SHIFT_MIN = 0;
 	
-	int NIGHT_SHIFT_HOUR = 17;
-	int NIGHT_SHIFT_MIN = 0;
+	public static int NIGHT_SHIFT_HOUR = 17;
+	public static int NIGHT_SHIFT_MIN = 0;
 	
-	int END_SHIFT_HOUR = 0;
-	int END_SHIFT_MIN = 0;
+	public static int END_SHIFT_HOUR = 0;
+	public static int END_SHIFT_MIN = 0;
 	
 	/**
 	 * Message sent to the workplace that it is time to open
