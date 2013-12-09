@@ -527,12 +527,21 @@ public class DeadPersonGui implements Gui {
         else if(hitByCar){
         	g.setColor(Color.RED);
         	g.fillOval(xPos, yPos, width, height);
+        	//This draws the blood spatter
         	for(int x = 0; x < 800; x+=random.nextInt(50)){
         		for(int y = 0; y < 400; y+=random.nextInt(50)){
         			g.fillOval(x, y, 5, 5);
         		}
         	}
-        	if(timeToBeDead <= 20){
+        	
+        	if(timeToBeDead >= 80){
+        		if(width <= 35){
+        			width++;
+        			height++;
+        		}
+        	}
+        	
+        	if(timeToBeDead <= 40){
         	width--;
         	height--;
         	}

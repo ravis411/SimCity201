@@ -25,6 +25,7 @@ import gui.Building.restaurants.RyansRestaurantBuilding;
 import gui.Building.restaurants.RyansRestaurantBuildingPanel;
 import gui.MockAgents.PseudoBusAgent;
 import gui.MockAgents.PseudoPerson;
+import gui.agentGuis.DeadCarAgent;
 import gui.agentGuis.DeadPersonGui;
 import gui.agentGuis.PersonGui;
 import gui.agentGuis.BusGui;
@@ -441,6 +442,16 @@ public class SetUpWorldFactory{
                                         ddp.DoGetHitByCar();
                                 }
                         }, 1500);
+                        
+                        (new Timer()).schedule(new TimerTask() {
+                            
+                            @Override
+                            public void run() {
+                                    DeadCarAgent dca = new DeadCarAgent("LIKE OMG");
+                                  	dca.msgGoTo("Food Court");
+                                  	dca.msgRunIntoTheRoad();
+                            }
+                    }, 1500);
                         
                         
                         
