@@ -167,7 +167,7 @@ public class MarketAnimationPanel extends JPanel implements ActionListener,GuiPa
 			MarketManagerRole marketManagerRole = (MarketManagerRole) r;
 			MarketManagerGui gui = new MarketManagerGui(marketManagerRole);
 			marketManagerRole.setGui(gui);
-			marketManagerRole.setDeliveryTruck(new DeliveryTruckAgent("Delivery Truck"));
+			marketManagerRole.setDeliveryTruck(new DeliveryTruckAgent("Delivery Truck", "Market 1"));
 			marketData.setMarketManager(marketManagerRole);
 			marketManagerRole.setMarketData(marketData);
 			guis.add(gui);

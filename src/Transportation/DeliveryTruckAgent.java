@@ -15,23 +15,27 @@ public class DeliveryTruckAgent extends Agent implements Car{
 	/** Constructor for Delivery Truck
 	 * 
 	 * @param name The name of the truck Truck 1 for example.
+	 * @param marketName The name of the Market Truck belongs to.
 	 */
-	public DeliveryTruckAgent(String name) {
+	public DeliveryTruckAgent(String name, String marketName) {
 		state = CarState.parked;
 		this.name = name;
 		
 		this.setGui(new TruckVehicleGui(name));
+		homeMarket=marketName;
+		agentGui.setCurrentLocation(marketName);
 		this.startThread();
 	}
 	
 	
 	//Data
 	String name = null;
+	String homeMarket;
 	private TruckVehicleGui agentGui = null;
 	
 	private Queue<String> destination = new LinkedList<>(); 
 	private CarState state;
-	public enum CarState {parked, driving};
+	public enum CarState {parked, driving, atDestination};
 	
 	
 	//Messages
@@ -55,6 +59,11 @@ public class DeliveryTruckAgent extends Agent implements Car{
 			goToDestination();
 			return true;
 		}
+		if (state == CarState.atDestination){
+			
+			goHome();
+			return true;
+		}
 
 		return false;
 	}
@@ -74,8 +83,18 @@ public class DeliveryTruckAgent extends Agent implements Car{
 		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Going to " + dest );
 		agentGui.DoGoTo(dest);
 		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Arrived at " + dest);
+		state = CarState.atDestination;
 	}
 	
+	private void goHome(){
+		String dest;
+		dest = homeMarket;
+		
+		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Going to " + dest );
+		agentGui.DoGoTo(dest);
+		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Arrived at " + dest);
+		state = CarState.parked;
+	}
 	
 	
 	
