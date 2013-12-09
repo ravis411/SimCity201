@@ -56,9 +56,9 @@ public class LucaCookRole extends GenericCook implements LucaCook{
 	public LucaCookRole(String restLocation){
 		super(restLocation);
 		marketCurrentlyBeingAskedForFood =0;
-		foodTypes.add(new Food("Steak", 7, 1));//Food type, cooktime, quantity
-		foodTypes.add(new Food("Chicken", 3, 1));//Food type, cooktime, quantity
-		foodTypes.add(new Food("Burger", 5, 1));//Food type, cooktime, quantity
+		foodTypes.add(new Food("Steak", 7, 0));//Food type, cooktime, quantity
+		foodTypes.add(new Food("Chicken", 3, 0));//Food type, cooktime, quantity
+		foodTypes.add(new Food("Burger", 5, 0));//Food type, cooktime, quantity
 		myWaitingOrders = Collections.synchronizedCollection(new ArrayList<Order>());
 		myRejectedOrders = Collections.synchronizedCollection(new ArrayList<Order>());
 	}

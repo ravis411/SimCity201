@@ -1,11 +1,14 @@
 package Person.Role;
 
+import interfaces.MarketManager;
 import interfaces.generic_interfaces.GenericCashier;
 import interfaces.generic_interfaces.GenericCook;
 import interfaces.generic_interfaces.GenericCustomer;
 import interfaces.generic_interfaces.GenericHost;
 import interfaces.generic_interfaces.GenericWaiter;
+import restaurant.luca.LucaCookRole;
 import ryansRestaurant.RyansCookRole;
+import building.Building;
 import building.BuildingList;
 import building.Restaurant;
 
@@ -39,6 +42,20 @@ public class RoleFactory {
 					Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(rcr.getWorkLocation());
 					rcr.setCashier(rest.getCashierRole());
 				}
+				if(gc instanceof LucaCookRole){
+					LucaCookRole lcr = (LucaCookRole) gc;
+				
+					for( Building m : BuildingList.findBuildingsWithType("Market")){
+						for (Role role :m.getInhabitants())
+						{
+							if (role instanceof MarketManager){
+								MarketManager manager = (MarketManager) role;
+								lcr.msgAddMarket(manager);
+								
+							}
+						}
+						}
+				}
 				return gc;
 			}else if(e instanceof GenericCashier){
 				GenericCashier gc = (GenericCashier) e;
@@ -46,7 +63,7 @@ public class RoleFactory {
 			}else{
 				return e;
 			}
-		} catch (Exception e) {
+		}catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
