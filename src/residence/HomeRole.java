@@ -11,7 +11,6 @@ import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
 import residence.gui.HomeRoleGui;
-import residence.test.mock.MockApartmentManager;
 import trace.AlertLog;
 import trace.AlertTag;
 import util.MasterTime;
@@ -536,11 +535,5 @@ public class HomeRole extends Role implements Home {
 			this.name = name;
 			this.quantity = quantity;
 		}
-	}
-
-
-	public void setLandlord(MockApartmentManager manager) {
-		// TODO Auto-generated method stub
-		
 	}
 }
