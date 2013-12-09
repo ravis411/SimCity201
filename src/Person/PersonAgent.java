@@ -362,7 +362,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			hr.partyInvitees.remove((PersonAgent) p);
 		}
 		if(hr.partyInvitees.size()==0 && hr.partyAttendees.size()==0){
-			AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "PARTY CANCELLED SINCE NO ONE IS COMING");
+			AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Cancelling the party since no one is coming.");
 		}
 	}
 	public void msgRespondToInviteUrgently(Person host){
