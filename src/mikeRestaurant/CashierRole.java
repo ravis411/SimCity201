@@ -1,4 +1,6 @@
-package restaurant;
+package mikeRestaurant;
+
+import interfaces.generic_interfaces.GenericCashier;
 
 import java.text.DecimalFormat;
 import java.util.ArrayDeque;
@@ -6,13 +8,13 @@ import java.util.ConcurrentModificationException;
 import java.util.Map;
 import java.util.Queue;
 
-import restaurant.interfaces.Cashier;
-import restaurant.interfaces.Customer;
-import restaurant.interfaces.Market;
-import restaurant.interfaces.Waiter;
-import restaurant.test.mock.EventLog;
-import restaurant.test.mock.LoggedEvent;
-import agent.Agent;
+import Person.Role.ShiftTime;
+import mikeRestaurant.interfaces.Cashier;
+import mikeRestaurant.interfaces.Customer;
+import mikeRestaurant.interfaces.Market;
+import mikeRestaurant.interfaces.Waiter;
+import mikeRestaurant.test.mock.EventLog;
+import mikeRestaurant.test.mock.LoggedEvent;
 
 /**
  * Note that much of this code is public b/c of the tests going on in the CashierTest.java file
@@ -21,7 +23,7 @@ import agent.Agent;
  * @author MSILKJR
  *
  */
-public class CashierAgent extends Agent implements Cashier{
+public class CashierRole extends GenericCashier implements Cashier{
 	
 	//data is public here for TESTING SCENARIOS
 	
@@ -40,7 +42,8 @@ public class CashierAgent extends Agent implements Cashier{
 	/**
 	 * Standard constructor for the cashier, initializes important information
 	 */
-	public CashierAgent(){
+	public CashierRole(String workLocation){
+		super(workLocation);
 		pendingBills = new ArrayDeque<Bill>();
 		pendingTransactions = new ArrayDeque<Transaction>();
 		pendingPayments = new ArrayDeque<Payment>();
@@ -54,7 +57,7 @@ public class CashierAgent extends Agent implements Cashier{
 	 * Name accessor used for print statements
 	 */
 	public String getName(){
-		return "Cashier";
+		return this.myPerson.getName();
 	}
 	
 	//-----------------MESSAGES-----------------//
@@ -97,7 +100,7 @@ public class CashierAgent extends Agent implements Cashier{
 	//-----------------SCHEDULER----------------//
 
 	@Override
-	public boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		// TODO Auto-generated method stub
 		
 		try {
@@ -213,7 +216,7 @@ public class CashierAgent extends Agent implements Cashier{
 		Waiter wtr;
 		
 		public Bill(String choice, Customer cust, Waiter wtr){
-			Map<String, Double> menu = WaiterAgent.MENU();
+			Map<String, Double> menu = WaiterRole.MENU();
 			this.choice = choice;
 			this.cust = cust;
 			this.wtr = wtr;
@@ -253,6 +256,30 @@ public class CashierAgent extends Agent implements Cashier{
 			this.name = name;
 			this.quantity = quantity;
 		}
+	}
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return "MikeCashierRole";
 	}
 
 }

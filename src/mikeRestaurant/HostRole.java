@@ -1,4 +1,7 @@
-package restaurant;
+package mikeRestaurant;
+
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -6,11 +9,11 @@ import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
-import restaurant.gui.HostGui;
-import restaurant.interfaces.Customer;
-import restaurant.interfaces.Host;
-import restaurant.interfaces.Waiter;
-import agent.Agent;
+import mikeRestaurant.gui.HostGui;
+import mikeRestaurant.interfaces.Customer;
+import mikeRestaurant.interfaces.Host;
+import mikeRestaurant.interfaces.Waiter;
+import Person.Role.ShiftTime;
 
 /**
  * Restaurant Host Agent
@@ -19,17 +22,17 @@ import agent.Agent;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class HostAgent extends Agent implements Host{
+public class HostRole extends GenericHost implements Host{
 	private static int NTABLES = 4; //num tables
 
 	private String name;
 	private Semaphore atTable = new Semaphore(0,true);
 	
 	private class MyWaiter {
-		WaiterAgent waiter;
+		WaiterRole waiter;
 		WaiterState state;
 		
-		public MyWaiter(WaiterAgent waiter){
+		public MyWaiter(WaiterRole waiter){
 			this.waiter = waiter;
 			state = WaiterState.Working;
 		}
@@ -45,15 +48,28 @@ public class HostAgent extends Agent implements Host{
 
 	public HostGui hostGui = null;
 
-	/**
-	 * Constructor for HostAgent
-	 * @param name name of host
-	 */
-	public HostAgent(String name) {
-		super();
-
-		this.name = name;
-
+//	/**
+//	 * Constructor for HostAgent
+//	 * @param name name of host
+//	 */
+//	public HostAgent(String name) {
+//		super();
+//
+//		this.name = name;
+//
+//		tables = new ArrayList<Table>();
+//		waiters = new ArrayList<MyWaiter>();
+//		waitingCustomers = new ArrayList<WaitingCustomer>();
+//		
+//		for (int ix = 1; ix <= NTABLES; ix++) {
+//			tables.add(new Table(ix));//how you add to a collections
+//		}
+//	}
+	
+	
+	public HostRole(String workLocation){
+		super(workLocation);
+		
 		tables = new ArrayList<Table>();
 		waiters = new ArrayList<MyWaiter>();
 		waitingCustomers = new ArrayList<WaitingCustomer>();
@@ -75,8 +91,8 @@ public class HostAgent extends Agent implements Host{
 	 * Accessor functino for the list of waiting customers
 	 * @return the list of waiting customers
 	 */
-	public List<CustomerAgent> getWaitingCustomers() {
-		ArrayList<CustomerAgent> agents = new ArrayList<CustomerAgent>();
+	public List<CustomerRole> getWaitingCustomers() {
+		ArrayList<CustomerRole> agents = new ArrayList<CustomerRole>();
 		for(WaitingCustomer cust : waitingCustomers){
 			agents.add(cust.cust);
 		}
@@ -107,20 +123,11 @@ public class HostAgent extends Agent implements Host{
 	}
 	
 	/**
-	 * Message sent to the host from the creation panel to add a waiter
-	 * @param waiter the waiter to add
-	 */
-	public void msgAddWaiter(Waiter waiter){
-		waiters.add(new MyWaiter((WaiterAgent)waiter));
-		stateChanged();
-	}
-	
-	/**
 	 * Message sent to the host by the gui panel when a customer is initially hungry
 	 * @param cust the customer who is hungry
 	 */
 	public void msgIWantToEat(Customer cust) {
-		waitingCustomers.add(new WaitingCustomer((CustomerAgent)cust));
+		waitingCustomers.add(new WaitingCustomer((CustomerRole)cust));
 		stateChanged();
 	}
 
@@ -143,7 +150,7 @@ public class HostAgent extends Agent implements Host{
 	 */
 	public void msgWantToGoOnBreak(Waiter wtr){
 		for(MyWaiter waiter : waiters){
-			if((WaiterAgent)wtr == waiter.waiter){
+			if((WaiterRole)wtr == waiter.waiter){
 				waiter.state = WaiterState.RequestedBreak;
 				stateChanged();
 				return;
@@ -157,7 +164,7 @@ public class HostAgent extends Agent implements Host{
 	 */
 	public void msgOffBreak(Waiter wtr){
 		for(MyWaiter waiter : waiters){
-			if((WaiterAgent)wtr == waiter.waiter){
+			if((WaiterRole)wtr == waiter.waiter){
 				if(waiters.size() != 0){
 					print(wtr.getName() + " is now off break");
 					waiter.state = WaiterState.Working;
@@ -175,7 +182,7 @@ public class HostAgent extends Agent implements Host{
 	 */
 	public void msgIWontWait(Customer sender){
 		for(WaitingCustomer cust : waitingCustomers){
-			if(cust.cust == (CustomerAgent)sender){
+			if(cust.cust == (CustomerRole)sender){
 				waitingCustomers.remove(cust);
 				return;
 			}
@@ -184,7 +191,7 @@ public class HostAgent extends Agent implements Host{
 	
 	//---------------SCHEDULER------------------//
 	
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		/* Think of this next rule as:
             Does there exist a table and customer,
             so that table is unoccupied and customer is waiting.
@@ -206,7 +213,7 @@ public class HostAgent extends Agent implements Host{
 						//WaiterAgent assignedWaiter = waiters.get(0).waiter;
 						//assign the least busy waiter to the customer
 						int min = Integer.MAX_VALUE;
-						WaiterAgent assignedWaiter = null;
+						WaiterRole assignedWaiter = null;
 						for(int i = 0; i < waiters.size(); i++){
 							MyWaiter waiter = waiters.get(i);
 							//since the number of customers is always less than the initial min, 
@@ -266,7 +273,7 @@ public class HostAgent extends Agent implements Host{
 			wtr.state = WaiterState.OnBreak;
 		}else{ //otherwise refuse the offer
 			wtr.state = WaiterState.Working;
-			wtr.waiter.getGui().cannotGoOnBreak();
+			//wtr.waiter.getGui().cannotGoOnBreak();
 		}
 		DoReplyToWaiterBreakRequest(wtr);
 		//message the wtr
@@ -281,7 +288,7 @@ public class HostAgent extends Agent implements Host{
 	 * @param wtr Waiter to assign the customer to
 	 * @param tbl Table to assign the both of them to
 	 */
-	private void assignCustomerToWaiter(WaitingCustomer cust, WaiterAgent wtr, Table tbl){
+	private void assignCustomerToWaiter(WaitingCustomer cust, WaiterRole wtr, Table tbl){
 		DoAssignCustomerToWaiter(cust, wtr, tbl);
 		tbl.setOccupant(cust.cust);
 		waitingCustomers.remove(cust);
@@ -297,7 +304,7 @@ public class HostAgent extends Agent implements Host{
 	
 	//----------------------DO XYZ---------------------//
 	
-	private void DoAssignCustomerToWaiter(WaitingCustomer cust, WaiterAgent wtr, Table tbl){
+	private void DoAssignCustomerToWaiter(WaitingCustomer cust, WaiterRole wtr, Table tbl){
 		print("set "+cust.cust.getName()+ " for seating at table "+tbl.tableNumber);
 	}
 	
@@ -328,13 +335,43 @@ public class HostAgent extends Agent implements Host{
 	}
 	
 	private class WaitingCustomer {
-		CustomerAgent cust;
+		CustomerRole cust;
 		boolean chosen;
 		
-		public WaitingCustomer(CustomerAgent cust){
+		public WaitingCustomer(CustomerRole cust){
 			this.cust = cust;
 			chosen = false;
 		}
+	}
+
+	@Override
+	public void addWaiter(GenericWaiter waiter) {
+		// TODO Auto-generated method stub
+		this.waiters.add(new MyWaiter((WaiterRole) waiter));
+	}
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return "MikeHostRole";
 	}
 
 }

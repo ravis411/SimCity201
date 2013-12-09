@@ -1,4 +1,4 @@
-package restaurant.gui;
+package mikeRestaurant.gui;
 
 
 import java.awt.Graphics2D;
@@ -6,12 +6,12 @@ import java.awt.Graphics2D;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import restaurant.CustomerAgent;
-import restaurant.HostAgent;
+import mikeRestaurant.CustomerRole;
+import mikeRestaurant.HostRole;
 
 public class HostGui implements Gui {
 
-    private HostAgent agent = null;
+    private HostRole agent = null;
     private boolean movingToTable;
 
     private ImageIcon icon;
@@ -24,7 +24,7 @@ public class HostGui implements Gui {
     
     private boolean readyToSeatCustomer;
 
-    public HostGui(HostAgent agent) {
+    public HostGui(HostRole agent) {
         this.agent = agent;
         icon = new ImageIcon("res/waitress.png");
         movingToTable = false;
@@ -66,11 +66,11 @@ public class HostGui implements Gui {
     	readyToSeatCustomer = false;
     }
 
-    public void DoBringToTable(CustomerAgent customer, int table) {
-    	int col = (table-1) % AnimationPanel.NUM_COLUMNS;
-    	int row = (table-1) / AnimationPanel.NUM_COLUMNS;
-        xDestination = AnimationPanel.TABLE_X + col*AnimationPanel.TABLE_WIDTH*2 + icon.getIconWidth();
-        yDestination = AnimationPanel.TABLE_Y + row*AnimationPanel.TABLE_HEIGHT*2 - icon.getIconHeight();
+    public void DoBringToTable(CustomerRole customer, int table) {
+    	int col = (table-1) % MikeAnimationPanel.NUM_COLUMNS;
+    	int row = (table-1) / MikeAnimationPanel.NUM_COLUMNS;
+        xDestination = MikeAnimationPanel.TABLE_X + col*MikeAnimationPanel.TABLE_WIDTH*2 + icon.getIconWidth();
+        yDestination = MikeAnimationPanel.TABLE_Y + row*MikeAnimationPanel.TABLE_HEIGHT*2 - icon.getIconHeight();
         movingToTable = true;
     }
 

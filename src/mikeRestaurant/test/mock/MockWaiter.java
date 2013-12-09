@@ -1,11 +1,11 @@
-package restaurant.test.mock;
+package mikeRestaurant.test.mock;
 
 import java.text.DecimalFormat;
 import java.util.Set;
 
-import restaurant.Table;
-import restaurant.interfaces.Customer;
-import restaurant.interfaces.Waiter;
+import mikeRestaurant.Table;
+import mikeRestaurant.interfaces.Customer;
+import mikeRestaurant.interfaces.Waiter;
 
 public class MockWaiter extends Mock implements Waiter{
 

@@ -1,4 +1,8 @@
-package restaurant;
+package mikeRestaurant;
+
+import interfaces.generic_interfaces.GenericCashier;
+import interfaces.generic_interfaces.GenericCustomer;
+import interfaces.generic_interfaces.GenericHost;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,15 +14,14 @@ import java.util.concurrent.Semaphore;
 
 import javax.swing.Timer;
 
-import restaurant.gui.CustomerGui;
-import restaurant.interfaces.Customer;
-import restaurant.interfaces.Waiter;
-import agent.Agent;
+import mikeRestaurant.gui.CustomerGui;
+import mikeRestaurant.interfaces.Customer;
+import mikeRestaurant.interfaces.Waiter;
 
 /**
  * Restaurant customer agent.
  */
-public class CustomerAgent extends Agent implements Customer{
+public class CustomerRole extends GenericCustomer implements Customer{
 	private String name;
 	private int hungerLevel = 5;        // determines length of meal
 	private CustomerGui customerGui;
@@ -29,13 +32,13 @@ public class CustomerAgent extends Agent implements Customer{
 	private Semaphore waiterAtTable = new Semaphore(0, true);
 	private Semaphore atCashier = new Semaphore(0, true);
 	private Semaphore cashierReply = new Semaphore(0, true);
-	private Semaphore atJail = new Semaphore(0, true);
+	private Semaphore atStart = new Semaphore(0, true);
 	
 	private Map<String, Double> menu; //a customer does have a menu in a real restaurant
 	private String choice;
-	private WaiterAgent waiter; //the waiter of this customer
-	private CashierAgent cashier;
-	private HostAgent host;
+	private WaiterRole waiter; //the waiter of this customer
+	private CashierRole cashier;
+	private HostRole host;
 	private double check;
 	private CustomerState status;
 	private CustomerEvent event;
@@ -49,7 +52,7 @@ public class CustomerAgent extends Agent implements Customer{
 
 	//states and events for a finite-state machine
 	public enum CustomerState {Waiting, MovingToSeat, Seated, WaitingForWaiterToOrder, Ordered, Served, Eating, AskedForCheck, ReadyToLeave, Left}
-	public enum CustomerEvent {NoEvent, Waiting, RestaurantIsFull, MovingToSeat, Seated, WaiterAskedForOrder, Served, ReceivedCheck, NeedsCheck, PayingCheck, GoToJail, ReadyToLeave, InJail}
+	public enum CustomerEvent {NoEvent, NotifiedHost, Waiting, RestaurantIsFull, MovingToSeat, Seated, WaiterAskedForOrder, Served, ReceivedCheck, NeedsCheck, PayingCheck, GoToJail, ReadyToLeave, InJail}
 
 	/**
 	 * Constructor for CustomerAgent class
@@ -57,13 +60,11 @@ public class CustomerAgent extends Agent implements Customer{
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public CustomerAgent(String name, CashierAgent cashier, HostAgent host){
+	public CustomerRole(String name, CashierRole cashier, HostRole host){
 		super();
 		this.name = name;
 		menu = null;
-		this.host =  host;
 		rnd = new Random();
-		this.cashier = cashier;
 		status = CustomerState.Waiting;
 		event = CustomerEvent.NoEvent;
 		
@@ -80,6 +81,29 @@ public class CustomerAgent extends Agent implements Customer{
 		if(name.equalsIgnoreCase("poor") || name.equalsIgnoreCase("good_person")){
 			isGoodPerson = true;
 		}
+	}
+	
+	public CustomerRole(){
+		super();
+		
+		menu = null;
+		rnd = new Random();
+		status = CustomerState.Waiting;
+		event = CustomerEvent.NoEvent;
+		
+		DecimalFormat df = new DecimalFormat("0.00");
+		money = Double.parseDouble(df.format(rnd.nextDouble()*MAX_AMOUNT_OF_MONEY));
+		
+		moneyOwedToRestaurant = 0.0;
+		
+		isGoodPerson = rnd.nextBoolean();
+//		if(name.equalsIgnoreCase("flake") || name.equalsIgnoreCase("bad_person")){
+//			isGoodPerson = false;
+//		}
+//		
+//		if(name.equalsIgnoreCase("poor") || name.equalsIgnoreCase("good_person")){
+//			isGoodPerson = true;
+//		}
 	}
 
 	/**
@@ -99,7 +123,7 @@ public class CustomerAgent extends Agent implements Customer{
 	 */
 	public void msgFollowMeToTable(Map<String, Double> menu, Waiter sender){
 		this.menu = menu;
-		this.waiter = (WaiterAgent)sender;
+		this.waiter = (WaiterRole)sender;
 		event = CustomerEvent.MovingToSeat;
 		
 		//reset money each time a character enters the restaurant
@@ -107,9 +131,9 @@ public class CustomerAgent extends Agent implements Customer{
 		//make sure the customer has at least the amount owed the restaurant
 		money = Double.parseDouble(df.format(rnd.nextDouble()*MAX_AMOUNT_OF_MONEY+moneyOwedToRestaurant));
 		
-		if(name.equalsIgnoreCase("poor") || name.equalsIgnoreCase("flake")){
-			money = 0.0;
-		}
+//		if(name.equalsIgnoreCase("poor") || name.equalsIgnoreCase("flake")){
+//			money = 0.0;
+//		}
 		
 		stateChanged();
 	}
@@ -184,8 +208,9 @@ public class CustomerAgent extends Agent implements Customer{
 	/**
 	 * Message sent by the gui when the customer has arrived at jail
 	 */
-	public void msgArrivedAtJail(){
-		atJail.release();
+	public void msgArrivedAtStart(){
+		if(atStart.availablePermits() == 0)
+			atStart.release();
 	}
 	
 	/**
@@ -229,7 +254,14 @@ public class CustomerAgent extends Agent implements Customer{
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
+		
+		if(event == CustomerEvent.NoEvent){
+			if(status == CustomerState.Waiting){
+				notifyHostIWantToEat();
+				return true;
+			}
+		}
 		
 		//if the customer is waiting in line, decide if he/she should stay/leave
 		if(event == CustomerEvent.RestaurantIsFull){
@@ -287,6 +319,15 @@ public class CustomerAgent extends Agent implements Customer{
 	//--------------------ACTIONS-------------------//
 	
 	/**
+	 * Message the Host that I would like to be seated
+	 */
+	private void notifyHostIWantToEat(){
+		DoNotifyHostIWantToEat();
+		this.host.msgIWantToEat(this);
+		event = CustomerEvent.NotifiedHost;
+	}
+	
+	/**
 	 * Private method called by scheduler that has the Customer decide from the menu
 	 * what meal he/she would like to order
 	 */
@@ -319,7 +360,10 @@ public class CustomerAgent extends Agent implements Customer{
 			}
 		}else{
 			//if we don't care if we can afford it, simply select something at random from the full menu
-			choice = (String) menu.keySet().toArray()[Math.abs(rnd.nextInt()) % menu.size()];
+			//int index = Math.abs(rnd.nextInt()) % menu.size();
+			int value = Math.abs(rnd.nextInt());
+			int denom = menu.size();
+			choice = (String) menu.keySet().toArray()[value % denom];
 		}
 		waiter.msgImReadyToOrder(this);
 		waitForWaiter();
@@ -394,6 +438,13 @@ public class CustomerAgent extends Agent implements Customer{
 		event = CustomerEvent.NoEvent;
 		
 		DoLeaveRestaurant();
+		try {
+			atStart.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		deactivate();
 	}
 	
 	/**
@@ -441,6 +492,10 @@ public class CustomerAgent extends Agent implements Customer{
 		print("Going to jail because of insufficient funds to pay for meal");
 	}*/
 	
+	private void DoNotifyHostIWantToEat(){
+		print("Notifying Host that I would like to eat");
+	}
+	
 	private void DoSignalForCheck(){
 		print("Signalling for check");
 	}
@@ -474,12 +529,13 @@ public class CustomerAgent extends Agent implements Customer{
 		String s = moneyOwedToRestaurant != 0.0 ? " (with a debt of $"+df.format(moneyOwedToRestaurant) : "";
 		print("leaving restaurant"+s);
 		customerGui.DoExitRestaurant();
+		
 	}
 
 	//-----------------------UTILITIES----------------------//
 
 	public String getName() {
-		return name;
+		return this.myPerson.getName();
 	}
 	
 	/**
@@ -529,6 +585,38 @@ public class CustomerAgent extends Agent implements Customer{
         sb.append(msg);
         sb.append("\n");
         System.out.print(sb.toString());
+	}
+
+	@Override
+	public void setCashier(GenericCashier c) {
+		// TODO Auto-generated method stub
+		this.cashier = (CashierRole) c;
+	}
+
+	@Override
+	public void setHost(GenericHost h) {
+		// TODO Auto-generated method stub
+		this.host = (HostRole) h;
+	}
+
+	@Override
+	public void gotHungry() {
+		// TODO Auto-generated method stub
+		this.status = CustomerState.Waiting;
+		this.event = CustomerEvent.NoEvent;
+		stateChanged();
+	}
+	
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return "MikeCustomerRole";
 	}
 
 }

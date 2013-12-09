@@ -1,4 +1,4 @@
-package restaurant;
+package mikeRestaurant;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,12 +11,12 @@ import java.util.concurrent.Semaphore;
 
 import javax.swing.Timer;
 
-import restaurant.interfaces.Cashier;
-import restaurant.interfaces.Cook;
-import restaurant.interfaces.Market;
+import mikeRestaurant.interfaces.Cashier;
+import mikeRestaurant.interfaces.Cook;
+import mikeRestaurant.interfaces.Market;
 import agent.Agent;
 
-public class MarketAgent extends Agent implements Market{
+public class MarketRole extends Agent implements Market{
 	
 	//arbitrary inventory value
 	private final static int MAX_FOOD_INVENTORY = 10;
@@ -30,8 +30,8 @@ public class MarketAgent extends Agent implements Market{
 	private Semaphore waitingForCashier = new Semaphore(0, true);
 	
 	private Map<String, Food> inventory;
-	private CookAgent cookRequestingFood;
-	private CashierAgent cashier;
+	private CookRole cookRequestingFood;
+	private CashierRole cashier;
 	private Queue<Food> requests;
 	
 	private Map<String, Double> pricesForGoods;
@@ -40,17 +40,17 @@ public class MarketAgent extends Agent implements Market{
 	 * Constructor for the MarketAgent
 	 * @param cook the cook to whom the Market responds (only one)
 	 */
-	public MarketAgent(Cook cook, Cashier cashier) {
+	public MarketRole(Cook cook, Cashier cashier) {
 		inventory = new HashMap<String, Food>();
 		requests = new ArrayDeque<Food>();
 		
 		//randomly add to the inventory of food
-		for(String choice : WaiterAgent.MENU().keySet()){
+		for(String choice : WaiterRole.MENU().keySet()){
 			inventory.put(choice, new Food(choice, (int)(Math.random()*MAX_FOOD_INVENTORY)) );
 		}
 		
-		cookRequestingFood = (CookAgent)cook;
-		this.cashier = (CashierAgent)cashier;	
+		cookRequestingFood = (CookRole)cook;
+		this.cashier = (CashierRole)cashier;	
 		
 		//how we distinguish between the separate Markets (they don't have names)
 		ID_COUNTER++;  //iterate the ID so the next market will have a different value
@@ -69,7 +69,7 @@ public class MarketAgent extends Agent implements Market{
 	
 	private Map<String, Double> initPricesForGoods(){
 		Map<String,Double> temp = new HashMap<String, Double>();
-		for(String s : WaiterAgent.MENU().keySet()){
+		for(String s : WaiterRole.MENU().keySet()){
 			switch(s){
 				case "Steak":
 					temp.put(s,Double.valueOf(10.00));
@@ -257,7 +257,7 @@ public class MarketAgent extends Agent implements Market{
 		
 		private Food request;
 		private boolean isEmpty;
-		private MarketAgent mkt;
+		private MarketRole mkt;
 		
 		/**
 		 * Standard constructor for a DeliveryTimeListener
@@ -265,7 +265,7 @@ public class MarketAgent extends Agent implements Market{
 		 * @param isEmpty whether or not the market is out of food altogether
 		 * @param mkt this MarketAgent that is sending the food
 		 */
-		public DeliveryTimerListener(Food request, boolean isEmpty, MarketAgent mkt){
+		public DeliveryTimerListener(Food request, boolean isEmpty, MarketRole mkt){
 			this.request = request;
 			this.isEmpty = isEmpty;
 			this.mkt = mkt;

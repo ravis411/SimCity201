@@ -1,4 +1,6 @@
-package restaurant.gui;
+package mikeRestaurant.gui;
+
+import interfaces.GuiPanel;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -10,23 +12,29 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import restaurant.HostAgent;
+import mikeRestaurant.CashierRole;
+import mikeRestaurant.CookRole;
+import mikeRestaurant.CustomerRole;
+import mikeRestaurant.HostRole;
+import mikeRestaurant.WaiterRole;
+import Person.Role.Role;
+import building.BuildingList;
+import building.Restaurant;
 
-public class AnimationPanel extends JPanel implements ActionListener {
+public class MikeAnimationPanel extends JPanel implements ActionListener, GuiPanel {
 
-    private final int WINDOWX = 450;
-    private final int WINDOWY = 500;
+    private final int WINDOWX = 800;
+    private final int WINDOWY = 400;
     private Image bufferImage;
     private Dimension bufferSize;
     
     public static final int TABLE_X = 100;
-    public static final int TABLE_Y = 200;
+    public static final int TABLE_Y = 100;
     
     public static final int TABLE_PADDING = 40;
     
@@ -45,7 +53,7 @@ public class AnimationPanel extends JPanel implements ActionListener {
     private List<Gui> guis = new ArrayList<Gui>();
     private HashMap<Integer, String> labelMap;
 
-    public AnimationPanel() {
+    public MikeAnimationPanel() {
     	setPreferredSize(new Dimension(WINDOWX, WINDOWY));
     	setMaximumSize(new Dimension(WINDOWX, WINDOWY));
         setVisible(true);
@@ -56,11 +64,18 @@ public class AnimationPanel extends JPanel implements ActionListener {
  
     	timer = new Timer(dt, this );
     	timer.start();
-    	numTables = HostAgent.getNumTables();
+    	numTables = HostRole.getNumTables();
     }
 
 	public void actionPerformed(ActionEvent e) {
 		repaint();  //Will have paintComponent called
+		
+		  //update the positions internally
+        for(Gui gui : guis) {
+            if (gui.isPresent()) {
+                gui.updatePosition();
+            }
+        }
 	}
 	
 	public void paintLabelAtTable(String label, int tableNumber){
@@ -92,14 +107,6 @@ public class AnimationPanel extends JPanel implements ActionListener {
         g2.setColor(Color.YELLOW);
         g2.fillRect(100, 400, 400, 300);
         g2.setColor(Color.BLACK);
-        
-
-        //update the positions internally
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.updatePosition();
-            }
-        }
 
         //redraw guis with updated positions
         for(Gui gui : guis) {
@@ -133,4 +140,36 @@ public class AnimationPanel extends JPanel implements ActionListener {
     public void addGui(Gui gui) {
         guis.add(gui);
     }
+
+	@Override
+	public void addGuiForRole(Role r) {
+		// TODO Auto-generated method stub
+		if(r instanceof CustomerRole){
+			CustomerRole cr = (CustomerRole) r;
+			CustomerGui gui = new CustomerGui(cr, this);
+			cr.setGui(gui);
+			guis.add(gui);
+		}else if(r instanceof CookRole){
+			CookRole cr = (CookRole) r;
+			CookGui gui = new CookGui(cr, this);
+			cr.setGui(gui);
+			guis.add(gui);
+		}else if(r instanceof CashierRole){
+			//CashierRole cr = (CashierRole) r;
+		}else if(r instanceof WaiterRole){
+			WaiterRole wr = (WaiterRole) r;
+			WaiterGui gui = new WaiterGui(wr, this);
+			wr.setGui(gui);
+			guis.add(gui);
+		}else if(r instanceof HostRole){
+
+		}
+		
+	}
+
+	@Override
+	public void removeGuiForRole(Role r) {
+		// TODO Auto-generated method stub
+		
+	}
 }

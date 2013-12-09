@@ -520,18 +520,18 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		  String location = PickFoodLocation();
 		  GoToLocation(location, transport);
 		  
-		  GenericCustomer role = (GenericCustomer) findRole(Role.RESTAURANT_KUSH_CUSTOMER_ROLE);
+		  GenericCustomer role = (GenericCustomer) findRole(Role.RESTAURANT_MIKE_CUSTOMER_ROLE);
 		  if(role == null){
-			  role = (GenericCustomer) RoleFactory.roleFromString(Role.RESTAURANT_KUSH_CUSTOMER_ROLE);
+			  role = (GenericCustomer) RoleFactory.roleFromString(Role.RESTAURANT_MIKE_CUSTOMER_ROLE);
 			  addRole(role);
 		  }
 
 		  AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Customer Role = "+role);
-		  BuildingList.findBuildingWithName("Kush's Restaurant").addRole(role);
-		  Building bdg =  BuildingList.findBuildingWithName("Kush's Restaurant");
+		  BuildingList.findBuildingWithName("Mike's Restaurant").addRole(role);
+		  Building bdg =  BuildingList.findBuildingWithName("Mike's Restaurant");
 		  if(bdg instanceof Restaurant){
 			  Restaurant rest = (Restaurant) bdg;
-			  role.setupCustomer("Kush's Restaurant");
+			  role.setupCustomer("Mike's Restaurant");
 //			  role.setCashier(rest.getCashierRole());
 //			  role.setHost(rest.getHostRole());
 			  
@@ -1222,5 +1222,49 @@ private void GoRobBank(){
 				stateChanged();
 			}	
 		}
+	}
+
+	//Control Panel Information Access Functions
+		//Only include what hasn't already been done
+	public int getHungerLevel() {
+		return hungerLevel;
+	}
+	public String getCurrentJobString() {
+		return findMyJob().getNameOfRole();
+	}
+	
+	public String getCurrentLocation() {
+		String location  = "N/A";
+		switch (stateOfLocation) {
+		case AtHome:
+			location = "Home";
+			break;
+			
+		case AtBank:
+			location = "Bank";
+			break;
+		
+		case AtMarket:
+			location = "Market";
+			break;
+			
+		case AtRestaurant:
+			location = "Restaurant";
+			break;
+			
+		case InCar: 
+			location = "City";
+			break;
+			
+		case InBus:
+			location = "City";
+			break;
+			
+		case Walking:
+			location = "City";
+			break;
+		}
+		
+		return location;
 	}
 }

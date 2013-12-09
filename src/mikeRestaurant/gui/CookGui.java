@@ -1,4 +1,4 @@
-package restaurant.gui;
+package mikeRestaurant.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -7,11 +7,11 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import restaurant.CookAgent;
+import mikeRestaurant.CookRole;
 
 public class CookGui implements Gui {
 
-	private CookAgent agent;
+	private CookRole agent;
 	
 	private int xPos;
 	private int yPos;
@@ -22,27 +22,27 @@ public class CookGui implements Gui {
 	private final int WIDTH = 30;
 	private final int HEIGHT = 30;
 	
-	private final int COOKING_X = 275;
-	private final int COOKING_Y = 450;
+	private final int COOKING_X = 675;
+	private final int COOKING_Y = 175;
 	
-	private final int GRILL_INITIAL_X = 275;
-	private final int GRILL_INITIAL_Y = 425;
+	private final int GRILL_INITIAL_X = 675;
+	private final int GRILL_INITIAL_Y = 150;
 	private final int GRILL_WIDTH = 25;
 	
-	public final static int PICKUP_X = 130;
-	public final static int PICKUP_Y = 450;
+	public final static int PICKUP_X = 530;
+	public final static int PICKUP_Y = 175;
 	
-	public final int FRIDGE_X = 400;
-	public final int FRIDGE_Y = 450;
+	public final int FRIDGE_X = 800;
+	public final int FRIDGE_Y = 175;
 	
-	public final int LABEL_HEIGHT = 410;
+	public final int LABEL_HEIGHT = 135;
 	
 	private boolean moving;
-	private RestaurantGui gui;
+	private MikeAnimationPanel gui;
 	
 	private List<FoodGui> foods;
 	
-	public CookGui(CookAgent agent, RestaurantGui gui){
+	public CookGui(CookRole agent, MikeAnimationPanel gui){
 		this.agent = agent;
 		
 		xPos = COOKING_X;
@@ -142,6 +142,10 @@ public class CookGui implements Gui {
 	@Override
 	public void draw(Graphics2D g) {
 		// TODO Auto-generated method stub
+		g.setColor(Color.PINK);
+		g.fillRect(PICKUP_X, PICKUP_Y, 400, 200);
+		g.setColor(Color.decode("#0EBFE9"));
+		g.fillRect(FRIDGE_X-20, FRIDGE_Y, 20, 50);
 		g.setColor(Color.GREEN);
 		g.fillRect(xPos, yPos, WIDTH, HEIGHT);
 		g.setColor(Color.BLACK);
@@ -185,22 +189,22 @@ public class CookGui implements Gui {
 			
 			switch(type){
 				case "Steak":
-					filepath = "steak.png";
+					filepath = "/mikeRestaurant/res/steak.png";
 					break;
 				case "Salad":
-					filepath = "salad.png";
+					filepath = "/mikeRestaurant/res/salad.png";
 					break;
 				case "Chicken":
-					filepath = "chicken.png";
+					filepath = "/mikeRestaurant/res/chicken.png";
 					break;
 				case "Pizza":
-					filepath = "pizza.png";
+					filepath = "/mikeRestaurant/res/pizza.png";
 					break;
 				default:
 					filepath = "default.png";
 			}
 			
-			icon = new ImageIcon(filepath);
+			icon = new ImageIcon(this.getClass().getResource(filepath));
 			this.grillPosition = grillPosition;
 		}
 	}

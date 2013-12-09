@@ -1,4 +1,4 @@
-package restaurant.test.mock;
+package mikeRestaurant.test.mock;
 
 public class Mock {
 	

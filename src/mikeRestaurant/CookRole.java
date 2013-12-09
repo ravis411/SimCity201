@@ -1,4 +1,6 @@
-package restaurant;
+package mikeRestaurant;
+
+import interfaces.generic_interfaces.GenericCook;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,18 +17,19 @@ import java.util.concurrent.Semaphore;
 
 import javax.swing.Timer;
 
-import restaurant.gui.CookGui;
-import restaurant.interfaces.Cashier;
-import restaurant.interfaces.Cook;
-import restaurant.interfaces.Market;
-import restaurant.interfaces.Waiter;
+import mikeRestaurant.gui.CookGui;
+import mikeRestaurant.interfaces.Cashier;
+import mikeRestaurant.interfaces.Cook;
+import mikeRestaurant.interfaces.Market;
+import mikeRestaurant.interfaces.Waiter;
+import Person.Role.ShiftTime;
 import agent.Agent;
 
 /**
  * Restaurant Cook Agent
  *
  */
-public class CookAgent extends Agent implements Cook{
+public class CookRole extends GenericCook implements Cook{
 
 	//list of orders that the Cook is handling
 	private List<Order> orders;
@@ -37,7 +40,7 @@ public class CookAgent extends Agent implements Cook{
 	
 	private final static int NUM_MARKETS = 5;
 
-	private List<MarketAgent> markets;
+	//private List<MarketAgent> markets;
 	private Queue<String> reorders;
 	private int marketIndex;
 	
@@ -45,29 +48,30 @@ public class CookAgent extends Agent implements Cook{
 	private Semaphore atPickupLocation = new Semaphore(0, true);
 	private Semaphore atFridge = new Semaphore(0, true);
 	
-	private CashierAgent cashier;
+	private CashierRole cashier;
 	
 	private CookGui cookGui;
 	
 	private List<Grill> grills;
+	private Queue<Integer> grillPickups;
 	
 	//maps a choice to a list of markets out of that food
-	private Map<String, Set<MarketAgent>> choicesExpended;
+	private Map<String, Set<MarketRole>> choicesExpended;
 	
 	/**
 	 * Basic CookAgent constructor
 	 */
-	public CookAgent(Cashier cashier){
-		super();
-		this.cashier = (CashierAgent)cashier;
+	public CookRole(String workLocation){
+		super(workLocation);
+		this.cashier = (CashierRole)cashier;
 		orders = new ArrayList<Order>();
 		foods = initFoods();
-		markets = initMarkets();
+		//markets = initMarkets();
 		reorders = new ArrayDeque<String>();
 		marketIndex = 0;
 		grills = new ArrayList<Grill>();
 		choicesExpended = initChoicesExpended();
-		
+		grillPickups = new ArrayDeque<Integer>();
 		//restock the CookAgent upon creation if possible
 		for(String s : foods.keySet()){
 			if(foods.get(s).quantity < foods.get(s).threshold){
@@ -81,10 +85,10 @@ public class CookAgent extends Agent implements Cook{
 		this.cookGui = gui;
 	}
 	
-	private Map<String, Set<MarketAgent>> initChoicesExpended(){
-		Map<String, Set<MarketAgent>> temp = new HashMap<String, Set<MarketAgent>>();
-		for(String s : WaiterAgent.MENU().keySet()){
-			temp.put(s, new HashSet<MarketAgent>());
+	private Map<String, Set<MarketRole>> initChoicesExpended(){
+		Map<String, Set<MarketRole>> temp = new HashMap<String, Set<MarketRole>>();
+		for(String s : WaiterRole.MENU().keySet()){
+			temp.put(s, new HashSet<MarketRole>());
 		}
 		return temp;
 	}
@@ -93,22 +97,22 @@ public class CookAgent extends Agent implements Cook{
 	 * Sets up the list of markets available
 	 * @return List of Markets responding to the cook
 	 */
-	private List<MarketAgent> initMarkets(){
-		ArrayList<MarketAgent> temp = new ArrayList<MarketAgent>();
-		for(int i = 0; i < NUM_MARKETS; i++){
-			//there is just one cook in this sim
-			MarketAgent market = new MarketAgent(this, cashier);
-			market.startThread();
-			temp.add(market);
-		}
-		return temp;
-	}
+//	private List<MarketAgent> initMarkets(){
+//		ArrayList<MarketAgent> temp = new ArrayList<MarketAgent>();
+//		for(int i = 0; i < NUM_MARKETS; i++){
+//			//there is just one cook in this sim
+//			MarketAgent market = new MarketAgent(this);
+//			market.startThread();
+//			temp.add(market);
+//		}
+//		return temp;
+//	}
 	
-	public void addMarket(MarketAgent m){
-		markets.add(m);
-		print("Market added");
-		return;
-	}
+//	public void addMarket(MarketAgent m){
+//		markets.add(m);
+//		print("Market added");
+//		return;
+//	}
 	
 	/**
 	 * Private method that sets up the foods map
@@ -116,8 +120,10 @@ public class CookAgent extends Agent implements Cook{
 	 */
 	private Map<String, Food> initFoods(){
 		HashMap<String, Food> temp = new HashMap<String, Food>();
-		for(String s : WaiterAgent.MENU().keySet()){
-			temp.put(s, new Food(s, getCookTimeForChoice(s), (int)(Math.random()*MAX_FOOD), THRESHOLD, CAPACITY));
+		for(String s : WaiterRole.MENU().keySet()){
+			//temp.put(s, new Food(s, getCookTimeForChoice(s), (int)(Math.random()*MAX_FOOD), THRESHOLD, CAPACITY));
+			//hacks a sufficient number of food into the cook inventory
+			temp.put(s, new Food(s, getCookTimeForChoice(s), 900, THRESHOLD, 900));
 		}
 		return temp;
 	}
@@ -156,7 +162,7 @@ public class CookAgent extends Agent implements Cook{
 	 */
 	public String getName(){
 		//the cook is a singleton - with name "Cook"
-		return "Cook";
+		return this.myPerson.getName();
 	}
 	
 	//----------------MESSAGES----------------//
@@ -166,8 +172,18 @@ public class CookAgent extends Agent implements Cook{
 	 * @param order the order to begin cooking
 	 */
 	public void msgHereIsAnOrder(Waiter waiter, String choice, Table table){
-		  orders.add(new Order((WaiterAgent) waiter, choice, table));
+		  orders.add(new Order((WaiterRole) waiter, choice, table));
 		  stateChanged();
+	}
+	
+	/**
+	 * This call from the Waiter pickup comes for an immediate gui change, 
+	 * so it will be promoted to the head of the scheduler.
+	 * @param grillPosition grill position fulfilled
+	 */
+	public void msgPickedUpFoodFromPosition(int grillPosition){
+		grillPickups.add(Integer.valueOf(grillPosition));
+		stateChanged();
 	}
 
 	/**
@@ -207,7 +223,7 @@ public class CookAgent extends Agent implements Cook{
 		
 		//if we should no longer consider the market b/c it is completely out of food
 		if(!stillHasStock){
-			markets.remove(market);
+			//markets.remove(market);
 		}
 		
 		stateChanged();
@@ -219,7 +235,7 @@ public class CookAgent extends Agent implements Cook{
 	 * @param mkt the market that cannot fill the order
 	 */
 	public void msgOrderWillNotBeFulfilled(String choice, Market mkt){
-		choicesExpended.get(choice).add((MarketAgent)mkt);
+		choicesExpended.get(choice).add((MarketRole)mkt);
 	}
 	
 	/**
@@ -247,10 +263,15 @@ public class CookAgent extends Agent implements Cook{
 
 
 	@Override
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		// TODO Auto-generated method stub
 		
 		try {
+			if(!grillPickups.isEmpty()){
+				dealWithGrillPosition(grillPickups.poll().intValue());
+				return true;
+			}
+			
 			for(Order order : orders){
 				if(order.orderStatus == Order.OrderStatus.OrderReady){
 					setOrderForPickup(order);
@@ -258,11 +279,11 @@ public class CookAgent extends Agent implements Cook{
 				}
 			}
 			
-			if(!reorders.isEmpty()){
-				String s = reorders.poll();
-				placeOrderForFood(s, foods.get(s).capacity-foods.get(s).quantity);
-				return true;
-			}
+//			if(!reorders.isEmpty()){
+//				String s = reorders.poll();
+//				placeOrderForFood(s, foods.get(s).capacity-foods.get(s).quantity);
+//				return true;
+//			}
 			
 			//cook the ready orders
 			for(Order order : orders){
@@ -280,6 +301,15 @@ public class CookAgent extends Agent implements Cook{
 	}
 	
 	//----------------ACTIONS----------------//
+	
+	/**
+	 * Private action called by the scheduler that tells the gui
+	 * to remove some food from a specific grill position
+	 */
+	private void dealWithGrillPosition(int grillPosition){
+		DoDealWithGrillPosition(grillPosition);
+		cookGui.foodPickedUp(grillPosition);
+	}
 	
 	/**
 	 * Private action called by the scheduler that sets an order to 
@@ -311,7 +341,7 @@ public class CookAgent extends Agent implements Cook{
 		if(food.quantity == 0){
 			//out of this type of food
 			print("Out of Food: "+order.choice);
-			placeOrderForFood(food.choice, food.capacity-food.quantity);
+			//placeOrderForFood(food.choice, food.capacity-food.quantity);
 			//msg waiter for this
 			Set<String> availableFoods = new HashSet<String>();
 			for(String s : foods.keySet()){
@@ -328,7 +358,7 @@ public class CookAgent extends Agent implements Cook{
 		food.decrementFood();
 		if(food.quantity <= food.threshold){
 			//order CAPACITY amount of food by contacting the market
-			placeOrderForFood(food.choice, food.capacity-food.quantity);
+			//placeOrderForFood(food.choice, food.capacity-food.quantity);
 		}
 		order.orderStatus = Order.OrderStatus.OrderCooking;
 		TimerListener listener = new TimerListener(order);
@@ -336,43 +366,47 @@ public class CookAgent extends Agent implements Cook{
 		timer.start();
 	}
 	
-	/**
-	 * Action called by cookOrder action if and only if more of a particular
-	 * type of food needs to be ordered
-	 * @param name the name of the food
-	 * @param quantity the amount of the food to order
-	 */
-	private void placeOrderForFood(String name, int quantity){
-		if(!markets.isEmpty()){
-			int n = markets.size();
-			int initialIndex = marketIndex;
-			MarketAgent marketToOrderFrom = null;
-			//make sure we don't continue checking markets forever
-			while(marketIndex - initialIndex < n){
-				MarketAgent temp = markets.get(marketIndex % markets.size());
-				marketIndex++;
-				//if this market has this type of food
-				if(!choicesExpended.get(name).contains(temp)){
-					marketToOrderFrom = temp;
-					break;
-				}
-			}
-			
-			//if no markets are available for this order
-			if(marketToOrderFrom == null){
-				print("All Markets out of "+name + " -- cannot order");
-				return;
-			}
-			
-			//otherwise make the order
-			DoPlaceOrderForFood(name, quantity, marketToOrderFrom.getID());
-			marketToOrderFrom.msgINeedFood(name, quantity);
-		}else{
-			print("All Markets out of food altogether");			
-		}
-	}
+//	/**
+//	 * Action called by cookOrder action if and only if more of a particular
+//	 * type of food needs to be ordered
+//	 * @param name the name of the food
+//	 * @param quantity the amount of the food to order
+//	 */
+//	private void placeOrderForFood(String name, int quantity){
+//		if(!markets.isEmpty()){
+//			int n = markets.size();
+//			int initialIndex = marketIndex;
+//			MarketAgent marketToOrderFrom = null;
+//			//make sure we don't continue checking markets forever
+//			while(marketIndex - initialIndex < n){
+//				MarketAgent temp = markets.get(marketIndex % markets.size());
+//				marketIndex++;
+//				//if this market has this type of food
+//				if(!choicesExpended.get(name).contains(temp)){
+//					marketToOrderFrom = temp;
+//					break;
+//				}
+//			}
+//			
+//			//if no markets are available for this order
+//			if(marketToOrderFrom == null){
+//				print("All Markets out of "+name + " -- cannot order");
+//				return;
+//			}
+//			
+//			//otherwise make the order
+//			DoPlaceOrderForFood(name, quantity, marketToOrderFrom.getID());
+//			marketToOrderFrom.msgINeedFood(name, quantity);
+//		}else{
+//			print("All Markets out of food altogether");			
+//		}
+//	}
 	
 	//---------------DO XYZ---------------//
+	
+	private void DoDealWithGrillPosition(int value){
+		print("Removing food in from grill position "+value);
+	}
 	
 	private void DoCookOrder(Order order){
 		cookGui.DoGoToRefrigerator();
@@ -446,14 +480,14 @@ public class CookAgent extends Agent implements Cook{
 		print("Food stores cleared");
 	}
 	
-	/**
-	 * Hack that clears all inventories of the markets held by this CookAgent
-	 */
-	public void clearMarkets(){
-		for(MarketAgent m : markets){
-			m.clearInventory();
-		}
-	}
+//	/**
+//	 * Hack that clears all inventories of the markets held by this CookAgent
+//	 */
+//	public void clearMarkets(){
+//		for(MarketAgent m : markets){
+//			m.clearInventory();
+//		}
+//	}
 	
 	/**
 	 * Private class meant only to listen to cooking timers
@@ -484,7 +518,7 @@ public class CookAgent extends Agent implements Cook{
 		public enum OrderStatus {NewOrder, OrderPending, OrderCooking, OrderReady, OrderDelivered};
 		
 		//Order meant to link the following data
-		private WaiterAgent waiter;
+		private WaiterRole waiter;
 	    private String choice;
 	    private Table table;
 	    public OrderStatus orderStatus;
@@ -497,7 +531,7 @@ public class CookAgent extends Agent implements Cook{
 	     * @param newChoice choice of customer for order
 	     * @param newTable table to which the order corresponds
 	     */
-	    public Order(WaiterAgent newWaiter, String newChoice, Table newTable){
+	    public Order(WaiterRole newWaiter, String newChoice, Table newTable){
 	    	waiter = newWaiter;
 	    	choice = newChoice;
 	    	table = newTable;
@@ -514,7 +548,7 @@ public class CookAgent extends Agent implements Cook{
 	    	return table;
 	    }
 	    
-	    public WaiterAgent getWaiter(){
+	    public WaiterRole getWaiter(){
 	    	return waiter;
 	    }
 	    
@@ -557,28 +591,28 @@ public class CookAgent extends Agent implements Cook{
     }
     
 	
-	@Override
-	public synchronized void pause() {
-		// TODO Auto-generated method stub
-		super.pause();
-		
-		//pause the markets as well
-		for(MarketAgent market: markets){
-			market.pause();
-		}
-	}
+//	@Override
+//	public synchronized void pauseThread() {
+//		// TODO Auto-generated method stub
+//		super.pauseThread();
+//		
+//		//pause the markets as well
+//		for(MarketAgent market: markets){
+//			market.pauseThread();
+//		}
+//	}
 	
 	
 
-	@Override
-	public void restart() {
-		// TODO Auto-generated method stub
-		super.restart();
-		
-		for(MarketAgent market: markets){
-			market.restart();
-		}
-	}
+//	@Override
+//	public synchronized void resumeThread() {
+//		// TODO Auto-generated method stub
+//		super.resumeThread();
+//		
+//		for(MarketAgent market: markets){
+//			market.resumeThread();
+//		}
+//	}
 	
 	private class Grill {
 		boolean inUse;
@@ -587,6 +621,31 @@ public class CookAgent extends Agent implements Cook{
 			inUse = false;
 			this.grillPosition = grillPosition;
 		}
+	}
+
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return "MikeCookRole";
 	}
 
 }
