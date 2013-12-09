@@ -14,7 +14,7 @@ public class DeliveryTruckAgent extends Agent implements Car{
 	
 	/** Constructor for Delivery Truck
 	 * 
-	 * @param name
+	 * @param name The name of the truck Truck 1 for example.
 	 */
 	public DeliveryTruckAgent(String name) {
 		state = CarState.parked;
@@ -36,6 +36,10 @@ public class DeliveryTruckAgent extends Agent implements Car{
 	
 	//Messages
 	
+	
+	/** Will add the destination to the queue of places to go.
+	 * 
+	 */
 	public void msgNewDestination(String destination) {
 		this.destination.offer(destination);
 		this.state = CarState.driving;

@@ -240,7 +240,7 @@ public class TruckVehicleGui implements Gui {
     
     public void draw(Graphics2D g) {
         if(testView){
-        	g.setColor(Color.blue);
+        	g.setColor(Color.ORANGE);
         	g.fillRect(xPos, yPos, 20, 20);
         	g.setColor(Color.white);
         	g.drawString(agentName, xPos, yPos);
