@@ -180,7 +180,10 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		rentDueDate = Calendar.getInstance();
 		rentDueDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1, 0, MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND));
 		MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
-		MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+2), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
+		MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+8), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
+		MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+15), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
+		MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+22), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
+		MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+29), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
 
 		if(name.equals("Person 1") || name.equals("Person 2") )
 			this.msgImHungry();
@@ -1097,7 +1100,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		if(rentDueDate != null && home != null && home.isApartment == true) {
             if(rentDueDate.get(Calendar.DAY_OF_MONTH) == day && hour == 0) {
                     hr.msgRentDue(5.00,rentDueDate.get(Calendar.DAY_OF_MONTH));
-                    rentDueDate.add(Calendar.DAY_OF_MONTH, 1);
+                    rentDueDate.add(Calendar.DAY_OF_MONTH, 7);
                     //MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
             }
 		}
