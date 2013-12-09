@@ -59,9 +59,7 @@ import Person.Role.Role;
 import Person.Role.RoleFactory;
 import Transportation.BusAgent;
 import Transportation.BusStopConstruct;
-import astar.AStarTraversal;
 import astar.PersonAStarTraversal;
-import astar.VehicleAStarTraversal;
 
 
 //This class will instantiate and setup everything.
