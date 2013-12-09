@@ -565,6 +565,9 @@ public class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 	public void setCashier(GenericCashier c) {
 		// TODO Auto-generated method stub
 		this.cashier = (RyansCashierRole) c;
+		if( !(cashier instanceof RyansCashierRole) || cashier == null) {
+			System.err.println("ERRROROROROROROR");
+		}
 	}
 
 

@@ -243,6 +243,7 @@ public class RyansCustomerRole extends GenericCustomer implements RyansCustomer 
 			//no action
 			print("Finished Leaving.");
 			activity = "";
+			this.deactivate();
 			return true;
 		}
 		return false;
