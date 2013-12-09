@@ -258,11 +258,20 @@ public class RestaurantPanel extends JPanel {
     	return markets;
     }
     
-//    public RyansCookRole getCook() {
-//    	return cook;
-//    }
-//    public RyansCashierRole getCashier(){
-//    	return cashier;
-//    }
+   public RyansCookRole getCook() {
+    	return cook;
+    }
+    RyansCashierRole cashier = null;
+    public RyansCashierRole getCashier(){
+    	return cashier;
+    }
+    public void setRyansCashierRole(RyansCashierRole cashier){
+    	this.cashier = cashier;
+    }
+
+    RyansCookRole cook = null;
+	public void setRyansCookRole(RyansCookRole cook) {
+		this.cook = cook;
+	}
 
 }
