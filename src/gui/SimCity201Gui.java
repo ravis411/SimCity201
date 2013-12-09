@@ -87,8 +87,8 @@ public class SimCity201Gui extends JFrame {
 		//add(mainPanel);
 		//add(tracePanel);
 	
-		
-		loadConfig(config);
+		loadConfig("XML");
+		//loadConfig(config);
 		//loadConfig("GUI Test 1");
 	}
 	
@@ -123,6 +123,12 @@ public class SimCity201Gui extends JFrame {
 			
 		case "GUI Test 1":
 			factory.LoadGUITest1();
+			layout = SetUpWorldFactory.layout;
+			cityPanel = SetUpWorldFactory.cityPanel;
+			buildingsPanels = SetUpWorldFactory.buildingsPanels;
+			break;
+		case "XML":
+			factory.loadXMLFile("/scenario1.xml");
 			layout = SetUpWorldFactory.layout;
 			cityPanel = SetUpWorldFactory.cityPanel;
 			buildingsPanels = SetUpWorldFactory.buildingsPanels;

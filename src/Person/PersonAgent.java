@@ -91,33 +91,33 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	
 	public ResidenceBuildingPanel home;
 	
-	public PersonAgent(String name, ResidenceBuildingPanel home, Role initialRole, String roleLocation){
-		SSN = counter++;
-		this.name = name;
-		//initializations
-		money = STARTING_MONEY;
-		moneyNeeded = 0;
-		loanAmount = 0;
-		friends = new ArrayList<PersonAgent>();
-		roles = new ArrayList<Role>();
-		hungerLevel = 0;
-		state=PersonState.GettingFood;
-		parties = new ArrayList<Party>();
-		prefs = new Preferences();
-		this.home = home;
-		
-		this.myCar = new CarAgent(this, name+" car");
-		
-		backpack = new ArrayList<Item>();
-		itemsNeeded = new ArrayDeque<Item>();
-		
-		MasterTime.getInstance().registerTimeListener(Workplace.DAY_SHIFT_HOUR, Workplace.DAY_SHIFT_MIN, false, this);
-		MasterTime.getInstance().registerTimeListener(Workplace.NIGHT_SHIFT_HOUR, Workplace.NIGHT_SHIFT_MIN, false, this);
-		MasterTime.getInstance().registerTimeListener(Workplace.END_SHIFT_HOUR, Workplace.END_SHIFT_MIN, false, this);
-	
-		//Add the gui
-		setGui(new PersonGui(this));
-	}
+//	public PersonAgent(String name, ResidenceBuildingPanel home, String roleLocation){
+//		SSN = counter++;
+//		this.name = name;
+//		//initializations
+//		money = STARTING_MONEY;
+//		moneyNeeded = 0;
+//		loanAmount = 0;
+//		friends = new ArrayList<PersonAgent>();
+//		roles = new ArrayList<Role>();
+//		hungerLevel = 0;
+//		state=PersonState.GettingFood;
+//		parties = new ArrayList<Party>();
+//		prefs = new Preferences();
+//		this.home = home;
+//		
+//		this.myCar = new CarAgent(this, name+" car");
+//		
+//		backpack = new ArrayList<Item>();
+//		itemsNeeded = new ArrayDeque<Item>();
+//		
+//		MasterTime.getInstance().registerTimeListener(Workplace.DAY_SHIFT_HOUR, Workplace.DAY_SHIFT_MIN, false, this);
+//		MasterTime.getInstance().registerTimeListener(Workplace.NIGHT_SHIFT_HOUR, Workplace.NIGHT_SHIFT_MIN, false, this);
+//		MasterTime.getInstance().registerTimeListener(Workplace.END_SHIFT_HOUR, Workplace.END_SHIFT_MIN, false, this);
+//	
+//		//Add the gui
+//		setGui(new PersonGui(this));
+//	}
 	
 	/**
 	 * @precondition must be called after setGui
@@ -125,7 +125,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	 * @param roleLocation
 	 */
 	public void setInitialRole(Role r, String roleLocation){
-		if(r instanceof HomeRole){
+		if(r instanceof HomeRole || r == null){
 			HomeRole hr = (HomeRole) findRole("HomeRole");
 			//if(name.equals("Person 1"))
 				hr.msgMakeFood();
@@ -179,6 +179,10 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		if(name.equals("Person 13")){
 			this.msgGoToMarket("Steak");
 		}
+		
+		MasterTime.getInstance().registerTimeListener(Workplace.DAY_SHIFT_HOUR, Workplace.DAY_SHIFT_MIN, false, this);
+		MasterTime.getInstance().registerTimeListener(Workplace.NIGHT_SHIFT_HOUR, Workplace.NIGHT_SHIFT_MIN, false, this);
+		MasterTime.getInstance().registerTimeListener(Workplace.END_SHIFT_HOUR, Workplace.END_SHIFT_MIN, false, this);
 		
 		//Add the gui
 		setGui(new PersonGui(this));
@@ -1027,5 +1031,9 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		}
 		
 		return location;
+	}
+	
+	public void addFriend(PersonAgent agent){
+		friends.add(agent);
 	}
 }
