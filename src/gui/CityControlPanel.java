@@ -163,14 +163,9 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 	//Add function to realtime update infopanel
 	
 	public void showExtraControls() {
-		JFrame extraControls = new JFrame("Additional Controls");
-		Rectangle windowLocation = new Rectangle(800, 400, 200, 400);
+		JFrame extraControls = new CommandsControl(this);
+		Rectangle windowLocation = new Rectangle(800, 400, 300, 400);
 		extraControls.setBounds(windowLocation);
-		
-		JPanel testPanel = new JPanel();
-		testPanel.add(new JButton("Test"));
-		extraControls.add(testPanel);
-		
 		
 		extraControls.setVisible(true);
 	}
@@ -198,6 +193,30 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 		catch (Exception e) {
 			//Catch null pointer exception
 		}
+	}
+	
+	//Functions from Control Panel
+	
+	public void personThrowParty() {
+		
+	}
+	
+	public void personGetHungry() {
+		
+	}
+	
+	public void personAddFriends(List<String> newFriends) {
+		for (String newFriend : newFriends) {
+			for (PersonAgent p : SetUpWorldFactory.agents) {
+				if (p.getName().equals(newFriend)) {
+					focus.addFriend(p);
+				}
+			}
+		}
+	}
+	
+	public void personGoToLocation(String Location) {
+		
 	}
 	
 	@Override

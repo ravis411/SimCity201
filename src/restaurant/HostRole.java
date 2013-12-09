@@ -162,7 +162,7 @@ public class HostRole extends GenericHost {
 				assignedWaiter = i;
 			}
 		}
-		customer.setWaiter(waiters.get(assignedWaiter));
+		customer.setWaiter((GenericWaiter)waiters.get(assignedWaiter));
 		customer.setTableX(xCoor);
 		customer.setTableY(yCoor);
 		customer.setTableNum(table);
