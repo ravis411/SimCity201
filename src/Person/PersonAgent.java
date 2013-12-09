@@ -344,6 +344,9 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		if(hr != null) {
 			hr.partyInvitees.remove((PersonAgent) p);
 		}
+		if(hr.partyInvitees.size()==0 && hr.partyAttendees.size()==0){
+			AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "PARTY CANCELLED SINCE NO ONE IS COMING");
+		}
 	}
 	public void msgRespondToInviteUrgently(Person host){
 		for(Party p : parties) {
@@ -351,6 +354,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 				p.partyState = PartyState.NeedsResponseUrgently;
 			}
 		}
+		stateChanged();
 	}
 	public void msgPartyOver(Person host) {
 		for(Party p : parties) {
@@ -376,13 +380,10 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 				if(p.partyState==PartyState.NeedsResponseUrgently){
 					for(PersonAgent pa:friends){
 						if(pa==p.getHost()){
-							pa.msgIAmComing(this);
-							p.partyState=PartyState.GoingToParty;
-							MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY), p.dateOfParty.get(Calendar.MINUTE), this);	
+							rsvpYes(pa,p);	
 						}
 						else{
-							pa.msgIAmNotComing(this);
-							p.partyState=PartyState.NotGoingToParty;
+							rsvpNo(pa,p);
 						
 						}   
 					}
@@ -395,23 +396,20 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 				if(p.partyState==PartyState.ReceivedInvite){
 					for(PersonAgent pa :friends){
 						if(pa==p.getHost()){
-							int i= new Random().nextInt(40);
-							//if(i%2==0){
-								pa.msgIAmComing(this);
-								p.partyState=PartyState.GoingToParty;
-								MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY), p.dateOfParty.get(Calendar.MINUTE), this); 
-								//return true;
-							//}
-							//else{ 
-							//	p.partyState=PartyState.notRSVPed;
-							//}
-						}
+							int i= 3;
+							if(i%2==0){
+								rsvpYes(pa,p); 
+								return true;
+							}
+							else{ 
+								p.partyState=PartyState.notRSVPed;
+							}
+					 }
 					}
 					int i= new Random().nextInt(40);
 					if(p.partyState==PartyState.ReceivedInvite){
 						if(i%2==0){
-							p.getHost().msgIAmNotComing(this);
-							p.partyState=PartyState.NotGoingToParty;
+							rsvpNo((PersonAgent) p.host,p);
 						}
 						else{p.partyState=PartyState.notRSVPed;
 						}
@@ -638,7 +636,16 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		if(!r.isActive())
 			r.activate();
 	}
-	
+	private void rsvpYes(PersonAgent pa, Party p){
+		pa.msgIAmComing(this);
+		p.partyState=PartyState.GoingToParty;
+		MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY), p.dateOfParty.get(Calendar.MINUTE), this);
+		
+	}
+	private void rsvpNo(PersonAgent pa, Party p){
+		pa.msgIAmNotComing(this);
+		p.partyState=PartyState.NotGoingToParty;
+	}
 	private String getTransportPreference(){
 		String transport;
 		switch(prefs.get(Preferences.KeyValue.VEHICLE_PREFERENCE)){
@@ -1181,8 +1188,10 @@ private void GoRobBank(){
 			hr.msgResendInvites();
 		}
 		if(hr.partyDate.get(Calendar.MONTH) == month && hr.partyDate.get(Calendar.DAY_OF_MONTH) == day && hr.partyDate.get(Calendar.HOUR_OF_DAY) == hour && hr.partyDate.get(Calendar.MINUTE) == minute) {
-			state = PersonState.HostParty;
-			stateChanged();
+			if(hr.partyAttendees.size()!=0){
+				state = PersonState.HostParty;
+			    stateChanged();
+			}
 		}
 		for(Party p: parties){
 			if(p.dateOfParty.get(Calendar.MONTH) == month && p.dateOfParty.get(Calendar.DAY_OF_MONTH) == day && p.dateOfParty.get(Calendar.HOUR_OF_DAY) == hour && p.dateOfParty.get(Calendar.MINUTE) == minute) {
