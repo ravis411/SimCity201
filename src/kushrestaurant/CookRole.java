@@ -1,15 +1,13 @@
 package kushrestaurant;
 import interfaces.generic_interfaces.GenericCook;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Map.Entry;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
-import Person.Role.ShiftTime;
+import javax.swing.Timer;
+
 import kushrestaurant.HostRole.Table;
 import kushrestaurant.MarketRole.MarketStatus;
 //import restaurant.Order2;
@@ -19,6 +17,7 @@ import kushrestaurant.gui.CookGui;
 import kushrestaurant.interfaces.Cook;
 import kushrestaurant.interfaces.Customer;
 import kushrestaurant.interfaces.Waiter;
+import Person.Role.ShiftTime;
 
 public class CookRole extends GenericCook implements Cook {
 	List<Order> orders= new ArrayList<Order>();
@@ -27,11 +26,12 @@ public class CookRole extends GenericCook implements Cook {
 	//private RestaurantGui gui;
 	private int constant=1000;
 	public List<MarketRole> markets= new ArrayList<MarketRole>();
-	private Map<String, Food> foods = new HashMap<String, Food>();
-	private Timer timer = new Timer();
+	private static Map<String, Food> foods = new HashMap<String, Food>();
+	private java.util.Timer timer = new java.util.Timer();
 	public List<Food> inventory = new ArrayList<Food>();
 	private int count=0;
-	public class Order{
+	private RevolvingStand revolvingStand;
+	public static class Order{
 		public Order(String choice,Waiter w2,Table t,Customer c){
 			this.choice=choice;
 			this.w=w2;
@@ -105,8 +105,19 @@ public CookRole(String workLocation) {
 	foods.put("Chicken",inventory.get(1));
 	foods.put("Pizza",inventory.get(3));
 	foods.put("Salad",inventory.get(2));
-	
-	
+	revolvingStand= new RevolvingStand();
+
+    javax.swing.Timer checkRevolvingStand = new javax.swing.Timer(15000, new ActionListener(){
+
+          
+            public void actionPerformed(ActionEvent e) {
+                    // TODO Auto-generated method stub        
+                    stateChanged();
+            }
+            
+    });
+    
+    checkRevolvingStand.start();
 }
 //map<String,Food> foods;
 public class Food{
@@ -205,6 +216,15 @@ public boolean pickAndExecuteAction() {
  	   }
  	   
     }
+	if(!revolvingStand.isEmpty()){
+        Order order = revolvingStand.getLastOrder();
+        Order newOrder = new Order(order.choice, order.w, order.table,order.customer);
+        newOrder.s = orderstate.pending;
+        orders.add(newOrder);
+        CookIt(newOrder);
+        return true;
+}
+
 
 	return false;
 }
@@ -289,6 +309,20 @@ public Double getSalary() {
 	// TODO Auto-generated method stub
 	return null;
 }
+
+//@Override
+//public void workplaceIsOpen() {
+//	// TODO Auto-generated method stub
+//	this.activate();
+//	
+//}
+
+@Override
+public RevolvingStand getRevolvingStand() {
+	// TODO Auto-generated method stub
+	return revolvingStand;
+}
+
 
 
 

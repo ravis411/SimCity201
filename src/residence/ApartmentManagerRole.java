@@ -20,8 +20,6 @@ public class ApartmentManagerRole extends Role implements ApartmentManager {
 	private List <BrokenFeature> thingsToFix = new ArrayList<BrokenFeature>();
 	boolean collectRent = false;
 	
-	private String name;
-	
 	public enum AgentState
 	{DoingNothing};
 	private AgentState state = AgentState.DoingNothing;//The start state
@@ -30,13 +28,12 @@ public class ApartmentManagerRole extends Role implements ApartmentManager {
 	{none};
 	AgentEvent event = AgentEvent.none;
 
-	public ApartmentManagerRole(String name) {
+	public ApartmentManagerRole() {
 		super();
-		this.name = name;
 	}
 	
 	public String getNameOfRole() {
-		return name;
+		return "residence.ApartmentManagerRole";
 	}
 	
 	// Messages
@@ -84,7 +81,7 @@ public class ApartmentManagerRole extends Role implements ApartmentManager {
 	// Actions
 
 	private void chargeRent (Home h) {
-		h.msgRentDue(20);
+		//h.msgRentDue(20);
 	}
 	private void demandRent (PersonAgent p) {
 		p.msgPayBackRentUrgently();

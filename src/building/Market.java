@@ -26,7 +26,7 @@ public class Market extends Building implements Workplace {
 	@Override
 	public boolean isOpen() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	
 	@Override
