@@ -54,24 +54,88 @@ public class ApartmentBuildingPanel extends BuildingPanel{
 		//System.out.println(s);
 		//Apartment 1
 
-			addBuilding("Residence", "Apartment "+ APARTMENT_NUMBER, 0, 0, 300, 200, new LocationInfo(location));
+			addBuilding("Residence", "Apartment "+ APARTMENT_NUMBER, 0, 0, 100, 150, new LocationInfo(location));
 			
 			APARTMENT_NUMBER++;
 
 		//Apartment 2
 
-			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 0, 200, 300, 200, new LocationInfo(location));
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 100, 0, 100, 150, new LocationInfo(location));
 			APARTMENT_NUMBER++;
 			
 		//Apartment 3
 
-			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 500, 0, 300, 200, new LocationInfo(location));
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 200, 0, 100, 150, new LocationInfo(location));
 			APARTMENT_NUMBER++;
 	
 		//Apartment 4
 
-			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 500, 200, 300, 200, new LocationInfo(location));
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 300, 0, 100, 150, new LocationInfo(location));
 			APARTMENT_NUMBER++;
+			
+		//Apartment 5
+
+			addBuilding("Residence", "Apartment "+ APARTMENT_NUMBER, 400, 0, 100, 150, new LocationInfo(location));
+			
+			APARTMENT_NUMBER++;
+
+		//Apartment 6
+
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 500, 0, 100, 150, new LocationInfo(location));
+			APARTMENT_NUMBER++;
+			
+		//Apartment 7
+
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 600, 0, 100, 150, new LocationInfo(location));
+			APARTMENT_NUMBER++;
+	
+		//Apartment 8
+
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 700, 0, 100, 150, new LocationInfo(location));
+			APARTMENT_NUMBER++;
+			
+		//Apartment 9
+
+			addBuilding("Residence", "Apartment "+ APARTMENT_NUMBER, 0, 250, 100, 150, new LocationInfo(location));
+			
+			APARTMENT_NUMBER++;
+
+		//Apartment 10
+
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 100, 250, 100, 150, new LocationInfo(location));
+			APARTMENT_NUMBER++;
+			
+		//Apartment 11
+
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 200, 250, 100, 150, new LocationInfo(location));
+			APARTMENT_NUMBER++;
+	
+		//Apartment 12
+
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 300, 250, 100, 150, new LocationInfo(location));
+			APARTMENT_NUMBER++;
+			
+		//Apartment 13
+
+			addBuilding("Residence", "Apartment "+ APARTMENT_NUMBER, 400, 250, 100, 150, new LocationInfo(location));
+			
+			APARTMENT_NUMBER++;
+
+		//Apartment 14
+
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 500, 250, 100, 150, new LocationInfo(location));
+			APARTMENT_NUMBER++;
+			
+		//Apartment 15
+
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 600, 250, 100, 150, new LocationInfo(location));
+			APARTMENT_NUMBER++;
+	
+		//Apartment 16
+
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 700, 250, 100, 150, new LocationInfo(location));
+			APARTMENT_NUMBER++;
+
 
 		//JLabel j = new JLabel( myName );
 		add( apartmentPanel );
