@@ -887,8 +887,8 @@ public class SetUpWorldFactory{
                 try{
                         PersonAgent person = new PersonAgent(name, buildingsPanels.getResidenceBuildingPanel(residenceName));
                         
-                        if(initialRole == null){
-                                //person.setInitialRole(RoleFactory.roleFromString(Role.HOME_ROLE), iHome);
+                        if(residenceList.contains(initialLocation)){
+                                person.setInitialRole(RoleFactory.roleFromString(Role.HOME_ROLE), initialLocation);
                         }else {
                                 Class e = Employee.class;
                                 Class c = Class.forName(initialRole);

@@ -12,7 +12,7 @@ public class HomeRoleGui implements Gui {
     public boolean hostingParty = false;
 
     private int xPos = 801, yPos = 150;//default waiter position
-    private int xDestination = 801, yDestination = 150;//default start position
+    private int xDestination = 375, yDestination = 150;//default start position
 
     public HomeRoleGui(HomeRole agent) {
         this.agent = agent;

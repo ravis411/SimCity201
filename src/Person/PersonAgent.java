@@ -131,9 +131,9 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	 */
 	public void setInitialRole(Role r, String roleLocation){
 		if(r instanceof HomeRole || r == null){
-			HomeRole hr = (HomeRole) findRole("HomeRole");
+			HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE);
 			//if(name.equals("Person 1"))
-				hr.msgMakeFood();
+				//hr.msgMakeFood();
 				
 			gui.setStartingStates(home.getName());
 			BuildingList.findBuildingWithName(home.getName()).addRole(hr);
