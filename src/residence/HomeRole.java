@@ -5,6 +5,7 @@ import interfaces.Home;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
@@ -46,6 +47,7 @@ public class HomeRole extends Role implements Home {
 	
 	public Calendar rsvpDate = Calendar.getInstance();
 	public Calendar partyDate = Calendar.getInstance();
+	public Calendar featureRepairDate = Calendar.getInstance();
 	
 	public HomeRoleGui gui;
 
@@ -119,13 +121,15 @@ public class HomeRole extends Role implements Home {
 		}
 		stateChanged();
 	}
-	public void msgFixedFeature (String name) {
-		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), name + " is fixed.");
+	public void msgFixedFeature () {
+		String name = "My broken appliance";
 		for (HomeFeature hf : features) {
-			if (name == hf.name) {
+			if (!hf.working) {
 				hf.working = true;
+				name = hf.name;
 			}
 		}
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), name + " is fixed.");
 		stateChanged();
 	}
 	public void msgMakeFood() {
@@ -200,6 +204,12 @@ public class HomeRole extends Role implements Home {
 			return true;
 		}
 		if(partyState != PartyState.host) {
+			for (HomeFeature hf : features) {
+				if(!hf.working) {
+					fileWorkOrder(hf);
+					return true;
+				}
+			}
 			if (leaveHome == true) {
 				leaveHome();
 				return true;
@@ -229,12 +239,6 @@ public class HomeRole extends Role implements Home {
 					goToMarket(i);
 					return true;
 				}	
-			}
-			for (HomeFeature hf : features) {
-				if(!hf.working) {
-					fileWorkOrder(hf);
-					return true;
-				}
 			}
 		}
 		return false;
@@ -267,11 +271,48 @@ public class HomeRole extends Role implements Home {
 			}
 		},
 		5000);
-		for(Item i : inventory) {
-			if(i.name == "Burger") {
-				i.quantity--;
+		Random rand = new Random();
+	    int foodChoice = rand.nextInt(3);
+	    if(foodChoice == 0) {
+			for(Item i : inventory) {
+				if(i.name == "Steak") {
+					i.quantity--;
+				}
+			}
+	    }
+	    else if(foodChoice == 1) {
+	    	for(Item i : inventory) {
+				if(i.name == "Chicken") {
+					i.quantity--;
+				}
+			}
+	    }
+	    else if(foodChoice == 2) {
+	    	for(Item i : inventory) {
+				if(i.name == "Burger") {
+					i.quantity--;
+				}
+			}
+	    }
+	    int brokenAppliance = rand.nextInt(9);
+	    boolean anythingBrokenAlready = false;
+	    for (HomeFeature hf : features) {
+			if(!hf.working) {
+				anythingBrokenAlready = true;
 			}
 		}
+	    if(brokenAppliance == 0 && anythingBrokenAlready == false) {
+	    	features.get(0).working = false;
+	    	AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "My sink isn't working. Filing a work order.");
+	    }
+	    else if(brokenAppliance == 2 && anythingBrokenAlready == false) {
+	    	features.get(1).working = false;
+	    	AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "My stove isn't working. Filing a work order.");
+	    }
+	    else if(brokenAppliance == 5 && anythingBrokenAlready == false) {
+	    	features.get(2).working = false;
+	    	AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "My refrigerator isn't working. Filing a work order.");
+	    }
 	}
 	private void goEat() {
 		print("Dinner's ready! Eating.");
@@ -335,7 +376,10 @@ public class HomeRole extends Role implements Home {
 		}
 	}
 	private void fileWorkOrder (HomeFeature brokenFeature) {
-		//landlord.msgBrokenFeature(brokenFeature.name, this);
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "My " + brokenFeature.name + " should be fixed in a day.");
+		featureRepairDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH), MasterTime.getInstance().get(Calendar.HOUR_OF_DAY), MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND));
+		featureRepairDate.add(Calendar.DAY_OF_MONTH, 1);
+		MasterTime.getInstance().registerDateListener(featureRepairDate.get(Calendar.MONTH), featureRepairDate.get(Calendar.DAY_OF_MONTH), featureRepairDate.get(Calendar.HOUR_OF_DAY), featureRepairDate.get(Calendar.MINUTE), myPerson);
 	}
 	private void payRent () {
 

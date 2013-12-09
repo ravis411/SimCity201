@@ -1103,6 +1103,9 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
                     //MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
             }
 		}
+		if(hr.featureRepairDate.get(Calendar.MONTH) == month && hr.featureRepairDate.get(Calendar.DAY_OF_MONTH) == day && hr.featureRepairDate.get(Calendar.HOUR_OF_DAY) == hour && hr.featureRepairDate.get(Calendar.MINUTE) == minute) {
+			hr.msgFixedFeature();
+		}
 		for(Party p: parties){
 			if(p.dateOfParty.get(Calendar.MONTH) == month && p.dateOfParty.get(Calendar.DAY_OF_MONTH) == day && p.dateOfParty.get(Calendar.HOUR_OF_DAY) == hour && p.dateOfParty.get(Calendar.MINUTE) == minute) {
 				state = PersonState.GoingToParty;
