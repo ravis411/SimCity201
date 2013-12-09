@@ -17,6 +17,7 @@ import java.util.concurrent.Semaphore;
 import Person.Role.ShiftTime;
 import restaurant.gui.luca.RestaurantGui;
 import restaurant.gui.luca.WaiterGui;
+import restaurant.interfaces.luca.LucaCashier;
 import restaurant.interfaces.luca.LucaCustomer;
 import restaurant.interfaces.luca.LucaWaiter;
 import restaurant.test.mock.EventLog;
@@ -66,7 +67,7 @@ public class LucaWaiterRole extends GenericWaiter implements LucaWaiter{
 		return myPerson.getName();
 	}
 	public void tellHostIExist(){
-		host.msgIAmAWaiter(this);
+		host.addWaiter(this);
 	}
 
 	public boolean isOnBreak() {
@@ -530,18 +531,6 @@ public class LucaWaiterRole extends GenericWaiter implements LucaWaiter{
 		return restaurantGui;
 	}
 	
-	public void setCook(LucaCookRole Cook)
-	{
-		this.cook=Cook;
-	}
-	public void setHost(LucaHostRole Host)
-	{
-		this.host=Host;
-	}
-	public void setCashier(LucaCashierRole cashier)
-	{
-		this.cashier=cashier;
-	}
 	private class MyCustomers {
 		LucaCustomer Customer;
 		int tableNumber;
@@ -656,19 +645,18 @@ public class LucaWaiterRole extends GenericWaiter implements LucaWaiter{
 
 	@Override
 	public void setCook(GenericCook c) {
-		// TODO Auto-generated method stub
+		this.cook= (LucaCookRole)c;
 		
 	}
 
 	@Override
 	public void setCashier(GenericCashier c) {
-		// TODO Auto-generated method stub
-		
+		this.cashier= (LucaCashierRole)c;
 	}
 
 	@Override
 	public void setHost(GenericHost h) {
-		// TODO Auto-generated method stub
+		this.host= (LucaHostRole)h;
 		
 	}
 

@@ -2,6 +2,7 @@ package restaurant.luca;
 
 import interfaces.MarketManager;
 import interfaces.generic_interfaces.GenericCashier;
+import interfaces.generic_interfaces.GenericWaiter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,7 +50,7 @@ public class LucaCashierRole extends GenericCashier implements LucaCashier {
 		menu.put("Chicken", 10);
 		menu.put("Burger", 15);
 		menuUnmodifiable = Collections.unmodifiableMap(menu);
-		print("Cashier has $"+ restaurantMoney);
+		//print("Cashier has $"+ restaurantMoney);
 	}
 
 	public String getName() {
@@ -229,9 +230,9 @@ public class LucaCashierRole extends GenericCashier implements LucaCashier {
 
 
 	
-	public void setWaiter(LucaWaiter waiter)
+	public void setWaiter(GenericWaiter waiter)
 	{
-		this.waiter=waiter;
+		this.waiter=(LucaWaiter)waiter;
 	}
 	public void addMarkets(Vector<MarketManager> markets) {
 			for (int i=0; i<markets.size(); i++){

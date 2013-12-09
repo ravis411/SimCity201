@@ -1,8 +1,6 @@
 package residence.test.mock;
 
 import interfaces.Home;
-import residence.ApartmentManagerRole;
-import residence.HomeRole;
 
 /**
  * MockHomeRole built to unit test a ApartmentManagerRole
@@ -12,7 +10,7 @@ public class MockHome extends Mock implements Home {
 	
 	public EventLog log = new EventLog();
 	
-	public ApartmentManagerRole landlord;
+	
 	public int rentOwed = 0;
 	
 	public MockHome(String name) {
