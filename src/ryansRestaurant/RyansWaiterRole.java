@@ -25,29 +25,29 @@ import Person.Role.ShiftTime;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the RyansHostRole. A RyansHost is the manager of a ryansRestaurant who sees that all
 //is proceeded as he wishes.
-public class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
+public abstract class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 	public List<MyCustomer> myCustomers	= new ArrayList<MyCustomer>();
 	
-	private String name = new String("RyansWaiter");
-	private Semaphore atTable = new Semaphore(0,true);
-	private RyansHost host = null;
+	protected String name = new String("RyansWaiter");
+	protected Semaphore atTable = new Semaphore(0,true);
+	protected RyansHost host = null;
 	public RyansCookRole cook = null;
-	private RyansCashier cashier = null;
+	protected RyansCashier cashier = null;
 	
-	private enum CustomerState {waiting, seated, readyToOrder, ordering, askedToOrder, ordered, orderOut, waitingForOrder, OrderReady, eating, billReady, billed, leaving,  done};
-	private enum AgentState {outSide, atTable, atCook, atCounter, atCashier, none, atHome};
-	private enum AgentEvent {None, CustomerOrdering};
-	private enum BreakState {none, OnBreak, requestBreak, requestedBreak, preparingForBreak, backToWork, okayToPrepareForBreak};
-	private BreakState breakStatus = BreakState.none;
-	private AgentEvent event = AgentEvent.None;
-	private AgentState state = AgentState.outSide;
+	protected enum CustomerState {waiting, seated, readyToOrder, ordering, askedToOrder, ordered, orderOut, waitingForOrder, OrderReady, eating, billReady, billed, leaving,  done};
+	protected enum AgentState {outSide, atTable, atCook, atCounter, atCashier, none, atHome};
+	protected enum AgentEvent {None, CustomerOrdering};
+	protected enum BreakState {none, OnBreak, requestBreak, requestedBreak, preparingForBreak, backToWork, okayToPrepareForBreak};
+	protected BreakState breakStatus = BreakState.none;
+	protected AgentEvent event = AgentEvent.None;
+	protected AgentState state = AgentState.outSide;
 	
 	public WaiterGui waiterGui = null;
 	public String activity = new String();
-	private Timer timer = new Timer();
+	protected Timer timer = new Timer();
 	
 	
-	public RyansWaiterRole(String workLocation) {
+	protected RyansWaiterRole(String workLocation) {
 		super(workLocation);
 
 		
@@ -308,7 +308,7 @@ public class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 	
 	
 	// Actions
-	private void EnterRestaurant() {
+	protected void EnterRestaurant() {
 		print("Entering Restaurant");
 		try {
 			waiterGui.DoEnterRestaurant();
@@ -321,7 +321,7 @@ public class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 	
 	
 	
-	private void seatCustomer(MyCustomer c) {
+	protected void seatCustomer(MyCustomer c) {
 		
 		
 		//waiterGui.DoGoToCounter();
@@ -341,7 +341,7 @@ public class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 		activity = "RyansCustomer seated.";
 	}
 	
-	private void takeOrder(MyCustomer c) {
+	protected void takeOrder(MyCustomer c) {
 		event = AgentEvent.CustomerOrdering;
 		
 		activity = "Going to take " + c.customer + "'s order.";
@@ -352,28 +352,29 @@ public class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 		c.s = CustomerState.ordering;
 	}
 	
-	private void Order(MyCustomer c) {
-		activity = "Going to order food for " + c.customer;
-		try {
-			waiterGui.DoGoToCook();
-		} catch (Exception e1) {
-		}
-		state=AgentState.atCook;
-		
-		activity = "" + c.customer + " would like " + c.choice;
-		
-		try {
-			Thread.sleep(2500);
-		} catch (InterruptedException e) {
-			print("EXCEPTION!!!! caught while waiting for order.");
-		}
-		
-		cook.msgHereIsOrder(this, c.choice, c.tableNumber);
-		c.s = CustomerState.ordered;
-		activity = "Ordered.";
-	}
+	protected abstract void Order(MyCustomer c);
+//	{
+//		activity = "Going to order food for " + c.customer;
+//		try {
+//			waiterGui.DoGoToCook();
+//		} catch (Exception e1) {
+//		}
+//		state=AgentState.atCook;
+//		
+//		activity = "" + c.customer + " would like " + c.choice;
+//		
+//		try {
+//			Thread.sleep(2500);
+//		} catch (InterruptedException e) {
+//			print("EXCEPTION!!!! caught while waiting for order.");
+//		}
+//		
+//		cook.msgHereIsOrder(this, c.choice, c.tableNumber);
+//		c.s = CustomerState.ordered;
+//		activity = "Ordered.";
+//	}
 	
-	private void BringOrderToCustomer(MyCustomer customer) {
+	protected void BringOrderToCustomer(MyCustomer customer) {
 		print("Getting food from cook for customer: " + customer.customer);
 		activity = "Picking up food for " + customer.customer;
 		DoGoToGrill(customer.grillNumber);
@@ -401,7 +402,7 @@ public class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 		customer.s = CustomerState.eating;
 	}
 	
-	private void haveCustomerReorder(MyCustomer c) {
+	protected void haveCustomerReorder(MyCustomer c) {
 		activity = "Going to have " + c.customer + " re-order.";
 		DoGoToTable(c.tableNumber);
 		activity = "We are out of " + c.choice;
@@ -409,11 +410,11 @@ public class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 		c.s = CustomerState.seated;
 	}
 	
-	private void computeBill(MyCustomer cust) {
+	protected void computeBill(MyCustomer cust) {
 		cashier.msgComputeBill(this, cust.choice, cust.customer);
 	}
 	
-	private void deliverBill(MyCustomer cust) {
+	protected void deliverBill(MyCustomer cust) {
 		//Pick up bill from cashier
 		activity = "Picking up bill for " + cust.customer;
 		DoGoToCashier();
@@ -432,7 +433,7 @@ public class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 	}
 	
 	
-	private void customerLeaving(MyCustomer c) {
+	protected void customerLeaving(MyCustomer c) {
 		host.msgTableFree(this, c.tableNumber);
 		c.s = CustomerState.done;
 		myCustomers.remove(c);
@@ -440,20 +441,20 @@ public class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 	
 	
 	
-	private void requestBreak() {
+	protected void requestBreak() {
 		breakStatus = BreakState.requestedBreak;
 		host.msgWantToGoOnBreak(this);
 	}
-	private void prepareForBreak() {
+	protected void prepareForBreak() {
 		breakStatus = BreakState.preparingForBreak;
 		waiterGui.prepareForBreak();
 	}
-	private void goOnBreak() {
+	protected void goOnBreak() {
 		activity = "On Break.";
 		breakStatus = BreakState.OnBreak;
 		waiterGui.onBreak();
 	}
-	private void BackToWork() {
+	protected void BackToWork() {
 		breakStatus = BreakState.none;
 		host.msgBreakOver(this);
 		waiterGui.backToWork();
@@ -463,7 +464,7 @@ public class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 	
 	
 	// The animation DoXYZ() routines
-	private void DoGoToTable(int tableNumber) {
+	protected void DoGoToTable(int tableNumber) {
 		try {
 			waiterGui.DoGoToTable(tableNumber);
 		} catch (Exception e) {
@@ -471,14 +472,14 @@ public class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 		state=AgentState.atTable;
 	}
 	
-	private void DoGoToGrill(int grillNumber){
+	protected void DoGoToGrill(int grillNumber){
 		try {
 			waiterGui.DoGoToGrill(grillNumber);
 		} catch (Exception e) {
 		}
 	}
 	
-	private void DoLeaveCustomer() {
+	protected void DoLeaveCustomer() {
 		activity = "Leaving area.";
 		try {
 			waiterGui.DoLeaveCustomer();
@@ -488,7 +489,7 @@ public class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 		//state=AgentState.atHome;
 	}
 		
-	private void DoSeatCustomer(RyansCustomerRole customer, int table) {
+	protected void DoSeatCustomer(RyansCustomerRole customer, int table) {
 		//Notice how we print "customer" directly. It's toString method will do it.
 		//Same with "table"
 		print("Seating " + customer + " at " + table);
@@ -500,7 +501,7 @@ public class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 
 	}
 	
-	private void DoGoToCashier() {
+	protected void DoGoToCashier() {
 		try {
 			waiterGui.DoGoToCashier();
 		} catch (Exception e) {

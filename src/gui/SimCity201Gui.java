@@ -43,7 +43,7 @@ public class SimCity201Gui extends JFrame {
 	 * Default Constructor Initializes gui
 	*/
 	public SimCity201Gui(String config) {
-		setTitle("SimCity201 V 1.00005  - Team 29");
+		setTitle("SimCity201 V 1.5  - Team 29");
         setVisible(true);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
