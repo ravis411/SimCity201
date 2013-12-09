@@ -329,15 +329,15 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	  * RSVP message sent by the home role
 	  */
 	public void msgIAmComing(Person p){
-		HomeRole hr= (HomeRole) findRole("HOME_ROLE");
+		HomeRole hr= (HomeRole) findRole(Role.HOME_ROLE);
 		hr.partyAttendees.add((PersonAgent) p);
 		//hr.rsvp.get(p)=true;
 		hr.partyInvitees.remove((PersonAgent) p);
 		
 	}
 	public void msgIAmNotComing(Person p){
-		//findRole("HOME_ROLE").rsvp.get(p)=true;
-		HomeRole hr= (HomeRole) findRole("HOME_ROLE");
+		//findRole(Role.HOME_ROLE).rsvp.get(p)=true;
+		HomeRole hr= (HomeRole) findRole(Role.HOME_ROLE);
 		hr.partyInvitees.remove((PersonAgent) p);
 	}
 
@@ -441,23 +441,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	//----------------------------ACTIONS--------------------------//
 	
 	private void GoGetFood(){
-		  state = PersonState.GettingFood;
-		  //Building b = PickFoodLocation();
-		  String transport;
-		  switch(prefs.get(Preferences.KeyValue.VEHICLE_PREFERENCE)){
-		  	case Preferences.BUS:
-		  		transport = Preferences.BUS;
-		  		break;
-		  	case Preferences.CAR:
-		  		transport = Preferences.CAR;
-		  		break;
-		  	case Preferences.WALK:
-		  		transport = Preferences.WALK;
-		  		break;
-		  		
-		  	default:
-		  		transport = "ERROR";
-		  }
+		  String transport = getTransportPreference();
 		  
 		  String location = PickFoodLocation();
 		  GoToLocation(location, transport);
@@ -483,7 +467,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	}
 	
 	private String PickFoodLocation(){
-		return home.getName();
+		return Math.random() > 0.5 ? "Food Court" : this.home.getName();
 	}
 	
 	private void GoToWork(){
@@ -551,21 +535,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	
 	private void GoToMarketForItems(){
 		AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "GOING TO MARKET FOR ITEMS");
-		String transport;
-		switch(prefs.get(Preferences.KeyValue.VEHICLE_PREFERENCE)){
-		  	case Preferences.BUS:
-		  		transport = Preferences.BUS;
-		  		break;
-		  	case Preferences.CAR:
-		  		transport = Preferences.CAR;
-		  		break;
-		  	case Preferences.WALK:
-		  		transport = Preferences.WALK;
-		  		break;
-		  		
-		  	default:
-		  		transport = "ERROR";
-		}
+		String transport = getTransportPreference();
 		
 		//needs a way to find a bank quite yet
 		 GoToLocation("Market 1", transport);
@@ -586,21 +556,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	 */
 	private void PayBackLoan(){
 			
-		String transport;
-		switch(prefs.get(Preferences.KeyValue.VEHICLE_PREFERENCE)){
-		  	case Preferences.BUS:
-		  		transport = Preferences.BUS;
-		  		break;
-		  	case Preferences.CAR:
-		  		transport = Preferences.CAR;
-		  		break;
-		  	case Preferences.WALK:
-		  		transport = Preferences.WALK;
-		  		break;
-		  		
-		  	default:
-		  		transport = "ERROR";
-		}
+		String transport = getTransportPreference();
 		
 		//needs a way to find a bank quite yet
 		GoToLocation("Bank", transport);
@@ -671,22 +627,8 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	}
 	
 	private void GoHome(){
-		String transport;
 	  state = PersonState.Idle;
-	  switch(prefs.get(Preferences.KeyValue.VEHICLE_PREFERENCE)){
-	  	case Preferences.BUS:
-	  		transport = Preferences.BUS;
-	  		break;
-	  	case Preferences.CAR:
-	  		transport = Preferences.CAR;
-	  		break;
-	  	case Preferences.WALK:
-	  		transport = Preferences.WALK;
-	  		break;
-	  		
-	  	default:
-	  		transport = "ERROR";
-	  }
+	  String transport = getTransportPreference();
  
 	  GoToLocation(home.getName(), transport);
 	  HomeRole role = (HomeRole) findRole("HomeRole");
@@ -1034,6 +976,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	}
 	
 	public void addFriend(PersonAgent agent){
-		friends.add(agent);
+		if(!friends.contains(agent))
+			friends.add(agent);
 	}
 }
