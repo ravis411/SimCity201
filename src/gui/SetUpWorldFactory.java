@@ -70,6 +70,11 @@ public class SetUpWorldFactory{
 	public static List<PersonAgent> agents = new ArrayList<PersonAgent>();
 	public static List<LocationInfo> locationMap = new ArrayList<LocationInfo>();//<--a map of strings to LocationInfo
 	
+	//GUI lists for AddPerson
+	public static List<String> locationsList = new ArrayList<String>();
+	public static List<String> jobList = new ArrayList<String>();
+	public static List<String> residenceList = new ArrayList<String>();
+	
 	
 	
 	SetUpWorldFactory() {
@@ -89,6 +94,70 @@ public class SetUpWorldFactory{
 		cityPanel = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
 		buildingsPanels = new BuildingsPanels();//<-Zoomed in view of buildings
 		controls = new CityControlPanel(buildingsPanels, this);
+		
+		//Populate GUI lists
+		jobList.add("Market Employee");
+		jobList.add("Market Customer");
+		jobList.add("Market Manager");
+		jobList.add("Bank Client");
+		jobList.add("Bank Teller");
+		jobList.add("Restaurant Customer");
+		jobList.add("Retaurant Old Waiter");
+		jobList.add("Restaurant New Waiter");
+		jobList.add("Restaurant Host");
+		jobList.add("Restaurant Cook");
+		jobList.add("Restaurant Cashier");
+		jobList.add("Luca Customer");
+		jobList.add("Luca Waiter");
+		jobList.add("Luca Host");
+		jobList.add("Luca Cook");
+		jobList.add("Luca Cashier");
+		//jobList.add("Apartment Manager");
+		jobList.add("Kush Customer");
+		jobList.add("Kush Waiter");
+		jobList.add("Kush Host");
+		jobList.add("Kush Cook");
+		jobList.add("Kush Cashier");
+		jobList.add("Jeffrey Customer");
+		jobList.add("Jeffrey Waiter");
+		jobList.add("Jeffrey Host");
+		jobList.add("Jeffrey Cook");
+		jobList.add("Jeffrey Cashier");
+		jobList.add("Mike New Waiter");
+		jobList.add("Mike Host");
+		jobList.add("Mike Cook");
+		jobList.add("Mike Cashier");
+		jobList.add("Mike Customer");
+		
+		locationsList.add("City");
+		locationsList.add("Main Restaurant");
+		locationsList.add("Mike's Restaurant");
+		locationsList.add("Ryan's Restaurant");
+		locationsList.add("Jeffrey's Restaurant");
+		locationsList.add("Luca's Restaurant");
+		locationsList.add("Byron's Restaurant");
+		locationsList.add("Kush's Restaurant");
+		locationsList.add("Bank 1");
+		locationsList.add("Bank 2");
+		locationsList.add("Market 1");
+		locationsList.add("Market 2");
+		locationsList.add("Residence 1");
+		locationsList.add("Residence 2");
+		locationsList.add("Apartment 1A");
+		locationsList.add("Apartment 1B");
+		locationsList.add("Apartment 1C");
+		locationsList.add("Apartment 1D");
+		locationsList.add("Apartment 2A");
+		locationsList.add("Apartment 2B");
+		
+		residenceList.add("Residence 1");
+		residenceList.add("Residence 2");
+		residenceList.add("Apartment 1A");
+		residenceList.add("Apartment 1B");
+		residenceList.add("Apartment 1C");
+		residenceList.add("Apartment 1D");
+		residenceList.add("Apartment 2A");
+		residenceList.add("Apartment 2B");
 
 		buildingsPanels.addBuildingPanel(new Team29Panel(buildingsPanels));
 		buildingsPanels.addBuildingPanel(controls);
