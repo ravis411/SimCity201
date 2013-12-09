@@ -16,7 +16,6 @@ import Person.test.mock.MockRole;
 public class ResidenceTest1 extends TestCase {
 	
 	private PersonAgent myPerson;
-	private MockApartmentManager manager;
 	private MockHome home;
 	private HomeRole homeRole;
 	private HomeRoleGui gui;
@@ -27,13 +26,10 @@ public class ResidenceTest1 extends TestCase {
 	
 	public void setUp() throws Exception{
 		super.setUp();
-		
-		manager=new MockApartmentManager("Mock Manager");
+
 		home= new MockHome("Mock Home");
 		myPerson= new PersonAgent("PersonAgent",null);
 		homeRole= new HomeRole(myPerson);
-		homeRole.setLandlord(manager);//this method still needs to be defined
-		manager.homeRole=homeRole;
 		
 		}
 	//-------------------ELEMENTARY PRECONDITIONS-----------------//
