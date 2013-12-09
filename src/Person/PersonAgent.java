@@ -1167,4 +1167,13 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		else
 			return false;
 	}
+	
+	public String getCurrentRole() {
+		for (Role r: roles) {
+			if (r.isActive()) {
+				return r.getNameOfRole();
+			}
+		}
+		return null;
+	}
 }

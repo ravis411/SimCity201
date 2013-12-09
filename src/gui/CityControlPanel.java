@@ -139,7 +139,7 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 		}
 		String currentJob;
 		try {
-			currentJob = agent.getCurrentJobString();
+			currentJob = agent.getCurrentRole();
 		}
 		catch (Exception e) {
 			currentJob = "N/A";
