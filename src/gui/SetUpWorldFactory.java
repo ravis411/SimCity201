@@ -64,6 +64,7 @@ import astar.PersonAStarTraversal;
 
 //This class will instantiate and setup everything.
 public class SetUpWorldFactory{
+
         public static SimCityLayout layout;// = new SimCityLayout(WINDOWX, WINDOWY/2);// <-This holds the grid information
         public static CityAnimationPanel cityPanel;// = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
         public static BuildingsPanels buildingsPanels;// = new BuildingsPanels();//<-Zoomed in view of buildings
@@ -130,7 +131,7 @@ public class SetUpWorldFactory{
                 jobList.add("Mike Cook");
                 jobList.add("Mike Cashier");
                 jobList.add("Mike Customer");
-                
+                /*
                 locationsList.add("City");
                 locationsList.add("Main Restaurant");
                 locationsList.add("Mike's Restaurant");
@@ -151,7 +152,7 @@ public class SetUpWorldFactory{
                 locationsList.add("Apartment 1D");
                 locationsList.add("Apartment 2A");
                 locationsList.add("Apartment 2B");
-                
+                */
                 residenceList.add("Residence 1");
                 residenceList.add("Residence 2");
                 residenceList.add("Apartment 1A");
@@ -186,6 +187,7 @@ public class SetUpWorldFactory{
 //                location.entranceFromRoadGrid = new Dimension(4, 3);
 //                location.positionToEnterFromRoadGrid = new Dimension(4, 4);
 //                addBuilding("Residence", "House 1", 3, 2, 2, 2, location);
+
 //
 //                //Building 2
 //                location.sector = 1;
@@ -709,6 +711,7 @@ public class SetUpWorldFactory{
          * @param height        Number of grid positions high.
          */
         private void addBuilding(String type, String name, int xPos, int yPos, int width, int height, LocationInfo info){
+        	locationsList.add(name);
                 if(layout == null || buildingsPanels == null){
                         System.out.println("ERROR In addBuilding ALL IS NULL");
                         return;
@@ -862,7 +865,7 @@ public class SetUpWorldFactory{
          * @param initialRole
          * @param initialLocation
          */
-        public static void addPerson(String name, String residenceName, String initialRole, String initialLocation){
+        public static PersonAgent addPerson(String name, String residenceName, String initialRole, String initialLocation, Double Money){
                 try{
                         PersonAgent person = new PersonAgent(name, buildingsPanels.getResidenceBuildingPanel(residenceName));
                         
@@ -880,9 +883,11 @@ public class SetUpWorldFactory{
                         
                         person.startThread();
                         agents.add(person);
+                        return person;
                 }catch(Exception e){
                         e.printStackTrace();
                 }
+                return null;
         }
         
         private class MyPerson {
@@ -1261,3 +1266,4 @@ public class SetUpWorldFactory{
                 }
         }
 }
+

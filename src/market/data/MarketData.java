@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MarketData {
+	String marketName;
 	List<Inventory> marketInventory	= new ArrayList<Inventory>();
 	MarketManager currentMarketManager;
 	MarketEmployee currentMarketEmployee1=null;
@@ -103,6 +104,11 @@ private void decrementFoodAmount(int amountToDecrement) {
 private void restockFoodAmount(int amountToRestock) {
 	amount +=amountToRestock;
 }
+}
+
+
+public String getName() {
+	return marketName;
 }
 
 

@@ -1,6 +1,7 @@
 package restaurant.gui.luca;
 
 import interfaces.GuiPanel;
+import interfaces.MarketManager;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,15 +13,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import building.BuildingList;
-import Person.Role.Role;
-import restaurant.gui.luca.CookGui;
-import restaurant.gui.luca.CustomerGui;
-import restaurant.gui.luca.WaiterGui;
 import restaurant.luca.LucaCashierRole;
 import restaurant.luca.LucaCookRole;
 import restaurant.luca.LucaHostRole;
@@ -28,6 +25,8 @@ import restaurant.luca.LucaRestaurantCustomerRole;
 import restaurant.luca.LucaWaiterRole;
 import trace.AlertLog;
 import trace.AlertTag;
+import Person.Role.Role;
+import building.BuildingList;
 
 
 
@@ -42,7 +41,7 @@ public class AnimationPanel extends JPanel implements ActionListener,GuiPanel{
     final static int TIMERCOUNTmilliseconds = 5;
     private Image bufferImage;
     private Dimension bufferSize;
-
+    private Vector<MarketManager> markets = new Vector<MarketManager>();
     private List<Gui> guis = new ArrayList<Gui>();
     private LucaHostRole host;
     private int customerNumber=0;
@@ -115,8 +114,16 @@ public class AnimationPanel extends JPanel implements ActionListener,GuiPanel{
 			LucaCookRole cr = (LucaCookRole) r;
 			CookGui gui = new CookGui(cr);
 			cr.setGui(gui);
+			for (Role role :BuildingList.findBuildingWithName(cr.getWorkLocation()).getInhabitants())
+			{
+				if (role instanceof MarketManager){
+					MarketManager manager = (MarketManager) role;
+					cr.msgAddMarket(manager);
+				}
+
 			guis.add(gui);
 			//System.out.println("My person is: " + hr.myPerson.getName());
+		}
 		}
 		if(r instanceof LucaHostRole){
 			host= new LucaHostRole("Cary");
@@ -124,9 +131,17 @@ public class AnimationPanel extends JPanel implements ActionListener,GuiPanel{
 
 		}
 		if(r instanceof LucaCashierRole){
-			LucaCashierRole cr = (LucaCashierRole) r;
+			LucaCashierRole cashr = (LucaCashierRole) r;
+			for (Role role :BuildingList.findBuildingWithName(cashr.getWorkLocation()).getInhabitants())
+			{
+				if (role instanceof MarketManager){
+					MarketManager manager = (MarketManager) role;
+					
+					cashr.addMarkets(markets);
+				}
 			
 
+			}
 		}
 		if(r instanceof LucaRestaurantCustomerRole){
 			LucaRestaurantCustomerRole rcr = (LucaRestaurantCustomerRole) r;
