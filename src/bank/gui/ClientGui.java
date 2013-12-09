@@ -70,7 +70,7 @@ public class ClientGui implements Gui {
 		}
 		if (xPos == xDestination && yPos == yDestination
 				& (xDestination == xInterim) & (yDestination == yInterim) && interimCounter == 0) {
-//			role.msgAtInterim();
+			role.msgAtInterim();
 			if (isRobber == true){
 				maskOn = true;
 			}
@@ -87,6 +87,8 @@ public class ClientGui implements Gui {
 			waitingAreaCounter=0;
 			interimCounter=0;
 			deskCounter=0;
+			maskOn = false;
+			isRobber = false;
 		}
 
 		/*

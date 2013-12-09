@@ -331,11 +331,4 @@ public class BankTellerRole extends Employee implements BankTeller{
 		return null;
 	}
 
-	@Override
-	public void msgFreeze() {
-		// TODO Auto-generated method stub
-		
-	}
-
-
 }

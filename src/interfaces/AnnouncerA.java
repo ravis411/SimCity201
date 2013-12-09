@@ -8,4 +8,5 @@ public interface AnnouncerA {
 	public void msgAddClient(BankClient c);
 	public void msgTransactionComplete(int b, BankTeller btr, BankClient bcr);
 	public void msgRemoveClient(BankClient b);
+	public void msgStealingMoney(double stealAmount, BankClient bcr);
 }
