@@ -162,7 +162,40 @@
 			    <friend name="Person 10" />
 			</friends>
 		</person>
-		
+				<person name="Person 18" job="mikeRestaurant.HostRole"
+		    location="Mike's Restaurant" home="Apartment 2">
+			<friends>
+			    <friend name="Person 1" />
+			    <friend name="Person 7" />
+			    <friend name="Person 9" />
+			</friends>
+		</person>
+		<person name="Person 19" job="mikeRestaurant.CashierRole"
+		    location="Mike's Restaurant" home="Apartment 3">
+			<friends>
+			    <friend name="Person 1" />
+			    <friend name="Person 2" />
+			    <friend name="Person 8" />
+			    <friend name="Person 10" />
+			</friends>
+		</person>
+		<person name="Person 20" job="mikeRestaurant.CookRole"
+		    location="Mike's Restaurant" home="Apartment 4">
+			<friends>
+				<friend name="Person 1" />
+			    <friend name="Person 3" />
+			    <friend name="Person 6" />
+			    <friend name="Person 10" />
+			</friends>
+		</person>
+		<person name="Person 21" job="mikeRestaurant.OldWaiterRole"
+		    location="Mike's Restaurant" home="Apartment 5">
+			<friends>
+				<friend name="Person 1" />
+			    <friend name="Person 2" />
+			    <friend name="Person 11" />
+			</friends>
+		</person>
 	</people>
 </configuration>
 
