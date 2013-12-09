@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Semaphore;
 
 import restaurant.gui.luca.CustomerGui;
 import restaurant.interfaces.luca.LucaCustomer;
@@ -42,6 +43,7 @@ public class LucaRestaurantCustomerRole extends GenericCustomer implements LucaC
 	private Random randomx = new Random(System.nanoTime());
 	private Map<String, Integer> menu;
 	public EventLog log= new EventLog();
+	private Semaphore hasLeft = new Semaphore(0,false);
 
 	//    private boolean isHungry = false; //hack for gui
 	public enum AgentState
@@ -74,16 +76,11 @@ public class LucaRestaurantCustomerRole extends GenericCustomer implements LucaC
 	/**
 	 * hack to establish connection to Host agent.
 	 */
-	public void setHost(LucaHostRole host) {
-		this.host = host;
-	}
+
 	public void setWaiter(LucaWaiter waiter) {
 		this.waiter = waiter;
 	}
-	public void setCashier(LucaCashierRole cashier) {
-		this.cashier=cashier;
-		
-	}
+
 
 	// Messages
 
@@ -159,6 +156,9 @@ public class LucaRestaurantCustomerRole extends GenericCustomer implements LucaC
 		event = AgentEvent.ChangeRecieved;
 		stateChanged();
 		
+	}
+	public void msgLeftRestaurant() {//from animation
+		hasLeft.release();
 	}
 
 
@@ -321,11 +321,25 @@ public class LucaRestaurantCustomerRole extends GenericCustomer implements LucaC
 		isHungry = false;
 		print(this + " is not hungry anymore since he is done eating...or just can't afford anything");
 		customerGui.DoExitRestaurant();
+		try {
+			hasLeft.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		deactivate();
 	}
 	private void leaveDoesNotWantToWait() {
 		isHungry = false;
 		print(this + "apparently is not hungry anymore since he is doesn't want to wait to be seated.");
 		customerGui.DoExitRestaurant();
+		try {
+			hasLeft.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		deactivate();
 	}
 
 	private void payCashier() {
@@ -396,13 +410,14 @@ public class LucaRestaurantCustomerRole extends GenericCustomer implements LucaC
 	@Override
 	public void setCashier(GenericCashier c) {
 		// TODO Auto-generated method stub
+		this.cashier = (LucaCashierRole) c;
 		
 	}
 
 	@Override
 	public void setHost(GenericHost h) {
-		// TODO Auto-generated method stub
-		
+		this.host = (LucaHostRole) h;
+				
 	}
 
 

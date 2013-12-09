@@ -26,6 +26,7 @@ import restaurant.luca.LucaWaiterRole;
 import trace.AlertLog;
 import trace.AlertTag;
 import Person.Role.Role;
+import building.Building;
 import building.BuildingList;
 
 
@@ -114,48 +115,69 @@ public class AnimationPanel extends JPanel implements ActionListener,GuiPanel{
 			LucaCookRole cr = (LucaCookRole) r;
 			CookGui gui = new CookGui(cr);
 			cr.setGui(gui);
-			for (Role role :BuildingList.findBuildingWithName(cr.getWorkLocation()).getInhabitants())
+/*			for (Role role :BuildingList.findBuildingWithName(cr.getWorkLocation()).getInhabitants())
 			{
 				if (role instanceof MarketManager){
 					MarketManager manager = (MarketManager) role;
 					cr.msgAddMarket(manager);
 				}
-
+*/
 			guis.add(gui);
 			//System.out.println("My person is: " + hr.myPerson.getName());
 		}
-		}
+		
 		if(r instanceof LucaHostRole){
-			host= new LucaHostRole("Cary");
+		//	host= new LucaHostRole("Cary");
 			
 
 		}
 		if(r instanceof LucaCashierRole){
-			LucaCashierRole cashr = (LucaCashierRole) r;
-			for (Role role :BuildingList.findBuildingWithName(cashr.getWorkLocation()).getInhabitants())
-			{
-				if (role instanceof MarketManager){
-					MarketManager manager = (MarketManager) role;
-					
-					cashr.addMarkets(markets);
+		/*	LucaCashierRole cashr = (LucaCashierRole) r;
+			for( Building m : BuildingList.findBuildingsWithType("Market")){
+				for (Role role :m.getInhabitants())
+				{
+					if (role instanceof MarketManager){
+						MarketManager market = (MarketManager) role;
+						markets.add(market);
+						break;
+					}
 				}
-			
-
+				}
+			cashr.addMarkets(markets);
+*/
 			}
-		}
+		
 		if(r instanceof LucaRestaurantCustomerRole){
 			LucaRestaurantCustomerRole rcr = (LucaRestaurantCustomerRole) r;
-			//CustomerGui gui = new CustomerGui(rcr);
-			//rcr.setGui(gui);
+			CustomerGui gui = new CustomerGui(rcr, waiterNumber*50+120);
+			rcr.setGui(gui);
 			AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "CustomerGui", "Assigning the Customer Gui ---------");
-			//guis.add(gui);
+		
+		/*	for (Role role :BuildingList.findBuildingWithName(rcr.).getInhabitants())
+			{
+				if (role instanceof LucaHostRole){
+					LucaHostRole host = (LucaHostRole) role;
+					rcr.setHost(host);
+					break;
+				}
+			}
+			for (Role role :BuildingList.findBuildingWithName(rcr.getWorkLocation()).getInhabitants())
+			{
+				if (role instanceof LucaCashierRole){
+					LucaCashierRole cashier = (LucaCashierRole) role;
+					rcr.setCashier(cashier);
+					break;
+				}
+			}*/
+			customerNumber++;
+			guis.add(gui);
 			//System.out.println("My person is: " + hr.myPerson.getName());
 		}
 		if(r instanceof LucaWaiterRole){
 			LucaWaiterRole nwr = (LucaWaiterRole) r;
 			WaiterGui gui = new WaiterGui(nwr, waiterNumber*50+120);
 			nwr.setGui(gui);
-			for (Role role :BuildingList.findBuildingWithName(nwr.getWorkLocation()).getInhabitants())
+			/*for (Role role :BuildingList.findBuildingWithName(nwr.getWorkLocation()).getInhabitants())
 			{
 				if (role instanceof LucaCookRole){
 					LucaCookRole cook = (LucaCookRole) role;
@@ -178,7 +200,7 @@ public class AnimationPanel extends JPanel implements ActionListener,GuiPanel{
 					nwr.setCashier(cashier);
 					break;
 				}
-			}
+			}*/
 			waiterNumber++;
 			guis.add(gui);
 			//System.out.println("My person is: " + hr.myPerson.getName());

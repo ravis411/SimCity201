@@ -70,8 +70,9 @@ public class LucaHostRole extends GenericHost implements LucaHost{
 		return tables;
 	}
 	// Messages
-	public void msgIAmAWaiter(LucaWaiter waiter) {
-		waiters.add(waiter);
+	public void addWaiter(GenericWaiter waiter) {
+		
+		waiters.add((LucaWaiter)waiter);
 		stateChanged();
 		
 	}
@@ -286,11 +287,7 @@ public class LucaHostRole extends GenericHost implements LucaHost{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	@Override
-	public void addWaiter(GenericWaiter waiter) {
-		// TODO Auto-generated method stub
-		
-	}
+
 	@Override
 	public ShiftTime getShift() {
 		// TODO Auto-generated method stub
@@ -301,6 +298,8 @@ public class LucaHostRole extends GenericHost implements LucaHost{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 
 
 

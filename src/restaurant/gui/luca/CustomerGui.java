@@ -43,6 +43,11 @@ public class CustomerGui implements Gui{
 		else if (yPos > yDestination)
 			yPos--;
 
+        if (xPos == xDestination && yPos == yDestination
+        		& (xDestination == xResturantEntrance) & (yDestination == yResturantEntrance)) {
+        	agent.msgLeftRestaurant();
+        }
+		
 		if (xPos == xDestination && yPos == yDestination) {
 			if (command==Command.GoToSeat) agent.msgAnimationFinishedGoToSeat();
 			else if (command==Command.LeaveRestaurant) {
@@ -65,7 +70,7 @@ public class CustomerGui implements Gui{
 	}
 
 	public boolean isPresent() {
-		return isPresent;
+		return true;
 	}
 	public void setHungry() {
 		isHungry = true;
