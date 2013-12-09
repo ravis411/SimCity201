@@ -92,9 +92,11 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 			}
 		}
 
-		for(Gui gui : guis) {
-			if (gui.isPresent()) {
-				gui.draw(g2);
+		synchronized(guis){
+			for(Gui gui : guis) {
+				if (gui.isPresent()) {
+					gui.draw(g2);
+				}
 			}
 		}
 		

@@ -131,9 +131,9 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	 */
 	public void setInitialRole(Role r, String roleLocation){
 		if(r instanceof HomeRole || r == null){
-			HomeRole hr = (HomeRole) findRole("HomeRole");
+			HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE);
 			//if(name.equals("Person 1"))
-				hr.msgMakeFood();
+				//hr.msgMakeFood();
 				
 			gui.setStartingStates(home.getName());
 			BuildingList.findBuildingWithName(home.getName()).addRole(hr);
@@ -362,7 +362,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			hr.partyInvitees.remove((PersonAgent) p);
 		}
 		if(hr.partyInvitees.size()==0 && hr.partyAttendees.size()==0){
-			AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "PARTY CANCELLED SINCE NO ONE IS COMING");
+			AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Cancelling the party since no one is coming.");
 		}
 	}
 	public void msgRespondToInviteUrgently(Person host){
@@ -484,7 +484,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			return true;
 		}
 		
-		if(state == PersonState.NeedsMoney && moneyNeeded > 10){
+		if(state == PersonState.NeedsMoney && moneyNeeded > 100000){
 			GoRobBank();
 			return true;
 		}
@@ -503,7 +503,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		  String transport = getTransportPreference();
 		  
 		  String location = PickFoodLocation();
-		  GoToLocation(location, transport);
+		  GoToLocation("Food Court", transport);
 		  
 		  GenericCustomer role = (GenericCustomer) findRole(Role.RESTAURANT_LUCA_CUSTOMER_ROLE);
 		  if(role == null){
@@ -520,10 +520,12 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 //			  role.setCashier(rest.getCashierRole());
 //			  role.setHost(rest.getHostRole());
 			  
+
 			  role.gotHungry();
 			  role.activate();
 		  }
 		  this.state = PersonState.GettingFood;
+		  this.msgGoToMarket("item");
 	}
 	
 	private String PickFoodLocation(){
@@ -869,7 +871,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	}
 	
 	public void homeThrowParty() {
-		HomeRole role = (HomeRole) findRole("HomeRole");
+		HomeRole role = (HomeRole) findRole(Role.HOME_ROLE);
 		role.msgThrowParty();
 	}
 	
@@ -1167,5 +1169,14 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		}
 		else
 			return false;
+	}
+	
+	public String getCurrentRole() {
+		for (Role r: roles) {
+			if (r.isActive()) {
+				return r.getNameOfRole();
+			}
+		}
+		return null;
 	}
 }

@@ -418,20 +418,25 @@ public class HomeRole extends Role implements Home {
 		enterHome = false;
 	}
 	private void sendOutInvites() {
-		rsvpDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH), MasterTime.getInstance().get(Calendar.HOUR_OF_DAY), MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND)); 
-		rsvpDate.add(Calendar.DAY_OF_MONTH, 1);
-		MasterTime.getInstance().registerDateListener(rsvpDate.get(Calendar.MONTH), rsvpDate.get(Calendar.DAY_OF_MONTH), rsvpDate.get(Calendar.HOUR_OF_DAY), rsvpDate.get(Calendar.MINUTE), myPerson);
-		
-		partyDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH), MasterTime.getInstance().get(Calendar.HOUR_OF_DAY), MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND)); 
-		partyDate.add(Calendar.DAY_OF_MONTH, 2);
-		MasterTime.getInstance().registerDateListener(partyDate.get(Calendar.MONTH), partyDate.get(Calendar.DAY_OF_MONTH), partyDate.get(Calendar.HOUR_OF_DAY), partyDate.get(Calendar.MINUTE), myPerson);
-		
-		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Inviting friends to my party.");
-		for(int i=0; i<myPerson.getFriends().size(); i++) {
-			myPerson.getFriends().get(i).msgPartyInvitation(myPerson, rsvpDate, partyDate);
-			partyInvitees.add(myPerson.getFriends().get(i));
+		if(myPerson.getFriends().size() == 0) {
+			AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "I have no friends to invite to a party.");
 		}
-		partyState = PartyState.setUp;
+		else {
+			rsvpDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH), MasterTime.getInstance().get(Calendar.HOUR_OF_DAY), MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND)); 
+			rsvpDate.add(Calendar.DAY_OF_MONTH, 1);
+			MasterTime.getInstance().registerDateListener(rsvpDate.get(Calendar.MONTH), rsvpDate.get(Calendar.DAY_OF_MONTH), rsvpDate.get(Calendar.HOUR_OF_DAY), rsvpDate.get(Calendar.MINUTE), myPerson);
+			
+			partyDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH), MasterTime.getInstance().get(Calendar.HOUR_OF_DAY), MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND)); 
+			partyDate.add(Calendar.DAY_OF_MONTH, 2);
+			MasterTime.getInstance().registerDateListener(partyDate.get(Calendar.MONTH), partyDate.get(Calendar.DAY_OF_MONTH), partyDate.get(Calendar.HOUR_OF_DAY), partyDate.get(Calendar.MINUTE), myPerson);
+			
+			AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Inviting friends to my party.");
+			for(int i=0; i<myPerson.getFriends().size(); i++) {
+				myPerson.getFriends().get(i).msgPartyInvitation(myPerson, rsvpDate, partyDate);
+				partyInvitees.add(myPerson.getFriends().get(i));
+			}
+			partyState = PartyState.setUp;
+		}
 	}
 	private void resendInvites() {
 		for(PersonAgent p : partyInvitees) {
