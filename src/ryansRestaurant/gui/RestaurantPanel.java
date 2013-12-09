@@ -18,6 +18,7 @@ import ryansRestaurant.RyansCashierRole;
 import ryansRestaurant.RyansCookRole;
 import ryansRestaurant.RyansCustomerRole;
 import ryansRestaurant.RyansMarketRole;
+import ryansRestaurant.RyansOldWaiterRole;
 import ryansRestaurant.RyansWaiterRole;
 import astar.AStarTraversal;
 
@@ -167,7 +168,7 @@ public class RestaurantPanel extends JPanel {
     		if(waiters.size() >= 10)
     			return;
     		
-    		RyansWaiterRole w = new RyansWaiterRole("Ryan's Restaurant");
+    		RyansWaiterRole w = new RyansOldWaiterRole("Ryan's Restaurant");
     		
     		AStarTraversal aStar = new AStarTraversal(grid);
     		
