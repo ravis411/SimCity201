@@ -1,14 +1,16 @@
 package restaurant.interfaces.luca;
 
-import restaurant.luca.LucaMarketRole;
+import interfaces.MarketManager;
+import MarketEmployee.MarketEmployeeRole;
+
 
 public interface LucaCook {
 
-	public abstract void msgAddMarket(LucaMarketRole market);
+	public abstract void msgAddMarket(MarketManager market);
 
 	public abstract void msgCookHeresAnOrder(int customerTableNumber, String customerChoice, LucaWaiter waiterAgent) ;
-	public abstract void msgCookIDoNotHaveFoodSupplyOrdered(String Food);
-	public abstract void msgHereAreRequestedFoodSupplies(String foodType, int foodAmount);
+	public abstract void msgOrderNotFilled(int ingredientNum);
+	public abstract void msgOrderFilled(String foodType, int foodAmount);
 
 	public abstract void msgAtGrill();
 

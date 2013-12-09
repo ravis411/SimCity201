@@ -35,7 +35,6 @@ public class MarketManagerGui implements Gui {
     private int waiterNumber=0;
     private int tableNum;
     private String orderBeingCarried = " ";
-    boolean goToTruck=false;
     public MarketManagerGui(MarketManagerRole marketManagereRole) {
         this.role = marketManagereRole;
         xDestination=xCounterEntranceCord;
@@ -89,19 +88,27 @@ public class MarketManagerGui implements Gui {
         	
         	xDestination= xManagerOfficeDoor+70;
         	yDestination= yManagerOfficeDoor-110;
-        	
+        	role.msgMarketEmployeeAtTruck();
         }
         if (xPos == xDestination && yPos == yDestination
         		& (xDestination == xManagerOfficeDoor+70 & (yDestination == yManagerOfficeDoor-110))) {
         	
-        	xDestination= xManagerOfficeDoor;
-        	yDestination= yManagerOfficeDoor;
+        	xDestination= xManagerOfficeDoor+50;
+        	yDestination= yManagerOfficeDoor-1;
         	
         }
         if (xPos == xDestination && yPos == yDestination
-        		& (xDestination ==  xManagerOfficeDoor & (yDestination ==  yManagerOfficeDoor))) {
+        		& (xDestination == xManagerOfficeDoor+50 & (yDestination == yManagerOfficeDoor-1))) {
+        	
+        	xDestination= xManagerOfficeDoor-20;
+        	yDestination= yManagerOfficeDoor-1;
+        	
+        }
+        if (xPos == xDestination && yPos == yDestination
+        		& (xDestination ==  xManagerOfficeDoor-20 & (yDestination ==  yManagerOfficeDoor-1))) {
         	xDestination= xManagerOfficeDesk;
         	yDestination= yManagerOfficeDesk;
+        	role.msgMarketEmployeeAtDesk();
         	
         }
         if (xPos == xDestination && yPos == yDestination
@@ -146,7 +153,6 @@ public class MarketManagerGui implements Gui {
     public void DoGoToDeliveryTruck() {
     	xDestination = xManagerOfficeDoor+60;
 	    yDestination = yManagerOfficeDoor;		
-	    goToTruck=true;
 	}
     
 
