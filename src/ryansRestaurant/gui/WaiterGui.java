@@ -1,20 +1,20 @@
 package ryansRestaurant.gui;
 
 
-import ryansRestaurant.RyansCookRole;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Semaphore;
+
 import ryansRestaurant.RyansCustomerRole;
-import ryansRestaurant.RyansHostRole;
 import ryansRestaurant.RyansWaiterRole;
 import ryansRestaurant.interfaces.RyansCustomer;
-
-import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Timer;
-import java.util.concurrent.Semaphore;
-import java.util.List;
-
-import astar.*;
+import astar.AStarNode;
+import astar.AStarTraversal;
+import astar.Position;
 
 public class WaiterGui implements Gui {
 
@@ -63,7 +63,7 @@ public class WaiterGui implements Gui {
     public WaiterGui(RyansWaiterRole agent, RestaurantGui gui, RestaurantLayout restLayout, AStarTraversal aStar) {
     	positionMap = new HashMap<Dimension, Dimension>(restLayout.positionMap);
     	this.agent = agent;
-    	this.cook = agent.cook.getGui();
+    	//this.cook = agent.cook.getGui();
         this.gui = gui;
         this.restLayout = restLayout;
         
@@ -79,6 +79,9 @@ public class WaiterGui implements Gui {
         dispName = new String("" + agent.getName().charAt(0) + agent.getName().charAt(agent.getName().length() - 1));
     }
 
+    public void setCook(CookGui gui){
+    	this.cook = this.agent.cook.getGui();
+    }
     
     //from gui to set home coordinates
     public void msgHereAreHomeCoords(Dimension d) {

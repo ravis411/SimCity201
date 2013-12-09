@@ -558,6 +558,7 @@ public class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 	public void setCook(GenericCook c) {
 		// TODO Auto-generated method stub
 		this.cook = (RyansCookRole) c;
+		this.waiterGui.setCook(this.cook.getGui());
 	}
 
 

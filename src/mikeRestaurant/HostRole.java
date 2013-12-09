@@ -247,6 +247,7 @@ public class HostRole extends GenericHost implements Host{
 			
 		} catch (ConcurrentModificationException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
 			return false;
 		}
 

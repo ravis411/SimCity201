@@ -7,6 +7,8 @@ public abstract class Role {
 	private boolean isActive = false;
 	protected Person myPerson;
 	
+	private boolean isWaitingAtWork = false;
+	
 	public final static String MARKET_CUSTOMER_ROLE = "MarketEmployee.MarketCustomerRole";
 	public final static String MARKET_EMPLOYEE_ROLE = "MarketEmployee.MarketEmployeeRole";
 	public final static String MARKET_MANAGER_ROLE = "MarketEmployee.MarketManagerRole";
@@ -117,6 +119,20 @@ public abstract class Role {
 	public void activate(){
 		isActive = true;
 		stateChanged();
+	}
+	
+	public void waitingAtWork(){
+		this.isWaitingAtWork = true;
+		stateChanged();
+	}
+	
+	public void goingToWork(){
+		this.isWaitingAtWork = false;
+		stateChanged();
+	}
+	
+	public boolean getWaitingAtWork(){
+		return this.isWaitingAtWork;
 	}
 	
 	/**

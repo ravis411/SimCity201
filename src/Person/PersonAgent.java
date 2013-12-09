@@ -12,12 +12,12 @@ import interfaces.generic_interfaces.GenericHost;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
+import mikeRestaurant.HostRole;
 import residence.HomeGuestRole;
 import residence.HomeRole;
 import trace.AlertLog;
@@ -65,6 +65,8 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	//party variables
 	private List<Party> parties;
 	
+	private Queue<Role> pendingJobs = new ArrayDeque<Role>();
+	
 	private double loanAmount;
 	
 	public List<Role> roles;
@@ -76,7 +78,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	
 	public enum StateOfHunger {NotHungry, SlightlyHungry, Hungry, VeryHungry, Starving} 
 	public enum StateOfLocation {AtHome,AtBank,AtMarket,AtRestaurant, InCar,InBus,Walking};
-	public enum StateOfEmployment {Customer,Employee,Idle};
+	public enum StateOfEmployment {Customer,WaitingAtWork, Employee,Idle};
 	public enum PersonState {Idle,NeedsMoney,PayRentNow, Working, PayLoanNow,GettingMoney,NeedsFood,GettingFood,HostParty,GoingToParty,HostingParty,Partying}
 	public enum WorkState {None, GoToWork, GoingToWork, AtWork}
 
@@ -124,6 +126,12 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 //		setGui(new PersonGui(this));
 //	}
 	
+	private Semaphore waitingAtWork = new Semaphore(0, true);
+	
+	public void workIsOpen(){
+		waitingAtWork.release();
+	}
+	
 	/**
 	 * @precondition must be called after setGui
 	 * @param r
@@ -139,20 +147,42 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			BuildingList.findBuildingWithName(home.getName()).addRole(hr);
 			hr.activate();
 		}else{
-			addRole(r);
+			
 
 			if(r instanceof MarketManagerRole ){
 				 MarketManagerRole role = (MarketManagerRole) findRole(Role.MARKET_MANAGER_ROLE);
-			
+				 return;
 			}
 			if(r instanceof MarketEmployeeRole ){
 				MarketEmployeeRole role = (MarketEmployeeRole) findRole(Role.MARKET_EMPLOYEE_ROLE);
+				return;
 			}
 			
+			addRole(r);
 			gui.setStartingStates(roleLocation);
-			BuildingList.findBuildingWithName(roleLocation).addRole(r);
+			Building bdg = BuildingList.findBuildingWithName(roleLocation);
+			bdg.addRole(r);
+			if(bdg instanceof Workplace){
+				Workplace w = (Workplace) bdg;
+				if(!w.isOpen()){
+					pendingJobs.add((Role) r);
+					stateChanged();
+					return;
+				}
+			}
+			
 			r.activate();
 		}
+	}
+	
+	public void waitForWork(Role r){
+		try {
+			waitingAtWork.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		r.activate();
 	}
 
 	public PersonAgent(String name, ResidenceBuildingPanel home){
@@ -392,6 +422,10 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	 */
 	@Override
 	public boolean pickAndExecuteAnAction() {
+		if(!pendingJobs.isEmpty()){
+			waitForWork(pendingJobs.poll());
+		}
+		
 		if(parties.size()!=0){
 			for(Party p:parties){
 				if(p.partyState==PartyState.NeedsResponseUrgently){
@@ -512,6 +546,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		  }
 
 		  AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Customer Role = "+role);
+		  Restaurant resta =  (Restaurant) BuildingList.findBuildingWithName("Mike's Restaurant");
 		  BuildingList.findBuildingWithName("Mike's Restaurant").addRole(role);
 		  Building bdg =  BuildingList.findBuildingWithName("Mike's Restaurant");
 		  if(bdg instanceof Restaurant){
@@ -576,6 +611,12 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	private void rsvpNo(PersonAgent pa, Party p){
 		pa.msgIAmNotComing(this);
 		p.partyState=PartyState.NotGoingToParty;
+	}
+	
+	public void deactivateAllRoles(){
+		for(Role r : roles) {
+			  r.deactivate();
+		  }
 	}
 	
 	private void GoToWork(){

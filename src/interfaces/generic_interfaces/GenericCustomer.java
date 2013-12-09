@@ -13,8 +13,10 @@ public abstract class GenericCustomer extends Role {
 	
 	public void setupCustomer(String location){
 		Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(location);
-		setCashier(rest.getCashierRole());
-		setHost(rest.getHostRole());
+		if(rest.isOpen()){
+			setCashier(rest.getCashierRole());
+			setHost(rest.getHostRole());
+		}
 	}
 	
 }

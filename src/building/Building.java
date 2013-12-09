@@ -1,9 +1,9 @@
 package building;
 
 import gui.Building.BuildingPanel;
-import interfaces.generic_interfaces.GenericHost;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import Person.Role.Role;
@@ -30,7 +30,7 @@ public class Building {
 		this.panel = panel;
 		this.name = panel.getName();
 		
-		inhabitants = new ArrayList<Role>();
+		inhabitants = Collections.synchronizedList(new ArrayList<Role>());
 	}
 	
 	/**
@@ -46,6 +46,7 @@ public class Building {
 	 * @param r the role of the person to be added
 	 */
 	public void addRole(Role r){
+
 		inhabitants.add(r);
 		this.panel.getPanel().addGuiForRole(r);
 	}

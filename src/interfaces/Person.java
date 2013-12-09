@@ -22,6 +22,10 @@ import java.util.Calendar;
 
 public interface Person extends DateListener{
 	
+	public void deactivateAllRoles();
+	
+	public void workIsOpen();
+	
 	//Transportation functions
 	public abstract void msgWeHaveArrived(String currentDestination);
 	
