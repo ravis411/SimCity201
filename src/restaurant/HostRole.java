@@ -14,6 +14,7 @@ import java.util.concurrent.Semaphore;
 import restaurant.gui.HostGui;
 import trace.AlertLog;
 import trace.AlertTag;
+import Person.Role.Role;
 import Person.Role.ShiftTime;
 
 /**
@@ -255,7 +256,7 @@ public class HostRole extends GenericHost {
 
 	@Override
 	public String getNameOfRole() {
-		return "HostRole";
+		return Role.RESTAURANT_HOST_ROLE;
 	}
 
 	@Override

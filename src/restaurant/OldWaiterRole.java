@@ -15,6 +15,7 @@ import java.util.concurrent.Semaphore;
 import restaurant.gui.WaiterGui;
 import trace.AlertLog;
 import trace.AlertTag;
+import Person.Role.Role;
 import Person.Role.ShiftTime;
 
 /**
@@ -478,7 +479,7 @@ public class OldWaiterRole extends GenericWaiter implements Waiter {
 	@Override
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
-		return "OldWaiterRole";
+		return Role.RESTAURANT_WAITER_ROLE;
 	}
 
 	@Override
