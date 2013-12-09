@@ -39,7 +39,7 @@ import astar.VehicleAStarTraversal;
 
 
 
-public class DeadPersonGui implements Gui {
+public class DrunkPersonGui implements Gui {
 	
 	
 	boolean hitByCar = false;
@@ -410,7 +410,7 @@ public class DeadPersonGui implements Gui {
     
     
     
-    public DeadPersonGui(String agent) {
+    public DrunkPersonGui(String agent) {
     	//this.agent = agent;
     	this.agent = agent;
     	this.cityLayout = SetUpWorldFactory.layout;
@@ -528,11 +528,11 @@ public class DeadPersonGui implements Gui {
         	g.setColor(Color.RED);
         	g.fillOval(xPos, yPos, width, height);
         	//This draws the blood spatter
-        	for(int x = 0; x < 800; x+=random.nextInt(50)){
-        		for(int y = 0; y < 400; y+=random.nextInt(50)){
-        			g.fillOval(x, y, 5, 5);
-        		}
-        	}
+//        	for(int x = 0; x < 800; x+=random.nextInt(50)){
+//        		for(int y = 0; y < 400; y+=random.nextInt(50)){
+//        			g.fillOval(x, y, 5, 5);
+//        		}
+//        	}
         	
         	if(timeToBeDead >= 80){
         		if(width <= 35){

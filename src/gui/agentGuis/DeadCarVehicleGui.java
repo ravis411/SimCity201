@@ -45,10 +45,10 @@ public class DeadCarVehicleGui implements Gui {
 	Random random = new Random();
 	
 	
-	public void DoGetHitByCar(){
+	public void DoDrunkDrive(){
 		//DoGoToClosestBusStop();
 		
-		DoEnterWorld();
+		DoEnterWorld(positionMap.get(currentLocation.entranceFromRoadGrid), new Position(currentLocation.positionToEnterFromRoadGrid.width, currentLocation.positionToEnterFromRoadGrid.height));
 		//Now we're in standing in the middle of the road
 		
 		//Try to find a free space in the road to moveInto
@@ -56,12 +56,12 @@ public class DeadCarVehicleGui implements Gui {
 		currentPosition.release(aStar.getGrid());
 		aboutToDie = true;
 		while(!hitByCar){
-			deadSpaz();
+			spaz();
 		}
 	}
 	
 	
-	private void deadSpaz(){
+	private void spaz(){
 		List<Position> spots = new ArrayList<>();
 		for(int x = -1; x <=1; x++ ){
 			for(int y = -1; y<=1; y++){
@@ -300,14 +300,18 @@ public class DeadCarVehicleGui implements Gui {
         
         
         
-        if(aboutToDie){
-        	if(!currentPosition.open(aStar.getGrid())){
-        		hitByCar = true;
-        		aboutToDie = false;
-        		xDestination = xPos;
-        		yDestination = yPos;
-        	}
-        }
+        try {
+			if(aboutToDie){
+				if(!currentPosition.open(aStar.getGrid())){
+					hitByCar = true;
+					aboutToDie = false;
+					xDestination = xPos;
+					yDestination = yPos;
+				}
+			}
+		} catch (Exception e) {
+
+		}
         
         
         
@@ -328,6 +332,14 @@ public class DeadCarVehicleGui implements Gui {
         	g.fillRect(xPos, yPos, 20, 20);
         	g.setColor(Color.white);
         	g.drawString(agent.toString(), xPos, yPos);
+        }else
+        {
+        	if(image == null){
+        		testView = true; return;
+        	}
+
+        	g.drawImage(image, xPos, yPos, 20, 20, null);
+
         }
         if(hitByCar){
         	g.setColor(Color.BLACK);
@@ -338,17 +350,16 @@ public class DeadCarVehicleGui implements Gui {
         			g.fillOval(x, y, 5, 5);
         		}
         	}
+
         	
-        	if(timeToBeDead >= 80){
-        		if(width <= 35){
-        			width++;
-        			height++;
-        		}
-        	}
+        	
         	
         	if(timeToBeDead <= 40){
         	width--;
         	height--;
+        	}else if(width <= 35){
+        		width++;
+        		height++;
         	}
         	
         	timeToBeDead--;
@@ -356,16 +367,12 @@ public class DeadCarVehicleGui implements Gui {
         	if(timeToBeDead == 0){
         		isPresent = false;
         		timeToBeDead = 200;
+        		hitByCar = false;
+        		state = GuiState.none; 
+        		currentPosition = null;
         	}
         }
-        else
-        {
-        	if(image == null){
-        		testView = true; return;
-        	}
-        	
-        	g.drawImage(image, xPos, yPos, 20, 20, null);
-        }
+       
     }
 
     
