@@ -1,12 +1,16 @@
 package gui.MockAgents;
 
+import gui.Building.ResidenceBuildingPanel;
+import gui.agentGuis.PersonGui;
 import interfaces.Person;
 
 import java.util.Calendar;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
-import gui.agentGuis.PersonGui;
+import Person.PersonAgent;
+import Person.Role.Role;
 import agent.Agent;
 
 public class PseudoPerson extends Agent implements Person{
@@ -109,11 +113,6 @@ public class PseudoPerson extends Agent implements Person{
 		
 	}
 
-	@Override
-	public void msgReportForWork(String role) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void msgGoToMarket(String item) {
@@ -160,6 +159,77 @@ public class PseudoPerson extends Agent implements Person{
 
 	@Override
 	public void msgIAmNotComing(Person p) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setMoney(double d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setMoneyNeeded(double d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public double getMoney() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public void stateChanged(){
+		// TODO Auto-generated method stub
+
+	}
+	@Override
+	
+	public int getAge() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getMoneyNeeded() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public List<PersonAgent> getFriends() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResidenceBuildingPanel getHome() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setInitialRole(Role roleFromString, String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgReportForWork() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgYouCanLeave() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dateAction(int month, int day, int hour, int minute) {
 		// TODO Auto-generated method stub
 		
 	}

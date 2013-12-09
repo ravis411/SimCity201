@@ -20,7 +20,7 @@ public class LoggedEvent {
 
 	/**
 	 * This is the body of the message. This might read something like:
-	 * msgSitCustomerAtTable called with Customer Jim at table 3.
+	 * msgSitCustomerAtTable called with RyansCustomer Jim at table 3.
 	 */
 	private String message;
 

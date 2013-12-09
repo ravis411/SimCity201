@@ -4,7 +4,7 @@ import javax.swing.*;
 
 import agent.Agent;
 import astar.Position;
-import ryansRestaurant.HostAgent;
+import ryansRestaurant.RyansHostRole;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -300,7 +300,7 @@ public class RestaurantLayout  {
     
     class MyHomePosition {
     	int number = 0;
-    	String type = "Waiter";
+    	String type = "RyansWaiter";
     	Dimension positionCoords = null;
     	Dimension xyCoords = null;
     	Gui agentGui = null;

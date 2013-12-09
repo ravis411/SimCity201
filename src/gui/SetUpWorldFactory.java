@@ -13,55 +13,69 @@ import gui.Building.MarketBuilding;
 import gui.Building.MarketBuildingPanel;
 import gui.Building.ResidenceBuilding;
 import gui.Building.ResidenceBuildingPanel;
+import gui.Building.restaurants.FoodCourtBuilding;
+import gui.Building.restaurants.FoodCourtBuildingPanel;
 import gui.Building.restaurants.KushRestaurantBuilding;
 import gui.Building.restaurants.KushRestaurantBuildingPanel;
+import gui.Building.restaurants.LucaRestaurantBuilding;
+import gui.Building.restaurants.LucaRestaurantBuildingPanel;
 import gui.Building.restaurants.RestaurantBuilding;
 import gui.Building.restaurants.RestaurantBuildingPanel;
 import gui.Building.restaurants.RyansRestaurantBuilding;
 import gui.Building.restaurants.RyansRestaurantBuildingPanel;
 import gui.MockAgents.PseudoBusAgent;
 import gui.MockAgents.PseudoPerson;
+import gui.agentGuis.DeadPersonGui;
 import gui.agentGuis.PersonGui;
-import gui.agentGuis.VehicleGui;
+import gui.agentGuis.BusGui;
 
 import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import residence.HomeRole;
 import trace.AlertLog;
 import trace.AlertTag;
 import Person.PersonAgent;
+import Person.Role.Employee;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
-import Person.test.mock.MockPerson;
 import Transportation.BusAgent;
-import Transportation.BusStopAgent;
-import agent.Agent;
-import astar.AStarTraversal;
+import Transportation.BusStopConstruct;
 import astar.PersonAStarTraversal;
-import astar.VehicleAStarTraversal;
 
 
 //This class will instantiate and setup everything.
 public class SetUpWorldFactory{
-	public SimCityLayout layout;// = new SimCityLayout(WINDOWX, WINDOWY/2);// <-This holds the grid information
-	public CityAnimationPanel cityPanel;// = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
-	public BuildingsPanels buildingsPanels;// = new BuildingsPanels();//<-Zoomed in view of buildings
+	public static SimCityLayout layout;// = new SimCityLayout(WINDOWX, WINDOWY/2);// <-This holds the grid information
+	public static CityAnimationPanel cityPanel;// = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
+	public static BuildingsPanels buildingsPanels;// = new BuildingsPanels();//<-Zoomed in view of buildings
+	public static CityControlPanel controls;
 
-	List<Agent> agents = new ArrayList<Agent>();
-	List<LocationInfo> locationMap = new ArrayList<LocationInfo>();//<--a map of strings to LocationInfo
+	public static List<PersonAgent> agents = new ArrayList<PersonAgent>();
+	public static List<LocationInfo> locationMap = new ArrayList<LocationInfo>();//<--a map of strings to LocationInfo
+	
+	//GUI lists for AddPerson
+	public static List<String> locationsList = new ArrayList<String>();
+	public static List<String> jobList = new ArrayList<String>();
+	public static List<String> residenceList = new ArrayList<String>();
 	
 	
 	
@@ -81,8 +95,74 @@ public class SetUpWorldFactory{
 		layout = new SimCityLayout(WINDOWX, WINDOWY/2, GRIDSIZEX, GRIDSIZEY);// <-This holds the grid information
 		cityPanel = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
 		buildingsPanels = new BuildingsPanels();//<-Zoomed in view of buildings
+		controls = new CityControlPanel(buildingsPanels, this);
+		
+		//Populate GUI lists
+		jobList.add("Market Employee");
+		jobList.add("Market Customer");
+		jobList.add("Market Manager");
+		jobList.add("Bank Client");
+		jobList.add("Bank Teller");
+		jobList.add("Restaurant Customer");
+		jobList.add("Retaurant Old Waiter");
+		jobList.add("Restaurant New Waiter");
+		jobList.add("Restaurant Host");
+		jobList.add("Restaurant Cook");
+		jobList.add("Restaurant Cashier");
+		jobList.add("Luca Customer");
+		jobList.add("Luca Waiter");
+		jobList.add("Luca Host");
+		jobList.add("Luca Cook");
+		jobList.add("Luca Cashier");
+		//jobList.add("Apartment Manager");
+		jobList.add("Kush Customer");
+		jobList.add("Kush Waiter");
+		jobList.add("Kush Host");
+		jobList.add("Kush Cook");
+		jobList.add("Kush Cashier");
+		jobList.add("Jeffrey Customer");
+		jobList.add("Jeffrey Waiter");
+		jobList.add("Jeffrey Host");
+		jobList.add("Jeffrey Cook");
+		jobList.add("Jeffrey Cashier");
+		jobList.add("Mike New Waiter");
+		jobList.add("Mike Host");
+		jobList.add("Mike Cook");
+		jobList.add("Mike Cashier");
+		jobList.add("Mike Customer");
+		
+		locationsList.add("City");
+		locationsList.add("Main Restaurant");
+		locationsList.add("Mike's Restaurant");
+		locationsList.add("Ryan's Restaurant");
+		locationsList.add("Jeffrey's Restaurant");
+		locationsList.add("Luca's Restaurant");
+		locationsList.add("Byron's Restaurant");
+		locationsList.add("Kush's Restaurant");
+		locationsList.add("Bank 1");
+		locationsList.add("Bank 2");
+		locationsList.add("Market 1");
+		locationsList.add("Market 2");
+		locationsList.add("Residence 1");
+		locationsList.add("Residence 2");
+		locationsList.add("Apartment 1A");
+		locationsList.add("Apartment 1B");
+		locationsList.add("Apartment 1C");
+		locationsList.add("Apartment 1D");
+		locationsList.add("Apartment 2A");
+		locationsList.add("Apartment 2B");
+		
+		residenceList.add("Residence 1");
+		residenceList.add("Residence 2");
+		residenceList.add("Apartment 1A");
+		residenceList.add("Apartment 1B");
+		residenceList.add("Apartment 1C");
+		residenceList.add("Apartment 1D");
+		residenceList.add("Apartment 2A");
+		residenceList.add("Apartment 2B");
 
 		buildingsPanels.addBuildingPanel(new Team29Panel(buildingsPanels));
+		buildingsPanels.addBuildingPanel(controls);
 
 		//across middle
 		layout.addRoad(1, 5, 32, 5);
@@ -91,93 +171,131 @@ public class SetUpWorldFactory{
 		layout.addCrossWalk(20, 5, 2, 5);
 		layout.addCrossWalk(2, 5, 2, 5);
 		layout.addCrossWalk(30, 5, 2, 5);
-
+		
 
 		LocationInfo location = new LocationInfo();
 
 
-		//Building 1
-		location.sector = 1;
-		location.positionToEnterFromMainGrid = new Dimension(5, 3);
-		location.entranceFromMainGridPosition = new Dimension(4, 3);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Residence", "House 1", 3, 2, 2, 2, location);
-
-		//Building 2
-		location.sector = 1;
-		location.positionToEnterFromMainGrid = new Dimension(10, 3);
-		location.entranceFromMainGridPosition = new Dimension(9, 3);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Residence", "House 2", 8, 2, 2, 2, location);
-
-		//Building 3
-		location.sector = 1;
-		location.positionToEnterFromMainGrid = new Dimension(15, 3);
-		location.entranceFromMainGridPosition = new Dimension(14, 3);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Market", "Market 1", 13, 2, 2, 2, location);
-
-		//Building 4
-		location.sector = 1;
-		location.positionToEnterFromMainGrid = new Dimension(20, 3);
-		location.entranceFromMainGridPosition = new Dimension(19, 3);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-
-		addBuilding("Apartment", "Apartment Building", 18, 2, 2, 2, location);
-		
-//Building 5
-		location.sector = 1;
-		location.positionToEnterFromMainGrid = new Dimension(25, 3);
-		location.entranceFromMainGridPosition = new Dimension(24, 3);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Bank", "Bank", 23, 2, 2, 2, location);
-		//Building 6
-		location.sector = 1;
-		location.positionToEnterFromMainGrid = new Dimension(30, 3);
-		location.entranceFromMainGridPosition = new Dimension(29, 3);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-
-		addBuilding("Apartment", "Apartment Building 1", 28, 2, 2, 2, location);
-		
-//Building 7
-		location.sector = 2;
-		location.positionToEnterFromMainGrid = new Dimension(5, 12);
-		location.entranceFromMainGridPosition = new Dimension(4, 12);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Apartment", "Apartment Building 4", 3, 12, 2, 2, location);
-		//Building 8
-		location.sector = 2;
-		location.positionToEnterFromMainGrid = new Dimension(10, 12);
-		location.entranceFromMainGridPosition = new Dimension(9, 12);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Restaurant", "Restaurant 1", 8, 12, 2, 2, location);
-		//Building 9
-		location.sector = 2;
-		location.positionToEnterFromMainGrid = new Dimension(15, 12);
-		location.entranceFromMainGridPosition = new Dimension(14, 12);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-
-		addBuilding("Apartment", "Apartment Building 2", 13, 12, 2, 2, location);
-//Building 10
-		location.sector = 2;
-		location.positionToEnterFromMainGrid = new Dimension(20, 12);
-		location.entranceFromMainGridPosition = new Dimension(19, 12);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-
-		addBuilding("KushsRestaurant", "Kush's Restaurant", 18, 12, 2, 2, location);
-//Building 11
-		location.sector = 2;
-		location.positionToEnterFromMainGrid = new Dimension(25, 12);
-		location.entranceFromMainGridPosition = new Dimension(24, 12);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-
-		addBuilding("RyansRestaurant", "Restaurant 2", 23, 12, 2, 2, location);
-//Building 12
-		location.sector = 2;
-		location.positionToEnterFromMainGrid = new Dimension(30, 12);
-		location.entranceFromMainGridPosition = new Dimension(29, 12);
-		location.entranceFromRoadGrid = location.positionToEnterFromRoadGrid = null;
-		addBuilding("Apartment", "Apartment Building 3", 28, 12, 2, 2, location);
+//		//Building 1
+//		location.sector = 1;
+//		location.positionToEnterFromMainGrid = new Dimension(5, 3);
+//		location.entranceFromMainGridPosition = new Dimension(4, 3);
+//		//Some driveways//:	
+//		//layout.addRoad(4, 4, 1, 1);	layout.addCrossWalk(4, 4, 1, 1);
+//		layout.addDriveway(4, 4, 1, 1);
+//		location.entranceFromRoadGrid = new Dimension(4, 3);
+//		location.positionToEnterFromRoadGrid = new Dimension(4, 4);
+//		addBuilding("Residence", "House 1", 3, 2, 2, 2, location);
+//
+//		//Building 2
+//		location.sector = 1;
+//		location.positionToEnterFromMainGrid = new Dimension(11, 3);
+//		location.entranceFromMainGridPosition = new Dimension(9, 3);
+//		location.entranceFromRoadGrid = new Dimension(9, 3);
+//		location.positionToEnterFromRoadGrid = new Dimension(9, 4);
+//		//Some driveways//:
+//		//layout.addRoad(9, 4, 1, 1);	layout.addCrossWalk(9, 4, 1, 1);
+//		layout.addDriveway(9, 4, 1, 1);
+//		addBuilding("Residence", "House 2", 8, 2, 3, 2, location);
+//
+//		//Building 3
+//		location.sector = 1;
+//		location.positionToEnterFromMainGrid = new Dimension(15, 3);
+//		location.entranceFromMainGridPosition = new Dimension(14, 3);
+//		location.entranceFromRoadGrid = new Dimension(14, 3);
+//		location.positionToEnterFromRoadGrid = new Dimension(14 , 4);
+//		//Some driveways//:
+//		//layout.addRoad(14, 4, 1, 1);	layout.addCrossWalk(14, 4, 1, 1);
+//		layout.addDriveway(14, 4, 1, 1);
+//		addBuilding("Market", "Market 1", 13, 2, 2, 2, location);
+//
+//		//Building 4
+//		location.sector = 1;
+//		location.positionToEnterFromMainGrid = new Dimension(20, 3);
+//		location.entranceFromMainGridPosition = new Dimension(19, 3);
+//		location.entranceFromRoadGrid = new Dimension(18, 3);
+//		location.positionToEnterFromRoadGrid = new Dimension(18, 4);;
+//		//Some driveways//:
+//		layout.addDriveway(18, 4, 1, 1);
+//		addBuilding("Apartment", "Apartment Building", 18, 2, 2, 2, location);
+//		
+////Building 5
+//		location.sector = 1;
+//		location.positionToEnterFromMainGrid = new Dimension(25, 3);
+//		location.entranceFromMainGridPosition = new Dimension(24, 3);
+//		location.entranceFromRoadGrid = new Dimension(23, 3);
+//		location.positionToEnterFromRoadGrid = new Dimension(23, 4);
+//		//Some driveways//:
+//		layout.addDriveway(23, 4, 1, 1);//	layout.addCrossWalk(23, 4, 1, 1);
+//		//addBuilding("Bank", "Bank", 23, 2, 2, 2, location);
+//		addBuilding("Bank", "Bank", 22, 2, 3, 2, location);
+////Building 6
+//		location.sector = 1;
+//		location.positionToEnterFromMainGrid = new Dimension(30, 3);
+//		location.entranceFromMainGridPosition = new Dimension(29, 3);
+//		location.entranceFromRoadGrid = new Dimension(28, 3);
+//		location.positionToEnterFromRoadGrid = new Dimension(28, 4);
+//		//Some driveways//:
+//		layout.addDriveway(28, 4, 1, 1);//	layout.addCrossWalk(28, 4, 1, 1);
+//		addBuilding("Apartment", "Apartment Building 1", 28, 2, 2, 2, location);
+//		
+////Building 7
+//		location.sector = 2;
+//		location.positionToEnterFromMainGrid = new Dimension(5, 12);
+//		location.entranceFromMainGridPosition = new Dimension(4, 12);
+//		location.entranceFromRoadGrid = new Dimension(3, 12);
+//		location.positionToEnterFromRoadGrid = new Dimension(3, 11);
+//		//Some driveways//:
+//		layout.addDriveway(3, 10, 2, 2);
+//		addBuilding("Apartment", "Apartment Building 4", 3, 12, 2, 2, location);
+//		
+//		
+////Building 8
+//		location.sector = 2;
+//		location.positionToEnterFromMainGrid = new Dimension(10, 12);
+//		location.entranceFromMainGridPosition = new Dimension(9, 12);
+//		location.entranceFromRoadGrid = new Dimension(9, 12);
+//		location.positionToEnterFromRoadGrid = new Dimension(9, 11);
+//		//Some driveways//:
+//		layout.addDriveway(8, 10, 2, 2);
+//		addBuilding("Restaurant", "Restaurant 1", 8, 12, 2, 2, location);
+//		
+//		//Building 9
+//		location.sector = 2;
+//		location.positionToEnterFromMainGrid = new Dimension(15, 12);
+//		location.entranceFromMainGridPosition = new Dimension(14, 12);
+//		location.entranceFromRoadGrid = new Dimension(14, 12);
+//		location.positionToEnterFromRoadGrid = new Dimension(14, 11);
+//		//Some driveways//:
+//		layout.addDriveway(13, 10, 2, 2);
+//		addBuilding("Apartment", "Apartment Building 2", 13, 12, 2, 2, location);
+////Building 10
+//		location.sector = 2;
+//		location.positionToEnterFromMainGrid = new Dimension(20, 12);
+//		location.entranceFromMainGridPosition = new Dimension(19, 12);
+//		location.entranceFromRoadGrid = new Dimension(19, 12);
+//				location.positionToEnterFromRoadGrid = new Dimension(19, 11);
+//		layout.addDriveway(18, 10, 2, 2);
+//		//addBuilding("KushsRestaurant", "Kush's Restaurant", 18, 12, 2, 2, location);
+//		addBuilding("Default", "Default", 18,12,2,2,location);
+////Building 11
+//		location.sector = 2;
+//		location.positionToEnterFromMainGrid = new Dimension(25, 12);
+//		location.entranceFromMainGridPosition = new Dimension(24, 12);
+//		location.entranceFromRoadGrid = new Dimension(24, 12);
+//				location.positionToEnterFromRoadGrid = new Dimension(24, 11);
+//				layout.addDriveway(23, 10, 2, 2);
+//
+//		addBuilding("Food Court", "Food Court", 23, 12, 2, 2, location);
+//		//addBuilding("RyansRestaurant", "Restaurant 2", 23, 12, 2, 2, location);
+////Building 12
+//		location.sector = 2;
+//		location.positionToEnterFromMainGrid = new Dimension(30, 12);
+//		location.entranceFromMainGridPosition = new Dimension(29, 12);
+//		location.entranceFromRoadGrid = new Dimension(29, 12);
+//				location.positionToEnterFromRoadGrid = new Dimension(29, 11);
+//				layout.addDriveway(28, 10, 2, 2);
+//		addBuilding("Default", "Default 1", 28, 12, 2, 2, location);
 		//file reading
 //		try {
 //			File fXmlFile = new File("scenario1.xml");
@@ -276,86 +394,63 @@ public class SetUpWorldFactory{
 			
 			
 			addVehicle("");
-			//addVehicle("EvenBus");
-			//addVehicle("OddMockBus");
 		
 			
-			addPerson("Person 1", buildingsPanels.getResidenceBuildingPanel("Apartment 1"));
-			addPerson("Person 2", buildingsPanels.getResidenceBuildingPanel("House 1"));
-			addPerson("Person 3", buildingsPanels.getResidenceBuildingPanel("Apartment 2"));
-			addPerson("Person 4", buildingsPanels.getResidenceBuildingPanel("Apartment 3"));
-			addPerson("Person 5", buildingsPanels.getResidenceBuildingPanel("Apartment 4"));
-			addPerson("Person 6", buildingsPanels.getResidenceBuildingPanel("Apartment 5"));
-			addPerson("Person 7", buildingsPanels.getResidenceBuildingPanel("Apartment 6"));
-			addPerson("Person 8", buildingsPanels.getResidenceBuildingPanel("Apartment 7"));
-			addPerson("Person 9", buildingsPanels.getResidenceBuildingPanel("Apartment 8"));
-			addPerson("Person 10", buildingsPanels.getResidenceBuildingPanel("Apartment 9"));
-			addPerson("Person 11", buildingsPanels.getResidenceBuildingPanel("Apartment 10"));
-			addPerson("Person 12", buildingsPanels.getResidenceBuildingPanel("Apartment 11"));
-			addPerson("Person 13", buildingsPanels.getResidenceBuildingPanel("Apartment 12"));
+//			addPerson("Person 1", buildingsPanels.getResidenceBuildingPanel("Apartment 1"));
+//			addPerson("Person 2", buildingsPanels.getResidenceBuildingPanel("House 1"));
+//			addPerson("Person 3", buildingsPanels.getResidenceBuildingPanel("Apartment 2"));
+//			addPerson("Person 4", buildingsPanels.getResidenceBuildingPanel("Apartment 3"));
+//			addPerson("Person 5", buildingsPanels.getResidenceBuildingPanel("Apartment 4"));
+//			addPerson("Person 6", buildingsPanels.getResidenceBuildingPanel("Apartment 5"));
+//			addPerson("Person 7", buildingsPanels.getResidenceBuildingPanel("Apartment 6"));
+//			addPerson("Person 8", buildingsPanels.getResidenceBuildingPanel("Apartment 7"));
+//			addPerson("Person 9", buildingsPanels.getResidenceBuildingPanel("Apartment 8"));
+//			addPerson("Person 10", buildingsPanels.getResidenceBuildingPanel("Apartment 9"));
+//			addPerson("Person 11", buildingsPanels.getResidenceBuildingPanel("Apartment 10"));
+//			addPerson("Person 12", buildingsPanels.getResidenceBuildingPanel("Apartment 11"));
+
+			
+			//Need to add people to the GUI controls here as well; 
+//			controls.addPerson(agents.get(0));
+//			controls.addPerson(agents.get(1));
+//			controls.addPerson(agents.get(2));
+//			controls.addPerson(agents.get(3));
+//			controls.addPerson(agents.get(4));
+//			controls.addPerson(agents.get(5));
+//			controls.addPerson(agents.get(6));
+//			controls.addPerson(agents.get(7));
+//			controls.addPerson(agents.get(8));
+//			controls.addPerson(agents.get(9));
+//			controls.addPerson(agents.get(10));
+//			controls.addPerson(agents.get(11));
+
+		
+			//addPerson("Person 14", buildingsPanels.getResidenceBuildingPanel("Apartment 13"));
+			//addPerson("Person 15", buildingsPanels.getResidenceBuildingPanel("Apartment 14"));
 //			addPerson("Person 14", buildingsPanels.getResidenceBuildingPanel("Apartment 13"));
 //			addPerson("Person 15", buildingsPanels.getResidenceBuildingPanel("House 2"));
 
 		
+			
+			
+			(new Timer()).schedule(new TimerTask() {
+				
+				@Override
+				public void run() {
+					DeadPersonGui ddp = new DeadPersonGui("AAAAaaaahhhhAAaaaa");
+					ddp.DoGetHitByCar();
+				}
+			}, 1500);
+			
+			
+			
 	} //end LoadDefault
-
-	/** Loads the second configuration
-	 * 
-	 */
-	public void LoadDefault2(){
-		final int WINDOWX = 800;
-		final int WINDOWY = 800;
-		final int GRIDSIZEX = 25;
-		final int GRIDSIZEY = 25;
-
-
-		layout = new SimCityLayout(WINDOWX, WINDOWY/2, GRIDSIZEX, GRIDSIZEY);// <-This holds the grid information
-		cityPanel = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
-		buildingsPanels = new BuildingsPanels();//<-Zoomed in view of buildings
-
-		//down left
-		layout.addRoad(6, 4, 3, 6);
-		// across top
-		layout.addRoad(9, 4, 20, 3);
-		//down right
-		layout.addRoad(26, 7, 3, 3);
-		//down middle
-		layout.addRoad(16, 1, 2, 10);
-		//across middle
-		layout.addRoad(6, 10, 23, 3);
-
-		LocationInfo location = new LocationInfo();
-
-		for(int x = 1; x < 7;x++) {
-			for(int y = 1; y < 5; y++){
-				addBuilding("Default", "Building " + x + y, x * 5 - 2, (y * 4)-3, 2, 2, location );
-			}
-		}
-
-		location.positionToEnterFromRoadGrid=new Dimension(16, 2);
-		addBuilding("Bus Stop", "Bus Stop 1", 15, 2, 1, 1, location);
-		location.positionToEnterFromRoadGrid=new Dimension(6, 12);
-		addBuilding("Bus Stop", "Bus Stop 2", 5, 12, 1, 1,location);
-		location.positionToEnterFromRoadGrid=new Dimension(28, 12);
-		addBuilding("Bus Stop", "Bus Stop 3", 29, 12, 1, 1, location);
-		location.positionToEnterFromRoadGrid=new Dimension(14, 10);
-		addBuilding("Bus Stop", "Bus Stop 4", 14, 9, 1, 1, location);
-		location.positionToEnterFromRoadGrid=new Dimension(17, 12);
-		addBuilding("Bus Stop", "Bus Stop 5", 17, 13, 1, 1, location);
-		location.positionToEnterFromRoadGrid=new Dimension(26, 8);
-		addBuilding("Bus Stop", "Bus Stop 6", 25, 8, 1, 1, location);
-
-		addVehicle("OddMockBus");
-		addVehicle("EvenMockBus");
-
-	} //end LoadDefault2
 
 	public void LoadGUITest1(){
 		final int WINDOWX = 800;
 		final int WINDOWY = 800;
 		final int GRIDSIZEX = 25;
 		final int GRIDSIZEY = 25;
-
 
 		layout = new SimCityLayout(WINDOWX, WINDOWY/2, GRIDSIZEX, GRIDSIZEY);// <-This holds the grid information
 		cityPanel = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
@@ -445,21 +540,13 @@ public class SetUpWorldFactory{
 		cityPanel.addGui(g1);
 		p1.startThread();
 		 
-
-
-		//addPerson("Person 1");
-		//addPerson("Person 2");
-		//addPerson("Person 3");
 	}
 
 
 
 	private void addPerson(String name, ResidenceBuildingPanel home){
-		//PersonAgent p1 = new PersonAgent(name);
+		
 		PersonAgent p1 = new PersonAgent(name, home);
-		AStarTraversal t = new PersonAStarTraversal(layout.getAgentGrid(), layout.getCrossWalkGrid(), layout.getRoadGrid());
-		PersonGui g1 = new PersonGui(p1, layout, t, locationMap);
-		p1.setGui(g1);
 
 		switch(name){
 
@@ -471,16 +558,16 @@ public class SetUpWorldFactory{
 				p1.setInitialRole(new HomeRole(p1), p1.home.getName());
 				break;
 			case "Person 6":
-				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_WAITER_ROLE), "Restaurant 1");
+				p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_MIKE_WAITER_ROLE, "Mike's Restaurant"), "Mike's Restaurant");
 				break;
 			case "Person 3":
-				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_HOST_ROLE), "Restaurant 1");
+				p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_MIKE_HOST_ROLE, "Mike's Restaurant"), "Mike's Restaurant");
 				break;
 			case "Person 5":
-				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_COOK_ROLE), "Restaurant 1");
+				p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_MIKE_COOK_ROLE, "Mike's Restaurant"), "Mike's Restaurant");
 				break;
 			case "Person 4":
-				p1.setInitialRole(RoleFactory.roleFromString(Role.RESTAURANT_CASHIER_ROLE), "Restaurant 1");
+				p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_MIKE_CASHIER_ROLE, "Mike's Restaurant"), "Mike's Restaurant");
 				break;
 			case "Person 7":
 				p1.setInitialRole(RoleFactory.roleFromString(Role.MARKET_MANAGER_ROLE), "Market 1");
@@ -495,29 +582,32 @@ public class SetUpWorldFactory{
 				p1.setInitialRole(new HomeRole(p1), p1.home.getName());
 				break;
 			case "Person 11":
-				
+				p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_LUCA_COOK_ROLE, "Luca's Restaurant"), "Luca's Restaurant");
 				break;
 			case "Person 12":
-				
+				p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_LUCA_HOST_ROLE, "Luca's Restaurant"), "Luca's Restaurant");
+				break;
+			case "Person 13":
+				p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_LUCA_WAITER_ROLE, "Luca's Restaurant"), "Luca's Restaurant");
 				break;
 			default:
 				break;
 		}
 		//p1.setInitialRole(new HomeRole(p1), "House 1");
-		cityPanel.addGui(g1);
+		
 		p1.startThread();
+		agents.add(p1);
 	}
 
 	
 	
-	
-	
-	
-	
-	
-
 	private void addVehicle(String type) {
 		switch (type) {
+		case "Car":
+			//CarAgent car = new CarAgent("Car " + numCars);
+		//numCars++;
+		break;	
+		
 		case "OddMockBus":
 			//add a mockVehicle
 			Queue<String> OddStopsQueue = new LinkedList<>(); //<--a list of the stops to go to
@@ -525,10 +615,8 @@ public class SetUpWorldFactory{
 			OddStopsQueue.add("Bus Stop " + 3);
 			OddStopsQueue.add("Bus Stop " + 5);
 			PseudoBusAgent v1 = new PseudoBusAgent("Odd Mock Bus", OddStopsQueue);
-			AStarTraversal t = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
-			VehicleGui v1Gui = new VehicleGui( v1, layout, t, locationMap );
+			BusGui v1Gui = new BusGui( v1);
 			v1.agentGui = v1Gui;
-			cityPanel.addGui(v1Gui);
 			v1.startThread();
 			//mockVehicle Added
 			break;
@@ -539,11 +627,6 @@ public class SetUpWorldFactory{
 			EvenStopsQueue1.add("Bus Stop " + 4);
 			EvenStopsQueue1.add("Bus Stop " + 6);
 			PseudoBusAgent v2 = new PseudoBusAgent("Even Mock Bus", EvenStopsQueue1);
-			AStarTraversal t2 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
-			VehicleGui v2Gui = new VehicleGui( v2, layout, t2 ,locationMap );
-			v2.agentGui = v2Gui;
-			cityPanel.addGui(v2Gui);
-			v2.startThread();
 			//mockVehicle Added
 			break;
 
@@ -559,23 +642,17 @@ public class SetUpWorldFactory{
 			v4.addBusStop(3, "Bus Stop 5",
 					((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 5"))).getBusStopAgent());
 			v4.location = "Bus Stop 1";
-			AStarTraversal t4 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
-			VehicleGui v4Gui = new VehicleGui( v4, layout, t4, locationMap);
-			v4.location = "Bus Stop 1";
 			v4.currentStop = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 1"))).getBusStopAgent();
-			v4.agentGui = v4Gui;
-			cityPanel.addGui(v4Gui);
-			v4.startThread();
 			break;
 
 		default:
 			//Lets add a bunch of busses///how about 3
-			BusStopAgent bs1 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 1"))).getBusStopAgent();
-			BusStopAgent bs2 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 2"))).getBusStopAgent();
-			BusStopAgent bs3 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 3"))).getBusStopAgent();
-			BusStopAgent bs4 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 4"))).getBusStopAgent();
-			BusStopAgent bs5 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 5"))).getBusStopAgent();
-			BusStopAgent bs6 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 6"))).getBusStopAgent();
+			BusStopConstruct bs1 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 1"))).getBusStopAgent();
+			BusStopConstruct bs2 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 2"))).getBusStopAgent();
+			BusStopConstruct bs3 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 3"))).getBusStopAgent();
+			BusStopConstruct bs4 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 4"))).getBusStopAgent();
+			BusStopConstruct bs5 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 5"))).getBusStopAgent();
+			BusStopConstruct bs6 = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 6"))).getBusStopAgent();
 
 
 			BusAgent v3 = new BusAgent("Bus 1");
@@ -585,13 +662,9 @@ public class SetUpWorldFactory{
 			v3.addBusStop(4, "Bus Stop 4", bs4 );
 			v3.addBusStop(5, "Bus Stop 5", bs5 );
 			v3.addBusStop(6, "Bus Stop 6", bs6 );
-			AStarTraversal t3 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
-			VehicleGui v3Gui = new VehicleGui( v3, layout, t3, locationMap);
-			v3.agentGui = v3Gui;
 			//v3.location = "Bus Stop 1";
 			v3.currentStop = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 1"))).getBusStopAgent();
 			v3.agentGui.setStartingStates("Bus Stop 1");
-			cityPanel.addGui(v3Gui);
 			v3.startThread();
 
 			BusAgent b1 = new BusAgent("Bus 2");
@@ -602,14 +675,10 @@ public class SetUpWorldFactory{
 			b1.addBusStop(4, "Bus Stop 4", bs4 );
 			b1.addBusStop(5, "Bus Stop 5", bs5 );
 
-			AStarTraversal tb1 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
-			VehicleGui vb1Gui = new VehicleGui( b1, layout, tb1, locationMap);
-			b1.agentGui = vb1Gui;
 			b1.agentGui.setStartingStates("Bus Stop 3");
 			//	b1.location = "Bus Stop 5";
 			//b1.currentStop = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 5"))).getBusStopAgent();
 			b1.setStartStopNumber(4);
-			cityPanel.addGui(vb1Gui);
 			b1.startThread();
 
 			break;
@@ -721,6 +790,7 @@ public class SetUpWorldFactory{
 				buildingsPanels.addBuildingPanel(restPanel);
 			}
 			break;
+
 		case "RyansRestaurant":
 			RyansRestaurantBuilding restb2 = new RyansRestaurantBuilding(building);
 			if(restb2 != null){
@@ -739,14 +809,39 @@ public class SetUpWorldFactory{
 				buildingsPanels.addBuildingPanel(restPanel);
 			}
 			break;
-			
+		case "Food Court":
+			FoodCourtBuilding food = new FoodCourtBuilding(building);
+			if(food != null){
+				FoodCourtBuildingPanel foodPanel = new FoodCourtBuildingPanel(food, name, buildingsPanels, this, info);
+				food.setBuildingPanel(foodPanel);
+				cityPanel.addGui(food);
+				buildingsPanels.addBuildingPanel(foodPanel);
+			}
+			break;
+		case "Luca's Restaurant":
+			LucaRestaurantBuilding lrestb = new LucaRestaurantBuilding(building);
+			if(lrestb != null){
+				LucaRestaurantBuildingPanel restPanel = new LucaRestaurantBuildingPanel(lrestb, name, buildingsPanels);
+				lrestb.setBuildingPanel(restPanel);
+				cityPanel.addGui(lrestb);
+				buildingsPanels.addBuildingPanel(restPanel);
+			}
+		
+			break;
 		default:
 			return;
 		}
 		info.name = name;
-		locationMap.add(new LocationInfo(info));
+		//locationMap.add(new LocationInfo(info));
+		addLocationToMap(info);
 	}
 
+	
+	/** This can be used to add LocationInfos to the city. 
+	 * MUST be called BEFORE addPerson and addVehicle of any agent GUIs
+	 * 
+	 * @param location
+	 */
 	public void addLocationToMap(LocationInfo location){
 		if(location == null)
 			return;
@@ -760,4 +855,401 @@ public class SetUpWorldFactory{
 		locationMap.add(new LocationInfo(location));
 	}
 	
+	public static void addPerson(String name, String residenceName, String initialRole){
+		try{
+			PersonAgent person = new PersonAgent(name, buildingsPanels.getResidenceBuildingPanel(residenceName));
+			
+			if(initialRole == null){
+				//person.setInitialRole(RoleFactory.roleFromString(Role.HOME_ROLE), iHome);
+			}else {
+				Class e = Employee.class;
+				Class c = Class.forName(initialRole);
+				if(e.isAssignableFrom(c)){
+					person.setInitialRole(RoleFactory.employeeFromString(initialRole, initialRole), initialRole);
+				}else{
+					person.setInitialRole(RoleFactory.roleFromString(initialRole), initialRole);
+				}
+			}
+			
+			person.startThread();
+			agents.add(person);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	private class MyPerson {
+		PersonAgent person;
+		ArrayList<String> friends;
+		
+		public MyPerson(PersonAgent person, ArrayList<String> friends){
+			this.person = person;
+			this.friends = friends;
+		}
+	}
+	
+	private void setupPeople(Node masterNode){
+		
+		
+		try {
+			NodeList masterList = masterNode.getChildNodes();
+			
+			Map<String, PersonAgent> peopleMap = new HashMap<String, PersonAgent>();
+			ArrayList<MyPerson> peopleList = new ArrayList<MyPerson>();
+			for(int i = 0; i < masterList.getLength(); i++){
+				Node iNode = masterList.item(i);
+				if(iNode.getNodeType() == Node.ELEMENT_NODE){
+					Element iElement = (Element) iNode;
+					switch(iElement.getNodeName()){
+						case Config.PERSON_NODE:
+							//get attributes
+							String iName = null, iHome = null, iJob = null, iLocation = null;
+							String iShift = null;
+							boolean iHasCar = false;
+							NamedNodeMap iMap = iElement.getAttributes();
+							ArrayList<String> iFriends = new ArrayList<String>();
+							for(int j = 0; j < iMap.getLength(); j++){
+								Node jNode = iMap.item(j);
+								switch(jNode.getNodeName()){
+									case Config.NAME_ATTRIBUTE:
+										iName = jNode.getNodeValue();
+										break;
+									case Config.HOME_ATTRIBUTE:
+										iHome = jNode.getNodeValue();
+										break;
+									case Config.JOB_ATTRIBUTE:
+										iJob = jNode.getNodeValue();
+										break;
+									case Config.LOCATION_ATTRIBUTE:
+										iLocation = jNode.getNodeValue();
+										break;
+									case Config.CAR_ATTRIBUTE:
+										iHasCar = Boolean.parseBoolean(jNode.getNodeValue());
+									case Config.SHIFT_ATTRIBUTE:
+										iShift = jNode.getNodeValue();
+										break;
+								}
+							}
+							
+							//System.out.println("Person Name="+iName+", Home="+iHome+", Job="+iJob+
+									//", Location="+iLocation+", HasCar="+iHasCar);
+							//get children
+							NodeList personChildren = iElement.getChildNodes();
+							for(int j = 0; j < personChildren.getLength(); j++){
+								Node jNode = personChildren.item(j);
+								if(jNode.getNodeType() == Node.ELEMENT_NODE){
+									Element jElement = (Element) jNode;
+									//get attributes
+									String jName = null;
+									//get children
+									switch(jElement.getNodeName()){
+										
+										case Config.FRIENDS_NODE:
+											//get attributes
+											//get children
+											NodeList jChildren = jElement.getChildNodes();
+											for(int k = 0; k < jChildren.getLength(); k++){
+												Node kNode = jChildren.item(k);
+												if(kNode.getNodeType() == Node.ELEMENT_NODE){
+													Element kElement = (Element) kNode;
+													switch(kNode.getNodeName()){
+														case Config.FRIEND_NODE:
+															//get attributes
+															String kName = null;
+															NamedNodeMap kMap = kElement.getAttributes();
+															for(int l = 0; l < kMap.getLength(); l++){
+																Node lNode = kMap.item(l);
+																switch(lNode.getNodeName()){
+																	case Config.NAME_ATTRIBUTE:
+																		kName = lNode.getNodeValue();
+																		break;
+																}
+															}
+															iFriends.add(kName);
+															//System.out.println("\t"+kName);
+															break;
+													}
+												}
+											}
+									}
+									
+								}
+							}
+							
+							PersonAgent person = new PersonAgent(iName, buildingsPanels.getResidenceBuildingPanel(iHome));
+							peopleMap.put(iName, person);
+							peopleList.add(new MyPerson(person, iFriends));
+							
+							if(iJob == null){
+								//person.setInitialRole(RoleFactory.roleFromString(Role.HOME_ROLE), iHome);
+							}else {
+								Class e = Employee.class;
+								Class c = Class.forName(iJob);
+								if(e.isAssignableFrom(c)){
+									System.out.println(iJob);
+									person.setInitialRole(RoleFactory.employeeFromString(iJob, iLocation), iLocation);
+								}else{
+									person.setInitialRole(RoleFactory.roleFromString(iJob), iLocation);
+								}
+							}
+							
+							person.startThread();
+							agents.add(person);
+							
+							break;
+					}
+
+				}
+				
+				//sets up the friend lists for the people after all people have been added
+				for(MyPerson person : peopleList){
+					for(String name : person.friends){
+						PersonAgent p = peopleMap.get(name);
+						if(p != null)
+							person.person.addFriend(p);
+					}
+				}
+				
+				for(PersonAgent a : agents){
+					controls.addPerson(a);
+				}
+				
+			}
+		} catch (DOMException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void setupBuildings(Node masterNode){
+		try{
+			NodeList masterList = masterNode.getChildNodes();
+
+			for(int i = 0; i < masterList.getLength(); i++){
+				Node iNode = masterList.item(i);
+				if(iNode.getNodeType() == Node.ELEMENT_NODE){
+					Element iElement = (Element) iNode;
+					switch(iElement.getNodeName()){
+						case Config.BUILDING_NODE:
+							//get attributes
+							Integer iId = null;
+							String iName = null, iType = null;
+							NamedNodeMap iMap = iElement.getAttributes();
+							for(int j = 0; j < iMap.getLength(); j++){
+								Node jNode = iMap.item(j);
+								//System.err.println("ATTRIBUTE-NAME: "+jNode.getNodeName());
+								switch(jNode.getNodeName()){
+									case Config.BUILDING_ID_ATTRIBUTE:
+										iId = Integer.valueOf(Integer.parseInt(jNode.getNodeValue()));
+										break;
+									case Config.BUILDING_NAME_ATTRIBUTE:
+										iName = jNode.getNodeValue();
+										break;
+									case Config.BUILDING_TYPE_ATTRIBUTE:
+										iType = jNode.getNodeValue();
+										break;
+								}
+							}
+							//System.out.println(iType+" named "+iName+" at Location #"+iId);
+							addBuildingFromConfig(iId, iType, iName);
+							break;
+					}
+				}
+			}
+		}catch(Exception e){
+			
+		}
+		
+	}
+	
+	private void addBuildingFromConfig(int id, String type, String name){
+		LocationInfo location = new LocationInfo();
+		switch(id){
+		
+			case 1:
+				//Building 1
+				location.sector = 1;
+				location.positionToEnterFromMainGrid = new Dimension(5, 3);
+				location.entranceFromMainGridPosition = new Dimension(4, 3);
+				//Some driveways//:	
+				//layout.addRoad(4, 4, 1, 1);	layout.addCrossWalk(4, 4, 1, 1);
+				layout.addDriveway(4, 4, 1, 1);
+				location.entranceFromRoadGrid = new Dimension(4, 3);
+				location.positionToEnterFromRoadGrid = new Dimension(4, 4);
+				addBuilding(type, name, 3, 2, 2, 2, location);
+				break;
+				
+			case 2:
+				//Building 2
+				location.sector = 1;
+				location.positionToEnterFromMainGrid = new Dimension(11, 3);
+				location.entranceFromMainGridPosition = new Dimension(9, 3);
+				location.entranceFromRoadGrid = new Dimension(9, 3);
+				location.positionToEnterFromRoadGrid = new Dimension(9, 4);
+				//Some driveways//:
+				//layout.addRoad(9, 4, 1, 1);	layout.addCrossWalk(9, 4, 1, 1);
+				layout.addDriveway(9, 4, 1, 1);
+				addBuilding(type, name, 8, 2, 3, 2, location);
+				break;
+				
+			case 3:
+				//Building 3
+				location.sector = 1;
+				location.positionToEnterFromMainGrid = new Dimension(15, 3);
+				location.entranceFromMainGridPosition = new Dimension(14, 3);
+				location.entranceFromRoadGrid = new Dimension(14, 3);
+				location.positionToEnterFromRoadGrid = new Dimension(14 , 4);
+				//Some driveways//:
+				//layout.addRoad(14, 4, 1, 1);	layout.addCrossWalk(14, 4, 1, 1);
+				layout.addDriveway(14, 4, 1, 1);
+				addBuilding(type, name, 13, 2, 2, 2, location);
+				break;
+				
+			case 4:
+				//Building 4
+				location.sector = 1;
+				location.positionToEnterFromMainGrid = new Dimension(20, 3);
+				location.entranceFromMainGridPosition = new Dimension(19, 3);
+				location.entranceFromRoadGrid = new Dimension(18, 3);
+				location.positionToEnterFromRoadGrid = new Dimension(18, 4);;
+				//Some driveways//:
+				layout.addDriveway(18, 4, 1, 1);
+				addBuilding(type, name, 18, 2, 2, 2, location);
+				break;
+				
+			case 5:
+		//Building 5
+				location.sector = 1;
+				location.positionToEnterFromMainGrid = new Dimension(25, 3);
+				location.entranceFromMainGridPosition = new Dimension(24, 3);
+				location.entranceFromRoadGrid = new Dimension(23, 3);
+				location.positionToEnterFromRoadGrid = new Dimension(23, 4);
+				//Some driveways//:
+				layout.addDriveway(23, 4, 1, 1);//	layout.addCrossWalk(23, 4, 1, 1);
+				//addBuilding("Bank", "Bank", 23, 2, 2, 2, location);
+				addBuilding(type, name, 22, 2, 3, 2, location);
+				break;
+				
+			case 6:
+		//Building 6
+				location.sector = 1;
+				location.positionToEnterFromMainGrid = new Dimension(30, 3);
+				location.entranceFromMainGridPosition = new Dimension(29, 3);
+				location.entranceFromRoadGrid = new Dimension(28, 3);
+				location.positionToEnterFromRoadGrid = new Dimension(28, 4);
+				//Some driveways//:
+				layout.addDriveway(28, 4, 1, 1);//	layout.addCrossWalk(28, 4, 1, 1);
+				addBuilding(type, name, 28, 2, 2, 2, location);
+				break;
+				
+			case 7:
+		//Building 7
+				location.sector = 2;
+				location.positionToEnterFromMainGrid = new Dimension(5, 12);
+				location.entranceFromMainGridPosition = new Dimension(4, 12);
+				location.entranceFromRoadGrid = new Dimension(3, 12);
+				location.positionToEnterFromRoadGrid = new Dimension(3, 11);
+				//Some driveways//:
+				layout.addDriveway(3, 10, 2, 2);
+				addBuilding(type, name, 3, 12, 2, 2, location);
+				break;
+				
+			case 8:
+		//Building 8
+				location.sector = 2;
+				location.positionToEnterFromMainGrid = new Dimension(10, 12);
+				location.entranceFromMainGridPosition = new Dimension(9, 12);
+				location.entranceFromRoadGrid = new Dimension(9, 12);
+				location.positionToEnterFromRoadGrid = new Dimension(9, 11);
+				//Some driveways//:
+				layout.addDriveway(8, 10, 2, 2);
+				addBuilding(type, name, 8, 12, 2, 2, location);
+				break;
+				
+			case 9:
+				//Building 9
+				location.sector = 2;
+				location.positionToEnterFromMainGrid = new Dimension(15, 12);
+				location.entranceFromMainGridPosition = new Dimension(14, 12);
+				location.entranceFromRoadGrid = new Dimension(14, 12);
+				location.positionToEnterFromRoadGrid = new Dimension(14, 11);
+				//Some driveways//:
+				layout.addDriveway(13, 10, 2, 2);
+				addBuilding(type, name, 13, 12, 2, 2, location);
+				break;
+				
+			case 10:
+		//Building 10
+				location.sector = 2;
+				location.positionToEnterFromMainGrid = new Dimension(20, 12);
+				location.entranceFromMainGridPosition = new Dimension(19, 12);
+				location.entranceFromRoadGrid = new Dimension(19, 12);
+						location.positionToEnterFromRoadGrid = new Dimension(19, 11);
+				layout.addDriveway(18, 10, 2, 2);
+				//addBuilding("KushsRestaurant", "Kush's Restaurant", 18, 12, 2, 2, location);
+				addBuilding(type, name, 18,12,2,2,location);
+				break;
+				
+			case 11:
+		//Building 11
+				location.sector = 2;
+				location.positionToEnterFromMainGrid = new Dimension(25, 12);
+				location.entranceFromMainGridPosition = new Dimension(24, 12);
+				location.entranceFromRoadGrid = new Dimension(24, 12);
+						location.positionToEnterFromRoadGrid = new Dimension(24, 11);
+						layout.addDriveway(23, 10, 2, 2);
+		
+				addBuilding(type, name, 23, 12, 2, 2, location);
+				//addBuilding("RyansRestaurant", "Restaurant 2", 23, 12, 2, 2, location);
+				break;
+				
+		//Building 12
+			case 12:
+				location.sector = 2;
+				location.positionToEnterFromMainGrid = new Dimension(30, 12);
+				location.entranceFromMainGridPosition = new Dimension(29, 12);
+				location.entranceFromRoadGrid = new Dimension(29, 12);
+						location.positionToEnterFromRoadGrid = new Dimension(29, 11);
+						layout.addDriveway(28, 10, 2, 2);
+				addBuilding(type, name, 28, 12, 2, 2, location);
+				
+				break;
+		}
+	}
+
+	public void loadXMLFile(String filepath){
+		try{
+			LoadDefault();
+			//System.err.println(this.getClass().getResource(filepath).toURI().toString());
+			File xmlFile = new File(this.getClass().getResource(filepath).toURI());
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(xmlFile);
+			//setup the document for easier reading
+			doc.getDocumentElement().normalize();
+			NodeList masterList = doc.getDocumentElement().getChildNodes();
+			for(int i = 0; i < masterList.getLength(); i++){
+				Node iNode = masterList.item(i);
+				if(iNode.getNodeType() == Node.ELEMENT_NODE){
+					Element iElement = (Element) iNode;
+					switch(iElement.getNodeName()){
+					case Config.BUILDING_CONFIG_NODE:
+						setupBuildings(iNode);
+						break;
+					case Config.PEOPLE_NODE:
+						setupPeople(iNode);
+						break;
+					}
+				}
+			}
+			
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 }

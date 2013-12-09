@@ -3,13 +3,13 @@ import bank.BankTellerRole.location;
 import bank.gui.LoanGui;
 import Person.Role.*;
 import interfaces.BankClient;
-import interfaces.Employee;
 
 
 
 
 
 import interfaces.LoanTeller;
+
 
 //import Person.*;
 import java.util.*;
@@ -27,7 +27,7 @@ import util.Interval;
  * @author Byron Choy
  *
  */
-public class LoanTellerRole extends Role implements Employee, LoanTeller{
+public class LoanTellerRole extends Employee implements LoanTeller{
 	public BankClient myClient;
 	private int myClientAge;
 
@@ -36,7 +36,6 @@ public class LoanTellerRole extends Role implements Employee, LoanTeller{
 	public enum location {entrance, station, breakRoom,closing};
 	public location locationState = location.entrance;
 	public double transactionAmount;
-
 	
 	
 	double loanAmount;
@@ -48,8 +47,8 @@ public class LoanTellerRole extends Role implements Employee, LoanTeller{
 	private LoanGui loanGui = null;
 	public boolean HasLoan = false;
  
-	public LoanTellerRole(){
-		super();
+	public LoanTellerRole(String workLocation){
+		super(workLocation);
 		Accounts = Database.INSTANCE.sendDatabase();
 	}
 
@@ -274,7 +273,7 @@ public class LoanTellerRole extends Role implements Employee, LoanTeller{
 	}
 
 	@Override
-	public Interval getShift() {
+	public ShiftTime getShift() {
 
 		return null;
 	}

@@ -6,7 +6,6 @@ import interfaces.GuiPanel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridLayout;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.JLabel;
@@ -64,7 +63,7 @@ public class RyansRestaurantBuildingPanel extends BuildingPanel{
 
 	@Override
 	public GuiPanel getPanel() {
-		return null;
+		return restaurantPanel.getAnimationPanel();
 	}
 
 }

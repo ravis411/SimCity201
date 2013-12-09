@@ -1,15 +1,20 @@
 package building;
 
 import gui.Building.BuildingPanel;
-import restaurant.CashierRole;
-import restaurant.CookRole;
-import restaurant.HostRole;
-import restaurant.NewWaiterRole;
-import restaurant.OldWaiterRole;
+import interfaces.generic_interfaces.GenericCashier;
+import interfaces.generic_interfaces.GenericCook;
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
+
+import java.util.Collection;
+import java.util.Collections;
+
+import kushrestaurant.HostRole;
+//import kushrestaurant.OldWaiterRole;
 import Person.Role.Role;
 
 public class Restaurant extends Building implements Workplace {
-
+	
 	public Restaurant(BuildingPanel panel) {
 		super(panel);
 		// TODO Auto-generated constructor stub
@@ -32,49 +37,57 @@ public class Restaurant extends Building implements Workplace {
 		// TODO Auto-generated method stub
 		boolean hasHost = false, hasCook = false, hasWaiter = false, hasCashier = false;
 		for(Role r : inhabitants){
-			if(r instanceof HostRole){
+			if(r instanceof GenericHost){
 				hasHost = true;
-			}else if(r instanceof CookRole){
+			}else if(r instanceof GenericCook){
 				hasCook = true;
-			}else if(r instanceof CashierRole){
+			}else if(r instanceof GenericCashier){
 				hasCashier = true;
-			}else if(r instanceof OldWaiterRole || r instanceof NewWaiterRole){
+			}else if(r instanceof GenericWaiter ){
 				hasWaiter = true;
 			}
 		}
 		
-		System.out.println( hasHost && hasCook && hasWaiter && hasCashier);
 		return hasHost && hasCook && hasWaiter && hasCashier;
 	}
 	
-	public HostRole getHostRole(){
+	public GenericHost getHostRole(){
 			for(Role r : inhabitants){
-				if(r instanceof HostRole){
-					return (HostRole) r;
+				if(r instanceof GenericHost){
+					return (GenericHost) r;
 				}
 			}
 		
 		return null;
 	}
 	
-	public CashierRole getCashierRole(){
+	public GenericCashier getCashierRole(){
 		for(Role r : inhabitants){
-			if(r instanceof CashierRole){
-				return (CashierRole) r;
+			if(r instanceof GenericCashier){
+				return (GenericCashier) r;
 			}
 		}
 		
 		return null;
 	}
 		
-	public CookRole getCookRole(){
+	public GenericCook getCookRole(){
 		for(Role r : inhabitants){
-			if(r instanceof CookRole){
-				return (CookRole) r;
+			if(r instanceof GenericCook){
+				return (GenericCook) r;
 			}
 		}
 		return null;
 	}
-	
 
+	@Override
+	public void notifyEmployeesTheyCanLeave() {
+		// TODO Auto-generated method stub
+		/*for(Role r : inhabitants){
+			if(r instanceof Employee){
+				r.deactivate();
+				r.getPerson().msgYouCanLeave();
+			}
+		}*/
+	}
 }

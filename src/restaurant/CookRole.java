@@ -3,6 +3,7 @@ package restaurant;
 import interfaces.Customer;
 import interfaces.MarketManager;
 import interfaces.Waiter;
+import interfaces.generic_interfaces.GenericCook;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import trace.AlertLog;
 import trace.AlertTag;
 import MarketEmployee.MarketManagerRole;
 import Person.Role.Role;
+import Person.Role.ShiftTime;
 import agent.Constants;
 import building.BuildingList;
 //import restaurant.gui.CookGui;
@@ -24,7 +26,7 @@ import building.BuildingList;
  * Restaurant Cook Agent
  */
 
-public class CookRole extends Role {
+public class CookRole extends GenericCook {
 	public List<Order> orders = new ArrayList<Order>();
 	public List<Food> inventory = new ArrayList<Food>();
 	public List<MarketManagerRole> markets = new ArrayList<MarketManagerRole>();
@@ -44,11 +46,11 @@ public class CookRole extends Role {
 	{none, placedOrder, reOrder, orderPartiallyFulfilled, orderFulfilled};
 	AgentEvent event = AgentEvent.none;
 
-	public CookRole() {
-		super();
+	public CookRole(String workLocation) {
+		super(workLocation);
 		
 		for(int i=0; i<3; i++) {
-			inventory.add(new Food(menu.getDishName(i), 5000, 300));
+			inventory.add(new Food(menu.getDishName(i), 5000, 0));
 		}
 		
 	}
@@ -75,19 +77,19 @@ public class CookRole extends Role {
 		stateChanged();
 	}
 	public void msgOrderFilled(int ingredientNum, int quantity) {
-		print("Recieved shipment of " + quantity + " " + inventory.get(ingredientNum).getName() + "s.");
+		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, getNameOfRole(), "Recieved shipment of " + quantity + " " + inventory.get(ingredientNum).getName() + "s.");
 		inventory.get(ingredientNum).addToInventory(quantity);
 		event = AgentEvent.orderFulfilled;
 		stateChanged();
 	}
 	public void msgOrderPartiallyFilled(int ingredientNum, int quantity) {
-		print("Recieved shipment of " + quantity + " " + inventory.get(ingredientNum).getName() + "s.");
+		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, getNameOfRole(), "Recieved shipment of " + quantity + " " + inventory.get(ingredientNum).getName() + "s.");
 		inventory.get(ingredientNum).addToInventory(quantity);
 		event = AgentEvent.orderPartiallyFulfilled;
 		stateChanged();
 	}
 	public void msgOrderNotFilled(int ingredientNum) {
-		print("Market could not provide " + inventory.get(ingredientNum).getName() + "s. Will order from different market.");
+		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, getNameOfRole(), "Market could not provide " + inventory.get(ingredientNum).getName() + "s. Will order from different market.");
 		event = AgentEvent.reOrder;
 	}
 
@@ -230,6 +232,18 @@ public class CookRole extends Role {
 	@Override
 	public String getNameOfRole() {
 		return "CookRole";
+	}
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -36,10 +36,10 @@ public class BankBuilding extends BuildingGui {
 			g.fill3DRect( (int)super.x +15,  (int)super.y+15,  (int)super.width-30, (int)super.height-45, false);
 			
 			g.fill3DRect( (int)(super.x),  (int)(super.y+super.height-5),  (int)(super.width), (int)5, true);
-			g.fill3DRect( (int)super.x +15,  (int)(super.y + 20),  (int)5, (int)super.height-25, false);
-			g.fill3DRect( (int)super.x +22,  (int)(super.y + 20),  (int)5, (int)super.height-25, false);
-			g.fill3DRect( (int)super.x +30,  (int)(super.y + 20),  (int)5, (int)super.height-25, false);
-			
+			//Draw the pillars
+			for(int i = 15; i < (int)super.width-15; i+=8){
+				g.fill3DRect( (int)super.x +i,  (int)(super.y + 20),  (int)5, (int)super.height-25, false);
+			}
 		}
 		else{
 			g.setColor(new Color(230, 220, 40));
@@ -53,10 +53,11 @@ public class BankBuilding extends BuildingGui {
 			g.fill3DRect( (int)super.x +15,  (int)super.y+15,  (int)super.width-30, (int)super.height-45, false);
 			
 			g.fill3DRect( (int)(super.x),  (int)(super.y+super.height-5),  (int)(super.width), (int)5, true);
-			g.fill3DRect( (int)super.x +15,  (int)(super.y + 20),  (int)5, (int)super.height-25, false);
-			g.fill3DRect( (int)super.x +22,  (int)(super.y + 20),  (int)5, (int)super.height-25, false);
-			g.fill3DRect( (int)super.x +30,  (int)(super.y + 20),  (int)5, (int)super.height-25, false);
 			
+			//Draw the pillars
+			for(int i = 15; i < (int)super.width-15; i+=8){
+				g.fill3DRect( (int)super.x +i,  (int)(super.y + 20),  (int)5, (int)super.height-25, false);
+			}
 			
 			g.setColor(Color.orange);
 		}

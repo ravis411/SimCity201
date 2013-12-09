@@ -1,10 +1,10 @@
 package ryansRestaurant.gui;
 
 
-import ryansRestaurant.CookAgent;
-import ryansRestaurant.CustomerAgent;
-import ryansRestaurant.HostAgent;
-import ryansRestaurant.WaiterAgent;
+import ryansRestaurant.RyansCookRole;
+import ryansRestaurant.RyansCustomerRole;
+import ryansRestaurant.RyansHostRole;
+import ryansRestaurant.RyansWaiterRole;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -22,7 +22,7 @@ import astar.Position;
 
 public class CookGui implements Gui {
 
-    private CookAgent agent = null;
+    private RyansCookRole agent = null;
     
     private RestaurantGui gui;
     private RestaurantLayout layout = null;
@@ -51,7 +51,7 @@ public class CookGui implements Gui {
     public List<Grill> grills = new ArrayList<Grill>();
     
     
-    public CookGui(CookAgent agent, RestaurantGui gui) {
+    public CookGui(RyansCookRole agent, RestaurantGui gui) {
         this.agent = agent;
         this.gui = gui;
         this.positionMap = new HashMap<Dimension, Dimension>(gui.animationPanel.positionMap);

@@ -42,6 +42,18 @@ public class MockMarketManager extends Mock implements MarketManager {
 		
 	}
 
+	@Override
+	public void msgDeliveryTruckAtDestination() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgDeliveryTruckBackAtMarket() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 	

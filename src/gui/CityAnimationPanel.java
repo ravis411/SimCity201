@@ -4,6 +4,9 @@ import gui.Building.BuildingGui;
 
 import javax.swing.*;
 
+import util.MasterTime;
+import building.BuildingList;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Calendar;
@@ -30,7 +33,6 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 
 	private SimCityLayout layout = null;
 
-	public static final Calendar calendar = Calendar.getInstance();
 	private float ampmAlpha = 0f;
 	
 	
@@ -56,19 +58,18 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		this.setBackground(Color.BLACK);
 		addMouseListener(this);
 
-		Timer timer = new Timer(5, this );
+		Timer timer = new Timer(20, this );
 		timer.start();
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		repaint();  //Will have paintComponent called
-		
 	}
 
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
 
-		calendar.add(Calendar.MINUTE, 1);
+		MasterTime.getInstance().add(Calendar.MINUTE, 1);
 		//AlertLog.getInstance().logInfo(AlertTag.GENERAL_CITY, "Calendar", calendar.toString());
 		
 		
@@ -111,9 +112,9 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		
 		
 		//This section makes the city dark at night and draws the clock.
-		if(calendar.get(Calendar.HOUR_OF_DAY) >= 18 && ampmAlpha < .5f){
+		if(MasterTime.getInstance().get(Calendar.HOUR_OF_DAY) >= 18 && ampmAlpha < .3f){
 			ampmAlpha += 0.001f;
-		}else if(calendar.get(Calendar.HOUR_OF_DAY) >= 6 && ampmAlpha > .01f)
+		}else if(MasterTime.getInstance().get(Calendar.HOUR_OF_DAY) <= 6 && ampmAlpha > .01f)
 		{
 			ampmAlpha -= 0.001f;
 		}
@@ -126,7 +127,7 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 			g2.setComposite(orig);
 		}
 		g2.setColor(Color.white);
-		String time = new java.text.SimpleDateFormat("EEEE, MM/dd/yyyy hh:mm a").format(calendar.getTime());
+		String time = MasterTime.getInstance().calendarString();
 		g2.drawString(time, g.getClipBounds().width - 225, g.getClipBounds().height - 30);
 	}
 

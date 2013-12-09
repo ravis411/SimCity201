@@ -11,7 +11,7 @@ import java.util.Map;
 
 import trace.AlertLog;
 import trace.AlertTag;
-import gui.agentGuis.VehicleGui;
+import gui.agentGuis.BusGui;
 import agent.Agent;
 
 public class BusAgent extends Agent implements Bus 
@@ -26,7 +26,7 @@ public class BusAgent extends Agent implements Bus
 	private Map<String, BusStop> stopAgents = new HashMap<String,BusStop>();
 	private int count, stopSize;
 	public BusStop currentStop;
-	public VehicleGui agentGui;
+	public BusGui agentGui;
 	
 	private List<myBusPassenger> passengers = Collections.synchronizedList(new ArrayList<myBusPassenger>());
 
@@ -49,6 +49,7 @@ public class BusAgent extends Agent implements Bus
 		state = AgentState.readyToLeave;
 
 		this.name = name;
+		this.agentGui = new BusGui(this);
 	}
 	/**
 	 * Utility function for filling in the map of Bus Stops for the Bus Agent. 
@@ -108,6 +109,7 @@ public class BusAgent extends Agent implements Bus
 	//Actions
 	
 	private void GoToNextStop(){
+		agentGui.setNumberPassengers(passengers.size());
 		//print("going to next stop");
 		//currentStop.msgLeavingStop();
 		state = AgentState.inTransit;
@@ -135,6 +137,7 @@ public class BusAgent extends Agent implements Bus
 	private void notifyPassenger(myBusPassenger pas) {
 		pas.passenger.msgWeHaveArrived(location);
 		passengers.remove(pas);
+		agentGui.setNumberPassengers(passengers.size());
 	}
 	
 	

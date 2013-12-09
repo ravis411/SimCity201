@@ -1,5 +1,7 @@
 package building;
 
+import Person.Role.Employee;
+import Person.Role.Role;
 import gui.Building.BuildingPanel;
 
 public class Market extends Building implements Workplace {
@@ -25,6 +27,16 @@ public class Market extends Building implements Workplace {
 	public boolean isOpen() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	@Override
+	public void notifyEmployeesTheyCanLeave() {
+		// TODO Auto-generated method stub
+		for(Role r : inhabitants){
+			if(r instanceof Employee){
+				r.deactivate();
+			}
+		}
 	}
 
 }
