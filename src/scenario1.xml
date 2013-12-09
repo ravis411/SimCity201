@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <people>
-	<person name="Person 1" job="bank.BankTellerRole"
-	    	home="House 1" location="Bank" hasCar="true">
+	<person name="Person 1"
+	    	home="Apartment 1" location="Home" hasCar="true">
 		<friends>
 			<friend name="Person 2" />
 			<friend name="Person 3" />
@@ -12,24 +12,24 @@
 		</friends>
 
 	</person>
-	<person name="Person 2" job="bank.LoanTellerRole"
-	    home="House 2" location="Bank" hasCar="fals">
+	<person name="Person 2"
+	    home="House 1" location="Home" hasCar="false">
 		<friends>
 		    <friend name="Person 1" />
 		    <friend name="Person 4" />
 		    <friend name="Person 6" />
 		</friends>
 	</person>
-	<person name="Person 3" job="MarketEmployee.MarketManagerRole"
-	    location="Market 1" home="Apartment 1">
+	<person name="Person 3" job="mikeRestaurant.HostRole"
+	    location="Mike's Restaurant" home="Apartment 2">
 		<friends>
 		    <friend name="Person 1" />
 		    <friend name="Person 7" />
 		    <friend name="Person 9" />
 		</friends>
 	</person>
-	<person name="Person 4" job="MarketEmployee.MarketEmployeeRole"
-	    location="Market 1" home="Apartment 2">
+	<person name="Person 4" job="mikeRestaurant.CashierRole"
+	    location="Mike's Restaurant" home="Apartment 3">
 		<friends>
 		    <friend name="Person 1" />
 		    <friend name="Person 2" />
@@ -37,8 +37,8 @@
 		    <friend name="Person 10" />
 		</friends>
 	</person>
-	<person name="Person 5" job="restaurant.HostRole"
-	    location="Restaurant 1" home="Apartment 3">
+	<person name="Person 5" job="mikeRestaurant.CookRole"
+	    location="Mike's Restaurant" home="Apartment 4">
 		<friends>
 			<friend name="Person 1" />
 		    <friend name="Person 3" />
@@ -46,24 +46,24 @@
 		    <friend name="Person 10" />
 		</friends>
 	</person>
-	<person name="Person 6" job="restaurant.CookRole"
-	    location="Restaurant 1" home="Apartment 4">
+	<person name="Person 6" job="mikeRestaurant.OldWaiterRole"
+	    location="Mike's Restaurant" home="Apartment 5">
 		<friends>
 			<friend name="Person 1" />
 		    <friend name="Person 2" />
 		    <friend name="Person 11" />
 		</friends>
 	</person>
-	<person name="Person 7" job="restaurant.OldWaiterRole"
-	    location="Restaurant 1" home="Apartment 5">
+	<person name="Person 7" job="MarketEmployee.MarketManagerRole"
+	    location="Market 1" home="Apartment 6">
 		<friends>
 			<friend name="Person 1" />
 		    <friend name="Person 8" />
 		    <friend name="Person 10" />
 		</friends>
 	</person>
-	<person name="Person 8" job="restaurant.CashierRole"
-	    location="Restaurant 1" home="Apartment 6">
+	<person name="Person 8" job="MarketEmployee.MarketEmployeeRole"
+	    location="Market 1" home="Apartment 7">
 		<friends>
 			<friend name="Person 1" />
 		    <friend name="Person 4" />
@@ -72,8 +72,8 @@
 		    <friend name="Person 9" />
 		</friends>
 	</person>
-	<person name="Person 9" job="restaurant.NewWaiterRole"
-	    location="Restaurant 1" home="Apartment 7">
+	<person name="Person 9" job="MarketEmployee.MarketEmployeeRole"
+	    location="Market 1" home="Apartment 8">
 		<friends>
 			<friend name="Person 1" />
 		    <friend name="Person 3" />
@@ -82,8 +82,8 @@
 		    <friend name="Person 11" />
 		</friends>
 	</person>
-	<person name="Person 10" job="bank.BankClientRole"
-	    location="Apartment 8" home="Apartment 8">
+	<person name="Person 10" 
+	    location="Home" home="Apartment 9">
 		<friends>
 			<friend name="Person 1" />
 		    <friend name="Person 2" />
@@ -92,8 +92,16 @@
 		    <friend name="Person 7" />
 		</friends>
 	</person>
-	<person name="Person 11" job="restaurant.RestaurantCustomerRole"
-	    location="Restaurant 1" home="Apartment 9">
+	<person name="Person 11" job="mikeRestaurant.OldWaiterRole"
+	    location="Mike's Restaurant" home="Apartment 10">
+		<friends>
+			<friend name="Person 1" />
+		    <friend name="Person 9" />
+		    <friend name="Person 10" />
+		</friends>
+	</person>
+	<person name="Person 12" 
+	    location="Home" home="Apartment 11">
 		<friends>
 			<friend name="Person 1" />
 		    <friend name="Person 9" />

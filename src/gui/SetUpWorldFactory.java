@@ -31,8 +31,10 @@ import gui.agentGuis.VehicleGui;
 import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -48,6 +50,7 @@ import residence.HomeRole;
 import trace.AlertLog;
 import trace.AlertTag;
 import Person.PersonAgent;
+import Person.Role.Employee;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
 import Transportation.BusAgent;
@@ -329,32 +332,32 @@ public class SetUpWorldFactory{
 			addVehicle("");
 		
 			
-			addPerson("Person 1", buildingsPanels.getResidenceBuildingPanel("Apartment 1"));
-			addPerson("Person 2", buildingsPanels.getResidenceBuildingPanel("House 1"));
-			addPerson("Person 3", buildingsPanels.getResidenceBuildingPanel("Apartment 2"));
-			addPerson("Person 4", buildingsPanels.getResidenceBuildingPanel("Apartment 3"));
-			addPerson("Person 5", buildingsPanels.getResidenceBuildingPanel("Apartment 4"));
-			addPerson("Person 6", buildingsPanels.getResidenceBuildingPanel("Apartment 5"));
-			addPerson("Person 7", buildingsPanels.getResidenceBuildingPanel("Apartment 6"));
-			addPerson("Person 8", buildingsPanels.getResidenceBuildingPanel("Apartment 7"));
-			addPerson("Person 9", buildingsPanels.getResidenceBuildingPanel("Apartment 8"));
-			addPerson("Person 10", buildingsPanels.getResidenceBuildingPanel("Apartment 9"));
-			addPerson("Person 11", buildingsPanels.getResidenceBuildingPanel("Apartment 10"));
-			addPerson("Person 12", buildingsPanels.getResidenceBuildingPanel("Apartment 11"));
+//			addPerson("Person 1", buildingsPanels.getResidenceBuildingPanel("Apartment 1"));
+//			addPerson("Person 2", buildingsPanels.getResidenceBuildingPanel("House 1"));
+//			addPerson("Person 3", buildingsPanels.getResidenceBuildingPanel("Apartment 2"));
+//			addPerson("Person 4", buildingsPanels.getResidenceBuildingPanel("Apartment 3"));
+//			addPerson("Person 5", buildingsPanels.getResidenceBuildingPanel("Apartment 4"));
+//			addPerson("Person 6", buildingsPanels.getResidenceBuildingPanel("Apartment 5"));
+//			addPerson("Person 7", buildingsPanels.getResidenceBuildingPanel("Apartment 6"));
+//			addPerson("Person 8", buildingsPanels.getResidenceBuildingPanel("Apartment 7"));
+//			addPerson("Person 9", buildingsPanels.getResidenceBuildingPanel("Apartment 8"));
+//			addPerson("Person 10", buildingsPanels.getResidenceBuildingPanel("Apartment 9"));
+//			addPerson("Person 11", buildingsPanels.getResidenceBuildingPanel("Apartment 10"));
+//			addPerson("Person 12", buildingsPanels.getResidenceBuildingPanel("Apartment 11"));
 			
 			//Need to add people to the GUI controls here as well; 
-			controls.addPerson(agents.get(0));
-			controls.addPerson(agents.get(1));
-			controls.addPerson(agents.get(2));
-			controls.addPerson(agents.get(3));
-			controls.addPerson(agents.get(4));
-			controls.addPerson(agents.get(5));
-			controls.addPerson(agents.get(6));
-			controls.addPerson(agents.get(7));
-			controls.addPerson(agents.get(8));
-			controls.addPerson(agents.get(9));
-			controls.addPerson(agents.get(10));
-			controls.addPerson(agents.get(11));
+//			controls.addPerson(agents.get(0));
+//			controls.addPerson(agents.get(1));
+//			controls.addPerson(agents.get(2));
+//			controls.addPerson(agents.get(3));
+//			controls.addPerson(agents.get(4));
+//			controls.addPerson(agents.get(5));
+//			controls.addPerson(agents.get(6));
+//			controls.addPerson(agents.get(7));
+//			controls.addPerson(agents.get(8));
+//			controls.addPerson(agents.get(9));
+//			controls.addPerson(agents.get(10));
+//			controls.addPerson(agents.get(11));
 
 			//addPerson("Person 13", buildingsPanels.getResidenceBuildingPanel("Apartment 12"));
 			//addPerson("Person 14", buildingsPanels.getResidenceBuildingPanel("Apartment 13"));
@@ -370,7 +373,6 @@ public class SetUpWorldFactory{
 		final int WINDOWY = 800;
 		final int GRIDSIZEX = 25;
 		final int GRIDSIZEY = 25;
-
 
 		layout = new SimCityLayout(WINDOWX, WINDOWY/2, GRIDSIZEX, GRIDSIZEY);// <-This holds the grid information
 		cityPanel = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
@@ -783,9 +785,21 @@ public class SetUpWorldFactory{
 		}
 		locationMap.add(new LocationInfo(location));
 	}
+	
+	private class MyPerson {
+		PersonAgent person;
+		ArrayList<String> friends;
+		
+		public MyPerson(PersonAgent person, ArrayList<String> friends){
+			this.person = person;
+			this.friends = friends;
+		}
+	}
 
 	public void loadXMLFile(String filepath){
 		try{
+			LoadDefault();
+			
 			File xmlFile = new File(this.getClass().getResource(filepath).toURI());
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -793,6 +807,9 @@ public class SetUpWorldFactory{
 			//setup the document for easier reading
 			doc.getDocumentElement().normalize();
 			NodeList masterList = doc.getDocumentElement().getChildNodes();
+			
+			Map<String, PersonAgent> peopleMap = new HashMap<String, PersonAgent>();
+			ArrayList<MyPerson> peopleList = new ArrayList<MyPerson>();
 			for(int i = 0; i < masterList.getLength(); i++){
 				Node iNode = masterList.item(i);
 				if(iNode.getNodeType() == Node.ELEMENT_NODE){
@@ -803,8 +820,8 @@ public class SetUpWorldFactory{
 							String iName = null, iHome = null, iJob = null, iLocation = null;
 							String iShift = null;
 							boolean iHasCar = false;
-					
 							NamedNodeMap iMap = iElement.getAttributes();
+							ArrayList<String> iFriends = new ArrayList<String>();
 							for(int j = 0; j < iMap.getLength(); j++){
 								Node jNode = iMap.item(j);
 								switch(jNode.getNodeName()){
@@ -862,6 +879,7 @@ public class SetUpWorldFactory{
 																		break;
 																}
 															}
+															iFriends.add(kName);
 															System.out.println("\t"+kName);
 															break;
 													}
@@ -871,9 +889,42 @@ public class SetUpWorldFactory{
 									
 								}
 							}
+							
+							PersonAgent person = new PersonAgent(iName, buildingsPanels.getResidenceBuildingPanel(iHome));
+							peopleMap.put(iName, person);
+							peopleList.add(new MyPerson(person, iFriends));
+							
+							if(iJob == null){
+								//person.setInitialRole(RoleFactory.roleFromString(Role.HOME_ROLE), iHome);
+							}else {
+								Class e = Employee.class;
+								Class c = Class.forName(iJob);
+								if(e.isAssignableFrom(c)){
+									person.setInitialRole(RoleFactory.employeeFromString(iJob, iLocation), iLocation);
+								}else{
+									person.setInitialRole(RoleFactory.roleFromString(iJob), iLocation);
+								}
+							}
+							
+							person.startThread();
+							agents.add(person);
+							
 							break;
 					}
 				}
+			}
+			
+			//sets up the friend lists for the people after all people have been added
+			for(MyPerson person : peopleList){
+				for(String name : person.friends){
+					PersonAgent p = peopleMap.get(name);
+					if(p != null)
+						person.person.addFriend(p);
+				}
+			}
+			
+			for(PersonAgent a : agents){
+				controls.addPerson(a);
 			}
 			
 		}catch(Exception e){
