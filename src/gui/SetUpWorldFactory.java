@@ -26,7 +26,7 @@ import gui.Building.restaurants.RyansRestaurantBuildingPanel;
 import gui.MockAgents.PseudoBusAgent;
 import gui.MockAgents.PseudoPerson;
 import gui.agentGuis.PersonGui;
-import gui.agentGuis.VehicleGui;
+import gui.agentGuis.BusGui;
 
 import java.awt.Dimension;
 import java.io.File;
@@ -71,6 +71,11 @@ public class SetUpWorldFactory{
 	public static List<PersonAgent> agents = new ArrayList<PersonAgent>();
 	public static List<LocationInfo> locationMap = new ArrayList<LocationInfo>();//<--a map of strings to LocationInfo
 	
+	//GUI lists for AddPerson
+	public static List<String> locationsList = new ArrayList<String>();
+	public static List<String> jobList = new ArrayList<String>();
+	public static List<String> residenceList = new ArrayList<String>();
+	
 	
 	
 	SetUpWorldFactory() {
@@ -90,6 +95,70 @@ public class SetUpWorldFactory{
 		cityPanel = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
 		buildingsPanels = new BuildingsPanels();//<-Zoomed in view of buildings
 		controls = new CityControlPanel(buildingsPanels, this);
+		
+		//Populate GUI lists
+		jobList.add("Market Employee");
+		jobList.add("Market Customer");
+		jobList.add("Market Manager");
+		jobList.add("Bank Client");
+		jobList.add("Bank Teller");
+		jobList.add("Restaurant Customer");
+		jobList.add("Retaurant Old Waiter");
+		jobList.add("Restaurant New Waiter");
+		jobList.add("Restaurant Host");
+		jobList.add("Restaurant Cook");
+		jobList.add("Restaurant Cashier");
+		jobList.add("Luca Customer");
+		jobList.add("Luca Waiter");
+		jobList.add("Luca Host");
+		jobList.add("Luca Cook");
+		jobList.add("Luca Cashier");
+		//jobList.add("Apartment Manager");
+		jobList.add("Kush Customer");
+		jobList.add("Kush Waiter");
+		jobList.add("Kush Host");
+		jobList.add("Kush Cook");
+		jobList.add("Kush Cashier");
+		jobList.add("Jeffrey Customer");
+		jobList.add("Jeffrey Waiter");
+		jobList.add("Jeffrey Host");
+		jobList.add("Jeffrey Cook");
+		jobList.add("Jeffrey Cashier");
+		jobList.add("Mike New Waiter");
+		jobList.add("Mike Host");
+		jobList.add("Mike Cook");
+		jobList.add("Mike Cashier");
+		jobList.add("Mike Customer");
+		
+		locationsList.add("City");
+		locationsList.add("Main Restaurant");
+		locationsList.add("Mike's Restaurant");
+		locationsList.add("Ryan's Restaurant");
+		locationsList.add("Jeffrey's Restaurant");
+		locationsList.add("Luca's Restaurant");
+		locationsList.add("Byron's Restaurant");
+		locationsList.add("Kush's Restaurant");
+		locationsList.add("Bank 1");
+		locationsList.add("Bank 2");
+		locationsList.add("Market 1");
+		locationsList.add("Market 2");
+		locationsList.add("Residence 1");
+		locationsList.add("Residence 2");
+		locationsList.add("Apartment 1A");
+		locationsList.add("Apartment 1B");
+		locationsList.add("Apartment 1C");
+		locationsList.add("Apartment 1D");
+		locationsList.add("Apartment 2A");
+		locationsList.add("Apartment 2B");
+		
+		residenceList.add("Residence 1");
+		residenceList.add("Residence 2");
+		residenceList.add("Apartment 1A");
+		residenceList.add("Apartment 1B");
+		residenceList.add("Apartment 1C");
+		residenceList.add("Apartment 1D");
+		residenceList.add("Apartment 2A");
+		residenceList.add("Apartment 2B");
 
 		buildingsPanels.addBuildingPanel(new Team29Panel(buildingsPanels));
 		buildingsPanels.addBuildingPanel(controls);
@@ -539,10 +608,8 @@ public class SetUpWorldFactory{
 			OddStopsQueue.add("Bus Stop " + 3);
 			OddStopsQueue.add("Bus Stop " + 5);
 			PseudoBusAgent v1 = new PseudoBusAgent("Odd Mock Bus", OddStopsQueue);
-			AStarTraversal t = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
-			VehicleGui v1Gui = new VehicleGui( v1, layout, t, locationMap );
+			BusGui v1Gui = new BusGui( v1);
 			v1.agentGui = v1Gui;
-			cityPanel.addGui(v1Gui);
 			v1.startThread();
 			//mockVehicle Added
 			break;
@@ -553,11 +620,6 @@ public class SetUpWorldFactory{
 			EvenStopsQueue1.add("Bus Stop " + 4);
 			EvenStopsQueue1.add("Bus Stop " + 6);
 			PseudoBusAgent v2 = new PseudoBusAgent("Even Mock Bus", EvenStopsQueue1);
-			AStarTraversal t2 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
-			VehicleGui v2Gui = new VehicleGui( v2, layout, t2 ,locationMap );
-			v2.agentGui = v2Gui;
-			cityPanel.addGui(v2Gui);
-			v2.startThread();
 			//mockVehicle Added
 			break;
 
@@ -573,13 +635,7 @@ public class SetUpWorldFactory{
 			v4.addBusStop(3, "Bus Stop 5",
 					((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 5"))).getBusStopAgent());
 			v4.location = "Bus Stop 1";
-			AStarTraversal t4 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
-			VehicleGui v4Gui = new VehicleGui( v4, layout, t4, locationMap);
-			v4.location = "Bus Stop 1";
 			v4.currentStop = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 1"))).getBusStopAgent();
-			v4.agentGui = v4Gui;
-			cityPanel.addGui(v4Gui);
-			v4.startThread();
 			break;
 
 		default:
@@ -599,13 +655,9 @@ public class SetUpWorldFactory{
 			v3.addBusStop(4, "Bus Stop 4", bs4 );
 			v3.addBusStop(5, "Bus Stop 5", bs5 );
 			v3.addBusStop(6, "Bus Stop 6", bs6 );
-			AStarTraversal t3 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
-			VehicleGui v3Gui = new VehicleGui( v3, layout, t3, locationMap);
-			v3.agentGui = v3Gui;
 			//v3.location = "Bus Stop 1";
 			v3.currentStop = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 1"))).getBusStopAgent();
 			v3.agentGui.setStartingStates("Bus Stop 1");
-			cityPanel.addGui(v3Gui);
 			v3.startThread();
 
 			BusAgent b1 = new BusAgent("Bus 2");
@@ -616,14 +668,10 @@ public class SetUpWorldFactory{
 			b1.addBusStop(4, "Bus Stop 4", bs4 );
 			b1.addBusStop(5, "Bus Stop 5", bs5 );
 
-			AStarTraversal tb1 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
-			VehicleGui vb1Gui = new VehicleGui( b1, layout, tb1, locationMap);
-			b1.agentGui = vb1Gui;
 			b1.agentGui.setStartingStates("Bus Stop 3");
 			//	b1.location = "Bus Stop 5";
 			//b1.currentStop = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 5"))).getBusStopAgent();
 			b1.setStartStopNumber(4);
-			cityPanel.addGui(vb1Gui);
 			b1.startThread();
 
 			break;
