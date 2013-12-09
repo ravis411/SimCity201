@@ -29,6 +29,7 @@ import javax.swing.JTextField;
  */
 
 public class AddPersonControl extends JFrame implements ActionListener{
+	
 	private JPanel panelContainer;
 	
 	private JPanel TFContainer;
@@ -178,7 +179,38 @@ public class AddPersonControl extends JFrame implements ActionListener{
 	}
 	
 	private void createPerson() {
-		
+		/*TODO
+		 * 1)Poll Name
+		 * 2)Poll money
+		 * 3)Poll Initial Job
+		 * 4)Poll Spawn Location
+		 * 5)Poll home
+		 * 
+		 * Then send data to SetUpWorldFactory
+		 */
+		String name = nameTF.getText();
+		Double money = Double.parseDouble(moneyTF.getText());
+		String job;
+		for (JRadioButton myJob : jobs) {
+			if (myJob.isSelected()) {
+				job = myJob.getText();
+				break;
+			}
+		}
+		String location;
+		for (JRadioButton myLocation : locations) {
+			if (myLocation.isSelected()) {
+				location = myLocation.getText();
+				break;
+			}
+		}
+		String home;
+		for (JRadioButton myHome : residences) {
+			if (myHome.isSelected()) {
+				home = myHome.getText();
+				break;
+			}
+		}
 	}
 
 }
