@@ -15,6 +15,7 @@ import java.util.TimerTask;
 
 import restaurant.gui.CustomerGui;
 import Person.PersonAgent;
+import Person.Role.Role;
 
 /**
  * Restaurant customer agent.
@@ -430,7 +431,7 @@ public class RestaurantCustomerRole extends GenericCustomer implements Customer 
 
 	@Override
 	public String getNameOfRole() {
-		return "RestaurantCustomerRole";
+		return Role.RESTAURANT_CUSTOMER_ROLE;
 	}
 }
 

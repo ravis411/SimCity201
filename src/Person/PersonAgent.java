@@ -415,10 +415,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 								p.partyState=PartyState.GoingToParty;
 								return true;
 							}
-						
-							
 						}
-						
 					}
 					int i= new Random().nextInt(40);
 					if(i%2==0){

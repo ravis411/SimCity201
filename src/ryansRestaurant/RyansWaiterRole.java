@@ -599,7 +599,7 @@ public class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 	@Override
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
-		return null;
+		return "Ryan's Waiter";
 	}
 	
 	

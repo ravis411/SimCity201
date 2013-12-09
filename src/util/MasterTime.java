@@ -1,9 +1,13 @@
 package util;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Queue;
+
+import agent.Agent;
 
 public class MasterTime {
 
@@ -18,11 +22,17 @@ public class MasterTime {
 			masterTime = new MasterTime();
 		return masterTime;
 	}
+
 	
-	protected MasterTime(){
-		dateListeners = Collections.synchronizedList(new ArrayList<MyDateListener>());
-		timeListeners = Collections.synchronizedList(new ArrayList<MyTimeListener>());
-	}
+//	private class Field {
+//		int field;
+//		int amt;
+//		
+//		public Field(int field, int amt){
+//			this.field = field;
+//			this.amt = amt;
+//		}
+//	}
 	
 	/**
 	 * Helper function to access a particular field of the calendar

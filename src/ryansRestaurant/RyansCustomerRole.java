@@ -7,6 +7,7 @@ import ryansRestaurant.interfaces.RyansCashier;
 import ryansRestaurant.interfaces.RyansCustomer;
 import ryansRestaurant.interfaces.RyansHost;
 import ryansRestaurant.interfaces.RyansWaiter;
+import Person.Role.Role;
 import agent.Agent;
 import interfaces.generic_interfaces.GenericCashier;
 import interfaces.generic_interfaces.GenericCustomer;
@@ -491,7 +492,7 @@ public class RyansCustomerRole extends GenericCustomer implements RyansCustomer 
 	@Override
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
-		return null;
+		return Role.RESTAURANT_RYAN_CUSTOMER_ROLE;
 	}
 
 	
