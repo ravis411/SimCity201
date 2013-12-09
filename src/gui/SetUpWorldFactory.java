@@ -711,6 +711,7 @@ public class SetUpWorldFactory{
          * @param height        Number of grid positions high.
          */
         private void addBuilding(String type, String name, int xPos, int yPos, int width, int height, LocationInfo info){
+        	locationsList.add(name);
                 if(layout == null || buildingsPanels == null){
                         System.out.println("ERROR In addBuilding ALL IS NULL");
                         return;
