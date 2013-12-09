@@ -1,7 +1,5 @@
 package gui;
 
-import javax.swing.*;
-
 import gui.Building.BuildingGui;
 import gui.Building.BuildingPanel;
 import interfaces.GuiPanel;
@@ -16,11 +14,16 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
-import agent.Agent;
 import Person.PersonAgent;
 import Person.Role.Role;
+import agent.Agent;
 /**
  * Singleton GUI class for controlling the city.
  * @author JEFFREY
