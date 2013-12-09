@@ -1,7 +1,5 @@
 package gui;
 
-import javax.swing.*;
-
 import gui.Building.BuildingGui;
 import gui.Building.BuildingPanel;
 import interfaces.GuiPanel;
@@ -9,21 +7,23 @@ import interfaces.GuiPanel;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.GraphicsConfiguration;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
-import sun.awt.X11.Screen;
-import agent.Agent;
 import Person.PersonAgent;
 import Person.Role.Role;
+import agent.Agent;
 /**
  * Singleton GUI class for controlling the city.
  * @author JEFFREY
@@ -36,7 +36,11 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 	public JScrollPane pane =
             new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                     JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    private JPanel personView = new JPanel();
+	public JScrollPane pane2 =
+            new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	private JPanel personView = new JPanel();
+    private JPanel focusPanel = new JPanel();
     private JLabel focusInfo = new JLabel();
     private JPanel moreControls = new JPanel();
     static BuildingGui defaultGui = new BuildingGui(0,0,0,0);
@@ -62,7 +66,9 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 		add(pane);
 		
 		focusInfo.setText("<html><pre> <u> Person Info goes here </u> </pre></html>");
-		add(focusInfo);
+		focusPanel.add(focusInfo);
+		pane2.setViewportView(focusPanel);
+		add(pane2);
 		
 		plusControlsB = new JButton("Additional Controls");
 		plusControlsB.addActionListener(this);
@@ -116,15 +122,21 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 	 * @param agent Agent taken directly from SetUpWorldFactory list of agents
 	 */
 	private void showInfo(PersonAgent agent) {
-		//Update Center text field
 		/*
+		 *TODO
+		 *Add car status
+		 *Add friends list
+		 */
+		
+		//Update Center text field
+		
 		String carStatus;
 		if (agent.hasCar()) {
 			carStatus = "Yes";
 		}
 		else {
 			carStatus = "No";
-		}*/
+		}
 		String currentJob;
 		try {
 			currentJob = agent.getCurrentJobString();
@@ -132,18 +144,23 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 		catch (Exception e) {
 			currentJob = "N/A";
 		}
-		
-		focusInfo.setText("<html> <u> " + agent.getName() + 
+		String info = "<html> <u> " + agent.getName() + 
 				"</u> <table><tr> Current Job: " + currentJob + 
 				"</tr><tr> Age: " + agent.getAge() + 
 				"</tr><tr> SSN: " + agent.getSSN() +
-				"</tr><tr> Owns car: " + "/*carStatus*/" + 
+				"</tr><tr> Owns car: " + carStatus + 
 				"</tr><tr> Current money: " + agent.getMoney() + 
 				"</tr><tr> Hunger Level: " + agent.getHungerLevel() + 
 				"</tr><tr> Current Loan: " + agent.getLoan() + 
 				"</tr><tr> Number of Parties: " + agent.getNumParties() +
-				"</tr><tr> Current Location: " + agent.getCurrentLocation() + 
-				"</tr></table></html>");
+				"</tr><tr> Current Location: " + agent.getPersonGui().getCurrentLocation() +
+				"</tr><tr> Friends: "; 
+		
+		for (PersonAgent friend : agent.getFriends()) {
+			info += ("</tr><tr><pre>    " + friend.getName() + "</pre>");
+		}
+		info += "</tr></table></html>";
+		focusInfo.setText(info);
 	}
 	
 	public void addPerson(Agent a) {
@@ -166,14 +183,9 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 	//Add function to realtime update infopanel
 	
 	public void showExtraControls() {
-		JFrame extraControls = new JFrame("Additional Controls");
-		Rectangle windowLocation = new Rectangle(800, 400, 200, 400);
+		JFrame extraControls = new CommandsControl(this);
+		Rectangle windowLocation = new Rectangle(800, 400, 300, 400);
 		extraControls.setBounds(windowLocation);
-		
-		JPanel testPanel = new JPanel();
-		testPanel.add(new JButton("Test"));
-		extraControls.add(testPanel);
-		
 		
 		extraControls.setVisible(true);
 	}
@@ -203,6 +215,42 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 		}
 	}
 	
+	//Functions from Control Panel
+	
+	public void personThrowParty() {
+		focus.homeThrowParty();
+		updateInfoPanel();
+	}
+	
+	public void personGetHungry() {
+		focus.msgImHungry();
+		updateInfoPanel();
+	}
+	
+	public void personAddFriends(List<String> newFriends) {
+		for (String newFriend : newFriends) {
+			for (PersonAgent p : SetUpWorldFactory.agents) {
+				if (p.getName().equals(newFriend)) {
+					focus.addFriend(p);
+				}
+			}
+		}
+		updateInfoPanel();
+	}
+	
+	public void personGoToLocation(String Location) {
+		
+		updateInfoPanel();
+	}
+	
+	public void personAddMoney(Double Money) {
+		focus.setMoney(focus.getMoney() + Money);
+		updateInfoPanel();
+	}
+	
+	private void updateInfoPanel() {
+		showInfo(focus);
+	}
 	@Override
 	public GuiPanel getPanel() {
 		// TODO Auto-generated method stub

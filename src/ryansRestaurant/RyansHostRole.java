@@ -1,24 +1,29 @@
 package ryansRestaurant;
 
-import agent.Agent;
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
 
-import java.awt.Dimension;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.ConcurrentModificationException;
+import java.util.List;
 import java.util.concurrent.Semaphore;
 
-import ryansRestaurant.interfaces.Customer;
-import ryansRestaurant.interfaces.Host;
-import ryansRestaurant.interfaces.Waiter;
+import ryansRestaurant.interfaces.RyansCustomer;
+import ryansRestaurant.interfaces.RyansHost;
+import ryansRestaurant.interfaces.RyansWaiter;
+import Person.Role.ShiftTime;
 
 /**
- * Restaurant Host Agent
+ * Restaurant RyansHost Agent
  */
 
-public class HostAgent extends Agent implements Host {
+public class RyansHostRole extends GenericHost implements RyansHost {
 	private int NTABLES = 2;//a global for the number of tables. // there's only one host changing from static
 
-	private List<Customer> waitingCustomers = Collections.synchronizedList(new ArrayList<Customer>());
-	//private List<Customer> waitingCustomers = (new ArrayList<Customer>());
+	private List<RyansCustomer> waitingCustomers = Collections.synchronizedList(new ArrayList<RyansCustomer>());
+	//private List<RyansCustomer> waitingCustomers = (new ArrayList<RyansCustomer>());
 	private Collection<Table> tables;
 
 
@@ -29,10 +34,9 @@ public class HostAgent extends Agent implements Host {
 	private String name;
 	private Semaphore atTable = new Semaphore(0,true);
 
-	public HostAgent(String name) {
-		super();
+	public RyansHostRole(String workLocation) {
+		super(workLocation);
 
-		this.name = name;
 		// make some tables
 		//tables = Collections.synchronizedCollection(new ArrayList<Table>(NTABLES));
 		tables = new ArrayList<Table>(NTABLES);
@@ -44,7 +48,7 @@ public class HostAgent extends Agent implements Host {
 
 
 	public String getName() {
-		return name;
+		return this.myPerson.getName();
 	}
 
 //	private List getWaitingCustomers() {
@@ -76,16 +80,16 @@ public class HostAgent extends Agent implements Host {
 
 	// Messages
 
-	public void msgIWantFood(Customer cust) {
+	public void msgIWantFood(RyansCustomer cust) {
 		waitingCustomers.add(cust);
 		print("" + cust + " is in the ryansRestaurant.");
 		stateChanged();
 	}
 
 	//called if a customer decides to leave before being seated.
-	public void msgIWantToLeave(Customer cust) {
+	public void msgIWantToLeave(RyansCustomer cust) {
 		synchronized (waitingCustomers) {
-			for(Customer c: waitingCustomers) {
+			for(RyansCustomer c: waitingCustomers) {
 				if(c == cust) {
 					print("" + c + " is leaving.");
 					waitingCustomers.remove(cust);
@@ -95,7 +99,7 @@ public class HostAgent extends Agent implements Host {
 		}	
 	}
 
-	public void msgTableFree(Waiter waiter, int tableNumber) {
+	public void msgTableFree(RyansWaiter waiter, int tableNumber) {
 
 		//synchronized (waiters)
 		{
@@ -124,7 +128,7 @@ public class HostAgent extends Agent implements Host {
 	 * 
 	 * @param waiter The waiter
 	 */
-	public void msgWantToGoOnBreak(Waiter waiter) {
+	public void msgWantToGoOnBreak(RyansWaiter waiter) {
 		print(waiter + " wants to go on break.");
 		//synchronized (waiters)
 		{
@@ -142,7 +146,7 @@ public class HostAgent extends Agent implements Host {
 	 * 
 	 * @param waiter The waiter
 	 */
-	public void msgBreakOver(Waiter waiter) {
+	public void msgBreakOver(RyansWaiter waiter) {
 		//synchronized (waiters) 
 		{
 			for(MyWaiter w : waiters) {
@@ -161,9 +165,9 @@ public class HostAgent extends Agent implements Host {
 	/**msgAddWaiter
 	 * @param waiter the waiter to add
 	 */
-	public void msgAddWaiter(Waiter waiter)
+	public void addWaiter(GenericWaiter waiter)
 	{
-		waiters.add(new MyWaiter(waiter));
+		waiters.add(new MyWaiter((RyansWaiter) waiter));
 		stateChanged();
 	}
 
@@ -202,7 +206,7 @@ public class HostAgent extends Agent implements Host {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		try {
 		/* Think of this next rule as:
             Does there exist a table and customer,
@@ -255,7 +259,7 @@ public class HostAgent extends Agent implements Host {
 
 	// Actions
 
-	private void seatCustomer(Customer customer, Table table, MyWaiter waiter) {
+	private void seatCustomer(RyansCustomer customer, Table table, MyWaiter waiter) {
 		{
 			customer.msgIntroduceWaiter(waiter.waiter);
 			waiter.waiter.msgSitAtTable(customer, table.getTableNumber());
@@ -292,7 +296,7 @@ public class HostAgent extends Agent implements Host {
 
 	/**This function will find the waiter with the least amount of customers
 	 * 
-	 * @return Waiter with least amount of customers
+	 * @return RyansWaiter with least amount of customers
 	 */
 	private MyWaiter pickAWaiter() {
 		int numCusts = 0;
@@ -327,16 +331,16 @@ public class HostAgent extends Agent implements Host {
 	//utilities
 
 	class MyWaiter {
-		Waiter waiter;
+		RyansWaiter waiter;
 		WaiterState state;
 		int numCusts = 0;
 
-		MyWaiter(Waiter waiter) {
+		MyWaiter(RyansWaiter waiter) {
 			this.waiter = waiter;
 			this.state = WaiterState.none;
 		}
 
-		MyWaiter(Waiter waiter, WaiterState state) {
+		MyWaiter(RyansWaiter waiter, WaiterState state) {
 			this.waiter = waiter;
 			this.state = state;
 		}
@@ -369,7 +373,7 @@ public class HostAgent extends Agent implements Host {
 	}
 
 	class Table extends aTable {
-		Customer occupiedBy;
+		RyansCustomer occupiedBy;
 
 		Table(int tableNumber) {
 			super(tableNumber);
@@ -379,7 +383,7 @@ public class HostAgent extends Agent implements Host {
 			super(tableNumber, numSeats);
 		}
 
-		void setOccupant(Customer cust) {
+		void setOccupant(RyansCustomer cust) {
 			occupiedBy = cust;
 		}
 
@@ -387,7 +391,7 @@ public class HostAgent extends Agent implements Host {
 			occupiedBy = null;
 		}
 
-		Customer getOccupant() {
+		RyansCustomer getOccupant() {
 			return occupiedBy;
 		}
 
@@ -396,6 +400,34 @@ public class HostAgent extends Agent implements Host {
 		}
 
 
+	}
+
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return "Ryan's Host";
 	}
 }
 

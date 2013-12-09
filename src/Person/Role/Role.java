@@ -38,11 +38,17 @@ public abstract class Role {
     public final static String RESTAURANT_JEFFREY_HOST_ROLE = "jeffreyRestaurant.HostAgent";
     public final static String RESTAURANT_JEFFREY_COOK_ROLE = "jeffreyRestaurant.CookAgent";
     public final static String RESTAURANT_JEFFREY_CASHIER_ROLE = "jeffreyRestaurant.CashierAgent";
-    public final static String RESTAURANT_MIKE_WAITER_ROLE = "mikeRestaurant.OldWaiterRole"; 
+    public final static String RESTAURANT_MIKE_WAITER_ROLE = "mikeRestaurant.NewWaiterRole"; 
     public final static String RESTAURANT_MIKE_HOST_ROLE = "mikeRestaurant.HostRole"; 
     public final static String RESTAURANT_MIKE_COOK_ROLE = "mikeRestaurant.CookRole"; 
     public final static String RESTAURANT_MIKE_CASHIER_ROLE = "mikeRestaurant.CashierRole"; 
     public final static String RESTAURANT_MIKE_CUSTOMER_ROLE = "mikeRestaurant.CustomerRole"; 
+    
+    public final static String RESTAURANT_RYAN_HOST_ROLE = "ryansRestaurant.RyansHostRole"; 
+    public final static String RESTAURANT_RYAN_COOK_ROLE = "ryansRestaurant.RyansCookRole"; 
+    public final static String RESTAURANT_RYAN_CASHIER_ROLE = "ryansRestaurant.RyansCashierRole"; 
+    public final static String RESTAURANT_RYAN_CUSTOMER_ROLE = "ryansRestaurant.RyansCustomerRole";
+    public final static String RESTAURANT_RYAN_WAITER_ROLE = "ryansRestaurant.RyansWaiterRole";
     
     
     

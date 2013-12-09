@@ -6,11 +6,13 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 /**
@@ -27,9 +29,11 @@ import javax.swing.JTextField;
  */
 
 public class AddPersonControl extends JFrame implements ActionListener{
+	
 	private JPanel panelContainer;
 	
 	private JPanel TFContainer;
+	private JPanel RBContainer;
 	private JTextField nameTF;
 	private JTextField moneyTF;
 	
@@ -37,20 +41,29 @@ public class AddPersonControl extends JFrame implements ActionListener{
 			new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED ,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	private JScrollPane locationScrollPane =
 			new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED ,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-	private List<JCheckBox> jobs = new ArrayList<JCheckBox>();
-	private List<JCheckBox> locations = new ArrayList<JCheckBox>();
-	private JPanel jobCBPanel;		//Populate these two with Checkboxes in
-	private JPanel locationCBPanel;	//the constructor. Need to implement scrolling
-									//or things won't fit.
+	private JScrollPane residenceScrollPane =
+			new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED ,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	private List<JRadioButton> jobs = new ArrayList<JRadioButton>();
+	private ButtonGroup jobsGroup = new ButtonGroup();
+	private List<JRadioButton> locations = new ArrayList<JRadioButton>();
+	private ButtonGroup locationsGroup = new ButtonGroup();
+	private List<JRadioButton> residences = new ArrayList<JRadioButton>();
+	private ButtonGroup residencesGroup = new ButtonGroup();
+	private JPanel jobRBPanel;		//Populate these two with Radio Buttons in
+	private JPanel locationRBPanel;	//the constructor. Need to implement scrolling
+	private JPanel residenceRBPanel;//or things won't fit.
 	
 	private JButton addPersonB;
 	
-	private final int OVERALL_ROWS = 4;
+	private List<String> jobList = new ArrayList<String>();
+	
+	private final int OVERALL_ROWS = 3;
 	private final int OVERALL_COLLUMNS = 1; //Don't touch this
 	
 	private final int TEXT_FIELD_COUNT = 2;
+	private final int SCROLL_MENU_COUNT = 3;
 	
-	private final int NUMBER_OF_JOBS = 20;
+	//private final int NUMBER_OF_JOBS = 20;
 	private final int NUMBER_OF_LOCATIONS = 25;
 	
 	AddPersonControl(String name) {
@@ -62,6 +75,12 @@ public class AddPersonControl extends JFrame implements ActionListener{
 		
 		TFContainer = new JPanel();
 		TFContainer.setLayout(new GridLayout(TEXT_FIELD_COUNT, 2));
+		
+		jobList.add("Market Employee");
+		jobList.add("Market Custoemr");
+		jobList.add("Market Manager");
+		jobList.add("Bank Client");
+		jobList.add("Bank Teller");
 		//--------Text Fields---------//
 		
 		//Name
@@ -70,119 +89,76 @@ public class AddPersonControl extends JFrame implements ActionListener{
 		TFContainer.add(nameTF);
 		
 		//Money
-		moneyTF = new JTextField("$$$");
+		moneyTF = new JTextField("$$.$$");
 		TFContainer.add(new JLabel("  Starting Money:"));
 		TFContainer.add(moneyTF);
 		//----------------------------//
 		
 		panelContainer.add(TFContainer);
 		
-		//------Job Check boxes------//
+		RBContainer = new JPanel();
+		RBContainer.setLayout(new GridLayout(SCROLL_MENU_COUNT, 2));
+		
+		//------Job Radio Buttons------//
 			//Hard code the check boxes with all jobs/locations
 			//Need to keep a list of the JCheckBoxes to reference them for data processing
 		
-		jobCBPanel = new JPanel();
-		jobCBPanel.setLayout(new GridLayout(NUMBER_OF_JOBS,1)); //May change this later depending on how big the job names are
+		jobRBPanel = new JPanel();
+		jobRBPanel.setLayout(new GridLayout(SetUpWorldFactory.jobList.size(),1)); //May change this later depending on how big the job names are
 		
-		JCheckBox testJob = new JCheckBox("25                  Chars");
-		jobCBPanel.add(testJob);
-		jobs.add(testJob);
-		
-		JCheckBox testJob1 = new JCheckBox("18           Chars");
-		jobCBPanel.add(testJob1);
-		jobs.add(testJob1);
-		
-		JCheckBox testJob2 = new JCheckBox("18           Chars");
-		jobCBPanel.add(testJob2);
-		jobs.add(testJob2);
-		
-		JCheckBox testJob3 = new JCheckBox("18           Chars");
-		jobCBPanel.add(testJob3);
-		jobs.add(testJob3);
-		
-		JCheckBox testJob4 = new JCheckBox("18           Chars");
-		jobCBPanel.add(testJob4);
-		jobs.add(testJob4);
-		
-		JCheckBox testJob5 = new JCheckBox("18           Chars");
-		jobCBPanel.add(testJob5);
-		jobs.add(testJob5);
-		
-		JCheckBox testJob6 = new JCheckBox("18           Chars");
-		jobCBPanel.add(testJob6);
-		jobs.add(testJob6);
-		
-		JCheckBox testJob7 = new JCheckBox("18           Chars");
-		jobCBPanel.add(testJob7);
-		jobs.add(testJob7);
-		
-		JCheckBox testJob8 = new JCheckBox("18           Chars");
-		jobCBPanel.add(testJob8);
-		jobs.add(testJob8);
-		
-		JCheckBox testJob9 = new JCheckBox("18           Chars");
-		jobCBPanel.add(testJob9);
-		jobs.add(testJob9);
-		
-		JCheckBox testJob10 = new JCheckBox("18           Chars");
-		jobCBPanel.add(testJob10);
-		jobs.add(testJob10);
-		
-		JCheckBox testJob11 = new JCheckBox("18           Chars");
-		jobCBPanel.add(testJob11);
-		jobs.add(testJob11);
-		
-		JCheckBox testJob12 = new JCheckBox("18           Chars");
-		jobCBPanel.add(testJob12);
-		jobs.add(testJob12);
-		
-		JCheckBox testJob13 = new JCheckBox("18           Chars");
-		jobCBPanel.add(testJob13);
-		jobs.add(testJob13);
-		
-		JCheckBox testJob14 = new JCheckBox("18           Chars");
-		jobCBPanel.add(testJob14);
-		jobs.add(testJob14);
-		
-		JCheckBox testJob15 = new JCheckBox("18           Chars");
-		jobCBPanel.add(testJob15);
-		jobs.add(testJob15);
-		
-		JCheckBox testJob16 = new JCheckBox("18           Chars");
-		jobCBPanel.add(testJob16);
-		jobs.add(testJob16);
-		
-		JCheckBox testJob17 = new JCheckBox("18           Chars");
-		jobCBPanel.add(testJob17);
-		jobs.add(testJob17);
-		
-		JCheckBox testJob18 = new JCheckBox("18           Chars");
-		jobCBPanel.add(testJob18);
-		jobs.add(testJob18);
-		
-		JCheckBox testJob19 = new JCheckBox("18           Chars");
-		jobCBPanel.add(testJob19);
-		jobs.add(testJob19);
-		
-		jobScrollPane.setViewportView(jobCBPanel);
-		
-		panelContainer.add(jobScrollPane);
-		
-		//--------------------------//
-		
-		//---Location Check Boxes---//
-		locationCBPanel = new JPanel();
-		locationCBPanel.setLayout(new GridLayout(NUMBER_OF_LOCATIONS, 1));
-			//Debug loops
-		for (int i = 0; i <= NUMBER_OF_LOCATIONS; ++i) {
-			JCheckBox checkBox = new JCheckBox(Integer.toString(i));
-			locationCBPanel.add(checkBox);
+		for (String job : SetUpWorldFactory.jobList) {
+			JRadioButton jobRB = new JRadioButton(job);
+			jobsGroup.add(jobRB);
+			jobRBPanel.add(jobRB);
+			jobs.add(jobRB);
 		}
-		locationScrollPane.setViewportView(locationCBPanel);
 		
-		panelContainer.add(locationScrollPane);
+		//jobRBPanel.add(jobs);
+		jobScrollPane.setViewportView(jobRBPanel);
+		
+		RBContainer.add(new JLabel("Initial Job"));
+		RBContainer.add(jobScrollPane);
+		//panelContainer.add(jobScrollPane);
 		
 		//--------------------------//
+		
+		//---Location Radio Buttons---//
+		locationRBPanel = new JPanel();
+		locationRBPanel.setLayout(new GridLayout(SetUpWorldFactory.locationsList.size() , 1));
+			//Debug loops
+		for (String location : SetUpWorldFactory.locationsList) {
+			JRadioButton locationRB = new JRadioButton(location);
+			locationRBPanel.add(locationRB);
+			locationsGroup.add(locationRB);
+			locations.add(locationRB);
+		}
+		locationScrollPane.setViewportView(locationRBPanel);
+		
+		RBContainer.add(new JLabel("Spawn Location"));
+		RBContainer.add(locationScrollPane);
+		//panelContainer.add(locationScrollPane);
+		//--------------------------//
+		
+		//---Residence Radio Buttons---//
+		residenceRBPanel = new JPanel();
+		residenceRBPanel.setLayout(new GridLayout(SetUpWorldFactory.residenceList.size(), 1));
+		
+		for (String home : SetUpWorldFactory.residenceList) {
+			JRadioButton residenceRB = new JRadioButton(home);
+			residenceRBPanel.add(residenceRB);
+			residencesGroup.add(residenceRB);
+			residences.add(residenceRB);
+			
+		}
+		residenceScrollPane.setViewportView(residenceRBPanel);
+		
+		RBContainer.add(new JLabel("Home"));
+		RBContainer.add(residenceScrollPane);
+		//panelContainer.add(residenceRBPanel);
+		
+		//----------------------------//
+		
+		panelContainer.add(RBContainer);
 		
 		//-----Add Person Button----//
 		addPersonB = new JButton("Create");
@@ -196,9 +172,45 @@ public class AddPersonControl extends JFrame implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		if (e.getSource() == addPersonB) {
+			createPerson();
+		}
 		
 	}
 	
+	private void createPerson() {
+		/*TODO
+		 * 1)Poll Name
+		 * 2)Poll money
+		 * 3)Poll Initial Job
+		 * 4)Poll Spawn Location
+		 * 5)Poll home
+		 * 
+		 * Then send data to SetUpWorldFactory
+		 */
+		String name = nameTF.getText();
+		Double money = Double.parseDouble(moneyTF.getText());
+		String job;
+		for (JRadioButton myJob : jobs) {
+			if (myJob.isSelected()) {
+				job = myJob.getText();
+				break;
+			}
+		}
+		String location;
+		for (JRadioButton myLocation : locations) {
+			if (myLocation.isSelected()) {
+				location = myLocation.getText();
+				break;
+			}
+		}
+		String home;
+		for (JRadioButton myHome : residences) {
+			if (myHome.isSelected()) {
+				home = myHome.getText();
+				break;
+			}
+		}
+	}
 
 }

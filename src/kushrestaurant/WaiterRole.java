@@ -715,16 +715,16 @@ public void setCashier(GenericCashier cashier){
 		return null;
 	}
 
-	@Override
-	public void workplaceIsOpen() {
-		// TODO Auto-generated method stub
-		//super(workLocation);
-		Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(this.getWorkLocation());
-		this.setHost(rest.getHostRole());
-		rest.getHostRole().addWaiter(this);
-		this.setCashier(rest.getCashierRole());
-		this.setCook(rest.getCookRole());
-	}
+//	@Override
+//	public void workplaceIsOpen() {
+//		// TODO Auto-generated method stub
+//		//super(workLocation);
+//		Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(this.getWorkLocation());
+//		this.setHost(rest.getHostRole());
+//		rest.getHostRole().addWaiter(this);
+//		this.setCashier(rest.getCashierRole());
+//		this.setCook(rest.getCookRole());
+//	}
 	
 	
 }

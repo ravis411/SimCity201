@@ -5,6 +5,7 @@ package gui.agentGuis;
 
 import gui.Gui;
 import gui.LocationInfo;
+import gui.SetUpWorldFactory;
 import gui.SimCityLayout;
 import interfaces.Bus;
 
@@ -13,6 +14,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Semaphore;
 import java.util.List;
 
@@ -24,11 +26,99 @@ import trace.AlertTag;
 import astar.AStarNode;
 import astar.AStarTraversal;
 import astar.Position;
+import astar.VehicleAStarTraversal;
 
 
 
-public class VehicleGui implements Gui {
+public class BusGui implements Gui {
 
+	
+	//PUBLIC FUNCTIONS FOR PERSON AGENT
+	
+	
+	
+	/** Sets the current location of the GUI
+	 * 
+	 * @param location The location to be at.
+	 * @return True if the GUI is at location. False otherwise.
+	 */
+	public boolean setCurrentLocation(String location){
+		return setStartingStates(location);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//END PUBLIC FUNCTIONS FOR USE BY PERSON AGENT
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
     private Bus agent = null;
     
     
@@ -65,15 +155,15 @@ public class VehicleGui implements Gui {
     
     
     
-    public VehicleGui(Bus agent, SimCityLayout cityLayout, AStarTraversal aStar, List<LocationInfo> locationList) {
-    	positionMap = new HashMap<Dimension, Dimension>(cityLayout.positionMap);
+    public BusGui(Bus agent) {
     	this.agent = agent;
-        this.cityLayout = cityLayout;
-    
-        this.aStar = aStar;
+    	
+    	this.cityLayout = SetUpWorldFactory.layout;
+    	positionMap = new HashMap<Dimension, Dimension>(cityLayout.positionMap);
+        this.aStar = new VehicleAStarTraversal(cityLayout.getAgentGrid(), cityLayout.getRoadGrid());
         
   
-			//img = new ImageIcon(("movingCar.gif"));
+		//img = new ImageIcon(("movingCar.gif"));
 	
 			try {
 				//BufferedImage img = ImageIO.read(new File("images/UFO.png"));
@@ -88,13 +178,15 @@ public class VehicleGui implements Gui {
 				AlertLog.getInstance().logWarning(AlertTag.VEHICLE_GUI, agent.toString(), "Image not found. Switching to Test View");
 			}
 
-			
+		List<LocationInfo> locationList = SetUpWorldFactory.locationMap;
         for(LocationInfo i : locationList){
         	if(i != null && i.positionToEnterFromRoadGrid != null)
         		locations.put(i.name, i);
         	//System.out.println("LOCATION " + i.positionToEnterFromRoadGrid);
         }
         
+        
+        SetUpWorldFactory.cityPanel.addGui(this);
     }
     
     /** Will start the gui at the given location. Assumes the gui is not already in the World.
@@ -111,7 +203,7 @@ public class VehicleGui implements Gui {
     	if(i.positionToEnterFromRoadGrid == null)
     		return false;
     	
-    	Dimension d = new Dimension(positionMap.get(i.positionToEnterFromMainGrid));
+    	Dimension d = new Dimension(positionMap.get(i.positionToEnterFromRoadGrid));
     	
     	currentPosition = new Position(i.positionToEnterFromRoadGrid.width, i.positionToEnterFromRoadGrid.height);
     	if(!currentPosition.moveInto(aStar.getGrid()))

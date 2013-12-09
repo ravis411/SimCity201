@@ -310,12 +310,12 @@ public Double getSalary() {
 	return null;
 }
 
-@Override
-public void workplaceIsOpen() {
-	// TODO Auto-generated method stub
-	this.activate();
-	
-}
+//@Override
+//public void workplaceIsOpen() {
+//	// TODO Auto-generated method stub
+//	this.activate();
+//	
+//}
 
 @Override
 public RevolvingStand getRevolvingStand() {

@@ -219,7 +219,7 @@ public class CashierRole extends GenericCashier implements Cashier {
 
 	@Override
 	public String getNameOfRole() {
-		return "CashierRole";
+		return Role.RESTAURANT_CASHIER_ROLE;
 	}
 
 	@Override

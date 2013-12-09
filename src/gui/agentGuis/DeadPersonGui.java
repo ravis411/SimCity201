@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.Semaphore;
 
 import javax.imageio.ImageIO;
@@ -34,12 +35,56 @@ import astar.AStarNode;
 import astar.AStarTraversal;
 import astar.PersonAStarTraversal;
 import astar.Position;
+import astar.VehicleAStarTraversal;
 
 
 
-public class PersonGui implements Gui {
+public class DeadPersonGui implements Gui {
 	
 	
+	boolean hitByCar = false;
+	boolean aboutToDie = false;
+	Random random = new Random();
+	
+	
+	public void DoGetHitByCar(){
+		DoGoToClosestBusStop();
+		
+		Dimension rdEnt = currentLocation.positionToEnterFromRoadGrid;
+		currentPosition = new Position(rdEnt.width, rdEnt.height);
+		
+		aStar = new VehicleAStarTraversal(cityLayout.getAgentGrid(), cityLayout.getRoadGrid());
+		DoEnterWorld(positionMap.get(currentLocation.entranceFromMainGridPosition), currentPosition);
+		
+		//Now we're in standing in the middle of the road
+		
+		//Try to find a free space in the road to moveInto
+		currentPosition.release(aStar.getGrid());
+		aboutToDie = true;
+		while(!hitByCar){
+			deadSpaz();
+		}
+	}
+	
+	
+	private void deadSpaz(){
+		List<Position> spots = new ArrayList<>();
+		for(int x = -1; x <=1; x++ ){
+			for(int y = -1; y<=1; y++){
+				if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(currentPosition, x,y))){
+					spots.add(new Position(currentPosition,x, y));
+				}
+			}
+		}
+		if(!spots.isEmpty()){
+			//Pick a random spot to move into
+			Position move = (spots.get(random.nextInt(spots.size())));
+			if(move.open(aStar.getGrid())){
+				currentPosition = move;
+				move(move.getX(), move.getY());
+			}
+		}
+	}
 	
 	
 	
@@ -52,11 +97,6 @@ public class PersonGui implements Gui {
 	public boolean setCurrentLocation(String location){
 		return setStartingStates(location);
 	}
-	
-	
-	
-	
-	
 	
 	
 	/** Gets the Person's current location.
@@ -151,7 +191,7 @@ public class PersonGui implements Gui {
     @SuppressWarnings("unused")
 	public String DoRideBusTo(String destination){
     	if(state != PersonState.inBuilding)
-    		AlertLog.getInstance().logDebug(AlertTag.PERSON_GUI, agent.getName(), "PERSON NOT IN BUILDING");
+    		AlertLog.getInstance().logDebug(AlertTag.PERSON_GUI, agent, "PERSON NOT IN BUILDING");
     	
     	
     	LocationInfo destLocation = locations.get(destination);
@@ -229,7 +269,7 @@ public class PersonGui implements Gui {
     	LocationInfo info = null;
     	info = locations.get(location); 
     	if(info == null){
-    		AlertLog.getInstance().logError(AlertTag.PERSON_GUI, agent.getName() + " GUI", "Person trying to DoGoTo() to a location (" + location + ") that doesn't exist.");
+    		AlertLog.getInstance().logError(AlertTag.PERSON_GUI, agent + " GUI", "Person trying to DoGoTo() to a location (" + location + ") that doesn't exist.");
     		return;
     	}
     	
@@ -336,7 +376,7 @@ public class PersonGui implements Gui {
 	
 	
 
-    private Person agent = null;
+    private String agent = null;
     
     private boolean isPresent = true;
     
@@ -370,7 +410,8 @@ public class PersonGui implements Gui {
     
     
     
-    public PersonGui(PersonAgent agent) {
+    public DeadPersonGui(String agent) {
+    	//this.agent = agent;
     	this.agent = agent;
     	this.cityLayout = SetUpWorldFactory.layout;
     	
@@ -410,45 +451,10 @@ public class PersonGui implements Gui {
     }
     
     
-    //Constructor for mockAgents...everything else is the same
-    public PersonGui(PseudoPerson agent, SimCityLayout cityLayout, AStarTraversal aStar, List<LocationInfo> locationList) {
-    	positionMap = new HashMap<Dimension, Dimension>(cityLayout.positionMap);
-    	this.cityLayout = cityLayout;
-    	this.agent = agent;
-        this.aStar = aStar;
-        
-  
-			//img = new ImageIcon(("movingCar.gif"));
+    
 	
-			try {
-				String s =( this.getClass().getResource("/images/alien.png").getPath() );
-				BufferedImage img = ImageIO.read(new File(s));
-			    if(img == null){
-	        		testView = true;
-	        	} else{
-	        	ImageIcon icon = new ImageIcon(img);
-	        	image = icon.getImage();
-	        	}
-			} catch (Exception e) {
-				AlertLog.getInstance().logWarning(AlertTag.PERSON_GUI, agent.toString(), "Image not found. Switching to test view.");
-				testView = true;
-			}
-			
-
-			
-        for(LocationInfo i : locationList){
-        	if(i != null){
-        		locations.put(i.name, i);
-        	}
-        	
-        }
-        
-    }//endd mockPerson constructor
     
     
-    public void setAgent(PersonAgent agent){
-    	this.agent = agent;
-    }
     
     /**	Sets the current location for the GUI
      * 
@@ -457,9 +463,9 @@ public class PersonGui implements Gui {
      */
     public boolean setStartingStates(String location){
     	LocationInfo i = locations.get(location);
-    	AlertLog.getInstance().logMessage(AlertTag.PERSON_GUI, agent.getName() + " GUI", "Setting current location to " + location);
+    	AlertLog.getInstance().logMessage(AlertTag.PERSON_GUI, agent + " GUI", "Setting current location to " + location);
     	if(i == null){
-    		AlertLog.getInstance().logMessage(AlertTag.PERSON_GUI, agent.getName() + " GUI", "" + location + " not found. Returning false.");
+    		AlertLog.getInstance().logMessage(AlertTag.PERSON_GUI, agent + " GUI", "" + location + " not found. Returning false.");
     		return false;
     	}
     	
@@ -493,20 +499,50 @@ public class PersonGui implements Gui {
         }
         
         
+        if(aboutToDie){
+        	if(!currentPosition.open(aStar.getGrid())){
+        		hitByCar = true;
+        		aboutToDie = false;
+        		xDestination = xPos;
+        		yDestination = yPos;
+        	}
+        }
+        
         if(aStarState == ASTARSTATE.moving && xPos == xDestination && yPos == yDestination) {
         	aStarState = ASTARSTATE.atDestination;
         	aSem.release();
         }
     }
 
-    
-    
+    int width = 20;
+    int height = 20;
+    int timeToBeDead = 150;
     public void draw(Graphics2D g) {
-        if(testView){
+        if(testView && !hitByCar){
         	g.setColor(Color.GREEN);
-        	g.fillOval(xPos, yPos, 20, 20);
+        	g.fillOval(xPos, yPos, width, height);
         	g.setColor(Color.GREEN);
         	g.drawString(agent.toString(), xPos, yPos);
+        }
+        else if(hitByCar){
+        	g.setColor(Color.RED);
+        	g.fillOval(xPos, yPos, width, height);
+        	for(int x = 0; x < 800; x+=random.nextInt(50)){
+        		for(int y = 0; y < 400; y+=random.nextInt(50)){
+        			g.fillOval(x, y, 5, 5);
+        		}
+        	}
+        	if(timeToBeDead <= 20){
+        	width--;
+        	height--;
+        	}
+        	
+        	timeToBeDead--;
+        	
+        	if(timeToBeDead == 0){
+        		isPresent = false;
+        		timeToBeDead = 200;
+        	}
         }
         else
         {

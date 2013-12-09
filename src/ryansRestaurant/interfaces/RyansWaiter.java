@@ -1,20 +1,20 @@
 package ryansRestaurant.interfaces;
 
 
-public interface Waiter {
-	public void msgSitAtTable(Customer cust, int tableNumber);
+public interface RyansWaiter {
+	public void msgSitAtTable(RyansCustomer cust, int tableNumber);
 
-	public void msgReadyToOrder(Customer customer);
+	public void msgReadyToOrder(RyansCustomer customer);
 	
-	public void msgHereIsMyChoice(Customer customer, String choice);
+	public void msgHereIsMyChoice(RyansCustomer customer, String choice);
 	
 	public void msgOutOfOrder(int tableNumber, String choice);
 	
 	public void msgOrderReady(int tableNumber, int grillNumber);
 	
-	public void msgHereIsCheck(Customer cust, double total);
+	public void msgHereIsCheck(RyansCustomer cust, double total);
 	
-	public void msgDoneEatingLeaving(Customer customer);
+	public void msgDoneEatingLeaving(RyansCustomer customer);
 	
 	/**Msg from host to allow waiter to go on a break
 	 * 

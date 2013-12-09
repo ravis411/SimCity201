@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 
 import restaurant.interfaces.luca.LucaWaiter;
+import restaurant.luca.LucaWaiterRole;
 
 public class WaiterGui implements Gui {
 
@@ -28,19 +29,18 @@ public class WaiterGui implements Gui {
     private int waiterNumber;
     private int tableNum;
     private String orderBeingCarried = " ";
-    RestaurantGui gui;
 
-    public WaiterGui(LucaWaiter agent, RestaurantGui gui, int waiterNumber) {
+    public WaiterGui(LucaWaiter agent, int waiterNumber) {
         this.agent = agent;
         xResturantEntrance= 5*(waiterNumber%4) + 20*(waiterNumber%4);
         xDestination=5*(waiterNumber%4) + 20*(waiterNumber%4);
         xPos = 5*(waiterNumber%4) + 20*(waiterNumber%4);
         yPos = 20;
-        this.gui = gui;
         this.waiterNumber=waiterNumber;
     }
 
-    public void updatePosition() {
+
+	public void updatePosition() {
         if (xPos < xDestination)
             {xPos++;
             agent.msgWaiterReadytoSeat(false);

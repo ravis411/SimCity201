@@ -175,12 +175,6 @@ public class SetUpWorldFactory{
 
                 LocationInfo location = new LocationInfo();
 
-                //        for(int x = 1; x < 7;x++) {
-                //        for(int y = 1; y < 4; y++){
-                //                        addBuilding("Default", "Building " + x + y, x * 5 - 2, (y * 5)-3, 2, 2, location );
-                //                }
-                //        }
-
 
 //                //Building 1
 //                location.sector = 1;
@@ -607,7 +601,6 @@ public class SetUpWorldFactory{
 
         
         
-        //int numCars = 1;
         private void addVehicle(String type) {
                 switch (type) {
                 case "Car":
@@ -694,6 +687,16 @@ public class SetUpWorldFactory{
 
         }// end addVehicle
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
 
         /** Attempts to add a building to the world.
@@ -745,7 +748,7 @@ public class SetUpWorldFactory{
                 case "Residence":
                         ResidenceBuilding rb = new ResidenceBuilding(building, false);
                         if(rb != null){
-                                BuildingPanel bp = new ResidenceBuildingPanel(rb, name, buildingsPanels);
+                                BuildingPanel bp = new ResidenceBuildingPanel(rb, name, buildingsPanels, false);
                                 rb.setBuildingPanel(bp);
                                 cityPanel.addGui(rb);
                                 buildingsPanels.addBuildingPanel(bp);
@@ -852,7 +855,14 @@ public class SetUpWorldFactory{
                 locationMap.add(new LocationInfo(location));
         }
         
-        public static void addPerson(String name, String residenceName, String initialRole){
+        /**
+         * If you want the person to spawn in the house, make initialLocation and initialRole null
+         * @param name
+         * @param residenceName
+         * @param initialRole
+         * @param initialLocation
+         */
+        public static void addPerson(String name, String residenceName, String initialRole, String initialLocation){
                 try{
                         PersonAgent person = new PersonAgent(name, buildingsPanels.getResidenceBuildingPanel(residenceName));
                         
@@ -862,9 +872,9 @@ public class SetUpWorldFactory{
                                 Class e = Employee.class;
                                 Class c = Class.forName(initialRole);
                                 if(e.isAssignableFrom(c)){
-                                        person.setInitialRole(RoleFactory.employeeFromString(initialRole, initialRole), initialRole);
+                                        person.setInitialRole(RoleFactory.employeeFromString(initialRole, initialLocation), initialLocation);
                                 }else{
-                                        person.setInitialRole(RoleFactory.roleFromString(initialRole), initialRole);
+                                        person.setInitialRole(RoleFactory.roleFromString(initialRole), initialLocation);
                                 }
                         }
                         

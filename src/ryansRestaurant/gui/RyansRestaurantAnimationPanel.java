@@ -1,22 +1,35 @@
 package ryansRestaurant.gui;
 
-import javax.swing.*;
+import interfaces.GuiPanel;
 
-import ryansRestaurant.HostAgent;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Rectangle2D;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
+import astar.AStarTraversal;
+import ryansRestaurant.RyansCashierRole;
+import ryansRestaurant.RyansCookRole;
+import ryansRestaurant.RyansCustomerRole;
+import ryansRestaurant.RyansHostRole;
+import ryansRestaurant.RyansWaiterRole;
+import Person.Role.Role;
 
 
-public class AnimationPanel extends JPanel implements MouseListener, ActionListener   {
+public class RyansRestaurantAnimationPanel extends JPanel implements MouseListener, ActionListener, GuiPanel  {
 
     private final int WINDOWX = 800;
     private final int WINDOWY = (int)(375);
@@ -77,8 +90,9 @@ public class AnimationPanel extends JPanel implements MouseListener, ActionListe
     private Dimension bufferSize;
 
     private List<Gui> guis = new ArrayList<Gui>();
-    protected HostAgent host = null;
-    public void setHost(HostAgent host) {
+    protected RyansHostRole host = null;
+    
+    public void setHost(RyansHostRole host) {
     	this.host = host;
     }
     private RestaurantLayout layout = null;
@@ -88,7 +102,7 @@ public class AnimationPanel extends JPanel implements MouseListener, ActionListe
     RestaurantGui gui;
     String showPBText = new String("Settings");    
 
-    public AnimationPanel(RestaurantLayout layout, RestaurantGui gui) {
+    public RyansRestaurantAnimationPanel(RestaurantLayout layout, RestaurantGui gui) {
     	setSize(WINDOWX, WINDOWY);
     	addMouseListener(this);
     	this.gui = gui;
@@ -116,7 +130,7 @@ public class AnimationPanel extends JPanel implements MouseListener, ActionListe
         bufferSize = this.getSize();
         this.setBackground(Color.BLACK);
  
-    	Timer timer = new Timer(20, this );
+    	Timer timer = new Timer(10, this );
     	timer.start();
     }
     
@@ -172,27 +186,29 @@ public class AnimationPanel extends JPanel implements MouseListener, ActionListe
 //        }
         
         //Here are the tables
-        List<HostAgent.aTable> tables = host.getTableNumbers();
-        for( HostAgent.aTable tempTable: tables)
-        {
-        	int xCoord = tableMap.get(tempTable.getTableNumber()).width;
-        	int yCoord = tableMap.get(tempTable.getTableNumber()).height;
-        	    g2.setColor(Color.ORANGE);
-        		g2.fillRect(xCoord, yCoord, GRID_SIZEX, GRID_SIZEY);
-        	
-        	if (tempTable.getNumSeats() >= 2)
-        	{
-        		g2.setColor(Color.ORANGE);
-        		g2.fillRect(xCoord + GRID_SIZEX, yCoord, GRID_SIZEX, GRID_SIZEY);
-        	}
-        	if (tempTable.getNumSeats() >= 3){
-        		g2.setColor(Color.ORANGE);
-        		g2.fillRect(xCoord, yCoord + GRID_SIZEY, GRID_SIZEX, GRID_SIZEY);
-        	}
-        	if(tempTable.getNumSeats() >= 4){
-        		g2.setColor(Color.ORANGE);
-        		g2.fillRect(xCoord + GRID_SIZEX, yCoord + GRID_SIZEY, GRID_SIZEX, GRID_SIZEY);
-        	}
+        if(host != null){
+	        List<RyansHostRole.aTable> tables = host.getTableNumbers();
+	        for( RyansHostRole.aTable tempTable: tables)
+	        {
+	        	int xCoord = tableMap.get(tempTable.getTableNumber()).width;
+	        	int yCoord = tableMap.get(tempTable.getTableNumber()).height;
+	        	    g2.setColor(Color.ORANGE);
+	        		g2.fillRect(xCoord, yCoord, GRID_SIZEX, GRID_SIZEY);
+	        	
+	        	if (tempTable.getNumSeats() >= 2)
+	        	{
+	        		g2.setColor(Color.ORANGE);
+	        		g2.fillRect(xCoord + GRID_SIZEX, yCoord, GRID_SIZEX, GRID_SIZEY);
+	        	}
+	        	if (tempTable.getNumSeats() >= 3){
+	        		g2.setColor(Color.ORANGE);
+	        		g2.fillRect(xCoord, yCoord + GRID_SIZEY, GRID_SIZEX, GRID_SIZEY);
+	        	}
+	        	if(tempTable.getNumSeats() >= 4){
+	        		g2.setColor(Color.ORANGE);
+	        		g2.fillRect(xCoord + GRID_SIZEX, yCoord + GRID_SIZEY, GRID_SIZEX, GRID_SIZEY);
+	        	}
+	        }
         }
         //Tables painted
         
@@ -256,6 +272,37 @@ public class AnimationPanel extends JPanel implements MouseListener, ActionListe
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addGuiForRole(Role r) {
+		// TODO Auto-generated method stub
+		if(r instanceof RyansCustomerRole){
+			RyansCustomerRole cr = (RyansCustomerRole) r;
+			CustomerGui gui = new CustomerGui(cr, this.gui);
+			cr.setGui(gui);
+			guis.add(gui);
+		}else if(r instanceof RyansCookRole){
+			RyansCookRole cr = (RyansCookRole) r;
+			CookGui gui = new CookGui(cr, this.gui);
+			cr.setGui(gui);
+			guis.add(gui);
+		}else if(r instanceof RyansCashierRole){
+			//CashierRole cr = (CashierRole) r;
+		}else if(r instanceof RyansWaiterRole){
+			RyansWaiterRole wr = (RyansWaiterRole) r;
+			WaiterGui gui = new WaiterGui(wr, this.gui, this.gui.layout, new AStarTraversal(this.gui.restPanel.grid) );
+			wr.setGui(gui);
+			guis.add(gui);
+		}else if(r instanceof RyansHostRole){
+			this.setHost((RyansHostRole) r);
+		}
+	}
+
+	@Override
+	public void removeGuiForRole(Role r) {
 		// TODO Auto-generated method stub
 		
 	}

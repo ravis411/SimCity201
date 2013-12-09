@@ -30,7 +30,7 @@ import astar.VehicleAStarTraversal;
 
 
 
-public class CarVehicleGui implements Gui {
+public class TruckVehicleGui implements Gui {
 
 	
 	
@@ -100,7 +100,7 @@ public class CarVehicleGui implements Gui {
     
     
     
-    private CarAgent agent = null;
+    private String agentName = null;
 	private SimCityLayout cityLayout = null;
 
 
@@ -131,9 +131,9 @@ public class CarVehicleGui implements Gui {
     
     
     
-    public CarVehicleGui(CarAgent agent) {
+    public TruckVehicleGui(String agentName) {
     	this.cityLayout = SetUpWorldFactory.layout;
-    	this.agent = agent;
+    	this.agentName = agentName;
     	positionMap = new HashMap<Dimension, Dimension>(cityLayout.positionMap);
     	this.aStar = new VehicleAStarTraversal(cityLayout.getAgentGrid(), cityLayout.getRoadGrid());
 
@@ -151,7 +151,7 @@ public class CarVehicleGui implements Gui {
     		}
     	} catch (Exception e) {
     		testView = true;
-    		AlertLog.getInstance().logWarning(AlertTag.VEHICLE_GUI, agent.toString(), "Image not found. Switching to Test View"+s);
+    		AlertLog.getInstance().logWarning(AlertTag.VEHICLE_GUI, agentName, "Image not found. Switching to Test View"+s);
     	}
 
     	
@@ -197,7 +197,7 @@ public class CarVehicleGui implements Gui {
     	isPresent = false;
     	state = GuiState.inBuilding;
     	
-    	AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, agent.getName() + " GUI", "Set current location to " + location);
+    	AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, agentName + " GUI", "Set current location to " + location);
     	
     	return true;
     }
@@ -240,10 +240,10 @@ public class CarVehicleGui implements Gui {
     
     public void draw(Graphics2D g) {
         if(testView){
-        	g.setColor(Color.blue);
+        	g.setColor(Color.ORANGE);
         	g.fillRect(xPos, yPos, 20, 20);
         	g.setColor(Color.white);
-        	g.drawString(agent.toString(), xPos, yPos);
+        	g.drawString(agentName, xPos, yPos);
         }
         else
         {
@@ -291,7 +291,7 @@ public class CarVehicleGui implements Gui {
     	LocationInfo info = null;
     	info = locations.get(location); 
     	if(info == null){
-    		AlertLog.getInstance().logError(AlertTag.VEHICLE_GUI, agent.getName() + " GUI", "Car trying to DoGoTo() to a location (" + location + ") that doesn't exist.");
+    		AlertLog.getInstance().logError(AlertTag.VEHICLE_GUI, agentName + " GUI", "Car trying to DoGoTo() to a location (" + location + ") that doesn't exist.");
     		return;
     	}
     	
@@ -329,7 +329,7 @@ public class CarVehicleGui implements Gui {
     				break;
     			} catch (Exception e) {
     				//System.out.println("Try again.");
-    				AlertLog.getInstance().logInfo(AlertTag.VEHICLE_GUI, agent.toString(), "Path not found/exception caught. Try again.");
+    				AlertLog.getInstance().logInfo(AlertTag.VEHICLE_GUI, agentName, "Path not found/exception caught. Try again.");
     			}
     		}
     		
@@ -414,12 +414,12 @@ public class CarVehicleGui implements Gui {
     	
     	while(!entrance.moveInto(aStar.getGrid()) ) {
     		//System.out.println("EntranceBlocked!!!!!!! waiting 3sec");
-    		AlertLog.getInstance().logInfo(AlertTag.VEHICLE_GUI, agent.toString(), "Entrance blocked. Waiting 3 second.");
+    		AlertLog.getInstance().logInfo(AlertTag.VEHICLE_GUI, agentName, "Entrance blocked. Waiting 3 second.");
     		try {
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
 				//System.out.println("EXCEPTION!!!!!!!!!! caught while waiting for entrance to clear.");
-				AlertLog.getInstance().logError(AlertTag.VEHICLE_GUI, agent.toString(), "Exception caught while waiting for entrance to clear.");
+				AlertLog.getInstance().logError(AlertTag.VEHICLE_GUI, agentName, "Exception caught while waiting for entrance to clear.");
 				
 			}    		
     	}
@@ -462,7 +462,7 @@ public class CarVehicleGui implements Gui {
     		}
     		else
     		{
-    			AlertLog.getInstance().logDebug(AlertTag.VEHICLE_GUI, agent.getName() + " GUI", "Destination must be blocked. Waiting.");
+    			AlertLog.getInstance().logDebug(AlertTag.VEHICLE_GUI, agentName + " GUI", "Destination must be blocked. Waiting.");
     			try {
     				Thread.sleep(300);
     				waits++;
@@ -480,13 +480,13 @@ public class CarVehicleGui implements Gui {
     					
     				}*/
     				if(waits > 8){
-    					AlertLog.getInstance().logDebug(AlertTag.VEHICLE_GUI, agent.getName() + " GUI", "Destination must be blocked. Trying to move out of the way.");
+    					AlertLog.getInstance().logDebug(AlertTag.VEHICLE_GUI, agentName + " GUI", "Destination must be blocked. Trying to move out of the way.");
     					boolean moved = false;
     					for(int x = -1; x <=1; x++ ){
     						for(int y = -1; y<=1; y++){
     							if(((VehicleAStarTraversal)aStar).gridTypeOk(new Position(currentPosition, x,y))){
     								guiMoveFromCurrentPostionTo(new Position(currentPosition,x, y));
-    								AlertLog.getInstance().logDebug(AlertTag.VEHICLE_GUI, agent.getName() + " GUI", "moving + (" + x + ", " + y + ").");
+    								AlertLog.getInstance().logDebug(AlertTag.VEHICLE_GUI, agentName + " GUI", "moving + (" + x + ", " + y + ").");
     								moved = true;break;
     						}}
     						if(moved) break;
@@ -506,7 +506,7 @@ public class CarVehicleGui implements Gui {
 //    					waits = 0;
     				}
     			} catch (Exception e) {
-    				AlertLog.getInstance().logInfo(AlertTag.VEHICLE_GUI, agent.toString(), "Destination acquired by something. Waiting some seconds.");
+    				AlertLog.getInstance().logInfo(AlertTag.VEHICLE_GUI, agentName, "Destination acquired by something. Waiting some seconds.");
     			}
     		}
     	}
@@ -578,7 +578,7 @@ public class CarVehicleGui implements Gui {
     	try {
 			aSem.acquire();
 		} catch (InterruptedException e) {
-			AlertLog.getInstance().logError(AlertTag.VEHICLE_GUI, agent.toString(), "Exception caught while waiting." + e.getMessage());
+			AlertLog.getInstance().logError(AlertTag.VEHICLE_GUI, agentName, "Exception caught while waiting." + e.getMessage());
 			e.printStackTrace();
 		}
     }

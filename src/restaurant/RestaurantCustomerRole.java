@@ -3,6 +3,10 @@ package restaurant;
 import interfaces.Cashier;
 import interfaces.Customer;
 import interfaces.Waiter;
+import interfaces.generic_interfaces.GenericCashier;
+import interfaces.generic_interfaces.GenericCustomer;
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
 
 import java.text.DecimalFormat;
 import java.util.Random;
@@ -16,7 +20,7 @@ import Person.Role.Role;
 /**
  * Restaurant customer agent.
  */
-public class RestaurantCustomerRole extends Role implements Customer {
+public class RestaurantCustomerRole extends GenericCustomer implements Customer {
 	private String name;
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
@@ -63,16 +67,16 @@ public class RestaurantCustomerRole extends Role implements Customer {
 		super.setPerson(person);
 	}
 	
-	public void setHost(HostRole host) {
-		this.host = host;
+	public void setHost(GenericHost host) {
+		this.host = (HostRole) host;
 	}
 	
-	public void setWaiter(Waiter waiter2) {
-		this.waiter = waiter2;
+	public void setWaiter(GenericWaiter waiter2) {
+		this.waiter = (OldWaiterRole) waiter2;
 	}
 	
-	public void setCashier(Cashier cashier) {
-		this.cashier = cashier;
+	public void setCashier(GenericCashier cashier) {
+		this.cashier = (CashierRole) cashier;
 	}
 
 	public String getCustomerName() {
@@ -427,7 +431,7 @@ public class RestaurantCustomerRole extends Role implements Customer {
 
 	@Override
 	public String getNameOfRole() {
-		return "RestaurantCustomerRole";
+		return Role.RESTAURANT_CUSTOMER_ROLE;
 	}
 }
 
