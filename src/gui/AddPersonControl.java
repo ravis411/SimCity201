@@ -66,8 +66,11 @@ public class AddPersonControl extends JFrame implements ActionListener{
 	//private final int NUMBER_OF_JOBS = 20;
 	private final int NUMBER_OF_LOCATIONS = 25;
 	
-	AddPersonControl(String name) {
+	private CityControlPanel controller;
+	
+	AddPersonControl(String name, CityControlPanel parent) {
 		super(name);
+		controller = parent;
 		//Create JLabel classes before each text field as name labels
 		//No need to have dedicated memory allocated for each one
 		panelContainer = new JPanel();
@@ -75,12 +78,7 @@ public class AddPersonControl extends JFrame implements ActionListener{
 		
 		TFContainer = new JPanel();
 		TFContainer.setLayout(new GridLayout(TEXT_FIELD_COUNT, 2));
-		
-		jobList.add("Market Employee");
-		jobList.add("Market Custoemr");
-		jobList.add("Market Manager");
-		jobList.add("Bank Client");
-		jobList.add("Bank Teller");
+
 		//--------Text Fields---------//
 		
 		//Name
@@ -190,27 +188,133 @@ public class AddPersonControl extends JFrame implements ActionListener{
 		 */
 		String name = nameTF.getText();
 		Double money = Double.parseDouble(moneyTF.getText());
-		String job;
+		String job = null;
 		for (JRadioButton myJob : jobs) {
 			if (myJob.isSelected()) {
-				job = myJob.getText();
+				job = formatRole(myJob.getText());
 				break;
 			}
 		}
-		String location;
+		String location = null;
 		for (JRadioButton myLocation : locations) {
 			if (myLocation.isSelected()) {
 				location = myLocation.getText();
 				break;
 			}
 		}
-		String home;
+		String home = null;
 		for (JRadioButton myHome : residences) {
 			if (myHome.isSelected()) {
 				home = myHome.getText();
 				break;
 			}
 		}
+		controller.addPerson(SetUpWorldFactory.addPerson(name, home, job, location, money));
+	}
+	
+	private String formatRole(String unformat) {
+		String format = "N/A";
+		switch(unformat) {
+		case "Market Employee":
+			format = "MarketEmployee.MarketEmployeeRole";
+			break;
+		case "Market Customer":
+			format = "MarketEmployee.MarketCustomerRole";
+			break;
+		case "Market Manager":
+			format = "MarketEmployee.MarketManagerRole";
+			break;
+		case "Bank Client":
+			format = "bank.BankClientRole";
+			break;
+		case "Bank Teller":
+			format = "bank.BankTellerRole";
+			break;
+		case "Bank Loan Teller":
+			format = "bank.LoanTellerRole";
+			break;
+		case "Restaurant Customer":
+			format = "restaurant.RestaurantCustomerRole";
+			break;
+		case "Restaurant Old Waiter":
+			format = "restaurant.OldWaiterRole";
+			break;
+		case "Restaurant New Waiter":
+			format = "restaurant.NewWaiterRole";
+			break;
+		case "Restaurant Host":
+			format = "restaurant.HostRole";
+			break;
+		case "Restaurant Cook":
+			format = "restaurant.CookRole";
+			break;
+		case "Restaurant Cashier": 
+			format = "restaurant.CashierRole";
+			break;
+		case "Luca Customer":
+			format = "restaurant.luca.LucaRestaurantCustomerRole";
+			break;
+		case "Luca Waiter":
+			format = "restaurant.luca.LucaWaiterRole";
+			break;
+		case "Luca Host":
+			format = "restaurant.luca.LucaHostRole";
+			break;
+		case "Luca Cook":
+			format = "restaurant.luca.LucaCookRole";
+			break;
+		case "Luca Cashier":
+			format = "restaurant.luca.LucaCashierRole";
+			break;
+		case "Kush Customer":
+			format = "kushrestaurant.CustomerRole";
+			break;
+		case "Kush Waiter":
+			format = "kushrestaurant.WaiterRole";
+			break;
+		case "Kush Host":
+			format = "kushrestaurant.HostRole";
+			break;
+		case "Kush Cook":
+			format = "kushrestaurant.CookRole";
+			break;
+		case "Kush Cashier":
+			format = "kushrestaurant.CashierRole";
+			break;
+		case "Jeffrey Customer":
+			format = "jeffreyRestaurant.CustomerAgent";
+			break;
+		case "Jefrey Waiter":
+			format = "jeffreyRestaurant.WaiterAgent";
+			break;
+		case "Jeffrey Host":
+			format = "jeffreyRestaurant.HostAgent";
+			break;
+		case "Jeffrey Cook":
+			format = "jeffreyRestaurant.CookAgent";
+			break;
+		case "Jeffrey Cashier":
+			format = "jeffreyRestaurant.CashierAgent";
+			break;
+		case "Mike New Waiter":
+			format = "mikeRestaurant.NewWaiterRole";
+			break;
+		case "Mike Host":
+			format = "mikeRestaurant.HostRole";
+			break;
+		case "Mike Cook":
+			format = "mikeRestaurant.CookRole";
+			break;
+		case "Mike Cashier":
+			format = "mikeRestaurant.CashierRole";
+			break;
+		case "Mike Customer":
+			format = "mikeRestaurant.CustomerRole";
+			break;
+		}
+		
+		return format;
+		
 	}
 
 }

@@ -16,9 +16,10 @@ public class NumberAnnouncer extends Agent implements AnnouncerA{
 	List<BankClient> clients = new ArrayList<BankClient>();
 	List<BankTeller> tellers = new ArrayList<BankTeller>();
 	Queue<BankTeller> openTeller = new ArrayDeque<BankTeller>();
+	private BankClient robber = null;
 	private int doneTeller;
 	private int tellerNumber = 0;
-	public enum numberState{pending, announceB};
+	public enum numberState{pending, gettingRobbed, announceB};
 	public numberState state = numberState.pending;
 	private String name;
 	private boolean onTheWay = false;
@@ -55,12 +56,26 @@ public class NumberAnnouncer extends Agent implements AnnouncerA{
 		stateChanged();
 		
 	}
+	
+	
 	public void msgGoodbye(BankTeller o){
 		tellers.remove(o);
 		stateChanged();
 	}
+	public void msgRobbingBank(BankClient c){
+		robber = c;
+		state = numberState.gettingRobbed;
+		System.out.println("Changing state to getting robbed");
+		stateChanged();
+	}
+	
 	//scheduler
 	protected boolean pickAndExecuteAnAction() {
+		if (state == numberState.gettingRobbed){
+			System.out.println("Should hit this");
+			robbedBank();
+			return true;
+		}
 		if (!(tellers.isEmpty()) && state == numberState.announceB){
 			announceNumberBank();
 			return true;
@@ -71,6 +86,7 @@ public class NumberAnnouncer extends Agent implements AnnouncerA{
 		return false;
 	}
 	//actions
+
 	private void announceNumberBank(){
 		while (onTheWay == false){
 			try {
@@ -85,6 +101,12 @@ public class NumberAnnouncer extends Agent implements AnnouncerA{
 			state = numberState.pending;
 		}
 	}
+	private void robbedBank(){
+		System.out.println(((BankTellerRole)tellers.get(0)).getPerson().getName());
+		robber.msgHereIsTeller(tellers.get(0));		
+		state = numberState.pending;
+	}
+	
 	private void Reset(){
 		state = numberState.pending;
 		tellerNumber = 0;
@@ -96,8 +118,4 @@ public class NumberAnnouncer extends Agent implements AnnouncerA{
 	public String toString() {
 		return "Bank Teller  " + getName();
 	}
-
-
-
-
 }

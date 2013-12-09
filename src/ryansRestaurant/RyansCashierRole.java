@@ -41,16 +41,14 @@ public class RyansCashierRole extends GenericCashier implements RyansCashier {
 	
 	private List<MarketBill> marketBills = Collections.synchronizedList(new LinkedList<MarketBill>());
 	
-	public RyansCashierRole(String name, String workplace) {
+	public RyansCashierRole(String workplace) {
 		super(workplace);
-
-		this.name = name;
 
 	}
 
 
 	public String getName() {
-		return name;
+		return myPerson.getName();
 	}
 
 	// Messages
@@ -113,7 +111,7 @@ public class RyansCashierRole extends GenericCashier implements RyansCashier {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	public boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAction() {
 		
 		
 		
@@ -281,13 +279,6 @@ public class RyansCashierRole extends GenericCashier implements RyansCashier {
 
 
 	@Override
-	public boolean pickAndExecuteAction() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	@Override
 	public boolean canGoGetFood() {
 		// TODO Auto-generated method stub
 		return false;
@@ -297,7 +288,7 @@ public class RyansCashierRole extends GenericCashier implements RyansCashier {
 	@Override
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
-		return null;
+		return "Ryan's Cashier";
 	}
 
 	

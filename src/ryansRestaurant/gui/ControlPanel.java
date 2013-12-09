@@ -56,7 +56,7 @@ public class ControlPanel extends JPanel implements ActionListener {
 	private List<JButton> markets = new ArrayList<>();
 	
 	private JButton cookButton = new JButton("Cook Info");
-	private JButton cashierButton = new JButton("RyansCashier Info");
+	private JButton cashierButton = new JButton("Ryan's Cashier Info");
 	
 	//sets the state of the panel
 	private enum GUIState {none, addTable, marketsPanel, cookPanel, cutomerPanel, cashierPanel};
@@ -98,8 +98,8 @@ public class ControlPanel extends JPanel implements ActionListener {
 		addTableButton.setText("Click to add Table");
 		
 		add(addTableButton);
-		add(pauseButton);
-		add(marketButton);
+		//add(pauseButton);
+		//add(marketButton);
 		add(cookButton);
 		add(cashierButton);
 		add(cancelButton);

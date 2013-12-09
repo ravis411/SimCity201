@@ -1,20 +1,22 @@
 package ryansRestaurant;
 
-import Person.Role.ShiftTime;
-import agent.Agent;
-import ryansRestaurant.gui.WaiterGui;
-import ryansRestaurant.interfaces.RyansCashier;
-import ryansRestaurant.interfaces.RyansCustomer;
-import ryansRestaurant.interfaces.RyansHost;
-import ryansRestaurant.interfaces.RyansWaiter;
 import interfaces.generic_interfaces.GenericCashier;
 import interfaces.generic_interfaces.GenericCook;
 import interfaces.generic_interfaces.GenericHost;
 import interfaces.generic_interfaces.GenericWaiter;
 
-import java.awt.Dimension;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.List;
+import java.util.Timer;
 import java.util.concurrent.Semaphore;
+
+import ryansRestaurant.gui.WaiterGui;
+import ryansRestaurant.interfaces.RyansCashier;
+import ryansRestaurant.interfaces.RyansCustomer;
+import ryansRestaurant.interfaces.RyansHost;
+import ryansRestaurant.interfaces.RyansWaiter;
+import Person.Role.ShiftTime;
 
 /**
  * Restaurant RyansHost Agent
@@ -45,12 +47,9 @@ public class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 	private Timer timer = new Timer();
 	
 	
-	public RyansWaiterRole(String name, RyansHost host, RyansCookRole cook, RyansCashier cashier, String workLocation) {
+	public RyansWaiterRole(String workLocation) {
 		super(workLocation);
-		this.name = name;
-		this.host = host;
-		this.cook = cook;
-		this.cashier = cashier;
+
 		
 		
 	}
@@ -558,21 +557,24 @@ public class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 	@Override
 	public void setCook(GenericCook c) {
 		// TODO Auto-generated method stub
-		
+		this.cook = (RyansCookRole) c;
 	}
 
 
 	@Override
 	public void setCashier(GenericCashier c) {
 		// TODO Auto-generated method stub
-		
+		this.cashier = (RyansCashierRole) c;
+		if( !(cashier instanceof RyansCashierRole) || cashier == null) {
+			System.err.println("ERRROROROROROROR");
+		}
 	}
 
 
 	@Override
 	public void setHost(GenericHost h) {
 		// TODO Auto-generated method stub
-		
+		this.host = (RyansHostRole) h;
 	}
 
 
@@ -600,7 +602,7 @@ public class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 	@Override
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
-		return null;
+		return "Ryan's Waiter";
 	}
 	
 	

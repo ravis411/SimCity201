@@ -1,20 +1,25 @@
 package ryansRestaurant.gui;
 
+import interfaces.generic_interfaces.GenericWaiter;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.util.Vector;
+import java.util.concurrent.Semaphore;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import ryansRestaurant.RyansCashierRole;
 import ryansRestaurant.RyansCookRole;
 import ryansRestaurant.RyansCustomerRole;
-import ryansRestaurant.RyansHostRole;
 import ryansRestaurant.RyansMarketRole;
 import ryansRestaurant.RyansWaiterRole;
-
-import javax.swing.*;
-
 import astar.AStarTraversal;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.util.Vector;
-import java.util.concurrent.Semaphore;
 
 /**
  * Panel in frame that contains all the ryansRestaurant information,
@@ -22,10 +27,7 @@ import java.util.concurrent.Semaphore;
  */
 public class RestaurantPanel extends JPanel {
 
-    //RyansHost, cook, waiters and customers
-    private RyansHostRole host = new RyansHostRole("Sarah", "Ryan's Restaurant");
-    private RyansCashierRole cashier = new RyansCashierRole("RyansCashier", "Ryan's Restaurant");
-    private RyansCookRole cook;
+    //RyansHost, cook, waiters a
     
 
     protected Vector<RyansCustomerRole> customers = new Vector<RyansCustomerRole>();
@@ -56,27 +58,27 @@ public class RestaurantPanel extends JPanel {
        // cashier.startThread();
         
         
-        cook = new RyansCookRole("Cook", cashier, "Ryan's Restaurant");
-        
-        CookGui cookGui = new CookGui(cook, gui);
-        cook.setGui(cookGui);
-        gui.animationPanel.addGui(cookGui);
-        
-        for(int i = 1; i <=3; i++) {
-        	RyansMarketRole m = new RyansMarketRole("RyansMarket" + i);
-        	m.startThread();
-        	cook.addMarket(m);
-        	markets.add(m);
-        }        
+//        cook = new RyansCookRole("Ryan's Restaurant");
+//        
+//        CookGui cookGui = new CookGui(cook, gui);
+//        cook.setGui(cookGui);
+//        gui.animationPanel.addGui(cookGui);
+//        
+//        for(int i = 1; i <=3; i++) {
+//        	RyansMarketRole m = new RyansMarketRole("RyansMarket" + i);
+//        	m.startThread();
+//        	cook.addMarket(m);
+//        	markets.add(m);
+//        }        
         //cook.startThread();
-        gui.animationPanel.setHost(host);
-        
-        markets.get(0).addToInventory("Oreo Cookie", 5);
-        markets.get(0).addToInventory("Cookies n Cream", 15);
-        markets.get(1).addToInventory("Oreo Cookie", 15);
-        markets.get(1).addToInventory("Oreo Milkshake", 20);
-        markets.get(2).addToInventory("Oreo Cake", 10);
-        markets.get(2).addToInventory("Dirt n Worms", 20);
+//        gui.animationPanel.setHost(host);
+//        
+//        markets.get(0).addToInventory("Oreo Cookie", 5);
+//        markets.get(0).addToInventory("Cookies n Cream", 15);
+//        markets.get(1).addToInventory("Oreo Cookie", 15);
+//        markets.get(1).addToInventory("Oreo Milkshake", 20);
+//        markets.get(2).addToInventory("Oreo Cake", 10);
+//        markets.get(2).addToInventory("Dirt n Worms", 20);
 
         //Add a waiter
        /* waiters.add(new RyansWaiterRole("Mary", host, cook));
@@ -114,7 +116,7 @@ public class RestaurantPanel extends JPanel {
         //restLabel.setLayout(new BoxLayout((Container)restLabel, BoxLayout.Y_AXIS));
         restLabel.setLayout(new BorderLayout());
         label.setText(
-                "<html><h3><u>Tonight's Staff</u></h3><table><tr><td>host:</td><td>" + host.getName() + "</td></tr><tr><td>cook:</td><td>" + cook.getName() + "</td></tr></table><h3><u> Menu</u></h3><table><tr><td>Oreo Cake</td><td>$15.99</td></tr><tr><td>Oreo Milkshake</td><td>$10.99</td></tr><tr><td>CookiesnCream</td><td>$5.99</td></tr><tr><td>DirtnWorms</td><td>$8.99</td></tr><tr><td>Oreo Cookie</td><td>$2.00</td></tr></table><br></html>");
+                "<html><h3><u>Tonight's Staff</u></h3><table><tr><td>host:</td><td>" + "Host" + "</td></tr><tr><td>cook:</td><td>" + "Cook" + "</td></tr></table><h3><u> Menu</u></h3><table><tr><td>Oreo Cake</td><td>$15.99</td></tr><tr><td>Oreo Milkshake</td><td>$10.99</td></tr><tr><td>CookiesnCream</td><td>$5.99</td></tr><tr><td>DirtnWorms</td><td>$8.99</td></tr><tr><td>Oreo Cookie</td><td>$2.00</td></tr></table><br></html>");
 
         restLabel.setBorder(BorderFactory.createRaisedBevelBorder());
         restLabel.add(label, BorderLayout.CENTER);
@@ -152,7 +154,7 @@ public class RestaurantPanel extends JPanel {
     public void addPerson(String type, String name) {
 
     	if (type.equals("Customers")) {
-    		RyansCustomerRole c = new RyansCustomerRole(name);	
+    		RyansCustomerRole c = new RyansCustomerRole();	
     		CustomerGui g = new CustomerGui(c, gui);
 
     		gui.animationPanel.addGui(g);// dw
@@ -165,7 +167,7 @@ public class RestaurantPanel extends JPanel {
     		if(waiters.size() >= 10)
     			return;
     		
-    		RyansWaiterRole w = new RyansWaiterRole(name, host, cook, cashier, "Ryan's Restaurant");
+    		RyansWaiterRole w = new RyansWaiterRole("Ryan's Restaurant");
     		
     		AStarTraversal aStar = new AStarTraversal(grid);
     		
@@ -174,7 +176,7 @@ public class RestaurantPanel extends JPanel {
             w.setGui(g);
             gui.animationPanel.addGui(g);
             
-            host.msgAddWaiter(w);
+            //host.addWaiter((GenericWaiter) w);
             waiters.add(w);
     		//w.startThread();
     	}
@@ -255,11 +257,21 @@ public class RestaurantPanel extends JPanel {
     public Vector<RyansMarketRole> getMarkets() {
     	return markets;
     }
-    public RyansCookRole getCook() {
+    
+   public RyansCookRole getCook() {
     	return cook;
     }
+    RyansCashierRole cashier = null;
     public RyansCashierRole getCashier(){
     	return cashier;
     }
+    public void setRyansCashierRole(RyansCashierRole cashier){
+    	this.cashier = cashier;
+    }
+
+    RyansCookRole cook = null;
+	public void setRyansCookRole(RyansCookRole cook) {
+		this.cook = cook;
+	}
 
 }

@@ -9,5 +9,6 @@ public interface Cook {
 	public abstract void msgMarketReStock(Order2 o);
 	public abstract void msgCantRestock();
 	public abstract void takenFood(String x);
+	public abstract RevolvingStand getRevolvingStand();
 	
 }

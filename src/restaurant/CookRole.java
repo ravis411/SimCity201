@@ -246,7 +246,7 @@ public class CookRole extends GenericCook {
 
 	@Override
 	public String getNameOfRole() {
-		return "CookRole";
+		return Role.RESTAURANT_COOK_ROLE;
 	}
 
 	@Override

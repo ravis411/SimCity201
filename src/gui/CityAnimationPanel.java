@@ -108,6 +108,9 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 //		}
 		
 		
+		
+		
+		
 		//This section makes the city dark at night and draws the clock.
 		if(MasterTime.getInstance().get(Calendar.HOUR_OF_DAY) >= 18 && ampmAlpha < .3f){
 			ampmAlpha += 0.001f;
@@ -128,6 +131,13 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		g2.drawString(time, g.getClipBounds().width - 225, g.getClipBounds().height - 30);
 	}
 
+	
+	
+	
+	
+	
+	
+	
 	public void addGui(Gui gui) {
 		guis.add(gui);
 	}

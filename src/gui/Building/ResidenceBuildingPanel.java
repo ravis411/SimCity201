@@ -20,8 +20,9 @@ import Person.Role.Role;
 public class ResidenceBuildingPanel extends BuildingPanel{
 	
 	AnimationPanel residencePanel;
+	public boolean isApartment = true;
 	
-	public ResidenceBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels) {
+	public ResidenceBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels, boolean isApartment) {
 		super(r, name, buildingPanels);
 		
 		this.removeAll();
@@ -29,6 +30,8 @@ public class ResidenceBuildingPanel extends BuildingPanel{
 		setBackground( Color.yellow );
 		
 		residencePanel = new AnimationPanel();
+		
+		this.isApartment = isApartment;
 		
 		setLayout(new GridLayout(1,1));
 		

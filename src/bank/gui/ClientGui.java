@@ -20,6 +20,7 @@ public class ClientGui implements Gui {
 	private int yPos;
 	private int yDestination;
 	private int xDestination;
+	private int interimCounter = 0, waitingAreaCounter = 0, deskCounter = 0;
 	static final int hostWidth = 20, hostHeight = 20;
 	private int xBankEntrance= 750;
 	private final static int yBankEntrance= 400;
@@ -29,8 +30,12 @@ public class ClientGui implements Gui {
 	private final static int yTellerDesk= 230;
 	private final static int xExit = 800;
 	private final static int yExit = 400;
+	private final static int xInterim = 400;
+	private final static int yInterim = 275;
 	private int line;
 	BankAnimationPanel gui;
+	private boolean isRobber = false;
+	private boolean maskOn = false;
 
 	public ClientGui(BankClientRole clientRole, BankAnimationPanel bankAnimationPanel) {
 		this.role = clientRole;
@@ -45,7 +50,7 @@ public class ClientGui implements Gui {
 	public void updatePosition() {
 		if (xPos < xDestination)
 		{xPos++;
- 
+
 		}
 		else if (xPos > xDestination)
 		{xPos--;
@@ -59,16 +64,29 @@ public class ClientGui implements Gui {
 		}
 
 		if (xPos == xDestination && yPos == yDestination
-				& (xDestination == xWaitingArea) & (yDestination == yWaitingArea)) {
-				role.msgAtWaitingArea();
+				& (xDestination == xWaitingArea) & (yDestination == yWaitingArea) && waitingAreaCounter == 0) {
+			waitingAreaCounter++;
+			role.msgAtWaitingArea();
+		}
+		if (xPos == xDestination && yPos == yDestination
+				& (xDestination == xInterim) & (yDestination == yInterim) && interimCounter == 0) {
+			role.msgAtInterim();
+			if (isRobber == true){
+				maskOn = true;
+			}
+			interimCounter++;
 		}
 		if (xPos == xDestination && yPos == yDestination && 
-				(xDestination == xTellerDesk + (100*(line-1))) && (yDestination == yTellerDesk)) {
+				(xDestination == xTellerDesk + (100*(line-1))) && (yDestination == yTellerDesk) && deskCounter == 0) {
 			role.msgAtLine();
+			deskCounter++;
 		}
 		if (xPos == xDestination && yPos == yDestination && 
 				(xDestination == xExit) && (yDestination == yExit)) {
 			role.msgAtExit();
+			waitingAreaCounter=0;
+			interimCounter=0;
+			deskCounter=0;
 		}
 
 		/*
@@ -92,9 +110,21 @@ public class ClientGui implements Gui {
 
 
 	public void draw(Graphics2D g) {
-		g.setColor(Color.RED);
-		g.fillRect(xPos, yPos, hostWidth, hostHeight);
+		if (maskOn == false){
+			g.setColor(Color.RED);
+			g.fillRect(xPos, yPos, hostWidth, hostHeight);
+		}
+		else {
+			g.setColor(Color.WHITE);
+			g.fillOval(xPos, yPos, hostWidth, hostHeight);
+			g.setColor(Color.BLACK);
+			g.fillOval(xPos+2, yPos+4, hostWidth/3, hostHeight/3);
+			g.fillOval(xPos+10, yPos+4, hostWidth/3, hostHeight/3);
+
+		}
+
 	}
+
 
 	public boolean isPresent() {
 		return true;
@@ -106,11 +136,17 @@ public class ClientGui implements Gui {
 		yDestination = yTellerDesk;
 
 	}
-	
+
 	public void doGoToWaitingArea(){
 		xDestination = xWaitingArea;
 		yDestination = yWaitingArea;
-		
+
+	}
+
+	public void doGoToInterim(boolean iR){
+		xDestination = xInterim;
+		yDestination = yInterim;
+		isRobber = iR;
 	}
 	public void DoLeave() {
 		xDestination = xExit;

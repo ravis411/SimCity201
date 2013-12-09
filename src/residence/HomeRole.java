@@ -1,30 +1,29 @@
 package residence;
 
-import MarketEmployee.MarketManagerRole;
-import Person.PersonAgent;
-import Person.Role.Role;
-import agent.Agent;
-import building.BuildingList;
-import residence.ApartmentManagerRole.AgentEvent;
+import interfaces.Home;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Semaphore;
+
 import residence.gui.HomeRoleGui;
 import trace.AlertLog;
 import trace.AlertTag;
 import util.MasterTime;
-import interfaces.ApartmentManager;
-import interfaces.Home;
-import interfaces.Person;
-
-import java.util.*;
-import java.util.concurrent.Semaphore;
+import MarketEmployee.MarketManagerRole;
+import Person.PersonAgent;
+import Person.Role.Role;
+import building.BuildingList;
 
 /**
  * Home Role
  */
 
 public class HomeRole extends Role implements Home {
-	private ApartmentManager landlord;
-	private int rentOwed = 0;
-	private int aptNumber = 0;
+	protected double rentOwed = 0;
 
 	public boolean leaveHome = false;
 	public boolean enterHome = false;
@@ -45,10 +44,8 @@ public class HomeRole extends Role implements Home {
 	private Semaphore atCenter = new Semaphore(0, true);
 	Timer timer = new Timer();
 	
-	private Calendar rsvpDate = Calendar.getInstance();
-	private Calendar partyDate = Calendar.getInstance();
-
-	private String name;
+	public Calendar rsvpDate = Calendar.getInstance();
+	public Calendar partyDate = Calendar.getInstance();
 	
 	public HomeRoleGui gui;
 
@@ -61,8 +58,8 @@ public class HomeRole extends Role implements Home {
 	public AgentEvent event = AgentEvent.none;
 	
 	public enum PartyState
-	{none, sendInvites, setUp, host};
-	public PartyState partyState = PartyState.sendInvites;
+	{none, sendInvites, resendInvites, setUp, host, cleanUp};
+	public PartyState partyState = PartyState.none;
 
 	public HomeRole(PersonAgent myPerson) {
 		this.myPerson = myPerson;
@@ -76,6 +73,7 @@ public class HomeRole extends Role implements Home {
 		
 		features.add(new HomeFeature("Sink"));
 		features.add(new HomeFeature("Stove"));
+		features.add(new HomeFeature("Refrigerator"));
 	}
 	
 	public void setGui(HomeRoleGui gui){
@@ -83,7 +81,7 @@ public class HomeRole extends Role implements Home {
 	}
 	
 	public String getNameOfRole() {
-		return "HomeRole";
+		return "residence.HomeRole";
 	}
 	public List<Item> getInventory(){
 		return inventory;
@@ -97,23 +95,22 @@ public class HomeRole extends Role implements Home {
 	
 	// Messages
 	
-	public void msgRentDue (int amount) {
+	public void msgRentDue (double amount, int date) {
 
-		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "I just got charged rent.");
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "I just got charged rent for the " + date + "th.");
 		setRentOwed(amount);
-
-		print("I just got charged rent.");
+		
 		rentOwed = amount;
 
 		stateChanged();
 	}
-	public void msgTired() { //called by timer
-		print("I'm tired.");
+	public void msgTired() {
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "I'm tired.");
 		state = AgentState.Sleeping;
 		stateChanged();
 	}
 	public void msgRestockItem (String itemName, int quantity) {
-		print("Just received " + quantity + " " + itemName + "s.");
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Just received " + quantity + " " + itemName + "s.");
 		event = AgentEvent.none;
 		for(Item i : inventory) {
 			if(i.name == itemName) {
@@ -123,6 +120,7 @@ public class HomeRole extends Role implements Home {
 		stateChanged();
 	}
 	public void msgFixedFeature (String name) {
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), name + " is fixed.");
 		for (HomeFeature hf : features) {
 			if (name == hf.name) {
 				hf.working = true;
@@ -131,25 +129,35 @@ public class HomeRole extends Role implements Home {
 		stateChanged();
 	}
 	public void msgMakeFood() {
-		print("I'm eating at home.");
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "I'm eating at home.");
 		state = AgentState.Cooking;
 		stateChanged();
 	}
 	public void msgLeaveBuilding() {
-		print("Leaving home.");
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Leaving home.");
 		event = AgentEvent.leaving;
 		leaveHome = true;
 		stateChanged();
 	}
 	public void msgEnterBuilding() {
-		print("Home sweet home!");
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Home sweet home!");
 		event = AgentEvent.none;
 		enterHome = true;
 		stateChanged();
 	}
 	public void msgThrowParty() {
-		print("I'm planning a party!");
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "I'm planning a party!");
 		partyState = PartyState.sendInvites;
+		stateChanged();
+	}
+	public void msgResendInvites() {
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Resending invites to those who didn't RSVP.");
+		partyState = PartyState.resendInvites;
+		stateChanged();
+	}
+	public void msgHostParty() {
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "There's a party at my house soon!");
+		partyState = PartyState.host;
 		stateChanged();
 	}
 	
@@ -178,45 +186,55 @@ public class HomeRole extends Role implements Home {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAction() {
+		if(partyInvitees.size() > 0 && partyState == PartyState.resendInvites) {
+			resendInvites();
+			partyState=PartyState.none;
+			return true;
+		}
+		if(partyState == PartyState.host) {
+			hostParty();
+			return true;
+		}
 		if(partyState == PartyState.sendInvites) {
 			sendOutInvites();
 			return true;
 		}
-		if (leaveHome == true) {
-			leaveHome();
-			return true;
-		}
-		if (enterHome == true) {
-			enterHome();
-			return true;
-		}
-		if (getRentOwed() > 0) {
-			payRent();
-			return true;
-		}
-		if (state == AgentState.Cooking && event == AgentEvent.none) {
-			cook();
-			return true;
-		}
-		/*if (Person.stateOfNourishment == hungry) {
-			eat()
-			return true;
-		}*/
-		if (state == AgentState.Sleeping && event == AgentEvent.none) {
-			goToSleep();
-			return true;
-		}
-		for(Item i : inventory) {
-			if(i.quantity < 2 && state == AgentState.DoingNothing && event == AgentEvent.none) {
-				goToMarket(i);
+		if(partyState != PartyState.host) {
+			if (leaveHome == true) {
+				leaveHome();
 				return true;
 			}
-			
-		}
-		for (HomeFeature hf : features) {
-			if(!hf.working) {
-				fileWorkOrder(hf);
+			if (enterHome == true) {
+				enterHome();
 				return true;
+			}
+			if (getRentOwed() > 0) {
+				payRent();
+				return true;
+			}
+			if (state == AgentState.Cooking && event == AgentEvent.none) {
+				cook();
+				return true;
+			}
+			/*if (Person.stateOfNourishment == hungry) {
+				eat()
+				return true;
+			}*/
+			if (state == AgentState.Sleeping && event == AgentEvent.none) {
+				goToSleep();
+				return true;
+			}
+			for(Item i : inventory) {
+				if(i.quantity < 2 && state == AgentState.DoingNothing && event == AgentEvent.none) {
+					goToMarket(i);
+					return true;
+				}	
+			}
+			for (HomeFeature hf : features) {
+				if(!hf.working) {
+					fileWorkOrder(hf);
+					return true;
+				}
 			}
 		}
 		return false;
@@ -275,7 +293,6 @@ public class HomeRole extends Role implements Home {
 		5000);
 	}
 	private void goToMarket (Item item) {
-		callMarket = false;
 		if(callMarket == true) {
 			gui.DoGoToCenter();
 			try {
@@ -284,7 +301,7 @@ public class HomeRole extends Role implements Home {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			print("Low on " + item.name + ". I'm calling the market.");
+			AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Low on " + item.name + ". I'm calling the market.");
 			List<Role> inhabitants = BuildingList.findBuildingWithName("Market 1").getInhabitants();
 			for(Role r : inhabitants) {
 				if (r.getNameOfRole() == "MARKET_MANAGER_ROLE") {
@@ -293,7 +310,7 @@ public class HomeRole extends Role implements Home {
 				}
 			}
 			myPerson.msgGoToMarket(item.name);
-			callMarket = true;
+			callMarket = false;
 		}
 		else if(callMarket == false) {
 			event = AgentEvent.leaving;
@@ -304,7 +321,7 @@ public class HomeRole extends Role implements Home {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			print("Low on " + item.name + ". I'm going to the market.");
+			AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Low on " + item.name + ". I'm going to the market.");
 			gui.DoGoToFrontDoor();
 			try {
 				atFrontDoor.acquire();
@@ -318,26 +335,26 @@ public class HomeRole extends Role implements Home {
 		}
 	}
 	private void fileWorkOrder (HomeFeature brokenFeature) {
-		landlord.msgBrokenFeature(brokenFeature.name, this);
+		//landlord.msgBrokenFeature(brokenFeature.name, this);
 	}
 	private void payRent () {
 
-		if(myPerson.getMoney() >= getRentOwed()) {
-			landlord.msgRentPaid (this, getRentOwed());
-			myPerson.setMoney(myPerson.getMoney()-getRentOwed());
-			setRentOwed(0);
-			AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Paid my rent. I have $" + myPerson.getMoney() + " left.");
-
+//		if(myPerson.getMoney() >= getRentOwed()) {
+//			//landlord.msgRentPaid (this, getRentOwed());
+//			myPerson.setMoney(myPerson.getMoney()-getRentOwed());
+//			setRentOwed(0);
+//			AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Paid my rent. I have $" + myPerson.getMoney() + " left.");
+//		}
 
 		if(myPerson.getMoney() >= rentOwed) {
-			landlord.msgRentPaid (this, rentOwed);
+			//landlord.msgRentPaid (this, rentOwed);
 			myPerson.setMoney(myPerson.getMoney()-rentOwed);
 			rentOwed = 0;
-			print("Paid my rent. I have $" + myPerson.getMoney() + " left.");
+			AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Paid my rent. I have $" + myPerson.getMoney() + " left.");
 		}
 		else {
 			//do nothing
-		}}
+		}
 	}
 	private void goToSleep() {
 		gui.DoGoToCenter();
@@ -366,7 +383,7 @@ public class HomeRole extends Role implements Home {
 			public void run() {
 				state = AgentState.DoingNothing;
 				event = AgentEvent.none;
-				print("I'm awake!");
+				AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "I'm awake!");
 				stateChanged();
 			}
 		},
@@ -402,30 +419,53 @@ public class HomeRole extends Role implements Home {
 	}
 	private void sendOutInvites() {
 		rsvpDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH), MasterTime.getInstance().get(Calendar.HOUR_OF_DAY), MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND)); 
-		rsvpDate.add(Calendar.DAY_OF_MONTH, 5);
+		rsvpDate.add(Calendar.DAY_OF_MONTH, 1);
 		MasterTime.getInstance().registerDateListener(rsvpDate.get(Calendar.MONTH), rsvpDate.get(Calendar.DAY_OF_MONTH), rsvpDate.get(Calendar.HOUR_OF_DAY), rsvpDate.get(Calendar.MINUTE), myPerson);
 		
 		partyDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH), MasterTime.getInstance().get(Calendar.HOUR_OF_DAY), MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND)); 
-		partyDate.add(Calendar.DAY_OF_MONTH, 10);
+		partyDate.add(Calendar.DAY_OF_MONTH, 2);
 		MasterTime.getInstance().registerDateListener(partyDate.get(Calendar.MONTH), partyDate.get(Calendar.DAY_OF_MONTH), partyDate.get(Calendar.HOUR_OF_DAY), partyDate.get(Calendar.MINUTE), myPerson);
 		
-		for(int i=0; i< (myPerson.getFriends().size() >= 4 ? 4 : myPerson.getFriends().size() ); i++) {
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Inviting friends to my party.");
+		for(int i=0; i<myPerson.getFriends().size(); i++) {
 			myPerson.getFriends().get(i).msgPartyInvitation(myPerson, rsvpDate, partyDate);
 			partyInvitees.add(myPerson.getFriends().get(i));
 		}
+		partyState = PartyState.setUp;
+	}
+	private void resendInvites() {
+		for(PersonAgent p : partyInvitees) {
+			p.msgRespondToInviteUrgently(myPerson);
+		}
+	}
+	private void hostParty() {
+		partyState = PartyState.cleanUp;
+		gui.hostingParty = true;
+		timer.schedule(new TimerTask() {
+			public void run() {
+				partyState = PartyState.none;
+				AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Party's over! Thanks for coming!");
+				for(PersonAgent p : partyAttendees) {
+					p.msgPartyOver(myPerson);
+				}
+			}
+		},
+		20000);
+		timer.schedule(new TimerTask() {
+			public void run() {
+				gui.hostingParty = false;
+			}
+		},
+		30000);
 	}
 
 	//utilities
 	
-	public void setLandlord (ApartmentManager role) {
-		this.landlord = role;
-	}
-	
-	public int getRentOwed() {
+	public double getRentOwed() {
 		return rentOwed;
 	}
 
-	public void setRentOwed(int rentOwed) {
+	public void setRentOwed(double rentOwed) {
 		this.rentOwed = rentOwed;
 	}
 

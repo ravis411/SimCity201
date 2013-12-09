@@ -1,15 +1,19 @@
 package ryansRestaurant;
 
-import Person.Role.ShiftTime;
 import interfaces.generic_interfaces.GenericHost;
 import interfaces.generic_interfaces.GenericWaiter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.ConcurrentModificationException;
+import java.util.List;
 import java.util.concurrent.Semaphore;
 
 import ryansRestaurant.interfaces.RyansCustomer;
 import ryansRestaurant.interfaces.RyansHost;
 import ryansRestaurant.interfaces.RyansWaiter;
+import Person.Role.ShiftTime;
 
 /**
  * Restaurant RyansHost Agent
@@ -30,10 +34,9 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 	private String name;
 	private Semaphore atTable = new Semaphore(0,true);
 
-	public RyansHostRole(String name, String workLocation) {
+	public RyansHostRole(String workLocation) {
 		super(workLocation);
 
-		this.name = name;
 		// make some tables
 		//tables = Collections.synchronizedCollection(new ArrayList<Table>(NTABLES));
 		tables = new ArrayList<Table>(NTABLES);
@@ -45,7 +48,7 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 
 
 	public String getName() {
-		return name;
+		return this.myPerson.getName();
 	}
 
 //	private List getWaitingCustomers() {
@@ -162,9 +165,9 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 	/**msgAddWaiter
 	 * @param waiter the waiter to add
 	 */
-	public void msgAddWaiter(RyansWaiter waiter)
+	public void addWaiter(GenericWaiter waiter)
 	{
-		waiters.add(new MyWaiter(waiter));
+		waiters.add(new MyWaiter((RyansWaiter) waiter));
 		stateChanged();
 	}
 
@@ -399,12 +402,6 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 
 	}
 
-	@Override
-	public void addWaiter(GenericWaiter waiter) {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 	@Override
 	public ShiftTime getShift() {
@@ -430,7 +427,7 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 	@Override
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
-		return null;
+		return "Ryan's Host";
 	}
 }
 

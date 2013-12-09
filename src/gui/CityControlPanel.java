@@ -1,7 +1,5 @@
 package gui;
 
-import javax.swing.*;
-
 import gui.Building.BuildingGui;
 import gui.Building.BuildingPanel;
 import interfaces.GuiPanel;
@@ -16,11 +14,16 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
-import agent.Agent;
 import Person.PersonAgent;
 import Person.Role.Role;
+import agent.Agent;
 /**
  * Singleton GUI class for controlling the city.
  * @author JEFFREY
@@ -33,7 +36,11 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 	public JScrollPane pane =
             new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                     JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    private JPanel personView = new JPanel();
+	public JScrollPane pane2 =
+            new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	private JPanel personView = new JPanel();
+    private JPanel focusPanel = new JPanel();
     private JLabel focusInfo = new JLabel();
     private JPanel moreControls = new JPanel();
     static BuildingGui defaultGui = new BuildingGui(0,0,0,0);
@@ -59,7 +66,9 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 		add(pane);
 		
 		focusInfo.setText("<html><pre> <u> Person Info goes here </u> </pre></html>");
-		add(focusInfo);
+		focusPanel.add(focusInfo);
+		pane2.setViewportView(focusPanel);
+		add(pane2);
 		
 		plusControlsB = new JButton("Additional Controls");
 		plusControlsB.addActionListener(this);
@@ -113,15 +122,21 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 	 * @param agent Agent taken directly from SetUpWorldFactory list of agents
 	 */
 	private void showInfo(PersonAgent agent) {
-		//Update Center text field
 		/*
+		 *TODO
+		 *Add car status
+		 *Add friends list
+		 */
+		
+		//Update Center text field
+		
 		String carStatus;
 		if (agent.hasCar()) {
 			carStatus = "Yes";
 		}
 		else {
 			carStatus = "No";
-		}*/
+		}
 		String currentJob;
 		try {
 			currentJob = agent.getCurrentJobString();
@@ -129,18 +144,23 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 		catch (Exception e) {
 			currentJob = "N/A";
 		}
-		
-		focusInfo.setText("<html> <u> " + agent.getName() + 
+		String info = "<html> <u> " + agent.getName() + 
 				"</u> <table><tr> Current Job: " + currentJob + 
 				"</tr><tr> Age: " + agent.getAge() + 
 				"</tr><tr> SSN: " + agent.getSSN() +
-				"</tr><tr> Owns car: " + "/*carStatus*/" + 
+				"</tr><tr> Owns car: " + carStatus + 
 				"</tr><tr> Current money: " + agent.getMoney() + 
 				"</tr><tr> Hunger Level: " + agent.getHungerLevel() + 
 				"</tr><tr> Current Loan: " + agent.getLoan() + 
 				"</tr><tr> Number of Parties: " + agent.getNumParties() +
-				"</tr><tr> Current Location: " + agent.getCurrentLocation() + 
-				"</tr></table></html>");
+				"</tr><tr> Current Location: " + agent.getPersonGui().getCurrentLocation() +
+				"</tr><tr> Friends: "; 
+		
+		for (PersonAgent friend : agent.getFriends()) {
+			info += ("</tr><tr><pre>    " + friend.getName() + "</pre>");
+		}
+		info += "</tr></table></html>";
+		focusInfo.setText(info);
 	}
 	
 	public void addPerson(Agent a) {
@@ -171,7 +191,7 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 	}
 	
 	public void showPersonCreation() {
-		AddPersonControl addPersonControls = new AddPersonControl("Create a person");
+		AddPersonControl addPersonControls = new AddPersonControl("Create a person", this);
 		Rectangle windowLocation = new Rectangle(800, 100, 400, 800); //Modify this to determine where the window spawns
 																	//(Xpos, Ypos, width, height)
 		addPersonControls.setBounds(windowLocation);
@@ -182,13 +202,11 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 	public void zoomToPerson() {
 		String location;
 		try {
-			location = focus.getCurrentLocation();
+			location = focus.getPersonGui().getCurrentLocation();
 			//Find correct building
 			//Need to format string correctly
 			//Call buildingsList.correctBuilding.displayBuildingPanel();
-			if (location.equals("City")) {
-				parent.buildingsPanels.displayBuildingPanel(location);
-			}
+			parent.buildingsPanels.displayBuildingPanel(location);
 		}
 		catch (Exception e) {
 			//Catch null pointer exception
@@ -198,11 +216,13 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 	//Functions from Control Panel
 	
 	public void personThrowParty() {
-		
+		focus.homeThrowParty();
+		updateInfoPanel();
 	}
 	
 	public void personGetHungry() {
-		
+		focus.msgImHungry();
+		updateInfoPanel();
 	}
 	
 	public void personAddFriends(List<String> newFriends) {
@@ -213,12 +233,22 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 				}
 			}
 		}
+		updateInfoPanel();
 	}
 	
 	public void personGoToLocation(String Location) {
 		
+		updateInfoPanel();
 	}
 	
+	public void personAddMoney(Double Money) {
+		focus.setMoney(focus.getMoney() + Money);
+		updateInfoPanel();
+	}
+	
+	private void updateInfoPanel() {
+		showInfo(focus);
+	}
 	@Override
 	public GuiPanel getPanel() {
 		// TODO Auto-generated method stub

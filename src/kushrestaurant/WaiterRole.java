@@ -13,6 +13,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
+import building.BuildingList;
+import building.Restaurant;
 import Person.Role.ShiftTime;
 import kushrestaurant.HostRole.Table;
 //import kushrestaurant.gui.RestaurantGui;
@@ -23,35 +25,35 @@ import kushrestaurant.interfaces.Customer;
 import kushrestaurant.interfaces.Waiter;
 
 
-public class WaiterRole extends GenericWaiter implements Waiter{
+public abstract class WaiterRole extends GenericWaiter implements Waiter{
 	
 	public List<MyCustomer> customers=new ArrayList<MyCustomer>();
 	public Collection<Table> tables;
 	//note that tables is typed with Collection semantics.
 	//Later we will see how it is implemented
-    private HostRole host;
-    private Cook cook;
-    private Cashier cashier;
-    private String notAvailable;
-    private Timer timer= new Timer();
-  //  private RestaurantGui gui;
-	private String name;
-	private Semaphore atTable = new Semaphore(0,true);
-	private Semaphore atDefault= new Semaphore(0,true);
-	private Semaphore atCook= new Semaphore(0,true);
-	private Semaphore atPlate= new Semaphore(0,true);
-	private Semaphore atCashier= new Semaphore(0,true);
-	private Semaphore atWait= new Semaphore(0,true);
-	private Semaphore atTable2 = new Semaphore(0,true);
-	private Semaphore atTable3 = new Semaphore(0,true);
-	//private boolean test=false;
+    protected HostRole host;
+    protected Cook cook;
+    protected Cashier cashier;
+    protected String notAvailable;
+    protected Timer timer= new Timer();
+  //  protected RestaurantGui gui;
+	protected String name;
+	protected Semaphore atTable = new Semaphore(0,true);
+	protected Semaphore atDefault= new Semaphore(0,true);
+	protected Semaphore atCook= new Semaphore(0,true);
+	protected Semaphore atPlate= new Semaphore(0,true);
+	protected Semaphore atCashier= new Semaphore(0,true);
+	protected Semaphore atWait= new Semaphore(0,true);
+	protected Semaphore atTable2 = new Semaphore(0,true);
+	protected Semaphore atTable3 = new Semaphore(0,true);
+	//protected boolean test=false;
 	 
 	public enum CustomerState{Waiting, Seated, ReadyToOrder,RestFull,ReadyToOrder2, Ordering, 
 		Ordered, FoodCooking, orderDone, Served,WaitingForCheck,ReceivedCheck, Leaving, Left}
 	public enum WaiterEvent{none,seatingCustomer,AskingForCheck,AskedForCheck,GotCheck, goingToCustomer,givingCheckToCustomer,notOnBreak, onBreak,goingToCook, gettingFood, givingFood}
 	public WaiterEvent event = WaiterEvent.none;
 	public WaiterEvent breakevent= WaiterEvent.notOnBreak;
-	private WaiterGui waiterGui= null;
+	protected WaiterGui waiterGui= null;
 	public boolean onBreak= false;
 	
 	/*
@@ -76,7 +78,7 @@ public class WaiterRole extends GenericWaiter implements Waiter{
 	}*/
 	
 	
-	public WaiterRole(String workLocation){
+	protected WaiterRole(String workLocation){
 		super(workLocation);
 	}
 
@@ -587,19 +589,8 @@ public void setCashier(GenericCashier cashier){
 		waiterGui.DoLeaveCustomer();
 		stateChanged();
 	}
-	public void HereIsOrder(MyCustomer c)
-	{
-		print("giving order of "+ c.choice+" to cook");
-		
-		//animation details
-		waiterGui.goToCook();
-		try {atCook.acquire();} 
-		catch (InterruptedException e) { e.printStackTrace();}
-		
-		//sends msg to cook
-		cook.MsgHereisTheOrder(this, c.c, c.table, c.choice);
-		stateChanged();
-	}
+	public abstract void HereIsOrder(MyCustomer c);
+	
 	public void HereIsTheFood(MyCustomer c)
 	{
 		print("Getting Table " + c.table.tableNumber +" order");
@@ -632,11 +623,11 @@ public void setCashier(GenericCashier cashier){
 			waiterGui.DoLeaveCustomer();
 			stateChanged();}
 	}
-	private void seatCustomerAnimation(Customer c, int tableNumber)
+	protected void seatCustomerAnimation(Customer c, int tableNumber)
 	{
 		waiterGui.DoBringToTable(c,tableNumber);
 	}
-	private void goToCustomerAnimation(int tableNumber)
+	protected void goToCustomerAnimation(int tableNumber)
 	{
 		//print("GOING TO TABLE");
 		waiterGui.goToTable(tableNumber);
@@ -660,7 +651,7 @@ public void setCashier(GenericCashier cashier){
 		  cstate = CustomerState.RestFull;
 		  amount=0;
 		}
-		private Menu menu;
+		protected Menu menu;
 		public Customer getCustomer()
 		{return c;}
 		public Table getTable()
@@ -723,6 +714,17 @@ public void setCashier(GenericCashier cashier){
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+//	@Override
+//	public void workplaceIsOpen() {
+//		// TODO Auto-generated method stub
+//		//super(workLocation);
+//		Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(this.getWorkLocation());
+//		this.setHost(rest.getHostRole());
+//		rest.getHostRole().addWaiter(this);
+//		this.setCashier(rest.getCashierRole());
+//		this.setCook(rest.getCookRole());
+//	}
 	
 	
 }

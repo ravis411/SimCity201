@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <configuration>
     <building-config>
-        <building id="1" type="Residence" name="House 1"/>
+        <building id="5" type="Residence" name="House 1"/>
         <building id="2" type="Residence" name="House 2"/>
         <building id="3" type="Market" name="Market 1"/>
         <building id="4" type="Apartment" name="Apartment Building"/>
-        <building id="5" type="Bank" name="Bank"/>
+        <building id="1" type="Bank" name="Bank"/>
         <building id="6" type="Apartment" name="Apartment Building 1"/>
         <building id="7" type="Apartment" name="Apartment Building 4"/>
         <building id="8" type="Restaurant" name="Restaurant 1"/>
@@ -34,16 +34,16 @@
 			    <friend name="Person 6" />
 			</friends>
 		</person>
-		<person name="Person 3" job="restaurant.HostRole"
-		    location="Dylan's Restaurant" home="Apartment 2">
+		<person name="Person 3" job="ryansRestaurant.RyansHostRole"
+		    location="Ryan's Restaurant" home="Apartment 2">
 			<friends>
 			    <friend name="Person 1" />
 			    <friend name="Person 7" />
 			    <friend name="Person 9" />
 			</friends>
 		</person>
-		<person name="Person 4" job="restaurant.CashierRole"
-		    location="Dylan's Restaurant" home="Apartment 3">
+		<person name="Person 4" job="ryansRestaurant.RyansCashierRole"
+		    location="Ryan's Restaurant" home="Apartment 3">
 			<friends>
 			    <friend name="Person 1" />
 			    <friend name="Person 2" />
@@ -51,8 +51,8 @@
 			    <friend name="Person 10" />
 			</friends>
 		</person>
-		<person name="Person 5" job="restaurant.CookRole"
-		    location="Dylan's Restaurant" home="Apartment 4">
+		<person name="Person 5" job="ryansRestaurant.RyansCookRole"
+		    location="Ryan's Restaurant" home="Apartment 4">
 			<friends>
 				<friend name="Person 1" />
 			    <friend name="Person 3" />
@@ -60,8 +60,8 @@
 			    <friend name="Person 10" />
 			</friends>
 		</person>
-		<person name="Person 6" job="restaurant.OldWaiterRole"
-		    location="Dylan's Restaurant" home="Apartment 5">
+		<person name="Person 6" job="ryansRestaurant.RyansWaiterRole"
+		    location="Ryan's Restaurant" home="Apartment 5">
 			<friends>
 				<friend name="Person 1" />
 			    <friend name="Person 2" />
@@ -106,8 +106,8 @@
 			    <friend name="Person 7" />
 			</friends>
 		</person>
-		<person name="Person 11" job="restaurant.OldWaiterRole"
-		    location="Dylan's Restaurant" home="Apartment 10">
+		<person name="Person 11" job="ryansRestaurant.RyansWaiterRole"
+		    location="Ryan's Restaurant" home="Apartment 10">
 			<friends>
 				<friend name="Person 1" />
 			    <friend name="Person 9" />
@@ -122,7 +122,7 @@
 			    <friend name="Person 10" />
 			</friends>
 		</person>
-		<person name="Person 13" job="restaurant.CookRole"
+		<person name="Person 13" job="restaurant.HostRole"
 		    location="Dylan's Restaurant" home="Apartment 3">
 			<friends>
 				<friend name="Person 1" />
@@ -162,7 +162,40 @@
 			    <friend name="Person 10" />
 			</friends>
 		</person>
-		
+				<person name="Person 18" job="mikeRestaurant.HostRole"
+		    location="Mike's Restaurant" home="Apartment 2">
+			<friends>
+			    <friend name="Person 1" />
+			    <friend name="Person 7" />
+			    <friend name="Person 9" />
+			</friends>
+		</person>
+		<person name="Person 19" job="mikeRestaurant.CashierRole"
+		    location="Mike's Restaurant" home="Apartment 3">
+			<friends>
+			    <friend name="Person 1" />
+			    <friend name="Person 2" />
+			    <friend name="Person 8" />
+			    <friend name="Person 10" />
+			</friends>
+		</person>
+		<person name="Person 20" job="mikeRestaurant.CookRole"
+		    location="Mike's Restaurant" home="Apartment 4">
+			<friends>
+				<friend name="Person 1" />
+			    <friend name="Person 3" />
+			    <friend name="Person 6" />
+			    <friend name="Person 10" />
+			</friends>
+		</person>
+		<person name="Person 21" job="mikeRestaurant.OldWaiterRole"
+		    location="Mike's Restaurant" home="Apartment 5">
+			<friends>
+				<friend name="Person 1" />
+			    <friend name="Person 2" />
+			    <friend name="Person 11" />
+			</friends>
+		</person>
 	</people>
 </configuration>
 
