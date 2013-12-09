@@ -44,7 +44,7 @@ import building.Workplace;
  * @author MSILKJR
  *
  */
-public class PersonAgent extends Agent implements Person, TimeListener{
+public class PersonAgent extends Agent implements Person, TimeListener, DateListener{
 	
 	private final double STARTING_MONEY = 100.00;
 	private final int HUNGER_THRESHOLD = 50;
@@ -90,6 +90,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	private StateOfEmployment stateOfEmployment;
 	private Preferences prefs;
 	private int hungerLevel;
+	private Calendar rentDueDate = null;
 	
 	private PersonGui gui;
 	
@@ -118,6 +119,12 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		MasterTime.getInstance().registerTimeListener(Workplace.DAY_SHIFT_HOUR, Workplace.DAY_SHIFT_MIN, false, this);
 		MasterTime.getInstance().registerTimeListener(Workplace.NIGHT_SHIFT_HOUR, Workplace.NIGHT_SHIFT_MIN, false, this);
 		MasterTime.getInstance().registerTimeListener(Workplace.END_SHIFT_HOUR, Workplace.END_SHIFT_MIN, false, this);
+		
+		if(home.isApartment) {
+			rentDueDate = Calendar.getInstance();
+			rentDueDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1, 0, MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND));
+			MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
+		}
 	}
 	
 	/**
@@ -174,6 +181,12 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		itemsNeeded = new ArrayDeque<Item>();
 		stateOfLocation = StateOfLocation.Walking;
 		roles.add(new HomeRole(this));
+		
+		//if(home.isApartment) {
+			rentDueDate = Calendar.getInstance();
+			rentDueDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1, 0, MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND));
+			MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
+		//}
 		
 //		if(name.equals("Person 1") || name.equals("Person 2") )
 //			this.msgImHungry();
@@ -1183,6 +1196,7 @@ private void GoRobBank(){
 	}
 
 	public void dateAction(int month, int day, int hour, int minute) {
+		print("DATEE ACTIONN CALLED");
 		HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE);
 		if(hr.rsvpDate.get(Calendar.MONTH) == month && hr.rsvpDate.get(Calendar.DAY_OF_MONTH) == day && hr.rsvpDate.get(Calendar.HOUR_OF_DAY) == hour && hr.rsvpDate.get(Calendar.MINUTE) == minute) {
 			hr.msgResendInvites();
@@ -1191,6 +1205,13 @@ private void GoRobBank(){
 			if(hr.partyAttendees.size()!=0){
 				state = PersonState.HostParty;
 			    stateChanged();
+			}
+		}
+		if(rentDueDate != null && home != null && home.isApartment == true) {
+			if(rentDueDate.get(Calendar.DAY_OF_MONTH) == day && hour == 0) {
+				hr.msgRentDue(5.00,rentDueDate.get(Calendar.DAY_OF_MONTH));
+				rentDueDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1, 0, MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND));
+				MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
 			}
 		}
 		for(Party p: parties){

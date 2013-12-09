@@ -666,7 +666,7 @@ public class SetUpWorldFactory{
 		case "Residence":
 			ResidenceBuilding rb = new ResidenceBuilding(building, false);
 			if(rb != null){
-				BuildingPanel bp = new ResidenceBuildingPanel(rb, name, buildingsPanels);
+				BuildingPanel bp = new ResidenceBuildingPanel(rb, name, buildingsPanels, false);
 				rb.setBuildingPanel(bp);
 				cityPanel.addGui(rb);
 				buildingsPanels.addBuildingPanel(bp);
