@@ -84,11 +84,11 @@ public class MasterTime {
 	 */
 	public boolean registerTimeListener(int hour, int minute, boolean weekend, TimeListener sender){
 		synchronized (timeListeners) {
-		for(MyTimeListener tl : timeListeners){
-			if(tl.listener == sender && tl.hour == hour && tl.minute == minute && tl.weekend == weekend){
-				return false;
+			for(MyTimeListener tl : timeListeners){
+				if(tl.listener == sender && tl.hour == hour && tl.minute == minute && tl.weekend == weekend){
+					return false;
+				}
 			}
-		}
 		}
 		timeListeners.add(new MyTimeListener(hour, minute, weekend, sender));
 		return true;
