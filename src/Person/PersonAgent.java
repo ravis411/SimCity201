@@ -293,7 +293,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	   state=PersonState.PayRentNow;
 	   stateChanged();
 	}
-	
+
 	
 	public void msgAddObjectToBackpack(String object, int quantity){
 		boolean added = false;
@@ -713,6 +713,11 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		}
 		
 		return null;
+	}
+	
+	public void homeThrowParty() {
+		HomeRole role = (HomeRole) findRole("HomeRole");
+		role.msgThrowParty();
 	}
 	
 	/**

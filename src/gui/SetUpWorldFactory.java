@@ -999,21 +999,22 @@ public class SetUpWorldFactory{
 					}
 
 				}
-				
-				//sets up the friend lists for the people after all people have been added
-				for(MyPerson person : peopleList){
-					for(String name : person.friends){
-						PersonAgent p = peopleMap.get(name);
-						if(p != null)
-							person.person.addFriend(p);
-					}
-				}
-				
-				for(PersonAgent a : agents){
-					controls.addPerson(a);
-				}
-				
+					
 			}
+
+			//sets up the friend lists for the people after all people have been added
+			for(MyPerson person : peopleList){
+				for(String name : person.friends){
+					PersonAgent p = peopleMap.get(name);
+					if(p != null)
+						person.person.addFriend(p);
+				}
+			}
+			
+			for(PersonAgent a : agents){
+				controls.addPerson(a);
+			}
+			
 		} catch (DOMException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
