@@ -29,7 +29,7 @@ public abstract class Role {
 	public final static String RESTAURANT_LUCA_CASHIER_ROLE = "restaurant.luca.LucaCashierRole";
 	public final static String APARTMENT_MANAGER_ROLE = "residence.ApartmentManagerRole";
 	 public final static String RESTAURANT_KUSH_CUSTOMER_ROLE = "kushrestaurant.CustomerRole";
-     public final static String RESTAURANT_KUSH_WAITER_ROLE = "kushrestaurant.WaiterRole";
+     public final static String RESTAURANT_KUSH_WAITER_ROLE = "kushrestaurant.NewWaiterRole";
      public final static String RESTAURANT_KUSH_HOST_ROLE = "kushrestaurant.HostRole";
      public final static String RESTAURANT_KUSH_COOK_ROLE = "kushrestaurant.CookRole";
      public final static String RESTAURANT_KUSH_CASHIER_ROLE = "kushrestaurant.CashierRole";

@@ -139,7 +139,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 				hr.msgEnterBuilding();
 				hr.msgThrowParty();
 			}
-
+            
 			gui.setStartingStates(home.getName());
 			BuildingList.findBuildingWithName(home.getName()).addRole(hr);
 			hr.activate();
@@ -562,6 +562,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 //		if(destination=="null"){
 //			return home.getName();
 //		}
+		
 		return home.getName();
 		
 	}
