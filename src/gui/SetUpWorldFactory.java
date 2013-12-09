@@ -25,6 +25,7 @@ import gui.Building.restaurants.RyansRestaurantBuilding;
 import gui.Building.restaurants.RyansRestaurantBuildingPanel;
 import gui.MockAgents.PseudoBusAgent;
 import gui.MockAgents.PseudoPerson;
+import gui.agentGuis.DeadPersonGui;
 import gui.agentGuis.PersonGui;
 import gui.agentGuis.BusGui;
 
@@ -36,6 +37,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -436,6 +439,19 @@ public class SetUpWorldFactory{
 //			addPerson("Person 15", buildingsPanels.getResidenceBuildingPanel("House 2"));
 
 		
+			
+			
+			(new Timer()).schedule(new TimerTask() {
+				
+				@Override
+				public void run() {
+					DeadPersonGui ddp = new DeadPersonGui("AAAAaaaahhhhAAaaaa");
+					ddp.DoGetHitByCar();
+				}
+			}, 1500);
+			
+			
+			
 	} //end LoadDefault
 
 	public void LoadGUITest1(){

@@ -43,8 +43,10 @@ public class CommandsControl extends JFrame implements ActionListener {
 	
 	private JTextField moneyTF = new JTextField("$$.$$");
 	
+	private CityControlPanel controller;
 	
-	CommandsControl() {
+	CommandsControl(CityControlPanel parent) {
+		controller = parent;
 		setLayout(new GridLayout(1,1));
 		Container.setLayout(new GridLayout(4,2));
 		
@@ -99,7 +101,7 @@ public class CommandsControl extends JFrame implements ActionListener {
 			
 		}
 		else if (e.getSource() == makeFriendB) {
-			
+			addFriends();
 		}
 		else if (e.getSource() == addMoneyB) {
 			
@@ -108,6 +110,16 @@ public class CommandsControl extends JFrame implements ActionListener {
 			
 		}
 		
+	}
+	
+	private void addFriends() {
+		List<String> people = new ArrayList<String>();
+		for (JCheckBox person : friendsList) {
+			if (person.isSelected()) {
+				people.add(person.getText());
+			}
+		}
+		controller.personAddFriends(people);
 	}
 
 }

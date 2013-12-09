@@ -122,6 +122,47 @@
 			    <friend name="Person 10" />
 			</friends>
 		</person>
+		<person name="Person 13" job="restaurant.CookRole"
+		    location="Dylan's Restaurant" home="Apartment 3">
+			<friends>
+				<friend name="Person 1" />
+			    <friend name="Person 9" />
+			    <friend name="Person 10" />
+			</friends>
+		</person>
+		<person name="Person 14" job="restaurant.OldWaiterRole"
+		    location="Dylan's Restaurant" home="Apartment 3">
+			<friends>
+				<friend name="Person 1" />
+			    <friend name="Person 9" />
+			    <friend name="Person 10" />
+			</friends>
+		</person>
+		<person name="Person 15" job="restaurant.CashierRole"
+		    location="Dylan's Restaurant" home="Apartment 3">
+			<friends>
+				<friend name="Person 1" />
+			    <friend name="Person 9" />
+			    <friend name="Person 10" />
+			</friends>
+		</person>
+		<person name="Person 16" job="restaurant.RestaurantCustomerRole"
+		    location="Dylan's Restaurant" home="Apartment 3">
+			<friends>
+				<friend name="Person 1" />
+			    <friend name="Person 9" />
+			    <friend name="Person 10" />
+			</friends>
+		</person>
+		<person name="Person 17" job="restaurant.NewWaiterRole"
+		    location="Dylan's Restaurant" home="Apartment 3">
+			<friends>
+				<friend name="Person 1" />
+			    <friend name="Person 9" />
+			    <friend name="Person 10" />
+			</friends>
+		</person>
+		
 	</people>
 </configuration>
 
