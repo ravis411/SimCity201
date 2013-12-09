@@ -329,8 +329,8 @@ public class DeadCarVehicleGui implements Gui {
         	g.setColor(Color.white);
         	g.drawString(agent.toString(), xPos, yPos);
         }
-        else if(hitByCar){
-        	g.setColor(Color.black);
+        if(hitByCar){
+        	g.setColor(Color.BLACK);
         	g.fillOval(xPos, yPos, width, height);
         	//This draws the blood spatter
         	for(int x = 0; x < 800; x+=random.nextInt(50)){

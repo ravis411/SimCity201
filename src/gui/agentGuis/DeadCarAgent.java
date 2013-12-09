@@ -29,6 +29,7 @@ public class DeadCarAgent extends Agent{
 	}
 	
 	
+	
 	public void msgGoTo(String destination){
 		goTo = true;
 		this.destination = destination;
