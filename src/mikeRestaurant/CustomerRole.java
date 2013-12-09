@@ -149,6 +149,7 @@ public class CustomerRole extends GenericCustomer implements Customer{
 	}
 	
 	public void msgArrivedAtLeave(){
+		atLeave.release();
 		deactivate();
 	}
 	
@@ -445,12 +446,11 @@ public class CustomerRole extends GenericCustomer implements Customer{
 		
 		DoLeaveRestaurant();
 		try {
-			atStart.acquire();
+			atLeave.acquire();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		deactivate();
 	}
 	
 	/**

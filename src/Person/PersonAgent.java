@@ -131,9 +131,9 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	 */
 	public void setInitialRole(Role r, String roleLocation){
 		if(r instanceof HomeRole || r == null){
-			HomeRole hr = (HomeRole) findRole("HomeRole");
+			HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE);
 			//if(name.equals("Person 1"))
-				hr.msgMakeFood();
+				//hr.msgMakeFood();
 				
 			gui.setStartingStates(home.getName());
 			BuildingList.findBuildingWithName(home.getName()).addRole(hr);
@@ -484,7 +484,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			return true;
 		}
 		
-		if(state == PersonState.NeedsMoney && moneyNeeded > 10){
+		if(state == PersonState.NeedsMoney && moneyNeeded > 100000){
 			GoRobBank();
 			return true;
 		}
@@ -503,7 +503,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		  String transport = getTransportPreference();
 		  
 		  String location = PickFoodLocation();
-		  GoToLocation(location, transport);
+		  GoToLocation("Food Court", transport);
 		  
 		  GenericCustomer role = (GenericCustomer) findRole(Role.RESTAURANT_MIKE_CUSTOMER_ROLE);
 		  if(role == null){
@@ -517,13 +517,12 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		  if(bdg instanceof Restaurant){
 			  Restaurant rest = (Restaurant) bdg;
 			  role.setupCustomer("Mike's Restaurant");
-//			  role.setCashier(rest.getCashierRole());
-//			  role.setHost(rest.getHostRole());
-			  
+
 			  role.gotHungry();
 			  role.activate();
 		  }
 		  this.state = PersonState.GettingFood;
+		  this.msgGoToMarket("item");
 	}
 	
 	private String PickFoodLocation(){
@@ -1167,5 +1166,14 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		}
 		else
 			return false;
+	}
+	
+	public String getCurrentRole() {
+		for (Role r: roles) {
+			if (r.isActive()) {
+				return r.getNameOfRole();
+			}
+		}
+		return null;
 	}
 }

@@ -1,5 +1,6 @@
 package restaurant.luca;
 
+import interfaces.MarketManager;
 import interfaces.generic_interfaces.GenericCook;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import restaurant.interfaces.luca.LucaCook;
 import restaurant.interfaces.luca.LucaWaiter;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
+import MarketEmployee.MarketEmployeeRole;
 import Person.Role.ShiftTime;
 import agent.Constants;
 
@@ -34,8 +36,8 @@ public class LucaCookRole extends GenericCook implements LucaCook{
 	private int marketCurrentlyBeingAskedForFood;
 	public List<LucaWaiter> waiters
 	= Collections.synchronizedList(new ArrayList<LucaWaiter>());
-	public List<LucaMarketRole> markets
-	= Collections.synchronizedList(new ArrayList<LucaMarketRole>());
+	public List<MarketManager> markets
+	= Collections.synchronizedList(new ArrayList<MarketManager>());
 	public List<Food> foodTypes
 	= Collections.synchronizedList(new ArrayList<Food>());
 	public EventLog log= new EventLog();
@@ -72,7 +74,7 @@ public class LucaCookRole extends GenericCook implements LucaCook{
 	
 	// Messages
 
-	public void msgAddMarket(LucaMarketRole market) {
+	public void msgAddMarket(MarketManager market) {
 		markets.add(market);
 	}
 
@@ -85,7 +87,12 @@ public class LucaCookRole extends GenericCook implements LucaCook{
 		stateChanged();
 		
 	}
-	public void msgCookIDoNotHaveFoodSupplyOrdered(String Food){
+	public void msgOrderNotFilled(int ingredientNum){
+		String Food; 
+		if (ingredientNum==0) Food="Steak"; 
+		else if (ingredientNum==1) Food="Chicken"; 
+		else if (ingredientNum==2) Food="Burger";
+		else Food="FoodDOesNtExIStttttWrongNUmber";
 		for(int i =0; i<foodTypes.size(); i++)
 			if (foodTypes.get(i).getChoice() == Food){
 			foodTypes.get(i).setMoreOrderedAndOnTheWay(false);
@@ -96,7 +103,12 @@ public class LucaCookRole extends GenericCook implements LucaCook{
 		
 	}
 
-	public void msgCookNumberThatWereOrderedButNotFullfilled(int num, String Type) {
+	public void msgOrderPartiallyFilled(int ingredientNum, int quantity,  int quantityOfOrderThatMarketDoesntHave) {
+		String Food; 
+		if (ingredientNum==0) Food="Steak"; 
+		else if (ingredientNum==1) Food="Chicken"; 
+		else if (ingredientNum==2) Food="Burger";
+		else Food="FoodDOesNtExIStttttWrongNUmber";
 		marketCurrentlyBeingAskedForFood++;
 		if (marketCurrentlyBeingAskedForFood==4){
 			marketCurrentlyBeingAskedForFood=0;
@@ -105,10 +117,10 @@ public class LucaCookRole extends GenericCook implements LucaCook{
 			return;}
 		for(int i=0; i<foodTypes.size(); i++){
 			foodTypes.get(i).setMoreOrderedAndOnTheWay(false);
-			if (foodTypes.get(i).getChoice()==Type && !foodTypes.get(i).getMoreOrderedAndOnTheWay() && marketCurrentlyBeingAskedForFood != markets.size())
+			if (foodTypes.get(i).getChoice()==Food && !foodTypes.get(i).getMoreOrderedAndOnTheWay() && marketCurrentlyBeingAskedForFood != markets.size())
 			{
-				print(markets.get(marketCurrentlyBeingAskedForFood).getName() + " do you Have food " + foodTypes.get(i).getChoice());
-				markets.get(marketCurrentlyBeingAskedForFood).msgMarketOrderFood(foodTypes.get(i).getChoice(), num); //order (food type, amount)
+				print(markets.get(marketCurrentlyBeingAskedForFood).getMarketName() + " do you Have food " + foodTypes.get(i).getChoice());
+				markets.get(marketCurrentlyBeingAskedForFood).msgMarketManagerFoodOrder(foodTypes.get(i).getChoice(), quantityOfOrderThatMarketDoesntHave, this); //order (food type, amount)
 				foodTypes.get(i).setMoreOrderedAndOnTheWay(true);
 				
 					
@@ -119,9 +131,14 @@ public class LucaCookRole extends GenericCook implements LucaCook{
 	}
 
 
-	public void msgHereAreRequestedFoodSupplies(String foodType, int foodAmount) {
+	public void msgOrderFilled(int ingredientNum, int foodAmount) {
+		String Food; 
+		if (ingredientNum==0) Food="Steak"; 
+		else if (ingredientNum==1) Food="Chicken"; 
+		else if (ingredientNum==2) Food="Burger";
+		else Food="FoodDOesNtExIStttttWrongNUmber";
 		for(int i =0; i<foodTypes.size(); i++)
-			if (foodTypes.get(i).getChoice() == foodType){
+			if (foodTypes.get(i).getChoice() == Food){
 				foodTypes.get(i).addToFoodQuantity(foodAmount);
 				foodTypes.get(i).setMoreOrderedAndOnTheWay(false);
 			}
@@ -231,8 +248,8 @@ public class LucaCookRole extends GenericCook implements LucaCook{
 		for(int i=0; i<foodTypes.size(); i++){
 			if (foodTypes.get(i).getFoodQuantity()==0 && !foodTypes.get(i).getMoreOrderedAndOnTheWay() && marketCurrentlyBeingAskedForFood != markets.size())
 			{
-				print(markets.get(marketCurrentlyBeingAskedForFood).getName() + " do you Have food " + foodTypes.get(i).getChoice());
-				markets.get(marketCurrentlyBeingAskedForFood).msgMarketOrderFood(foodTypes.get(i).getChoice(), howMuchFoodAgentAsksFromMarket); //order (food type, amount)
+				print(markets.get(marketCurrentlyBeingAskedForFood).getMarketName() + " do you Have food " + foodTypes.get(i).getChoice());
+				markets.get(marketCurrentlyBeingAskedForFood).msgMarketManagerFoodOrder(foodTypes.get(i).getChoice(), howMuchFoodAgentAsksFromMarket,this); //order (food type, amount)
 				foodTypes.get(i).setMoreOrderedAndOnTheWay(true);
 				
 					
@@ -416,6 +433,20 @@ public class LucaCookRole extends GenericCook implements LucaCook{
 	public Double getSalary() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	@Override
+	public void msgOrderFilled(String foodType, int foodAmount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgCookNumberThatWereOrderedButNotFullfilled(int i,
+			String string) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

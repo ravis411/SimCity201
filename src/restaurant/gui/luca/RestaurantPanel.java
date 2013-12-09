@@ -1,20 +1,13 @@
 package restaurant.gui.luca;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.util.Vector;
 
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import restaurant.luca.LucaCashierRole;
-import restaurant.luca.LucaCookRole;
-import restaurant.luca.LucaRestaurantCustomerRole;
 import restaurant.luca.LucaHostRole;
-import restaurant.luca.LucaMarketRole;
+import restaurant.luca.LucaRestaurantCustomerRole;
 import restaurant.luca.LucaWaiterRole;
-import restaurant.interfaces.luca.LucaWaiter;
 
 /**
  * Panel in frame that contains all the restaurant information,
@@ -26,7 +19,7 @@ public class RestaurantPanel extends JPanel {
 	private LucaHostRole host = new LucaHostRole("Cary");
 //	private LucaCookRole cook = new LucaCookRole("Harry");
 	private LucaCashierRole cashier = new LucaCashierRole("Sarah");
-	private Vector<LucaMarketRole> markets = new Vector<LucaMarketRole>();
+//	private Vector<LucaMarketRole> markets = new Vector<LucaMarketRole>();
 	
     private Vector<LucaRestaurantCustomerRole> customers = new Vector<LucaRestaurantCustomerRole>();
     private Vector<LucaWaiterRole> waiters = new Vector<LucaWaiterRole>();

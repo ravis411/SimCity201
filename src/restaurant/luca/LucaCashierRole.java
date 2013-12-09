@@ -1,5 +1,6 @@
 package restaurant.luca;
 
+import interfaces.MarketManager;
 import interfaces.generic_interfaces.GenericCashier;
 
 import java.util.ArrayList;
@@ -117,7 +118,7 @@ public class LucaCashierRole extends GenericCashier implements LucaCashier {
 		{
 			
 			for (int i=0; i<marketBills.size(); i++){
-				if (market.getName() == marketBills.get(i).getMarket().getName()){
+				if (market.getName() == marketBills.get(i).getMarket().getMarketName()){
 					 marketBills.get(i).setMoneyOwed(orderPrice);
 				}
 					event = AgentEvent.needToPayMarket;
@@ -128,7 +129,7 @@ public class LucaCashierRole extends GenericCashier implements LucaCashier {
 		{
 			
 			for (int i=0; i<marketBills.size(); i++){
-				if (market.getName() == marketBills.get(i).getMarket().getName()){
+				if (market.getName() == marketBills.get(i).getMarket().getMarketName()){
 					 marketBills.get(i).setMoneyOwed(orderPrice);
 					 event = AgentEvent.notEnoughMoneyToPayMarket;
 					 log.add(new LoggedEvent("New Event notEnoughMoneyToPayMarket"));
@@ -186,7 +187,7 @@ public class LucaCashierRole extends GenericCashier implements LucaCashier {
 			if (marketBills.get(i).getMoneyOwed() !=0){
 				restaurantMoney = restaurantMoney-marketBills.get(i).getMoneyOwed();
 			print("Market gave Cashier a bill of $" + marketBills.get(i).getMoneyOwed()+ " and since doesn't have enough money cashier pays with credit and goes into debt with $"+ restaurantMoney);
-			marketBills.get(i).getMarket().msgMarketHereIsPayment(marketBills.get(i).getMoneyOwed());
+			marketBills.get(i).getMarket().msgMarketManagerHereIsPayment(marketBills.get(i).getMoneyOwed());
 			marketBills.get(i).setMoneyOwed(0);
 			}
 		}
@@ -198,7 +199,7 @@ public class LucaCashierRole extends GenericCashier implements LucaCashier {
 			if (marketBills.get(i).getMoneyOwed() !=0){
 				restaurantMoney = restaurantMoney-marketBills.get(i).getMoneyOwed();
 			print("Market gave Cashier a bill of $" + marketBills.get(i).getMoneyOwed()+ " and after paying has $"+ restaurantMoney);	
-			marketBills.get(i).getMarket().msgMarketHereIsPayment(marketBills.get(i).getMoneyOwed());
+			marketBills.get(i).getMarket().msgMarketManagerHereIsPayment(marketBills.get(i).getMoneyOwed());
 			marketBills.get(i).setMoneyOwed(0);			
 			}
 		}
@@ -232,17 +233,17 @@ public class LucaCashierRole extends GenericCashier implements LucaCashier {
 	{
 		this.waiter=waiter;
 	}
-	public void addMarkets(Vector<LucaMarketRole> markets) {
+	public void addMarkets(Vector<MarketManager> markets) {
 			for (int i=0; i<markets.size(); i++){
 				this.marketBills.add(new MarketBill(markets.get(i)));		
 		}
 	}
 	
 	public class MarketBill{
-		LucaMarketRole market;
+		MarketManager market;
 		int moneyOwed=0;
 		
-		public MarketBill(LucaMarketRole lucaMarketAgent){
+		public MarketBill(MarketManager lucaMarketAgent){
 			this.market= lucaMarketAgent;
 		}
 		void setMoneyOwed(int money){
@@ -251,7 +252,7 @@ public class LucaCashierRole extends GenericCashier implements LucaCashier {
 		public int getMoneyOwed(){
 			return moneyOwed;
 		}
-		LucaMarketRole getMarket(){
+		MarketManager getMarket(){
 			return market;
 		}
 		

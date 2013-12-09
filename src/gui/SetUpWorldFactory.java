@@ -65,6 +65,7 @@ import astar.PersonAStarTraversal;
 
 //This class will instantiate and setup everything.
 public class SetUpWorldFactory{
+
         public static SimCityLayout layout;// = new SimCityLayout(WINDOWX, WINDOWY/2);// <-This holds the grid information
         public static CityAnimationPanel cityPanel;// = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
         public static BuildingsPanels buildingsPanels;// = new BuildingsPanels();//<-Zoomed in view of buildings
@@ -105,7 +106,7 @@ public class SetUpWorldFactory{
                 jobList.add("Bank Client");
                 jobList.add("Bank Teller");
                 jobList.add("Restaurant Customer");
-                jobList.add("Retaurant Old Waiter");
+                jobList.add("Restaurant Old Waiter");
                 jobList.add("Restaurant New Waiter");
                 jobList.add("Restaurant Host");
                 jobList.add("Restaurant Cook");
@@ -131,7 +132,7 @@ public class SetUpWorldFactory{
                 jobList.add("Mike Cook");
                 jobList.add("Mike Cashier");
                 jobList.add("Mike Customer");
-                
+                /*
                 locationsList.add("City");
                 locationsList.add("Main Restaurant");
                 locationsList.add("Mike's Restaurant");
@@ -152,7 +153,8 @@ public class SetUpWorldFactory{
                 locationsList.add("Apartment 1D");
                 locationsList.add("Apartment 2A");
                 locationsList.add("Apartment 2B");
-                
+                */
+                /*
                 residenceList.add("Residence 1");
                 residenceList.add("Residence 2");
                 residenceList.add("Apartment 1A");
@@ -161,6 +163,7 @@ public class SetUpWorldFactory{
                 residenceList.add("Apartment 1D");
                 residenceList.add("Apartment 2A");
                 residenceList.add("Apartment 2B");
+                */
 
                 buildingsPanels.addBuildingPanel(new Team29Panel(buildingsPanels));
                 buildingsPanels.addBuildingPanel(controls);
@@ -187,6 +190,7 @@ public class SetUpWorldFactory{
 //                location.entranceFromRoadGrid = new Dimension(4, 3);
 //                location.positionToEnterFromRoadGrid = new Dimension(4, 4);
 //                addBuilding("Residence", "House 1", 3, 2, 2, 2, location);
+
 //
 //                //Building 2
 //                location.sector = 1;
@@ -743,6 +747,7 @@ public class SetUpWorldFactory{
                                 building.setBuildingPanel(bp);
                                 cityPanel.addGui(building);
                                 buildingsPanels.addBuildingPanel(bp);
+                                locationsList.add(name);
                         }
                         break;
                 case "Bus Stop":
@@ -754,6 +759,7 @@ public class SetUpWorldFactory{
                                 busStop.setBuildingPanel(bp);
                                 cityPanel.addGui(busStop);
                                 buildingsPanels.addBuildingPanel(bp);
+                                //locationsList.add(name);
                         }
                         break;
                 case "Residence":
@@ -763,6 +769,8 @@ public class SetUpWorldFactory{
                                 rb.setBuildingPanel(bp);
                                 cityPanel.addGui(rb);
                                 buildingsPanels.addBuildingPanel(bp);
+                                locationsList.add(name);
+                                residenceList.add(name);
                         }
                         break;
                 case "Bank":
@@ -772,6 +780,7 @@ public class SetUpWorldFactory{
                                 bb.setBuildingPanel(bp);
                                 cityPanel.addGui(bb);
                                 buildingsPanels.addBuildingPanel(bp);
+                                locationsList.add(name);
                         }
                         break;
                 case "Apartment":
@@ -779,6 +788,10 @@ public class SetUpWorldFactory{
                         if(ab != null){
                                 ApartmentBuildingPanel bp = new ApartmentBuildingPanel(ab, name, buildingsPanels, this, new LocationInfo(info));
                                 ab.setBuildingPanel(bp);
+                                for (String buildingName : bp.getNameList()) {
+                                	locationsList.add(buildingName);
+                                	residenceList.add(buildingName);
+                                }
                                 cityPanel.addGui(ab);
                                 buildingsPanels.addBuildingPanel(bp);
                         }
@@ -790,6 +803,7 @@ public class SetUpWorldFactory{
                                 mb.setBuildingPanel(mp);
                                 cityPanel.addGui(mb);
                                 buildingsPanels.addBuildingPanel(mp);
+                                locationsList.add(name);
                         }
                         break;
                 case "Restaurant":
@@ -799,6 +813,7 @@ public class SetUpWorldFactory{
                                 restb.setBuildingPanel(restPanel);
                                 cityPanel.addGui(restb);
                                 buildingsPanels.addBuildingPanel(restPanel);
+                                locationsList.add(name);
                         }
                         break;
 
@@ -809,6 +824,7 @@ public class SetUpWorldFactory{
                                 restb2.setBuildingPanel(restPanel);
                                 cityPanel.addGui(restb2);
                                 buildingsPanels.addBuildingPanel(restPanel);
+                                locationsList.add(name);
                         }
                         break;
                 case "KushsRestaurant":
@@ -818,6 +834,7 @@ public class SetUpWorldFactory{
                                 restb3.setBuildingPanel(restPanel);
                                 cityPanel.addGui(restb3);
                                 buildingsPanels.addBuildingPanel(restPanel);
+                                locationsList.add(name);
                         }
                         break;
                 case "Food Court":
@@ -825,6 +842,9 @@ public class SetUpWorldFactory{
                         if(food != null){
                                 FoodCourtBuildingPanel foodPanel = new FoodCourtBuildingPanel(food, name, buildingsPanels, this, info);
                                 food.setBuildingPanel(foodPanel);
+                                for (String buildingName : foodPanel.getNameList()) {
+                                	locationsList.add(buildingName);
+                                }
                                 cityPanel.addGui(food);
                                 buildingsPanels.addBuildingPanel(foodPanel);
                         }
@@ -836,6 +856,7 @@ public class SetUpWorldFactory{
                                 lrestb.setBuildingPanel(restPanel);
                                 cityPanel.addGui(lrestb);
                                 buildingsPanels.addBuildingPanel(restPanel);
+                                locationsList.add(name);
                         }
                 
                         break;
@@ -873,12 +894,12 @@ public class SetUpWorldFactory{
          * @param initialRole
          * @param initialLocation
          */
-        public static void addPerson(String name, String residenceName, String initialRole, String initialLocation){
+        public static PersonAgent addPerson(String name, String residenceName, String initialRole, String initialLocation, Double Money){
                 try{
                         PersonAgent person = new PersonAgent(name, buildingsPanels.getResidenceBuildingPanel(residenceName));
                         
-                        if(initialRole == null){
-                                //person.setInitialRole(RoleFactory.roleFromString(Role.HOME_ROLE), iHome);
+                        if(residenceList.contains(initialLocation)){
+                                person.setInitialRole(RoleFactory.roleFromString(Role.HOME_ROLE), initialLocation);
                         }else {
                                 Class e = Employee.class;
                                 Class c = Class.forName(initialRole);
@@ -891,9 +912,11 @@ public class SetUpWorldFactory{
                         
                         person.startThread();
                         agents.add(person);
+                        return person;
                 }catch(Exception e){
                         e.printStackTrace();
                 }
+                return null;
         }
         
         private class MyPerson {
@@ -1272,3 +1295,4 @@ public class SetUpWorldFactory{
                 }
         }
 }
+
