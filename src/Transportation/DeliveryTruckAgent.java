@@ -61,17 +61,19 @@ public class DeliveryTruckAgent extends Agent implements Car{
 	
 	//Actions
 	private void goToDestination() {
+		
 		if(destination.size() == 0){
 			state = CarState.parked;
+			AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "No destinations in queue. Parking.");
 			return;
 		}
 		
 		String dest;
 		dest = destination.poll();
 		
+		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Going to " + dest );
 		agentGui.DoGoTo(dest);
-		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Arrived at " + destination);
-		
+		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Arrived at " + dest);
 	}
 	
 	
