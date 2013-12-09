@@ -142,10 +142,6 @@ public class MarketManagerRole extends Role implements MarketManager{
 	}
 
 
-	public void msgDeliveryTruckBackAtMarket() {
-		truckAvailable.release();
-	}
-	
 
 
 	/**
@@ -261,23 +257,28 @@ public class MarketManagerRole extends Role implements MarketManager{
 						myOrders.get(i).setState(Order.OrderState.delivered);
 					}
 					if (myOrders.get(i).getAmountReadyToBeShipped()==myOrders.get(i).getAmount()){
-						ck.msgOrderFilled(myOrders.get(i).getNumberThatIsAssociatedWithFoodsMenuNumber()
-								,myOrders.get(i).getAmountReadyToBeShipped());
 						AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "Market sending full order of "+myOrders.get(i).getAmountReadyToBeShipped()+" "+ (myOrders.get(i).getFoodType()));
 						deliveryTruck.msgNewDestination("Food Court",this);
 						try {
-							atTruck.acquire();
+							atTruckAtDestination.acquire();
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
+						ck.msgOrderFilled(myOrders.get(i).getNumberThatIsAssociatedWithFoodsMenuNumber()
+								,myOrders.get(i).getAmountReadyToBeShipped());
 						myOrders.get(i).setState(Order.OrderState.delivered);
 
 					}
 					if (myOrders.get(i).getAmountReadyToBeShipped()<myOrders.get(i).getAmount()){
-						ck.msgOrderPartiallyFilled(myOrders.get(i).getNumberThatIsAssociatedWithFoodsMenuNumber()
-								,myOrders.get(i).getAmountReadyToBeShipped());
 						AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "Market sending partial order of "+myOrders.get(i).getAmountReadyToBeShipped()+" "+ (myOrders.get(i).getFoodType()));
 						deliveryTruck.msgNewDestination("Food Court",this);
+						try {
+							atTruckAtDestination.acquire();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						ck.msgOrderPartiallyFilled(myOrders.get(i).getNumberThatIsAssociatedWithFoodsMenuNumber()
+								,myOrders.get(i).getAmountReadyToBeShipped());
 						myOrders.get(i).setState(Order.OrderState.delivered);
 
 					}
@@ -448,7 +449,6 @@ public class MarketManagerRole extends Role implements MarketManager{
 		}
 		
 		}
-
 
 
 

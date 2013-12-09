@@ -62,10 +62,7 @@ public class DeliveryTruckAgent extends Agent implements MarketDeliveryTruck{
 			goToDestination();
 			return true;
 		}
-		if (state == CarState.parked) {
-			tellManagerTruckAvailable();
-			return true;
-		}
+
 		if (state == CarState.atDestination){
 			
 			goHome();
@@ -76,10 +73,7 @@ public class DeliveryTruckAgent extends Agent implements MarketDeliveryTruck{
 	}
 	
 	//Actions
-	private void tellManagerTruckAvailable() {
-		marketManager.msgDeliveryTruckBackAtMarket();
-		
-	}
+
 
 
 	private void goToDestination() {
@@ -95,8 +89,8 @@ public class DeliveryTruckAgent extends Agent implements MarketDeliveryTruck{
 		
 		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Going to " + dest );
 		agentGui.DoGoTo(dest);
-		marketManager.msgDeliveryTruckAtDestination();
 		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Arrived at " + dest);
+		marketManager.msgDeliveryTruckAtDestination();
 		
 		state = CarState.atDestination;
 	}
@@ -108,7 +102,6 @@ public class DeliveryTruckAgent extends Agent implements MarketDeliveryTruck{
 		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Going to " + dest );
 		agentGui.DoGoTo(dest);
 		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Arrived at " + dest);
-		marketManager.msgDeliveryTruckBackAtMarket();
 		state = CarState.parked;
 	}
 	

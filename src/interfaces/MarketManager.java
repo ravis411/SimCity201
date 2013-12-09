@@ -17,7 +17,7 @@ public interface MarketManager {
 
 	public abstract void msgDeliveryTruckAtDestination();
 
-	public abstract void msgDeliveryTruckBackAtMarket();
+
 
 
 }
