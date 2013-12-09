@@ -5,7 +5,7 @@ import astar.AStarTraversal;
 import astar.VehicleAStarTraversal;
 import gui.SetUpWorldFactory;
 import gui.agentGuis.CarVehicleGui;
-import gui.agentGuis.VehicleGui;
+import gui.agentGuis.BusGui;
 import interfaces.Car;
 import interfaces.Person;
 

@@ -26,7 +26,7 @@ import gui.Building.restaurants.RyansRestaurantBuildingPanel;
 import gui.MockAgents.PseudoBusAgent;
 import gui.MockAgents.PseudoPerson;
 import gui.agentGuis.PersonGui;
-import gui.agentGuis.VehicleGui;
+import gui.agentGuis.BusGui;
 
 import java.awt.Dimension;
 import java.io.File;
@@ -536,10 +536,8 @@ public class SetUpWorldFactory{
 			OddStopsQueue.add("Bus Stop " + 3);
 			OddStopsQueue.add("Bus Stop " + 5);
 			PseudoBusAgent v1 = new PseudoBusAgent("Odd Mock Bus", OddStopsQueue);
-			AStarTraversal t = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
-			VehicleGui v1Gui = new VehicleGui( v1, layout, t, locationMap );
+			BusGui v1Gui = new BusGui( v1);
 			v1.agentGui = v1Gui;
-			cityPanel.addGui(v1Gui);
 			v1.startThread();
 			//mockVehicle Added
 			break;
@@ -550,11 +548,6 @@ public class SetUpWorldFactory{
 			EvenStopsQueue1.add("Bus Stop " + 4);
 			EvenStopsQueue1.add("Bus Stop " + 6);
 			PseudoBusAgent v2 = new PseudoBusAgent("Even Mock Bus", EvenStopsQueue1);
-			AStarTraversal t2 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
-			VehicleGui v2Gui = new VehicleGui( v2, layout, t2 ,locationMap );
-			v2.agentGui = v2Gui;
-			cityPanel.addGui(v2Gui);
-			v2.startThread();
 			//mockVehicle Added
 			break;
 
@@ -570,13 +563,7 @@ public class SetUpWorldFactory{
 			v4.addBusStop(3, "Bus Stop 5",
 					((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 5"))).getBusStopAgent());
 			v4.location = "Bus Stop 1";
-			AStarTraversal t4 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
-			VehicleGui v4Gui = new VehicleGui( v4, layout, t4, locationMap);
-			v4.location = "Bus Stop 1";
 			v4.currentStop = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 1"))).getBusStopAgent();
-			v4.agentGui = v4Gui;
-			cityPanel.addGui(v4Gui);
-			v4.startThread();
 			break;
 
 		default:
@@ -596,13 +583,9 @@ public class SetUpWorldFactory{
 			v3.addBusStop(4, "Bus Stop 4", bs4 );
 			v3.addBusStop(5, "Bus Stop 5", bs5 );
 			v3.addBusStop(6, "Bus Stop 6", bs6 );
-			AStarTraversal t3 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
-			VehicleGui v3Gui = new VehicleGui( v3, layout, t3, locationMap);
-			v3.agentGui = v3Gui;
 			//v3.location = "Bus Stop 1";
 			v3.currentStop = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 1"))).getBusStopAgent();
 			v3.agentGui.setStartingStates("Bus Stop 1");
-			cityPanel.addGui(v3Gui);
 			v3.startThread();
 
 			BusAgent b1 = new BusAgent("Bus 2");
@@ -613,14 +596,10 @@ public class SetUpWorldFactory{
 			b1.addBusStop(4, "Bus Stop 4", bs4 );
 			b1.addBusStop(5, "Bus Stop 5", bs5 );
 
-			AStarTraversal tb1 = new VehicleAStarTraversal(layout.getAgentGrid(), layout.getRoadGrid());
-			VehicleGui vb1Gui = new VehicleGui( b1, layout, tb1, locationMap);
-			b1.agentGui = vb1Gui;
 			b1.agentGui.setStartingStates("Bus Stop 3");
 			//	b1.location = "Bus Stop 5";
 			//b1.currentStop = ((BusStopBuildingPanel)(buildingsPanels.getBuildingPanel("Bus Stop 5"))).getBusStopAgent();
 			b1.setStartStopNumber(4);
-			cityPanel.addGui(vb1Gui);
 			b1.startThread();
 
 			break;
