@@ -1,5 +1,7 @@
 package restaurant.luca;
 
+import interfaces.generic_interfaces.GenericCook;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -11,7 +13,7 @@ import restaurant.interfaces.luca.LucaCook;
 import restaurant.interfaces.luca.LucaWaiter;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
-import Person.Role.Role;
+import Person.Role.ShiftTime;
 import agent.Constants;
 
 /**
@@ -21,7 +23,7 @@ import agent.Constants;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class LucaCookRole extends Role implements LucaCook{
+public class LucaCookRole extends GenericCook implements LucaCook{
 	private CookGui cookGui;
 	private Semaphore atRefrigerator = new Semaphore(0,false);
 	private Semaphore atGrill = new Semaphore(0,false);
@@ -29,7 +31,6 @@ public class LucaCookRole extends Role implements LucaCook{
 	private Semaphore atDefaultPos = new Semaphore(0,false);
 	public Collection<Order> myWaitingOrders;
 	public Collection<Order> myRejectedOrders;
-	private String name;
 	private int marketCurrentlyBeingAskedForFood;
 	public List<LucaWaiter> waiters
 	= Collections.synchronizedList(new ArrayList<LucaWaiter>());
@@ -50,8 +51,8 @@ public class LucaCookRole extends Role implements LucaCook{
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public LucaCookRole(){
-		super();
+	public LucaCookRole(String restLocation){
+		super(restLocation);
 		marketCurrentlyBeingAskedForFood =0;
 		foodTypes.add(new Food("Steak", 7, 1));//Food type, cooktime, quantity
 		foodTypes.add(new Food("Chicken", 3, 1));//Food type, cooktime, quantity
@@ -61,7 +62,7 @@ public class LucaCookRole extends Role implements LucaCook{
 	}
 	
 	public String getName(){
-		return name;
+		return myPerson.getName();
 	}
 	/**
 	 * hack to establish connection to Host agent.
@@ -401,6 +402,18 @@ public class LucaCookRole extends Role implements LucaCook{
 
 	@Override
 	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
 		// TODO Auto-generated method stub
 		return null;
 	}

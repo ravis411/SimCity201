@@ -1,14 +1,17 @@
 package restaurant.luca;
 
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import Person.Role.ShiftTime;
 import restaurant.interfaces.luca.LucaCustomer;
 import restaurant.interfaces.luca.LucaHost;
 import restaurant.interfaces.luca.LucaWaiter;
-import Person.Role.Role;
 
 /**
  * Restaurant Host Agent
@@ -17,7 +20,7 @@ import Person.Role.Role;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class LucaHostRole extends Role implements LucaHost{
+public class LucaHostRole extends GenericHost implements LucaHost{
 	static int NTABLES = 4;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
@@ -34,15 +37,14 @@ public class LucaHostRole extends Role implements LucaHost{
 	//note that tables is typed with Collection semantics.
 	//Later we will see how it is implemented
 	
-	private String name;
 
 
 
 
-	public LucaHostRole(String name) {
-		super();
 
-		this.name = name;
+	public LucaHostRole(String restLocation) {
+		super(restLocation);
+		
 		// make some tables
 		tables = Collections.synchronizedCollection(new ArrayList<Table>(NTABLES));
 		for (int ix = 1; ix <= NTABLES; ix++) {
@@ -53,11 +55,11 @@ public class LucaHostRole extends Role implements LucaHost{
 		return NTABLES;
 	}
 	public String getMaitreDName() {
-		return name;
+		return  getPerson().getName();
 	}
 
 	public String getName() {
-		return name;
+		return getPerson().getName();
 	}
 
 	public List getWaitingCustomers() {
@@ -281,6 +283,21 @@ public class LucaHostRole extends Role implements LucaHost{
 	}
 	@Override
 	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void addWaiter(GenericWaiter waiter) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Double getSalary() {
 		// TODO Auto-generated method stub
 		return null;
 	}

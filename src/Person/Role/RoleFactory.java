@@ -1,8 +1,5 @@
 package Person.Role;
 
-import java.lang.reflect.InvocationTargetException;
-
-import trace.AlertLog;
 import interfaces.generic_interfaces.GenericCashier;
 import interfaces.generic_interfaces.GenericCook;
 import interfaces.generic_interfaces.GenericCustomer;
@@ -17,7 +14,10 @@ public class RoleFactory {
 		try {
 			Class c = Class.forName(string);
 			Employee e = (Employee) c.getDeclaredConstructor(String.class).newInstance(restLocation);
-			
+			//make sure your building is set to appropriate building type in addBuildingPanel method in BuildingsPanels class
+			//for example restaurant needs to be specified as a restaurant not a building or the line below
+			//"Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(e.getWorkLocation());"
+			//or else you will get cast error
 			if(e instanceof GenericWaiter){
 				GenericWaiter gw = (GenericWaiter) e;
 				Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(e.getWorkLocation());

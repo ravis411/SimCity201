@@ -1,5 +1,9 @@
 package restaurant.luca;
 
+import interfaces.generic_interfaces.GenericCashier;
+import interfaces.generic_interfaces.GenericCustomer;
+import interfaces.generic_interfaces.GenericHost;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,14 +17,12 @@ import restaurant.gui.luca.CustomerGui;
 import restaurant.interfaces.luca.LucaCustomer;
 import restaurant.interfaces.luca.LucaWaiter;
 import restaurant.test.mock.EventLog;
-import Person.Role.Role;
 import agent.Constants;
 
 /**
  * Restaurant customer agent.
  */
-public class LucaRestaurantCustomerRole extends Role implements LucaCustomer{
-	private String name;
+public class LucaRestaurantCustomerRole extends GenericCustomer implements LucaCustomer{
 	private int hungerLevel = 10;        // determines length of meal
 	private boolean isHungry;
 	private boolean gotMenu;
@@ -56,9 +58,9 @@ public class LucaRestaurantCustomerRole extends Role implements LucaCustomer{
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public LucaRestaurantCustomerRole(String name){
+	public LucaRestaurantCustomerRole(){
 		super();
-		this.name = name;
+
 		isHungry = false;
 		gotMenu=false;
 		hasEnoughMoney= false;
@@ -339,7 +341,7 @@ public class LucaRestaurantCustomerRole extends Role implements LucaCustomer{
 
 	// Accessors, etc.
 	public String getName() {
-		return name;
+		return myPerson.getName();
 	}
 	
 	public int getHungerLevel() {
@@ -389,6 +391,18 @@ public class LucaRestaurantCustomerRole extends Role implements LucaCustomer{
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void setCashier(GenericCashier c) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setHost(GenericHost h) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

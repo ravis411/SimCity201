@@ -134,7 +134,10 @@ public class SimCity201Gui extends JFrame {
 			buildingsPanels = SetUpWorldFactory.buildingsPanels;
 			break;
 		default:
-			AlertLog.getInstance().logError(AlertTag.GENERAL_CITY, "City", "Error loading " + config + " configuration.");
+			factory.LoadDefault();
+			layout = SetUpWorldFactory.layout;
+			cityPanel = SetUpWorldFactory.cityPanel;
+			buildingsPanels = SetUpWorldFactory.buildingsPanels;
 			break;
 		}
 		
