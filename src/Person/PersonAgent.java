@@ -293,7 +293,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	   state=PersonState.PayRentNow;
 	   stateChanged();
 	}
-	
+
 	
 	public void msgAddObjectToBackpack(String object, int quantity){
 		boolean added = false;
@@ -415,10 +415,7 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 								p.partyState=PartyState.GoingToParty;
 								return true;
 							}
-						
-							
 						}
-						
 					}
 					int i= new Random().nextInt(40);
 					if(i%2==0){
@@ -715,6 +712,11 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		return null;
 	}
 	
+	public void homeThrowParty() {
+		HomeRole role = (HomeRole) findRole("HomeRole");
+		role.msgThrowParty();
+	}
+	
 	/**
 	 * Getter function for name
 	 * @return name
@@ -979,5 +981,13 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 	public void addFriend(PersonAgent agent){
 		if(!friends.contains(agent))
 			friends.add(agent);
+	}
+	
+	public boolean hasCar() {
+		if (myCar != null) {
+			return true;
+		}
+		else
+			return false;
 	}
 }

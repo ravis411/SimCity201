@@ -16,7 +16,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import Person.PersonAgent;
-
+/**
+ * GUI class for the command window that pops up 
+ * from the control panel
+ * @author JEFFREY
+ *
+ */
 public class CommandsControl extends JFrame implements ActionListener {
 	
 	public JScrollPane pane1 =
@@ -95,19 +100,19 @@ public class CommandsControl extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == throwPartyB) {
-			
+			throwParty();
 		}
 		else if (e.getSource() == getHungryB) {
-			
+			getHungry();
 		}
 		else if (e.getSource() == makeFriendB) {
 			addFriends();
 		}
 		else if (e.getSource() == addMoneyB) {
-			
+			addMoney();
 		}
 		else if (e.getSource() == goToB) {
-			
+			//TODO
 		}
 		
 	}
@@ -121,5 +126,14 @@ public class CommandsControl extends JFrame implements ActionListener {
 		}
 		controller.personAddFriends(people);
 	}
-
+	private void getHungry() {
+		controller.personGetHungry();
+	}
+	private void throwParty() {
+		controller.personThrowParty();
+	}
+	private void addMoney() {
+		Double funds = Double.parseDouble(moneyTF.getText());
+		controller.personAddMoney(funds);
+	}
 }

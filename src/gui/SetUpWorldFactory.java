@@ -855,7 +855,14 @@ public class SetUpWorldFactory{
 		locationMap.add(new LocationInfo(location));
 	}
 	
-	public static void addPerson(String name, String residenceName, String initialRole){
+	/**
+	 * If you want the person to spawn in the house, make initialLocation and initialRole null
+	 * @param name
+	 * @param residenceName
+	 * @param initialRole
+	 * @param initialLocation
+	 */
+	public static void addPerson(String name, String residenceName, String initialRole, String initialLocation){
 		try{
 			PersonAgent person = new PersonAgent(name, buildingsPanels.getResidenceBuildingPanel(residenceName));
 			
@@ -865,9 +872,9 @@ public class SetUpWorldFactory{
 				Class e = Employee.class;
 				Class c = Class.forName(initialRole);
 				if(e.isAssignableFrom(c)){
-					person.setInitialRole(RoleFactory.employeeFromString(initialRole, initialRole), initialRole);
+					person.setInitialRole(RoleFactory.employeeFromString(initialRole, initialLocation), initialLocation);
 				}else{
-					person.setInitialRole(RoleFactory.roleFromString(initialRole), initialRole);
+					person.setInitialRole(RoleFactory.roleFromString(initialRole), initialLocation);
 				}
 			}
 			
@@ -1000,21 +1007,22 @@ public class SetUpWorldFactory{
 					}
 
 				}
-				
-				//sets up the friend lists for the people after all people have been added
-				for(MyPerson person : peopleList){
-					for(String name : person.friends){
-						PersonAgent p = peopleMap.get(name);
-						if(p != null)
-							person.person.addFriend(p);
-					}
-				}
-				
-				for(PersonAgent a : agents){
-					controls.addPerson(a);
-				}
-				
+					
 			}
+
+			//sets up the friend lists for the people after all people have been added
+			for(MyPerson person : peopleList){
+				for(String name : person.friends){
+					PersonAgent p = peopleMap.get(name);
+					if(p != null)
+						person.person.addFriend(p);
+				}
+			}
+			
+			for(PersonAgent a : agents){
+				controls.addPerson(a);
+			}
+			
 		} catch (DOMException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
