@@ -74,10 +74,6 @@ public class HomeRole extends Role implements Home {
 		features.add(new HomeFeature("Sink"));
 		features.add(new HomeFeature("Stove"));
 		features.add(new HomeFeature("Refrigerator"));
-		
-		if(myPerson.getName() == "Person 10") {
-			partyState = PartyState.sendInvites;
-		}
 	}
 	
 	public void setGui(HomeRoleGui gui){
@@ -103,7 +99,7 @@ public class HomeRole extends Role implements Home {
 
 		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "I just got charged rent for the " + date + "th.");
 		setRentOwed(amount);
-
+		
 		rentOwed = amount;
 
 		stateChanged();

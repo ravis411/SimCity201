@@ -461,16 +461,16 @@ public class SetUpWorldFactory{
 				p1.setInitialRole(new HomeRole(p1), "House 1");
 				break;
 			case "Person 6":
-				p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_KUSH_WAITER_ROLE, "Kush's Restaurant"), "Kush's Restaurant");
+				//p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_KUSH_WAITER_ROLE, "Kush's Restaurant"), "Kush's Restaurant");
 				break;
 			case "Person 3":
-				p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_KUSH_HOST_ROLE, "Kush's Restaurant"), "Kush's Restaurant");
+				//p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_KUSH_HOST_ROLE, "Kush's Restaurant"), "Kush's Restaurant");
 				break;
 			case "Person 5":
-				p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_KUSH_COOK_ROLE, "Kush's Restaurant"), "Kush's Restaurant");
+				//p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_KUSH_COOK_ROLE, "Kush's Restaurant"), "Kush's Restaurant");
 				break;
 			case "Person 4":
-				p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_KUSH_CASHIER_ROLE, "Kush's Restaurant"), "Kush's Restaurant");
+				//p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_KUSH_CASHIER_ROLE, "Kush's Restaurant"), "Kush's Restaurant");
 				break;
 			case "Person 7":
 				p1.setInitialRole(RoleFactory.roleFromString(Role.MARKET_MANAGER_ROLE), "Market 1");

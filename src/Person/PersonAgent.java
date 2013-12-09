@@ -123,7 +123,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		if(home.isApartment) {
 			rentDueDate = Calendar.getInstance();
 			rentDueDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1, 0, MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND));
-			MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
+			MasterTime.getInstance().registerTimeListener(0, 0, true, this);
 		}
 	}
 	
@@ -186,6 +186,8 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			rentDueDate = Calendar.getInstance();
 			rentDueDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1, 0, MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND));
 			MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
+			MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+2), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
+			//MasterTime.getInstance().registerTimeListener(0, 0, true, this);
 		//}
 		
 //		if(name.equals("Person 1") || name.equals("Person 2") )
@@ -394,11 +396,9 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 					for(PersonAgent pa:friends){
 						if(pa==p.getHost()){
 							rsvpYes(pa,p);	
-							//return true;
 						}
 						else{
 							rsvpNo(pa,p);
-						
 						}   
 					}
 				}
@@ -410,22 +410,23 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 				if(p.partyState==PartyState.ReceivedInvite){
 					for(PersonAgent pa :friends){
 						if(pa==p.getHost()){
-							int i= 3;
+							int i= new Random().nextInt(40);
 							if(i%2==0){
-								rsvpYes(pa,p); 
+								rsvpYes(pa,p);
 								return true;
 							}
 							else{ 
 								p.partyState=PartyState.notRSVPed;
 							}
-					 }
+						}
 					}
 					int i= new Random().nextInt(40);
 					if(p.partyState==PartyState.ReceivedInvite){
 						if(i%2==0){
 							rsvpNo((PersonAgent) p.host,p);
 						}
-						else{p.partyState=PartyState.notRSVPed;
+						else{
+							p.partyState=PartyState.notRSVPed;
 						}
 					}
 				}
@@ -1197,7 +1198,6 @@ private void GoRobBank(){
 	}
 
 	public void dateAction(int month, int day, int hour, int minute) {
-		print("DATEE ACTIONN CALLED");
 		HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE);
 		if(hr.rsvpDate.get(Calendar.MONTH) == month && hr.rsvpDate.get(Calendar.DAY_OF_MONTH) == day && hr.rsvpDate.get(Calendar.HOUR_OF_DAY) == hour && hr.rsvpDate.get(Calendar.MINUTE) == minute) {
 			hr.msgResendInvites();
@@ -1209,11 +1209,11 @@ private void GoRobBank(){
 			}
 		}
 		if(rentDueDate != null && home != null && home.isApartment == true) {
-			if(rentDueDate.get(Calendar.DAY_OF_MONTH) == day && hour == 0) {
-				hr.msgRentDue(5.00,rentDueDate.get(Calendar.DAY_OF_MONTH));
-				rentDueDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1, 0, MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND));
-				MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
-			}
+            if(rentDueDate.get(Calendar.DAY_OF_MONTH) == day && hour == 0) {
+                    hr.msgRentDue(5.00,rentDueDate.get(Calendar.DAY_OF_MONTH));
+                    rentDueDate.add(Calendar.DAY_OF_MONTH, 1);
+                    //MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
+            }
 		}
 		for(Party p: parties){
 			if(p.dateOfParty.get(Calendar.MONTH) == month && p.dateOfParty.get(Calendar.DAY_OF_MONTH) == day && p.dateOfParty.get(Calendar.HOUR_OF_DAY) == hour && p.dateOfParty.get(Calendar.MINUTE) == minute) {

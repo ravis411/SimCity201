@@ -81,7 +81,7 @@ public class ApartmentManagerRole extends Role implements ApartmentManager {
 	// Actions
 
 	private void chargeRent (Home h) {
-		h.msgRentDue(20);
+		//h.msgRentDue(20);
 	}
 	private void demandRent (PersonAgent p) {
 		p.msgPayBackRentUrgently();
