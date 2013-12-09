@@ -1,19 +1,21 @@
 package ryansRestaurant;
 
-import Person.Role.ShiftTime;
-import agent.Agent;
+import interfaces.generic_interfaces.GenericCashier;
 import interfaces.generic_interfaces.GenericCook;
 
-import java.awt.Dimension;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
-import ryansRestaurant.RyansMarketRole;
-import ryansRestaurant.RyansMarketRole.Food;
 import ryansRestaurant.RyansMarketRole.MarketOrder;
 import ryansRestaurant.gui.CookGui;
-import ryansRestaurant.gui.Gui;
 import ryansRestaurant.interfaces.RyansCashier;
+import Person.Role.ShiftTime;
 
 /**
  * Restaurant Cook Agent
@@ -62,17 +64,18 @@ public class RyansCookRole extends GenericCook {
 	//public static List<String> menu = Collections.synchronizedList(new ArrayList<String>());
 	public static List<String> menu = (new ArrayList<String>());
 	
+	public void setCashier(GenericCashier cashier){
+		this.cashier = (RyansCashier) cashier;
+	}
 	
-	public RyansCookRole(String name, RyansCashier cashier, String workplace) {
+	public RyansCookRole( String workplace) {
 		super(workplace);
-		this.name = name;
-		this.cashier = cashier;
 		
-		inventory.put("Oreo Cookie", new Food("Oreo Cookie", 1000, 1, 3, 40) );
-		inventory.put("Oreo Cake", new Food("Oreo Cake", 10000, 3, 5, 11) );
-		inventory.put("Oreo Milkshake" , new Food("Oreo Milkshake", 9000, 9, 5, 10 ));
-		inventory.put("Cookies n Cream", new Food("Cookies n Cream", 3000, 4, 3, 10 ));
-		inventory.put("Dirt n Worms", new Food("Dirt n Worms", 5000, 3, 3, 10));
+		inventory.put("Oreo Cookie", new Food("Oreo Cookie", 1000, 10000, 3, 40) );
+		inventory.put("Oreo Cake", new Food("Oreo Cake", 10000, 30000, 5, 11) );
+		inventory.put("Oreo Milkshake" , new Food("Oreo Milkshake", 9000, 90000, 5, 10 ));
+		inventory.put("Cookies n Cream", new Food("Cookies n Cream", 3000, 4000, 3, 10 ));
+		inventory.put("Dirt n Worms", new Food("Dirt n Worms", 5000, 30000, 3, 10));
 		
 		updateMenu();
 		
@@ -84,7 +87,7 @@ public class RyansCookRole extends GenericCook {
 
 
 	public String getName() {
-		return name;
+		return myPerson.getName();
 	}
 
 	// Messages

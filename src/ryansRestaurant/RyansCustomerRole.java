@@ -60,42 +60,32 @@ public class RyansCustomerRole extends GenericCustomer implements RyansCustomer 
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public RyansCustomerRole(String name){
+	public RyansCustomerRole(){
 		super();
-		this.name = name;
 		
-		
-		//hack for not checking wallet
-		if( name.toLowerCase().contains("flake") )
-				flake = true;
-		//hack for not being patient
-		if((name.toLowerCase().contains("leave")))
-			leaves = true;
-		
-		//hack to set initial wallet amount
-		if(name.contains("$")) {
-			int pos = name.lastIndexOf("$");
-			double wallet;
-			try {
-				wallet = Double.parseDouble(name.substring(pos + 1));
-				this.wallet = wallet;
-				print("I have $" + this.wallet);
-			} catch (NumberFormatException e) {
-				e.printStackTrace();
-			}
-		}
+//		this.name = myPerson.getName();
+//		//hack for not checking wallet
+//		if( name.toLowerCase().contains("flake") )
+//				flake = true;
+//		//hack for not being patient
+//		if((name.toLowerCase().contains("leave")))
+//			leaves = true;
+//		
+//		//hack to set initial wallet amount
+//		if(name.contains("$")) {
+//			int pos = name.lastIndexOf("$");
+//			double wallet;
+//			try {
+//				wallet = Double.parseDouble(name.substring(pos + 1));
+//				this.wallet = wallet;
+//				print("I have $" + this.wallet);
+//			} catch (NumberFormatException e) {
+//				e.printStackTrace();
+//			}
+//		}
 		
 		
 	}
-
-	/**
-	 * hack to establish connection to RyansHost agent.
-	 */
-	public void setHost(RyansHost host) {
-		this.host = host;
-	}
-	
-	
 
 	public String getCustomerName() {
 		return name;
@@ -339,7 +329,7 @@ public class RyansCustomerRole extends GenericCustomer implements RyansCustomer 
 				
 				//hack to have customer choose his name
 				for(String c : menu) {
-					if(name.toLowerCase().contains(c.toLowerCase())) {
+					if(getName().toLowerCase().contains(c.toLowerCase())) {
 						choice = c;
 					}
 				}
@@ -433,7 +423,7 @@ public class RyansCustomerRole extends GenericCustomer implements RyansCustomer 
 	// Accessors, etc.    
 
 	public String getName() {
-		return name;
+		return myPerson.getName();
 	}
 	
 	public int getHungerLevel() {
@@ -489,7 +479,7 @@ public class RyansCustomerRole extends GenericCustomer implements RyansCustomer 
 	@Override
 	public void setCashier(GenericCashier c) {
 		// TODO Auto-generated method stub
-		
+		this.cashier = (RyansCashier) c;
 	}
 
 	@Override
@@ -507,9 +497,7 @@ public class RyansCustomerRole extends GenericCustomer implements RyansCustomer 
 	
 	@Override
 	public void setHost(GenericHost h) {
-		if( h instanceof RyansHostRole) {
-			this.host = (RyansHost)h;
-		}
+		this.host = (RyansHost) h;
 		
 	}
 

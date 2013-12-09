@@ -1,5 +1,7 @@
 package ryansRestaurant.interfaces;
 
+import interfaces.generic_interfaces.GenericWaiter;
+
 
 public interface RyansHost {
 	public abstract void msgIWantFood(RyansCustomer cust);
@@ -25,7 +27,7 @@ public interface RyansHost {
 	/**msgAddWaiter
 	 * @param waiter the waiter to add
 	 */
-	public abstract void msgAddWaiter(RyansWaiter waiter);
+	public abstract void addWaiter(GenericWaiter waiter);
 	
 	
 	/**msgAddTable sent from GUI when a table is added.

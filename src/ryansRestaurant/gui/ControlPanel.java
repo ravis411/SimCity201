@@ -126,7 +126,7 @@ public class ControlPanel extends JPanel implements ActionListener {
 	public void showCashierInfo() {
 		this.removeAll();
 		state = GUIState.cashierPanel;
-		add(new CashierInfo(gui.restPanel.getCashier()));
+		//add(new CashierInfo(gui.restPanel.getCashier()));
 		this.repaint();
 		validate();
 	}
@@ -136,7 +136,7 @@ public class ControlPanel extends JPanel implements ActionListener {
 		this.removeAll();
 		state = GUIState.cookPanel;
         
-		add(new CookInfo(gui.restPanel.getCook()));
+		//add(new CookInfo(gui.restPanel.getCook()));
 		
 		this.repaint();
 		validate();

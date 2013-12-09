@@ -63,7 +63,7 @@ public class RyansRestaurantBuildingPanel extends BuildingPanel{
 
 	@Override
 	public GuiPanel getPanel() {
-		return null;
+		return restaurantPanel.getAnimationPanel();
 	}
 
 }

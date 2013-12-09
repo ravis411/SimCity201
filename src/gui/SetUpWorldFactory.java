@@ -1023,7 +1023,7 @@ public class SetUpWorldFactory{
 							NamedNodeMap iMap = iElement.getAttributes();
 							for(int j = 0; j < iMap.getLength(); j++){
 								Node jNode = iMap.item(j);
-								System.err.println("ATTRIBUTE-NAME: "+jNode.getNodeName());
+								//System.err.println("ATTRIBUTE-NAME: "+jNode.getNodeName());
 								switch(jNode.getNodeName()){
 									case Config.BUILDING_ID_ATTRIBUTE:
 										iId = Integer.valueOf(Integer.parseInt(jNode.getNodeValue()));

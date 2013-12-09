@@ -41,16 +41,14 @@ public class RyansCashierRole extends GenericCashier implements RyansCashier {
 	
 	private List<MarketBill> marketBills = Collections.synchronizedList(new LinkedList<MarketBill>());
 	
-	public RyansCashierRole(String name, String workplace) {
+	public RyansCashierRole(String workplace) {
 		super(workplace);
-
-		this.name = name;
 
 	}
 
 
 	public String getName() {
-		return name;
+		return myPerson.getName();
 	}
 
 	// Messages

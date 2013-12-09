@@ -1,12 +1,22 @@
 package ryansRestaurant.gui;
 
+import interfaces.GuiPanel;
+
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+
+import ryansRestaurant.RyansCashierRole;
+import ryansRestaurant.RyansCookRole;
 import ryansRestaurant.RyansCustomerRole;
+import ryansRestaurant.RyansHostRole;
 import ryansRestaurant.RyansWaiterRole;
-
-import javax.swing.*;
-
-import java.awt.*;
-import java.awt.event.*;
+import Person.Role.Role;
 /**
  * Main GUI class.
  * Contains the main frame and subsequent panels
@@ -83,6 +93,11 @@ public class RestaurantGui extends JPanel {
         //controlFram.setVisible(false);
       
         
+    }
+    
+    
+    public RyansRestaurantAnimationPanel getAnimationPanel(){
+    	return this.animationPanel;
     }
    
     

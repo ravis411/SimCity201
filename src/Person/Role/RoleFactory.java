@@ -5,6 +5,7 @@ import interfaces.generic_interfaces.GenericCook;
 import interfaces.generic_interfaces.GenericCustomer;
 import interfaces.generic_interfaces.GenericHost;
 import interfaces.generic_interfaces.GenericWaiter;
+import ryansRestaurant.RyansCookRole;
 import building.BuildingList;
 import building.Restaurant;
 
@@ -33,6 +34,11 @@ public class RoleFactory {
 				return gh;
 			}else if(e instanceof GenericCook){
 				GenericCook gc = (GenericCook) e;
+				if(gc instanceof RyansCookRole){
+					RyansCookRole rcr = (RyansCookRole) gc;
+					Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(rcr.getWorkLocation());
+					rcr.setCashier(rest.getCashierRole());
+				}
 				return gc;
 			}else if(e instanceof GenericCashier){
 				GenericCashier gc = (GenericCashier) e;
