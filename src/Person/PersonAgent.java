@@ -982,4 +982,12 @@ public class PersonAgent extends Agent implements Person, TimeListener{
 		if(!friends.contains(agent))
 			friends.add(agent);
 	}
+	
+	public boolean hasCar() {
+		if (myCar != null) {
+			return true;
+		}
+		else
+			return false;
+	}
 }

@@ -16,7 +16,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import Person.PersonAgent;
-
+/**
+ * GUI class for the command window that pops up 
+ * from the control panel
+ * @author JEFFREY
+ *
+ */
 public class CommandsControl extends JFrame implements ActionListener {
 	
 	public JScrollPane pane1 =

@@ -129,14 +129,14 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 		 */
 		
 		//Update Center text field
-		/*
+		
 		String carStatus;
 		if (agent.hasCar()) {
 			carStatus = "Yes";
 		}
 		else {
 			carStatus = "No";
-		}*/
+		}
 		String currentJob;
 		try {
 			currentJob = agent.getCurrentJobString();
@@ -148,12 +148,12 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 				"</u> <table><tr> Current Job: " + currentJob + 
 				"</tr><tr> Age: " + agent.getAge() + 
 				"</tr><tr> SSN: " + agent.getSSN() +
-				"</tr><tr> Owns car: " + "/*carStatus*/" + 
+				"</tr><tr> Owns car: " + carStatus + 
 				"</tr><tr> Current money: " + agent.getMoney() + 
 				"</tr><tr> Hunger Level: " + agent.getHungerLevel() + 
 				"</tr><tr> Current Loan: " + agent.getLoan() + 
 				"</tr><tr> Number of Parties: " + agent.getNumParties() +
-				"</tr><tr> Current Location: " + agent.getCurrentLocation() +
+				"</tr><tr> Current Location: " + agent.getPersonGui().getCurrentLocation() +
 				"</tr><tr> Friends: "; 
 		
 		for (PersonAgent friend : agent.getFriends()) {
