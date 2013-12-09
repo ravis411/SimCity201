@@ -22,6 +22,11 @@ public class MasterTime {
 			masterTime = new MasterTime();
 		return masterTime;
 	}
+	
+	protected MasterTime(){
+		dateListeners = Collections.synchronizedList(new ArrayList<MyDateListener>());
+		timeListeners = Collections.synchronizedList(new ArrayList<MyTimeListener>());
+	}
 
 	
 //	private class Field {
