@@ -50,7 +50,7 @@ public class CookRole extends GenericCook {
 		super(workLocation);
 		
 		for(int i=0; i<3; i++) {
-			inventory.add(new Food(menu.getDishName(i), 5000, 300));
+			inventory.add(new Food(menu.getDishName(i), 5000, 0));
 		}
 		
 	}

@@ -22,6 +22,7 @@ import MarketEmployee.MarketCustomerRole;
 import MarketEmployee.MarketEmployeeRole;
 import MarketEmployee.MarketManagerRole;
 import Person.Role.Role;
+import Transportation.DeliveryTruckAgent;
 
 public class MarketAnimationPanel extends JPanel implements ActionListener,GuiPanel {
 
@@ -166,6 +167,7 @@ public class MarketAnimationPanel extends JPanel implements ActionListener,GuiPa
 			MarketManagerRole marketManagerRole = (MarketManagerRole) r;
 			MarketManagerGui gui = new MarketManagerGui(marketManagerRole);
 			marketManagerRole.setGui(gui);
+			marketManagerRole.setDeliveryTruck(new DeliveryTruckAgent("Delivery Truck"));
 			marketData.setMarketManager(marketManagerRole);
 			marketManagerRole.setMarketData(marketData);
 			guis.add(gui);

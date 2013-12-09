@@ -16,6 +16,7 @@ import restaurant.CookRole;
 import trace.AlertLog;
 import trace.AlertTag;
 import Person.Role.Role;
+import Transportation.DeliveryTruckAgent;
 
 /**
  * MarketCustomer Role
@@ -38,6 +39,7 @@ public class MarketManagerRole extends Role implements MarketManager{
 	int orderNum=0;
 	Random random = new Random(System.nanoTime());
 	private MarketData marketData;
+	private DeliveryTruckAgent deliveryTruck;
 	/**
 	 * Constructor for MarketManager Role
 	 *
@@ -265,6 +267,7 @@ public class MarketManagerRole extends Role implements MarketManager{
 						ck.msgOrderFilled(myOrders.get(i).getNumberThatIsAssociatedWithFoodsMenuNumber()
 								,myOrders.get(i).getAmountReadyToBeShipped());
 						AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "Market sending full order of "+myOrders.get(i).getAmountReadyToBeShipped()+" "+ (myOrders.get(i).getFoodType()));
+						deliveryTruck.msgNewDestination("Food Court");
 						myOrders.get(i).setState(Order.OrderState.delivered);
 
 					}
@@ -272,6 +275,7 @@ public class MarketManagerRole extends Role implements MarketManager{
 						ck.msgOrderPartiallyFilled(myOrders.get(i).getNumberThatIsAssociatedWithFoodsMenuNumber()
 								,myOrders.get(i).getAmountReadyToBeShipped());
 						AlertLog.getInstance().logMessage(AlertTag.MARKET, getNameOfRole(), "Market sending partial order of "+myOrders.get(i).getAmountReadyToBeShipped()+" "+ (myOrders.get(i).getFoodType()));
+						deliveryTruck.msgNewDestination("Food Court");
 						myOrders.get(i).setState(Order.OrderState.delivered);
 
 					}
@@ -349,6 +353,10 @@ public class MarketManagerRole extends Role implements MarketManager{
 	public void setMarketData(MarketData marketData) {
 		this.marketData=marketData;
 	}
+	public void setDeliveryTruck(DeliveryTruckAgent deliveryTruckAgent) {
+		this.deliveryTruck=deliveryTruckAgent;
+	}
+
 
 	private class CounterStation{
 		int CounterNumber;
