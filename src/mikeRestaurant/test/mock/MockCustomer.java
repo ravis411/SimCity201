@@ -76,13 +76,13 @@ public class MockCustomer extends Mock implements Customer{
 	}
 
 	@Override
-	public void msgArrivedAtJail() {
+	public void msgHereIsCheck(double check) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void msgHereIsCheck(double check) {
+	public void msgArrivedAtStart() {
 		// TODO Auto-generated method stub
 		
 	}

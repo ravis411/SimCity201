@@ -211,14 +211,13 @@ public class SetUpWorldFactory{
 		addBuilding("Food Court", "Food Court", 23, 12, 2, 2, location);
 		//addBuilding("RyansRestaurant", "Restaurant 2", 23, 12, 2, 2, location);
 //Building 12
-/*		location.sector = 2;
+		location.sector = 2;
 		location.positionToEnterFromMainGrid = new Dimension(30, 12);
 		location.entranceFromMainGridPosition = new Dimension(29, 12);
 		location.entranceFromRoadGrid = new Dimension(29, 12);
 				location.positionToEnterFromRoadGrid = new Dimension(29, 11);
 				layout.addDriveway(28, 10, 2, 2);
-		addBuilding("Luca's Restaurant", "Luca's Restaurant", 28, 12, 2, 2, location);
-		//addBuilding("Default", "Default", 28, 12, 2, 2, location);*/
+		addBuilding("Default", "Default 1", 28, 12, 2, 2, location);
 		//file reading
 //		try {
 //			File fXmlFile = new File("scenario1.xml");
@@ -331,7 +330,7 @@ public class SetUpWorldFactory{
 			addPerson("Person 10", buildingsPanels.getResidenceBuildingPanel("Apartment 9"));
 			addPerson("Person 11", buildingsPanels.getResidenceBuildingPanel("Apartment 10"));
 			addPerson("Person 12", buildingsPanels.getResidenceBuildingPanel("Apartment 11"));
-
+			addPerson("Person 13", buildingsPanels.getResidenceBuildingPanel("Apartment 12"));
 			
 			//Need to add people to the GUI controls here as well; 
 			controls.addPerson(agents.get(0));
@@ -347,7 +346,7 @@ public class SetUpWorldFactory{
 			controls.addPerson(agents.get(10));
 			controls.addPerson(agents.get(11));
 
-			//addPerson("Person 13", buildingsPanels.getResidenceBuildingPanel("Apartment 12"));
+		
 			//addPerson("Person 14", buildingsPanels.getResidenceBuildingPanel("Apartment 13"));
 			//addPerson("Person 15", buildingsPanels.getResidenceBuildingPanel("Apartment 14"));
 //			addPerson("Person 14", buildingsPanels.getResidenceBuildingPanel("Apartment 13"));
