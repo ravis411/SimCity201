@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 public class MasterTime {
 
@@ -13,6 +14,7 @@ public class MasterTime {
 	private final Calendar calendar = Calendar.getInstance();
 	private List<MyDateListener> dateListeners;
 	private List<MyTimeListener> timeListeners;
+	private Semaphore dateListenersAvailable = new Semaphore(0,false);
 	
 	public static MasterTime getInstance(){
 		if(masterTime == null)
@@ -41,6 +43,7 @@ public class MasterTime {
 	 * @param amt the number of units to add
 	 */
 	public synchronized void add(int field, int amt){
+		boolean breakBool=false;
 		calendar.add(field, amt);
 		
 		int month = calendar.get(Calendar.MONTH);
@@ -63,28 +66,27 @@ public class MasterTime {
 		synchronized (dateListeners) {
 			for(MyDateListener dl : dateListeners){
 				if(dl.month == month && dl.day == day && dl.hour == hour && dl.minute == minute){
-					dl.listener.dateAction(month, day, hour, minute);
-					//dateListeners.remove(dl);
+						dl.listener.dateAction(month, day, hour, minute);
 					toRemove.add(dl);
+					breakBool=true;
+					break;
+					
 				}
+				else
+					break;
 			}
 		}
+
 		//now remove dl to prevent ConcurrentModificationExceptions.
 		for (MyDateListener dListener1: toRemove){
-			for (Iterator<MyDateListener> dLst = toRemove.iterator(); dLst.hasNext();){
+			for (Iterator<MyDateListener> dLst = dateListeners.iterator(); dLst.hasNext();){
 				MyDateListener dListener2 = dLst.next();
 					if (dListener2 == dListener1){
 						dLst.remove();
 					}
 			}
 		}
-		/*for(int i = toRemove.size()-1; i >= 0; i--){
-			dateListeners.remove(i);
-		}
-		*/
-//		for(MyDateListener dl : toRemove){
-//			dateListeners.remove(dl);
-//		}
+
 	}
 	
 	/**
@@ -117,7 +119,16 @@ public class MasterTime {
 	 * @return true if the registration worked, false if such a registration already exists
 	 */
 	public boolean registerDateListener(int month, int day, int hour, int minute, DateListener sender){
+		/*if (semaphoreNeeded){
+			try {
+				dateListenersAvailable.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			}*/
 		synchronized (dateListeners) {
+			
 		for(MyDateListener dl : dateListeners){
 			if(dl.listener == sender && dl.month == month && dl.day == day && 
 					dl.hour == hour && dl.minute == minute){
@@ -125,6 +136,7 @@ public class MasterTime {
 			}
 		}
 		}
+		
 		dateListeners.add(new MyDateListener(month, day, hour, minute, sender));
 		return true;
 	}

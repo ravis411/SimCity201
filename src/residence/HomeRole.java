@@ -1,21 +1,22 @@
 package residence;
 
-import MarketEmployee.MarketManagerRole;
-import Person.PersonAgent;
-import Person.Role.Role;
-import agent.Agent;
-import building.BuildingList;
-import residence.ApartmentManagerRole.AgentEvent;
+import interfaces.Home;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Semaphore;
+
 import residence.gui.HomeRoleGui;
 import trace.AlertLog;
 import trace.AlertTag;
 import util.MasterTime;
-import interfaces.ApartmentManager;
-import interfaces.Home;
-import interfaces.Person;
-
-import java.util.*;
-import java.util.concurrent.Semaphore;
+import MarketEmployee.MarketManagerRole;
+import Person.PersonAgent;
+import Person.Role.Role;
+import building.BuildingList;
 
 /**
  * Home Role
