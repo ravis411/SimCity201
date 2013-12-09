@@ -20,6 +20,7 @@ public class RoleFactory {
 			//or else you will get cast error
 			if(e instanceof GenericWaiter){
 				GenericWaiter gw = (GenericWaiter) e;
+				System.out.println(e.getWorkLocation());
 				Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(e.getWorkLocation());
 				gw.setHost(rest.getHostRole());
 				rest.getHostRole().addWaiter(gw);

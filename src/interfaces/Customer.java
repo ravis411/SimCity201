@@ -1,13 +1,9 @@
 package interfaces;
 
-import java.text.DecimalFormat;
-import java.util.Random;
-import java.util.Timer;
-
+import interfaces.generic_interfaces.GenericWaiter;
 import restaurant.Menu;
 //import restaurant.Customer.AgentEvent;
 //import restaurant.Customer.AgentState;
-import restaurant.gui.CustomerGui;
 
 /**
  * A sample Customer interface built to unit test Cashier
@@ -44,7 +40,7 @@ public interface Customer {
 	public abstract int getWaitingLocX();
 	public abstract void setWaitingLocX(int i);
 	public abstract void setWaitingLocY(int i);
-	public abstract void setWaiter(Waiter waiter);
+	public abstract void setWaiter(GenericWaiter waiter);
 	public abstract void setTableX(int xCoor);
 	public abstract void setTableY(int yCoor);
 	public abstract void setTableNum(int table);

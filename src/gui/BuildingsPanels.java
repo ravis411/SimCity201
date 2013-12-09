@@ -67,6 +67,8 @@ public class BuildingsPanels extends JPanel{
 			BuildingList.getInstance().add(new Restaurant(buildingPanel));
 		}else if(buildingPanel instanceof RyansRestaurantBuildingPanel){
 			BuildingList.getInstance().add(new Restaurant(buildingPanel));
+		}else if(buildingPanel instanceof RestaurantBuildingPanel){
+			BuildingList.getInstance().add(new Restaurant(buildingPanel));
 		}else{
 			BuildingList.getInstance().add(new Building(buildingPanel));
 		}
