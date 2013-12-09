@@ -22,9 +22,7 @@ import java.util.concurrent.Semaphore;
  */
 
 public class HomeRole extends Role implements Home {
-	private ApartmentManager landlord;
-	private int rentOwed = 0;
-	private int aptNumber = 0;
+	protected double rentOwed = 0;
 
 	public boolean leaveHome = false;
 	public boolean enterHome = false;
@@ -74,6 +72,7 @@ public class HomeRole extends Role implements Home {
 		
 		features.add(new HomeFeature("Sink"));
 		features.add(new HomeFeature("Stove"));
+		features.add(new HomeFeature("Refrigerator"));
 		
 		if(myPerson.getName() == "Person 10") {
 			partyState = PartyState.sendInvites;
@@ -99,12 +98,11 @@ public class HomeRole extends Role implements Home {
 	
 	// Messages
 	
-	public void msgRentDue (int amount) {
+	public void msgRentDue (double amount, int date) {
 
-		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "I just got charged rent.");
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "I just got charged rent for the " + date + "th.");
 		setRentOwed(amount);
 
-		print("I just got charged rent.");
 		rentOwed = amount;
 
 		stateChanged();
@@ -339,26 +337,26 @@ public class HomeRole extends Role implements Home {
 		}
 	}
 	private void fileWorkOrder (HomeFeature brokenFeature) {
-		landlord.msgBrokenFeature(brokenFeature.name, this);
+		//landlord.msgBrokenFeature(brokenFeature.name, this);
 	}
 	private void payRent () {
 
-		if(myPerson.getMoney() >= getRentOwed()) {
-			landlord.msgRentPaid (this, getRentOwed());
-			myPerson.setMoney(myPerson.getMoney()-getRentOwed());
-			setRentOwed(0);
-			AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Paid my rent. I have $" + myPerson.getMoney() + " left.");
-
+//		if(myPerson.getMoney() >= getRentOwed()) {
+//			//landlord.msgRentPaid (this, getRentOwed());
+//			myPerson.setMoney(myPerson.getMoney()-getRentOwed());
+//			setRentOwed(0);
+//			AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Paid my rent. I have $" + myPerson.getMoney() + " left.");
+//		}
 
 		if(myPerson.getMoney() >= rentOwed) {
-			landlord.msgRentPaid (this, rentOwed);
+			//landlord.msgRentPaid (this, rentOwed);
 			myPerson.setMoney(myPerson.getMoney()-rentOwed);
 			rentOwed = 0;
 			AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Paid my rent. I have $" + myPerson.getMoney() + " left.");
 		}
 		else {
 			//do nothing
-		}}
+		}
 	}
 	private void goToSleep() {
 		gui.DoGoToCenter();
@@ -465,15 +463,11 @@ public class HomeRole extends Role implements Home {
 
 	//utilities
 	
-	public void setLandlord (ApartmentManager role) {
-		this.landlord = role;
-	}
-	
-	public int getRentOwed() {
+	public double getRentOwed() {
 		return rentOwed;
 	}
 
-	public void setRentOwed(int rentOwed) {
+	public void setRentOwed(double rentOwed) {
 		this.rentOwed = rentOwed;
 	}
 

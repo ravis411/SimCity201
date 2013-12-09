@@ -8,6 +8,6 @@ package interfaces;
  */
 
 public interface Home {
-	public void msgRentDue (int amount);
+	//public void msgRentDue (double amount);
 	public void msgFixedFeature (String name);
 }

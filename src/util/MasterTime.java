@@ -3,6 +3,7 @@ package util;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 public class MasterTime {
@@ -39,7 +40,7 @@ public class MasterTime {
 	 * @param field the unit of time defined by Calendar constants
 	 * @param amt the number of units to add
 	 */
-	public void add(int field, int amt){
+	public synchronized void add(int field, int amt){
 		calendar.add(field, amt);
 		
 		int month = calendar.get(Calendar.MONTH);
@@ -69,9 +70,21 @@ public class MasterTime {
 			}
 		}
 		//now remove dl to prevent ConcurrentModificationExceptions.
-		for(MyDateListener dl : toRemove){
-			dateListeners.remove(dl);
+		for (MyDateListener dListener1: toRemove){
+			for (Iterator<MyDateListener> dLst = toRemove.iterator(); dLst.hasNext();){
+				MyDateListener dListener2 = dLst.next();
+					if (dListener2 == dListener1){
+						dLst.remove();
+					}
+			}
 		}
+		/*for(int i = toRemove.size()-1; i >= 0; i--){
+			dateListeners.remove(i);
+		}
+		*/
+//		for(MyDateListener dl : toRemove){
+//			dateListeners.remove(dl);
+//		}
 	}
 	
 	/**
