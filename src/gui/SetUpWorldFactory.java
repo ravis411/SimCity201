@@ -891,8 +891,8 @@ public class SetUpWorldFactory{
 								}
 							}
 							
-							System.out.println("Person Name="+iName+", Home="+iHome+", Job="+iJob+
-									", Location="+iLocation+", HasCar="+iHasCar);
+							//System.out.println("Person Name="+iName+", Home="+iHome+", Job="+iJob+
+									//", Location="+iLocation+", HasCar="+iHasCar);
 							//get children
 							NodeList personChildren = iElement.getChildNodes();
 							for(int j = 0; j < personChildren.getLength(); j++){
@@ -926,7 +926,7 @@ public class SetUpWorldFactory{
 																}
 															}
 															iFriends.add(kName);
-															System.out.println("\t"+kName);
+															//System.out.println("\t"+kName);
 															break;
 													}
 												}
@@ -946,6 +946,7 @@ public class SetUpWorldFactory{
 								Class e = Employee.class;
 								Class c = Class.forName(iJob);
 								if(e.isAssignableFrom(c)){
+									System.out.println(iJob);
 									person.setInitialRole(RoleFactory.employeeFromString(iJob, iLocation), iLocation);
 								}else{
 									person.setInitialRole(RoleFactory.roleFromString(iJob), iLocation);
@@ -1012,7 +1013,7 @@ public class SetUpWorldFactory{
 										break;
 								}
 							}
-							System.out.println(iType+" named "+iName+" at Location #"+iId);
+							//System.out.println(iType+" named "+iName+" at Location #"+iId);
 							addBuildingFromConfig(iId, iType, iName);
 							break;
 					}

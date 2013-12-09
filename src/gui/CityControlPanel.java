@@ -163,14 +163,9 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 	//Add function to realtime update infopanel
 	
 	public void showExtraControls() {
-		JFrame extraControls = new JFrame("Additional Controls");
-		Rectangle windowLocation = new Rectangle(800, 400, 200, 400);
+		JFrame extraControls = new CommandsControl();
+		Rectangle windowLocation = new Rectangle(800, 400, 300, 400);
 		extraControls.setBounds(windowLocation);
-		
-		JPanel testPanel = new JPanel();
-		testPanel.add(new JButton("Test"));
-		extraControls.add(testPanel);
-		
 		
 		extraControls.setVisible(true);
 	}
