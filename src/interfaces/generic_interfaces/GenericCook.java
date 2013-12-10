@@ -4,9 +4,19 @@ import Person.Role.Employee;
 
 public abstract class GenericCook extends Employee{
 
+	private GenericCashier cashier;
+	
 	protected GenericCook(String workLocation) {
 		super(workLocation);
 		// TODO Auto-generated constructor stub
+	}
+	
+	public GenericCashier getCashier(){
+		return cashier;
+	}
+	
+	public void setCashier(GenericCashier cashier){
+		this.cashier = cashier;
 	}
 
 	public void msgOrderFilled(int numberThatIsAssociatedWithFoodsMenuNumber,
