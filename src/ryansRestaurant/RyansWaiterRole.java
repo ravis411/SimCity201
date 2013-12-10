@@ -580,13 +580,6 @@ public class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 
 
 	@Override
-	public ShiftTime getShift() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
 	public Double getSalary() {
 		// TODO Auto-generated method stub
 		return null;

@@ -46,9 +46,10 @@ public class Building {
 	 * @param r the role of the person to be added
 	 */
 	public void addRole(Role r){
-
-		inhabitants.add(r);
-		this.panel.getPanel().addGuiForRole(r);
+		if(!inhabitants.contains(r)){
+			inhabitants.add(r);
+			this.panel.getPanel().addGuiForRole(r);
+		}
 	}
 	
 	/**

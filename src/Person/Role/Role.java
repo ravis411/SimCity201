@@ -118,7 +118,7 @@ public abstract class Role {
 	 */
 	public void activate(){
 		isActive = true;
-		stateChanged();
+		//stateChanged();
 	}
 	
 	public void waitingAtWork(){

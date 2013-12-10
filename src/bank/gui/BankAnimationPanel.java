@@ -177,24 +177,24 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 	public void addGuiForRole(Role r) {
 		if (r instanceof BankClientRole){
 		    BankClientRole clientRole = (BankClientRole) r;
-			Person client = r.getPerson();
+			//Person client = r.getPerson();
 		    BankClientRoles.add(clientRole);
 		    ClientGui clientGui = new ClientGui(clientRole, this);
-	        clientRole.setPerson(client);
-	        ((PersonAgent) client).addRole(clientRole);
+	        //clientRole.setPerson(client);
+	        //((PersonAgent) client).addRole(clientRole);
 	        this.addGui(clientGui);
-	        client.setMoney((double)100);
-	        client.setMoneyNeeded((double)50);
+//	        client.setMoney((double)100);
+//	        client.setMoneyNeeded((double)50);
 	        clientRole.setAnnouncer(announcer);
 	        clientRole.setLoanAnnouncer(loanAnnouncer);
 	        clientRole.setGui(clientGui);
-	        client.startThread();
+	        //client.startThread();
 		}
 		if (r instanceof BankTellerRole){
 		    BankTellerRole tellerRole = (BankTellerRole) r;
-		    Person teller = r.getPerson();
+		    //Person teller = r.getPerson();
 		    TellerGui tellerGui = new TellerGui(tellerRole, this, tellerRole.getLine());
-		    ((PersonAgent) teller).addRole(tellerRole);
+		   // ((PersonAgent) teller).addRole(tellerRole);
 	        this.addGui(tellerGui);
 	        tellerRole.setAnnouncer(announcer);
 	        tellerRole.setGui(tellerGui);
@@ -203,9 +203,9 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 		}
 		if (r instanceof LoanTellerRole){
 		    LoanTellerRole loanTellereRole=(LoanTellerRole) r;
-		    Person loanTellerPerson= r.getPerson();
+		    //Person loanTellerPerson= r.getPerson();
 		    LoanGui loanGui = new LoanGui(loanTellereRole, this);
-		    ((PersonAgent) loanTellerPerson).addRole(loanTellereRole);
+		    //((PersonAgent) loanTellerPerson).addRole(loanTellereRole);
 	        this.addGui(loanGui);
 	        loanTellereRole.setAnnouncer(loanAnnouncer);
 	        loanTellereRole.setGui(loanGui);

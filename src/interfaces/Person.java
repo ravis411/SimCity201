@@ -2,22 +2,13 @@ package interfaces;
 
 import gui.Building.ResidenceBuildingPanel;
 
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import Person.PersonAgent;
-import Person.PersonAgent.Friend;
-import Person.Role.Role;
-import bank.BankClientRole;
-import bank.BankTellerRole;
-import bank.LoanTellerRole;
-import building.Building;
 import util.DateListener;
-import util.MasterTime;
-
-import java.util.Calendar;
+import Person.PersonAgent;
+import Person.Role.Role;
+import Person.Role.ShiftTime;
 
 
 public interface Person extends DateListener{
@@ -77,7 +68,7 @@ public interface Person extends DateListener{
 
 	public abstract ResidenceBuildingPanel getHome();
 
-	public abstract void setInitialRole(Role roleFromString, String string);
+	public abstract void setInitialRole(Role roleFromString, String string, ShiftTime shift);
 	
 	public abstract void dateAction(int month, int day, int hour, int minute);
 

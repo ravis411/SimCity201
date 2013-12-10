@@ -11,7 +11,7 @@ import building.Restaurant;
 
 public class RoleFactory {
 	
-	public static Role employeeFromString(String string, String restLocation){
+	public static Employee employeeFromString(String string, String restLocation){
 		try {
 			Class c = Class.forName(string);
 			Employee e = (Employee) c.getDeclaredConstructor(String.class).newInstance(restLocation);
@@ -19,6 +19,8 @@ public class RoleFactory {
 			//for example restaurant needs to be specified as a restaurant not a building or the line below
 			//"Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(e.getWorkLocation());"
 			//or else you will get cast error
+			
+			
 			return e;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

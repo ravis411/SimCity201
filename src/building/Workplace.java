@@ -2,6 +2,7 @@ package building;
 
 import interfaces.generic_interfaces.GenericCashier;
 import interfaces.generic_interfaces.GenericCook;
+import interfaces.generic_interfaces.GenericCustomer;
 import interfaces.generic_interfaces.GenericHost;
 import interfaces.generic_interfaces.GenericWaiter;
 import ryansRestaurant.RyansCookRole;
@@ -83,7 +84,7 @@ public abstract class Workplace extends Building{
 		
 		for(Role r : inhabitants){
 			System.err.println("Activating: " + r.getNameOfRole() );
-			r.getPerson().workIsOpen();
+				r.getPerson().workIsOpen();
 		}
 	}
 
@@ -91,6 +92,7 @@ public abstract class Workplace extends Building{
 	public void addRole(Role r) {
 		// TODO Auto-generated method stub
 		super.addRole(r);	
+		System.err.println("Added "+r.getNameOfRole()+" to "+this.getName());
 		if(isOpen() && !ready){
 			ready = true;
 			getReadyForWork();

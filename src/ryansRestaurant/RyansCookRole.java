@@ -488,25 +488,6 @@ public class RyansCookRole extends GenericCook {
 		return agentGui;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-	@Override
-	public ShiftTime getShift() {
-		// TODO Auto-generated method stub
-		return ShiftTime.DAY_SHIFT;
-	}
-
 
 	@Override
 	public Double getSalary() {

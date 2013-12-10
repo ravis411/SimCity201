@@ -5,6 +5,7 @@ import interfaces.generic_interfaces.GenericWaiter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.concurrent.Semaphore;
@@ -72,7 +73,7 @@ public class HostRole extends GenericHost implements Host{
 		
 		tables = new ArrayList<Table>();
 		waiters = new ArrayList<MyWaiter>();
-		waitingCustomers = new ArrayList<WaitingCustomer>();
+		waitingCustomers = Collections.synchronizedList(new ArrayList<WaitingCustomer>());
 		
 		for (int ix = 1; ix <= NTABLES; ix++) {
 			tables.add(new Table(ix));//how you add to a collections
@@ -204,39 +205,42 @@ public class HostRole extends GenericHost implements Host{
 					return true;
 				}
 			}
-			
-			for(WaitingCustomer customer : waitingCustomers){
-				for(Table table : tables){
-					//if there is an open table and a waiter to sit the customer, then do so
-					if(!table.isOccupied() && !waiters.isEmpty()){
-						//waiter assignment
-						//WaiterAgent assignedWaiter = waiters.get(0).waiter;
-						//assign the least busy waiter to the customer
-						int min = Integer.MAX_VALUE;
-						WaiterRole assignedWaiter = null;
-						for(int i = 0; i < waiters.size(); i++){
-							MyWaiter waiter = waiters.get(i);
-							//since the number of customers is always less than the initial min, 
-							//assignedWaiter is never null after the loop
-							if(waiter.state != WaiterState.OnBreak && waiter.waiter.getNumCustomers() < min){
-								assignedWaiter = waiter.waiter;
-								min = waiter.waiter.getNumCustomers();
+			synchronized(waitingCustomers){
+				for(WaitingCustomer customer : waitingCustomers){
+					for(Table table : tables){
+						//if there is an open table and a waiter to sit the customer, then do so
+						if(!table.isOccupied() && !waiters.isEmpty()){
+							//waiter assignment
+							//WaiterAgent assignedWaiter = waiters.get(0).waiter;
+							//assign the least busy waiter to the customer
+							int min = Integer.MAX_VALUE;
+							WaiterRole assignedWaiter = null;
+							for(int i = 0; i < waiters.size(); i++){
+								MyWaiter waiter = waiters.get(i);
+								//since the number of customers is always less than the initial min, 
+								//assignedWaiter is never null after the loop
+								if(waiter.state != WaiterState.OnBreak && waiter.waiter.getNumCustomers() < min){
+									assignedWaiter = waiter.waiter;
+									min = waiter.waiter.getNumCustomers();
+								}
 							}
+							assignCustomerToWaiter(customer, assignedWaiter, table);
+							return true;
 						}
-						assignCustomerToWaiter(customer, assignedWaiter, table);
-						return true;
 					}
 				}
 			}
 			
-			//if this rule is reached, a customer is waiting to sit b/c the dining room is full
-			if(!waitingCustomers.isEmpty()){
-				for(WaitingCustomer cust : waitingCustomers){
-					if(!cust.chosen){
-						notifyCustomer(cust);
-						return true;
+			synchronized(waitingCustomers){
+				//if this rule is reached, a customer is waiting to sit b/c the dining room is full
+				if(!waitingCustomers.isEmpty()){
+					for(WaitingCustomer cust : waitingCustomers){
+						if(!cust.chosen){
+							notifyCustomer(cust);
+							return true;
+						}
+						
 					}
-					
 				}
 			}
 			
@@ -349,12 +353,6 @@ public class HostRole extends GenericHost implements Host{
 	public void addWaiter(GenericWaiter waiter) {
 		// TODO Auto-generated method stub
 		this.waiters.add(new MyWaiter((WaiterRole) waiter));
-	}
-
-	@Override
-	public ShiftTime getShift() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

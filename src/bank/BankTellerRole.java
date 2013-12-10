@@ -319,12 +319,6 @@ public class BankTellerRole extends Employee implements BankTeller{
 	}
 
 	@Override
-	public ShiftTime getShift() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Double getSalary() {
 		// TODO Auto-generated method stub
 		return null;
