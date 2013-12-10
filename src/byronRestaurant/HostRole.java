@@ -145,7 +145,7 @@ public class HostRole extends GenericHost {
 
 	//utilities
 	public String getName(){
-		return name;
+		return myPerson.getName();
 	}
 
 	@Override

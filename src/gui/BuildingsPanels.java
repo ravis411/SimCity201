@@ -4,6 +4,7 @@ import gui.Building.BankBuildingPanel;
 import gui.Building.BuildingPanel;
 import gui.Building.MarketBuildingPanel;
 import gui.Building.ResidenceBuildingPanel;
+import gui.Building.restaurants.ByronRestaurantBuildingPanel;
 import gui.Building.restaurants.JeffreyRestaurantBuildingPanel;
 import gui.Building.restaurants.KushRestaurantBuildingPanel;
 import gui.Building.restaurants.LucaRestaurantBuildingPanel;
@@ -71,8 +72,9 @@ public class BuildingsPanels extends JPanel{
 			BuildingList.getInstance().add(new Restaurant(buildingPanel));
 		}else if(buildingPanel instanceof RestaurantBuildingPanel){
 			BuildingList.getInstance().add(new Restaurant(buildingPanel));
-		}else{
-			BuildingList.getInstance().add(new Building(buildingPanel));
+		}else if(buildingPanel instanceof ByronRestaurantBuildingPanel){
+			BuildingList.getInstance().add(new Restaurant(buildingPanel));
+		}else{	BuildingList.getInstance().add(new Building(buildingPanel));
 		}
 		
 		this.add(buildingPanel, buildingPanel.getName());

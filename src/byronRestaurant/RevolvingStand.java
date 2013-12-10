@@ -1,11 +1,12 @@
-package restaurant;
+package byronRestaurant;
 
-import interfaces.Customer;
-import interfaces.Waiter;
+import interfaces.generic_interfaces.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import byronRestaurant.WaiterRole.Order;
 
 public class RevolvingStand {
 
@@ -13,12 +14,11 @@ public class RevolvingStand {
 	
 	/**
 	 * Adds an order to the Stand based on the necessary parameters
-	 * @param w the GenericWaiter
-	 * @param choice the choice
-	 * @param t the Table
+	 * 
+	 * 
 	 */
-	public synchronized void addOrder(Waiter w, int choice, int table, Customer c){
-		orders.add(new Order(w, choice, table, c));
+	public synchronized void addOrder(GenericWaiter waiterRole, int t, String c){
+		orders.add(new Order((WaiterRole)waiterRole, t, c));
 	}
 	
 	/**

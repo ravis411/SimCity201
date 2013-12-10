@@ -10,6 +10,7 @@ import residence.gui.HomeRoleGui;
 import restaurant.CashierRole;
 import restaurant.CookRole;
 import restaurant.NewWaiterRole;
+//import restaurant.NewWaiterRole;
 import restaurant.OldWaiterRole;
 import restaurant.RestaurantCustomerRole;
 import trace.AlertLog;
@@ -155,14 +156,14 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
 		}
 		if(r instanceof NewWaiterRole){
 			NewWaiterRole nwr = (NewWaiterRole) r;
-			WaiterGui gui = new WaiterGui(nwr, waiterCount*50+120, 0);
+			WaiterGui gui = new WaiterGui(nwr, waiterCount*50+120, 10);
 			nwr.setGui(gui);
 			guis.add(gui);
 			//System.out.println("My person is: " + hr.myPerson.getName());
 		}
 		if(r instanceof OldWaiterRole){
 			OldWaiterRole owr = (OldWaiterRole) r;
-			WaiterGui gui = new WaiterGui(owr, waiterCount*50+120, 0);
+			WaiterGui gui = new WaiterGui(owr, waiterCount*50+120, 10);
 			owr.setGui(gui);
 			guis.add(gui);
 			//System.out.println("My person is: " + hr.myPerson.getName());

@@ -113,7 +113,7 @@ public class LucaCashierRole extends GenericCashier implements LucaCashier {
 		}
 	@Override
 
-	public void msgCashierHereIsMarketBill(int orderPrice, LucaMarket market) {
+	public void msgCashierHereIsMarketBill(int orderPrice, MarketManager market) {
 		log.add(new LoggedEvent("Recieved msgCashierHereIsMarketBill orderPrice: " +orderPrice + " market: "+market));
 		if (orderPrice<=restaurantMoney)
 		{

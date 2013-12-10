@@ -1,19 +1,19 @@
 package restaurant;
 
-import Person.Role.Role;
-import agent.Agent;
-import restaurant.gui.HostGui;
-import restaurant.Order;
-import restaurant.Menu;
-import restaurant.RestaurantCustomerRole.AgentEvent;
-import restaurant.RestaurantCustomerRole.AgentState;
-import restaurant.Menu.Dish;
-import restaurant.gui.WaiterGui;
 import interfaces.Customer;
 import interfaces.Waiter;
+import interfaces.generic_interfaces.GenericCashier;
+import interfaces.generic_interfaces.GenericCook;
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
 
-import java.util.*;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.Vector;
 import java.util.concurrent.Semaphore;
+
+import restaurant.gui.WaiterGui;
+import Person.Role.ShiftTime;
 
 /**
  * Restaurant Waiter Agent
@@ -22,7 +22,7 @@ import java.util.concurrent.Semaphore;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the WaiterRole. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public abstract class WaiterAgent extends Role implements Waiter {
+public abstract class WaiterAgent extends GenericWaiter implements Waiter {
 	/*public List<CustomerAgent> myCustomers
 	= new ArrayList<CustomerAgent>();*/
 	
@@ -61,30 +61,16 @@ public abstract class WaiterAgent extends Role implements Waiter {
 	public WaiterGui waiterGui = null;
 
 	protected WaiterAgent(String name) {
-		super();
-
-		this.name = name;
+		super(name);
 	}
 
 	public String getName() {
-		return name;
-	}
-	
-	public void setCook(CookRole cook) {
-		this.cook = cook;
-	}
-	
-	public void setHost(HostRole host) {
-		this.host = host;
-	}
-	
-	public void setCashier(CashierRole cashier) {
-		this.cashier = cashier;
+		return myPerson.getName();
 	}
 	
 	//Messages
 	
-	public void msgSeatCustomer(RestaurantCustomerRole cust) {
+	public void msgSeatCustomer(Customer cust) {
 		myCustomers.add(new MyCustomer(cust));
 		event = AgentEvent.seatCustomer;
 		stateChanged();
@@ -95,7 +81,7 @@ public abstract class WaiterAgent extends Role implements Waiter {
 		stateChanged();
 	}
 	
-	public void msgTakeOrder(RestaurantCustomerRole c, int choice) {
+	public void msgTakeOrder(Customer c, int choice) {
 		for(int i=0; i<myCustomers.size(); i++) {
 			if(myCustomers.get(i).customer == c) {
 				myCustomers.get(i).setMealChoice(choice);
@@ -139,7 +125,7 @@ public abstract class WaiterAgent extends Role implements Waiter {
 		stateChanged();
 	}
 	
-	public void msgLeavingTable(RestaurantCustomerRole cust) {
+	public void msgLeavingTable(Customer cust) {
 		for(int i=0; i<myCustomers.size(); i++) {
 			if (cust.getTableNum() == myCustomers.get(i).customer.getTableNum()) {
 				print(cust + " leaving table " + (cust.getTableNum()+1));
@@ -148,8 +134,8 @@ public abstract class WaiterAgent extends Role implements Waiter {
 		stateChanged();
 	}
 	
-	public void msgOutOfFood(int menuItem, RestaurantCustomerRole c) {
-		print("We're out of " + menu.getDishName(menuItem) + "!");
+	public void msgOutOfFood(int choice, Customer c) {
+		print("We're out of " + menu.getDishName(choice) + "!");
 		for(int i=0; i<myCustomers.size(); i++) {
 			if(myCustomers.get(i).customer == c) {
 				myCustomers.get(i).state = CustomerState.needToReorder;
@@ -431,13 +417,13 @@ public abstract class WaiterAgent extends Role implements Waiter {
 	}
 
 	protected class MyCustomer {
-		public RestaurantCustomerRole customer;
+		public Customer customer;
 		protected int mealChoice = -1;
 		protected boolean orderTaken = false;
 		
 		protected CustomerState state = CustomerState.seated;
 		
-		MyCustomer(RestaurantCustomerRole c) {
+		MyCustomer(Customer c) {
 			customer = c;
 		}
 		
@@ -454,6 +440,36 @@ public abstract class WaiterAgent extends Role implements Waiter {
 			this.customer = customer;
 			this.amount = amount;
 		}
+	}
+
+	@Override
+	public void setCook(GenericCook c) {
+		this.cook = (CookRole) c;
+	}
+
+	@Override
+	public void setCashier(GenericCashier c) {
+		this.cashier = (CashierRole) c;
+	}
+
+	@Override
+	public void setHost(GenericHost h) {
+		this.host = (HostRole) h;
+	}
+
+	@Override
+	public ShiftTime getShift() {
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
+		return null;
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		return false;
 	}
 }
 

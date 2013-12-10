@@ -7,7 +7,7 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.geom.Rectangle2D;
 
-import restaurant.gui.RestaurantAnimationPanel;
+import byronRestaurant.gui.AnimationPanel;
 import Person.Role.Role;
 
 
@@ -20,7 +20,7 @@ import Person.Role.Role;
 @SuppressWarnings("serial")
 public class ByronRestaurantBuildingPanel extends BuildingPanel{
 	
-	RestaurantAnimationPanel restaurantPanel;
+	AnimationPanel restaurantPanel;
 	
 	public ByronRestaurantBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels) {
 		super(r, name, buildingPanels);
@@ -29,7 +29,7 @@ public class ByronRestaurantBuildingPanel extends BuildingPanel{
 		
 		setBackground( Color.yellow );
 		
-		restaurantPanel = new RestaurantAnimationPanel();
+		restaurantPanel = new AnimationPanel();
 		
 		setLayout(new GridLayout(1,1));
 		
@@ -43,7 +43,7 @@ public class ByronRestaurantBuildingPanel extends BuildingPanel{
 		return myName;
 	}
 	
-	public RestaurantAnimationPanel getPanel() {
+	public AnimationPanel getPanel() {
 		return restaurantPanel;
 	}
 
