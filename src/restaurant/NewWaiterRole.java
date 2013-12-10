@@ -1,5 +1,8 @@
 package restaurant;
 
+import trace.AlertLog;
+import trace.AlertTag;
+
 
 public class NewWaiterRole extends WaiterAgent {
 
@@ -10,7 +13,7 @@ public class NewWaiterRole extends WaiterAgent {
 
 	@Override
 	protected void TakeOrderToCook(MyCustomer c) {
-		print("Taking " + c.customer.getName() + "'s order to cook.");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Taking " + c.customer.getName() + "'s order to cook.");
 		waiterGui.DoGoToCookingArea();
 		try {
 			atCookingArea.acquire();
