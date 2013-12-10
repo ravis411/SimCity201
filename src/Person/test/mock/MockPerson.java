@@ -1,17 +1,17 @@
 package Person.test.mock;
 
+import gui.Building.ResidenceBuildingPanel;
+import interfaces.Person;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import building.Building;
-import gui.Building.ResidenceBuildingPanel;
-import interfaces.Person;
 import Person.PersonAgent;
 import Person.Role.Role;
 import Person.Role.ShiftTime;
-import Transportation.test.mock.Mock;
 import Transportation.test.mock.LoggedEvent;
+import Transportation.test.mock.Mock;
 
 public class MockPerson extends Mock implements Person {
 	
