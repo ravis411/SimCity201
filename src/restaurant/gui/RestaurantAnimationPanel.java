@@ -53,10 +53,8 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
     public RestaurantAnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
-        
         bufferSize = this.getSize();
- 
-    	Timer timer = new Timer(5, this );
+    	Timer timer = new Timer(5, this);
     	timer.start();
     }
 

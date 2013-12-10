@@ -1,6 +1,7 @@
 package jeffreyRestaurant;
 
 import agent.Agent;
+import interfaces.generic_interfaces.GenericCook;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -8,6 +9,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 import Person.Role.Role;
+import Person.Role.ShiftTime;
 import jeffreyRestaurant.Gui.CookGui;
 import jeffreyRestaurant.Gui.HostGui;
 import jeffreyRestaurant.interfaces.Cook;
@@ -19,25 +21,13 @@ import jeffreyRestaurant.interfaces.Cook;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class CookAgent extends Role implements Cook{
+public class CookAgent extends GenericCook implements Cook{
 	
 	public void addMarket(MarketAgent m) {
 		markets.add(new myMarket(m));
 	}
 	
 	//Data
-	public CookAgent() {//Default, never called
-		super();
-		//Foods
-		food.put("Steak", new food("Steak", 1, 6));
-		//print("Just created Steak for " + food.get("Steak"));
-		food.put("Chicken", new food ("Chicken", 1, 5));
-		//print("Just created Chicken for " + food.get("Steak"));
-		food.put("Salad", new food("Salad", 1, 2));
-		//print("Just created salad for " + food.get("Salad"));
-		food.put("Pizza", new food("Pizza", 1, 7));
-		//print("Just created Pizza for " + food.get("Pizza"));
-	}
 	private class order {
 		order(WaiterAgent waiter, String c, int tableNum) {
 			w = waiter; choice = c; table = tableNum;
@@ -92,7 +82,6 @@ public class CookAgent extends Role implements Cook{
 	}
 	
 	
-	private String name;
 	private Semaphore waitingForMarket = new Semaphore(0, true);
 	private Semaphore animation = new Semaphore(0, true);
 	private List<order> orders = Collections.synchronizedList(new ArrayList<order>());
@@ -107,8 +96,8 @@ public class CookAgent extends Role implements Cook{
 	private Map<String, food> food = new HashMap<String, food>();
 	//Fill map in class constructor
 	
-	public CookAgent(String Name) {
-		name = Name;
+	public CookAgent(String location) {
+		super(location);
 		//Foods
 		food.put("Steak", new food("Steak", 1, 6));
 		food.put("Chicken", new food ("Chicken", 1, 5));
@@ -116,7 +105,7 @@ public class CookAgent extends Role implements Cook{
 		food.put("Pizza", new food("Pizza", 1, 7));
 	}
 	public String getName() {
-		return name;
+		return myPerson.getName();
 	}
 	
 	//Messages
@@ -193,7 +182,6 @@ public class CookAgent extends Role implements Cook{
 						try {
 							waitingForMarket.acquire();
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
@@ -216,7 +204,6 @@ public class CookAgent extends Role implements Cook{
 				try {
 					animation.acquire();
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				o.cookFood(food.get(o.choice).time, o);
@@ -233,7 +220,6 @@ public class CookAgent extends Role implements Cook{
 			try {
 				animation.acquire();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			o.w.msgGiveFood(o.choice, o.table);
@@ -265,6 +251,18 @@ public class CookAgent extends Role implements Cook{
 
 	@Override
 	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return Role.RESTAURANT_JEFFREY_COOK_ROLE;
+	}
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
 		// TODO Auto-generated method stub
 		return null;
 	}
