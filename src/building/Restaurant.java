@@ -13,7 +13,7 @@ import kushrestaurant.HostRole;
 //import kushrestaurant.OldWaiterRole;
 import Person.Role.Role;
 
-public class Restaurant extends Building implements Workplace {
+public class Restaurant extends Workplace {
 	
 	public Restaurant(BuildingPanel panel) {
 		super(panel);

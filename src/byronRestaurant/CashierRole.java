@@ -4,9 +4,6 @@ package byronRestaurant;
 import Person.Role.ShiftTime;
 import agent.Agent;
 import interfaces.generic_interfaces.GenericCashier;
-import interfaces.generic_interfaces.GenericCook;
-import interfaces.generic_interfaces.GenericHost;
-import interfaces.generic_interfaces.GenericWaiter;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;

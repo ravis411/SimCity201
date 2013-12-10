@@ -266,12 +266,6 @@ public class RyansCashierRole extends GenericCashier implements RyansCashier {
 		}
 	}
 
-	@Override
-	public ShiftTime getShift() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 	@Override
 	public Double getSalary() {
