@@ -4,7 +4,7 @@ import interfaces.Person;
 
 public abstract class Role {
 
-	public RoleState state = RoleState.Inactive;
+	public RoleState roleState = RoleState.Inactive;
 
 	protected Person myPerson;
 	
@@ -100,7 +100,7 @@ public abstract class Role {
 	 * @return true if active, false otherwise
 	 */
 	public boolean isActive(){
-		return state == RoleState.Active;
+		return roleState == RoleState.Active;
 	}
 	
 	/**
@@ -123,7 +123,7 @@ public abstract class Role {
 	 * Activate the role
 	 */
 	public void activate(){
-		state = RoleState.Active;
+		roleState = RoleState.Active;
 		//stateChanged();
 	}
 	
@@ -145,12 +145,12 @@ public abstract class Role {
 	 * Deactivate a specific role
 	 */
 	public void deactivate(){
-		state = RoleState.Deactivating;
+		roleState = RoleState.Deactivating;
 		stateChanged();
 	}
 	
 	public void kill(){
-		state = RoleState.Inactive;
+		roleState = RoleState.Inactive;
 		stateChanged();
 	}
 	

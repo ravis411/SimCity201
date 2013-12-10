@@ -25,7 +25,7 @@ public class MasterTime {
         protected MasterTime(){
                 dateListeners = Collections.synchronizedList(new ArrayList<MyDateListener>());
                 timeListeners = Collections.synchronizedList(new ArrayList<MyTimeListener>());
-                calendar.set(Calendar.HOUR, 8);
+                calendar.set(Calendar.HOUR_OF_DAY, 8);
         }
         
         /**
