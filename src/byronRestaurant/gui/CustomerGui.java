@@ -80,7 +80,7 @@ public class CustomerGui implements Gui{
 	}
 	public void setHungry() {
 		isHungry = true;
-		agent.setHungry();
+		//agent.setHungry();
 		setPresent(true);
 	}
 	public boolean isHungry() {

@@ -30,11 +30,8 @@ import Person.Role.ShiftTime;
 public abstract class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 	public List<MyCustomer> myCustomers	= new ArrayList<MyCustomer>();
 	
-<<<<<<< HEAD
-	protected String name = new String("RyansWaiter");
-=======
+
 	protected String name = new String();
->>>>>>> origin/develop
 	protected Semaphore atTable = new Semaphore(0,true);
 	protected RyansHost host = null;
 	public RyansCookRole cook = null;
@@ -315,11 +312,9 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 	
 	// Actions
 	protected void EnterRestaurant() {
-<<<<<<< HEAD
-		print("Entering Restaurant");
-=======
+
 		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Entering Restaurant");
->>>>>>> origin/develop
+
 		try {
 			waiterGui.DoEnterRestaurant();
 		} catch (Exception e) {
@@ -385,11 +380,9 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 //	}
 	
 	protected void BringOrderToCustomer(MyCustomer customer) {
-<<<<<<< HEAD
-		print("Getting food from cook for customer: " + customer.customer);
-=======
+
 		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Getting food from cook for customer: " + customer.customer);
->>>>>>> origin/develop
+
 		activity = "Picking up food for " + customer.customer;
 		DoGoToGrill(customer.grillNumber);
 		
