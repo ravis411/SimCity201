@@ -1,7 +1,10 @@
 package jeffreyRestaurant;
 
 import Person.Role.Role;
+import Person.Role.ShiftTime;
 import agent.Agent;
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -15,7 +18,7 @@ import jeffreyRestaurant.Gui.HostGui;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class HostAgent extends Role {
+public class HostAgent extends GenericHost {
 	static final int NTABLES = 3;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
@@ -50,8 +53,8 @@ public class HostAgent extends Role {
 
 	public HostGui hostGui = null;
 
-	public HostAgent(String name) {
-		super();
+	public HostAgent(String name, String location) {
+		super(location);
 
 		this.name = name;
 		// make some tables
@@ -269,6 +272,24 @@ public class HostAgent extends Role {
 
 	@Override
 	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addWaiter(GenericWaiter waiter) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
 		// TODO Auto-generated method stub
 		return null;
 	}
