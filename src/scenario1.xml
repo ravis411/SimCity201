@@ -230,8 +230,8 @@
 			    <friend name="Person 11" />
 			</friends>
 		</person>
-		<person name="Person 42" job="ryansRestaurant.RyansCustomerRole"
-		    location="Bank" home="Apartment 42">
+		<person name="Person 42" job="ryansRestaurant.RyansOldWaiterRole"
+		    location="Ryan's Restaurant" home="Apartment 42">
 			<friends>
 				<friend name="Person 1" />
 			    <friend name="Person 3" />
