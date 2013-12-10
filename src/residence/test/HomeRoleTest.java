@@ -7,11 +7,7 @@ import residence.HomeRole;
 import residence.HomeRole.AgentEvent;
 import residence.HomeRole.AgentState;
 import residence.HomeRole.PartyState;
-import residence.gui.HomeRoleGui;
-import residence.test.mock.MockHome;
-import trace.AlertLog;
 import Person.PersonAgent;
-import Person.test.mock.MockRole;
 
 /**
  * 

@@ -9,6 +9,7 @@ import gui.Building.ResidenceBuildingPanel;
 import interfaces.Person;
 import Person.PersonAgent;
 import Person.Role.Role;
+import Person.Role.ShiftTime;
 import Transportation.test.mock.Mock;
 import Transportation.test.mock.LoggedEvent;
 
@@ -155,12 +156,6 @@ public class MockPerson extends Mock implements Person {
 	}
 
 	@Override
-	public void setInitialRole(Role roleFromString, String string) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void msgYouCanLeave() {
 		// TODO Auto-generated method stub
 		
@@ -168,6 +163,25 @@ public class MockPerson extends Mock implements Person {
 
 	@Override
 	public void dateAction(int month, int day, int hour, int minute) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deactivateCurrentRole() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void workIsOpen() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setInitialRole(Role roleFromString, String string,
+			ShiftTime shift) {
 		// TODO Auto-generated method stub
 		
 	}
