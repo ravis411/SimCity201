@@ -33,4 +33,10 @@ public class RyansOldWaiterRole extends RyansWaiterRole {
 
 	}
 
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return "Ryan's Old Waiter Role";
+	}
+
 }

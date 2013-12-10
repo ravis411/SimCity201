@@ -9,25 +9,18 @@ public class RyansNewWaiterRole extends RyansWaiterRole {
 
 	@Override
 	protected void Order(MyCustomer c) {
-			activity = "Going to order food for " + c.customer;
-			try {
-				waiterGui.DoGoToCook();
-			} catch (Exception e1) {
-			}
-			state=AgentState.atCook;
+			activity = "Adding " + c.customer + "'s order to stand.";
 			
-			activity = "" + c.customer + " would like " + c.choice;
+			cook.getRevolvingStand().addOrder(this, c.choice, c.tableNumber);
 			
-			try {
-				Thread.sleep(2500);
-			} catch (InterruptedException e) {
-				print("EXCEPTION!!!! caught while waiting for order.");
-			}
-			
-			cook.msgHereIsOrder(this, c.choice, c.tableNumber);
 			c.s = CustomerState.ordered;
 			activity = "Ordered.";
+	}
 
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return "Ryan's New Waiter Role";
 	}
 
 }
