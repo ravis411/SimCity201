@@ -1,7 +1,6 @@
 package byronRestaurant;
 
 import Person.Role.ShiftTime;
-import agent.Agent;
 import byronRestaurant.gui.WaiterGui;
 import interfaces.generic_interfaces.GenericCashier;
 import interfaces.generic_interfaces.GenericCook;
@@ -16,7 +15,7 @@ import trace.AlertTag;
 /**
  * Restaurant Waiter Agent
  */
-public class WaiterRole extends GenericWaiter {
+public abstract class WaiterRole extends GenericWaiter {
 	public enum CustomerState{noAction,notSeated, readyToOrder, orderPending, orderReady, doneEating, gotCheck, isDone, orderNotAvailable};
 	Timer timer;
 	public List<String>menu = new ArrayList<String>();{
@@ -25,7 +24,7 @@ public class WaiterRole extends GenericWaiter {
 		menu.add("Salad");
 		menu.add("Pizza");
 	}
-	private class MyCustomer{
+	protected class MyCustomer{
 		public CustomerState state;
 		public CustomerRole cust;
 		public String choice;
@@ -52,14 +51,38 @@ public class WaiterRole extends GenericWaiter {
 			return false;
 		}
 	}
+	protected static class Order{
+		public WaiterRole waiter;
+		public int table;
+		public String choice;
+		
+		Order(WaiterRole waiterRole, int t, String c){
+			waiter = waiterRole;
+			table = t;
+			choice = c;
+		}
+		
+		public WaiterRole getWaiter(){
+			return waiter;
+		}
+		
+		public int getTable(){
+			return table;
+		}
+		
+		public String getChoice(){
+			return choice;
+		}
+	}
+
 	public List<MyCustomer> Customers = new ArrayList<MyCustomer>();
-	private HostRole host;
-	private CookRole cook;
-	private CashierRole cashier;
-	private String name;
-	private Semaphore atTable = new Semaphore(0,true);
-	private Semaphore atKitchen = new Semaphore(0, true);
-	private Semaphore atLobby = new Semaphore(0,true);
+	protected HostRole host;
+	protected CookRole cook;
+	protected CashierRole cashier;
+	protected String name;
+	protected Semaphore atTable = new Semaphore(0,true);
+	protected Semaphore atKitchen = new Semaphore(0, true);
+	protected Semaphore atLobby = new Semaphore(0,true);
 	public WaiterGui waiterGui = null;
 
 	public WaiterRole(String location) {
@@ -223,7 +246,7 @@ public class WaiterRole extends GenericWaiter {
 
 	// Actions
 
-	private void outOfStock(MyCustomer customer){
+	protected void outOfStock(MyCustomer customer){
 		for (String m : menu){
 			if (m == customer.choice){
 				menu.remove(customer.choice);
@@ -237,7 +260,7 @@ public class WaiterRole extends GenericWaiter {
 		}
 	}
 
-	private void seatCustomer(MyCustomer customer){
+	protected void seatCustomer(MyCustomer customer){
 		customer.cust.msgFollowMeToTable(this, customer.table, menu);
 		DoSeatCustomer(customer.cust, customer.table);
 		try {
@@ -249,7 +272,7 @@ public class WaiterRole extends GenericWaiter {
 		waiterGui.DoLeaveCustomer();
 	}
 
-	private void takeOrder(MyCustomer customer){
+	protected void takeOrder(MyCustomer customer){
 		DoGoToCustomer(customer);
 		try {
 			atTable.acquire();
@@ -260,20 +283,13 @@ public class WaiterRole extends GenericWaiter {
 		customer.cust.msgWhatWouldYouLike();
 	}
 
-	private void giveOrderToCook(MyCustomer customer){
-		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(),"Giving " + customer.cust + "'s choice of " + customer.choice + " to cook");
-		customer.state = CustomerState.noAction;
-		cook.msgHereIsAnOrder(this, customer.table, customer.choice);
-		cashier.msgHereIsOrder(customer.table, customer.choice, this);
-		waiterGui.DoLeaveCustomer();
-	}
+	protected abstract void giveOrderToCook(MyCustomer customer);
 
-	private void giveFoodToCustomer(MyCustomer customer){
+	protected void giveFoodToCustomer(MyCustomer customer){
 		DoGoToKitchen();
 		try {
 			atKitchen.acquire();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		cook.msgTakingFood();
@@ -281,7 +297,6 @@ public class WaiterRole extends GenericWaiter {
 		try {
 			atTable.acquire();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		customer.state = CustomerState.noAction;
@@ -289,35 +304,32 @@ public class WaiterRole extends GenericWaiter {
 		waiterGui.DoLeaveCustomer();
 	}
 
-	private void getCheck(MyCustomer customer){
+	protected void getCheck(MyCustomer customer){
 		DoGoToLobby();
 		try {
 			atLobby.acquire();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		customer.state = CustomerState.noAction;
 		cashier.msgINeedCheck(customer.table);
 	}
 
-	private void hereIsCheck(MyCustomer customer){
+	protected void hereIsCheck(MyCustomer customer){
 		DoGoToCustomer(customer);
 		try {
 			atTable.acquire();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		customer.state = CustomerState.noAction;
 		customer.cust.msgHereIsCheck(customer.cost);
 	}
-	private void clearTable(MyCustomer customer){
+	protected void clearTable(MyCustomer customer){
 		DoClearingTable(customer);
 		try {
 			atTable.acquire();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		host.msgLeavingTable(customer.table);
@@ -327,32 +339,32 @@ public class WaiterRole extends GenericWaiter {
 	}
 
 	// The animation DoXYZ() routines
-	private void DoSeatCustomer(CustomerRole customer, int table) {
+	protected void DoSeatCustomer(CustomerRole customer, int table) {
 		//Notice how we print "customer" directly. It's toString method will do it.
 		//Same with "table"
 		print("Seating " + customer + " at table " + table);
 		waiterGui.DoBringToTable(customer, table); 
 
 	}
-	private void DoGoToCustomer(MyCustomer customer){
+	protected void DoGoToCustomer(MyCustomer customer){
 		print("Going to " + customer.cust.getName() + " at table " + customer.table);
 		waiterGui.doGoToTable(customer.table);
 
 	}
-	private void DoGiveFoodToCustomer(MyCustomer customer){
+	protected void DoGiveFoodToCustomer(MyCustomer customer){
 		print("Bringing food to " + customer.cust.getName());
 		waiterGui.doGoToTable(customer.table);
 	}
-	private void DoGoToLobby(){
+	protected void DoGoToLobby(){
 		print("Getting check");
 		waiterGui.doGoToLobby();
 	}
-	private void DoGoToKitchen(){
+	protected void DoGoToKitchen(){
 		print("Grabbing food from kitchen");
 		waiterGui.doGoToKitchen();
 	}
 
-	private void DoClearingTable(MyCustomer customer){
+	protected void DoClearingTable(MyCustomer customer){
 		waiterGui.doGoToTable(customer.table);
 		print("Clearing table");
 	}
@@ -360,7 +372,7 @@ public class WaiterRole extends GenericWaiter {
 
 	//utilities
 	public String getName(){
-		return name;
+		return myPerson.getName();
 	}
 
 	public void setGui(WaiterGui gui) {
@@ -386,7 +398,6 @@ public class WaiterRole extends GenericWaiter {
 	}
 
 	public String getNameOfRole() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

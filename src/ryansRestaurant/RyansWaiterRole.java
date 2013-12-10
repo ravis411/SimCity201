@@ -30,6 +30,7 @@ import Person.Role.ShiftTime;
 public abstract class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 	public List<MyCustomer> myCustomers	= new ArrayList<MyCustomer>();
 	
+
 	protected String name = new String();
 	protected Semaphore atTable = new Semaphore(0,true);
 	protected RyansHost host = null;
@@ -312,6 +313,7 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 	// Actions
 	protected void EnterRestaurant() {
 		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Entering Restaurant");
+
 		try {
 			waiterGui.DoEnterRestaurant();
 		} catch (Exception e) {

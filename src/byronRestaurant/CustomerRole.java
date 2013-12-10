@@ -7,6 +7,7 @@ import byronRestaurant.interfaces.Customer;
 import interfaces.generic_interfaces.GenericCashier;
 import interfaces.generic_interfaces.GenericCustomer;
 import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
 
 import java.util.*;
 
@@ -42,30 +43,31 @@ public class CustomerRole extends GenericCustomer {
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public CustomerRole(String name){
+	public CustomerRole(){
 		super();
-		this.name = name;
 	}
 
 	/**
 	 * hack to establish connection to Host agent.
 	 */
-	public void setHost(HostRole host){
-		this.host = host;
+	public void setWaiter(GenericWaiter waiter) {
+		this.waiter = (WaiterRole)waiter;
 	}
-	public void setCashier(CashierRole cashier){
-		this.cashier = cashier;
-	}
-	public void setWaiter(WaiterRole waiter) {
-		this.waiter = waiter;
+	public void setCashier(GenericCashier c) {
+		this.cashier = (CashierRole) c;	
 	}
 
+	public void setHost(GenericHost h) {
+		this.host = (HostRole) h;
+	}
+
+	
 	public String getCustomerName() {
 		return name;
 	}
 	// Messages
 
-	public void setHungry() {//from animation
+	public void gotHungry() {//from animation
 		print("I'm hungry");
 		event = AgentEvent.gotHungry;
 		stateChanged();
@@ -226,7 +228,7 @@ public class CustomerRole extends GenericCustomer {
 	
 	private void orderFood(){
 		String choice = menu.get((int)(Math.random()*(menu.size())));
-		if (this.name.equals("Steak")){
+		if (myPerson.getName().equals("Steak")){
 			System.out.println("Exception: Mandatory Steak Order");
 			choice = menu.get(0);
 		}
@@ -279,12 +281,13 @@ public class CustomerRole extends GenericCustomer {
 		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT_CUSTOMER_ROLE, myPerson.getName(),"Leaving.");
 		cost = 0;
 		customerGui.DoExitRestaurant();
+		deactivate();
 	}
 
 	// Accessors, etc.
 
 	public String getName() {
-		return name;
+		return myPerson.getName();
 	}
 	
 	@Override
@@ -300,30 +303,15 @@ public class CustomerRole extends GenericCustomer {
 		return customerGui;
 	}
 
-	@Override
-	public void setCashier(GenericCashier c) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void setHost(GenericHost h) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void gotHungry() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public boolean canGoGetFood() {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	@Override
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub

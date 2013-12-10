@@ -4,7 +4,6 @@ import java.awt.*;
 import java.util.*;
 
 import byronRestaurant.CustomerRole;
-import byronRestaurant.HostRole;
 
 public class CustomerGui implements Gui{
 
@@ -22,6 +21,8 @@ public class CustomerGui implements Gui{
 
 	public static final int xTable = 200;
 	public static final int yTable = 200;
+	
+	public AnimationPanel animationPanel;
 	
 	public Map<Integer, Dimension> tables = new HashMap<Integer, Dimension>(){{
 		put(1, new Dimension(xTable, yTable));
@@ -80,7 +81,7 @@ public class CustomerGui implements Gui{
 	}
 	public void setHungry() {
 		isHungry = true;
-		agent.setHungry();
+		agent.gotHungry();
 		setPresent(true);
 	}
 	public boolean isHungry() {

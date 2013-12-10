@@ -2,14 +2,18 @@ package byronRestaurant;
 
 
 import Person.Role.ShiftTime;
-import agent.Agent;
 import byronRestaurant.gui.CookGui;
-import byronRestaurant.gui.WaiterGui;
 import interfaces.generic_interfaces.GenericCook;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import javax.swing.Timer;
+
+
+import byronRestaurant.RevolvingStand;
 import trace.AlertLog;
 import trace.AlertTag;
 
@@ -27,23 +31,23 @@ public class CookRole extends GenericCook {
 	private int foodThreshold = 3;
 	private int foodMaximum = 50;
 	private CookGui cookGui;
+	private RevolvingStand revolvingStand;
 	private Semaphore atPlatingArea = new Semaphore(0,true);
 	private Semaphore atKitchen = new Semaphore(0,true);
 	private Semaphore atDefault = new Semaphore(0,true);
-	private class Order{
+	protected class Order{
 		public WaiterRole waiter;
 		public int table;
 		public String choice;
 		public cookStatus status;
-		
-		Order(WaiterRole waiterRole, int t, String c, cookStatus s){
+
+		Order(WaiterRole waiterRole, int t, String c){
 			waiter = waiterRole;
 			table = t;
 			choice = c;
-			status = s;
+			status = cookStatus.pending;
 		}
 	}
-	Timer timer2 = new Timer();
 	private class Food{
 		public String type;
 		public double cookTime;
@@ -55,7 +59,12 @@ public class CookRole extends GenericCook {
 			amount = a;
 		}
 	}
-	private Map<String, Food> inventory = Collections.synchronizedMap(new HashMap<String, Food>() {{
+	private Map<String, Food> inventory = Collections.synchronizedMap(new HashMap<String, Food>() {/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+	{
 		put("Steak", new Food("Steak", 6000,5));
 		put("Chicken", new Food("Chicken", 5000, 5));
 		put("Salad", new Food("Salad", 1000, 5));
@@ -63,23 +72,36 @@ public class CookRole extends GenericCook {
 	}});
 
 
+
 	//Initialize Cook
 	public CookRole(String location) { 
 		super(location);
+		revolvingStand = new RevolvingStand();
 
+		Timer checkRevolvingStand = new Timer(15000, new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				stateChanged();
+			}
+
+		});
+
+		checkRevolvingStand.start();
 	}
 
-//	public void AddMarket(MarketAgent m){
-//		market = m;
-//	}
+
+	//	public void AddMarket(MarketAgent m){
+	//		market = m;
+	//	}
 
 	// messages
 	public void msgHereIsAnOrder(WaiterRole waiterRole, int table, String choice){
-		orders.add(new Order(waiterRole, table, choice, cookStatus.pending));
+		orders.add(new Order(waiterRole, table, choice));
 		print("Receiving new order from " + waiterRole.getName());
 		stateChanged();
 	}
-	public void msgfoodDone(Order o){
+	public void msgFoodDone(Order o){
 		o.status = cookStatus.done;
 		stateChanged();
 	}
@@ -114,7 +136,7 @@ public class CookRole extends GenericCook {
 		atDefault.release();
 		stateChanged();
 	}
-	
+
 	// Scheduler
 	public boolean pickAndExecuteAction() {
 		synchronized(orders){
@@ -127,6 +149,17 @@ public class CookRole extends GenericCook {
 					cookOrder(o);
 					return true;
 				}
+			}
+			if(!revolvingStand.isEmpty()){
+				//get the order from the stand
+				WaiterRole.Order order = revolvingStand.getLastOrder();
+				//structure the order data to fit in with my old cooking routine
+				Order newOrder = new Order(order.getWaiter(), order.getTable(), order.getChoice());
+				orders.add(newOrder);
+				//cook the order in the same way
+				cookOrder(newOrder);
+				return true;
+
 			}
 		}
 		return false;
@@ -153,32 +186,35 @@ public class CookRole extends GenericCook {
 
 	}
 	private void cookOrder(final Order o){
-			if (inventory.get(o.choice).amount == foodThreshold){
-//				o.waiter.msgOutOfStock(o.choice, o.table);
-//				market.msgIWantFood(o.choice, (foodMaximum-inventory.get(o.choice).amount));
-//				orders.remove(o);
-			}else if (inventory.get(o.choice).amount == 0){
-				o.waiter.msgOutOfStock(o.choice, o.table);
-				orders.remove(o);
+		if (inventory.get(o.choice).amount == foodThreshold){
+			//				o.waiter.msgOutOfStock(o.choice, o.table);
+			//				market.msgIWantFood(o.choice, (foodMaximum-inventory.get(o.choice).amount));
+			//				orders.remove(o);
+		}else if (inventory.get(o.choice).amount == 0){
+			o.waiter.msgOutOfStock(o.choice, o.table);
+			orders.remove(o);
+		}
+		else{	
+			Food food = inventory.get(o.choice);
+			cookGui.doGoToKitchen();
+			try {
+				atKitchen.acquire();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-			else{	
-				Food food = inventory.get(o.choice);
-				cookGui.doGoToKitchen();
-				try {
-					atKitchen.acquire();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+			cookGui.setIsCooking(true);
+			o.status = cookStatus.cooking;
+			
+			Timer timer2 = new Timer((int) food.cookTime, new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					msgFoodDone(o);
+					cookGui.setIsCooking(false);
 				}
-				cookGui.setIsCooking(true);
-				o.status = cookStatus.cooking;
-				timer2.schedule(new TimerTask(){
-					public void run(){
-						msgfoodDone(o);
-						cookGui.setIsCooking(false);
-					}	
-				}, (long)food.cookTime);
-				inventory.get(o.choice).amount --;
-				print ("Cooking order of " + o.choice + ". " + inventory.get(o.choice).amount + " remaining.");
+			});
+			timer2.start();
+			
+			inventory.get(o.choice).amount --;
+			print ("Cooking order of " + o.choice + ". " + inventory.get(o.choice).amount + " remaining.");
 		}
 	}
 
@@ -186,7 +222,7 @@ public class CookRole extends GenericCook {
 	public String getName(){
 		return name;
 	}
-	
+
 	public void setGui(CookGui gui) {
 		cookGui = gui;
 	}
@@ -217,6 +253,10 @@ public class CookRole extends GenericCook {
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public RevolvingStand getRevolvingStand(){
+		return revolvingStand;
 	}
 
 }

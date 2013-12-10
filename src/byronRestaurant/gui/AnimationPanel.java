@@ -4,6 +4,10 @@ import interfaces.GuiPanel;
 
 import javax.swing.*;
 
+import bank.BankClientRole;
+import bank.BankTellerRole;
+import bank.LoanTellerRole;
+import building.BuildingList;
 import byronRestaurant.*;
 import byronRestaurant.gui.*;
 import trace.AlertLog;
@@ -43,6 +47,12 @@ public class AnimationPanel extends JPanel implements ActionListener,GuiPanel {
 
 	public void actionPerformed(ActionEvent e) {
 		repaint();  //Will have paintComponent called
+        for(Gui gui : guis) {
+            if (gui.isPresent()) {
+//            	System.out.println(gui.getName());
+                gui.updatePosition();
+            }
+        }
 	}
 
     public void paintComponent(Graphics g) {
@@ -73,13 +83,7 @@ public class AnimationPanel extends JPanel implements ActionListener,GuiPanel {
         g2.setColor(Color.BLACK);
         g2.fillRect(0,80, 20, 80);
  
-        
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-//            	System.out.println(gui.getName());
-                gui.updatePosition();
-            }
-        }
+       
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {
@@ -130,7 +134,25 @@ public class AnimationPanel extends JPanel implements ActionListener,GuiPanel {
 
 	@Override
 	public void removeGuiForRole(Role r) {
-		// TODO Auto-generated method stub
+		if (r instanceof WaiterRole){
+		    WaiterRole waiterRole = (WaiterRole) r;
+//		    BankClientRoles.remove(waiterRole);
+		    guis.remove(waiterRole.getGui());
+			r.deactivate();
+		}
+		if (r instanceof CustomerRole){
+		    CustomerRole customerRole = (CustomerRole) r;
+//		    BankTellerRoles.remove(customerRole);
+			BuildingList.findBuildingWithName("Byron's Restaurant").removeRole(customerRole);
+		    guis.remove(customerRole.getGui());
+		    r.deactivate();
+		}
+		if (r instanceof CookRole){
+		    CookRole cookRole=(CookRole) r;
+			BuildingList.findBuildingWithName("Byron's Restaurant").removeRole(cookRole);
+		    guis.remove(cookRole.getGui());
+		    r.deactivate();
+		}
 		
 	}	
 }

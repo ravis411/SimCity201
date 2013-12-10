@@ -689,7 +689,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
              GoToLocation("Market 1", transport);
              Role r = findRole(Role.MARKET_CUSTOMER_ROLE);
             if(r == null){
-                    r = RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
+                    r = RoleFactory.employeeFromString(Employee.MARKET_CUSTOMER_ROLE, "Market 1");
                     addRole(r);
                     r.activate();
             }else{
@@ -1095,15 +1095,16 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
                 if(hr.partyDate.get(Calendar.MONTH) == month && hr.partyDate.get(Calendar.DAY_OF_MONTH) == day && hr.partyDate.get(Calendar.HOUR_OF_DAY) == hour && hr.partyDate.get(Calendar.MINUTE) == minute) {
                         if(hr.partyAttendees.size()!=0){
                                 state = PersonState.HostParty;
-                            stateChanged();
+                                stateChanged();
                         }
                 }
                 if(rentDueDate != null && home != null && home.isApartment == true) {
-            if(rentDueDate.get(Calendar.DAY_OF_MONTH) == day && hour == 0) {
-                    hr.msgRentDue(5.00,rentDueDate.get(Calendar.DAY_OF_MONTH));
-                    rentDueDate.add(Calendar.DAY_OF_MONTH, 7);
-                    //MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
-            }
+                        if(rentDueDate.get(Calendar.DAY_OF_MONTH) == day && hour == 0) {
+                                hr.msgRentDue(5.00,rentDueDate.get(Calendar.DAY_OF_MONTH));
+                                rentDueDate.add(Calendar.DAY_OF_MONTH, 7);
+                                //MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
+                        }
+
                 }
                 if(hr.featureRepairDate.get(Calendar.MONTH) == month && hr.featureRepairDate.get(Calendar.DAY_OF_MONTH) == day && hr.featureRepairDate.get(Calendar.HOUR_OF_DAY) == hour && hr.featureRepairDate.get(Calendar.MINUTE) == minute) {
                         hr.msgFixedFeature();
@@ -1115,6 +1116,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
                         }        
                 }
         }
+
 
         //Control Panel Information Access Functions
                 //Only include what hasn't already been done

@@ -3,13 +3,18 @@ package jeffreyRestaurant;
 import agent.Agent;
 import interfaces.generic_interfaces.GenericCook;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 import java.util.Map;
 import java.util.HashMap;
 
+import javax.swing.Timer;
+
 import Person.Role.Role;
 import Person.Role.ShiftTime;
+import jeffreyRestaurant.CashierAgent.OrderState;
 import jeffreyRestaurant.Gui.CookGui;
 import jeffreyRestaurant.Gui.HostGui;
 import jeffreyRestaurant.interfaces.Cook;
@@ -36,7 +41,7 @@ public class CookAgent extends GenericCook implements Cook{
 		String choice;
 		int table;
 		state s = state.pending;
-		Timer foodTimer = new Timer();
+		java.util.Timer foodTimer = new java.util.Timer();
 		void cookFood(Integer time, final order o) {
 			//print("Time is " + time);
 			foodTimer.schedule(new TimerTask() {
@@ -81,6 +86,11 @@ public class CookAgent extends GenericCook implements Cook{
 		Map<String, Integer> marketFoods = new HashMap<String, Integer>();
 	}
 	
+	private RevolvingStand orderStand = new RevolvingStand();
+	
+	
+	
+	
 	
 	private Semaphore waitingForMarket = new Semaphore(0, true);
 	private Semaphore animation = new Semaphore(0, true);
@@ -103,9 +113,20 @@ public class CookAgent extends GenericCook implements Cook{
 		food.put("Chicken", new food ("Chicken", 1, 5));
 		food.put("Salad", new food("Salad", 1, 2));
 		food.put("Pizza", new food("Pizza", 1, 7));
+		javax.swing.Timer orderStandTime = new Timer(15000, new ActionListener(){ 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				stateChanged();
+			}
+			
+		});
+		orderStandTime.start();
 	}
 	public String getName() {
 		return myPerson.getName();
+	}
+	public RevolvingStand getStand() {
+		return orderStand;
 	}
 	
 	//Messages
@@ -166,6 +187,16 @@ public class CookAgent extends GenericCook implements Cook{
 				}
 			}
 		}
+		
+		if (!orderStand.isEmtpy()) {
+			RevolvingStand.order Order = orderStand.getLastOrder();
+			order newOrder = new order(Order.getWaiter(), Order.getChoice(), Order.getTable());
+			newOrder.s = state.pending;
+			orders.add(newOrder);
+			cookIt(newOrder);
+			return true;
+		}
+		
 		DoGoHome();
 		return false;
 	}
