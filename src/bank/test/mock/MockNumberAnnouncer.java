@@ -51,4 +51,10 @@ public class MockNumberAnnouncer extends Mock implements AnnouncerA{
 		
 	}
 
+	@Override
+	public void msgStealingMoney(double stealAmount, BankClient bcr) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

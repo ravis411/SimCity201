@@ -108,6 +108,7 @@ public class BankTellerRole extends Employee implements BankTeller{
 		stateChanged();
 	}
 
+	
 	public void msgRestaurantDeposit(CashierRole r, double a){
 		transactionAmount = a;
 		myRestaurant = r;
