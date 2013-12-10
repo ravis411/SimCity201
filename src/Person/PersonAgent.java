@@ -241,7 +241,9 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		prefs = new Preferences();
 		this.home = home;
 		
-		this.myCar = new CarAgent(this, name+" car", home.getName());
+		if(home != null) {
+			this.myCar = new CarAgent(this, name+" car", home.getName());
+		}
 		
 		backpack = new ArrayList<Item>();
 		itemsNeeded = new ArrayDeque<Item>();
