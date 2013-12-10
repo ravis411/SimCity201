@@ -39,7 +39,7 @@ public class BankClientRole extends Role implements BankClient{
 	public static final String steal = "steal";
 	public bankState state1 = bankState.nothing;
 	private Account myAccount;
-	public enum inLineState{noTicket, robbingBank, atInterim, waiting, goingToLine, atDesk, beingHelped, transactionProcessing, leaving};
+	public enum inLineState{noTicket, haveTicket,atInterim, waiting, goingToLine, atDesk, beingHelped, transactionProcessing, leaving};
 	public inLineState state2 = inLineState.noTicket;
 	private BankTeller teller = null;
 	private LoanTeller loanTeller = null;
@@ -56,7 +56,7 @@ public class BankClientRole extends Role implements BankClient{
 	private Semaphore atWaitingArea = new Semaphore(0,true);
 	private Semaphore atExit = new Semaphore(0,true);
 	private ClientGui clientGui = null;
-
+	private boolean isFrozen = false;
 
 	//hack for accounts - to ensure that there are some existing accounts at the beginning of SimCity
 	//	private int existsBankAccount = new Random().nextInt(10);
@@ -108,12 +108,6 @@ public class BankClientRole extends Role implements BankClient{
 		stateChanged();
 	}
 
-	public void msgAtInterim(){
-		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "At interim point");		
-		atInterim.release();
-		state2 = inLineState.atInterim;
-		stateChanged();
-	}
 	/**
 	 * 
 	 * Sent by the number announcer. If the number matches the client's ticket, the client should go to the proper line
@@ -163,7 +157,13 @@ public class BankClientRole extends Role implements BankClient{
 		atExit.release();
 		stateChanged();
 	}
-	
+
+	public void msgAtInterim(){
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "At interim.");		
+		atInterim.release();
+		state2 = inLineState.atInterim;
+		stateChanged();
+	}
 	/**
 	 * sent by the bank teller as a greeting to the client to let the client know he can communicate his needs
 	 */
@@ -218,81 +218,75 @@ public class BankClientRole extends Role implements BankClient{
 	}
 
 	public void msgFreeze() {
+		isFrozen = true;
 		stateChanged();
 	}
 
-	public void msgHereIsTeller(BankTeller bankTeller) {
-		teller = bankTeller;
-		System.out.println("Got the new teller");
-		state2 = inLineState.robbingBank;
+	public void msgUnfreeze(){
+		isFrozen = false;
 		stateChanged();
-		
 	}
-
-
 	//Scheduler
 	public boolean pickAndExecuteAction() {
-		if (state1 == bankState.closing){
-			Leaving();
-			return true;
-		}
-
-		if (state1 == bankState.steal){
-			if (state2 == inLineState.atInterim){
-				robBank();
-			}
-			if (state2 == inLineState.robbingBank){
-				stealMoney();
-			}
-		}
-
-		if ((state2 == inLineState.goingToLine && state1 == bankState.withdraw) ||(state2 == inLineState.goingToLine && state1 == bankState.deposit)){
-			goToLine(lineNum);
-			return true;
-		}
-		if ((state2 == inLineState.goingToLine && state1 == bankState.loan) ||(state2 == inLineState.goingToLine && state1 == bankState.repay)){
-			goToLoanLine();
-			return true;
-		}
-		if (state1 != bankState.nothing){
-			if (state2 == inLineState.noTicket){
-				goToInterim();
+		while (!isFrozen){ //while not in frozen state, makes sure frozen takes priority
+			if (state1 == bankState.closing){
+				Leaving(); //second most priority is making sure people leave when bank closes
 				return true;
 			}
-			if (state2 == inLineState.atInterim && state1 != bankState.steal){
-				goToWaitingArea();
-				return true;
-			}
-			if (state2 == inLineState.beingHelped){
-				if (getMyAccount() == null && state1 != bankState.loan){
-					openAccount();
+			//anything after should just be sequential
+			if (state1 != bankState.nothing){
+				if (state2 == inLineState.haveTicket){
+					goToInterim();
 					return true;
-				}else if (getMyAccount() == null && state1 == bankState.loan){
-					loanOpenAccount();
-					return true;
-				}else{
-					if (state1 == bankState.deposit){
-						IWantToDeposit();
+				}
+				if (state2 == inLineState.atInterim){
+					if (state1 == bankState.steal){
+						stealMoney();
+					}
+					else goToWaitingArea();
+				}
+				if (state2 == inLineState.goingToLine){
+					if ((state1 == bankState.withdraw) ||(state1 == bankState.deposit)){
+						goToLine(lineNum);
 						return true;
 					}
-					if (state1 == bankState.withdraw){
-						IWantToWithdraw();
-						return true;
-					}
-					if (state1 == bankState.loan){
-						IWantALoan();
-						return true;
-					}
-					if (state1 == bankState.repay){
-						IWantToRepay();
+					if ((state1 == bankState.loan) ||(state1 == bankState.repay)){
+						goToLoanLine();
 						return true;
 					}
 				}
+				if (state2 == inLineState.beingHelped){
+					if (getMyAccount() == null && state1 != bankState.loan){
+						openAccount();
+						return true;
+					}else if (getMyAccount() == null && state1 == bankState.loan){
+						loanOpenAccount();
+						return true;
+					}else{
+						if (state1 == bankState.deposit){
+							IWantToDeposit();
+							return true;
+						}
+						if (state1 == bankState.withdraw){
+							IWantToWithdraw();
+							return true;
+						}
+						if (state1 == bankState.loan){
+							IWantALoan();
+							return true;
+						}
+						if (state1 == bankState.repay){
+							IWantToRepay();
+							return true;
+						}
+					}
+				}
 			}
-		}
-		if (state2 == inLineState.leaving){
-			Leaving();
-			return true;
+			if (state2 == inLineState.leaving){
+				Leaving();
+				return true;
+			}
+			return false;
 		}
 		return false;
 	}
@@ -390,18 +384,18 @@ public class BankClientRole extends Role implements BankClient{
 		state2 = inLineState.transactionProcessing;
 
 	}
-	private void robBank(){
-		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Robbing bank");		
-		announcer.msgRobbingBank(this);
-	}
-	
 	private void stealMoney(){
 		int i= new Random().nextInt(10)+1;
 		double stealAmount= i *10000;
 		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Why so serious? Im just robbing bro");
 		state2 = inLineState.transactionProcessing;
-		teller.msgStealingMoney(stealAmount);
-		
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		announcer.msgStealingMoney(stealAmount, this);
+
 	}
 	private void IWantALoan(){
 		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "I want a loan for " + requestAmount);
@@ -419,6 +413,8 @@ public class BankClientRole extends Role implements BankClient{
 	 */
 	private void Leaving(){
 		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Thanks, goodbye.");
+		announcer.msgRemoveClient(this);
+		loanAnnouncer.msgRemoveClient(this);
 		clientGui.DoLeave();
 		try{
 			atExit.acquire();
@@ -427,7 +423,6 @@ public class BankClientRole extends Role implements BankClient{
 		}
 		state2 = inLineState.noTicket;
 		BuildingList.findBuildingWithName("Bank").removeRole(this);
-		myPerson.msgImHungry();
 		deactivate();
 	}
 
@@ -442,17 +437,16 @@ public class BankClientRole extends Role implements BankClient{
 			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Going to waiting area");
 		
 		clientGui.doGoToWaitingArea();
-
 	}
-	
+
 	private void DoGoToInterim(){
 		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Going to interim point");
 		if (state1 == bankState.steal){
-		clientGui.doGoToInterim(true);
+			clientGui.doGoToInterim(true);
 		}
 		else clientGui.doGoToInterim(false);
 	}
-		
+
 
 	//other
 	public String getName() {
@@ -478,29 +472,31 @@ public class BankClientRole extends Role implements BankClient{
 		requestAmount = myPerson.getMoneyNeeded();
 		if (trans.equalsIgnoreCase("deposit")){
 			this.state1 = bankState.deposit;
+			this.state2 = inLineState.haveTicket;
 			ticketNum = TakeANumberDispenser.INSTANCE.pullTicket();
-			//			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
 		}
 		if (trans.equalsIgnoreCase("withdraw")){
 			this.state1 = bankState.withdraw;
+			this.state2 = inLineState.haveTicket;
 			ticketNum = TakeANumberDispenser.INSTANCE.pullTicket();
-			//			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + ticketNum);
 		}
 		if (trans.equalsIgnoreCase("loan")){
 			this.state1 = bankState.loan;
+			this.state2 = inLineState.haveTicket;
 			loanTicketNum = LoanTakeANumberDispenser.INSTANCE.pullTicket();
-			//			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + loanTicketNum);
 			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "My ticket number is " + loanTicketNum);
 		}
 		if (trans.equalsIgnoreCase("repay")){
 			this.state1 = bankState.repay;
+			this.state2 = inLineState.haveTicket;
 			loanTicketNum = LoanTakeANumberDispenser.INSTANCE.pullTicket();
 			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER,  myPerson.getName(), "My ticket number is " + loanTicketNum);
 		}
 		if (trans.equalsIgnoreCase("steal")){
 			this.state1 = bankState.steal;
+			this.state2 = inLineState.haveTicket;
 			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER,  myPerson.getName(), "Robbing this bank");
 		}
 
@@ -532,7 +528,7 @@ public class BankClientRole extends Role implements BankClient{
 	public void setMyAccount(Account myAccount) {
 		this.myAccount = myAccount;
 	}
-	
+
 
 
 }

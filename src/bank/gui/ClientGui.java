@@ -87,6 +87,8 @@ public class ClientGui implements Gui {
 			waitingAreaCounter=0;
 			interimCounter=0;
 			deskCounter=0;
+			maskOn = false;
+			isRobber = false;
 		}
 
 		/*

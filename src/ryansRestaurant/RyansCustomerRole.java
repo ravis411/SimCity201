@@ -7,6 +7,8 @@ import ryansRestaurant.interfaces.RyansCashier;
 import ryansRestaurant.interfaces.RyansCustomer;
 import ryansRestaurant.interfaces.RyansHost;
 import ryansRestaurant.interfaces.RyansWaiter;
+import trace.AlertLog;
+import trace.AlertTag;
 import Person.Role.Role;
 import agent.Agent;
 import interfaces.generic_interfaces.GenericCashier;
@@ -94,7 +96,7 @@ public class RyansCustomerRole extends GenericCustomer implements RyansCustomer 
 	// Messages
 
 	public void gotHungry() {//from animation
-		//print("I'm hungry");
+		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "I'm hungry");
 		event = AgentEvent.gotHungry;
 		stateChanged();
 	}
@@ -106,7 +108,7 @@ public class RyansCustomerRole extends GenericCustomer implements RyansCustomer 
 
 	public void msgSitAtTable(List<String> menu, RyansCashier cashier) {
 		event = AgentEvent.followWaiter;
-		print("Received msgSitAtTable");
+		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Received msgSitAtTable");
 		this.menu = menu;
 		this.cashier = cashier;
 		stateChanged();
@@ -138,7 +140,7 @@ public class RyansCustomerRole extends GenericCustomer implements RyansCustomer 
 	
 	public void msgHereIsCheck(double total) {
 		this.totalBill = total;
-		print("My bill is $" + total);
+		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "My bill is $" + total);
 		readyToPay = true;
 		stateChanged();
 	}
@@ -148,13 +150,13 @@ public class RyansCustomerRole extends GenericCustomer implements RyansCustomer 
 		if(change > 0){
 			wallet += change;
 		}
-		print("My change is: " + change);
+		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "My change is: " + change);
 		stateChanged();
 	}
 
 	public void msgAnimationFinishedGoToSeat() {
 		//from animation
-		print("At seat.");
+		//AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "At seat.");
 		event = AgentEvent.seated;
 		stateChanged();
 	}
@@ -241,7 +243,7 @@ public class RyansCustomerRole extends GenericCustomer implements RyansCustomer 
 			state = AgentState.DoingNothing;
 			event = AgentEvent.none;
 			//no action
-			print("Finished Leaving.");
+			AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Finished Leaving.");
 			activity = "";
 			this.deactivate();
 			return true;
@@ -269,7 +271,7 @@ public class RyansCustomerRole extends GenericCustomer implements RyansCustomer 
 						if(waiter == null) {
 							host.msgIWantToLeave(cust);
 							state = AgentState.Leaving;
-							print("DECIDED TO LEAVE.");
+							AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "DECIDED TO LEAVE.");
 							activity = "Leaving.";
 							customerGui.DoImpatientExitRestaurant();
 							stateChanged();
@@ -278,7 +280,7 @@ public class RyansCustomerRole extends GenericCustomer implements RyansCustomer 
 				}, 3000);
 			}
 		}
-		print("Waiting In Restaurant.");
+		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Waiting In Restaurant.");
 	}
 	
 	private void SitDown() {
@@ -299,7 +301,7 @@ public class RyansCustomerRole extends GenericCustomer implements RyansCustomer 
 			public void run() {
 
 				if(menu == null || menu.isEmpty()) {
-					print("There's nothing to eat?, I'm outa here!");
+					AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "There's nothing to eat?, I'm outa here!");
 					activity = "There's no food, I'm out of here!";
 					state = AgentState.Paying;
 					event = AgentEvent.donePaying;
@@ -322,7 +324,7 @@ public class RyansCustomerRole extends GenericCustomer implements RyansCustomer 
 						//NOT ENOUGH MONEY TO PAY FOR ANYTHING LEAVE
 						event = AgentEvent.cantPayForAnything;
 						activity = "I can't afford anything.";
-						print("I can't afford anything.");
+						AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "I can't afford anything.");
 						stateChanged();
 						return;
 					}
@@ -376,7 +378,7 @@ public class RyansCustomerRole extends GenericCustomer implements RyansCustomer 
 		timer.schedule(new TimerTask() {
 			
 			public void run() {
-				print("Done eating, " + choice);
+				AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Done eating, " + choice);
 				activity = "Done.";
 				event = AgentEvent.doneEating;
 				//isHungry = false;

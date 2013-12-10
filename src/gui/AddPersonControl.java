@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+
+import Person.Role.ShiftTime;
 /**
  * Class for the sub-window that appears when clicking the 
  * "add a new person" button. Includes various options and checkboxes
@@ -33,7 +35,8 @@ public class AddPersonControl extends JFrame implements ActionListener{
 	private JPanel panelContainer;
 	
 	private JPanel TFContainer;
-	private JPanel RBContainer;
+	private JPanel RBContainer_1;
+	private JPanel RBContainer_2;
 	private JTextField nameTF;
 	private JTextField moneyTF;
 	
@@ -43,28 +46,30 @@ public class AddPersonControl extends JFrame implements ActionListener{
 			new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED ,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	private JScrollPane residenceScrollPane =
 			new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED ,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	
+	
 	private List<JRadioButton> jobs = new ArrayList<JRadioButton>();
 	private ButtonGroup jobsGroup = new ButtonGroup();
 	private List<JRadioButton> locations = new ArrayList<JRadioButton>();
 	private ButtonGroup locationsGroup = new ButtonGroup();
 	private List<JRadioButton> residences = new ArrayList<JRadioButton>();
 	private ButtonGroup residencesGroup = new ButtonGroup();
-	private JPanel jobRBPanel;		//Populate these two with Radio Buttons in
+	private List<JRadioButton> shifts = new ArrayList<JRadioButton>();
+	private ButtonGroup shiftsGroup = new ButtonGroup();
+	
+	private JPanel jobRBPanel;		//Populate these with Radio Buttons in
 	private JPanel locationRBPanel;	//the constructor. Need to implement scrolling
 	private JPanel residenceRBPanel;//or things won't fit.
+	private JPanel shiftRBPanel;
 	
 	private JButton addPersonB;
 	
-	private List<String> jobList = new ArrayList<String>();
 	
-	private final int OVERALL_ROWS = 3;
+	private final int OVERALL_ROWS = 4;
 	private final int OVERALL_COLLUMNS = 1; //Don't touch this
 	
 	private final int TEXT_FIELD_COUNT = 2;
-	private final int SCROLL_MENU_COUNT = 3;
-	
-	//private final int NUMBER_OF_JOBS = 20;
-	private final int NUMBER_OF_LOCATIONS = 25;
+	private final int SCROLL_MENU_COUNT = 2;
 	
 	private CityControlPanel controller;
 	
@@ -94,8 +99,10 @@ public class AddPersonControl extends JFrame implements ActionListener{
 		
 		panelContainer.add(TFContainer);
 		
-		RBContainer = new JPanel();
-		RBContainer.setLayout(new GridLayout(SCROLL_MENU_COUNT, 2));
+		RBContainer_1 = new JPanel();
+		RBContainer_1.setLayout(new GridLayout(SCROLL_MENU_COUNT, 2));
+		RBContainer_2 = new JPanel();
+		RBContainer_2.setLayout(new GridLayout(SCROLL_MENU_COUNT, 2));
 		
 		//------Job Radio Buttons------//
 			//Hard code the check boxes with all jobs/locations
@@ -114,12 +121,39 @@ public class AddPersonControl extends JFrame implements ActionListener{
 		//jobRBPanel.add(jobs);
 		jobScrollPane.setViewportView(jobRBPanel);
 		
-		RBContainer.add(new JLabel("Initial Job"));
-		RBContainer.add(jobScrollPane);
+		RBContainer_1.add(new JLabel("Initial Job"));
+		RBContainer_1.add(jobScrollPane);
 		//panelContainer.add(jobScrollPane);
 		
 		//--------------------------//
 		
+		//---Job Shift Radio Buttons---//
+		//Hard code because its an enum, not a list
+		shiftRBPanel = new JPanel();
+		shiftRBPanel.setLayout(new GridLayout(3,1));
+		
+		
+		JRadioButton none_shift = new JRadioButton("None");
+		none_shift.setEnabled(true);
+		shiftsGroup.add(none_shift);
+		shifts.add(none_shift);
+		
+		JRadioButton AM_shift = new JRadioButton("AM");
+		shiftRBPanel.add(AM_shift);
+		shiftsGroup.add(AM_shift);
+		shifts.add(AM_shift);
+		
+		JRadioButton PM_shift = new JRadioButton("PM");
+		shiftRBPanel.add(PM_shift);
+		shiftsGroup.add(PM_shift);
+		shifts.add(PM_shift);
+		
+		RBContainer_1.add(new JLabel("Working Shift"));
+		RBContainer_1.add(shiftRBPanel);
+		
+		//-----------------------------//
+
+		//-------------------------//
 		//---Location Radio Buttons---//
 		locationRBPanel = new JPanel();
 		locationRBPanel.setLayout(new GridLayout(SetUpWorldFactory.locationsList.size() , 1));
@@ -132,9 +166,9 @@ public class AddPersonControl extends JFrame implements ActionListener{
 		}
 		locationScrollPane.setViewportView(locationRBPanel);
 		
-		RBContainer.add(new JLabel("Spawn Location"));
-		RBContainer.add(locationScrollPane);
-		//panelContainer.add(locationScrollPane);
+		RBContainer_2.add(new JLabel("Spawn Location"));
+		RBContainer_2.add(locationScrollPane);
+
 		//--------------------------//
 		
 		//---Residence Radio Buttons---//
@@ -150,19 +184,21 @@ public class AddPersonControl extends JFrame implements ActionListener{
 		}
 		residenceScrollPane.setViewportView(residenceRBPanel);
 		
-		RBContainer.add(new JLabel("Home"));
-		RBContainer.add(residenceScrollPane);
+
+		RBContainer_2.add(new JLabel("Home"));
+		RBContainer_2.add(residenceScrollPane);
 		//panelContainer.add(residenceRBPanel);
 		
 		//----------------------------//
 		
-		panelContainer.add(RBContainer);
+		
+		panelContainer.add(RBContainer_1);
+		panelContainer.add(RBContainer_2);
 		
 		//-----Add Person Button----//
 		addPersonB = new JButton("Create");
 		addPersonB.addActionListener(this);
 		panelContainer.add(addPersonB);
-		//-------------------------//
 		
 		
 		add(panelContainer);
@@ -177,18 +213,21 @@ public class AddPersonControl extends JFrame implements ActionListener{
 	}
 	
 	private void createPerson() {
-		/*TODO
+		/*
 		 * 1)Poll Name
 		 * 2)Poll money
 		 * 3)Poll Initial Job
 		 * 4)Poll Spawn Location
 		 * 5)Poll home
+		 * 6)Poll shift
 		 * 
 		 * Then send data to SetUpWorldFactory
 		 */
 		String name = nameTF.getText();
 		Double money = Double.parseDouble(moneyTF.getText());
 		String job = null;
+		ShiftTime shift = ShiftTime.NONE;
+		String shiftText = null;
 		for (JRadioButton myJob : jobs) {
 			if (myJob.isSelected()) {
 				job = formatRole(myJob.getText());
@@ -209,7 +248,33 @@ public class AddPersonControl extends JFrame implements ActionListener{
 				break;
 			}
 		}
-		controller.addPerson(SetUpWorldFactory.addPerson(name, home, job, location, money));
+		
+		for (JRadioButton myShift : shifts) {
+			if (myShift.isSelected()) {
+				shift = parseShift(myShift.getText());
+				break;
+			}
+		}
+		//TODO
+		controller.addPerson(SetUpWorldFactory.addPerson(name, home, job, location, money/*, shift*/));
+
+	}
+	
+	private ShiftTime parseShift(String text) {
+		ShiftTime time = ShiftTime.NONE;
+		switch(text) {
+		case "None": 
+			time = ShiftTime.NONE;
+			break;
+		case "AM":
+			time = ShiftTime.DAY_SHIFT;
+			break;
+		case "PM":
+			time = ShiftTime.NIGHT_SHIFT;
+			break;
+		}
+		
+		return time;
 	}
 	
 	private String formatRole(String unformat) {

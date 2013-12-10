@@ -34,7 +34,7 @@ public abstract class Role {
 	public final static String RESTAURANT_KUSH_COOK_ROLE = "kushrestaurant.CookRole";
 	public final static String RESTAURANT_KUSH_CASHIER_ROLE = "kushrestaurant.CashierRole";
     public final static String RESTAURANT_JEFFREY_CUSTOMER_ROLE = "jeffreyRestaurant.CustomerAgent";
-    public final static String RESTAURANT_JEFFREY_WAITER_ROLE = "jeffreyRestaurant.WaiterAgent";
+    public final static String RESTAURANT_JEFFREY_WAITER_ROLE = "jeffreyRestaurant.OldWaiterAgent";
     public final static String RESTAURANT_JEFFREY_HOST_ROLE = "jeffreyRestaurant.HostAgent";
     public final static String RESTAURANT_JEFFREY_COOK_ROLE = "jeffreyRestaurant.CookAgent";
     public final static String RESTAURANT_JEFFREY_CASHIER_ROLE = "jeffreyRestaurant.CashierAgent";
@@ -49,8 +49,17 @@ public abstract class Role {
     public final static String RESTAURANT_RYAN_CASHIER_ROLE = "ryansRestaurant.RyansCashierRole"; 
     public final static String RESTAURANT_RYAN_CUSTOMER_ROLE = "ryansRestaurant.RyansCustomerRole";
     public final static String RESTAURANT_RYAN_WAITER_ROLE = "ryansRestaurant.RyansOldHostRole";//"ryansRestaurant.RyansWaiterRole";
+<<<<<<< HEAD
     
+=======
+>>>>>>> origin/develop
     
+    public final static String RESTAURANT_BYRON_NEW_WAITER_ROLE = "byronRestaurant.NewWaiterRole";
+    public final static String RESTAURANT_BYRON_WAITER_ROLE = "byronRestaurant.OldWaiterRole";
+    public final static String RESTAURANT_BYRON_HOST_ROLE = "byronRestaurant.HostRole"; 
+    public final static String RESTAURANT_BYRON_COOK_ROLE = "byronRestaurant.CookRole"; 
+    public final static String RESTAURANT_BYRON_CASHIER_ROLE = "byronRestaurant.CashierRole"; 
+    public final static String RESTAURANT_BYRON_CUSTOMER_ROLE = "byronRestaurant.CustomerRole"; 
     
 	
 	/**

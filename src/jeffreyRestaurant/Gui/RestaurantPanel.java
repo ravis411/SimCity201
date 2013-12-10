@@ -17,7 +17,7 @@ import jeffreyRestaurant.WaiterAgent;
  * Old Restaurant GUI panel for the restaurant project. 
  * Obsolete file in SimCity201.
  */
-public class RestaurantPanel extends JPanel {
+public class RestaurantPanel extends JPanel {/*
 	private int ROWS = 1;
 	private int COLLUMNS = 2;
 	private int vgap1 = 10;
@@ -81,7 +81,7 @@ public class RestaurantPanel extends JPanel {
     /**
      * Sets up the restaurant label that includes the menu,
      * and host and cook information
-     */
+     *//*
     private void initRestLabel() {
         JLabel label = new JLabel();
         //restLabel.setLayout(new BoxLayout((Container)restLabel, BoxLayout.Y_AXIS));
@@ -102,7 +102,7 @@ public class RestaurantPanel extends JPanel {
      *
      * @param type indicates whether the person is a customer or waiter
      * @param name name of person
-     */
+     *//*
     public void showInfo(String type, String name) {
 
         if (type.equals("Customers")) {
@@ -154,7 +154,7 @@ public class RestaurantPanel extends JPanel {
     		
     		host.addWaiter(w);
     	}
-    }*/
+    }*//*
     public void addPerson(String type, String name, Boolean isHungry) {
 
     	if (type.equals("Customers")) {
@@ -193,5 +193,5 @@ public class RestaurantPanel extends JPanel {
     }
     public Vector<WaiterAgent> getWaiters() {
     	return waiters;
-    }
+    }*/
 }
