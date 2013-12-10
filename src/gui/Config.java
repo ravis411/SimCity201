@@ -1,7 +1,6 @@
 package gui;
 
 public interface Config {
-	
 	//arranged in hierarchy
 	
 	String PEOPLE_NODE = "people";
@@ -21,7 +20,6 @@ public interface Config {
 			String BUILDING_NAME_ATTRIBUTE = "name";
 			String BUILDING_ID_ATTRIBUTE = "id";
 			String BUILDING_TYPE_ATTRIBUTE = "type";
-	
 	
 	
 }

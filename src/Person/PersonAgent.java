@@ -147,8 +147,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			}
 			if(r instanceof MarketEmployeeRole ){
 				MarketEmployeeRole role = (MarketEmployeeRole) findRole(Role.MARKET_EMPLOYEE_ROLE);
-			}
-			
+			}			
 			gui.setStartingStates(roleLocation);
 			BuildingList.findBuildingWithName(roleLocation).addRole(r);
 			r.activate();

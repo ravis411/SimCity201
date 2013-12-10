@@ -19,6 +19,7 @@ public class NumberAnnouncer extends Agent implements AnnouncerA{
 	private BankClient robber = null;
 	private int doneTeller;
 	private int tellerNumber = 0;
+	private double robbedMoney = 0;
 	public enum numberState{pending, gettingRobbed, announceB};
 	public numberState state = numberState.pending;
 	private String name;
@@ -28,9 +29,9 @@ public class NumberAnnouncer extends Agent implements AnnouncerA{
 		super();
 		name = n;
 	}
-	
+
 	//messages
-	
+
 	public void msgOnTheWay(){
 		onTheWay = true;
 		stateChanged();
@@ -54,35 +55,43 @@ public class NumberAnnouncer extends Agent implements AnnouncerA{
 		state = numberState.announceB;
 		onTheWay = false;
 		stateChanged();
-		
+
 	}
-	
-	
+
+	public void msgRemoveClient(BankClient b){
+		clients.remove(b);
+		if (b == robber){
+			robber = null;
+			for (BankClient c : clients){
+				c.msgUnfreeze();
+			}
+		}
+		stateChanged();
+	}
+
 	public void msgGoodbye(BankTeller o){
 		tellers.remove(o);
 		stateChanged();
 	}
-	public void msgRobbingBank(BankClient c){
-		robber = c;
-		state = numberState.gettingRobbed;
-		System.out.println("Changing state to getting robbed");
+
+	public void msgStealingMoney(double stealAmount, BankClient bcr) {
+		robbedMoney = stealAmount;
+		robber = bcr;
 		stateChanged();
 	}
-	
+
 	//scheduler
 	protected boolean pickAndExecuteAnAction() {
-		if (state == numberState.gettingRobbed){
-			System.out.println("Should hit this");
-			robbedBank();
-			return true;
-		}
-		if (!(tellers.isEmpty()) && state == numberState.announceB){
-			announceNumberBank();
-			return true;
-		}
-		if (tellers.isEmpty()){
-			Reset();
-		}
+		if (robbedMoney == 0){
+			if (!(tellers.isEmpty()) && state == numberState.announceB && !(clients.isEmpty())){
+				announceNumberBank();
+				return true;
+			}
+			if (tellers.isEmpty()){
+				Reset();
+			}
+		} else listenToRobber();
+
 		return false;
 	}
 	//actions
@@ -96,20 +105,26 @@ public class NumberAnnouncer extends Agent implements AnnouncerA{
 			}
 			Do("Calling ticket " + tellerNumber);
 			for (BankClient b : clients){
+				System.out.println("Telling client the number");
 				b.msgCallingTicket(tellerNumber, doneTeller, openTeller.peek());
 			}
 			state = numberState.pending;
 		}
 	}
-	private void robbedBank(){
-		System.out.println(((BankTellerRole)tellers.get(0)).getPerson().getName());
-		robber.msgHereIsTeller(tellers.get(0));		
-		state = numberState.pending;
-	}
-	
+
 	private void Reset(){
 		state = numberState.pending;
 		tellerNumber = 0;
+	}
+	
+	private void listenToRobber(){
+		for (BankClient b : clients){
+			if (b != robber){
+				b.msgFreeze();
+			}
+		}
+		robber.msgTransactionCompleted(robbedMoney);
+		robbedMoney = 0;
 	}
 
 	public String getName() {
@@ -118,4 +133,7 @@ public class NumberAnnouncer extends Agent implements AnnouncerA{
 	public String toString() {
 		return "Bank Teller  " + getName();
 	}
+
+
+
 }
