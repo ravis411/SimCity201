@@ -21,9 +21,5 @@ public abstract class GenericCashier extends Employee{
 		
 	}
 
-	public void msgCashierHereIsMarketBill(int orderPrice, MarketManager market) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }
