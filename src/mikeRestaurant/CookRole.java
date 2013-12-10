@@ -652,13 +652,6 @@ public class CookRole extends GenericCook implements Cook{
 		}
 	}
 
-
-	@Override
-	public ShiftTime getShift() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public Double getSalary() {
 		// TODO Auto-generated method stub

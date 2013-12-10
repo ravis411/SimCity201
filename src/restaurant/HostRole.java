@@ -50,7 +50,7 @@ public class HostRole extends GenericHost {
 		// make some tables
 		tables = new ArrayList<Table>(NTABLES);
 		for (int ix = 1; ix <= NTABLES; ix++) {
-			tables.add(new Table(ix,ix*60 + 70,ix*60));//how you add to a collections
+			tables.add(new Table(ix,ix*65 + 70,200));//how you add to a collections
 		}
 	}
 	
@@ -75,13 +75,12 @@ public class HostRole extends GenericHost {
 		waitingCustomers.add(cust);
 		waitingCust++;
 		stateChanged();
-		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "Host", "Customer added to waitingCustomers: "+cust);
 	}
 
 	public void msgLeavingTable(Customer customer) {
 		for (Table table : tables) {
 			if (table.getOccupant() == customer) {
-				print(customer + " leaving " + table);
+				AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), customer.getName() + " leaving " + table);
 				table.setUnoccupied();
 				stateChanged();
 			}
@@ -129,9 +128,7 @@ public class HostRole extends GenericHost {
 		for (Table table : tables) {
 			i = i+1;
 				if (!table.isOccupied() && i<4) {
-					AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "Host", "Inside scheduler table loop");
 					if (!waitingCustomers.isEmpty()) {
-						AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "Host", "We Should Return true here");
 						getWaiter(waitingCustomers.get(0), i-1, ((ArrayList<Table>) tables).get(i).getX(),((ArrayList<Table>) tables).get(i).getY());//the action
 						//waitingCustomers.remove(0);
 						return true;//return true to the abstract agent to reinvoke the scheduler.
@@ -167,7 +164,6 @@ public class HostRole extends GenericHost {
 		customer.setTableX(xCoor);
 		customer.setTableY(yCoor);
 		customer.setTableNum(table);
-		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "Host", "Messaging a Waiter");
 		waiters.get(assignedWaiter).msgSeatCustomer(customer);
 		((ArrayList<Table>) tables).get(table).setOccupant(customer);
 		waitingCustomers.remove(customer);
@@ -175,18 +171,18 @@ public class HostRole extends GenericHost {
 	
 	private void analyzeBreak() {
 		if(waiters.size() > 1) {
-			print(requestedBreak.getName() + " can go on break after current customers leave.");
+			AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), requestedBreak.getName() + " can go on break after current customers leave.");
 			requestedBreak.msgBreakReply(true);
 		}
 		else {
-			print(requestedBreak.getName() + " cannot go on break.");
+			AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), requestedBreak.getName() + " cannot go on break.");
 			requestedBreak.msgBreakReply(false);		
 		}
 		requestedBreak = null;
 	}
 	
 	private void notifyCustomerOfWait(Customer customer) {
-		print(customer.getCustomerName() + ", the restaurant is full. There's a wait to be seated.");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), customer.getCustomerName() + ", the restaurant is full. There's a wait to be seated.");
 		customer.msgRestaurantFull();
 	}
 	
@@ -257,12 +253,6 @@ public class HostRole extends GenericHost {
 	@Override
 	public String getNameOfRole() {
 		return Role.RESTAURANT_HOST_ROLE;
-	}
-
-	@Override
-	public ShiftTime getShift() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

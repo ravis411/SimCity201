@@ -84,7 +84,7 @@ public class CookRole extends GenericCook {
 	
 	// Messages
 	public void msgHereIsAnOrder(Waiter waiter, int choice, int table, Customer customer) {
-		print("Received order from " + waiter.getName());
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Received order from " + waiter.getName());
 		orders.add(new Order(waiter, choice, table, customer));
 		stateChanged();
 	}
@@ -94,7 +94,7 @@ public class CookRole extends GenericCook {
 	 * @param quantity amount of ingredient being delivered
 	 */
 	public void msgOrderFilled(int ingredientNum, int quantity) {
-		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, getNameOfRole(), "Recieved shipment of " + quantity + " " + inventory.get(ingredientNum).getName() + "s.");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, getNameOfRole(), "Recieved shipment of " + quantity + " " + inventory.get(ingredientNum).getName() + "s.");
 		inventory.get(ingredientNum).addToInventory(quantity);
 		event = AgentEvent.orderFulfilled;
 		stateChanged();
@@ -106,7 +106,7 @@ public class CookRole extends GenericCook {
 	 * @param quantityOfOrderThatMarketDoesntHave Amount of the order that the Market Could send
 	 */
 	public void msgOrderPartiallyFilled(int ingredientNum, int quantity, int quantityOfOrderThatMarketDoesntHave) {
-		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, getNameOfRole(), "Recieved shipment of " + quantity + " " + inventory.get(ingredientNum).getName() + "s.");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, getNameOfRole(), "Recieved shipment of " + quantity + " " + inventory.get(ingredientNum).getName() + "s.");
 		inventory.get(ingredientNum).addToInventory(quantity);
 		event = AgentEvent.orderPartiallyFulfilled;
 		stateChanged();
@@ -116,7 +116,7 @@ public class CookRole extends GenericCook {
 	 * @param ingredientNum if (ingredientNum==0) foodType=Steak; if (ingredientNum==1) foodType=Chicken; if (ingredientNum==2) foodType=Burger;
 	 */
 	public void msgOrderNotFilled(int ingredientNum) {
-		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, getNameOfRole(), "Market could not provide " + inventory.get(ingredientNum).getName() + "s. Will order from different market.");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, getNameOfRole(), "Market could not provide " + inventory.get(ingredientNum).getName() + "s. Will order from different market.");
 		event = AgentEvent.reOrder;
 	}
 
@@ -186,7 +186,7 @@ public class CookRole extends GenericCook {
 	
 	private void cookCurrentOrder() {
 		currentOrder.setCooked();
-		print("Food is ready for " + currentOrder.getWaiter().getName() + " to take to table " + (currentOrder.getTableNum()+1));
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, getNameOfRole(), "Food is ready for " + currentOrder.getWaiter().getName() + " to take to table " + (currentOrder.getTableNum()+1));
 		currentOrder.getWaiter().msgBringFoodToTable(currentOrder);
 	}
 	
@@ -198,7 +198,7 @@ public class CookRole extends GenericCook {
 		//print("Num of markets: " + markets.size());
 		List<Role> inhabitants;
 		boolean tempCheck=false;
-		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, getNameOfRole(), "Looking Up Market 1's Manager to Call in order");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, getNameOfRole(), "Looking Up Market 1's manager to call in order");
 		do{
 		inhabitants=BuildingList.findBuildingWithName("Market 1").getInhabitants();
 			try {
@@ -210,23 +210,22 @@ public class CookRole extends GenericCook {
 			for(Role r : inhabitants) {
 				if (r instanceof MarketManager){
 					tempCheck=true;
-					AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, getNameOfRole(), "Cook has found A restaurant Manager to call");
+					AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, getNameOfRole(), "Cook has found a market manager to call");
 					MarketManagerRole mr = (MarketManagerRole) r;
 					addMarket(mr);
 					break;
 				}
 			}
 		}
-		while(	!tempCheck);
+		while(!tempCheck);
 			
 
 		event = AgentEvent.placedOrder;
 		int marketChoice;
 		Random randNum = new Random();
 		marketChoice = randNum.nextInt(markets.size());
-		print("Low on " + inventory.get(ingredientNum).getName() + ". Getting more from Market 1.");
 
-		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, getNameOfRole(), "Low on " + inventory.get(ingredientNum).getName() + ". Getting more from Market 1.");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, getNameOfRole(), "Low on " + inventory.get(ingredientNum).getName() + ". Getting more from Market 1.");
 		markets.get(0).msgMarketManagerFoodOrder(inventory.get(ingredientNum).getName(), 5, this);
 	}
 
@@ -263,12 +262,6 @@ public class CookRole extends GenericCook {
 	@Override
 	public String getNameOfRole() {
 		return Role.RESTAURANT_COOK_ROLE;
-	}
-
-	@Override
-	public ShiftTime getShift() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

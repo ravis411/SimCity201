@@ -28,16 +28,16 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
 	static final int XCOOR = 0;
 	static final int YCOOR = 0;
 	
-	static final int TABLEXCOOR1 = 130;
-	static final int TABLEYCOOR1 = 60;
+	static final int TABLEXCOOR1 = 135;
+	static final int TABLEYCOOR1 = 200;
 	static final int TABLEX1 = 50;
 	static final int TABLEY1 = 50;
-	static final int TABLEXCOOR2 = 190;
-	static final int TABLEYCOOR2 = 120;
+	static final int TABLEXCOOR2 = 200;
+	static final int TABLEYCOOR2 = 200;
 	static final int TABLEX2 = 50;
 	static final int TABLEY2 = 50;
-	static final int TABLEXCOOR3 = 250;
-	static final int TABLEYCOOR3 = 180;
+	static final int TABLEXCOOR3 = 265;
+	static final int TABLEYCOOR3 = 200;
 	static final int TABLEX3 = 50;
 	static final int TABLEY3 = 50;
 	

@@ -158,12 +158,18 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 	public void addGuiForRole(Role r) {
 		if (r instanceof BankClientRole){
 		    BankClientRole clientRole = (BankClientRole) r;
+			//Person client = r.getPerson();
 		    BankClientRoles.add(clientRole);
 		    ClientGui clientGui = new ClientGui(clientRole, this);
+	        //clientRole.setPerson(client);
+	        //((PersonAgent) client).addRole(clientRole);
 	        this.addGui(clientGui);
+//	        client.setMoney((double)100);
+//	        client.setMoneyNeeded((double)50);
 	        clientRole.setAnnouncer(announcer);
 	        clientRole.setLoanAnnouncer(loanAnnouncer);
 	        clientRole.setGui(clientGui);
+	        //client.startThread();
 		}
 		if (r instanceof BankTellerRole){
 		    BankTellerRole tellerRole = (BankTellerRole) r;
@@ -175,7 +181,9 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 		}
 		if (r instanceof LoanTellerRole){
 		    LoanTellerRole loanTellereRole=(LoanTellerRole) r;
+		    //Person loanTellerPerson= r.getPerson();
 		    LoanGui loanGui = new LoanGui(loanTellereRole, this);
+		    //((PersonAgent) loanTellerPerson).addRole(loanTellereRole);
 	        this.addGui(loanGui);
 	        loanTellereRole.setAnnouncer(loanAnnouncer);
 	        loanTellereRole.setGui(loanGui);

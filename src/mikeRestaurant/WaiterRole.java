@@ -797,12 +797,6 @@ public abstract class WaiterRole extends GenericWaiter implements Waiter{
 	}
 
 	@Override
-	public ShiftTime getShift() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Double getSalary() {
 		// TODO Auto-generated method stub
 		return null;

@@ -373,6 +373,12 @@ public class LucaCashierRole extends GenericCashier implements LucaCashier {
 		return null;
 	}
 
+	
+	public void msgCashierHereIsMarketBill(int orderPrice, LucaMarket market) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 
