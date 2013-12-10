@@ -14,13 +14,14 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
 
-import Person.Role.ShiftTime;
+import mikeRestaurant.Table;
+import mikeRestaurant.WaiterRole;
 import restaurant.gui.luca.RestaurantGui;
 import restaurant.gui.luca.WaiterGui;
-import restaurant.interfaces.luca.LucaCashier;
 import restaurant.interfaces.luca.LucaCustomer;
 import restaurant.interfaces.luca.LucaWaiter;
 import restaurant.test.mock.EventLog;
+import Person.Role.ShiftTime;
 
 
 /**
@@ -30,21 +31,21 @@ import restaurant.test.mock.EventLog;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class LucaWaiterRole extends GenericWaiter implements LucaWaiter{
+public abstract class LucaWaiterRole extends GenericWaiter implements LucaWaiter{
 	public List<MyCustomers> myCustomers
 	= Collections.synchronizedList(new ArrayList<MyCustomers>());
-	private Semaphore atTable = new Semaphore(0,false);
-	private Semaphore atCook = new Semaphore(0,false);
-	private Semaphore waitForOrder = new Semaphore(0,false);
-	private boolean WaiterAvailable;
-	private LucaCashierRole cashier;
-	private LucaCookRole cook;
-	private LucaHostRole host;
-	private WaiterGui waiterGui;
-	private RestaurantGui restaurantGui;
-	private boolean onBreak;
-	private boolean requestBreak;
-	private boolean tellHostIamBackFromBreak;
+	protected Semaphore atTable = new Semaphore(0,false);
+	protected Semaphore atCook = new Semaphore(0,false);
+	protected Semaphore waitForOrder = new Semaphore(0,false);
+	protected boolean WaiterAvailable;
+	protected LucaCashierRole cashier;
+	protected LucaCookRole cook;
+	protected LucaHostRole host;
+	protected WaiterGui waiterGui;
+	protected RestaurantGui restaurantGui;
+	protected boolean onBreak;
+	protected boolean requestBreak;
+	protected boolean tellHostIamBackFromBreak;
 	public static HashMap<String, Integer> menu;
 	public static Map<String, Integer> menuUnmodifiable;
 	public EventLog log= new EventLog();
@@ -333,17 +334,17 @@ public class LucaWaiterRole extends GenericWaiter implements LucaWaiter{
 	// Actions
 
 
-	private void askHostForBreak() throws ExecutionException {
+	protected void askHostForBreak() throws ExecutionException {
 		print("Can I , " + getName() + ", go on Break?");
 		host.msgHostCanIGoOnBreak(this);//passes the number of customers the waiter has so the host can deny his request if he currently has customers
 		requestBreak =false;
 	}
-	private void tellHostReadyToWork() throws ExecutionException{
+	protected void tellHostReadyToWork() throws ExecutionException{
 		print(" I , " + getName() + ", am back from Break");
 		tellHostIamBackFromBreak= false;
 		host.msgHostBackFromBreak(this);
 	}
-	private void seatCustomer(MyCustomers customer) throws ExecutionException{
+	protected void seatCustomer(MyCustomers customer) throws ExecutionException{
 		waiterGui.showOrderInAnimation("", "");
 		DoSeatCustomer(customer);
 		customer.getCustomer().msgSitAtTable(customer.getCustomerTableNumber(), this);
@@ -360,7 +361,7 @@ public class LucaWaiterRole extends GenericWaiter implements LucaWaiter{
 		customer.setCustomerSeated();
 	}
 	
-	private void askForMyCustomerOrder(MyCustomers customer)throws ExecutionException{
+	protected void askForMyCustomerOrder(MyCustomers customer)throws ExecutionException{
 		
 		DoTakeOrder(customer);
 		try {
@@ -406,22 +407,9 @@ public class LucaWaiterRole extends GenericWaiter implements LucaWaiter{
 		
 	}
 	
-	private void giveCookOrder(MyCustomers customer)throws ExecutionException{
-		DoGiveCookOrder(customer);
-		try {
-			atCook.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		cook.msgCookHeresAnOrder(customer.getCustomerTableNumber(), customer.getCustomerChoice(), this);
-		print(customer.getCustomer() + "'s Order given to cook");
-		waiterGui.showOrderInAnimation("", "");
-		customer.setCookHasOrder(true);
-		waiterGui.DoLeave();
-	}
+	protected abstract void giveCookOrder(MyCustomers customer)throws ExecutionException;
 	
-	private void giveCustomerOrder(MyCustomers customer)throws ExecutionException{
+	protected void giveCustomerOrder(MyCustomers customer)throws ExecutionException{
 		doGetOrderFromCook(customer);
 		try {
 			atCook.acquire();
@@ -444,7 +432,7 @@ public class LucaWaiterRole extends GenericWaiter implements LucaWaiter{
 		waiterGui.showOrderInAnimation("", "");
 		waiterGui.DoLeave();
 	}
-	private void tellCashierToComputeBill() throws ExecutionException{
+	protected void tellCashierToComputeBill() throws ExecutionException{
 		for (int i=0; i<myCustomers.size(); i++){
 			if (myCustomers.get(i).isReadyForCheck()){
 				cashier.msgCashierComputeBill(myCustomers.get(i).getCustomerChoice(), myCustomers.get(i).getCustomer(), this);
@@ -454,7 +442,7 @@ public class LucaWaiterRole extends GenericWaiter implements LucaWaiter{
 		}
 	}
 	
-	private void giveCustomerCheck() throws ExecutionException{
+	protected void giveCustomerCheck() throws ExecutionException{
 		for (int i=0; i<myCustomers.size(); i++){
 			if (myCustomers.get(i).isCustomersCheckReady()){
 			print("Giving customer their check for $" + myCustomers.get(i).getCustomersTab());
@@ -473,7 +461,7 @@ public class LucaWaiterRole extends GenericWaiter implements LucaWaiter{
 		
 		}
 	}
-	private void tellHostTableFree(MyCustomers customer) throws ExecutionException{
+	protected void tellHostTableFree(MyCustomers customer) throws ExecutionException{
 		host.msgHostTableFree(customer.getCustomerTableNumber());
 		customer.setCustomerleaving(false);
 		myCustomers.remove(customer);
@@ -481,33 +469,33 @@ public class LucaWaiterRole extends GenericWaiter implements LucaWaiter{
 	}
 	
 	// The animation DoXYZ() routines
-	private void DoSeatCustomer(MyCustomers customer) {
+	protected void DoSeatCustomer(MyCustomers customer) {
 		//Notice how we print "customer" directly. It's toString method will do it.
 		//Same with "table"
 		print("Seating " + customer.getCustomer() + " at table" + customer.getCustomerTableNumber());
 		waiterGui.DoGoToTable(customer.getCustomerTableNumber()); 
 
 	}
-	private void DoTakeOrder(MyCustomers customer) {
+	protected void DoTakeOrder(MyCustomers customer) {
 		//Notice how we print "customer" directly. It's toString method will do it.
 		//Same with "table"
 		print("Taking " + customer.getCustomer() + "'s order at table" +  customer.getCustomerTableNumber());
 		waiterGui.DoGoToTable( customer.getCustomerTableNumber()); 
 	}
 
-	private void DoGiveCookOrder(MyCustomers customer) {
+	protected void DoGiveCookOrder(MyCustomers customer) {
 		print("Bringing " + customer.getCustomer() + "'s order to cook from table" +  customer.getCustomerTableNumber());
 		waiterGui.DoGoToCook(); 
 	}
-	private void doGetOrderFromCook(MyCustomers customer) {
+	protected void doGetOrderFromCook(MyCustomers customer) {
 		print("Getting " + customer.getCustomer() + "'s order from cook");
 		waiterGui.DoGoToPlatingArea(); 
 	}
-	private void doBringOrderToCustomer(MyCustomers customer) {
+	protected void doBringOrderToCustomer(MyCustomers customer) {
 		print("Bringing " + customer.getCustomer() + "'s cooked order to customer at table" +  customer.getCustomerTableNumber());
 		waiterGui.DoGoToTable( customer.getCustomerTableNumber());
 	}
-	private void doBringCheckToCustomer(MyCustomers customer) {
+	protected void doBringCheckToCustomer(MyCustomers customer) {
 		print("Bringing " + customer.getCustomer() + "'s Check to customer at table" +  customer.getCustomerTableNumber());
 		waiterGui.DoGoToTable( customer.getCustomerTableNumber());
 	}
@@ -530,21 +518,67 @@ public class LucaWaiterRole extends GenericWaiter implements LucaWaiter{
 	public RestaurantGui getRestaurantGui() {
 		return restaurantGui;
 	}
-	
-	private class MyCustomers {
+    protected static class Order {
+		
+		
+		//Order meant to link the following data
+		private LucaWaiterRole waiter;
+	    private String choice;
+	    private int table;
+
+	    
+		
+	    /**
+	     * Constructor
+	     * @param w waiter handling order
+	     * @param newChoice choice of customer for order
+	     * @param table2 table to which the order corresponds
+	     */
+	    public Order(LucaWaiterRole w, String newChoice, int table2){
+	    	waiter = w;
+	    	choice = newChoice;
+	    	table = table2;
+	    }
+	    
+	    
+	    //-----------------ACCESSORS-------------//
+	    public String getChoice(){
+	    	return choice;
+	    }
+	    
+	    public int getTable(){
+	    	return table;
+	    }
+	    
+	    public LucaWaiterRole getWaiter(){
+	    	return waiter;
+	    }
+	    
+	    /**
+	     * toString method which changes the Order to a readable string
+	     */
+	    public String toString(){
+	    	StringBuilder builder = new StringBuilder();
+	    	builder.append("Choice = "+ choice);
+	    	builder.append("\tWaiter = "+ waiter.getName());
+	    	builder.append("\tTable = "+ table);
+	    	return builder.toString();
+	    }
+	}
+	protected class MyCustomers {
 		LucaCustomer Customer;
 		int tableNumber;
 		String Choice;
 		boolean menuTaken;
 		boolean seated;
 		boolean readyToOrder;
-		private boolean orderTaken;
-		private boolean cookHasOrder;
-		private boolean orderReady;
-		private boolean customerleaving;
-		private boolean readyForCheck;
-		private boolean customersCheckReady;
-		private int customersTab;
+		protected boolean orderTaken;
+		protected boolean cookHasOrder;
+		protected boolean orderReady;
+		protected boolean customerleaving;
+		protected boolean readyForCheck;
+		protected boolean customersCheckReady;
+		protected int customersTab;
 		
 		
 		MyCustomers(LucaCustomer C, int tableNum) {

@@ -13,6 +13,8 @@ import java.util.Vector;
 import java.util.concurrent.Semaphore;
 
 import restaurant.gui.WaiterGui;
+import trace.AlertLog;
+import trace.AlertTag;
 import Person.Role.ShiftTime;
 
 /**
@@ -128,14 +130,14 @@ public abstract class WaiterAgent extends GenericWaiter implements Waiter {
 	public void msgLeavingTable(Customer cust) {
 		for(int i=0; i<myCustomers.size(); i++) {
 			if (cust.getTableNum() == myCustomers.get(i).customer.getTableNum()) {
-				print(cust + " leaving table " + (cust.getTableNum()+1));
+				AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), cust + " leaving table " + (cust.getTableNum()+1));
 			}
 		}
 		stateChanged();
 	}
 	
 	public void msgOutOfFood(int choice, Customer c) {
-		print("We're out of " + menu.getDishName(choice) + "!");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "We're out of " + menu.getDishName(choice) + "!");
 		for(int i=0; i<myCustomers.size(); i++) {
 			if(myCustomers.get(i).customer == c) {
 				myCustomers.get(i).state = CustomerState.needToReorder;
@@ -271,14 +273,14 @@ public abstract class WaiterAgent extends GenericWaiter implements Waiter {
 	}
 	
 	protected void DoSeatCustomer(MyCustomer c, int tableNum) {
-		print("Seating " + c.customer.getName() + " at table " + (tableNum+1));
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Seating " + c.customer.getName() + " at table " + (tableNum+1));
 		waiterGui.DoBringToTable(c.customer);
 	}
 	
 	protected void GoTakeOrder(MyCustomer c) {
 		waiterGui.DoGoTakeOrder(c.customer);
 		atTableForOrder = c.customer.getTableNum();
-		print("Going to table " + (c.customer.getTableNum()+1) + " to take order.");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Going to table " + (c.customer.getTableNum()+1) + " to take order.");
 		try {
 			atTable.acquire();
 		} catch (InterruptedException e) {
@@ -291,7 +293,7 @@ public abstract class WaiterAgent extends GenericWaiter implements Waiter {
 	protected void GoRetakeOrder(MyCustomer c) {
 		waiterGui.DoGoTakeOrder(c.customer);
 		atTableForOrder = c.customer.getTableNum();
-		print("Going to table " + (c.customer.getTableNum()+1) + " to retake order.");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Going to table " + (c.customer.getTableNum()+1) + " to retake order.");
 		try {
 			atTable.acquire();
 		} catch (InterruptedException e) {
@@ -302,12 +304,12 @@ public abstract class WaiterAgent extends GenericWaiter implements Waiter {
 	}
 	
 	protected void TakeOrder(MyCustomer c) {
-		print("Taking " + c.customer.getName() + "'s order.");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Taking " + c.customer.getName() + "'s order.");
 		c.customer.msgWaiterReadyToTakeOrder();
 	}
 	
 	protected void RetakeOrder(MyCustomer c) {
-		print("Retaking " + c.customer.getName() + "'s order.");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Retaking " + c.customer.getName() + "'s order.");
 		c.state = CustomerState.ordered;
 		c.customer.msgWaiterReadyToRetakeOrder();
 	}
@@ -315,7 +317,7 @@ public abstract class WaiterAgent extends GenericWaiter implements Waiter {
 	abstract protected void TakeOrderToCook(MyCustomer c);
 	
 	protected void GetFoodFromKitchen(Order o) {
-		print("Getting " + o.getCustomer().getName() + "'s food from kitchen");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Getting " + o.getCustomer().getName() + "'s food from kitchen");
 		waiterGui.DoGoToPlatingArea();
 		try {
 			atPlatingArea.acquire();
@@ -326,7 +328,7 @@ public abstract class WaiterAgent extends GenericWaiter implements Waiter {
 	}
 	
 	protected void TakeFoodToTable(Order o) {
-		print("Taking " + o.getCustomer().getName() + "'s food to table " + (o.getCustomer().getTableNum()+1));
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Taking " + o.getCustomer().getName() + "'s food to table " + (o.getCustomer().getTableNum()+1));
 		cook.cookGui.setPlate(0);
 		waiterGui.DoTakeFoodToTable(o.customer);
 		try {
@@ -341,7 +343,7 @@ public abstract class WaiterAgent extends GenericWaiter implements Waiter {
 	}
 	
 	protected void BringCheckToTable(Check check) {
-		print("Taking check to table " + (check.customer.getTableNum()+1));
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Taking check to table " + (check.customer.getTableNum()+1));
 		waiterGui.DoTakeCheckToTable(check.customer);
 		try {
 			atTable.acquire();
@@ -364,17 +366,17 @@ public abstract class WaiterAgent extends GenericWaiter implements Waiter {
 	}
 	
 	public void requestBreak() {
-		print("Can I go on break please?");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Can I go on break please?");
 		host.msgWaiterGoOnBreak(this);
 		requestBreak = false;
 	}
 	
 	public void goOnBreak() {
-		print("I'm going on break!");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "I'm going on break.");
 		waiterGui.DoGoOnBreak();
 		timer.schedule(new TimerTask() {
 			public void run() {
-				print("Off break!");
+				AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "I'm off break.");
 				onBreak = false;
 				waiterGui.DoBackFromBreak();
 				onBreakSema.release();

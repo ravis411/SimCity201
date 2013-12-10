@@ -68,7 +68,7 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
 
-		MasterTime.getInstance().add(Calendar.MINUTE, 1);
+		MasterTime.getInstance().add(Calendar.SECOND, 10);
 		//AlertLog.getInstance().logInfo(AlertTag.GENERAL_CITY, "Calendar", calendar.toString());
 		
 		

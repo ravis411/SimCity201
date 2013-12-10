@@ -43,7 +43,6 @@ public abstract class Employee extends Role{
 		//BuildingList.findBuildingWithName(workLocation).addRole(this);
 	}
 	
-	//public abstract void workplaceIsOpen();
 	
 	/**
 	 * Mutator for the Work Location

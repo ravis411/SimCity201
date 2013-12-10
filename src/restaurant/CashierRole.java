@@ -13,6 +13,8 @@ import java.util.TimerTask;
 import java.util.Vector;
 
 import restaurant.gui.CashierGui;
+import trace.AlertLog;
+import trace.AlertTag;
 import Person.Role.Role;
 import Person.Role.ShiftTime;
 import bank.BankTellerRole;
@@ -48,14 +50,13 @@ public class CashierRole extends GenericCashier implements Cashier {
 	public CashierRole(String workLocation) {
 		super(workLocation);
 		
-//		List<Role> inhabitants = BuildingList.findBuildingWithName("Bank").getInhabitants();
-//		for(Role r : inhabitants) {
-//			if (r.getNameOfRole() == "BANK_TELLER_ROLE") {
-//				BankTellerRole bt = (BankTellerRole) r;
-//				teller = bt;
-//			}
-//		}
-
+		List<Role> inhabitants = BuildingList.findBuildingWithName("Bank").getInhabitants();
+		for(Role r : inhabitants) {
+			if (r.getNameOfRole() == Role.BANK_TELLER_ROLE) {
+				BankTellerRole bt = (BankTellerRole) r;
+				teller = bt;
+			}
+		}
 		
 		money = 200.00;
 	}
@@ -67,24 +68,24 @@ public class CashierRole extends GenericCashier implements Cashier {
 	// Messages
 	
 	public void msgPrepareCheck(Waiter waiter, Customer customer, int mealChoice) {
-		print("Received check from " + waiter.getName());
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Received check from " + waiter.getName());
 		checks.add(new Check(waiter, customer, mealChoice));
 		stateChanged();
 	}
 	
 	public void msgPayingCheck(Customer customer, double amountOwed) {
-		print(customer.getName() + " is paying bill.");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), customer.getName() + " is paying bill.");
 		payingCustomers.add(new Check(customer, amountOwed));
 		stateChanged();
 	}
 	
 	public void msgMarketBill(Market market, double amount) {
-		print("Received bill from market for $" + amount);
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Received bill from market for $" + amount);
 		marketBills.add(new MarketBill(market,amount));
 		stateChanged();
 	}
 	public void msgReceivedDeposit(double amount){
-		print("Deposited $" + amount + " to bank.");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Deposited $" + amount + " to bank.");
 		money = money - amount;
 		stateChanged();
 	}
@@ -131,7 +132,7 @@ public class CashierRole extends GenericCashier implements Cashier {
 	private void ringUpCheck(final Check check) {
 		timer.schedule(new TimerTask() {
 			public void run() {
-				print(check.customer.getName() + " owes $" + menu.getDishPrice(check.mealChoice));
+				AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), check.customer.getName() + " owes $" + menu.getDishPrice(check.mealChoice));
 				check.waiter.msgCheckReady(check.customer, menu.getDishPrice(check.mealChoice));
 				stateChanged();
 			}
@@ -141,24 +142,24 @@ public class CashierRole extends GenericCashier implements Cashier {
 	
 	private void chargeCustomer(Check check) {
 		if(check.customer.getMoney() >= check.amount) {
-			print(check.customer.getName() + " has $" + check.customer.getMoney() + ". Enough to pay bill.");
+			AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), check.customer.getName() + " has $" + check.customer.getMoney() + ". Enough to pay bill.");
 			money = money + check.amount;
 			check.customer.msgCheckPayed();
 		}
 		else {
-			print(check.customer.getName() + " has $" + check.customer.getMoney() + ". Not enough to pay bill.");
+			AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), check.customer.getName() + " has $" + check.customer.getMoney() + ". Not enough to pay bill.");
 			check.customer.msgCheckNotPayed();
 		}
 	}
 	
 	private void payMarketBill(MarketBill bill) {
 		if(money >= bill.amount) {
-			print("Paying " + bill.market.getName() + " $" + bill.amount);
+			AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Paying " + bill.market.getName() + " $" + bill.amount);
 			money = money-bill.amount;
 			bill.market.msgReceivePayment(bill.amount);
 		}
 		if(money < bill.amount) {
-			print("I don't have enough money to pay " + bill.market.getName() + ". I'll pay it off next time!");
+			AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "I don't have enough money to pay " + bill.market.getName() + ". I'll pay it off next time!");
 			debts.add(bill);
 		}
 	}

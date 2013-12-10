@@ -52,6 +52,7 @@ public class WaiterGui implements Gui {
 	private boolean isPresent;
 	private boolean moving;
 	
+	
 	private static int idCounter = 0;
 	private final int ID;
 	

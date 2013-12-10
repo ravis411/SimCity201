@@ -1,30 +1,22 @@
 <?xml version="1.0"?>
 <configuration>
-    <building-config>
-        <building id="1" type="Residence" name="House 1"/>
-        <building id="2" type="Residence" name="House 2"/>
-        <building id="3" type="Market" name="Market 1"/>
-        <building id="4" type="Apartment" name="Apartment Building"/>
-        <building id="5" type="Bank" name="Bank" />
-        <building id="6" type="Apartment" name="Apartment Building 1"/>
-        <building id="7" type="Apartment" name="Apartment Building 4"/>
-        <building id="8" type="Restaurant" name="Restaurant 1"/>
-        <building id="9" type="Apartment" name="Apartment Building 2"/>
-        <building id="10" type="Default" name="Default"/>
-        <building id="11" type="Food Court" name="Food Court"/>
-        <building id="12" type="Default" name="Default 1"/>
-    </building-config>
+	<building-config>
+		<building id="5" type="Residence" name="House 1" />
+		<building id="2" type="Residence" name="House 2" />
+		<building id="3" type="Market" name="Market 1" />
+		<building id="4" type="Apartment" name="Apartment Building" />
+		<building id="1" type="Bank" name="Bank" />
+		<building id="6" type="Apartment" name="Apartment Building 1" />
+		<building id="7" type="Apartment" name="Apartment Building 4" />
+		<building id="8" type="Restaurant" name="Restaurant 1" />
+		<building id="9" type="Apartment" name="Apartment Building 2" />
+		<building id="10" type="Default" name="Default" />
+		<building id="11" type="Food Court" name="Food Court" />
+		<building id="12" type="Default" name="Default 1" />
+	</building-config>
 	<people>
-	    <person name="Mike's Waiter" job="mikeRestaurant.OldWaiterRole" shift="AM"
-		    location="Mike's Restaurant" home="Apartment 5">
-			<friends>
-				<friend name="Person 1" />
-			    <friend name="Person 2" />
-			    <friend name="Person 11" />
-			</friends>
-		</person>
-		<person name="Person 1"
-		    	home="Apartment 1" location="Home" hasCar="true">
+		<person name="Person 1" home="Apartment 1" location="Home"
+			hasCar="true">
 			<friends>
 				<friend name="Person 2" />
 				<friend name="Person 3" />
@@ -41,17 +33,16 @@
 				<friend name="Person 6" />
 			</friends>
 		</person>
-		<person name="Person 3" job="ryansRestaurant.RyansHostRole" shift="AM"
-		    location="Ryan's Restaurant" home="Apartment 2">
+		<person name="Person 3" job="ryansRestaurant.RyansHostRole"
+			location="Ryan's Restaurant" home="Apartment 2">
 			<friends>
 				<friend name="Person 1" />
 				<friend name="Person 7" />
 				<friend name="Person 9" />
 			</friends>
 		</person>
-		<person name="Person 4" job="ryansRestaurant.RyansCashierRole" shift="AM"
-		    location="Ryan's Restaurant" home="Apartment 3">
-
+		<person name="Person 4" job="ryansRestaurant.RyansCashierRole"
+			location="Ryan's Restaurant" home="Apartment 3">
 			<friends>
 				<friend name="Person 1" />
 				<friend name="Person 2" />
@@ -76,8 +67,8 @@
 				<friend name="Person 11" />
 			</friends>
 		</person>
-		<person name="Person 7" job="MarketEmployee.MarketManagerRole" shift="AM"
-		    location="Market 1" home="Apartment 6">
+		<person name="Person 7" job="MarketEmployee.MarketManagerRole"
+			location="Market 1" home="Apartment 6">
 			<friends>
 				<friend name="Person 1" />
 				<friend name="Person 8" />
@@ -94,8 +85,8 @@
 				<friend name="Person 9" />
 			</friends>
 		</person>
-		<person name="Person 9" job="MarketEmployee.MarketEmployeeRole" shift="AM"
-		    location="Market 1" home="Apartment 8">
+		<person name="Person 9" job="MarketEmployee.MarketEmployeeRole"
+			location="Market 1" home="Apartment 8">
 			<friends>
 				<friend name="Person 1" />
 				<friend name="Person 3" />
@@ -152,7 +143,6 @@
 				<friend name="Person 10" />
 			</friends>
 		</person>
-
 		<person name="Person 16" job="restaurant.NewWaiterRole"
 			location="Dylan's Restaurant" home="Apartment 3">
 			<friends>
@@ -161,10 +151,11 @@
 				<friend name="Person 10" />
 			</friends>
 		</person>
-
+		<!-- <person name="Person 17" job="restaurant.RestaurantCustomerRole" location="Dylan's 
+			Restaurant" home="Apartment 3"> <friends> <friend name="Person 1" /> <friend 
+			name="Person 9" /> <friend name="Person 10" /> </friends> </person> -->
 		<person name="Person 18" job="mikeRestaurant.HostRole"
-		    location="Mike's Restaurant" home="Apartment 2">
-
+			location="Mike's Restaurant" home="Apartment 2">
 			<friends>
 				<friend name="Person 1" />
 				<friend name="Person 7" />
