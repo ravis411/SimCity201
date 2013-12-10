@@ -57,15 +57,5 @@ public class MockBankTeller extends Mock implements BankTeller{
 			client.msgTransactionCompleted(a);
 		}
 	}
-	@Override
-	public void msgStealingMoney(double stealAmount) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void msgFreeze() {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

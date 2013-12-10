@@ -107,8 +107,12 @@ public class MockBankClient extends Mock implements BankClient{
 	}
 
 	@Override
-	public void msgHereIsTeller(BankTeller bankTeller) {
-		// TODO Auto-generated method stub
+	public void msgFreeze() {
+		
+	}
+
+	@Override
+	public void msgUnfreeze() {
 		
 	}
 }

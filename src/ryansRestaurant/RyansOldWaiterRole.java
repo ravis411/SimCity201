@@ -3,6 +3,8 @@ package ryansRestaurant;
 import ryansRestaurant.RyansWaiterRole.MyCustomer;
 import trace.AlertLog;
 import trace.AlertTag;
+import trace.AlertLog;
+import trace.AlertTag;
 
 
 public class RyansOldWaiterRole extends RyansWaiterRole {
@@ -43,5 +45,6 @@ public class RyansOldWaiterRole extends RyansWaiterRole {
 		// TODO Auto-generated method stub
 		return "Ryan's Old Waiter Role";
 	}
+
 
 }
