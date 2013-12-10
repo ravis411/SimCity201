@@ -90,9 +90,6 @@ public class SimCity201Gui extends JFrame {
 		loadConfig("XML");
 		//loadConfig(config);
 		//loadConfig("GUI Test 1");
-		//loadConfigFile();
-		
-		loadConfig(config);
 	}
 	
 	
