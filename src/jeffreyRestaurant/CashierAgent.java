@@ -1,7 +1,9 @@
 package jeffreyRestaurant;
 
 import Person.Role.Role;
+import Person.Role.ShiftTime;
 import agent.Agent;
+import interfaces.generic_interfaces.GenericCashier;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -21,11 +23,10 @@ import jeffreyRestaurant.interfaces.Waiter;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class CashierAgent extends Role implements Cashier {
+public class CashierAgent extends GenericCashier implements Cashier {
 	//Constructor
-	public CashierAgent(String name) {
-		super();
-		this.name = name;
+	public CashierAgent(String location) {
+		super(location);//TODO
 		menu = new HashMap<String,Double>();
 		menu.put("Steak", 15.99);
 		menu.put("Chicken", 10.99);
@@ -78,11 +79,10 @@ public class CashierAgent extends Role implements Cashier {
 	private List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
 	private Map<String, Double> menu;
 	
-	private String name;
-	
+
 	//Utilities
 	public String getName() {
-		return name;
+		return myPerson.getName();
 	}
 	
 	//Messages
@@ -222,6 +222,18 @@ public class CashierAgent extends Role implements Cashier {
 
 	@Override
 	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
 		// TODO Auto-generated method stub
 		return null;
 	}

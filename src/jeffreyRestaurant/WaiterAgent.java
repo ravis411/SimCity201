@@ -1,7 +1,12 @@
 package jeffreyRestaurant;
 
 import Person.Role.Role;
+import Person.Role.ShiftTime;
 import agent.Agent;
+import interfaces.generic_interfaces.GenericCashier;
+import interfaces.generic_interfaces.GenericCook;
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -17,7 +22,7 @@ import jeffreyRestaurant.interfaces.Waiter;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class WaiterAgent extends Role implements Waiter{
+public class WaiterAgent extends GenericWaiter implements Waiter{
 	static final int NTABLES = 3;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
@@ -70,8 +75,8 @@ public class WaiterAgent extends Role implements Waiter{
 	private CashierAgent ch;
 	public HostGui hostGui = null;
 
-	public WaiterAgent(String name) {
-		super();
+	public WaiterAgent(String name, String location) {
+		super(location);
 
 		this.name = name;
 		wantsBreak = false;
@@ -81,15 +86,15 @@ public class WaiterAgent extends Role implements Waiter{
 	public String getMaitreDName() {
 		return h.getName();
 	}
-	public void setHost(HostAgent host) {
-		h = host;
-	}
-	public void setCook(CookAgent cook) {
-		ck = cook;
-	}
-	public void setCashier(CashierAgent cashier) {
-		ch = cashier;
-	}
+//	public void setHost(HostAgent host) {
+//		h = host;
+//	}
+//	public void setCook(CookAgent cook) {
+//		ck = cook;
+//	}
+//	public void setCashier(CashierAgent cashier) {
+//		ch = cashier;
+//	}
 	public String getName() {
 		return name;
 	}
@@ -444,6 +449,36 @@ public class WaiterAgent extends Role implements Waiter{
 
 	@Override
 	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setCook(GenericCook c) {
+		// TODO Auto-generated method stub
+		this.ck = (CookAgent) c;
+	}
+
+	@Override
+	public void setCashier(GenericCashier c) {
+		// TODO Auto-generated method stub
+		this.ch = (CashierAgent) c;
+	}
+
+	@Override
+	public void setHost(GenericHost h) {
+		// TODO Auto-generated method stub
+		this.h = (HostAgent) h;
+	}
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
 		// TODO Auto-generated method stub
 		return null;
 	}
