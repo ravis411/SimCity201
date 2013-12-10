@@ -256,7 +256,7 @@ public class AddPersonControl extends JFrame implements ActionListener{
 			}
 		}
 		//TODO
-		controller.addPerson(SetUpWorldFactory.addPerson(name, home, job, location, money, shift));
+		controller.addPerson(SetUpWorldFactory.addPerson(name, home, job, location, money/*, shift*/));
 	}
 	
 	private ShiftTime parseShift(String text) {
