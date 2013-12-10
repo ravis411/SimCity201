@@ -30,7 +30,7 @@ import Person.Role.ShiftTime;
 public abstract class RyansWaiterRole extends GenericWaiter implements RyansWaiter {
 	public List<MyCustomer> myCustomers	= new ArrayList<MyCustomer>();
 	
-	protected String name = new String("RyansWaiter");
+	protected String name = new String();
 	protected Semaphore atTable = new Semaphore(0,true);
 	protected RyansHost host = null;
 	public RyansCookRole cook = null;
@@ -58,7 +58,7 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 
 	
 	public String getName() {
-		return name;
+		return myPerson.getName();
 	}
 
 	// Messages
@@ -587,28 +587,16 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 		return null;
 	}
 
-
 	@Override
 	public Double getSalary() {
 		// TODO Auto-generated method stub
-		return null;
+		return 42.00;
 	}
-
 
 	@Override
 	public boolean canGoGetFood() {
-		// TODO Auto-generated method stub
 		return false;
 	}
-
-
-	@Override
-	public String getNameOfRole() {
-		// TODO Auto-generated method stub
-		return "Ryan's Waiter";
-	}
-	
-	
 	
 }
 
