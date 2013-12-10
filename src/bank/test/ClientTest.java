@@ -16,7 +16,6 @@ import residence.HomeRole;
 import residence.HomeRole.AgentEvent;
 import residence.HomeRole.AgentState;
 import residence.gui.HomeRoleGui;
-import residence.test.mock.MockApartmentManager;
 import residence.test.mock.MockHome;
 import trace.AlertLog;
 import Person.PersonAgent;

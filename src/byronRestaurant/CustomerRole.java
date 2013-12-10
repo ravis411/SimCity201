@@ -281,6 +281,7 @@ public class CustomerRole extends GenericCustomer {
 		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT_CUSTOMER_ROLE, myPerson.getName(),"Leaving.");
 		cost = 0;
 		customerGui.DoExitRestaurant();
+		deactivate();
 	}
 
 	// Accessors, etc.
