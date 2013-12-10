@@ -126,6 +126,7 @@ public class HomeRole extends Role implements Home {
 		for (HomeFeature hf : features) {
 			if (!hf.working) {
 				hf.working = true;
+				hf.workOrderFiled = false;
 				name = hf.name;
 			}
 		}
@@ -205,7 +206,7 @@ public class HomeRole extends Role implements Home {
 		}
 		if(partyState != PartyState.host) {
 			for (HomeFeature hf : features) {
-				if(!hf.working) {
+				if(!hf.working && !hf.workOrderFiled) {
 					fileWorkOrder(hf);
 					return true;
 				}
@@ -377,6 +378,7 @@ public class HomeRole extends Role implements Home {
 	}
 	private void fileWorkOrder (HomeFeature brokenFeature) {
 		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "My " + brokenFeature.name + " should be fixed in a day.");
+		brokenFeature.workOrderFiled = true;
 		featureRepairDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH), MasterTime.getInstance().get(Calendar.HOUR_OF_DAY), MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND));
 		featureRepairDate.add(Calendar.DAY_OF_MONTH, 1);
 		MasterTime.getInstance().registerDateListener(featureRepairDate.get(Calendar.MONTH), featureRepairDate.get(Calendar.DAY_OF_MONTH), featureRepairDate.get(Calendar.HOUR_OF_DAY), featureRepairDate.get(Calendar.MINUTE), myPerson);
@@ -521,10 +523,12 @@ public class HomeRole extends Role implements Home {
 	public class HomeFeature {
 		public String name;
 		public boolean working;
+		public boolean workOrderFiled;
 		
 		HomeFeature(String name) {
 			this.name = name;
 			working = true;
+			workOrderFiled = false;
 		}
 	}
 	public class Item {
