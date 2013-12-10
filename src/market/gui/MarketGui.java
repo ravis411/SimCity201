@@ -29,7 +29,7 @@ public class MarketGui extends JFrame implements ActionListener {
     private Vector<PersonAgent> marketCustomerPersons = new Vector<PersonAgent>();
     private Vector<MarketCustomerRole> marketCustomerRoles = new Vector<MarketCustomerRole>();
  //   private PersonAgent marketManagerPerson= new PersonAgent("Harry");
-    private MarketManagerRole marketManagereRole= new MarketManagerRole();
+   // private MarketManagerRole marketManagereRole= new MarketManagerRole();
     private MarketData marketData = new MarketData();
     private  MarketCustomerGui marketCustomerGui;
     /**

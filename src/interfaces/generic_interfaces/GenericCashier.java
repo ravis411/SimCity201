@@ -1,5 +1,6 @@
 package interfaces.generic_interfaces;
 
+import interfaces.MarketManager;
 import Person.Role.Employee;
 
 public abstract class GenericCashier extends Employee{
@@ -13,6 +14,11 @@ public abstract class GenericCashier extends Employee{
 	
 	public double getMoney(){
 		return money;
+	}
+
+	public void msgCashierHereIsMarketBill(int orderPrice, MarketManager market) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
