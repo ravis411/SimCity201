@@ -1,51 +1,53 @@
 package restaurant;
 
-import Person.Role.Role;
-import agent.Agent;
-import restaurant.gui.HostGui;
-import restaurant.Order;
-import restaurant.Menu;
-import restaurant.RestaurantCustomerRole.AgentEvent;
-import restaurant.RestaurantCustomerRole.AgentState;
-import restaurant.Menu.Dish;
-import restaurant.gui.WaiterGui;
 import interfaces.Customer;
 import interfaces.Waiter;
+import interfaces.generic_interfaces.GenericCashier;
+import interfaces.generic_interfaces.GenericCook;
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
 
-import java.util.*;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.Vector;
 import java.util.concurrent.Semaphore;
+
+import restaurant.gui.WaiterGui;
+import trace.AlertLog;
+import trace.AlertTag;
+import Person.Role.ShiftTime;
 
 /**
  * Restaurant Waiter Agent
  */
 //We only have 2 types of agents in this prototype. A customer and an agent that
 //does all the rest. Rather than calling the other agent a waiter, we called him
-//the WaiterAgent. A Host is the manager of a restaurant who sees that all
+//the WaiterRole. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public abstract class WaiterAgent extends Role implements Waiter {
+public abstract class WaiterAgent extends GenericWaiter implements Waiter {
 	/*public List<CustomerAgent> myCustomers
 	= new ArrayList<CustomerAgent>();*/
 	
-	private Vector<MyCustomer> myCustomers = new Vector<MyCustomer>();
-	private Vector<Order> cookedOrders = new Vector<Order>();
-	private Vector<Check> checks = new Vector<Check>();
+	protected Vector<MyCustomer> myCustomers = new Vector<MyCustomer>();
+	protected Vector<Order> cookedOrders = new Vector<Order>();
+	protected Vector<Check> checks = new Vector<Check>();
 
-	private String name;
-	private Semaphore atWaitingArea = new Semaphore(0, true);
-	private Semaphore atTable = new Semaphore(0,true);
-	private Semaphore atCookingArea = new Semaphore(0,true);
-	private Semaphore atPlatingArea = new Semaphore(0,true);
-	private Semaphore atFrontDesk = new Semaphore(0,true);
-	private Semaphore onBreakSema = new Semaphore(0,true);
-	private int atTableForOrder = -1; //-1 means waiter is not at a table
-	private boolean requestBreak = false;
-	private boolean onBreak = false;
-	private Menu menu = new Menu();
+	protected String name;
+	protected Semaphore atWaitingArea = new Semaphore(0, true);
+	protected Semaphore atTable = new Semaphore(0,true);
+	protected Semaphore atCookingArea = new Semaphore(0,true);
+	protected Semaphore atPlatingArea = new Semaphore(0,true);
+	protected Semaphore atFrontDesk = new Semaphore(0,true);
+	protected Semaphore onBreakSema = new Semaphore(0,true);
+	protected int atTableForOrder = -1; //-1 means waiter is not at a table
+	protected boolean requestBreak = false;
+	protected boolean onBreak = false;
+	protected Menu menu = new Menu();
 	Timer timer = new Timer();
 	
 	public enum AgentState
 	{DoingNothing, AtFrontDesk, AtTable, AtKitchen, TakingOrder, TakeOrderToKitchen};
-	private AgentState state = AgentState.AtFrontDesk;//The start state
+	protected AgentState state = AgentState.AtFrontDesk;//The start state
 
 	public enum AgentEvent 
 	{none, seatCustomer};
@@ -54,37 +56,23 @@ public abstract class WaiterAgent extends Role implements Waiter {
 	public enum CustomerState
 	{waiting, seated, ordered, needToReorder};
 	
-	private CookRole cook;
-	private HostRole host;
-	private CashierRole cashier;
+	protected CookRole cook;
+	protected HostRole host;
+	protected CashierRole cashier;
 
 	public WaiterGui waiterGui = null;
 
-	public WaiterAgent(String name) {
-		super();
-
-		this.name = name;
+	protected WaiterAgent(String name) {
+		super(name);
 	}
 
 	public String getName() {
-		return name;
-	}
-	
-	public void setCook(CookRole cook) {
-		this.cook = cook;
-	}
-	
-	public void setHost(HostRole host) {
-		this.host = host;
-	}
-	
-	public void setCashier(CashierRole cashier) {
-		this.cashier = cashier;
+		return myPerson.getName();
 	}
 	
 	//Messages
 	
-	public void msgSeatCustomer(RestaurantCustomerRole cust) {
+	public void msgSeatCustomer(Customer cust) {
 		myCustomers.add(new MyCustomer(cust));
 		event = AgentEvent.seatCustomer;
 		stateChanged();
@@ -95,7 +83,7 @@ public abstract class WaiterAgent extends Role implements Waiter {
 		stateChanged();
 	}
 	
-	public void msgTakeOrder(RestaurantCustomerRole c, int choice) {
+	public void msgTakeOrder(Customer c, int choice) {
 		for(int i=0; i<myCustomers.size(); i++) {
 			if(myCustomers.get(i).customer == c) {
 				myCustomers.get(i).setMealChoice(choice);
@@ -139,17 +127,17 @@ public abstract class WaiterAgent extends Role implements Waiter {
 		stateChanged();
 	}
 	
-	public void msgLeavingTable(RestaurantCustomerRole cust) {
+	public void msgLeavingTable(Customer cust) {
 		for(int i=0; i<myCustomers.size(); i++) {
 			if (cust.getTableNum() == myCustomers.get(i).customer.getTableNum()) {
-				print(cust + " leaving table " + (cust.getTableNum()+1));
+				AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), cust + " leaving table " + (cust.getTableNum()+1));
 			}
 		}
 		stateChanged();
 	}
 	
-	public void msgOutOfFood(int menuItem, RestaurantCustomerRole c) {
-		print("We're out of " + menu.getDishName(menuItem) + "!");
+	public void msgOutOfFood(int choice, Customer c) {
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "We're out of " + menu.getDishName(choice) + "!");
 		for(int i=0; i<myCustomers.size(); i++) {
 			if(myCustomers.get(i).customer == c) {
 				myCustomers.get(i).state = CustomerState.needToReorder;
@@ -244,12 +232,12 @@ public abstract class WaiterAgent extends Role implements Waiter {
 
 	// Actions
 
-	private void goToIdle() {
+	protected void goToIdle() {
 		//waiterGui.DoGoToIdle();
 		waiterGui.DoLeaveCustomer();
 	}
 	
-	private void goToFrontDesk() {
+	protected void goToFrontDesk() {
 		waiterGui.DoLeaveCustomer();
 		try {
 			atFrontDesk.acquire();
@@ -259,7 +247,7 @@ public abstract class WaiterAgent extends Role implements Waiter {
 		}
 	}
 	
-	private void seatCustomer(MyCustomer c) {
+	protected void seatCustomer(MyCustomer c) {
 		DoGoToWaitingArea();
 		try {
 			atWaitingArea.acquire();
@@ -280,19 +268,19 @@ public abstract class WaiterAgent extends Role implements Waiter {
 		//state = AgentState.DoingNothing;
 	}
 	
-	private void DoGoToWaitingArea() {
+	protected void DoGoToWaitingArea() {
 		waiterGui.DoGoGetCustomer();
 	}
 	
-	private void DoSeatCustomer(MyCustomer c, int tableNum) {
-		print("Seating " + c.customer.getName() + " at table " + (tableNum+1));
+	protected void DoSeatCustomer(MyCustomer c, int tableNum) {
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Seating " + c.customer.getName() + " at table " + (tableNum+1));
 		waiterGui.DoBringToTable(c.customer);
 	}
 	
-	private void GoTakeOrder(MyCustomer c) {
+	protected void GoTakeOrder(MyCustomer c) {
 		waiterGui.DoGoTakeOrder(c.customer);
 		atTableForOrder = c.customer.getTableNum();
-		print("Going to table " + (c.customer.getTableNum()+1) + " to take order.");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Going to table " + (c.customer.getTableNum()+1) + " to take order.");
 		try {
 			atTable.acquire();
 		} catch (InterruptedException e) {
@@ -302,10 +290,10 @@ public abstract class WaiterAgent extends Role implements Waiter {
 		TakeOrder(c);
 	}
 	
-	private void GoRetakeOrder(MyCustomer c) {
+	protected void GoRetakeOrder(MyCustomer c) {
 		waiterGui.DoGoTakeOrder(c.customer);
 		atTableForOrder = c.customer.getTableNum();
-		print("Going to table " + (c.customer.getTableNum()+1) + " to retake order.");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Going to table " + (c.customer.getTableNum()+1) + " to retake order.");
 		try {
 			atTable.acquire();
 		} catch (InterruptedException e) {
@@ -315,32 +303,21 @@ public abstract class WaiterAgent extends Role implements Waiter {
 		RetakeOrder(c);
 	}
 	
-	private void TakeOrder(MyCustomer c) {
-		print("Taking " + c.customer.getName() + "'s order.");
+	protected void TakeOrder(MyCustomer c) {
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Taking " + c.customer.getName() + "'s order.");
 		c.customer.msgWaiterReadyToTakeOrder();
 	}
 	
-	private void RetakeOrder(MyCustomer c) {
-		print("Retaking " + c.customer.getName() + "'s order.");
+	protected void RetakeOrder(MyCustomer c) {
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Retaking " + c.customer.getName() + "'s order.");
 		c.state = CustomerState.ordered;
 		c.customer.msgWaiterReadyToRetakeOrder();
 	}
 	
-	private void TakeOrderToCook(MyCustomer c) {
-		print("Taking " + c.customer.getName() + "'s order to cook.");
-		waiterGui.DoGoToCookingArea();
-		try {
-			atCookingArea.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		cook.msgHereIsAnOrder(this, c.mealChoice, c.customer.getTableNum(), c.customer);
-		c.customer.msgOrderOnItsWay();
-	}
+	abstract protected void TakeOrderToCook(MyCustomer c);
 	
-	private void GetFoodFromKitchen(Order o) {
-		print("Getting " + o.getCustomer().getName() + "'s food from kitchen");
+	protected void GetFoodFromKitchen(Order o) {
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Getting " + o.getCustomer().getName() + "'s food from kitchen");
 		waiterGui.DoGoToPlatingArea();
 		try {
 			atPlatingArea.acquire();
@@ -350,8 +327,8 @@ public abstract class WaiterAgent extends Role implements Waiter {
 		}
 	}
 	
-	private void TakeFoodToTable(Order o) {
-		print("Taking " + o.getCustomer().getName() + "'s food to table " + (o.getCustomer().getTableNum()+1));
+	protected void TakeFoodToTable(Order o) {
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Taking " + o.getCustomer().getName() + "'s food to table " + (o.getCustomer().getTableNum()+1));
 		cook.cookGui.setPlate(0);
 		waiterGui.DoTakeFoodToTable(o.customer);
 		try {
@@ -365,8 +342,8 @@ public abstract class WaiterAgent extends Role implements Waiter {
 		cookedOrders.remove(0);
 	}
 	
-	private void BringCheckToTable(Check check) {
-		print("Taking check to table " + (check.customer.getTableNum()+1));
+	protected void BringCheckToTable(Check check) {
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Taking check to table " + (check.customer.getTableNum()+1));
 		waiterGui.DoTakeCheckToTable(check.customer);
 		try {
 			atTable.acquire();
@@ -377,7 +354,7 @@ public abstract class WaiterAgent extends Role implements Waiter {
 		check.customer.msgCheckAtTable(check.amount);
 	}
 	
-	private void CustomerLeaving(MyCustomer c) {
+	protected void CustomerLeaving(MyCustomer c) {
 		host.msgLeavingTable(c.customer);
 		for(int i=0; i<myCustomers.size(); i++) {
 			if(myCustomers.get(i).customer == c.customer) {
@@ -389,17 +366,17 @@ public abstract class WaiterAgent extends Role implements Waiter {
 	}
 	
 	public void requestBreak() {
-		print("Can I go on break please?");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Can I go on break please?");
 		host.msgWaiterGoOnBreak(this);
 		requestBreak = false;
 	}
 	
 	public void goOnBreak() {
-		print("I'm going on break!");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "I'm going on break.");
 		waiterGui.DoGoOnBreak();
 		timer.schedule(new TimerTask() {
 			public void run() {
-				print("Off break!");
+				AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "I'm off break.");
 				onBreak = false;
 				waiterGui.DoBackFromBreak();
 				onBreakSema.release();
@@ -441,14 +418,14 @@ public abstract class WaiterAgent extends Role implements Waiter {
 		return onBreak;
 	}
 
-	private class MyCustomer {
-		public RestaurantCustomerRole customer;
-		private int mealChoice = -1;
-		private boolean orderTaken = false;
+	protected class MyCustomer {
+		public Customer customer;
+		protected int mealChoice = -1;
+		protected boolean orderTaken = false;
 		
-		private CustomerState state = CustomerState.seated;
+		protected CustomerState state = CustomerState.seated;
 		
-		MyCustomer(RestaurantCustomerRole c) {
+		MyCustomer(Customer c) {
 			customer = c;
 		}
 		
@@ -457,7 +434,7 @@ public abstract class WaiterAgent extends Role implements Waiter {
 		}
 	}
 	
-	private class Check {
+	protected class Check {
 		Customer customer;
 		double amount;
 	
@@ -465,6 +442,36 @@ public abstract class WaiterAgent extends Role implements Waiter {
 			this.customer = customer;
 			this.amount = amount;
 		}
+	}
+
+	@Override
+	public void setCook(GenericCook c) {
+		this.cook = (CookRole) c;
+	}
+
+	@Override
+	public void setCashier(GenericCashier c) {
+		this.cashier = (CashierRole) c;
+	}
+
+	@Override
+	public void setHost(GenericHost h) {
+		this.host = (HostRole) h;
+	}
+
+	@Override
+	public ShiftTime getShift() {
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
+		return null;
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		return false;
 	}
 }
 

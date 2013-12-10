@@ -1,9 +1,9 @@
 package building;
 
 import gui.Building.BuildingPanel;
-import interfaces.generic_interfaces.GenericHost;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import Person.Role.Role;
@@ -45,9 +45,11 @@ public class Building {
 	 * Add a Person to the building
 	 * @param r the role of the person to be added
 	 */
-	public void addRole(Role r){
-		inhabitants.add(r);
-		this.panel.getPanel().addGuiForRole(r);
+	public synchronized void addRole(Role r){
+		if(!inhabitants.contains(r)){
+			inhabitants.add(r);
+			this.panel.getPanel().addGuiForRole(r);
+		}
 	}
 	
 	/**
@@ -58,12 +60,18 @@ public class Building {
 		return inhabitants;
 	}
 	
+	private List<Role> removalList = new ArrayList<Role>();
+	
+	protected void removeInhabitants(){
+		removalList.clear();
+	}
+	
 	/**
 	 * Removes a person from the building
 	 * @param r
 	 */
-	public void removeRole(Role r){
-		inhabitants.remove(r);
-		this.panel.getPanel().removeGuiForRole(r);
+	public synchronized void removeRole(Role r){
+			removalList.add(r);
+			this.panel.getPanel().removeGuiForRole(r);
 	}
 }

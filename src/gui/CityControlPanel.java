@@ -139,7 +139,7 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 		}
 		String currentJob;
 		try {
-			currentJob = agent.getCurrentJobString();
+			currentJob = agent.getCurrentRole();
 		}
 		catch (Exception e) {
 			currentJob = "N/A";
@@ -191,7 +191,7 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 	}
 	
 	public void showPersonCreation() {
-		AddPersonControl addPersonControls = new AddPersonControl("Create a person");
+		AddPersonControl addPersonControls = new AddPersonControl("Create a person", this);
 		Rectangle windowLocation = new Rectangle(800, 100, 400, 800); //Modify this to determine where the window spawns
 																	//(Xpos, Ypos, width, height)
 		addPersonControls.setBounds(windowLocation);
@@ -202,13 +202,11 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 	public void zoomToPerson() {
 		String location;
 		try {
-			location = focus.getCurrentLocation();
+			location = focus.getPersonGui().getCurrentLocation();
 			//Find correct building
 			//Need to format string correctly
 			//Call buildingsList.correctBuilding.displayBuildingPanel();
-			if (location.equals("City")) {
-				parent.buildingsPanels.displayBuildingPanel(location);
-			}
+			parent.buildingsPanels.displayBuildingPanel(location);
 		}
 		catch (Exception e) {
 			//Catch null pointer exception

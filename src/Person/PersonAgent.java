@@ -12,7 +12,6 @@ import interfaces.generic_interfaces.GenericHost;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
@@ -25,11 +24,10 @@ import trace.AlertTag;
 import util.DateListener;
 import util.MasterTime;
 import util.TimeListener;
-import MarketEmployee.MarketEmployeeRole;
-import MarketEmployee.MarketManagerRole;
 import Person.Role.Employee;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
+import Person.Role.RoleState;
 import Person.Role.ShiftTime;
 import Transportation.BusStopConstruct;
 import Transportation.CarAgent;
@@ -45,9 +43,9 @@ import building.Workplace;
  *
  */
 public class PersonAgent extends Agent implements Person, TimeListener, DateListener{
-	
-	private final double STARTING_MONEY = 100.00;
-	private final int HUNGER_THRESHOLD = 50;
+        
+        private final double STARTING_MONEY = 100.00;
+        private final int HUNGER_THRESHOLD = 50;
 
 	private String name;
 	private double money;
@@ -65,9 +63,11 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	//party variables
 	private List<Party> parties;
 	
+	private Queue<Employee> pendingJobs = new ArrayDeque<Employee>();
+	
 	private double loanAmount;
 	
-	public List<Role> roles;
+	public List<MyRole> roles;
 	public List<PersonAgent> friends;
 	
 	private CarAgent myCar;
@@ -76,10 +76,12 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	
 	public enum StateOfHunger {NotHungry, SlightlyHungry, Hungry, VeryHungry, Starving} 
 	public enum StateOfLocation {AtHome,AtBank,AtMarket,AtRestaurant, InCar,InBus,Walking};
-	public enum StateOfEmployment {Customer,Employee,Idle};
-	public enum PersonState {Idle,NeedsMoney,PayRentNow, Working, PayLoanNow,GettingMoney,NeedsFood,GettingFood,HostParty,GoingToParty,HostingParty,Partying}
+	public enum StateOfEmployment {Customer,WaitingAtWork, Employee,Idle};
+	public enum PersonState {Idle,NeedsMoney,PayRentNow, Working, PayLoanNow,GettingMoney,NeedsFood,GettingFood,HostParty,GoingToParty,HostingParty,Partying, GoHome}
 	public enum WorkState {None, GoToWork, GoingToWork, AtWork}
 
+	private static int GO_HOME_HOUR = 1;
+	private static int GO_HOME_MINUTE = 0;
 	
 	private List<Item> backpack;
 	
@@ -95,6 +97,25 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	private PersonGui gui;
 	
 	public ResidenceBuildingPanel home;
+	
+	private class MyRole{
+		Role role;
+		
+		public MyRole(Role r){
+			this.role = r;
+		}
+	}
+	
+	private class MyJob extends MyRole{
+
+		ShiftTime shift;
+		public MyJob(Role r, ShiftTime shift) {
+			super(r);
+			this.shift = shift;
+			// TODO Auto-generated constructor stub
+		}
+		
+	}
 	
 //	public PersonAgent(String name, ResidenceBuildingPanel home, String roleLocation){
 //		SSN = counter++;
@@ -124,35 +145,85 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 //		setGui(new PersonGui(this));
 //	}
 	
+	private Semaphore waitingAtWork = new Semaphore(0, true);
+	
+	public void workIsOpen(){
+		waitingAtWork.release();
+	}
+	
 	/**
 	 * @precondition must be called after setGui
 	 * @param r
 	 * @param roleLocation
 	 */
-	public void setInitialRole(Role r, String roleLocation){
-		if(r instanceof HomeRole || r == null){
-			HomeRole hr = (HomeRole) findRole("HomeRole");
+	public void setInitialRole(Role r, String roleLocation, ShiftTime shift){
+		//if(r instanceof HomeRole || r == null){
+		
+			//always start them at the house
+			HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE).role;
 			//if(name.equals("Person 1"))
-				hr.msgMakeFood();
+			//hr.msgMakeFood();
 				
 			gui.setStartingStates(home.getName());
 			BuildingList.findBuildingWithName(home.getName()).addRole(hr);
 			hr.activate();
-		}else{
-			addRole(r);
+//		}
+			
 
-			if(r instanceof MarketManagerRole ){
-				 MarketManagerRole role = (MarketManagerRole) findRole(Role.MARKET_MANAGER_ROLE);
+//			if(r instanceof MarketManagerRole ){
+//				 MarketManagerRole role = (MarketManagerRole) findRole(Role.MARKET_MANAGER_ROLE);
+//				 return;
+//			}
+//			if(r instanceof MarketEmployeeRole ){
+//				MarketEmployeeRole role = (MarketEmployeeRole) findRole(Role.MARKET_EMPLOYEE_ROLE);
+//				return;
+//			}
 			
-			}
-			if(r instanceof MarketEmployeeRole ){
-				MarketEmployeeRole role = (MarketEmployeeRole) findRole(Role.MARKET_EMPLOYEE_ROLE);
-			}
-			
-			gui.setStartingStates(roleLocation);
-			BuildingList.findBuildingWithName(roleLocation).addRole(r);
-			r.activate();
+			//but if the role we passed in was an employee, we have to make sure we add it to the role list
+			if(r instanceof Employee){
+				Employee e = (Employee) r;
+				
+				//if the role is a shared role, make sure we are adding the same one and not a repeat
+				if(r instanceof GenericHost){
+					Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(e.getWorkLocation());
+					//if the hostrole exists, add that role
+					if(rest.getHostRole() != null){
+						MyRole a = new MyJob(rest.getHostRole(), shift);
+						addRole(a);
+					}else //otherwise add the role that was passed in -- a new one
+						addRole(new MyJob(r, shift));
+				 }else if(r instanceof GenericCook){
+					Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(e.getWorkLocation());
+					if(rest.getCookRole() != null){
+						MyRole a = new MyJob(rest.getCookRole(), shift);
+						addRole(a);
+					}else
+						addRole(new MyJob(r, shift));
+				 }else if(r instanceof GenericCashier){
+					Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(e.getWorkLocation());
+					if(rest.getCashierRole() != null){
+						MyRole a = new MyJob(rest.getCashierRole(), shift);
+						addRole(a);
+					}else
+						addRole(new MyJob(r, shift));
+				 }else{
+					 //if it isn't a shared role just add it
+					 addRole(new MyJob(r, shift));
+				}
+
 		}
+	}
+	
+	public void waitForWork(Role r){
+//		BuildingList.findBuildingWithName(em.getWorkLocation()).addRole(em);
+		try {
+			waitingAtWork.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		workState = WorkState.AtWork;
+		r.activate();
 	}
 
 	public PersonAgent(String name, ResidenceBuildingPanel home){
@@ -163,163 +234,175 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		moneyNeeded = 0;
 		loanAmount = 0;
 		friends = new ArrayList<PersonAgent>();
-		roles = new ArrayList<Role>();
+		roles = new ArrayList<MyRole>();
 		hungerLevel = 0;
 		state=PersonState.GettingFood;
 		parties = new ArrayList<Party>();
 		prefs = new Preferences();
 		this.home = home;
-		
-		this.myCar = new CarAgent(this, name+" car");
+		if(home!=null)
+		{
+			this.myCar = new CarAgent(this, name+" car", home.getName());
+		}
 		
 		backpack = new ArrayList<Item>();
 		itemsNeeded = new ArrayDeque<Item>();
 		stateOfLocation = StateOfLocation.Walking;
-		roles.add(new HomeRole(this));
-
-		rentDueDate = Calendar.getInstance();
-		rentDueDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1, 0, MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND));
-		MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
-		MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+2), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
-
-		if(name.equals("Person 1") || name.equals("Person 2") )
-			this.msgImHungry();
-		if(name.equals("Person 10") || name.equals("Person 11") || name.equals("Person 12"))
-			this.msgINeedMoney(30.00);
-		if(name.equals("Person 13")){
-			this.msgGoToMarket("Steak");
-		}
+		roles.add(new MyRole(new HomeRole(this)));
 		
-		MasterTime.getInstance().registerTimeListener(Workplace.DAY_SHIFT_HOUR, Workplace.DAY_SHIFT_MIN, false, this);
-		MasterTime.getInstance().registerTimeListener(Workplace.NIGHT_SHIFT_HOUR, Workplace.NIGHT_SHIFT_MIN, false, this);
-		MasterTime.getInstance().registerTimeListener(Workplace.END_SHIFT_HOUR, Workplace.END_SHIFT_MIN, false, this);
-		
-		//Add the gui
-		setGui(new PersonGui(this));
-	}
-	
+		this.workState = WorkState.None;
+
+                rentDueDate = Calendar.getInstance();
+                rentDueDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1, 0, MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND));
+                MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
+                MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+8), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
+                MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+15), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
+                MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+22), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
+                MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+29), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
+
+                if(name.equals("Person 1") || name.equals("Person 2") )
+                        this.msgImHungry();
+                if(name.equals("Person 10") || name.equals("Person 11") || name.equals("Person 12"))
+                        this.msgINeedMoney(30.00);
+                if(name.equals("Person 13")){
+                        this.msgGoToMarket("Steak");
+                }
+                
+                MasterTime.getInstance().registerTimeListener(Workplace.DAY_SHIFT_HOUR, Workplace.DAY_SHIFT_MIN, false, this);
+                MasterTime.getInstance().registerTimeListener(Workplace.NIGHT_SHIFT_HOUR, Workplace.NIGHT_SHIFT_MIN, false, this);
+                MasterTime.getInstance().registerTimeListener(Workplace.END_SHIFT_HOUR, Workplace.END_SHIFT_MIN, false, this);
+                MasterTime.getInstance().registerTimeListener(GO_HOME_HOUR, GO_HOME_MINUTE, true, this);
+                //Add the gui
+                //setGui(new PersonGui(this));
+        }
+        
 //-------------------------------MESSAGES----------------------------------------//
-	
-	/**
-	  * Message sent by a vehicle, like a bus, to tell its passengers
-	  * when it has arrived somewhere
-	  * @param currentLocation the location the bus has arrived at
-	  */
-	public void msgWeHaveArrived(String currentDestination){
-	  //unpause agent, which will be in transit (implementation not necessary here)
-		onBus.release();
-		//------------------ILLEGAL CHANGE OR DELETE---------------------------------//
-		if(stateOfLocation == StateOfLocation.InCar){
-			myCar.msgLeavingCar();
-			stateOfLocation = StateOfLocation.Walking;
-		}
-		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Arrived at Destination!!");
-	}
-	
-	
+        
+        /**
+          * Message sent by a vehicle, like a bus, to tell its passengers
+          * when it has arrived somewhere
+          * @param currentLocation the location the bus has arrived at
+          */
+        public void msgWeHaveArrived(String currentDestination){
+          //unpause agent, which will be in transit (implementation not necessary here)
+                onBus.release();
+                //------------------ILLEGAL CHANGE OR DELETE---------------------------------//
+                if(stateOfLocation == StateOfLocation.InCar){
+                        myCar.msgLeavingCar();
+                        stateOfLocation = StateOfLocation.Walking;
+                }
+                AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Arrived at Destination!!");
+        }
+        
+        public void msgGoHome(){
+        	state = PersonState.GoHome;
+        	stateChanged();
+        }
+        
 
-	/**
-	  * Message probably sent by an outside GUI to force hunger on the 
-	  * person
-	  */
-	public void msgImHungry(){
-	  state = PersonState.NeedsFood;
-	  stateChanged();
-	}
+        /**
+          * Message probably sent by an outside GUI to force hunger on the 
+          * person
+          */
+        public void msgImHungry(){
+          state = PersonState.NeedsFood;
+          stateChanged();
+        }
 
-	/**
-	  * Message sent by any role where the Person needs money but doesn't have enough
-	  * @param amountNeeded the amount of money the Person needs in addition to what he already has
-	  */
-	public void msgINeedMoney(double amountNeeded){
-	  state = PersonState.NeedsMoney;
-	  moneyNeeded += amountNeeded;
-	  stateChanged();
-	}
+        /**
+          * Message sent by any role where the Person needs money but doesn't have enough
+          * @param amountNeeded the amount of money the Person needs in addition to what he already has
+          */
+        public void msgINeedMoney(double amountNeeded){
+          state = PersonState.NeedsMoney;
+          moneyNeeded += amountNeeded;
+          stateChanged();
+        }
 
-	/**
-	  * Message sent by a Bank employee to inform the person he has a loan
-	  //---------THIS MESSAGE COULD BE SENT TO BANKCUSTOMER WHO JUST CHANGES HIS PERSON DATA----------//
-	  * @param loan the amount of money in the loan
-	  */
-	public void msgYouHaveALoan(double loan){
-	  loanAmount = loan;
-	  stateChanged();
-	}
+        /**
+          * Message sent by a Bank employee to inform the person he has a loan
+          //---------THIS MESSAGE COULD BE SENT TO BANKCUSTOMER WHO JUST CHANGES HIS PERSON DATA----------//
+          * @param loan the amount of money in the loan
+          */
+        public void msgYouHaveALoan(double loan){
+          loanAmount = loan;
+          stateChanged();
+        }
 
-	/**
-	  * Message sent to the person by a timer listener to report for
-	  * work. Works sort of like an alarm clock.
-	  */
-	public void msgReportForWork(){
-		if(getCurrentJob() == null)
-			return;
-		else
-			workState = WorkState.GoToWork;
-		
-		stateChanged();
-	}
-	
-	/**
-	 * Message sent to the Person from a Workplace to leave
-	 */
-	public void msgYouCanLeave(){
-		workState = WorkState.None;
-		stateChanged();
-	}
-	
-	/**
-	 * Message sent by the HomeRole for the person to go to the market
-	 * @param item the name of the item needed from the market
-	 */
-	public void msgGoToMarket(String item){
-		itemsNeeded.add(new Item(item, 1));
-		stateChanged();
-	}
+        /**
+          * Message sent to the person by a timer listener to report for
+          * work. Works sort of like an alarm clock.
+          */
+        public void msgReportForWork(){
+                if(getCurrentJob() == null)
+                        return;
+                else{
+                        workState = WorkState.GoToWork;
+                        deactivateCurrentRole();
+                }
+                
+                stateChanged();
+        }
+        
+        /**
+         * Message sent to the Person from a Workplace to leave
+         */
+        public void msgYouCanLeave(){
+                workState = WorkState.None;
+                stateChanged();
+        }
+        
+        /**
+         * Message sent by the HomeRole for the person to go to the market
+         * @param item the name of the item needed from the market
+         */
+        public void msgGoToMarket(String item){
+                itemsNeeded.add(new Item(item, 1));
+                stateChanged();
+        }
 
-	/**
-	  * Message called, probably by a timer, which increases the person's
-	  * amount of money by the amount he makes from work
-	  */
-	public void msgReceiveSalary(double amount){
-	  money += amount;
-	  stateChanged();
-	}
+        /**
+          * Message called, probably by a timer, which increases the person's
+          * amount of money by the amount he makes from work
+          */
+        public void msgReceiveSalary(double amount){
+          money += amount;
+          stateChanged();
+        }
 
-	/**
-	  * Somehow if the person forgets to pay his loan, the Bank will remind him
-	  * around the time of the due date
-	  */
-	public void msgPayBackLoanUrgently(){
-	   state=PersonState.PayLoanNow;
-	   stateChanged();
-	}
+        /**
+          * Somehow if the person forgets to pay his loan, the Bank will remind him
+          * around the time of the due date
+          */
+        public void msgPayBackLoanUrgently(){
+           state=PersonState.PayLoanNow;
+           stateChanged();
+        }
 
-	/**
-	  * Message sent by the building (or other mechanism see above) when the rent
-	  * due date is close and needs paying.
-	  */
-	public void msgPayBackRentUrgently(){
-	   state=PersonState.PayRentNow;
-	   stateChanged();
-	}
+        /**
+          * Message sent by the building (or other mechanism see above) when the rent
+          * due date is close and needs paying.
+          */
+        public void msgPayBackRentUrgently(){
+           state=PersonState.PayRentNow;
+           stateChanged();
+        }
 
-	
-	public void msgAddObjectToBackpack(String object, int quantity){
-		boolean added = false;
-		for(Item bo : backpack){
-			if(bo.name.equals(object)){
-				bo.quantity += quantity;
-				added = true;
-				print("Added "+ quantity +" "+ object+ " to backpack. Quantity now: "+bo.quantity);
-				break;
-			}
-		}
-		
-		if(!added){
-			backpack.add(new Item(object, quantity));
-			print("Added "+ quantity +" "+ object+ " to backpack. Quantity now: "+quantity);
-
+        
+        public void msgAddObjectToBackpack(String object, int quantity){
+                boolean added = false;
+                for(Item bo : backpack){
+                        if(bo.name.equals(object)){
+                                bo.quantity += quantity;
+                                added = true;
+                                print("Added "+ quantity +" "+ object+ " to backpack. Quantity now: "+bo.quantity);
+                                break;
+                        }
+                }
+                
+                if(!added){
+                        backpack.add(new Item(object, quantity));
+                        print("Added "+ quantity +" "+ object+ " to backpack. Quantity now: "+quantity);
 		}
 		
 		stateChanged();
@@ -341,7 +424,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	  */
 	public void msgIAmComing(Person p){
 		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), p.getName() + " is coming to the party.");
-		HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE);
+		HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE).role;
 
 		if(hr != null) {
 			hr.partyAttendees.add((PersonAgent) p);
@@ -353,8 +436,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	public void msgIAmNotComing(Person p){
 		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), p.getName() + " is not coming to the party.");
 		//findRole("HOME_ROLE").rsvp.get(p)=true;
-		HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE);
-
+		HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE).role;
 		if(hr != null) {
 			hr.partyInvitees.remove((PersonAgent) p);
 		}
@@ -376,7 +458,8 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 				//parties.remove(p);
 			}
 		}
-		HomeGuestRole hgr = (HomeGuestRole) findRole(Role.HOME_GUEST_ROLE);
+		MyRole role = findRole(Role.HOME_GUEST_ROLE);
+		HomeGuestRole hgr = (HomeGuestRole) role.role;
 		hgr.msgPartyOver();
 	}
 
@@ -389,6 +472,33 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	 */
 	@Override
 	public boolean pickAndExecuteAnAction() {
+		
+		//cue the Role schedulers
+		boolean outcome = false;
+			for(MyRole r: roles){
+				boolean somethingIsActive = false;
+				if(r.role.roleState == RoleState.Deactivating){
+					somethingIsActive = true;
+					
+					outcome = r.role.pickAndExecuteAction() || outcome;
+					if(outcome)
+						return outcome;
+				}
+				
+				if(somethingIsActive)
+					return false;
+		}
+		
+		if(stateOfLocation != StateOfLocation.AtHome && state == PersonState.GoHome){
+			GoHome();
+			return true;
+		}
+		
+		if(!pendingJobs.isEmpty()){
+			waitForWork(pendingJobs.poll());
+			return true;
+		}
+		
 		if(parties.size()!=0){
 			for(Party p:parties){
 				if(p.partyState==PartyState.NeedsResponseUrgently){
@@ -438,8 +548,8 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		}
 		if(state == PersonState.HostParty) {
 			boolean atHome = false;
-			for(Role r : roles){
-				if(r.getNameOfRole().equals(Role.HOME_ROLE) && r.isActive()){
+			for(MyRole r : roles){
+				if(r.role.getNameOfRole().equals(Role.HOME_ROLE) && r.role.isActive()){
 					atHome = true;
 					break;
 				}
@@ -450,25 +560,32 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			HostParty();
 			return true;
 		}
+		
+		if(workState == WorkState.GoToWork){
+			GoToWork();
+			return true;
+		}
 
 		//cue the Role schedulers
-		boolean outcome = false;
-		for(Role r: roles){
+		outcome = false;
+		for(MyRole r: roles){
 			boolean somethingIsActive = false;
-			if(r.isActive()){
+			if(r.role.isActive()){
 				somethingIsActive = true;
-				outcome = r.pickAndExecuteAction() || outcome;
+				
+//				if(workState == WorkState.AtWork){
+//					Employee e = (Employee) r.role;
+//					if(getCurrentJob().role != e)
+//						continue;
+//				}
+				
+				outcome = r.role.pickAndExecuteAction() || outcome;
 				if(outcome)
 					return outcome;
 			}
 			
 			if(somethingIsActive)
 				return false;
-		}
-
-		if(workState == WorkState.GoToWork){
-			GoToWork();
-			return true;
 		}
 		
 		if(state == PersonState.NeedsFood){
@@ -481,7 +598,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			return true;
 		}
 		
-		if(state == PersonState.NeedsMoney && moneyNeeded > 10){
+		if(state == PersonState.NeedsMoney && moneyNeeded > 100000){
 			GoRobBank();
 			return true;
 		}
@@ -500,68 +617,60 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		  String transport = getTransportPreference();
 		  
 		  String location = PickFoodLocation();
-		  GoToLocation(location, transport);
+		  GoToLocation("Food Court", transport);
 		  
-		  GenericCustomer role = (GenericCustomer) findRole(Role.RESTAURANT_RYAN_CUSTOMER_ROLE);
+		  MyRole role = findRole(Role.RESTAURANT_MIKE_CUSTOMER_ROLE);
 		  if(role == null){
-			  role = (GenericCustomer) RoleFactory.roleFromString(Role.RESTAURANT_RYAN_CUSTOMER_ROLE);
+			  role = new MyRole(RoleFactory.roleFromString(Role.RESTAURANT_MIKE_CUSTOMER_ROLE));
+
 			  addRole(role);
 		  }
-
+		  GenericCustomer cust = (GenericCustomer) role.role;
 		  AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Customer Role = "+role);
-		  BuildingList.findBuildingWithName("Ryan's Restaurant").addRole(role);
-		  Building bdg =  BuildingList.findBuildingWithName("Ryan's Restaurant");
+		  Restaurant resta =  (Restaurant) BuildingList.findBuildingWithName("Mike's Restaurant");
+		  BuildingList.findBuildingWithName("Mike's Restaurant").addRole(role.role);
+		  Building bdg =  BuildingList.findBuildingWithName("Mike's Restaurant");
 		  if(bdg instanceof Restaurant){
 			  Restaurant rest = (Restaurant) bdg;
-			  role.setupCustomer("Ryan's Restaurant");
-//			  role.setCashier(rest.getCashierRole());
-//			  role.setHost(rest.getHostRole());
-			  
-			  role.gotHungry();
-			  role.activate();
+			  try {
+				waitingAtWork.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			  cust.setupCustomer("Mike's Restaurant");
+
+			  cust.gotHungry();
+			  cust.activate();
 		  }
 		  this.state = PersonState.GettingFood;
+		  this.msgGoToMarket("item");
 	}
 	
 	private String PickFoodLocation(){
+
         return Math.random() > 0.5 ? "Food Court" : this.home.getName();
-	}
+        }
 
 	private void GoToParty(String location){
 		  state = PersonState.Partying;
-		  //Building b = PickFoodLocation();
-		  String transport;
-		  switch(prefs.get(Preferences.KeyValue.VEHICLE_PREFERENCE)){
-		  	case Preferences.BUS:
-		  		transport = Preferences.BUS;
-		  		break;
-		  	case Preferences.CAR:
-		  		transport = Preferences.CAR;
-		  		break;
-		  	case Preferences.WALK:
-		  		transport = Preferences.WALK;
-		  		break;
-		  		
-		  	default:
-		  		transport = "ERROR";
-		  }
 		  
-		  GoToLocation(location, transport);
+		  GoToLocation(location, getTransportPreference());
 		  
-		  HomeGuestRole role = (HomeGuestRole) findRole(Role.HOME_GUEST_ROLE);
+		  MyRole role = findRole(Role.HOME_GUEST_ROLE);
 		  if(role == null){
-			  role = (HomeGuestRole) RoleFactory.roleFromString(Role.HOME_GUEST_ROLE);
+			  role = new MyRole( RoleFactory.roleFromString(Role.HOME_GUEST_ROLE));
 			  addRole(role);
 		  }
-		  
-		  for(Role r : roles) {
-			  r.deactivate();
+		  HomeGuestRole hgr = (HomeGuestRole) role.role;
+		  for(MyRole r : roles) {
+			  r.role.deactivate();
 		  }
 
 		  AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Home Guest Role = "+role);
-		  role.msgComeIn();
-		  BuildingList.findBuildingWithName(location).addRole(role);
-		  role.activate();
+		  hgr.msgComeIn();
+		  BuildingList.findBuildingWithName(location).addRole(role.role);
+		  hgr.activate();
 	}
 	
 	private void rsvpYes(PersonAgent pa, Party p){
@@ -576,54 +685,62 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		p.partyState=PartyState.NotGoingToParty;
 	}
 	
+	public void deactivateCurrentRole(){
+		for(MyRole r : roles) {
+			  if(r.role.isActive())
+				  r.role.deactivate();
+		  }
+	}
+	
 	private void GoToWork(){
 		if(getCurrentJob() == null)
 			return;
-		if(BuildingList.findBuildingWithName(getCurrentJob().getWorkLocation()) instanceof Workplace ){
-			 Workplace w= (Workplace) BuildingList.findBuildingWithName(getCurrentJob().getWorkLocation());
-			 if (w.isOpen()==false){
-				 AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", ""
-				 		+ "WORKPLACE IS CLOSED SO NOT GOING");
-				 String workLocation = getCurrentJob().getWorkLocation();
-					GoToLocation(workLocation, getTransportPreference());
-					Role r = getCurrentJob();
-					if(r instanceof GenericHost){
-						Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(workLocation);
-						addRole(rest.getHostRole());
-					}else if(r instanceof GenericCook){
-						Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(workLocation);
-						addRole(rest.getCookRole());
-					}else if(r instanceof GenericCashier){
-						Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(workLocation);
-						addRole(rest.getCashierRole());
-					}else{
-						BuildingList.findBuildingWithName(workLocation).addRole(r);
-						addRole(getCurrentJob());
-					}
-				 return;
-			 }
-			
-		}
-		String workLocation = getCurrentJob().getWorkLocation();
-		GoToLocation(workLocation, getTransportPreference());
-		Role r = getCurrentJob();
-		if(r instanceof GenericHost){
-			Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(workLocation);
-			addRole(rest.getHostRole());
-		}else if(r instanceof GenericCook){
-			Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(workLocation);
-			addRole(rest.getCookRole());
-		}else if(r instanceof GenericCashier){
-			Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(workLocation);
-			addRole(rest.getCashierRole());
-		}else{
-			BuildingList.findBuildingWithName(workLocation).addRole(r);
-			addRole(getCurrentJob());
+		this.workState = WorkState.GoingToWork;
+		Employee r = (Employee) getCurrentJob().role;
+		Building bdg = BuildingList.findBuildingWithName(r.getWorkLocation());
+		if(BuildingList.findBuildingWithName(r.getWorkLocation()) instanceof Workplace ){
+			Workplace w = (Workplace) bdg;
+			GoToLocation(r.getWorkLocation(), getTransportPreference());
+			w.addRole(r);
+			if(!w.isOpen()){
+				pendingJobs.add(r);
+				stateChanged();
+				return;
+			}
+			r.activate();
+			return;
+//			if(!roles.contains(r)){
+//					addRole(r);
+//					if(!w.isOpen()){
+//						pendingJobs.add((Role) r);
+//						stateChanged();
+//						return;
+//					}
+//					r.activate();
+//					return;
+//			 }else{
+			}
 		}
 		
-		if(!r.isActive())
-			r.activate();
-	}
+//		String workLocation = getCurrentJob().getWorkLocation();
+//		GoToLocation(workLocation, getTransportPreference());
+//		Role r = getCurrentJob();
+//		if(r instanceof GenericHost){
+//			Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(workLocation);
+//			addRole(rest.getHostRole());
+//		}else if(r instanceof GenericCook){
+//			Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(workLocation);
+//			addRole(rest.getCookRole());
+//		}else if(r instanceof GenericCashier){
+//			Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(workLocation);
+//			addRole(rest.getCashierRole());
+//		}else{
+//			BuildingList.findBuildingWithName(workLocation).addRole(r);
+//			addRole(getCurrentJob());
+//		}
+//		
+//		if(!r.isActive())
+//			r.activate();
 	
 	private String getTransportPreference(){
 		String transport;
@@ -645,33 +762,34 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		return transport;
 	}
 
-	private void GoGetMoney(){
+        private void GoGetMoney(){
 
         //needs a way to find a bank quite yet
         GoToLocation("Bank", getTransportPreference());
-        Role r = findRole(Role.BANK_CLIENT_ROLE);
+        MyRole r = findRole(Role.BANK_CLIENT_ROLE);
         if(r == null){
-                r = RoleFactory.roleFromString(Role.BANK_CLIENT_ROLE);
+                r = new MyRole(RoleFactory.roleFromString(Role.BANK_CLIENT_ROLE));
                 addRole(r);
         }
         
-        BankClientRole role = (BankClientRole) r;
+        BankClientRole role = (BankClientRole) r.role;
         role.setIntent(BankClientRole.withdraw);
         BuildingList.findBuildingWithName("Bank").addRole(role);
         role.activate();
+
 	}
 	
 	private void GoRobBank(){
 	
 		//needs a way to find a bank quite yet
 		GoToLocation("Bank", getTransportPreference());
-		Role r = findRole(Role.BANK_CLIENT_ROLE);
+		MyRole r = findRole(Role.BANK_CLIENT_ROLE);
 		if(r == null){
-			r = RoleFactory.roleFromString(Role.BANK_CLIENT_ROLE);
+			r = new MyRole(RoleFactory.roleFromString(Role.BANK_CLIENT_ROLE));
 			addRole(r);
 		}
 		
-		BankClientRole role = (BankClientRole) r;
+		BankClientRole role = (BankClientRole) r.role;
 		role.setIntent(BankClientRole.steal);
 		BuildingList.findBuildingWithName("Bank").addRole(role);
 		role.activate();
@@ -683,43 +801,44 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	    
 	    //needs a way to find a bank quite yet
 	     GoToLocation("Market 1", transport);
-	     Role r = findRole(Role.MARKET_CUSTOMER_ROLE);
+	     MyRole r = findRole(Role.MARKET_CUSTOMER_ROLE);
 	    if(r == null){
-	            r = RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
+	            r = new MyRole(RoleFactory.employeeFromString(Role.MARKET_CUSTOMER_ROLE, "Market 1"));
 	            addRole(r);
-	            r.activate();
+	            r.role.activate();
 	    }else{
-	            r.activate();
+	            r.role.activate();
 	    }
 	    
-	    BuildingList.findBuildingWithName("Market 1").addRole(r);
+	    BuildingList.findBuildingWithName("Market 1").addRole(r.role);
 	}
+	
+        /**
+         * @pre Assume that if we are paying back a loan we have a bank role
+         */
+        private void PayBackLoan(){
+                        
+                String transport = getTransportPreference();
+                
+                //needs a way to find a bank quite yet
+                GoToLocation("Bank", transport);
+                
+                if(money >= loanAmount){
 
-	/**
-	 * @pre Assume that if we are paying back a loan we have a bank role
-	 */
-	private void PayBackLoan(){
-			
-		String transport = getTransportPreference();
-		
-		//needs a way to find a bank quite yet
-		GoToLocation("Bank", transport);
-		
-		if(money >= loanAmount){
+                    //--------------------NEEDS MSG FOR ENTERING BANK WITH THE INTENT TO PAY LOAN-----------------------//
+                   /* BankCustomerRole bcr = (BankCustomeRole) findRole(Role.BANK_CUSTOMER_ROLE);
+                    bcr.msgPayLoan(loanAmount);*/
+                }else{
+                    //--------------------NEEDS MSG FOR WITHDRAWING FROM BANK------------------------------------------//
+                   /* BankCustomerRole bcr = (BankCustomerRole) findRole(Role.BANK_CUSTOMER_ROLE);
+                    bcr.msgWithdrawMoney();
+                    bcr.msgPayLoan(loanAmount);*/
+                }
+                
+                  /*DoGoToBank();
+                  if(money >= loanAmount){
 
-		    //--------------------NEEDS MSG FOR ENTERING BANK WITH THE INTENT TO PAY LOAN-----------------------//
-		   /* BankCustomerRole bcr = (BankCustomeRole) findRole(Role.BANK_CUSTOMER_ROLE);
-		    bcr.msgPayLoan(loanAmount);*/
-		}else{
-		    //--------------------NEEDS MSG FOR WITHDRAWING FROM BANK------------------------------------------//
-		   /* BankCustomerRole bcr = (BankCustomerRole) findRole(Role.BANK_CUSTOMER_ROLE);
-		    bcr.msgWithdrawMoney();
-		    bcr.msgPayLoan(loanAmount);*/
-		}
-		
-		  /*DoGoToBank();
-		  if(money >= loanAmount){
-
+<<<<<<< HEAD
 		    //--------------------NEEDS MSG FOR ENTERING BANK WITH THE INTENT TO PAY LOAN-----------------------//
 		    BankCustomerRole bcr = getBankCustomerRole();
 		    bcr.msgPayLoan(loanAmount);
@@ -771,22 +890,23 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	}
 	
 	private void GoHome(){
+	  stateOfLocation = StateOfLocation.AtHome;
 	  state = PersonState.Idle;
 	  String transport = getTransportPreference();
- 
+	  deactivateCurrentRole();
 	  GoToLocation(home.getName(), transport);
-	  HomeRole role = (HomeRole) findRole(Role.HOME_ROLE);
+	  HomeRole role = (HomeRole) findRole(Role.HOME_ROLE).role;
 	  BuildingList.findBuildingWithName(home.getName()).addRole(role);
 	  role.activate();
 	  
-	  role.msgMakeFood();
-	  //role.msgEnterBuilding();
+	  //role.msgMakeFood();
+	  role.msgEnterBuilding();
 
 	}
 	
 	private void HostParty(){
 		state = PersonState.HostingParty;
-		HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE);
+		HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE).role;
 		hr.msgHostParty();
 	}
 		  
@@ -820,7 +940,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	}
 	
 	private boolean canGoOnBreak(){
-		Role r = findMyJob();
+		MyRole r = findMyJob();
 		if(r == null)
 			return true;
 		
@@ -828,9 +948,9 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	}
 	
 	private boolean needsToBeAtWork(){
-		Role r = findMyJob();
+		MyRole r = findMyJob();
 		if(r != null){
-			Employee e = (Employee) r;
+			Employee e = (Employee) r.role;
 			return true;
 			//return stateOfEmployment == StateOfEmployment.Employee && e.getShift().intersectsWithTime(realTime);
 		}
@@ -845,9 +965,12 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	//--------------------------UTILITIES---------------------------//
 	
 	
-	private Role findRole(String role){
-		for(Role r : roles){
-			if(r.getNameOfRole().equals(role)){
+	private MyRole findRole(String role){
+		if(role.equals(Role.HOME_ROLE)){
+			int i = 0;
+		}
+		for(MyRole r : roles){
+			if(r.role.getNameOfRole().equals(role)){
 				return r;
 			}
 		}
@@ -855,9 +978,9 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		return null;
 	}
 	
-	private Role findMyJob(){
-		for(Role r : roles){
-			if(r.isActive() && r instanceof Employee){
+	private MyRole findMyJob(){
+		for(MyRole r : roles){
+			if(r.role.isActive() && r.role instanceof Employee){
 				return r;
 			}
 		}
@@ -866,8 +989,9 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	}
 	
 	public void homeThrowParty() {
-		HomeRole role = (HomeRole) findRole("HomeRole");
-		role.msgThrowParty();
+		MyRole role = findRole("HomeRole");
+		HomeRole hr = (HomeRole) role.role;
+		hr.msgThrowParty();
 	}
 	
 	/**
@@ -949,17 +1073,17 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	 * Adds a role to the Person
 	 * @param r the role to add
 	 */
-	public void addRole(Role r){
-		if(r instanceof Employee){
+	public void addRole(MyRole r){
+		if(r.role instanceof Employee){
 			state = PersonState.Working;
 		}
 		
 		if(roles.contains(r)){
-			r.setPerson(this);
+			r.role.setPerson(this);
 			return;
 		}
 		
-		r.setPerson(this);
+		r.role.setPerson(this);
 		roles.add(r);
 	}
 	
@@ -1055,12 +1179,12 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		return home;
 	}
 	
-	private Employee getCurrentJob(){
-		for(Role r : roles){
-			if(r instanceof Employee){
-				Employee e = (Employee) r;
-				if(e.getShift() == currentShift){
-					return (Employee) r;
+	private MyJob getCurrentJob(){
+		for(MyRole r : roles){
+			if(r instanceof MyJob){
+				MyJob e = (MyJob) r;
+				if(e.shift == currentShift){
+					return e;
 				}
 			}
 		}
@@ -1071,43 +1195,49 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	@Override
 	public void timeAction(int hour, int minute) {
 		// TODO Auto-generated method stub
-		/*if(hour == Workplace.DAY_SHIFT_HOUR && minute == .DAY_SHIFT_MIN){
+		if(hour == Workplace.DAY_SHIFT_HOUR && minute == Workplace.DAY_SHIFT_MIN){
 			currentShift = ShiftTime.DAY_SHIFT;
-			if(getCurrentJob().getShift() == ShiftTime.DAY_SHIFT){
-				msgReportForWork();
+			if(getCurrentJob() != null && getCurrentJob().shift == ShiftTime.DAY_SHIFT){
+				if(workState == WorkState.None)
+					msgReportForWork();
 			}
 		}else if(hour == Workplace.NIGHT_SHIFT_HOUR && minute == Workplace.NIGHT_SHIFT_MIN){
 			currentShift = ShiftTime.NIGHT_SHIFT;
 		}else if(hour == Workplace.END_SHIFT_HOUR && minute == Workplace.END_SHIFT_MIN){
 			currentShift = ShiftTime.NONE;
-		}*/
+		}
 	}
 
-	public void dateAction(int month, int day, int hour, int minute) {
-		HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE);
-		if(hr.rsvpDate.get(Calendar.MONTH) == month && hr.rsvpDate.get(Calendar.DAY_OF_MONTH) == day && hr.rsvpDate.get(Calendar.HOUR_OF_DAY) == hour && hr.rsvpDate.get(Calendar.MINUTE) == minute) {
-			hr.msgResendInvites();
-		}
-		if(hr.partyDate.get(Calendar.MONTH) == month && hr.partyDate.get(Calendar.DAY_OF_MONTH) == day && hr.partyDate.get(Calendar.HOUR_OF_DAY) == hour && hr.partyDate.get(Calendar.MINUTE) == minute) {
-			if(hr.partyAttendees.size()!=0){
-				state = PersonState.HostParty;
-			    stateChanged();
-			}
-		}
-		if(rentDueDate != null && home != null && home.isApartment == true) {
+
+public void dateAction(int month, int day, int hour, int minute) {
+    HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE).role;
+    if(hr.rsvpDate.get(Calendar.MONTH) == month && hr.rsvpDate.get(Calendar.DAY_OF_MONTH) == day && hr.rsvpDate.get(Calendar.HOUR_OF_DAY) == hour && hr.rsvpDate.get(Calendar.MINUTE) == minute) {
+            hr.msgResendInvites();
+    }
+    if(hr.partyDate.get(Calendar.MONTH) == month && hr.partyDate.get(Calendar.DAY_OF_MONTH) == day && hr.partyDate.get(Calendar.HOUR_OF_DAY) == hour && hr.partyDate.get(Calendar.MINUTE) == minute) {
+            if(hr.partyAttendees.size()!=0){
+                    state = PersonState.HostParty;
+                    stateChanged();
+            }
+    }
+    if(rentDueDate != null && home != null && home.isApartment == true) {
             if(rentDueDate.get(Calendar.DAY_OF_MONTH) == day && hour == 0) {
                     hr.msgRentDue(5.00,rentDueDate.get(Calendar.DAY_OF_MONTH));
-                    rentDueDate.add(Calendar.DAY_OF_MONTH, 1);
+                    rentDueDate.add(Calendar.DAY_OF_MONTH, 7);
                     //MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
             }
-		}
-		for(Party p: parties){
-			if(p.dateOfParty.get(Calendar.MONTH) == month && p.dateOfParty.get(Calendar.DAY_OF_MONTH) == day && p.dateOfParty.get(Calendar.HOUR_OF_DAY) == hour && p.dateOfParty.get(Calendar.MINUTE) == minute) {
-				state = PersonState.GoingToParty;
-				stateChanged();
-			}	
-		}
-	}
+
+    }
+    if(hr.featureRepairDate.get(Calendar.MONTH) == month && hr.featureRepairDate.get(Calendar.DAY_OF_MONTH) == day && hr.featureRepairDate.get(Calendar.HOUR_OF_DAY) == hour && hr.featureRepairDate.get(Calendar.MINUTE) == minute) {
+            hr.msgFixedFeature();
+    }
+    for(Party p: parties){
+            if(p.dateOfParty.get(Calendar.MONTH) == month && p.dateOfParty.get(Calendar.DAY_OF_MONTH) == day && p.dateOfParty.get(Calendar.HOUR_OF_DAY) == hour && p.dateOfParty.get(Calendar.MINUTE) == minute) {
+                    state = PersonState.GoingToParty;
+                    stateChanged();
+            }        
+    }
+}
 
 	//Control Panel Information Access Functions
 		//Only include what hasn't already been done
@@ -1115,7 +1245,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		return hungerLevel;
 	}
 	public String getCurrentJobString() {
-		return findMyJob().getNameOfRole();
+		return findMyJob().role.getNameOfRole();
 	}
 	
 	public String getCurrentLocation() {
@@ -1156,6 +1286,15 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	public void addFriend(PersonAgent agent){
 		if(!friends.contains(agent))
 			friends.add(agent);
+	}
+	
+	public String getCurrentRole(){
+		for(MyRole r : roles){
+			if(r.role.isActive())
+				return r.role.getNameOfRole();
+		}
+		
+		return null;
 	}
 	
 	public boolean hasCar() {

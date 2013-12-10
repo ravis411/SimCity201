@@ -171,7 +171,7 @@ public boolean pickAndExecuteAction() {
 public void PayMarketBill(Bill b){
 	
 	print("Paying bill of "+b.bill+" to market "+ b.m.getName()+" left with " + (money-b.bill));
-	    b.m.msgMarketManagerHereIsPayment(b.bill);
+	    b.m.msgMarketHereIsPayment(b.bill);
 	    money=money-b.bill;
 	    b.state=CState.paid;
 }

@@ -13,7 +13,7 @@ public class Order
 	//Dish choice;
 	int table;
 	public enum orderStatus {pending, cooking, cooked}
-	private orderStatus status = orderStatus.pending;
+	public orderStatus status = orderStatus.pending;
 	int cookTime;
 
 	public Order (Waiter waiter, int choice, int table, Customer customer) {

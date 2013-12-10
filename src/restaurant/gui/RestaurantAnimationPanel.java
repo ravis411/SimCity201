@@ -10,6 +10,7 @@ import residence.gui.HomeRoleGui;
 import restaurant.CashierRole;
 import restaurant.CookRole;
 import restaurant.NewWaiterRole;
+//import restaurant.NewWaiterRole;
 import restaurant.OldWaiterRole;
 import restaurant.RestaurantCustomerRole;
 import trace.AlertLog;
@@ -27,16 +28,16 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
 	static final int XCOOR = 0;
 	static final int YCOOR = 0;
 	
-	static final int TABLEXCOOR1 = 130;
-	static final int TABLEYCOOR1 = 60;
+	static final int TABLEXCOOR1 = 135;
+	static final int TABLEYCOOR1 = 200;
 	static final int TABLEX1 = 50;
 	static final int TABLEY1 = 50;
-	static final int TABLEXCOOR2 = 190;
-	static final int TABLEYCOOR2 = 120;
+	static final int TABLEXCOOR2 = 200;
+	static final int TABLEYCOOR2 = 200;
 	static final int TABLEX2 = 50;
 	static final int TABLEY2 = 50;
-	static final int TABLEXCOOR3 = 250;
-	static final int TABLEYCOOR3 = 180;
+	static final int TABLEXCOOR3 = 265;
+	static final int TABLEYCOOR3 = 200;
 	static final int TABLEX3 = 50;
 	static final int TABLEY3 = 50;
 	
@@ -52,10 +53,8 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
     public RestaurantAnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
-        
         bufferSize = this.getSize();
- 
-    	Timer timer = new Timer(5, this );
+    	Timer timer = new Timer(5, this);
     	timer.start();
     }
 
@@ -157,14 +156,14 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
 		}
 		if(r instanceof NewWaiterRole){
 			NewWaiterRole nwr = (NewWaiterRole) r;
-			WaiterGui gui = new WaiterGui(nwr, waiterCount*50+120, 0);
+			WaiterGui gui = new WaiterGui(nwr, waiterCount*50+120, 10);
 			nwr.setGui(gui);
 			guis.add(gui);
 			//System.out.println("My person is: " + hr.myPerson.getName());
 		}
 		if(r instanceof OldWaiterRole){
 			OldWaiterRole owr = (OldWaiterRole) r;
-			WaiterGui gui = new WaiterGui(owr, waiterCount*50+120, 0);
+			WaiterGui gui = new WaiterGui(owr, waiterCount*50+120, 10);
 			owr.setGui(gui);
 			guis.add(gui);
 			//System.out.println("My person is: " + hr.myPerson.getName());

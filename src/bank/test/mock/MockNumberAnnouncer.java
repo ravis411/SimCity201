@@ -12,6 +12,7 @@ import Transportation.test.mock.LoggedEvent;
 public class MockNumberAnnouncer extends Mock implements AnnouncerA{
 
 	public BankClient client;
+	public BankClient robber;
 	public List<LoggedEvent> log = new ArrayList<LoggedEvent>();
 	public MockNumberAnnouncer(String name) {
 		super(name);
@@ -41,6 +42,20 @@ public class MockNumberAnnouncer extends Mock implements AnnouncerA{
 			client.msgCallingTicket(1,b,btr);
 		}
 		
+	}
+
+	public void msgRemoveClient(BankClient b) {
+		log.add(new LoggedEvent("msgRemoveClient received from bankClient. Removing bankClient to the list."));
+	}
+	public void msgRobbingBank(BankClient c) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgStealingMoney(double stealAmount, BankClient bcr) {
+		// TODO Auto-generated method stub
+		robber=bcr;
 	}
 
 }

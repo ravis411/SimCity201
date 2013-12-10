@@ -209,7 +209,7 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
 			hr.setGui(gui);
 			guis.add(gui);
 			BuildingPanel bp = (BuildingPanel) this.getParent();
-			System.out.println("Added to "+bp.getName());
+			//System.out.println("Added to "+bp.getName());
 			//System.out.println("My person is: " + hr.myPerson.getName());
 		}
 		if(r instanceof HomeGuestRole){
@@ -218,7 +218,7 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
 			hgr.setGui(gui);
 			guis.add(gui);
 			BuildingPanel bp = (BuildingPanel) this.getParent();
-			System.out.println("Added to "+bp.getName());
+			//System.out.println("Added to "+bp.getName());
 			//System.out.println("My person is: " + hr.myPerson.getName());
 		}
 	}

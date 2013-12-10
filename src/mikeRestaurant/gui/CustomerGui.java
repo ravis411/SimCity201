@@ -109,7 +109,7 @@ public class CustomerGui implements Gui{
 				}else if(xPos == JAIL_X){
 					
 				}else if (xPos == LEAVE_X){
-					agent.msgArrivedAtStart();
+					agent.msgArrivedAtLeave();
 				}else{
 					agent.msgArrivedAtTable();
 				}
@@ -170,8 +170,8 @@ public class CustomerGui implements Gui{
 	 * Sets the new destination outside the restauraunt so the customergui will leave
 	 */
 	public void DoExitRestaurant() {
-		xDestination = INITIAL_X;
-		yDestination = INITIAL_Y;
+		xDestination = LEAVE_X;
+		yDestination = LEAVE_Y;
 		moving = true;
 		//gui.enableCustomer(agent.getName());
 	}

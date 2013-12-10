@@ -14,6 +14,7 @@ import java.util.concurrent.Semaphore;
 
 import javax.swing.Timer;
 
+import Person.Role.Role;
 import mikeRestaurant.gui.CustomerGui;
 import mikeRestaurant.interfaces.Customer;
 import mikeRestaurant.interfaces.Waiter;
@@ -33,6 +34,7 @@ public class CustomerRole extends GenericCustomer implements Customer{
 	private Semaphore atCashier = new Semaphore(0, true);
 	private Semaphore cashierReply = new Semaphore(0, true);
 	private Semaphore atStart = new Semaphore(0, true);
+	private Semaphore atLeave = new Semaphore(0, true);
 	
 	private Map<String, Double> menu; //a customer does have a menu in a real restaurant
 	private String choice;
@@ -144,6 +146,11 @@ public class CustomerRole extends GenericCustomer implements Customer{
 	public void msgArrivedAtTable(){
 		event = CustomerEvent.Seated;
 		stateChanged();
+	}
+	
+	public void msgArrivedAtLeave(){
+		atLeave.release();
+		kill();
 	}
 	
 	/**
@@ -439,12 +446,11 @@ public class CustomerRole extends GenericCustomer implements Customer{
 		
 		DoLeaveRestaurant();
 		try {
-			atStart.acquire();
+			atLeave.acquire();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		deactivate();
 	}
 	
 	/**
@@ -616,7 +622,7 @@ public class CustomerRole extends GenericCustomer implements Customer{
 	@Override
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
-		return "MikeCustomerRole";
+		return Role.RESTAURANT_MIKE_CUSTOMER_ROLE;
 	}
 
 }

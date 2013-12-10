@@ -3,6 +3,7 @@ package restaurant.gui;
 
 import interfaces.Customer;
 import interfaces.Waiter;
+import interfaces.generic_interfaces.GenericWaiter;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

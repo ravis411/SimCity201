@@ -10,7 +10,6 @@ public interface LucaHost {
 	public abstract String getName();
 	public abstract List getWaitingCustomers();
 	public abstract Collection getTables();
-	public abstract void msgIAmAWaiter(LucaWaiter waiter);
 	public abstract void msgIWantFood(LucaCustomer cust);
 	
 	public abstract void msgHostTableFree(int tableNum);

@@ -13,6 +13,8 @@ import ryansRestaurant.interfaces.RyansMarket;
 import ryansRestaurant.interfaces.RyansWaiter;
 import ryansRestaurant.test.mock.EventLog;
 import ryansRestaurant.test.mock.LoggedEvent;
+import trace.AlertLog;
+import trace.AlertTag;
 
 /**
  * Restaurant RyansCashier Agent
@@ -158,21 +160,21 @@ public class RyansCashierRole extends GenericCashier implements RyansCashier {
 		if(money >= bill.total) {
 			bill.market.msgHereIsPayment(this, bill.total);
 			money -= bill.total;
-			print("Paid " + bill.market + " entire bill of $" + bill.total);
+			AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Paid " + bill.market + " entire bill of $" + bill.total);
 			marketBills.remove(bill);
 			log.add(new LoggedEvent("Bill paid in full."));
 		}
 		//can pay some of bill
 		else if(money > 0) {
 			bill.market.msgHereIsPayment(this, money);
-			print("Paid " + bill.market + " partial bill of $" + money + " out of $" + bill.total);
+			AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Paid " + bill.market + " partial bill of $" + money + " out of $" + bill.total);
 			bill.total -= money;
-			print("Still owe " + bill.market + " partial bill of $" + bill.total);
+			AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Still owe " + bill.market + " partial bill of $" + bill.total);
 			money -= money;
 			log.add(new LoggedEvent("Some of bill paid."));
 		}
 		else{
-			print("Out of money. Can't pay marketBills.");
+			AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Out of money. Can't pay marketBills.");
 			log.add(new LoggedEvent("Out of money. Nothing to pay with."));
 		}
 		
@@ -262,12 +264,6 @@ public class RyansCashierRole extends GenericCashier implements RyansCashier {
 			this.market = market;
 			this.total = total;
 		}
-	}
-
-	@Override
-	public ShiftTime getShift() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 

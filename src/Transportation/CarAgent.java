@@ -10,7 +10,7 @@ import interfaces.Car;
 import interfaces.Person;
 
 public class CarAgent extends Agent implements Car{
-	public CarAgent(Person person, String name) {
+	public CarAgent(Person person, String name, String startingLocation) {
 		passenger = new myPassenger(person);
 		destination = "N/A";
 		state = CarState.parked;
@@ -18,6 +18,7 @@ public class CarAgent extends Agent implements Car{
 		
 		
 		this.setGui(new CarVehicleGui(this));
+		this.agentGui.setStartingStates(startingLocation);
 		this.startThread();
 		
 	}

@@ -3,6 +3,8 @@ package ryansRestaurant;
 import interfaces.generic_interfaces.GenericCashier;
 import interfaces.generic_interfaces.GenericCook;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,16 +14,50 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
+
+
+
+
+
 import ryansRestaurant.RyansMarketRole.MarketOrder;
 import ryansRestaurant.gui.CookGui;
 import ryansRestaurant.interfaces.RyansCashier;
+import trace.AlertLog;
+import trace.AlertTag;
 import Person.Role.ShiftTime;
 
 /**
  * Restaurant Cook Agent
  */
 
-public class RyansCookRole extends GenericCook {
+public class RyansCookRole extends GenericCook implements ActionListener{
+	
+	
+	
+	/** 	 Revolving Stand for use by waiters and cook 
+	 * I use the stand for when waiters do not go to the cook. 
+	 * The revolving stand in my restaurant is more of a shared data between them.
+	 * The normal waiter goes to the cook. 
+	 * The revolving stand waiter simply adds the order to the stand.       	 */
+	RyansRevolvingStand revolvingStand = new RyansRevolvingStand();
+	/** Returns a reference to the revolving stand.
+	 * 
+	 * @return
+	 */
+	public RyansRevolvingStand getRevolvingStand() {
+		return revolvingStand;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	private List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
@@ -83,11 +119,12 @@ public class RyansCookRole extends GenericCook {
 			grills.add(new Grill(i));
 		}
 		
+		checkStand();
 	}
 
 
 	public String getName() {
-		return myPerson.getName();
+		return myPerson.getName() + " Cook Role";
 	}
 
 	// Messages
@@ -95,7 +132,7 @@ public class RyansCookRole extends GenericCook {
 	public void msgHereIsOrder(RyansWaiterRole waiter, String choice, int tableNumber) {
 		orders.add(new Order(waiter, choice, tableNumber));
 		stateChanged();
-		print("New order " + waiter + " " + choice + " Table: " + tableNumber);
+		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "New order " + waiter + " " + choice + " Table: " + tableNumber);
 	}
 
 	
@@ -106,7 +143,7 @@ public class RyansCookRole extends GenericCook {
 		for(MarketOrder o:orders) {
 			f = inventory.get(o.type);
 			f.cancelOrder(o.quantity);
-			print("" + o.quantity + " " + o.type + " cannot be delivered.");
+			AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "" + o.quantity + " " + o.type + " cannot be delivered.");
 			
 		}
 		orderFailed = true;
@@ -125,7 +162,7 @@ public class RyansCookRole extends GenericCook {
 		for(MarketOrder o : orders) {
 			f = inventory.get(o.type);
 			f.addToInventoryFromOrder(o.quantity);
-			print("Adding " + o.quantity + " " + o.type + " to inventory.");
+			AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Adding " + o.quantity + " " + o.type + " to inventory.");
 		}
 		newInventory = true;
 		stateChanged();
@@ -146,6 +183,14 @@ public class RyansCookRole extends GenericCook {
 				updateMenu();
 				return true;
 			}
+			
+			
+			//Check if the revolving stand has any orders.
+			if(!revolvingStand.isEmpty()){
+				 doGetOrderFromStand();
+				return true;
+			}
+			
 
 			synchronized (orders) 
 			{
@@ -191,8 +236,26 @@ public class RyansCookRole extends GenericCook {
 	// Actions
 	
 	
+	
+	/**Gets an order from the revolving stand and adds it to the list of orders.
+	 * 
+	 */
+	private void doGetOrderFromStand(){
+		//get the order from the stand
+		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Getting a new order from the Revolveing Stand.");
+		RyansCookWaiterOrder order = revolvingStand.getLastOrder();
+		//structure the order data to fit in with my old cooking routine
+		orders.add(new Order(order.waiter, order.choice, order.tableNumber));
+	}
+	
+	
+	
+	
+	
+	
+	
 	private void TryToCookIt(Order o, Grill g) {
-		print("Trying to cook " + o.choice + " for table " + o.tableNumber +" at grill " + g.grillNumber);
+		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Trying to cook " + o.choice + " for table " + o.tableNumber +" at grill " + g.grillNumber);
 		Food f = inventory.get(o.choice);
 		
 		if(f.amount == 0) {
@@ -234,7 +297,7 @@ public class RyansCookRole extends GenericCook {
 		agentGui.grillActive(o.grill.grillNumber, false, null);
 		o.state = OrderState.finished;
 		o.grill.state = GrillState.ready;
-		print("" + o.choice + "Plated");
+		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "" + o.choice + "Plated");
 		orders.remove(o);
 		activity = "";
 	}
@@ -258,7 +321,7 @@ public class RyansCookRole extends GenericCook {
 	 * Scans the inventory for foods that are low, then orders that food from a market
 	 */
 	private void OrderFoodThatIsLow() {
-		print("Checking Inventory...");
+		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Checking Inventory...");
 		orderFailed = false;
 		List<MarketOrder> order = new ArrayList<MarketOrder>();
 		int quantity;
@@ -271,7 +334,7 @@ public class RyansCookRole extends GenericCook {
 				quantity = f.ordering();
 				if(quantity > 0) {
 					order.add( new MarketOrder(f.type, quantity) );
-					print("Need to order " + quantity +" " + f.type);
+					AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Need to order " + quantity +" " + f.type);
 				}
 			}
 		}
@@ -279,18 +342,18 @@ public class RyansCookRole extends GenericCook {
 		
 		
 		if(order.isEmpty()) {
-			print("Nothing to order. Inventory fine.");
+			AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Nothing to order. Inventory fine.");
 			return;
 		}
 		RyansMarketRole m = chooseAMarket();
 		
 		if(m != null) {
 			m.msgOrder(order, this, cashier);
-			print("Ordering from " + m);
+			AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Ordering from " + m);
 			return;
 		}
 		else {
-			print("Can't Order!!!!! THERE ARE NO MARKETS!!!!");
+			AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Can't Order!!!!! THERE ARE NO MARKETS!!!!");
 		}
 	}
 	
@@ -460,7 +523,7 @@ public class RyansCookRole extends GenericCook {
 		}
 		
 		void grillOrder(Order order) {
-			print("grilling " + order.choice + " for table " + order.tableNumber);
+			AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "grilling " + order.choice + " for table " + order.tableNumber);
 			agentGui.grillActive(grillNumber, true, order.choice);
 			this.order = order;
 			state = GrillState.cooking;
@@ -468,7 +531,7 @@ public class RyansCookRole extends GenericCook {
 			
 			timer.schedule(new TimerTask() {
 				public void run() {
-					print("Grill " + grillNumber + "" + grill.order.choice +" done cooking.");
+					AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Grill " + grillNumber + "" + grill.order.choice +" done cooking.");
 					grill.order.state = OrderState.doneCooking;
 					agentGui.grillActive(grillNumber, false, grill.order.choice);
 					stateChanged();
@@ -487,7 +550,6 @@ public class RyansCookRole extends GenericCook {
 	public CookGui getGui() {
 		return agentGui;
 	}
-
 	
 	
 	
@@ -495,6 +557,20 @@ public class RyansCookRole extends GenericCook {
 	
 	
 	
+	
+	
+	/** Utility function to have stateChanged called everySoOften for cook to check his stand.
+	 * 
+	 */
+	private void checkStand(){
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				stateChanged();
+				checkStand();
+			}
+		}, 15000);
+	}
 	
 	
 	
@@ -506,7 +582,6 @@ public class RyansCookRole extends GenericCook {
 		// TODO Auto-generated method stub
 		return ShiftTime.DAY_SHIFT;
 	}
-
 
 	@Override
 	public Double getSalary() {
@@ -526,6 +601,12 @@ public class RyansCookRole extends GenericCook {
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
 		return "Ryan's Cook";
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -1,17 +1,20 @@
 package Person.Role;
 
+import interfaces.MarketManager;
 import interfaces.generic_interfaces.GenericCashier;
 import interfaces.generic_interfaces.GenericCook;
 import interfaces.generic_interfaces.GenericCustomer;
 import interfaces.generic_interfaces.GenericHost;
 import interfaces.generic_interfaces.GenericWaiter;
+import restaurant.luca.LucaCookRole;
 import ryansRestaurant.RyansCookRole;
+import building.Building;
 import building.BuildingList;
 import building.Restaurant;
 
 public class RoleFactory {
 	
-	public static Role employeeFromString(String string, String restLocation){
+	public static Employee employeeFromString(String string, String restLocation){
 		try {
 			Class c = Class.forName(string);
 			Employee e = (Employee) c.getDeclaredConstructor(String.class).newInstance(restLocation);
@@ -19,34 +22,10 @@ public class RoleFactory {
 			//for example restaurant needs to be specified as a restaurant not a building or the line below
 			//"Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(e.getWorkLocation());"
 			//or else you will get cast error
-			if(e instanceof GenericWaiter){
-				GenericWaiter gw = (GenericWaiter) e;
-				System.out.println(e.getWorkLocation());
-				Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(e.getWorkLocation());
-				gw.setHost(rest.getHostRole());
-				rest.getHostRole().addWaiter(gw);
-				gw.setCashier(rest.getCashierRole());
-				gw.setCook(rest.getCookRole());
-				return gw;
-			}else if(e instanceof GenericHost){
-				GenericHost gh = (GenericHost) e;
-				Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(e.getWorkLocation());
-				return gh;
-			}else if(e instanceof GenericCook){
-				GenericCook gc = (GenericCook) e;
-				if(gc instanceof RyansCookRole){
-					RyansCookRole rcr = (RyansCookRole) gc;
-					Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(rcr.getWorkLocation());
-					rcr.setCashier(rest.getCashierRole());
-				}
-				return gc;
-			}else if(e instanceof GenericCashier){
-				GenericCashier gc = (GenericCashier) e;
-				return gc;
-			}else{
-				return e;
-			}
+			
+			return e;
 		} catch (Exception e) {
+
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

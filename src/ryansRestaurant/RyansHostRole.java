@@ -13,6 +13,8 @@ import java.util.concurrent.Semaphore;
 import ryansRestaurant.interfaces.RyansCustomer;
 import ryansRestaurant.interfaces.RyansHost;
 import ryansRestaurant.interfaces.RyansWaiter;
+import trace.AlertLog;
+import trace.AlertTag;
 import Person.Role.ShiftTime;
 
 /**
@@ -72,7 +74,7 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 		}
 		catch( ConcurrentModificationException e)
 		{
-			print("Concurrent Modification Exception caught.");
+			AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Concurrent Modification Exception caught.");
 		}
 		return nums;
 	}
@@ -82,7 +84,7 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 
 	public void msgIWantFood(RyansCustomer cust) {
 		waitingCustomers.add(cust);
-		print("" + cust + " is in the ryansRestaurant.");
+		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "" + cust + " is in the ryansRestaurant.");
 		stateChanged();
 	}
 
@@ -91,7 +93,7 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 		synchronized (waitingCustomers) {
 			for(RyansCustomer c: waitingCustomers) {
 				if(c == cust) {
-					print("" + c + " is leaving.");
+					AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "" + c + " is leaving.");
 					waitingCustomers.remove(cust);
 					return;
 				}
@@ -115,7 +117,7 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 		{
 			for (Table table : tables) {
 				if (table.getTableNumber() == tableNumber) {
-					print(table.occupiedBy + " leaving " + table);
+					AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), table.occupiedBy + " leaving " + table);
 					table.setUnoccupied();
 					stateChanged();
 					break;
@@ -129,7 +131,7 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 	 * @param waiter The waiter
 	 */
 	public void msgWantToGoOnBreak(RyansWaiter waiter) {
-		print(waiter + " wants to go on break.");
+		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), waiter + " wants to go on break.");
 		//synchronized (waiters)
 		{
 			for(MyWaiter w : waiters) {
@@ -152,7 +154,7 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 			for(MyWaiter w : waiters) {
 				if(w.waiter == waiter) {
 					w.state = WaiterState.none;
-					print(waiter + " back from break.");
+					AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), waiter + " back from break.");
 					stateChanged();
 					return;
 				}
@@ -248,7 +250,7 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 			}
 		}
 		}catch(ConcurrentModificationException e) {
-			print("ConcurrentModification exception caught in hose scheduler.");
+			AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "ConcurrentModification exception caught in hose scheduler.");
 		}
 
 		return false;
@@ -266,8 +268,8 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 			waiter.numCusts++;
 			table.setOccupant(customer);
 			if(!waitingCustomers.remove(customer))
-				print("ERROR!!!!!! REMOVING " + customer + " from waitingCustomers.");
-			print("Introduced " + customer + " to " + waiter.waiter);
+				AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "ERROR!!!!!! REMOVING " + customer + " from waitingCustomers.");
+			AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Introduced " + customer + " to " + waiter.waiter);
 		}	
 	}
 
@@ -284,12 +286,12 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 			if(availableWaiter) {
 				waiter.state = WaiterState.onBreak;
 				waiter.waiter.msgFromHostGoOnBreak(true);
-				print("Telling " + waiter.waiter + " to GO ON BREAK.");
+				AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Telling " + waiter.waiter + " to GO ON BREAK.");
 			}
 			else {
 				waiter.waiter.msgFromHostGoOnBreak(false);
 				waiter.state = WaiterState.none;
-				print("Telling " + waiter.waiter + " they CANNOT go on break.");
+				AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Telling " + waiter.waiter + " they CANNOT go on break.");
 			}
 		}
 	}
@@ -323,7 +325,7 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 			}
 			
 		}catch(ConcurrentModificationException e) {
-			print("Concurrent Modification Exception Caught");
+			AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Concurrent Modification Exception Caught");
 		}
 			return wait;
 	}
@@ -400,13 +402,6 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 		}
 
 
-	}
-
-
-	@Override
-	public ShiftTime getShift() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 

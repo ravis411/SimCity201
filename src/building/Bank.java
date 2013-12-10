@@ -5,9 +5,11 @@ import Person.Role.Employee;
 import Person.Role.Role;
 import bank.BankClientRole;
 import bank.BankTellerRole;
+import bank.LoanNumberAnnouncer;
 import bank.LoanTellerRole;
+import bank.NumberAnnouncer;
 
-public class Bank extends Building implements Workplace {
+public class Bank extends Workplace {
 
 	public boolean isOpenSetter = false;
 	public Bank(BuildingPanel panel) {
@@ -39,6 +41,7 @@ public class Bank extends Building implements Workplace {
 				this.panel.getPanel().removeGuiForRole(loanTeller);
 			}
 		}
+		isOpenSetter = false;
 	}
 
 	@Override
@@ -60,4 +63,14 @@ public class Bank extends Building implements Workplace {
 		}
 	}
 
+	public NumberAnnouncer getAnnouncer() {
+		// TODO Auto-generated method stub
+		return ((Bank) this.panel.getPanel()).getAnnouncer();
+	}
+	
+	public LoanNumberAnnouncer getLoanAnnouncer(){
+		return ((Bank) this.panel.getPanel()).getLoanAnnouncer();
+	}
+
+	
 }

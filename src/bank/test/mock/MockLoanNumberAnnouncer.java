@@ -46,4 +46,10 @@ public class MockLoanNumberAnnouncer extends Mock implements AnnouncerB{
 		}
 
 	}
+
+	@Override
+	public void msgRemoveClient(BankClient b) {
+		log.add(new LoggedEvent("msgRemoveClient received from bankClient. Removing bankClient to the list."));
+		
+	}
 }

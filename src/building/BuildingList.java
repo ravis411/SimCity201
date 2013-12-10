@@ -52,7 +52,7 @@ public class BuildingList extends ArrayList<Building> implements TimeListener{
 		return null;
 	}
 	
-	public synchronized ArrayList<Building> findBuildingsWithType(String name){
+	public synchronized static ArrayList<Building> findBuildingsWithType(String name){
         ArrayList<Building> buildings = new ArrayList<Building>();
         
             for(Building b : getInstance()){

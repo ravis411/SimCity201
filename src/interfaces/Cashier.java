@@ -1,7 +1,5 @@
 package interfaces;
 
-import restaurant.MarketRole;
-import restaurant.WaiterAgent;
 //import restaurant.CashierAgent.Check;
 
 /**
