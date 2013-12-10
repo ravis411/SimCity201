@@ -70,14 +70,14 @@ public class CashierRole extends GenericCashier {
 	//messages
 
 	public void msgHereIsOrder(int table, String choice, WaiterRole waiterRole) {
-		AlertLog.getInstance().logMessage(AlertTag.CASHIER_ROLE, myPerson.getName(),"Recieving order from waiter.");
+		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"Recieving order from waiter.");
 		PendingOrders.add(new WaiterCheck(table,choice,waiterRole));
 		stateChanged();
 	}
 
 	
 	public void msgINeedCheck(int i){
-		AlertLog.getInstance().logMessage(AlertTag.CASHIER_ROLE, myPerson.getName(),"Giving bill to waiter.");
+		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"Giving bill to waiter.");
 		synchronized(PendingOrders){
 			for (WaiterCheck w : PendingOrders){
 				if (w.tableNum == i){
@@ -89,7 +89,7 @@ public class CashierRole extends GenericCashier {
 	}
 
 	public void msgPayForFood(double a, double s, CustomerRole c){
-		AlertLog.getInstance().logMessage(AlertTag.CASHIER_ROLE, myPerson.getName(),"Customer is paying for food.");
+		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"Customer is paying for food.");
 		CompletedOrders.add(new CustomerCheck(a,s,c));
 		stateChanged();
 	}
@@ -145,7 +145,7 @@ public class CashierRole extends GenericCashier {
 	private void payBill(double b){
 		register = register - b;
 		MarketBills.remove(b); 
-		AlertLog.getInstance().logMessage(AlertTag.CASHIER_ROLE, myPerson.getName(),"Paying Market for order, total left in register is $" + register);
+		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"Paying Market for order, total left in register is $" + register);
 	}
 
 	//Utilities

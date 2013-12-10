@@ -119,7 +119,7 @@ public class CookRole extends GenericCook {
 	}
 
 	public void msgNotEnoughFood(String s){
-		AlertLog.getInstance().logMessage(AlertTag.COOK_ROLE, myPerson.getName(),"Market has run out, keep " + s + " off the menu.");
+		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"Market has run out, keep " + s + " off the menu.");
 	}
 	public void msgTakingFood(){
 		cookGui.setOnPlate(false);

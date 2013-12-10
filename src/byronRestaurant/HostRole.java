@@ -9,6 +9,9 @@ import interfaces.generic_interfaces.GenericWaiter;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import trace.AlertLog;
+import trace.AlertTag;
+
 /**
  * Restaurant Host Agent
  */
@@ -131,7 +134,7 @@ public class HostRole extends GenericHost {
 	// Actions
 
 	private void sitCustomerAtTable(CustomerRole c, int t){
-		print("Telling " + waiters.get(nextWaiter).waiter.getName() + " to seat " + c + " at table " + (t));
+		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"Telling " + waiters.get(nextWaiter).waiter.getName() + " to seat " + c + " at table " + (t));
 		waiters.get(nextWaiter).waiter.msgSitCustomerAtTable(c, t);
 		tables.get(t-1).setOccupant(c);
 		waitingCustomers.remove(c);
