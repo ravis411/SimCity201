@@ -1,5 +1,8 @@
 package restaurant.luca;
 
+import interfaces.MarketManager;
+import interfaces.generic_interfaces.GenericCook;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -11,7 +14,8 @@ import restaurant.interfaces.luca.LucaCook;
 import restaurant.interfaces.luca.LucaWaiter;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
-import Person.Role.Role;
+import MarketEmployee.MarketEmployeeRole;
+import Person.Role.ShiftTime;
 import agent.Constants;
 
 /**
@@ -21,7 +25,7 @@ import agent.Constants;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class LucaCookRole extends Role implements LucaCook{
+public class LucaCookRole extends GenericCook implements LucaCook{
 	private CookGui cookGui;
 	private Semaphore atRefrigerator = new Semaphore(0,false);
 	private Semaphore atGrill = new Semaphore(0,false);
@@ -29,12 +33,11 @@ public class LucaCookRole extends Role implements LucaCook{
 	private Semaphore atDefaultPos = new Semaphore(0,false);
 	public Collection<Order> myWaitingOrders;
 	public Collection<Order> myRejectedOrders;
-	private String name;
 	private int marketCurrentlyBeingAskedForFood;
 	public List<LucaWaiter> waiters
 	= Collections.synchronizedList(new ArrayList<LucaWaiter>());
-	public List<LucaMarketRole> markets
-	= Collections.synchronizedList(new ArrayList<LucaMarketRole>());
+	public List<MarketManager> markets
+	= Collections.synchronizedList(new ArrayList<MarketManager>());
 	public List<Food> foodTypes
 	= Collections.synchronizedList(new ArrayList<Food>());
 	public EventLog log= new EventLog();
@@ -50,18 +53,18 @@ public class LucaCookRole extends Role implements LucaCook{
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public LucaCookRole(){
-		super();
+	public LucaCookRole(String restLocation){
+		super(restLocation);
 		marketCurrentlyBeingAskedForFood =0;
-		foodTypes.add(new Food("Steak", 7, 1));//Food type, cooktime, quantity
-		foodTypes.add(new Food("Chicken", 3, 1));//Food type, cooktime, quantity
-		foodTypes.add(new Food("Burger", 5, 1));//Food type, cooktime, quantity
+		foodTypes.add(new Food("Steak", 7, 0));//Food type, cooktime, quantity
+		foodTypes.add(new Food("Chicken", 3, 0));//Food type, cooktime, quantity
+		foodTypes.add(new Food("Burger", 5, 0));//Food type, cooktime, quantity
 		myWaitingOrders = Collections.synchronizedCollection(new ArrayList<Order>());
 		myRejectedOrders = Collections.synchronizedCollection(new ArrayList<Order>());
 	}
 	
 	public String getName(){
-		return name;
+		return myPerson.getName();
 	}
 	/**
 	 * hack to establish connection to Host agent.
@@ -71,7 +74,7 @@ public class LucaCookRole extends Role implements LucaCook{
 	
 	// Messages
 
-	public void msgAddMarket(LucaMarketRole market) {
+	public void msgAddMarket(MarketManager market) {
 		markets.add(market);
 	}
 
@@ -84,7 +87,12 @@ public class LucaCookRole extends Role implements LucaCook{
 		stateChanged();
 		
 	}
-	public void msgCookIDoNotHaveFoodSupplyOrdered(String Food){
+	public void msgOrderNotFilled(int ingredientNum){
+		String Food; 
+		if (ingredientNum==0) Food="Steak"; 
+		else if (ingredientNum==1) Food="Chicken"; 
+		else if (ingredientNum==2) Food="Burger";
+		else Food="FoodDOesNtExIStttttWrongNUmber";
 		for(int i =0; i<foodTypes.size(); i++)
 			if (foodTypes.get(i).getChoice() == Food){
 			foodTypes.get(i).setMoreOrderedAndOnTheWay(false);
@@ -95,7 +103,12 @@ public class LucaCookRole extends Role implements LucaCook{
 		
 	}
 
-	public void msgCookNumberThatWereOrderedButNotFullfilled(int num, String Type) {
+	public void msgOrderPartiallyFilled(int ingredientNum, int quantity,  int quantityOfOrderThatMarketDoesntHave) {
+		String Food; 
+		if (ingredientNum==0) Food="Steak"; 
+		else if (ingredientNum==1) Food="Chicken"; 
+		else if (ingredientNum==2) Food="Burger";
+		else Food="FoodDOesNtExIStttttWrongNUmber";
 		marketCurrentlyBeingAskedForFood++;
 		if (marketCurrentlyBeingAskedForFood==4){
 			marketCurrentlyBeingAskedForFood=0;
@@ -104,10 +117,10 @@ public class LucaCookRole extends Role implements LucaCook{
 			return;}
 		for(int i=0; i<foodTypes.size(); i++){
 			foodTypes.get(i).setMoreOrderedAndOnTheWay(false);
-			if (foodTypes.get(i).getChoice()==Type && !foodTypes.get(i).getMoreOrderedAndOnTheWay() && marketCurrentlyBeingAskedForFood != markets.size())
+			if (foodTypes.get(i).getChoice()==Food && !foodTypes.get(i).getMoreOrderedAndOnTheWay() && marketCurrentlyBeingAskedForFood != markets.size())
 			{
-				print(markets.get(marketCurrentlyBeingAskedForFood).getName() + " do you Have food " + foodTypes.get(i).getChoice());
-				markets.get(marketCurrentlyBeingAskedForFood).msgMarketOrderFood(foodTypes.get(i).getChoice(), num); //order (food type, amount)
+				print(markets.get(marketCurrentlyBeingAskedForFood).getMarketName() + " do you Have food " + foodTypes.get(i).getChoice());
+				markets.get(marketCurrentlyBeingAskedForFood).msgMarketManagerFoodOrder(foodTypes.get(i).getChoice(), quantityOfOrderThatMarketDoesntHave, this); //order (food type, amount)
 				foodTypes.get(i).setMoreOrderedAndOnTheWay(true);
 				
 					
@@ -118,9 +131,14 @@ public class LucaCookRole extends Role implements LucaCook{
 	}
 
 
-	public void msgHereAreRequestedFoodSupplies(String foodType, int foodAmount) {
+	public void msgOrderFilled(int ingredientNum, int foodAmount) {
+		String Food; 
+		if (ingredientNum==0) Food="Steak"; 
+		else if (ingredientNum==1) Food="Chicken"; 
+		else if (ingredientNum==2) Food="Burger";
+		else Food="FoodDOesNtExIStttttWrongNUmber";
 		for(int i =0; i<foodTypes.size(); i++)
-			if (foodTypes.get(i).getChoice() == foodType){
+			if (foodTypes.get(i).getChoice() == Food){
 				foodTypes.get(i).addToFoodQuantity(foodAmount);
 				foodTypes.get(i).setMoreOrderedAndOnTheWay(false);
 			}
@@ -230,8 +248,8 @@ public class LucaCookRole extends Role implements LucaCook{
 		for(int i=0; i<foodTypes.size(); i++){
 			if (foodTypes.get(i).getFoodQuantity()==0 && !foodTypes.get(i).getMoreOrderedAndOnTheWay() && marketCurrentlyBeingAskedForFood != markets.size())
 			{
-				print(markets.get(marketCurrentlyBeingAskedForFood).getName() + " do you Have food " + foodTypes.get(i).getChoice());
-				markets.get(marketCurrentlyBeingAskedForFood).msgMarketOrderFood(foodTypes.get(i).getChoice(), howMuchFoodAgentAsksFromMarket); //order (food type, amount)
+				print(markets.get(marketCurrentlyBeingAskedForFood).getMarketName() + " do you Have food " + foodTypes.get(i).getChoice());
+				markets.get(marketCurrentlyBeingAskedForFood).msgMarketManagerFoodOrder(foodTypes.get(i).getChoice(), howMuchFoodAgentAsksFromMarket,this); //order (food type, amount)
 				foodTypes.get(i).setMoreOrderedAndOnTheWay(true);
 				
 					
@@ -403,6 +421,32 @@ public class LucaCookRole extends Role implements LucaCook{
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void msgOrderFilled(String foodType, int foodAmount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgCookNumberThatWereOrderedButNotFullfilled(int i,
+			String string) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

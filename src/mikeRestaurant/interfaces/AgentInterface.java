@@ -1,4 +1,4 @@
-package restaurant.interfaces;
+package mikeRestaurant.interfaces;
 
 public interface AgentInterface {
 

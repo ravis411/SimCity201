@@ -3,17 +3,17 @@ package ryansRestaurant.test.mock;
 
 import java.util.List;
 
-import ryansRestaurant.interfaces.Cashier;
-import ryansRestaurant.interfaces.Customer;
-import ryansRestaurant.interfaces.Waiter;
+import ryansRestaurant.interfaces.RyansCashier;
+import ryansRestaurant.interfaces.RyansCustomer;
+import ryansRestaurant.interfaces.RyansWaiter;
 
 /**
- * A sample MockCustomer built to unit test a CashierAgent.
+ * A sample MockCustomer built to unit test a RyansCashierRole.
  *
  * @author Monroe Ekilah
  *
  */
-public class MockWaiter extends Mock implements Waiter {
+public class MockWaiter extends Mock implements RyansWaiter {
 
 	public EventLog log = new EventLog();
 	
@@ -23,19 +23,19 @@ public class MockWaiter extends Mock implements Waiter {
 	}
 
 	@Override
-	public void msgSitAtTable(Customer cust, int tableNumber) {
+	public void msgSitAtTable(RyansCustomer cust, int tableNumber) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void msgReadyToOrder(Customer customer) {
+	public void msgReadyToOrder(RyansCustomer customer) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void msgHereIsMyChoice(Customer customer, String choice) {
+	public void msgHereIsMyChoice(RyansCustomer customer, String choice) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -53,13 +53,13 @@ public class MockWaiter extends Mock implements Waiter {
 	}
 
 	@Override
-	public void msgHereIsCheck(Customer cust, double total) {
+	public void msgHereIsCheck(RyansCustomer cust, double total) {
 		log.add(new LoggedEvent("msgHereIsCheck recieved"));
 		
 	}
 
 	@Override
-	public void msgDoneEatingLeaving(Customer customer) {
+	public void msgDoneEatingLeaving(RyansCustomer customer) {
 		// TODO Auto-generated method stub
 		
 	}

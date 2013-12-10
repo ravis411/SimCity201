@@ -1,8 +1,8 @@
-package restaurant.test.mock;
+package mikeRestaurant.test.mock;
 
 import java.text.DecimalFormat;
 
-import restaurant.interfaces.Market;
+import mikeRestaurant.interfaces.Market;
 
 public class MockMarket extends Mock implements Market {
 

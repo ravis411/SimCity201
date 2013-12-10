@@ -1,4 +1,4 @@
-package restaurant.gui;
+package mikeRestaurant.gui;
 
 import java.awt.*;
 

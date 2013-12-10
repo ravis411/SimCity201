@@ -284,5 +284,12 @@ public class LoanTellerRole extends Employee implements LoanTeller{
 		return null;
 	}
 
+//	@Override
+//	public void workplaceIsOpen() {
+//		// TODO Auto-generated method stub
+//		this.activate();
+//		
+//	}
+
 
 }

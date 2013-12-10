@@ -1,8 +1,6 @@
 package residence.test.mock;
 
 import interfaces.HomeGuest;
-import residence.ApartmentManagerRole;
-import residence.HomeRole;
 
 /**
  * MockHomeGuestRole built to unit test

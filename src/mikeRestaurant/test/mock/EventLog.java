@@ -1,4 +1,4 @@
-package restaurant.test.mock;
+package mikeRestaurant.test.mock;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -16,7 +16,7 @@ import java.util.Queue;
 import trace.AlertLog;
 import trace.AlertTag;
 import gui.LocationInfo;
-import gui.agentGuis.VehicleGui;
+import gui.agentGuis.BusGui;
 import Transportation.myBusPassenger;
 import agent.Agent;
 
@@ -26,7 +26,7 @@ public class PseudoBusAgent extends Agent implements Bus {
 	String name;
 	boolean traveled = false;
 	boolean goToBusStop3 = false;
-	public VehicleGui agentGui;
+	public BusGui agentGui;
 	Queue<String> StopsQueue = new LinkedList<>(); //<--a list of the stops to go to
 	
 	public PseudoBusAgent(String name, Queue<String> busStops) {

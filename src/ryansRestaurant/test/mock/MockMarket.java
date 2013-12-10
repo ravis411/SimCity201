@@ -3,13 +3,13 @@ package ryansRestaurant.test.mock;
 
 import java.util.List;
 
-import ryansRestaurant.interfaces.Cashier;
-import ryansRestaurant.interfaces.Customer;
-import ryansRestaurant.interfaces.Market;
-import ryansRestaurant.interfaces.Waiter;
+import ryansRestaurant.interfaces.RyansCashier;
+import ryansRestaurant.interfaces.RyansCustomer;
+import ryansRestaurant.interfaces.RyansMarket;
+import ryansRestaurant.interfaces.RyansWaiter;
 
 
-public class MockMarket extends Mock implements Market {
+public class MockMarket extends Mock implements RyansMarket {
 
 	public EventLog log = new EventLog();
 	
@@ -19,7 +19,7 @@ public class MockMarket extends Mock implements Market {
 	}
 
 
-	public void msgHereIsPayment(Cashier cashier, double total){
+	public void msgHereIsPayment(RyansCashier cashier, double total){
 		log.add(new LoggedEvent("Recieved msgHereIsPayment total =" + total));
 	}
 	

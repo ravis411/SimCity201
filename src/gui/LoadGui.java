@@ -136,6 +136,7 @@ public class LoadGui extends JFrame implements ActionListener{
 					timeCountDown();
 				else if(time == 0 && load){
 						//Timer has expired load the current loadThisConfig
+					@SuppressWarnings("unused")
 					SimCity201Gui gui = new SimCity201Gui(loadThisConfig);
 					thisFrame.setVisible(false);
 				}
@@ -163,6 +164,7 @@ public class LoadGui extends JFrame implements ActionListener{
 		
 		if(e.getSource() == loadDefault ){
 			loadThisConfig = "Default";
+			@SuppressWarnings("unused")
 			SimCity201Gui gui = new SimCity201Gui(loadThisConfig);
 		}
 		

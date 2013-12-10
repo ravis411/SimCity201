@@ -1,8 +1,8 @@
-package restaurant.interfaces;
+package mikeRestaurant.interfaces;
 
-import restaurant.CustomerAgent;
-import restaurant.Table;
-import restaurant.WaiterAgent;
+import mikeRestaurant.CustomerRole;
+import mikeRestaurant.Table;
+import mikeRestaurant.WaiterRole;
 
 public interface Host extends AgentInterface {
 
@@ -11,11 +11,11 @@ public interface Host extends AgentInterface {
 	 */
 	public void msgAddTable();
 	
-	/**
-	 * Message sent to the host from the creation panel to add a waiter
-	 * @param waiter the waiter to add
-	 */
-	public void msgAddWaiter(Waiter waiter);
+//	/**
+//	 * Message sent to the host from the creation panel to add a waiter
+//	 * @param waiter the waiter to add
+//	 */
+//	public void addWaiter(Waiter waiter);
 	
 	/**
 	 * Message sent to the host by the gui panel when a customer is initially hungry

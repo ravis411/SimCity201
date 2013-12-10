@@ -92,9 +92,11 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 			}
 		}
 
-		for(Gui gui : guis) {
-			if (gui.isPresent()) {
-				gui.draw(g2);
+		synchronized(guis){
+			for(Gui gui : guis) {
+				if (gui.isPresent()) {
+					gui.draw(g2);
+				}
 			}
 		}
 		
@@ -106,6 +108,9 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 //			//	b.draw(g2);
 //			}
 //		}
+		
+		
+		
 		
 		
 		//This section makes the city dark at night and draws the clock.
@@ -128,6 +133,13 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		g2.drawString(time, g.getClipBounds().width - 225, g.getClipBounds().height - 30);
 	}
 
+	
+	
+	
+	
+	
+	
+	
 	public void addGui(Gui gui) {
 		guis.add(gui);
 	}

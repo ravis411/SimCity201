@@ -15,6 +15,7 @@ public abstract class Role {
 	public final static String LOAN_TELLER_ROLE = "bank.LoanTellerRole";
 	public final static String PASSENGER_ROLE = "Person.Role.PassengerRole";
 	public final static String HOME_ROLE = "residence.HomeRole";
+	public final static String HOME_GUEST_ROLE = "residence.HomeGuestRole";
 	public final static String RESTAURANT_CUSTOMER_ROLE = "restaurant.RestaurantCustomerRole";
 	public final static String RESTAURANT_WAITER_ROLE = "restaurant.OldWaiterRole";
 	public final static String RESTAURANT_NEW_WAITER_ROLE = "restaurant.NewWaiterRole";
@@ -27,16 +28,29 @@ public abstract class Role {
 	public final static String RESTAURANT_LUCA_COOK_ROLE = "restaurant.luca.LucaCookRole";
 	public final static String RESTAURANT_LUCA_CASHIER_ROLE = "restaurant.luca.LucaCashierRole";
 	public final static String APARTMENT_MANAGER_ROLE = "residence.ApartmentManagerRole";
-	 public final static String RESTAURANT_KUSH_CUSTOMER_ROLE = "kushrestaurant.CustomerRole";
-     public final static String RESTAURANT_KUSH_WAITER_ROLE = "kushrestaurant.WaiterRole";
-     public final static String RESTAURANT_KUSH_HOST_ROLE = "kushrestaurant.HostRole";
-     public final static String RESTAURANT_KUSH_COOK_ROLE = "kushrestaurant.CookRole";
-     public final static String RESTAURANT_KUSH_CASHIER_ROLE = "kushrestaurant.CashierRole";
+	public final static String RESTAURANT_KUSH_CUSTOMER_ROLE = "kushrestaurant.CustomerRole";
+	public final static String RESTAURANT_KUSH_WAITER_ROLE = "kushrestaurant.WaiterRole";
+	public final static String RESTAURANT_KUSH_HOST_ROLE = "kushrestaurant.HostRole";
+	public final static String RESTAURANT_KUSH_COOK_ROLE = "kushrestaurant.CookRole";
+	public final static String RESTAURANT_KUSH_CASHIER_ROLE = "kushrestaurant.CashierRole";
     public final static String RESTAURANT_JEFFREY_CUSTOMER_ROLE = "jeffreyRestaurant.CustomerAgent";
     public final static String RESTAURANT_JEFFREY_WAITER_ROLE = "jeffreyRestaurant.WaiterAgent";
     public final static String RESTAURANT_JEFFREY_HOST_ROLE = "jeffreyRestaurant.HostAgent";
     public final static String RESTAURANT_JEFFREY_COOK_ROLE = "jeffreyRestaurant.CookAgent";
     public final static String RESTAURANT_JEFFREY_CASHIER_ROLE = "jeffreyRestaurant.CashierAgent";
+    public final static String RESTAURANT_MIKE_WAITER_ROLE = "mikeRestaurant.NewWaiterRole"; 
+    public final static String RESTAURANT_MIKE_HOST_ROLE = "mikeRestaurant.HostRole"; 
+    public final static String RESTAURANT_MIKE_COOK_ROLE = "mikeRestaurant.CookRole"; 
+    public final static String RESTAURANT_MIKE_CASHIER_ROLE = "mikeRestaurant.CashierRole"; 
+    public final static String RESTAURANT_MIKE_CUSTOMER_ROLE = "mikeRestaurant.CustomerRole"; 
+    
+    public final static String RESTAURANT_RYAN_HOST_ROLE = "ryansRestaurant.RyansHostRole";
+    public final static String RESTAURANT_RYAN_COOK_ROLE = "ryansRestaurant.RyansCookRole"; 
+    public final static String RESTAURANT_RYAN_CASHIER_ROLE = "ryansRestaurant.RyansCashierRole"; 
+    public final static String RESTAURANT_RYAN_CUSTOMER_ROLE = "ryansRestaurant.RyansCustomerRole";
+    public final static String RESTAURANT_RYAN_WAITER_ROLE = "ryansRestaurant.RyansOldHostRole";//"ryansRestaurant.RyansWaiterRole";
+    
+    
     
 	
 	/**

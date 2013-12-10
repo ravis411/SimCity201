@@ -2,6 +2,7 @@ package residence;
 
 import interfaces.HomeGuest;
 
+import java.util.Timer;
 import java.util.concurrent.Semaphore;
 
 import residence.HomeRole.AgentEvent;
@@ -11,13 +12,12 @@ import Person.PersonAgent;
 import Person.Role.Role;
 
 /**
- * Home Role
+ * Home Guest Role
  */
 
 public class HomeGuestRole extends Role implements HomeGuest {
 	
 	HomeGuestGui gui = null;
-	PersonAgent myPerson;
 	private Semaphore atFrontDoor = new Semaphore(0, true);
 	private Semaphore atCenter = new Semaphore(0, true);
 	
@@ -25,8 +25,8 @@ public class HomeGuestRole extends Role implements HomeGuest {
 	{DoingNothing, WalkingIn, Leaving};
 	private AgentState state = AgentState.DoingNothing;
 	
-	public HomeGuestRole(PersonAgent myPerson) {
-		this.myPerson = myPerson;
+	public HomeGuestRole() {
+		super();
 	}
 	
 	public void setGui(HomeGuestGui gui){
@@ -34,7 +34,7 @@ public class HomeGuestRole extends Role implements HomeGuest {
 	} 
 	
 	public String getNameOfRole() {
-		return "HomeGuestRole";
+		return "residence.HomeGuestRole";
 	}
 	
 	public boolean canGoGetFood() {
@@ -53,6 +53,7 @@ public class HomeGuestRole extends Role implements HomeGuest {
 	}
 
 	public void msgAtFrontDoor() {
+		gui.leaveParty = false;
 		deactivate();
 		atFrontDoor.release();
 	}
@@ -86,7 +87,7 @@ public class HomeGuestRole extends Role implements HomeGuest {
 		}
 	}
 	private void leaveHome() {
-		gui.DoGoToFrontDoor();
+		gui.leaveParty = true;
 		try {
 			atFrontDoor.acquire();
 		} catch (InterruptedException e) {

@@ -1,6 +1,7 @@
 package market.test.mock;
 
 import interfaces.MarketManager;
+import interfaces.generic_interfaces.GenericCook;
 import MarketEmployee.MarketEmployeeRole;
 
 public class MockMarketManager extends Mock implements MarketManager {
@@ -41,6 +42,32 @@ public class MockMarketManager extends Mock implements MarketManager {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void msgDeliveryTruckAtDestination() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgMarketManagerHereIsPayment(double moneyPayment) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getMarketName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void msgMarketManagerFoodOrder(String choice,
+			int quantityOfOrderThatMarketDoesntHave, GenericCook CookRole) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 

@@ -1,10 +1,10 @@
-package restaurant.test.mock;
+package mikeRestaurant.test.mock;
 
 import java.text.DecimalFormat;
 import java.util.Map;
 
-import restaurant.interfaces.Customer;
-import restaurant.interfaces.Waiter;
+import mikeRestaurant.interfaces.Customer;
+import mikeRestaurant.interfaces.Waiter;
 
 public class MockCustomer extends Mock implements Customer{
 
@@ -76,13 +76,13 @@ public class MockCustomer extends Mock implements Customer{
 	}
 
 	@Override
-	public void msgArrivedAtJail() {
+	public void msgHereIsCheck(double check) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void msgHereIsCheck(double check) {
+	public void msgArrivedAtStart() {
 		// TODO Auto-generated method stub
 		
 	}

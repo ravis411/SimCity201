@@ -5,6 +5,7 @@ package gui.agentGuis;
 
 import gui.Gui;
 import gui.LocationInfo;
+import gui.SetUpWorldFactory;
 import gui.SimCityLayout;
 
 import java.awt.*;
@@ -31,11 +32,75 @@ import astar.VehicleAStarTraversal;
 
 public class CarVehicleGui implements Gui {
 
+	
+	
+	//PUBLIC METHODS FOR USE BY CARAGENT
+	
+	
+	
+	/** Attempts to put the gui at location
+	 * 
+	 * @param location The building or location to be at.
+	 * @return True if successful false otherwise.
+	 */
+	public boolean setCurrentLocation(String location){
+		return setStartingStates(location);
+	}
+	
+	
+	 /**	This will move the car from their current location to location
+     * When this function returns, the car has arrived or the location does not exist.
+     * 
+     * @param location	The name of the destination to travel to.
+     */
+    public void DoGoTo(String location){
+    	GUIDoGoTo(location);
+    }
+    
+    
+    /** 
+     * 
+     * @return The vehicles current location. null if it has not entered the city.
+     */
+    public String getCurrentLocation(){
+    	if(currentLocation != null){
+    		return currentLocation.name;
+    	}
+    	else
+    		return null;
+    }
+    
+    /**	
+     * @return A list of locations that the gui knows about.
+     */
+    public List<String> getLocations(){
+    	return new ArrayList<>(locations.keySet());
+    }
+    
+	
+    
+    
+    
+    
+    
+    
+    
+    //END PUBLIC METHODS FOR USE BY CARAGENT
+	
+	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     private CarAgent agent = null;
-    
-    
-    
-    @SuppressWarnings("unused")
 	private SimCityLayout cityLayout = null;
 
 
@@ -66,42 +131,48 @@ public class CarVehicleGui implements Gui {
     
     
     
-    public CarVehicleGui(CarAgent agent, SimCityLayout cityLayout, AStarTraversal aStar, List<LocationInfo> locationList) {
-    	positionMap = new HashMap<Dimension, Dimension>(cityLayout.positionMap);
+    public CarVehicleGui(CarAgent agent) {
+    	this.cityLayout = SetUpWorldFactory.layout;
     	this.agent = agent;
-        this.cityLayout = cityLayout;
-    
-        this.aStar = aStar;
-        
-  
-			//img = new ImageIcon(("movingCar.gif"));
-        String s=new String("none");
-			try {
-				//BufferedImage img = ImageIO.read(new File("images/UFO.png"));
-				 s=( this.getClass().getResource("/images/UFO.png").getPath() );
-				BufferedImage img = ImageIO.read(new File(s));
-			    if(img != null){
-			    	ImageIcon icon = new ImageIcon(img);
-			    	image = icon.getImage();
-			    }
-			} catch (Exception e) {
-				testView = true;
-				AlertLog.getInstance().logWarning(AlertTag.VEHICLE_GUI, agent.toString(), "Image not found. Switching to Test View"+s);
-			}
+    	positionMap = new HashMap<Dimension, Dimension>(cityLayout.positionMap);
+    	this.aStar = new VehicleAStarTraversal(cityLayout.getAgentGrid(), cityLayout.getRoadGrid());
 
-			
-        for(LocationInfo i : locationList){
-        	if(i != null && i.positionToEnterFromRoadGrid != null && i.entranceFromRoadGrid != null){
-        		locations.put(i.name, i);
-        		if(i.name.contains("City Entrance")){
-        			currentLocation = new LocationInfo(i);
-        		}
-        	}
-        }
-        
+
+    	
+    	//img = new ImageIcon(("movingCar.gif"));
+    	String s=new String("none");
+    	try {
+    		//BufferedImage img = ImageIO.read(new File("images/UFO.png"));
+    		s=( this.getClass().getResource("/images/UFO.png").getPath() );
+    		BufferedImage img = ImageIO.read(new File(s));
+    		if(img != null){
+    			ImageIcon icon = new ImageIcon(img);
+    			image = icon.getImage();
+    		}
+    	} catch (Exception e) {
+    		testView = true;
+    		AlertLog.getInstance().logWarning(AlertTag.VEHICLE_GUI, agent.toString(), "Image not found. Switching to Test View"+s);
+    	}
+
+    	
+    	
+    	
+    	List<LocationInfo> locationList = SetUpWorldFactory.locationMap;
+    	for(LocationInfo i : locationList){
+    		if(i != null && i.positionToEnterFromRoadGrid != null && i.entranceFromRoadGrid != null){
+    			locations.put(i.name, i);
+    			if(i.name.contains("City Entrance")){
+    				currentLocation = new LocationInfo(i);
+    			}
+    		}
+    	}
+    	SetUpWorldFactory.cityPanel.addGui(this);
     }
+
     
-    /** Will start the gui at the given location. Assumes the gui is not already in the World.
+    
+    
+    /** Will put the gui at the given location.
      * 
      * @param location	The name of the location for the gui to be at.
      * @return	True if successful, false otherwise.
@@ -109,42 +180,30 @@ public class CarVehicleGui implements Gui {
     public boolean setStartingStates(String location){
     	LocationInfo i = locations.get(location);
     	
-    	if(i == null || state != GuiState.none || state != GuiState.inBuilding)
+    	if(i == null)
     		return false;
     	
     	if(i.entranceFromRoadGrid == null || i.positionToEnterFromRoadGrid == null)
     		return false;
     	
+    	if(currentPosition != null && state == GuiState.inCity){
+    		currentPosition.release(aStar.getGrid());
+    	}
+    	
     	Dimension d = new Dimension(positionMap.get(i.entranceFromRoadGrid));
-    	
-    	
     	currentLocation = i;
     	xPos = xDestination = d.width;
     	yPos = yDestination = d.height;
     	isPresent = false;
     	state = GuiState.inBuilding;
     	
-    	//System.out.println("" + agent.toString() + location);
+    	AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, agent.getName() + " GUI", "Set current location to " + location);
     	
     	return true;
     }
     
     
-    public String getCurrentLocation(){
-    	if(currentLocation != null){
-    		return currentLocation.name;
-    	}
-    	else
-    		return null;
-    }
-    
-    /**	
-     * @return A list of locations that the gui knows about.
-     */
-    public List<String> getLocations(){
-    	return new ArrayList<>(locations.keySet());
-    }
-    
+  
     
     
     
@@ -228,7 +287,7 @@ public class CarVehicleGui implements Gui {
      * 
      * @param location	The name of the destination to travel to.
      */
-    public void DoGoTo(String location){
+    private void GUIDoGoTo(String location){
     	LocationInfo info = null;
     	info = locations.get(location); 
     	if(info == null){
@@ -325,6 +384,7 @@ public class CarVehicleGui implements Gui {
     		return;
     	}
     	currentPosition.release(aStar.getGrid());
+    	currentPosition = null;
     	move(to.width, to.height);
     	state = GuiState.inBuilding;
     	isPresent = false;
@@ -531,36 +591,7 @@ public class CarVehicleGui implements Gui {
         return yPos;
     }
 
-    /**	This puts the gui on the grid at startPos
-     * 
-     * @param startPos
-     * @return
-     */
-    private boolean setDefaultStartPosition(Dimension startPos){
-    	if(currentPosition != null || startPos == null){
-    		return false;
-    	}
-    	
-    	
-    	currentLocation = null;
-    	
-    	
-    	currentPosition = new Position(startPos.width, startPos.height);
-    	if(!currentPosition.moveInto(aStar.getGrid())){
-    		return false;
-    	}
-    	
-    	Dimension d = positionMap.get(startPos);
-    	xPos = xDestination = d.width;
-    	yPos = yDestination = d.height;
-    	state = GuiState.inCity;
-    	
-    	
-    	return true;
-    }
-    
-
-	@Override
+    @Override
 	public void setTestView(boolean test) {
 		this.testView = test;
 	}

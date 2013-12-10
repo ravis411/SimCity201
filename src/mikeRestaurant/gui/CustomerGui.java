@@ -1,17 +1,18 @@
-package restaurant.gui;
+package mikeRestaurant.gui;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
 import javax.swing.ImageIcon;
 
-import restaurant.CustomerAgent;
-import restaurant.WaiterAgent;
+import mikeRestaurant.CustomerRole;
+import mikeRestaurant.WaiterRole;
 
 public class CustomerGui implements Gui{
 
-	private CustomerAgent agent = null;
-	private WaiterAgent wtrAgent = null;
+	private CustomerRole agent = null;
+	private WaiterRole wtrAgent = null;
 	
 	private boolean isPresent = false;
 	private boolean isHungry = false;
@@ -19,7 +20,7 @@ public class CustomerGui implements Gui{
 	private ImageIcon icon;
 	
 	//private HostAgent host;
-	RestaurantGui gui;
+	MikeAnimationPanel gui;
 
 	private int xPos, yPos;
 	private int xDestination, yDestination;
@@ -28,6 +29,9 @@ public class CustomerGui implements Gui{
 	
 	private final int INITIAL_X;
 	private final int INITIAL_Y;
+	
+	private final int LEAVE_X = -100;
+	private final int LEAVE_Y = -100;
 	
 	private final int HOME_X = -50;
 	private final int HOME_Y = -50;
@@ -48,16 +52,16 @@ public class CustomerGui implements Gui{
 	
 	private static final int NUM_COLUMNS = 2;
 	
-	private static final String IMAGE_PATH = "diner.png";
+	private static final String IMAGE_PATH = "/mikeRestaurant/res/diner.png";
 	
 	private static int idCounter = 0;
 	private final int ID;
 
-	public CustomerGui(CustomerAgent c, RestaurantGui gui){
+	public CustomerGui(CustomerRole c, MikeAnimationPanel gui){
 		
 		agent = c;
 		
-		icon = new ImageIcon(IMAGE_PATH);
+		icon = new ImageIcon(this.getClass().getResource(IMAGE_PATH));
 		
 		ID = idCounter++;
 		
@@ -75,7 +79,7 @@ public class CustomerGui implements Gui{
 		
 		moving = true;
 		//maitreD = m;
-		this.gui = gui;
+		//this.gui = gui;
 	}
 	
 	public Point getHomePosition(){
@@ -98,12 +102,14 @@ public class CustomerGui implements Gui{
 				//if leaving the restaurant
 				if (xPos == INITIAL_X){
 					isHungry = false;
-					gui.setCustomerEnabled(agent);
+					//gui.setCustomerEnabled(agent);
 				//if moving to table
 				}else if(xPos == CASHIER_X){
 					agent.msgArrivedAtCashier();
 				}else if(xPos == JAIL_X){
-					agent.msgArrivedAtJail();
+					
+				}else if (xPos == LEAVE_X){
+					agent.msgArrivedAtLeave();
 				}else{
 					agent.msgArrivedAtTable();
 				}
@@ -115,6 +121,9 @@ public class CustomerGui implements Gui{
 
 	public void draw(Graphics2D g) {
 		icon.paintIcon(gui, g, xPos, yPos);
+		
+//		g.setColor(Color.BLUE);
+//		g.fillRect(xPos, yPos, WIDTH, HEIGHT);
 	}
 
 	public boolean isPresent() {
@@ -161,9 +170,9 @@ public class CustomerGui implements Gui{
 	 * Sets the new destination outside the restauraunt so the customergui will leave
 	 */
 	public void DoExitRestaurant() {
-		xDestination = INITIAL_X;
-		yDestination = INITIAL_Y;
+		xDestination = LEAVE_X;
+		yDestination = LEAVE_Y;
 		moving = true;
-		gui.enableCustomer(agent.getName());
+		//gui.enableCustomer(agent.getName());
 	}
 }

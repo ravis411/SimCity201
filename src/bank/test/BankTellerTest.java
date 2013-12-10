@@ -48,8 +48,7 @@ public class BankTellerTest extends TestCase {
 		personAgent= new PersonAgent("myPerson",null);
 		personAgent2= new PersonAgent("myPerson2",null);
 		client.setPerson(personAgent);
-		String workLocation = "test";
-		teller= new BankTellerRole(workLocation);
+		teller= new BankTellerRole("Bank");
 		teller.setPerson(personAgent2);
 		loanTeller= new MockLoanTeller("loanTeller");
 		announcerA= new MockNumberAnnouncer("announcerA");

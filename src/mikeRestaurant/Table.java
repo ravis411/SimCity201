@@ -1,4 +1,4 @@
-package restaurant;
+package mikeRestaurant;
 
 /**
  * Package visible class that represents a table
@@ -6,7 +6,7 @@ package restaurant;
 public class Table {
 	
 	//data includes whether or not the table is occupied and a table number
-	private CustomerAgent occupiedBy;
+	private CustomerRole occupiedBy;
 	int tableNumber; //package visible
 	
 	/**
@@ -21,7 +21,7 @@ public class Table {
 	 * Fills the table with the paramter customer
 	 * @param cust customer to sit at the table
 	 */
-	void setOccupant(CustomerAgent cust) {
+	void setOccupant(CustomerRole cust) {
 		occupiedBy = cust;
 	}
 
@@ -36,7 +36,7 @@ public class Table {
 	 * Accessor method of the occupant
 	 * @return
 	 */
-	CustomerAgent getOccupant() {
+	CustomerRole getOccupant() {
 		return occupiedBy;
 	}
 

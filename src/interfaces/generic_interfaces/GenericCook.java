@@ -9,5 +9,23 @@ public abstract class GenericCook extends Employee{
 		// TODO Auto-generated constructor stub
 	}
 
+	public void msgOrderFilled(int numberThatIsAssociatedWithFoodsMenuNumber,
+			int amountReadyToBeShipped) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void msgOrderNotFilled(int numberThatIsAssociatedWithFoodsMenuNumber) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void msgOrderPartiallyFilled(
+			int numberThatIsAssociatedWithFoodsMenuNumber,
+			int amountReadyToBeShipped, int amountNotBeingShippedFromMarket) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

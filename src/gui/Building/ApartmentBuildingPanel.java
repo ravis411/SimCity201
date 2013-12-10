@@ -10,6 +10,8 @@ import interfaces.GuiPanel;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import Person.Role.Role;
 
@@ -27,6 +29,7 @@ public class ApartmentBuildingPanel extends BuildingPanel{
 	public SimCityLayout layout;
 	public SetUpWorldFactory factory;
 	public static int APARTMENT_NUMBER = 1;
+	private List<String> nameList = new ArrayList<String>();
 	
 	public ApartmentBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels, SetUpWorldFactory factory, LocationInfo locationInfo) {
 		super(r, name, buildingPanels);
@@ -51,24 +54,88 @@ public class ApartmentBuildingPanel extends BuildingPanel{
 		//System.out.println(s);
 		//Apartment 1
 
-			addBuilding("Residence", "Apartment "+ APARTMENT_NUMBER, 0, 0, 300, 200, new LocationInfo(location));
+			addBuilding("Residence", "Apartment "+ APARTMENT_NUMBER, 0, 0, 100, 150, new LocationInfo(location));
 			
 			APARTMENT_NUMBER++;
 
 		//Apartment 2
 
-			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 0, 200, 300, 200, new LocationInfo(location));
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 100, 0, 100, 150, new LocationInfo(location));
 			APARTMENT_NUMBER++;
 			
 		//Apartment 3
 
-			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 500, 0, 300, 200, new LocationInfo(location));
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 200, 0, 100, 150, new LocationInfo(location));
 			APARTMENT_NUMBER++;
 	
 		//Apartment 4
 
-			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 500, 200, 300, 200, new LocationInfo(location));
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 300, 0, 100, 150, new LocationInfo(location));
 			APARTMENT_NUMBER++;
+			
+		//Apartment 5
+
+			addBuilding("Residence", "Apartment "+ APARTMENT_NUMBER, 400, 0, 100, 150, new LocationInfo(location));
+			
+			APARTMENT_NUMBER++;
+
+		//Apartment 6
+
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 500, 0, 100, 150, new LocationInfo(location));
+			APARTMENT_NUMBER++;
+			
+		//Apartment 7
+
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 600, 0, 100, 150, new LocationInfo(location));
+			APARTMENT_NUMBER++;
+	
+		//Apartment 8
+
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 700, 0, 100, 150, new LocationInfo(location));
+			APARTMENT_NUMBER++;
+			
+		//Apartment 9
+
+			addBuilding("Residence", "Apartment "+ APARTMENT_NUMBER, 0, 250, 100, 150, new LocationInfo(location));
+			
+			APARTMENT_NUMBER++;
+
+		//Apartment 10
+
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 100, 250, 100, 150, new LocationInfo(location));
+			APARTMENT_NUMBER++;
+			
+		//Apartment 11
+
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 200, 250, 100, 150, new LocationInfo(location));
+			APARTMENT_NUMBER++;
+	
+		//Apartment 12
+
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 300, 250, 100, 150, new LocationInfo(location));
+			APARTMENT_NUMBER++;
+			
+		//Apartment 13
+
+			addBuilding("Residence", "Apartment "+ APARTMENT_NUMBER, 400, 250, 100, 150, new LocationInfo(location));
+			
+			APARTMENT_NUMBER++;
+
+		//Apartment 14
+
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 500, 250, 100, 150, new LocationInfo(location));
+			APARTMENT_NUMBER++;
+			
+		//Apartment 15
+
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 600, 250, 100, 150, new LocationInfo(location));
+			APARTMENT_NUMBER++;
+	
+		//Apartment 16
+
+			addBuilding("Residence", "Apartment " + APARTMENT_NUMBER, 700, 250, 100, 150, new LocationInfo(location));
+			APARTMENT_NUMBER++;
+
 
 		//JLabel j = new JLabel( myName );
 		add( apartmentPanel );
@@ -99,7 +166,7 @@ public class ApartmentBuildingPanel extends BuildingPanel{
 		case "Residence":
 			ResidenceBuilding rb = new ResidenceBuilding(building, true);
 			if(rb != null){
-				BuildingPanel bp = new ResidenceBuildingPanel(rb, name, factory.buildingsPanels);
+				BuildingPanel bp = new ResidenceBuildingPanel(rb, name, factory.buildingsPanels, true);
 				rb.setBuildingPanel(bp);
 				apartmentPanel.addGui(rb);
 				factory.buildingsPanels.addBuildingPanel(bp);
@@ -111,9 +178,14 @@ public class ApartmentBuildingPanel extends BuildingPanel{
 		//info.name = name;
 		//locationMap.add(new LocationInfo(info));
 		}
+		nameList.add(name);
 	}
 
 
+	public List<String> getNameList() {
+		return nameList;
+	}
+	
 	@Override
 	public void addPersonWithRole(Role r) {
 		// TODO Auto-generated method stub

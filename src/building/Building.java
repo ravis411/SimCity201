@@ -1,6 +1,7 @@
 package building;
 
 import gui.Building.BuildingPanel;
+import interfaces.generic_interfaces.GenericHost;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -434,7 +434,8 @@ public class BankClientRole extends Role implements BankClient{
 	}
 
 	private void DoGoToWaitingArea(){
-		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Going to waiting area");
+			AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "Going to waiting area");
+		
 		clientGui.doGoToWaitingArea();
 	}
 

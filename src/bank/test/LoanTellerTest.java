@@ -49,7 +49,7 @@ public class LoanTellerTest extends TestCase {
 		client.setPerson(personAgent);
 		
 		teller= new MockBankTeller("Teller");
-		loanTeller= new LoanTellerRole(getName());
+		loanTeller= new LoanTellerRole("Bank");
 		loanTeller.setPerson(personAgent2);
 		announcerA= new MockNumberAnnouncer("announcerA");
 		announcerB= new MockLoanNumberAnnouncer("announcerB");

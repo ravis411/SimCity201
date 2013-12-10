@@ -9,9 +9,10 @@ import building.BuildingList;
 public class HomeRoleGui implements Gui {
 
     private HomeRole agent = null;
+    public boolean hostingParty = false;
 
-    private int xPos = 800, yPos = 150;//default waiter position
-    private int xDestination = 805, yDestination = 150;//default start position
+    private int xPos = 801, yPos = 150;//default waiter position
+    private int xDestination = 375, yDestination = 150;//default start position
 
     public HomeRoleGui(HomeRole agent) {
         this.agent = agent;
@@ -56,6 +57,7 @@ public class HomeRoleGui implements Gui {
         if(xPos == 375 && yPos == 65) {
         	g.setColor(Color.black);
             g.fillOval(372, 47, 11, 11);
+            g.fillRect(377, 58, 2, 4);
         }
         if(xPos > 150 && xPos < 250 && yPos > 100 && yPos < 200) { //bedroom door
         	g.setColor(Color.orange);
@@ -69,7 +71,7 @@ public class HomeRoleGui implements Gui {
             g.setColor(Color.black);
             g.fillRect(200, 153, 5, 2);
         }
-        if(xPos > 700 && xPos < 800 && yPos > 110 && yPos < 210) { //front door
+        if((xPos > 700 && xPos < 800 && yPos > 110 && yPos < 210) || hostingParty) { //front door
         	g.setColor(Color.orange);
             g.fillRect(760, 120, 45, 5);
             g.fillRect(760, 210, 45, 5);

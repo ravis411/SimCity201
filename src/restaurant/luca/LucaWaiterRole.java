@@ -1,5 +1,10 @@
 package restaurant.luca;
 
+import interfaces.generic_interfaces.GenericCashier;
+import interfaces.generic_interfaces.GenericCook;
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
@@ -9,12 +14,13 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
 
+import Person.Role.ShiftTime;
 import restaurant.gui.luca.RestaurantGui;
 import restaurant.gui.luca.WaiterGui;
+import restaurant.interfaces.luca.LucaCashier;
 import restaurant.interfaces.luca.LucaCustomer;
 import restaurant.interfaces.luca.LucaWaiter;
 import restaurant.test.mock.EventLog;
-import Person.Role.Role;
 
 
 /**
@@ -24,10 +30,9 @@ import Person.Role.Role;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class LucaWaiterRole extends Role implements LucaWaiter{
+public class LucaWaiterRole extends GenericWaiter implements LucaWaiter{
 	public List<MyCustomers> myCustomers
 	= Collections.synchronizedList(new ArrayList<MyCustomers>());
-	private String name;
 	private Semaphore atTable = new Semaphore(0,false);
 	private Semaphore atCook = new Semaphore(0,false);
 	private Semaphore waitForOrder = new Semaphore(0,false);
@@ -45,9 +50,8 @@ public class LucaWaiterRole extends Role implements LucaWaiter{
 	public EventLog log= new EventLog();
 
 	
-	public LucaWaiterRole(String s){
-		super();
-		name=s;
+	public LucaWaiterRole(String restLocation){
+		super(restLocation);
 		onBreak = false;
 		requestBreak=false;
 		tellHostIamBackFromBreak=false;
@@ -60,10 +64,10 @@ public class LucaWaiterRole extends Role implements LucaWaiter{
 	}
 
 	public String getName() {
-		return name;
+		return myPerson.getName();
 	}
 	public void tellHostIExist(){
-		host.msgIAmAWaiter(this);
+		host.addWaiter(this);
 	}
 
 	public boolean isOnBreak() {
@@ -330,12 +334,12 @@ public class LucaWaiterRole extends Role implements LucaWaiter{
 
 
 	private void askHostForBreak() throws ExecutionException {
-		print("Can I , " + name + ", go on Break?");
+		print("Can I , " + getName() + ", go on Break?");
 		host.msgHostCanIGoOnBreak(this);//passes the number of customers the waiter has so the host can deny his request if he currently has customers
 		requestBreak =false;
 	}
 	private void tellHostReadyToWork() throws ExecutionException{
-		print(" I , " + name + ", am back from Break");
+		print(" I , " + getName() + ", am back from Break");
 		tellHostIamBackFromBreak= false;
 		host.msgHostBackFromBreak(this);
 	}
@@ -527,18 +531,6 @@ public class LucaWaiterRole extends Role implements LucaWaiter{
 		return restaurantGui;
 	}
 	
-	public void setCook(LucaCookRole Cook)
-	{
-		this.cook=Cook;
-	}
-	public void setHost(LucaHostRole Host)
-	{
-		this.host=Host;
-	}
-	public void setCashier(LucaCashierRole cashier)
-	{
-		this.cashier=cashier;
-	}
 	private class MyCustomers {
 		LucaCustomer Customer;
 		int tableNumber;
@@ -647,6 +639,35 @@ public class LucaWaiterRole extends Role implements LucaWaiter{
 
 	@Override
 	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setCook(GenericCook c) {
+		this.cook= (LucaCookRole)c;
+		
+	}
+
+	@Override
+	public void setCashier(GenericCashier c) {
+		this.cashier= (LucaCashierRole)c;
+	}
+
+	@Override
+	public void setHost(GenericHost h) {
+		this.host= (LucaHostRole)h;
+		
+	}
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
 		// TODO Auto-generated method stub
 		return null;
 	}

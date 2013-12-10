@@ -331,4 +331,11 @@ public class BankTellerRole extends Employee implements BankTeller{
 		return null;
 	}
 
+	public void workplaceIsOpen() {
+		// TODO Auto-generated method stub
+		this.activate();
+		
+	}
+
+
 }

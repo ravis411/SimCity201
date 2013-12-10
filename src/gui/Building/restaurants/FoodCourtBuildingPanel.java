@@ -10,6 +10,8 @@ import interfaces.GuiPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JLabel;
 
@@ -28,6 +30,8 @@ public class FoodCourtBuildingPanel extends BuildingPanel{
 	FoodCourtAnimationPanel animPanel = null;
 	LocationInfo locationInfo = null;
 	SetUpWorldFactory factory = null;
+	
+	private List<String> nameList = new ArrayList<String>();
 	
 	public FoodCourtBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels, SetUpWorldFactory factory, LocationInfo info) {
 		super(r, name, buildingPanels);
@@ -50,6 +54,7 @@ public class FoodCourtBuildingPanel extends BuildingPanel{
 		buildingPanels.addBuildingPanel(rrbp);
 		locationInfo.name = "Ryan's Restaurant";
 		factory.addLocationToMap(locationInfo);
+		nameList.add("Ryan's Restaurant");
 		animPanel.addBuildingGui(rrb);
 		
 		//Adds Dylan's Restaurant
@@ -59,6 +64,7 @@ public class FoodCourtBuildingPanel extends BuildingPanel{
 		buildingPanels.addBuildingPanel(drbp);
 		locationInfo.name = "Dylan's Restaurant";
 		factory.addLocationToMap(locationInfo);
+		nameList.add("Dylan's Restaurant");
 		animPanel.addBuildingGui(drb);
 		
 		//Adds Kush's Restaurant
@@ -68,6 +74,7 @@ public class FoodCourtBuildingPanel extends BuildingPanel{
 		buildingPanels.addBuildingPanel(krbp);
 		locationInfo.name = "Kush's Restaurant";
 		factory.addLocationToMap(locationInfo);
+		nameList.add("Kush's Restaurant");
 		animPanel.addBuildingGui(krb);
 		
 		//Adds Luca's Restaurant
@@ -77,6 +84,7 @@ public class FoodCourtBuildingPanel extends BuildingPanel{
 		buildingPanels.addBuildingPanel(lrbp);
 		locationInfo.name = "Luca's Restaurant";
 		factory.addLocationToMap(locationInfo);
+		nameList.add("Luca's Restaurant");
 		animPanel.addBuildingGui(lrb);
 		
 		//Adds Byron's Restaurant
@@ -86,6 +94,7 @@ public class FoodCourtBuildingPanel extends BuildingPanel{
 		buildingPanels.addBuildingPanel(brbp);
 		locationInfo.name = "Byron's Restaurant";
 		factory.addLocationToMap(locationInfo);
+		nameList.add("Byron's Restaurant");
 		animPanel.addBuildingGui(brb);
 		
 		//Adds Jeffrey's Restaurant
@@ -95,6 +104,7 @@ public class FoodCourtBuildingPanel extends BuildingPanel{
 		buildingPanels.addBuildingPanel(jrbp);
 		locationInfo.name = "Jeffrey's Restaurant";
 		factory.addLocationToMap(locationInfo);
+		nameList.add("Jeffrey's Restaurant");
 		animPanel.addBuildingGui(jrb);
 		
 		//Adds Mike's Restaurant
@@ -104,6 +114,7 @@ public class FoodCourtBuildingPanel extends BuildingPanel{
 		buildingPanels.addBuildingPanel(mrbp);
 		locationInfo.name = "Mike's Restaurant";
 		factory.addLocationToMap(locationInfo);
+		nameList.add("Mike's Restaurant");
 		animPanel.addBuildingGui(mrb);
 		
 	}
@@ -113,7 +124,9 @@ public class FoodCourtBuildingPanel extends BuildingPanel{
 		return myName;
 	}
 
-
+	public List<String> getNameList() {
+		return nameList;
+	}
 	
 	/** 
 	 * 
