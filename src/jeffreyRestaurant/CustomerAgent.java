@@ -2,6 +2,9 @@ package jeffreyRestaurant;
 
 import Person.Role.Role;
 import agent.Agent;
+import interfaces.generic_interfaces.GenericCashier;
+import interfaces.generic_interfaces.GenericCustomer;
+import interfaces.generic_interfaces.GenericHost;
 
 import java.util.Random;
 import java.util.Timer;
@@ -15,7 +18,7 @@ import jeffreyRestaurant.interfaces.Customer;
 /**
  * Restaurant customer agent.
  */
-public class CustomerAgent extends Role implements Customer{
+public class CustomerAgent extends GenericCustomer implements Customer{
 	private String name;
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
@@ -50,9 +53,8 @@ public class CustomerAgent extends Role implements Customer{
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public CustomerAgent(String name){
+	public CustomerAgent(){
 		super();
-		this.name = name;
 		tableNum = 1;
 		debug = false;
 		Random rand = new Random();
@@ -360,6 +362,16 @@ public class CustomerAgent extends Role implements Customer{
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	@Override
+	public void setCashier(GenericCashier c) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void setHost(GenericHost h) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 
