@@ -55,6 +55,7 @@ public class CashierRole extends GenericCashier implements Cashier {
 //				teller = bt;
 //			}
 //		}
+
 		
 		money = 200.00;
 	}

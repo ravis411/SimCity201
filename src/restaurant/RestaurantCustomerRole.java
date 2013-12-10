@@ -340,7 +340,7 @@ public class RestaurantCustomerRole extends GenericCustomer implements Customer 
 	// Accessors, etc.
 
 	public String getName() {
-		return name;
+		return myPerson.getName();
 	}
 	
 	public int getHungerLevel() {

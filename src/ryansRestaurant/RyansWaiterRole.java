@@ -312,7 +312,6 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 	
 	// Actions
 	protected void EnterRestaurant() {
-
 		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Entering Restaurant");
 
 		try {
@@ -380,9 +379,7 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 //	}
 	
 	protected void BringOrderToCustomer(MyCustomer customer) {
-
 		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Getting food from cook for customer: " + customer.customer);
-
 		activity = "Picking up food for " + customer.customer;
 		DoGoToGrill(customer.grillNumber);
 		

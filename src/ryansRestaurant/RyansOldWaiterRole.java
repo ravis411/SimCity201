@@ -1,9 +1,10 @@
 package ryansRestaurant;
 
+import ryansRestaurant.RyansWaiterRole.MyCustomer;
 import trace.AlertLog;
 import trace.AlertTag;
-
-
+import trace.AlertLog;
+import trace.AlertTag;
 
 
 public class RyansOldWaiterRole extends RyansWaiterRole {

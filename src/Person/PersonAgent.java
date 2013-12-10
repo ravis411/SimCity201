@@ -751,6 +751,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
         role.setIntent(BankClientRole.withdraw);
         BuildingList.findBuildingWithName("Bank").addRole(role);
         role.activate();
+
 	}
 	
 	private void GoRobBank(){
@@ -786,7 +787,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	    
 	    BuildingList.findBuildingWithName("Market 1").addRole(r.role);
 	}
-
+	
         /**
          * @pre Assume that if we are paying back a loan we have a bank role
          */
@@ -1181,31 +1182,36 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		}
 	}
 
-	public void dateAction(int month, int day, int hour, int minute) {
-		HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE).role;
-		if(hr.rsvpDate.get(Calendar.MONTH) == month && hr.rsvpDate.get(Calendar.DAY_OF_MONTH) == day && hr.rsvpDate.get(Calendar.HOUR_OF_DAY) == hour && hr.rsvpDate.get(Calendar.MINUTE) == minute) {
-			hr.msgResendInvites();
-		}
-		if(hr.partyDate.get(Calendar.MONTH) == month && hr.partyDate.get(Calendar.DAY_OF_MONTH) == day && hr.partyDate.get(Calendar.HOUR_OF_DAY) == hour && hr.partyDate.get(Calendar.MINUTE) == minute) {
-			if(hr.partyAttendees.size()!=0){
-				state = PersonState.HostParty;
-			    stateChanged();
-			}
-		}
-		if(rentDueDate != null && home != null && home.isApartment == true) {
+
+public void dateAction(int month, int day, int hour, int minute) {
+    HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE).role;
+    if(hr.rsvpDate.get(Calendar.MONTH) == month && hr.rsvpDate.get(Calendar.DAY_OF_MONTH) == day && hr.rsvpDate.get(Calendar.HOUR_OF_DAY) == hour && hr.rsvpDate.get(Calendar.MINUTE) == minute) {
+            hr.msgResendInvites();
+    }
+    if(hr.partyDate.get(Calendar.MONTH) == month && hr.partyDate.get(Calendar.DAY_OF_MONTH) == day && hr.partyDate.get(Calendar.HOUR_OF_DAY) == hour && hr.partyDate.get(Calendar.MINUTE) == minute) {
+            if(hr.partyAttendees.size()!=0){
+                    state = PersonState.HostParty;
+                    stateChanged();
+            }
+    }
+    if(rentDueDate != null && home != null && home.isApartment == true) {
             if(rentDueDate.get(Calendar.DAY_OF_MONTH) == day && hour == 0) {
                     hr.msgRentDue(5.00,rentDueDate.get(Calendar.DAY_OF_MONTH));
                     rentDueDate.add(Calendar.DAY_OF_MONTH, 7);
                     //MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
             }
-		}
-		for(Party p: parties){
-			if(p.dateOfParty.get(Calendar.MONTH) == month && p.dateOfParty.get(Calendar.DAY_OF_MONTH) == day && p.dateOfParty.get(Calendar.HOUR_OF_DAY) == hour && p.dateOfParty.get(Calendar.MINUTE) == minute) {
-				state = PersonState.GoingToParty;
-				stateChanged();
-			}	
-		}
-	}
+
+    }
+    if(hr.featureRepairDate.get(Calendar.MONTH) == month && hr.featureRepairDate.get(Calendar.DAY_OF_MONTH) == day && hr.featureRepairDate.get(Calendar.HOUR_OF_DAY) == hour && hr.featureRepairDate.get(Calendar.MINUTE) == minute) {
+            hr.msgFixedFeature();
+    }
+    for(Party p: parties){
+            if(p.dateOfParty.get(Calendar.MONTH) == month && p.dateOfParty.get(Calendar.DAY_OF_MONTH) == day && p.dateOfParty.get(Calendar.HOUR_OF_DAY) == hour && p.dateOfParty.get(Calendar.MINUTE) == minute) {
+                    state = PersonState.GoingToParty;
+                    stateChanged();
+            }        
+    }
+}
 
 	//Control Panel Information Access Functions
 		//Only include what hasn't already been done
@@ -1254,6 +1260,15 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	public void addFriend(PersonAgent agent){
 		if(!friends.contains(agent))
 			friends.add(agent);
+	}
+	
+	public String getCurrentRole(){
+		for(MyRole r : roles){
+			if(r.role.isActive())
+				return r.role.getNameOfRole();
+		}
+		
+		return null;
 	}
 	
 	public boolean hasCar() {

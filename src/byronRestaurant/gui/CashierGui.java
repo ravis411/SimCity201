@@ -34,13 +34,13 @@ public class CashierGui {
 		else if (yPos > yDestination)
 			yPos--;
 		if ((xPos == xDestination && yPos == yDestination) && (xPos == xPlatingArea) && (yPos == yPlatingArea)){
-			agent.msgAtPlatingArea();
+//			agent.msgAtPlatingArea();
 		}
 		if ((xPos == xDestination && yPos == yDestination) && (xPos == xKitchen) && (yPos == yKitchen)){
-			agent.msgAtKitchen();
+//			agent.msgAtKitchen();
 		}
 		if ((xPos == xDestination && yPos == yDestination) && (xPos == xDefault) && (yPos == yDefault)){
-			agent.msgAtDefault();
+//			agent.msgAtDefault();
 		}
 
 	}

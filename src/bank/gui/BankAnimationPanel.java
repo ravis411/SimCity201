@@ -59,11 +59,6 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
     
 
  
-    //test
-    private PersonAgent testTeller = new PersonAgent("Test Teller", null);
-    private PersonAgent testLoanTeller = new PersonAgent("Test Loan Teller",null);
-    private BankTellerRole testTellerRole = new BankTellerRole("Bank");
-    private LoanTellerRole testLoanTellerRole = new LoanTellerRole("Bank");
     
     
 	private List<Gui> guis = new ArrayList<Gui>();
@@ -75,12 +70,6 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 		
 		bufferSize = this.getSize();
 		
-
-		testTellerRole.setPerson(testTeller);
-		testLoanTellerRole.setPerson(testLoanTeller);
-		addGuiForRole(testTellerRole);
-		addGuiForRole(testLoanTellerRole);
-
 
 		
 		Timer timer = new Timer(TIMERCOUNTmilliseconds, this );
@@ -184,14 +173,11 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 		}
 		if (r instanceof BankTellerRole){
 		    BankTellerRole tellerRole = (BankTellerRole) r;
-		    //Person teller = r.getPerson();
+		    BankTellerRoles.add(tellerRole);
 		    TellerGui tellerGui = new TellerGui(tellerRole, this, tellerRole.getLine());
-		   // ((PersonAgent) teller).addRole(tellerRole);
 	        this.addGui(tellerGui);
 	        tellerRole.setAnnouncer(announcer);
 	        tellerRole.setGui(tellerGui);
-	        tellerRole.activate(); //remove later
-	        tellerRole.getPerson().startThread();
 		}
 		if (r instanceof LoanTellerRole){
 		    LoanTellerRole loanTellereRole=(LoanTellerRole) r;
@@ -201,8 +187,6 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 	        this.addGui(loanGui);
 	        loanTellereRole.setAnnouncer(loanAnnouncer);
 	        loanTellereRole.setGui(loanGui);
-	        loanTellereRole.activate(); //remove later
-	        loanTellereRole.getPerson().startThread();
 		}
 	}
 
@@ -210,6 +194,7 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 		if (r instanceof BankClientRole){
 		    BankClientRole clientRole = (BankClientRole) r;
 		    BankClientRoles.remove(clientRole);
+			BuildingList.findBuildingWithName("Bank").removeRole(clientRole);
 		    guis.remove(clientRole.getGui());
 			r.deactivate();
 		}
