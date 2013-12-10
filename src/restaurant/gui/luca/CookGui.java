@@ -1,12 +1,16 @@
 package restaurant.gui.luca;
 
 
+import interfaces.MarketManager;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
 import restaurant.interfaces.luca.LucaCook;
 import restaurant.luca.LucaCookRole;
+import Person.Role.Employee;
+import building.BuildingList;
 
 public class CookGui implements Gui {
 
