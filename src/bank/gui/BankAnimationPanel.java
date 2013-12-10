@@ -88,6 +88,7 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 	}
 
 	@Override
+	
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
 
