@@ -16,6 +16,8 @@ import ryansRestaurant.interfaces.RyansCashier;
 import ryansRestaurant.interfaces.RyansCustomer;
 import ryansRestaurant.interfaces.RyansHost;
 import ryansRestaurant.interfaces.RyansWaiter;
+import trace.AlertLog;
+import trace.AlertTag;
 import Person.Role.ShiftTime;
 
 /**
@@ -189,7 +191,7 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 	}
 	public void msgAtHome() {
 		state = AgentState.atHome;
-		print("I'm Home!!!");
+		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "I'm Home!!!");
 		activity = "";
 		stateChanged();
 	}
@@ -290,7 +292,7 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 				goOnBreak();
 			}
 		} catch (ConcurrentModificationException e) {
-			print("ConcurrentModificationException caught. Returning true.");
+			AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "ConcurrentModificationException caught. Returning true.");
 			return true;
 		}
 		//catch(Exception e) {
@@ -309,7 +311,7 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 	
 	// Actions
 	protected void EnterRestaurant() {
-		print("Entering Restaurant");
+		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Entering Restaurant");
 		try {
 			waiterGui.DoEnterRestaurant();
 		} catch (Exception e) {
@@ -375,7 +377,7 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 //	}
 	
 	protected void BringOrderToCustomer(MyCustomer customer) {
-		print("Getting food from cook for customer: " + customer.customer);
+		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Getting food from cook for customer: " + customer.customer);
 		activity = "Picking up food for " + customer.customer;
 		DoGoToGrill(customer.grillNumber);
 		
@@ -386,7 +388,7 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
         DoGoToTable(customer.tableNumber);
 
 
-		print("Your food has arrived.");
+        AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Your food has arrived.");
 		activity = "Your food has arrived.";
 		activity += "\n\n " + customer.choice.charAt(0) + Character.toUpperCase(customer.choice.charAt(1));
 		
@@ -395,7 +397,7 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 		try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {
-			print("EXCEPTION!!!!!!! caught while delivering food.");
+			AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "EXCEPTION!!!!!!! caught while delivering food.");
 		}
 		
 		
@@ -421,7 +423,7 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
-			print("EXCEPTION!!!!! caught while speaking to cashier.");
+			AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "EXCEPTION!!!!! caught while speaking to cashier.");
 		}
 		activity = "Going to deliver bill.";
 		DoGoToTable(cust.tableNumber);
@@ -492,7 +494,7 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 	protected void DoSeatCustomer(RyansCustomerRole customer, int table) {
 		//Notice how we print "customer" directly. It's toString method will do it.
 		//Same with "table"
-		print("Seating " + customer + " at " + table);
+		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Seating " + customer + " at " + table);
 		try {
 			waiterGui.DoBringToTable(customer, table);
 		} catch (Exception e) {
@@ -567,7 +569,7 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 		// TODO Auto-generated method stub
 		this.cashier = (RyansCashierRole) c;
 		if( !(cashier instanceof RyansCashierRole) || cashier == null) {
-			System.err.println("ERRROROROROROROR");
+			AlertLog.getInstance().logError(AlertTag.RYANS_RESTAURANT, getName(), "ERRROROROROROROR");
 		}
 	}
 
