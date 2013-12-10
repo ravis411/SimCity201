@@ -27,7 +27,7 @@ import trace.TracePanel;
 public class SimCity201Gui extends JFrame {
 
 	private final int WINDOWX = 800;
-	private final int WINDOWY = 800;
+	private final int WINDOWY = 815;
 	
 	SimCityLayout layout = null;// <-This holds the grid information
 	CityAnimationPanel cityPanel = null;//<-AnimationPanel draws the layout and the GUIs
@@ -51,7 +51,7 @@ public class SimCity201Gui extends JFrame {
         menuBar = new GuiJMenuBar(this);
 		this.setJMenuBar(menuBar);
              
-        setBounds(50, 50, (int)(WINDOWX * 1.5), (WINDOWY + 50));
+        setBounds(50, 50, (int)(WINDOWX * 1.5), (WINDOWY));
 		setLayout(new GridBagLayout());
 		
 		

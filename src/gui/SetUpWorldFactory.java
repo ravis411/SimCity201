@@ -89,12 +89,12 @@ public class SetUpWorldFactory{
          */
         public void LoadDefault(){
                 final int WINDOWX = 800;
-                final int WINDOWY = 800;
+                final int WINDOWY = 375;
                 final int GRIDSIZEX = 25;
                 final int GRIDSIZEY = 25;
 
 
-                layout = new SimCityLayout(WINDOWX, WINDOWY/2, GRIDSIZEX, GRIDSIZEY);// <-This holds the grid information
+                layout = new SimCityLayout(WINDOWX, WINDOWY, GRIDSIZEX, GRIDSIZEY);// <-This holds the grid information
                 cityPanel = new CityAnimationPanel(layout);//<-AnimationPanel draws the layout and the GUIs
                 buildingsPanels = new BuildingsPanels();//<-Zoomed in view of buildings
                 controls = new CityControlPanel(buildingsPanels, this);
