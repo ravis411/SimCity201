@@ -253,7 +253,7 @@
 				<friend name="Person 10" />
 			</friends>
 		</person>
-		<person name="Person 29" job="byronRestaurant.NewWaiterRole"
+		<person name="Person 29" job="byronRestaurant.OldWaiterRole"
 			location="Byron's Restaurant" home="Apartment 5">
 			<friends>
 				<friend name="Person 1" />

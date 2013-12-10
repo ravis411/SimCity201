@@ -67,7 +67,7 @@ public class CustomerRole extends GenericCustomer {
 	}
 	// Messages
 
-	public void setHungry() {//from animation
+	public void gotHungry() {//from animation
 		print("I'm hungry");
 		event = AgentEvent.gotHungry;
 		stateChanged();
@@ -303,11 +303,7 @@ public class CustomerRole extends GenericCustomer {
 	}
 
 
-	@Override
-	public void gotHungry() {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 	@Override
 	public boolean canGoGetFood() {
