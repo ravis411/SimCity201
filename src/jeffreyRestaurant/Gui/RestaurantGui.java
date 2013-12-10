@@ -26,7 +26,7 @@ public class RestaurantGui extends JFrame implements ActionListener {
      *    in RestaurantPanel()
      * 2) the infoPanel about the clicked Customer (created just below)
      */    
-    private RestaurantPanel restPanel = new RestaurantPanel(this);
+    //private RestaurantPanel restPanel = new RestaurantPanel(this);
     
     /* infoPanel holds information about the clicked customer, if there is one*/
     private JPanel infoPanel;
@@ -61,10 +61,10 @@ public class RestaurantGui extends JFrame implements ActionListener {
         setLayout(new GridLayout(2,4));
 
         Dimension restDim = new Dimension(WINDOWX, (int) (WINDOWY * .6));
-        restPanel.setPreferredSize(restDim);
-        restPanel.setMinimumSize(restDim);
-        restPanel.setMaximumSize(restDim);
-        add(restPanel);
+       // restPanel.setPreferredSize(restDim);
+       // restPanel.setMinimumSize(restDim);
+       // restPanel.setMaximumSize(restDim);
+       // add(restPanel);
         
         // Now, setup the info panel
         Dimension infoDim = new Dimension(WINDOWX, (int) (WINDOWY * .25));
@@ -207,14 +207,14 @@ public class RestaurantGui extends JFrame implements ActionListener {
             }
         }
     }
-    /**
-     * Main routine to get gui started
-     */
-    public static void main(String[] args) {
-        RestaurantGui gui = new RestaurantGui();
-        gui.setTitle("csci201 Restaurant");
-        gui.setVisible(true);
-        gui.setResizable(false);
-        gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
+//    /**
+//     * Main routine to get gui started
+//     */
+//    public static void main(String[] args) {
+//        RestaurantGui gui = new RestaurantGui();
+//        gui.setTitle("csci201 Restaurant");
+//        gui.setVisible(true);
+//        gui.setResizable(false);
+//        gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//    }
 }
