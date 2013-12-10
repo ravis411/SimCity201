@@ -689,7 +689,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
              GoToLocation("Market 1", transport);
              Role r = findRole(Role.MARKET_CUSTOMER_ROLE);
             if(r == null){
-                    r = RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
+                    r = RoleFactory.employeeFromString(Employee.MARKET_CUSTOMER_ROLE, "Market 1");
                     addRole(r);
                     r.activate();
             }else{

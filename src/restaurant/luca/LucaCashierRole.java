@@ -119,7 +119,7 @@ public class LucaCashierRole extends GenericCashier implements LucaCashier {
 		{
 			
 			for (int i=0; i<marketBills.size(); i++){
-				if (market.getName() == marketBills.get(i).getMarket().getMarketName()){
+				if (market.getMarketName() == marketBills.get(i).getMarket().getMarketName()){
 					 marketBills.get(i).setMoneyOwed(orderPrice);
 				}
 					event = AgentEvent.needToPayMarket;
@@ -130,7 +130,7 @@ public class LucaCashierRole extends GenericCashier implements LucaCashier {
 		{
 			
 			for (int i=0; i<marketBills.size(); i++){
-				if (market.getName() == marketBills.get(i).getMarket().getMarketName()){
+				if (market.getMarketName() == marketBills.get(i).getMarket().getMarketName()){
 					 marketBills.get(i).setMoneyOwed(orderPrice);
 					 event = AgentEvent.notEnoughMoneyToPayMarket;
 					 log.add(new LoggedEvent("New Event notEnoughMoneyToPayMarket"));
