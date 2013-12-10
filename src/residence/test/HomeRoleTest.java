@@ -1,4 +1,3 @@
-
 package residence.test;
 
 import junit.framework.Test;
@@ -13,15 +12,14 @@ import trace.AlertLog;
 import Person.PersonAgent;
 import Person.test.mock.MockRole;
 
-public class ResidenceTest1 extends TestCase {
+public class HomeRoleTest extends TestCase {
 	
 	private PersonAgent myPerson;
 	private MockHome home;
 	private HomeRole homeRole;
-	private HomeRoleGui gui;
 	
 	public static Test suite() {
-	    return new TestSuite(ResidenceTest1.class);
+	    return new TestSuite(HomeRoleTest.class);
 	}
 	
 	public void setUp() throws Exception{
@@ -104,17 +102,7 @@ public class ResidenceTest1 extends TestCase {
 		assertTrue("Now the event should be none",homeRole.event==AgentEvent.leaving);
 		assertTrue("Now the leaveBuilding boolean should be true",homeRole.leaveHome==true);
 		assertTrue("Now the enterHome boolean should be false",homeRole.enterHome==false);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+	
 	}
 }
 
