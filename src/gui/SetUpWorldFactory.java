@@ -899,7 +899,7 @@ public class SetUpWorldFactory{
         public static PersonAgent addPerson(String name, String residenceName, String initialRole, String initialLocation, Double Money, ShiftTime shift){
                 try{
                         PersonAgent person = new PersonAgent(name, buildingsPanels.getResidenceBuildingPanel(residenceName));
-                        
+                        person.setGui(new PersonGui(person));
                         if(residenceList.contains(initialLocation)){
                                 person.setInitialRole(RoleFactory.roleFromString(Role.HOME_ROLE), initialLocation, shift);
                         }else {
@@ -1027,6 +1027,7 @@ public class SetUpWorldFactory{
                                                         }
                                                         
                                                         PersonAgent person = new PersonAgent(iName, buildingsPanels.getResidenceBuildingPanel(iHome));
+                                                        person.setGui(new PersonGui(person));
                                                         peopleMap.put(iName, person);
                                                         peopleList.add(new MyPerson(person, iFriends));
                                                         
@@ -1092,7 +1093,7 @@ public class SetUpWorldFactory{
                                                         NamedNodeMap iMap = iElement.getAttributes();
                                                         for(int j = 0; j < iMap.getLength(); j++){
                                                                 Node jNode = iMap.item(j);
-                                                                System.err.println(jNode.getNodeName()+"\t"+jNode.getNodeValue());
+                                                            
                                                                 //System.err.println("ATTRIBUTE-NAME: "+jNode.getNodeName());
                                                                 switch(jNode.getNodeName()){
                                                                         case Config.BUILDING_ID_ATTRIBUTE:

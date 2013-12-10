@@ -78,6 +78,11 @@ public class HomeRole extends Role implements Home {
 		features.add(new HomeFeature("Refrigerator"));
 	}
 	
+	public void deactivate(){
+		msgLeaveBuilding();
+		super.deactivate();
+	}
+	
 	public void setGui(HomeRoleGui gui){
 		this.gui = gui;
 	}
@@ -176,7 +181,7 @@ public class HomeRole extends Role implements Home {
 		atBed.release();
 	}
 	public void msgAtFrontDoor() {
-		deactivate();
+		kill();
 		event = AgentEvent.none;
 		atFrontDoor.release();
 	}
@@ -437,6 +442,7 @@ public class HomeRole extends Role implements Home {
 	}
 	private void leaveHome() {
 		gui.DoGoToCenter();
+		//kill();
 		try {
 			atCenter.acquire();
 		} catch (InterruptedException e) {

@@ -128,7 +128,7 @@ public class SimCity201Gui extends JFrame {
 			buildingsPanels = SetUpWorldFactory.buildingsPanels;
 			break;
 		case "XML":
-			factory.loadXMLFile("/scenario1.xml");
+			factory.loadXMLFile("/scenario2.xml");
 			layout = SetUpWorldFactory.layout;
 			cityPanel = SetUpWorldFactory.cityPanel;
 			buildingsPanels = SetUpWorldFactory.buildingsPanels;

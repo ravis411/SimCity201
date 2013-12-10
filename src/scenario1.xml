@@ -5,7 +5,7 @@
         <building id="2" type="Residence" name="House 2"/>
         <building id="3" type="Market" name="Market 1"/>
         <building id="4" type="Apartment" name="Apartment Building"/>
-        <!--  <building id="5" type="Bank" name="Bank" /> -->
+        <building id="5" type="Bank" name="Bank" />
         <building id="6" type="Apartment" name="Apartment Building 1"/>
         <building id="7" type="Apartment" name="Apartment Building 4"/>
         <building id="8" type="Restaurant" name="Restaurant 1"/>

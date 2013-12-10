@@ -30,7 +30,7 @@ public class Building {
 		this.panel = panel;
 		this.name = panel.getName();
 		
-		inhabitants = Collections.synchronizedList(new ArrayList<Role>());
+		inhabitants = new ArrayList<Role>();
 	}
 	
 	/**
@@ -45,7 +45,7 @@ public class Building {
 	 * Add a Person to the building
 	 * @param r the role of the person to be added
 	 */
-	public void addRole(Role r){
+	public synchronized void addRole(Role r){
 		if(!inhabitants.contains(r)){
 			inhabitants.add(r);
 			this.panel.getPanel().addGuiForRole(r);
@@ -60,12 +60,18 @@ public class Building {
 		return inhabitants;
 	}
 	
+	private List<Role> removalList = new ArrayList<Role>();
+	
+	protected void removeInhabitants(){
+		removalList.clear();
+	}
+	
 	/**
 	 * Removes a person from the building
 	 * @param r
 	 */
-	public void removeRole(Role r){
-		inhabitants.remove(r);
-		this.panel.getPanel().removeGuiForRole(r);
+	public synchronized void removeRole(Role r){
+			removalList.add(r);
+			this.panel.getPanel().removeGuiForRole(r);
 	}
 }

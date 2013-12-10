@@ -17,7 +17,6 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
-import mikeRestaurant.HostRole;
 import residence.HomeGuestRole;
 import residence.HomeRole;
 import trace.AlertLog;
@@ -25,11 +24,10 @@ import trace.AlertTag;
 import util.DateListener;
 import util.MasterTime;
 import util.TimeListener;
-import MarketEmployee.MarketEmployeeRole;
-import MarketEmployee.MarketManagerRole;
 import Person.Role.Employee;
 import Person.Role.Role;
 import Person.Role.RoleFactory;
+import Person.Role.RoleState;
 import Person.Role.ShiftTime;
 import Transportation.BusStopConstruct;
 import Transportation.CarAgent;
@@ -79,9 +77,11 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	public enum StateOfHunger {NotHungry, SlightlyHungry, Hungry, VeryHungry, Starving} 
 	public enum StateOfLocation {AtHome,AtBank,AtMarket,AtRestaurant, InCar,InBus,Walking};
 	public enum StateOfEmployment {Customer,WaitingAtWork, Employee,Idle};
-	public enum PersonState {Idle,NeedsMoney,PayRentNow, Working, PayLoanNow,GettingMoney,NeedsFood,GettingFood,HostParty,GoingToParty,HostingParty,Partying}
+	public enum PersonState {Idle,NeedsMoney,PayRentNow, Working, PayLoanNow,GettingMoney,NeedsFood,GettingFood,HostParty,GoingToParty,HostingParty,Partying, GoHome}
 	public enum WorkState {None, GoToWork, GoingToWork, AtWork}
 
+	private static int GO_HOME_HOUR = 1;
+	private static int GO_HOME_MINUTE = 0;
 	
 	private List<Item> backpack;
 	
@@ -269,9 +269,9 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
                 MasterTime.getInstance().registerTimeListener(Workplace.DAY_SHIFT_HOUR, Workplace.DAY_SHIFT_MIN, false, this);
                 MasterTime.getInstance().registerTimeListener(Workplace.NIGHT_SHIFT_HOUR, Workplace.NIGHT_SHIFT_MIN, false, this);
                 MasterTime.getInstance().registerTimeListener(Workplace.END_SHIFT_HOUR, Workplace.END_SHIFT_MIN, false, this);
-                
+                MasterTime.getInstance().registerTimeListener(GO_HOME_HOUR, GO_HOME_MINUTE, true, this);
                 //Add the gui
-                setGui(new PersonGui(this));
+                //setGui(new PersonGui(this));
         }
         
 //-------------------------------MESSAGES----------------------------------------//
@@ -292,6 +292,10 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
                 AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Arrived at Destination!!");
         }
         
+        public void msgGoHome(){
+        	state = PersonState.GoHome;
+        	stateChanged();
+        }
         
 
         /**
@@ -330,8 +334,10 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
         public void msgReportForWork(){
                 if(getCurrentJob() == null)
                         return;
-                else
+                else{
                         workState = WorkState.GoToWork;
+                        deactivateCurrentRole();
+                }
                 
                 stateChanged();
         }
@@ -464,13 +470,31 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	 */
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		if(!pendingJobs.isEmpty()){
-			waitForWork(pendingJobs.poll());
+		
+		//cue the Role schedulers
+		boolean outcome = false;
+			for(MyRole r: roles){
+				boolean somethingIsActive = false;
+				if(r.role.state == RoleState.Deactivating){
+					somethingIsActive = true;
+					
+					outcome = r.role.pickAndExecuteAction() || outcome;
+					if(outcome)
+						return outcome;
+				}
+				
+				if(somethingIsActive)
+					return false;
+		}
+		
+		if(stateOfLocation != StateOfLocation.AtHome && state == PersonState.GoHome){
+			GoHome();
 			return true;
 		}
 		
-		if(workState == WorkState.AtWork){
-			int i = 0;
+		if(!pendingJobs.isEmpty()){
+			waitForWork(pendingJobs.poll());
+			return true;
 		}
 		
 		if(parties.size()!=0){
@@ -541,7 +565,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		}
 
 		//cue the Role schedulers
-		boolean outcome = false;
+		outcome = false;
 		for(MyRole r: roles){
 			boolean somethingIsActive = false;
 			if(r.role.isActive()){
@@ -659,17 +683,16 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		p.partyState=PartyState.NotGoingToParty;
 	}
 	
-	public void deactivateAllRoles(){
+	public void deactivateCurrentRole(){
 		for(MyRole r : roles) {
-			  r.role.deactivate();
+			  if(r.role.isActive())
+				  r.role.deactivate();
 		  }
 	}
 	
 	private void GoToWork(){
 		if(getCurrentJob() == null)
 			return;
-		HomeRole role = (HomeRole) findRole(Role.HOME_ROLE).role;
-		role.deactivate();
 		this.workState = WorkState.GoingToWork;
 		Employee r = (Employee) getCurrentJob().role;
 		Building bdg = BuildingList.findBuildingWithName(r.getWorkLocation());
@@ -827,9 +850,9 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	
 	private void GoToLocation(String location, String modeOfTransportation){
 		//if the Person has a Car use it
-//		if(myCar != null){
-//			modeOfTransportation = Preferences.CAR;
-//		}
+		if(myCar != null){
+			modeOfTransportation = Preferences.CAR;
+		}
 		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Going to "+location+" via + "+modeOfTransportation);
 		
 		switch(modeOfTransportation){
@@ -865,16 +888,19 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	}
 	
 	private void GoHome(){
+	  stateOfLocation = StateOfLocation.AtHome;
 	  state = PersonState.Idle;
 	  String transport = getTransportPreference();
- 
+	  for(MyRole role : roles){
+		  role.role.deactivate();
+	  }
 	  GoToLocation(home.getName(), transport);
 	  HomeRole role = (HomeRole) findRole(Role.HOME_ROLE).role;
 	  BuildingList.findBuildingWithName(home.getName()).addRole(role);
 	  role.activate();
 	  
-	  role.msgMakeFood();
-	  //role.msgEnterBuilding();
+	  //role.msgMakeFood();
+	  role.msgEnterBuilding();
 
 	}
 	

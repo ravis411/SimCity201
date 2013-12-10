@@ -6,17 +6,27 @@ import interfaces.generic_interfaces.GenericCustomer;
 import interfaces.generic_interfaces.GenericHost;
 import interfaces.generic_interfaces.GenericWaiter;
 import ryansRestaurant.RyansCookRole;
+import util.MasterTime;
+import util.TimeListener;
 import gui.Building.BuildingPanel;
 import Person.Role.Employee;
 import Person.Role.Role;
 
-public abstract class Workplace extends Building{
+public abstract class Workplace extends Building implements TimeListener{
 	
 	public Workplace(BuildingPanel panel) {
 		super(panel);
 		// TODO Auto-generated constructor stub
+		MasterTime.getInstance().registerTimeListener(NIGHT_SHIFT_HOUR, NIGHT_SHIFT_MIN, false, this);
 	}
 	
+	@Override
+	public void timeAction(int hour, int minute) {
+		// TODO Auto-generated method stub
+		
+		this.notifyEmployeesTheyCanLeave();
+	}
+
 	private boolean ready = false;
 
 	public static int DAY_SHIFT_HOUR = 9;
@@ -47,44 +57,48 @@ public abstract class Workplace extends Building{
 	public abstract void notifyEmployeesTheyCanLeave();
 	
 	public void getReadyForWork(){
-		for(Role role : inhabitants){
-			if(role instanceof Employee){
-				Employee e = (Employee) role;
-				
-				if(e instanceof GenericWaiter){
-					GenericWaiter gw = (GenericWaiter) e;
-					//System.out.println(e.getWorkLocation());
-					Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(e.getWorkLocation());
-					gw.setHost(rest.getHostRole());
-					rest.getHostRole().addWaiter(gw);
-					gw.setCashier(rest.getCashierRole());
-					gw.setCook(rest.getCookRole());
-					//return gw;
-				}else if(e instanceof GenericHost){
-					GenericHost gh = (GenericHost) e;
-					Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(e.getWorkLocation());
-					//return gh;
-				}else if(e instanceof GenericCook){
-					GenericCook gc = (GenericCook) e;
-					if(gc instanceof RyansCookRole){
-						RyansCookRole rcr = (RyansCookRole) gc;
-						Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(rcr.getWorkLocation());
-						rcr.setCashier(rest.getCashierRole());
+		synchronized(inhabitants){
+			for(Role role : inhabitants){
+				if(role instanceof Employee){
+					Employee e = (Employee) role;
+					
+					if(e instanceof GenericWaiter){
+						GenericWaiter gw = (GenericWaiter) e;
+						//System.out.println(e.getWorkLocation());
+						Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(e.getWorkLocation());
+						gw.setHost(rest.getHostRole());
+						rest.getHostRole().addWaiter(gw);
+						gw.setCashier(rest.getCashierRole());
+						gw.setCook(rest.getCookRole());
+						//return gw;
+					}else if(e instanceof GenericHost){
+						GenericHost gh = (GenericHost) e;
+						Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(e.getWorkLocation());
+						//return gh;
+					}else if(e instanceof GenericCook){
+						GenericCook gc = (GenericCook) e;
+						if(gc instanceof RyansCookRole){
+							RyansCookRole rcr = (RyansCookRole) gc;
+							Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(rcr.getWorkLocation());
+							rcr.setCashier(rest.getCashierRole());
+						}
+						//return gc;
+					}else if(e instanceof GenericCashier){
+						GenericCashier gc = (GenericCashier) e;
+						//return gc;
+					}else{
+						//return e;
 					}
-					//return gc;
-				}else if(e instanceof GenericCashier){
-					GenericCashier gc = (GenericCashier) e;
-					//return gc;
-				}else{
-					//return e;
+					
 				}
-				
 			}
 		}
 		
-		for(Role r : inhabitants){
-			System.err.println("Activating: " + r.getNameOfRole() );
-				r.getPerson().workIsOpen();
+		synchronized(inhabitants){
+			for(Role r : inhabitants){
+				System.err.println("Activating: " + r.getNameOfRole() );
+					r.getPerson().workIsOpen();
+			}
 		}
 	}
 
@@ -96,13 +110,6 @@ public abstract class Workplace extends Building{
 		if(isOpen() && !ready){
 			ready = true;
 			getReadyForWork();
-		}
-	}
-	
-	public void activateAll(){
-		
-		for(Role r : inhabitants){
-			r.activate();
 		}
 	}
 	
