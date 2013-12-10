@@ -377,7 +377,7 @@ public class HomeRole extends Role implements Home {
 		}
 	}
 	private void fileWorkOrder (HomeFeature brokenFeature) {
-		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "My " + brokenFeature.name + " should be fixed in a day.");
+		AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), brokenFeature.name + " should be fixed in a day.");
 		brokenFeature.workOrderFiled = true;
 		featureRepairDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH), MasterTime.getInstance().get(Calendar.HOUR_OF_DAY), MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND));
 		featureRepairDate.add(Calendar.DAY_OF_MONTH, 1);
