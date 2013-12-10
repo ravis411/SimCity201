@@ -50,7 +50,12 @@ public abstract class Role {
     public final static String RESTAURANT_RYAN_CUSTOMER_ROLE = "ryansRestaurant.RyansCustomerRole";
     public final static String RESTAURANT_RYAN_WAITER_ROLE = "ryansRestaurant.RyansOldHostRole";//"ryansRestaurant.RyansWaiterRole";
     
-    
+    public final static String RESTAURANT_BYRON_NEW_WAITER_ROLE = "byronRestaurant.NewWaiterRole";
+    public final static String RESTAURANT_BYRON_WAITER_ROLE = "byronRestaurant.OldWaiterRole";
+    public final static String RESTAURANT_BYRON_HOST_ROLE = "byronRestaurant.HostRole"; 
+    public final static String RESTAURANT_BYRON_COOK_ROLE = "byronRestaurant.CookRole"; 
+    public final static String RESTAURANT_BYRON_CASHIER_ROLE = "byronRestaurant.CashierRole"; 
+    public final static String RESTAURANT_BYRON_CUSTOMER_ROLE = "byronRestaurant.CustomerRole"; 
     
 	
 	/**

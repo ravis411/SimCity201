@@ -488,37 +488,37 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
                         return true;
                 }
 
-                if(state != PersonState.Idle){
-                        AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "////////////IDLE//////////");
-                        GoHome();
-                }
-                
-                return false;
-        }
-        
-        //----------------------------ACTIONS--------------------------//
-        
-        private void GoGetFood(){
-                  String transport = getTransportPreference();
-                  
-                  String location = PickFoodLocation();
-                  GoToLocation("Food Court", transport);
-                  
-                  GenericCustomer role = (GenericCustomer) findRole(Role.RESTAURANT_JEFFREY_CUSTOMER_ROLE);
-                  if(role == null){
-                          role = (GenericCustomer) RoleFactory.roleFromString(Role.RESTAURANT_JEFFREY_CUSTOMER_ROLE);
-                          addRole(role);
-                  }
+		if(state != PersonState.Idle){
+			AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "////////////IDLE//////////");
+			GoHome();
+		}
+		
+		return false;
+	}
+	
+	//----------------------------ACTIONS--------------------------//
+	
+	private void GoGetFood(){
+		  String transport = getTransportPreference();
+		  
+		  String location = PickFoodLocation();
+		  GoToLocation("Food Court", transport);
+		  
+		  GenericCustomer role = (GenericCustomer) findRole(Role.RESTAURANT_BYRON_CUSTOMER_ROLE);
+		  if(role == null){
+			  role = (GenericCustomer) RoleFactory.roleFromString(Role.RESTAURANT_BYRON_CUSTOMER_ROLE);
+			  addRole(role);
+		  }
 
-                  AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Customer Role = "+role);
-                  BuildingList.findBuildingWithName("Jeffrey's Restaurant").addRole(role);
-                  Building bdg =  BuildingList.findBuildingWithName("Jeffrey's Restaurant");
-                  if(bdg instanceof Restaurant){
-                          Restaurant rest = (Restaurant) bdg;
-                          role.setupCustomer("Jeffrey's Restaurant");
-//                          role.setCashier(rest.getCashierRole());
-//                          role.setHost(rest.getHostRole());
-                          
+		  AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Customer Role = "+role);
+		  BuildingList.findBuildingWithName("Byron's Restaurant").addRole(role);
+		  Building bdg =  BuildingList.findBuildingWithName("Byron's Restaurant");
+		  if(bdg instanceof Restaurant){
+			  Restaurant rest = (Restaurant) bdg;
+			  role.setupCustomer("Byron's Restaurant");
+//			  role.setCashier(rest.getCashierRole());
+//			  role.setHost(rest.getHostRole());
+			  
 
                           role.gotHungry();
                           role.activate();

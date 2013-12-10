@@ -153,7 +153,7 @@ public class CashierRole extends GenericCashier {
 
 	//Utilities
 	public String getName(){
-		return name;
+		return myPerson.getName();
 	}
 
 	@Override
