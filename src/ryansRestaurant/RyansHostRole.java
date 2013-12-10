@@ -406,13 +406,6 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 
 
 	@Override
-	public ShiftTime getShift() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
 	public Double getSalary() {
 		// TODO Auto-generated method stub
 		return null;

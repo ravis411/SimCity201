@@ -26,4 +26,5 @@ public class OldWaiterRole extends WaiterAgent {
 	public String getNameOfRole() {
 		return "restaurant.OldWaiterRole";
 	}
+
 }

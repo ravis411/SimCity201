@@ -48,14 +48,14 @@ public class CashierRole extends GenericCashier implements Cashier {
 	public CashierRole(String workLocation) {
 		super(workLocation);
 		
-		List<Role> inhabitants = BuildingList.findBuildingWithName("Bank").getInhabitants();
-		for(Role r : inhabitants) {
-			if (r.getNameOfRole() == Role.BANK_TELLER_ROLE) {
-				BankTellerRole bt = (BankTellerRole) r;
-				print("FOUNDD TELLER");
-				teller = bt;
-			}
-		}
+//		List<Role> inhabitants = BuildingList.findBuildingWithName("Bank").getInhabitants();
+//		for(Role r : inhabitants) {
+//			if (r.getNameOfRole() == "BANK_TELLER_ROLE") {
+//				BankTellerRole bt = (BankTellerRole) r;
+//				teller = bt;
+//			}
+//		}
+
 		
 		money = 200.00;
 	}
@@ -221,12 +221,6 @@ public class CashierRole extends GenericCashier implements Cashier {
 	@Override
 	public String getNameOfRole() {
 		return Role.RESTAURANT_CASHIER_ROLE;
-	}
-
-	@Override
-	public ShiftTime getShift() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
