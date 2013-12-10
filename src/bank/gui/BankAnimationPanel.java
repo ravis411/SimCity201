@@ -198,7 +198,14 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 		    r.deactivate();
 		}
 	}
-
+	
+	public NumberAnnouncer getAnnouncer(){
+		return announcer;
+	}
+	
+	public LoanNumberAnnouncer getLoanAnnouncer(){
+		return loanAnnouncer;
+	}
 
 
 }

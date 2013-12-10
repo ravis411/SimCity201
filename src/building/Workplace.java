@@ -1,5 +1,11 @@
 package building;
 
+import bank.BankClientRole;
+import bank.BankTellerRole;
+import bank.LoanTellerRole;
+import interfaces.BankClient;
+import interfaces.BankTeller;
+import interfaces.LoanTeller;
 import interfaces.generic_interfaces.GenericCashier;
 import interfaces.generic_interfaces.GenericCook;
 import interfaces.generic_interfaces.GenericCustomer;
@@ -75,6 +81,16 @@ public abstract class Workplace extends Building{
 				}else if(e instanceof GenericCashier){
 					GenericCashier gc = (GenericCashier) e;
 					//return gc;
+				}else if(e instanceof BankTeller){
+					BankTellerRole btr = (BankTellerRole) e;
+					Bank bank = (Bank) BuildingList.findBuildingWithName(e.getWorkLocation());
+					btr.setAnnouncer(bank.getAnnouncer());
+					
+				}else if(e instanceof LoanTeller){
+					LoanTellerRole ltr = (LoanTellerRole) e;
+					Bank bank = (Bank) BuildingList.findBuildingWithName(e.getWorkLocation());
+					ltr.setAnnouncer(bank.getLoanAnnouncer());
+
 				}else{
 					//return e;
 				}
