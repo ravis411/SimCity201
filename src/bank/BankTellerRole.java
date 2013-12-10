@@ -10,6 +10,7 @@ import restaurant.CashierRole;
 import trace.AlertLog;
 import trace.AlertTag;
 import Person.Role.Employee;
+import Person.Role.Role;
 import Person.Role.ShiftTime;
 import bank.gui.TellerGui;
 
@@ -131,6 +132,7 @@ public class BankTellerRole extends Employee implements BankTeller{
 		}
 		if(state==requestState.steal){
 			Robbed(myClient);
+			return true;
 		}
 		if (locationState == location.station){
 			if (state == requestState.deposit){
@@ -317,7 +319,7 @@ public class BankTellerRole extends Employee implements BankTeller{
 	@Override
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
-		return null;
+		return Role.BANK_TELLER_ROLE;
 	}
 
 	@Override

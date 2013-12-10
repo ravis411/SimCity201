@@ -1,5 +1,10 @@
 package building;
 
+import bank.gui.BankAnimationPanel;
+import interfaces.generic_interfaces.GenericCashier;
+import interfaces.generic_interfaces.GenericCook;
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
 import gui.Building.BuildingPanel;
 import Person.Role.Employee;
 import Person.Role.Role;
@@ -46,11 +51,19 @@ public class Bank extends Workplace {
 
 	@Override
 	public boolean isOpen() {
-
-		if (this.isOpenSetter){
-			return true;
+		boolean hasTeller = false, hasLoanTeller = false;
+		synchronized(inhabitants){
+			for(Role r : inhabitants){
+				if(r instanceof BankTellerRole){
+					hasTeller = true;
+				}else if(r instanceof LoanTellerRole){
+					hasLoanTeller = true;
+				}
+			}
 		}
-		else return false;
+		
+		return hasTeller && hasLoanTeller;
+
 	}
 	
 	@Override
@@ -65,11 +78,11 @@ public class Bank extends Workplace {
 
 	public NumberAnnouncer getAnnouncer() {
 		// TODO Auto-generated method stub
-		return ((Bank) this.panel.getPanel()).getAnnouncer();
+		return ((BankAnimationPanel) this.panel.getPanel()).getAnnouncer();
 	}
 	
 	public LoanNumberAnnouncer getLoanAnnouncer(){
-		return ((Bank) this.panel.getPanel()).getLoanAnnouncer();
+		return ((BankAnimationPanel) this.panel.getPanel()).getLoanAnnouncer();
 	}
 
 	

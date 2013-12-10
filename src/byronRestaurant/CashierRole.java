@@ -1,6 +1,7 @@
 package byronRestaurant;
 
 
+import Person.Role.Role;
 import Person.Role.ShiftTime;
 import agent.Agent;
 import interfaces.generic_interfaces.GenericCashier;
@@ -174,7 +175,6 @@ public class CashierRole extends GenericCashier {
 	@Override
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
+		return Role.RESTAURANT_BYRON_CASHIER_ROLE;
+	}	
 }

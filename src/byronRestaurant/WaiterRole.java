@@ -1,5 +1,6 @@
 package byronRestaurant;
 
+import Person.Role.Role;
 import Person.Role.ShiftTime;
 import byronRestaurant.gui.WaiterGui;
 import interfaces.generic_interfaces.GenericCashier;
@@ -398,7 +399,7 @@ public abstract class WaiterRole extends GenericWaiter {
 	}
 
 	public String getNameOfRole() {
-		return null;
+		return Role.RESTAURANT_BYRON_WAITER_ROLE;
 	}
 
 }

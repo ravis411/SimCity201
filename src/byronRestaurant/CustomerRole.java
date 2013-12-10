@@ -1,5 +1,6 @@
 package byronRestaurant;
 
+import Person.Role.Role;
 import agent.Agent;
 import byronRestaurant.WaiterRole;
 import byronRestaurant.gui.CustomerGui;
@@ -315,7 +316,7 @@ public class CustomerRole extends GenericCustomer {
 	@Override
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
-		return null;
+		return Role.RESTAURANT_BYRON_CUSTOMER_ROLE;
 	}
 }
 
