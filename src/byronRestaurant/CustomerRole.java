@@ -228,7 +228,7 @@ public class CustomerRole extends GenericCustomer {
 	
 	private void orderFood(){
 		String choice = menu.get((int)(Math.random()*(menu.size())));
-		if (this.name.equals("Steak")){
+		if (myPerson.getName().equals("Steak")){
 			System.out.println("Exception: Mandatory Steak Order");
 			choice = menu.get(0);
 		}

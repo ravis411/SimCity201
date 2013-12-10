@@ -398,7 +398,6 @@ public abstract class WaiterRole extends GenericWaiter {
 	}
 
 	public String getNameOfRole() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
