@@ -50,8 +50,9 @@ public class CashierRole extends GenericCashier implements Cashier {
 		
 		List<Role> inhabitants = BuildingList.findBuildingWithName("Bank").getInhabitants();
 		for(Role r : inhabitants) {
-			if (r.getNameOfRole() == "BANK_TELLER_ROLE") {
+			if (r.getNameOfRole() == Role.BANK_TELLER_ROLE) {
 				BankTellerRole bt = (BankTellerRole) r;
+				print("FOUNDD TELLER");
 				teller = bt;
 			}
 		}

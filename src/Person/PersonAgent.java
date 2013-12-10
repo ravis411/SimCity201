@@ -504,18 +504,18 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
                   String location = PickFoodLocation();
                   GoToLocation("Food Court", transport);
                   
-                  GenericCustomer role = (GenericCustomer) findRole(Role.RESTAURANT_JEFFREY_CUSTOMER_ROLE);
+                  GenericCustomer role = (GenericCustomer) findRole(Role.RESTAURANT_CUSTOMER_ROLE);
                   if(role == null){
-                          role = (GenericCustomer) RoleFactory.roleFromString(Role.RESTAURANT_JEFFREY_CUSTOMER_ROLE);
+                          role = (GenericCustomer) RoleFactory.roleFromString(Role.RESTAURANT_CUSTOMER_ROLE);
                           addRole(role);
                   }
 
                   AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Customer Role = "+role);
-                  BuildingList.findBuildingWithName("Jeffrey's Restaurant").addRole(role);
-                  Building bdg =  BuildingList.findBuildingWithName("Jeffrey's Restaurant");
+                  BuildingList.findBuildingWithName("Dylan's Restaurant").addRole(role);
+                  Building bdg =  BuildingList.findBuildingWithName("Dylan's Restaurant");
                   if(bdg instanceof Restaurant){
                           Restaurant rest = (Restaurant) bdg;
-                          role.setupCustomer("Jeffrey's Restaurant");
+                          role.setupCustomer("Dylan's Restaurant");
 //                          role.setCashier(rest.getCashierRole());
 //                          role.setHost(rest.getHostRole());
                           
