@@ -6,6 +6,8 @@ import ryansRestaurant.RyansCustomerRole;
 import ryansRestaurant.RyansHostRole;
 import ryansRestaurant.RyansWaiterRole;
 import ryansRestaurant.interfaces.RyansCustomer;
+import trace.AlertLog;
+import trace.AlertTag;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -148,7 +150,7 @@ public class WaiterGui implements Gui {
     		try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				System.out.println("EXCEPTION!!!!!!!!!! caught while waiting for entrance to clear.");
+				AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, agent.getName() + " GUI", "EXCEPTION!!!!!!!!!! caught while waiting for entrance to clear.");
 			}    		
     	}
     	

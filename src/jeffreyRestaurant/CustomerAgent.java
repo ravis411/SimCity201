@@ -19,7 +19,6 @@ import jeffreyRestaurant.interfaces.Customer;
  * Restaurant customer agent.
  */
 public class CustomerAgent extends GenericCustomer implements Customer{
-	private String name;
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
 	private CustomerGui customerGui;
@@ -59,52 +58,40 @@ public class CustomerAgent extends GenericCustomer implements Customer{
 		debug = false;
 		Random rand = new Random();
 		money = (double)rand.nextInt(20);
-		print("I have $" + money);
+		//print("I have $" + money);
 		//Debug cases
-		if (this.name.equals("Pizza")) {
-			print("Debug case");
-			choice = "Pizza";
-			money = 10.00;
-			debug = true;
-		} else if (this.name.equals("Salad")) {
-			print("Debug case");
-			choice = "Salad";
-			money = 6.00;
-			debug = true;
-		} else if (this.name.equals("Steak")) {
-			print("Debug case");
-			choice = "Steak";
-			money = 16.00;
-			debug = true;
-		} else if (this.name.equals("Chicken")) {
-			print("Debug case");
-			choice = "Chicken";
-			money = 11.00;
-			debug = true;
-		} else if (this.name.equals("Leaver")) {
-			print("Debug case");
-			debug = true;
-		} else if (this.name.equals("Flake")) {
-			print("Debug case");
-			choice = "Chicken";
-			money = 4.00;
-			debug = true;
-		}
-	}
-	/**
-	 * hack to establish connection to Host agent.
-	 */
-	public void setHost(HostAgent host) {
-		this.host = host;
+//		if (this.name.equals("Pizza")) {
+//			print("Debug case");
+//			choice = "Pizza";
+//			money = 10.00;
+//			debug = true;
+//		} else if (this.name.equals("Salad")) {
+//			print("Debug case");
+//			choice = "Salad";
+//			money = 6.00;
+//			debug = true;
+//		} else if (this.name.equals("Steak")) {
+//			print("Debug case");
+//			choice = "Steak";
+//			money = 16.00;
+//			debug = true;
+//		} else if (this.name.equals("Chicken")) {
+//			print("Debug case");
+//			choice = "Chicken";
+//			money = 11.00;
+//			debug = true;
+//		} else if (this.name.equals("Leaver")) {
+//			print("Debug case");
+//			debug = true;
+//		} else if (this.name.equals("Flake")) {
+//			print("Debug case");
+//			choice = "Chicken";
+//			money = 4.00;
+//			debug = true;
+//		}
 	}
 	public void setWaiter(WaiterAgent waiter) {
 		this.waiter = waiter;
-	}
-	public void setCashier(CashierAgent cashier) {
-		this.cashier = cashier;
-	}
-	public String getCustomerName() {
-		return name;
 	}
 	// Messages
 
@@ -118,7 +105,7 @@ public class CustomerAgent extends GenericCustomer implements Customer{
 		stateChanged();
 	}
 	public void msgWeAreFull() {
-		if (this.name.equals("Leaver") && debug) {
+		if (this.getName().equals("Leaver") && debug) {
 			print("Restaurant Full, I'm Leaving");
 			event = AgentEvent.donePaying;
 			state = AgentState.Leaving;
@@ -300,7 +287,6 @@ public class CustomerAgent extends GenericCustomer implements Customer{
 		try {
 			inProgress.acquire();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		Double amountPayed = 0.0;
@@ -324,12 +310,13 @@ public class CustomerAgent extends GenericCustomer implements Customer{
 		event = AgentEvent.doneLeaving;
 		//stateChanged();
 		customerGui.DoExitRestaurant();
+		deactivate();
 	}
 
 	// Accessors, etc.
 
 	public String getName() {
-		return name;
+		return myPerson.getName();
 	}
 	
 	public int getHungerLevel() {
@@ -360,17 +347,16 @@ public class CustomerAgent extends GenericCustomer implements Customer{
 	}
 	@Override
 	public String getNameOfRole() {
-		// TODO Auto-generated method stub
-		return null;
+		return Role.RESTAURANT_JEFFREY_CUSTOMER_ROLE;
 	}
 	@Override
 	public void setCashier(GenericCashier c) {
-		// TODO Auto-generated method stub
+		this.cashier = (CashierAgent) c;
 		
 	}
 	@Override
 	public void setHost(GenericHost h) {
-		// TODO Auto-generated method stub
+		this.host = (HostAgent) h;
 		
 	}
 }

@@ -261,5 +261,47 @@
 				<friend name="Person 11" />
 			</friends>
 		</person>
+
+		<person name="Person 42" job="ryansRestaurant.RyansOldWaiterRole"
+		    location="Ryan's Restaurant" home="Apartment 42">
+			<friends>
+				<friend name="Person 1" />
+			    <friend name="Person 3" />
+			    <friend name="Person 6" />
+			    <friend name="Person 10" />
+			    </friends>
+	    </person>
+		<person name="JTest Host" job="jeffreyRestaurant.HostAgent"
+		    location="Jeffrey's Restaurant" home="Apartment 10">
+			<friends>
+				<friend name="Person 1" />
+			    <friend name="Person 3" />
+			    <friend name="Person 4" />
+			</friends>
+		</person>
+		<person name="JTest Cashier" job="jeffreyRestaurant.CashierAgent"
+		    location="Jeffrey's Restaurant" home="Apartment 11">
+			<friends>
+				<friend name="Person 1" />
+			    <friend name="Person 3" />
+			    <friend name="Person 4" />
+			</friends>
+		</person>
+		<person name="JTest Cook" job="jeffreyRestaurant.CookAgent"
+		    location="Jeffrey's Restaurant" home="Apartment 12">
+			<friends>
+				<friend name="Person 1" />
+			    <friend name="Person 3" />
+			    <friend name="Person 4" />
+			</friends>
+		</person>
+		<person name="JTest Waiter" job="jeffreyRestaurant.WaiterAgent"
+		    location="Jeffrey's Restaurant" home="Apartment 13">
+			<friends>
+				<friend name="Person 1" />
+			    <friend name="Person 3" />
+			    <friend name="Person 4" />
+			</friends>
+		</person>
 	</people>
 </configuration>

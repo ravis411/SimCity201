@@ -1,11 +1,8 @@
 package ryansRestaurant;
 
-import trace.AlertLog;
-import trace.AlertTag;
+public class RyansNewWaiterRole extends RyansWaiterRole {
 
-public class RyansOldWaiterRole extends RyansWaiterRole {
-
-	public RyansOldWaiterRole(String workLocation) {
+	public RyansNewWaiterRole(String workLocation) {
 		super(workLocation);
 		
 	}
@@ -24,7 +21,7 @@ public class RyansOldWaiterRole extends RyansWaiterRole {
 			try {
 				Thread.sleep(2500);
 			} catch (InterruptedException e) {
-				AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "EXCEPTION!!!! caught while waiting for order.");
+				print("EXCEPTION!!!! caught while waiting for order.");
 			}
 			
 			cook.msgHereIsOrder(this, c.choice, c.tableNumber);
