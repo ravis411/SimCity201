@@ -689,7 +689,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
              GoToLocation("Market 1", transport);
              Role r = findRole(Role.MARKET_CUSTOMER_ROLE);
             if(r == null){
-                    r = RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE);
+                    r = RoleFactory.employeeFromString(Employee.MARKET_CUSTOMER_ROLE, "Market 1");
                     addRole(r);
                     r.activate();
             }else{
@@ -1104,7 +1104,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
                     rentDueDate.add(Calendar.DAY_OF_MONTH, 7);
                     //MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
             }
-<<<<<<< HEAD
+
 		}
 		if(hr.featureRepairDate.get(Calendar.MONTH) == month && hr.featureRepairDate.get(Calendar.DAY_OF_MONTH) == day && hr.featureRepairDate.get(Calendar.HOUR_OF_DAY) == hour && hr.featureRepairDate.get(Calendar.MINUTE) == minute) {
 			hr.msgFixedFeature();
@@ -1116,19 +1116,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			}	
 		}
 	}
-=======
-                }
-                if(hr.featureRepairDate.get(Calendar.MONTH) == month && hr.featureRepairDate.get(Calendar.DAY_OF_MONTH) == day && hr.featureRepairDate.get(Calendar.HOUR_OF_DAY) == hour && hr.featureRepairDate.get(Calendar.MINUTE) == minute) {
-                        hr.msgFixedFeature();
-                }
-                for(Party p: parties){
-                        if(p.dateOfParty.get(Calendar.MONTH) == month && p.dateOfParty.get(Calendar.DAY_OF_MONTH) == day && p.dateOfParty.get(Calendar.HOUR_OF_DAY) == hour && p.dateOfParty.get(Calendar.MINUTE) == minute) {
-                                state = PersonState.GoingToParty;
-                                stateChanged();
-                        }        
-                }
-        }
->>>>>>> origin/develop
+
 
         //Control Panel Information Access Functions
                 //Only include what hasn't already been done

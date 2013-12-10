@@ -1,11 +1,9 @@
 package ryansRestaurant;
 
-<<<<<<< HEAD
 import ryansRestaurant.RyansWaiterRole.MyCustomer;
-=======
 import trace.AlertLog;
 import trace.AlertTag;
->>>>>>> origin/develop
+
 
 public class RyansOldWaiterRole extends RyansWaiterRole {
 
@@ -28,11 +26,9 @@ public class RyansOldWaiterRole extends RyansWaiterRole {
 			try {
 				Thread.sleep(2500);
 			} catch (InterruptedException e) {
-<<<<<<< HEAD
-				print("EXCEPTION!!!! caught while waiting for order.");
-=======
+
 				AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "EXCEPTION!!!! caught while waiting for order.");
->>>>>>> origin/develop
+
 			}
 			
 			cook.msgHereIsOrder(this, c.choice, c.tableNumber);
@@ -41,13 +37,11 @@ public class RyansOldWaiterRole extends RyansWaiterRole {
 
 	}
 
-<<<<<<< HEAD
-=======
+
 	@Override
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
 		return "Ryan's Old Waiter Role";
 	}
 
->>>>>>> origin/develop
 }

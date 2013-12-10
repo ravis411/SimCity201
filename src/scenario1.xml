@@ -60,11 +60,7 @@
 			</friends>
 		</person>
 		<person name="Person 6" job="ryansRestaurant.RyansOldWaiterRole"
-<<<<<<< HEAD
 		    location="Ryan's Restaurant" home="Apartment 5">
-=======
-			location="Ryan's Restaurant" home="Apartment 5">
->>>>>>> origin/develop
 			<friends>
 				<friend name="Person 1" />
 				<friend name="Person 2" />
@@ -109,11 +105,7 @@
 			</friends>
 		</person>
 		<person name="Person 11" job="ryansRestaurant.RyansOldWaiterRole"
-<<<<<<< HEAD
 		    location="Ryan's Restaurant" home="Apartment 10">
-=======
-			location="Ryan's Restaurant" home="Apartment 10">
->>>>>>> origin/develop
 			<friends>
 				<friend name="Person 1" />
 				<friend name="Person 9" />
