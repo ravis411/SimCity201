@@ -230,6 +230,15 @@
 			    <friend name="Person 11" />
 			</friends>
 		</person>
+		<person name="Person 42" job="ryansRestaurant.RyansCustomerRole"
+		    location="Bank" home="Apartment 42">
+			<friends>
+				<friend name="Person 1" />
+			    <friend name="Person 3" />
+			    <friend name="Person 6" />
+			    <friend name="Person 10" />
+			</friends>
+		</person>
 	</people>
 </configuration>
 
