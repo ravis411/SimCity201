@@ -11,7 +11,7 @@ public class NewWaiterRole extends WaiterRole {
 	@Override
 	public void HereIsOrder(MyCustomer c) {
 		// TODO Auto-generated method stub
-		
+		print("Placing order of "+ c.choice+ " on revolving stand");
 		
 		 this.cook.getRevolvingStand().addOrder(this, c.choice, c.table);
 	}

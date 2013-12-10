@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 
+import restaurant.interfaces.luca.LucaMarket;
 import Person.Role.ShiftTime;
 import kushrestaurant.interfaces.Cashier;
 import kushrestaurant.interfaces.Customer;
@@ -46,9 +47,9 @@ public class CashierRole extends GenericCashier implements Cashier{
 	}
 	public class Bill{
 		int bill;
-		Market m;
+		LucaMarket m;
 		public CState state=CState.Unpaid;
-		Bill(int b, Market m){
+		Bill(int b, LucaMarket m){
 			bill=b;
 			this.m=m;
 		}
@@ -113,8 +114,8 @@ public void msgHereIsPayment(Customer cust,double check, double cash){
 			stateChanged();
 		}
 	}
-public void msgHereIsBill(Market m, int bill){
-	bills.add(new Bill(bill,m));
+public void msgCashierHereIsMarketBill( int bill, LucaMarket market){
+	bills.add(new Bill(bill,market));
 	stateChanged();
 }
 //List<WaiterAgent> waiters;
@@ -168,29 +169,11 @@ public boolean pickAndExecuteAction() {
 	return false;
 }
 public void PayMarketBill(Bill b){
-	if(b.bill>money){
-		print("Dont have enough money, cant pay");
-		if(money==0)
-		  {b.m.msgHereIsGiftCard(b.bill,0);
-		  givenGiftCards.put(i++,b.bill);
-		  money=0;}
-		else
-		{
-			print("Only have "+ money + "dollars so giving this plus a gift card worth the difference");
-			b.m.msgHereIsGiftCard(b.bill-money,money);
-			givenGiftCards.put(i++,b.bill-money );		
-			money=0;}
-		
-		b.state=CState.MadeGood;
-	}
-	else if(b.bill==0){
-		b.m.msgNoPayment();
-		b.state=CState.paid;
-	}
-	else {print("Paying bill of "+b.bill+" to market "+ b.m.getName()+" left with " + (money-b.bill));
-	    b.m.msgHereIsPayment(b.bill);
+	
+	print("Paying bill of "+b.bill+" to market "+ b.m.getName()+" left with " + (money-b.bill));
+	    b.m.msgMarketManagerHereIsPayment(b.bill);
 	    money=money-b.bill;
-	    b.state=CState.paid;}
+	    b.state=CState.paid;
 }
 public void ChangeReady(Customer c, double change){
    print("Heres your change "+change);
@@ -225,6 +208,12 @@ public ShiftTime getShift() {
 public Double getSalary() {
 	// TODO Auto-generated method stub
 	return null;
+}
+
+@Override
+public void msgHereIsBill(Market m, int bill) {
+	// TODO Auto-generated method stub
+	
 }
 
 //@Override
