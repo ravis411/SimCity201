@@ -1,6 +1,7 @@
 package byronRestaurant;
 
 
+import Person.Role.Role;
 import Person.Role.ShiftTime;
 import byronRestaurant.gui.CookGui;
 import interfaces.generic_interfaces.GenericCook;
@@ -11,6 +12,7 @@ import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import javax.swing.Timer;
+
 
 
 import byronRestaurant.RevolvingStand;
@@ -252,7 +254,7 @@ public class CookRole extends GenericCook {
 	@Override
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
-		return null;
+		return Role.RESTAURANT_BYRON_COOK_ROLE;
 	}
 	
 	public RevolvingStand getRevolvingStand(){

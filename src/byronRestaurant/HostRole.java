@@ -1,5 +1,6 @@
 package byronRestaurant;
 
+import Person.Role.Role;
 import Person.Role.ShiftTime;
 import agent.Agent;
 import byronRestaurant.gui.WaiterGui;
@@ -172,7 +173,7 @@ public class HostRole extends GenericHost {
 	@Override
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
-		return null;
+		return Role.RESTAURANT_BYRON_HOST_ROLE;
 	}
 
 }

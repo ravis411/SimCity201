@@ -520,7 +520,7 @@ public class BankClientRole extends Role implements BankClient{
 	}
 	@Override
 	public String getNameOfRole() {
-		return "Bank Client Role";
+		return Role.BANK_CLIENT_ROLE;
 	}
 	public Account getMyAccount() {
 		return myAccount;
