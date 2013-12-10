@@ -282,7 +282,6 @@ public class CookAgent extends GenericCook implements Cook{
 
 	@Override
 	public String getNameOfRole() {
-		// TODO Auto-generated method stub
 		return Role.RESTAURANT_JEFFREY_COOK_ROLE;
 	}
 

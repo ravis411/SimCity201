@@ -135,6 +135,7 @@ public class AddPersonControl extends JFrame implements ActionListener{
 		
 		JRadioButton none_shift = new JRadioButton("None");
 		none_shift.setEnabled(true);
+		shiftRBPanel.add(none_shift);
 		shiftsGroup.add(none_shift);
 		shifts.add(none_shift);
 		
@@ -256,7 +257,7 @@ public class AddPersonControl extends JFrame implements ActionListener{
 			}
 		}
 		//TODO
-		controller.addPerson(SetUpWorldFactory.addPerson(name, home, job, location, money/*, shift*/));
+		controller.addPerson(SetUpWorldFactory.addPerson(name, home, job, location, money, shift));
 
 	}
 	
