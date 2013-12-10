@@ -3,8 +3,11 @@ package gui;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -32,16 +35,25 @@ public class LoadGui extends JFrame implements ActionListener{
 	//private List<JButton> configList = new ArrayList<>();
 	
 	JLabel loadTimeLabel = new JLabel();
+	JLabel infoLabel = new JLabel();
 	boolean load = true;
 	int defaultWaitTime = 5;//<<-The default time to wait before loading config.
 	int time = 0;
 	Timer timer = new Timer();
 	
 	JButton cancelButton = new JButton("Cancel");
-	JButton loadDefault = new JButton("Default");
+	
+	//JButton loadDefault = new JButton("Default");
+	
+	//JButton loadScenario1 = new JButton("Scenario 1");
+	//JButton loadScenario2 = new JButton("Scenario 2");
+	
 	String loadThisConfig = new String("Default");
 	JPanel loadingPanel = new JPanel();
-		
+	
+	List<JButton> buttonList = new ArrayList<JButton>();
+	Font font = new Font(Font.SERIF, Font.BOLD, 24);
+	
 	
 	//Default constructor
 	public LoadGui() {
@@ -59,14 +71,45 @@ public class LoadGui extends JFrame implements ActionListener{
 		configPane.setPreferredSize(paneSize);
 		this.add(configPane);
 		
-		
 		JLabel b = new JLabel("Load: ");
+		b.setFont(font);
 		view.add(b);
-		view.add(loadDefault);
+
+
+		loadTimeLabel.setFont(font);
+		infoLabel.setFont(font);
+		
 		
 		
 		cancelButton.addActionListener(this);
-		loadDefault.addActionListener(this);
+		cancelButton.setFont(font);
+		cancelButton.setPreferredSize(paneSize);
+		cancelButton.setMinimumSize(paneSize);
+		cancelButton.setMaximumSize(paneSize);
+		
+//		loadDefault.addActionListener(this);
+//		loadDefault.setFont(new Font(Font.SERIF, Font.BOLD, 24));
+//		loadScenario2.addActionListener(this);
+//		loadScenario2.setFont(new Font(Font.DIALOG, Font.PLAIN, 24));
+//		loadScenario1.addActionListener(this);
+//		loadScenario1.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 24));
+		
+		
+		Dimension size = new Dimension(paneSize.width, paneSize.height/8);
+		
+		buttonList.add(new JButton("Default"));
+		buttonList.add(new JButton("Scenario 1"));
+		buttonList.add(new JButton("Scenario 2"));
+		
+		for(JButton bl : buttonList){
+			bl.addActionListener(this);
+			bl.setFont(font);
+			bl.setPreferredSize(size);
+			bl.setMaximumSize(size);
+			bl.setMinimumSize(size);
+			view.add(bl);
+		}
+		
 		
 		loadingPanel.setMaximumSize(paneSize);
 		loadingPanel.setMinimumSize(paneSize);
@@ -90,11 +133,13 @@ public class LoadGui extends JFrame implements ActionListener{
 		
 		if(loadThisConfig.length() != 0)
 		{
-			loadingPanel.add(new JLabel(loadThisConfig + " configuration"));
+			infoLabel.setText(loadThisConfig + " configuration");
+			loadingPanel.add(infoLabel);
 			loadingPanel.add(loadTimeLabel);
 			loadingPanel.add(cancelButton);
 		}else{
-			loadingPanel.add(new JLabel("<<~~~ Please choose a file to load."));
+			infoLabel.setText("<<~~~ Please choose a file to load.");
+			loadingPanel.add(infoLabel);
 		}
 		
 		
@@ -161,15 +206,17 @@ public class LoadGui extends JFrame implements ActionListener{
 			populateLoadingPanel();
 			return;
 		}
-		
-		if(e.getSource() == loadDefault ){
-			loadThisConfig = "Default";
-			@SuppressWarnings("unused")
+		else if(e.getSource() instanceof JButton){
+			JButton b = (JButton)e.getSource();
+			loadThisConfig = b.getText();
 			SimCity201Gui gui = new SimCity201Gui(loadThisConfig);
 		}
 		
 		this.setVisible(false);
 	}
+	
+	
+	
 	
 	
 public static void main(String[] args) {

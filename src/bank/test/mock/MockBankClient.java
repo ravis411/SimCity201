@@ -105,4 +105,14 @@ public class MockBankClient extends Mock implements BankClient{
 	public void msgLoanRepaid(double n) {
 		log.add(new LoggedEvent("msgLoanRepaid received from loanBankTeller. I have paid off my loan of $" + n));
 	}
+
+	@Override
+	public void msgFreeze() {
+		
+	}
+
+	@Override
+	public void msgUnfreeze() {
+		
+	}
 }

@@ -1,7 +1,11 @@
 package jeffreyRestaurant;
 
 import Person.Role.Role;
-import agent.Agent;
+import Person.Role.ShiftTime;
+import interfaces.generic_interfaces.GenericCashier;
+import interfaces.generic_interfaces.GenericCook;
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -17,7 +21,7 @@ import jeffreyRestaurant.interfaces.Waiter;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class WaiterAgent extends Role implements Waiter{
+public abstract class WaiterAgent extends GenericWaiter implements Waiter{
 	static final int NTABLES = 3;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
@@ -27,9 +31,9 @@ public class WaiterAgent extends Role implements Waiter{
 	//note that tables is typed with Collection semantics.
 	//Later we will see how it is implemented
     
-	private enum CustomerState{waiting, seated, readyToOrder, AskedToOrder, OutOfOrder, Ordered, OrderReady, Eating, WaitingForCheck, Paying, GivenCheck, Leaving, Done};
+	protected enum CustomerState{waiting, seated, readyToOrder, AskedToOrder, OutOfOrder, Ordered, OrderReady, Eating, WaitingForCheck, Paying, GivenCheck, Leaving, Done};
 	
-	private class myCustomer {
+	protected class myCustomer {
 		myCustomer(CustomerAgent myCust, int tab, CustomerState state) {
 			c = myCust; table = tab; s = state;
 		}
@@ -60,20 +64,19 @@ public class WaiterAgent extends Role implements Waiter{
 		
 	}
 	
-	private String name; 
-	private Semaphore atDestination = new Semaphore(0,true);
-	private boolean wantsBreak;
-	private boolean onBreak;
+	protected String name; 
+	protected Semaphore atDestination = new Semaphore(0,true);
+	protected boolean wantsBreak;
+	protected boolean onBreak;
 	
-	private HostAgent h;
-	private CookAgent ck;
-	private CashierAgent ch;
+	protected HostAgent h;
+	protected CookAgent ck;
+	protected CashierAgent ch;
 	public HostGui hostGui = null;
 
-	public WaiterAgent(String name) {
-		super();
+	protected WaiterAgent(String location) {
+		super(location);
 
-		this.name = name;
 		wantsBreak = false;
 		onBreak = false;
 	}
@@ -81,17 +84,17 @@ public class WaiterAgent extends Role implements Waiter{
 	public String getMaitreDName() {
 		return h.getName();
 	}
-	public void setHost(HostAgent host) {
-		h = host;
-	}
-	public void setCook(CookAgent cook) {
-		ck = cook;
-	}
-	public void setCashier(CashierAgent cashier) {
-		ch = cashier;
-	}
+//	public void setHost(HostAgent host) {
+//		h = host;
+//	}
+//	public void setCook(CookAgent cook) {
+//		ck = cook;
+//	}
+//	public void setCashier(CashierAgent cashier) {
+//		ch = cashier;
+//	}
 	public String getName() {
-		return name;
+		return myPerson.getName();
 	}
 
 	public List getCustomers() {
@@ -299,7 +302,7 @@ public class WaiterAgent extends Role implements Waiter{
 
 	// Actions
 
-	private void seatCustomer(myCustomer myCustomer) {
+	protected void seatCustomer(myCustomer myCustomer) {
 		print("Seating" + myCustomer.c.getName());
 		myCustomer.c.msgSitAtTable(myCustomer.table,new WaiterAgent.menu());
 		DoSeatCustomer(myCustomer.c, myCustomer.table);
@@ -312,7 +315,7 @@ public class WaiterAgent extends Role implements Waiter{
 		myCustomer.s = CustomerState.seated;
 	}
 
-	private void TakeOrder(myCustomer myCustomer) {
+	protected void TakeOrder(myCustomer myCustomer) {
 		print("Taking the order of " + myCustomer.c.getName());
 		//myCustomer.s = CustomerState.AskedToOrder;
 		DoFindCustomer(myCustomer);
@@ -325,21 +328,9 @@ public class WaiterAgent extends Role implements Waiter{
 		myCustomer.c.msgWhatIsOrder();
 	}
 	
-	private void tellCookOrder(myCustomer mc) {
-		print("Telling cook order of " + mc.ch);
-		DoGoToCook();
-		try {
-			atDestination.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		ck.msgHereIsOrder(this, mc.ch, mc.table);
-		mc.s = CustomerState.Ordered;
-		hostGui.DoLeaveCustomer();
-	}
+	protected abstract void tellCookOrder(myCustomer mc);
 	
-	private void pleaseOrderAgain(myCustomer mc) {
+	protected void pleaseOrderAgain(myCustomer mc) {
 		DoFindCustomer(mc);
 		try {
 			atDestination.acquire();
@@ -357,7 +348,7 @@ public class WaiterAgent extends Role implements Waiter{
 		hostGui.DoLeaveCustomer();
 	}
 	
-	private void DeliverFood(myCustomer myCustomer) {
+	protected void DeliverFood(myCustomer myCustomer) {
 		DoGoToCook();
 		try {
 			atDestination.acquire();
@@ -381,43 +372,43 @@ public class WaiterAgent extends Role implements Waiter{
 		hostGui.DoLeaveCustomer();
 	}
 	
-	private void customerReadyToPay(myCustomer mc) {
+	protected void customerReadyToPay(myCustomer mc) {
 		print(mc.c.getName() + " is ready to pay");
 		mc.s = CustomerState.WaitingForCheck;
 		ch.msgCustomerReadyToPay(this, mc.ch, mc.c);
 	}
 	
-	private void giveCustomerCheck(myCustomer mc) {
+	protected void giveCustomerCheck(myCustomer mc) {
 		mc.c.msgHereIsCheck(mc.tab);
 		mc.s = CustomerState.GivenCheck;
 	}
 	
-	private void customerLeaving(myCustomer mc) {
+	protected void customerLeaving(myCustomer mc) {
 		print("Telling host that " + mc.c.getName() + " is leaving table.");
 		h.msgDone(mc.c);
 		h.msgLeavingTable(mc.c);
 		Customers.remove(mc);
 	}
 	
-	private void askForBreak() {
+	protected void askForBreak() {
 		h.msgWantToGoOnBreak(this);
 		wantsBreak = false;
 	}
 	
 	// The animation DoXYZ() routines
-	private void DoSeatCustomer(CustomerAgent customer, int table) {
+	protected void DoSeatCustomer(CustomerAgent customer, int table) {
 		//Notice how we print "customer" directly. It's toString method will do it.
 		//Same with "table"
 		print("Seating " + customer + " at " + table);
 		hostGui.DoBringToTable(customer, table); 
 	}
 
-	private void DoFindCustomer(myCustomer cust) {
+	protected void DoFindCustomer(myCustomer cust) {
 		print ("Going to " + cust.c.getName());
 		hostGui.DoGoToTable(cust.table);
 	}
 	
-	private void DoGoToCook() {
+	protected void DoGoToCook() {
 		print ("Going to " + ck.getName());
 		hostGui.DoGoToCook();
 	}
@@ -444,6 +435,32 @@ public class WaiterAgent extends Role implements Waiter{
 
 	@Override
 	public String getNameOfRole() {
+		return Role.RESTAURANT_JEFFREY_WAITER_ROLE;
+	}
+
+	@Override
+	public void setCook(GenericCook c) {
+		this.ck = (CookAgent) c;
+	}
+
+	@Override
+	public void setCashier(GenericCashier c) {
+		this.ch = (CashierAgent) c;
+	}
+
+	@Override
+	public void setHost(GenericHost h) {
+		this.h = (HostAgent) h;
+	}
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
 		// TODO Auto-generated method stub
 		return null;
 	}

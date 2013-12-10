@@ -15,14 +15,16 @@ import market.gui.MarketManagerGui;
 import residence.HomeRole;
 import trace.AlertLog;
 import trace.AlertTag;
+import Person.Role.Employee;
 import Person.Role.Role;
+import Person.Role.ShiftTime;
 import Transportation.DeliveryTruckAgent;
 
 /**
  * MarketCustomer Role
  */
 //MarketCustomer Agent
-public class MarketManagerRole extends Role implements MarketManager{
+public class MarketManagerRole extends Employee implements MarketManager{
 	enum MarketEmployeeState
 	{walkingToDesk, waiting};
 	enum MarketEmployeeEvent
@@ -45,8 +47,8 @@ public class MarketManagerRole extends Role implements MarketManager{
 	 * Constructor for MarketManager Role
 	 *
 	 */
-	public MarketManagerRole(){
-				
+	public MarketManagerRole(String location){
+			super(location);
 		}
 	
 
@@ -410,6 +412,20 @@ public class MarketManagerRole extends Role implements MarketManager{
 	@Override
 	public String getMarketName() {
 		return marketData.getName();
+	}
+
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

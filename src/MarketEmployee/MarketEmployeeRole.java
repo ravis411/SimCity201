@@ -14,12 +14,13 @@ import market.gui.MarketEmployeeGui;
 import market.test.mock.EventLog;
 import trace.AlertLog;
 import trace.AlertTag;
-import Person.Role.Role;
+import Person.Role.Employee;
+import Person.Role.ShiftTime;
 
 /**
  * MarketEmployee Role
  */
-public class MarketEmployeeRole extends Role implements MarketEmployee{
+public class MarketEmployeeRole extends Employee implements MarketEmployee{
 	public EventLog log= new EventLog();
 	MarketEmployeeGui gui;
 	String name = "Market Employee";
@@ -45,8 +46,8 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	 * Constructor for MarketEmployee Role
 	 *
 	 */
-	public MarketEmployeeRole(){
-	
+	public MarketEmployeeRole(String location){
+	super(location);
 	}
 
 
@@ -523,6 +524,22 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	public boolean canGoGetFood() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

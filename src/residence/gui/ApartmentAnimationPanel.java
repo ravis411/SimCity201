@@ -79,28 +79,30 @@ public class ApartmentAnimationPanel extends JPanel implements MouseListener, Gu
         g2.setColor(getBackground());
         g2.fillRect(XCOOR, YCOOR, WINDOWX, WINDOWY);
         
-        g2.setColor(new Color(200, 50, 50));
-        g2.fillRect(300,0,200,400);
+        g2.setColor(new Color(200, 50, 50)); //hallway
+        g2.fillRect(0,150,800,100);
         g2.setColor(Color.orange);
-        g2.fillRect(310,0,180,400);
+        g2.fillRect(0,160,800,80);
         
         
-        g2.setColor(new Color(100, 180, 200));
-        g2.fillOval(290, 140, 40, 40);
-        g2.fillOval(470, 140, 40, 40);
-        g2.fillOval(290, 340, 40, 40);
-        g2.fillOval(470, 340, 40, 40);
-        g2.setColor(Color.yellow);
-        g2.fillOval(300, 150, 20, 20);
-        g2.fillOval(480, 150, 20, 20);
-        g2.fillOval(300, 350, 20, 20);
-        g2.fillOval(480, 350, 20, 20);
+//        g2.setColor(new Color(100, 180, 200)); //lamps
+//        g2.fillOval(290, 140, 40, 40);
+//        g2.fillOval(470, 140, 40, 40);
+//        g2.fillOval(290, 340, 40, 40);
+//        g2.fillOval(470, 340, 40, 40);
+//        g2.setColor(Color.yellow);
+//        g2.fillOval(300, 150, 20, 20);
+//        g2.fillOval(480, 150, 20, 20);
+//        g2.fillOval(300, 350, 20, 20);
+//        g2.fillOval(480, 350, 20, 20);
         
         g2.setColor(Color.white);
-        g2.drawString(apartments.get(0).getName(), 300, 100);
-        g2.drawString(apartments.get(1).getName(), 300, 300);
-        g2.drawString(apartments.get(2).getName(), 420, 100);
-        g2.drawString(apartments.get(3).getName(), 420, 300);
+        for(int i=0; i<8; i++) {
+        	g2.drawString(apartments.get(i).getName(),100*i+10,160);
+        }
+        for(int i=8; i<apartments.size(); i++) {
+        	g2.drawString(apartments.get(i).getName(),100*(i-8)+10,250);
+        }
         
         for(Gui gui : guis) {
 			if (gui.isPresent()) {

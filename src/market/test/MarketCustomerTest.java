@@ -36,7 +36,7 @@ public class MarketCustomerTest extends TestCase
 		super.setUp();		
 		
 		
-		customer = new MarketCustomerRole();
+		customer = new MarketCustomerRole("Market 1");
 		employee = new MockMarketEmployee("CARrrl");
 		customerPerson= new MockPerson("fd");
 		customer.setPerson(customerPerson);

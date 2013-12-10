@@ -43,4 +43,18 @@ public class MockNumberAnnouncer extends Mock implements AnnouncerA{
 		
 	}
 
+	public void msgRemoveClient(BankClient b) {
+		log.add(new LoggedEvent("msgRemoveClient received from bankClient. Removing bankClient to the list."));
+	}
+	public void msgRobbingBank(BankClient c) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgStealingMoney(double stealAmount, BankClient bcr) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -1,11 +1,14 @@
 package Person.Role;
 
+import interfaces.MarketManager;
 import interfaces.generic_interfaces.GenericCashier;
 import interfaces.generic_interfaces.GenericCook;
 import interfaces.generic_interfaces.GenericCustomer;
 import interfaces.generic_interfaces.GenericHost;
 import interfaces.generic_interfaces.GenericWaiter;
+import restaurant.luca.LucaCookRole;
 import ryansRestaurant.RyansCookRole;
+import building.Building;
 import building.BuildingList;
 import building.Restaurant;
 
@@ -20,9 +23,9 @@ public class RoleFactory {
 			//"Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(e.getWorkLocation());"
 			//or else you will get cast error
 			
-			
 			return e;
 		} catch (Exception e) {
+
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

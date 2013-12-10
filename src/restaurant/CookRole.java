@@ -5,11 +5,11 @@ import interfaces.MarketManager;
 import interfaces.Waiter;
 import interfaces.generic_interfaces.GenericCook;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
 
 import restaurant.Order.orderStatus;
 import restaurant.gui.CookGui;
@@ -31,10 +31,11 @@ public class CookRole extends GenericCook {
 	public List<Food> inventory = new ArrayList<Food>();
 	public List<MarketManagerRole> markets = new ArrayList<MarketManagerRole>();
 
-	private RevolvingStand revolvingStand = RevolvingStand.getInstance();
+	private RevolvingStand revolvingStand = new RevolvingStand();
+	Timer checkRevolvingStand;
 	
 	private Menu menu = new Menu();
-	Timer timer = new Timer();
+	java.util.Timer timer = new java.util.Timer();
 	Order currentOrder;
 	public CookGui cookGui = null;
 	
@@ -50,9 +51,20 @@ public class CookRole extends GenericCook {
 		super(workLocation);
 		
 		for(int i=0; i<3; i++) {
-			inventory.add(new Food(menu.getDishName(i), 5000, 0));
+			inventory.add(new Food(menu.getDishName(i), 5000, 3));
 		}
 		
+		javax.swing.Timer checkRevolvingStand = new javax.swing.Timer(15000, new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub	
+				stateChanged();
+			}
+			
+		});
+		
+		checkRevolvingStand.start();	
 	}
 	
 	public void addMarket(MarketManagerRole market) {
@@ -135,12 +147,16 @@ public class CookRole extends GenericCook {
 			}
 			
 			if(!revolvingStand.isEmpty()){
-				Order o = revolvingStand.popOrder();
-				cookOrder(o);
-				inventory.get(o.choice);
+	             //get the order from the stand
+				Order order = revolvingStand.getLastOrder();
+	             //structure the order data to fit in with my old cooking routine
+				Order newOrder = new Order(order.waiter, order.choice, order.table, order.customer);
+				newOrder.status = orderStatus.pending;
+				orders.add(newOrder);
+	             //cook the order in the same way
+				cookOrder(newOrder);
+				return true;
 			}
-			
-			
 		}
 		return false;
 	}
@@ -253,6 +269,10 @@ public class CookRole extends GenericCook {
 	public Double getSalary() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public RevolvingStand getRevolvingStand() {
+		return revolvingStand;
 	}
 
 }

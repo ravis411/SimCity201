@@ -9,13 +9,13 @@ import agent.Agent;
  * @author Ryan
  *
  */
-public class DeadPersonAgent extends Agent{
+public class DrunkPersonAgent extends Agent{
 
 	
 	
-	public DeadPersonAgent(String name) {
+	public DrunkPersonAgent(String name) {
 		this.name = name;
-		agentGui = new DeadPersonGui(name);
+		agentGui = new DrunkPersonGui(name);
 	}
 	
 	
@@ -100,7 +100,7 @@ public class DeadPersonAgent extends Agent{
 	AgentState state = AgentState.none;
 	String destination = null;
 	boolean goTo = false;
-	DeadPersonGui agentGui = null;
+	DrunkPersonGui agentGui = null;
 	String name = new String();
 	
 	public String defaultStartLocation = "Food Court";

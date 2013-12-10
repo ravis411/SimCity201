@@ -36,11 +36,12 @@ public class BankTellerRole extends Employee implements BankTeller{
 	private TellerGui tellerGui = null;
 
 	
-	public BankTellerRole(String workLocation){
+ 
+	public BankTellerRole(String workLocation) {
 		super(workLocation);
 		Accounts = Database.INSTANCE.sendDatabase();
 	}
- 
+
 	public void setAnnouncer(NumberAnnouncer a){
 		this.announcer = a;
 	}
@@ -107,6 +108,7 @@ public class BankTellerRole extends Employee implements BankTeller{
 		stateChanged();
 	}
 
+	
 	public void msgRestaurantDeposit(CashierRole r, double a){
 		transactionAmount = a;
 		myRestaurant = r;
@@ -324,10 +326,6 @@ public class BankTellerRole extends Employee implements BankTeller{
 		return null;
 	}
 
-	@Override
-	public void msgFreeze() {
-		// TODO Auto-generated method stub
-	}
 	public void workplaceIsOpen() {
 		// TODO Auto-generated method stub
 		this.activate();

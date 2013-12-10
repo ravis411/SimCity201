@@ -45,9 +45,9 @@ import building.Workplace;
  *
  */
 public class PersonAgent extends Agent implements Person, TimeListener, DateListener{
-	
-	private final double STARTING_MONEY = 100.00;
-	private final int HUNGER_THRESHOLD = 50;
+        
+        private final double STARTING_MONEY = 100.00;
+        private final int HUNGER_THRESHOLD = 50;
 
 	private String name;
 	private double money;
@@ -250,152 +250,151 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		
 		this.workState = WorkState.None;
 
-		rentDueDate = Calendar.getInstance();
-		rentDueDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1, 0, MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND));
-		MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
-		MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+8), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
-		MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+15), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
-		MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+22), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
-		MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+29), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
+                rentDueDate = Calendar.getInstance();
+                rentDueDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1, 0, MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND));
+                MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+1), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
+                MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+8), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
+                MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+15), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
+                MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+22), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
+                MasterTime.getInstance().registerDateListener(MasterTime.getInstance().get(Calendar.MONTH), (MasterTime.getInstance().get(Calendar.DAY_OF_MONTH)+29), 0, MasterTime.getInstance().get(Calendar.MINUTE), this);
 
-		if(name.equals("Person 1") || name.equals("Person 2") )
-			this.msgImHungry();
-		if(name.equals("Person 10") || name.equals("Person 11") || name.equals("Person 12"))
-			this.msgINeedMoney(30.00);
-		if(name.equals("Person 13")){
-			this.msgGoToMarket("Steak");
-		}
-		
-		MasterTime.getInstance().registerTimeListener(Workplace.DAY_SHIFT_HOUR, Workplace.DAY_SHIFT_MIN, false, this);
-		MasterTime.getInstance().registerTimeListener(Workplace.NIGHT_SHIFT_HOUR, Workplace.NIGHT_SHIFT_MIN, false, this);
-		MasterTime.getInstance().registerTimeListener(Workplace.END_SHIFT_HOUR, Workplace.END_SHIFT_MIN, false, this);
-		
-		//Add the gui
-		setGui(new PersonGui(this));
-	}
-	
+                if(name.equals("Person 1") || name.equals("Person 2") )
+                        this.msgImHungry();
+                if(name.equals("Person 10") || name.equals("Person 11") || name.equals("Person 12"))
+                        this.msgINeedMoney(30.00);
+                if(name.equals("Person 13")){
+                        this.msgGoToMarket("Steak");
+                }
+                
+                MasterTime.getInstance().registerTimeListener(Workplace.DAY_SHIFT_HOUR, Workplace.DAY_SHIFT_MIN, false, this);
+                MasterTime.getInstance().registerTimeListener(Workplace.NIGHT_SHIFT_HOUR, Workplace.NIGHT_SHIFT_MIN, false, this);
+                MasterTime.getInstance().registerTimeListener(Workplace.END_SHIFT_HOUR, Workplace.END_SHIFT_MIN, false, this);
+                
+                //Add the gui
+                setGui(new PersonGui(this));
+        }
+        
 //-------------------------------MESSAGES----------------------------------------//
-	
-	/**
-	  * Message sent by a vehicle, like a bus, to tell its passengers
-	  * when it has arrived somewhere
-	  * @param currentLocation the location the bus has arrived at
-	  */
-	public void msgWeHaveArrived(String currentDestination){
-	  //unpause agent, which will be in transit (implementation not necessary here)
-		onBus.release();
-		//------------------ILLEGAL CHANGE OR DELETE---------------------------------//
-		if(stateOfLocation == StateOfLocation.InCar){
-			myCar.msgLeavingCar();
-			stateOfLocation = StateOfLocation.Walking;
-		}
-		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Arrived at Destination!!");
-	}
-	
-	
+        
+        /**
+          * Message sent by a vehicle, like a bus, to tell its passengers
+          * when it has arrived somewhere
+          * @param currentLocation the location the bus has arrived at
+          */
+        public void msgWeHaveArrived(String currentDestination){
+          //unpause agent, which will be in transit (implementation not necessary here)
+                onBus.release();
+                //------------------ILLEGAL CHANGE OR DELETE---------------------------------//
+                if(stateOfLocation == StateOfLocation.InCar){
+                        myCar.msgLeavingCar();
+                        stateOfLocation = StateOfLocation.Walking;
+                }
+                AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Arrived at Destination!!");
+        }
+        
+        
 
-	/**
-	  * Message probably sent by an outside GUI to force hunger on the 
-	  * person
-	  */
-	public void msgImHungry(){
-	  state = PersonState.NeedsFood;
-	  stateChanged();
-	}
+        /**
+          * Message probably sent by an outside GUI to force hunger on the 
+          * person
+          */
+        public void msgImHungry(){
+          state = PersonState.NeedsFood;
+          stateChanged();
+        }
 
-	/**
-	  * Message sent by any role where the Person needs money but doesn't have enough
-	  * @param amountNeeded the amount of money the Person needs in addition to what he already has
-	  */
-	public void msgINeedMoney(double amountNeeded){
-	  state = PersonState.NeedsMoney;
-	  moneyNeeded += amountNeeded;
-	  stateChanged();
-	}
+        /**
+          * Message sent by any role where the Person needs money but doesn't have enough
+          * @param amountNeeded the amount of money the Person needs in addition to what he already has
+          */
+        public void msgINeedMoney(double amountNeeded){
+          state = PersonState.NeedsMoney;
+          moneyNeeded += amountNeeded;
+          stateChanged();
+        }
 
-	/**
-	  * Message sent by a Bank employee to inform the person he has a loan
-	  //---------THIS MESSAGE COULD BE SENT TO BANKCUSTOMER WHO JUST CHANGES HIS PERSON DATA----------//
-	  * @param loan the amount of money in the loan
-	  */
-	public void msgYouHaveALoan(double loan){
-	  loanAmount = loan;
-	  stateChanged();
-	}
+        /**
+          * Message sent by a Bank employee to inform the person he has a loan
+          //---------THIS MESSAGE COULD BE SENT TO BANKCUSTOMER WHO JUST CHANGES HIS PERSON DATA----------//
+          * @param loan the amount of money in the loan
+          */
+        public void msgYouHaveALoan(double loan){
+          loanAmount = loan;
+          stateChanged();
+        }
 
-	/**
-	  * Message sent to the person by a timer listener to report for
-	  * work. Works sort of like an alarm clock.
-	  */
-	public void msgReportForWork(){
-		if(getCurrentJob() == null)
-			return;
-		else
-			workState = WorkState.GoToWork;
-		
-		stateChanged();
-	}
-	
-	/**
-	 * Message sent to the Person from a Workplace to leave
-	 */
-	public void msgYouCanLeave(){
-		workState = WorkState.None;
-		stateChanged();
-	}
-	
-	/**
-	 * Message sent by the HomeRole for the person to go to the market
-	 * @param item the name of the item needed from the market
-	 */
-	public void msgGoToMarket(String item){
-		itemsNeeded.add(new Item(item, 1));
-		stateChanged();
-	}
+        /**
+          * Message sent to the person by a timer listener to report for
+          * work. Works sort of like an alarm clock.
+          */
+        public void msgReportForWork(){
+                if(getCurrentJob() == null)
+                        return;
+                else
+                        workState = WorkState.GoToWork;
+                
+                stateChanged();
+        }
+        
+        /**
+         * Message sent to the Person from a Workplace to leave
+         */
+        public void msgYouCanLeave(){
+                workState = WorkState.None;
+                stateChanged();
+        }
+        
+        /**
+         * Message sent by the HomeRole for the person to go to the market
+         * @param item the name of the item needed from the market
+         */
+        public void msgGoToMarket(String item){
+                itemsNeeded.add(new Item(item, 1));
+                stateChanged();
+        }
 
-	/**
-	  * Message called, probably by a timer, which increases the person's
-	  * amount of money by the amount he makes from work
-	  */
-	public void msgReceiveSalary(double amount){
-	  money += amount;
-	  stateChanged();
-	}
+        /**
+          * Message called, probably by a timer, which increases the person's
+          * amount of money by the amount he makes from work
+          */
+        public void msgReceiveSalary(double amount){
+          money += amount;
+          stateChanged();
+        }
 
-	/**
-	  * Somehow if the person forgets to pay his loan, the Bank will remind him
-	  * around the time of the due date
-	  */
-	public void msgPayBackLoanUrgently(){
-	   state=PersonState.PayLoanNow;
-	   stateChanged();
-	}
+        /**
+          * Somehow if the person forgets to pay his loan, the Bank will remind him
+          * around the time of the due date
+          */
+        public void msgPayBackLoanUrgently(){
+           state=PersonState.PayLoanNow;
+           stateChanged();
+        }
 
-	/**
-	  * Message sent by the building (or other mechanism see above) when the rent
-	  * due date is close and needs paying.
-	  */
-	public void msgPayBackRentUrgently(){
-	   state=PersonState.PayRentNow;
-	   stateChanged();
-	}
+        /**
+          * Message sent by the building (or other mechanism see above) when the rent
+          * due date is close and needs paying.
+          */
+        public void msgPayBackRentUrgently(){
+           state=PersonState.PayRentNow;
+           stateChanged();
+        }
 
-	
-	public void msgAddObjectToBackpack(String object, int quantity){
-		boolean added = false;
-		for(Item bo : backpack){
-			if(bo.name.equals(object)){
-				bo.quantity += quantity;
-				added = true;
-				print("Added "+ quantity +" "+ object+ " to backpack. Quantity now: "+bo.quantity);
-				break;
-			}
-		}
-		
-		if(!added){
-			backpack.add(new Item(object, quantity));
-			print("Added "+ quantity +" "+ object+ " to backpack. Quantity now: "+quantity);
-
+        
+        public void msgAddObjectToBackpack(String object, int quantity){
+                boolean added = false;
+                for(Item bo : backpack){
+                        if(bo.name.equals(object)){
+                                bo.quantity += quantity;
+                                added = true;
+                                print("Added "+ quantity +" "+ object+ " to backpack. Quantity now: "+bo.quantity);
+                                break;
+                        }
+                }
+                
+                if(!added){
+                        backpack.add(new Item(object, quantity));
+                        print("Added "+ quantity +" "+ object+ " to backpack. Quantity now: "+quantity);
 		}
 		
 		stateChanged();
@@ -597,6 +596,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		  MyRole role = findRole(Role.RESTAURANT_MIKE_CUSTOMER_ROLE);
 		  if(role == null){
 			  role = new MyRole(RoleFactory.roleFromString(Role.RESTAURANT_MIKE_CUSTOMER_ROLE));
+
 			  addRole(role);
 		  }
 		  GenericCustomer cust = (GenericCustomer) role.role;
@@ -622,8 +622,9 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	}
 	
 	private String PickFoodLocation(){
+
         return Math.random() > 0.5 ? "Food Court" : this.home.getName();
-	}
+        }
 
 	private void GoToParty(String location){
 		  state = PersonState.Partying;
@@ -736,7 +737,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		return transport;
 	}
 
-	private void GoGetMoney(){
+        private void GoGetMoney(){
 
         //needs a way to find a bank quite yet
         GoToLocation("Bank", getTransportPreference());
@@ -776,7 +777,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	     GoToLocation("Market 1", transport);
 	     MyRole r = findRole(Role.MARKET_CUSTOMER_ROLE);
 	    if(r == null){
-	            r = new MyRole(RoleFactory.roleFromString(Role.MARKET_CUSTOMER_ROLE));
+	            r = new MyRole(RoleFactory.employeeFromString(Role.MARKET_CUSTOMER_ROLE, "Market 1"));
 	            addRole(r);
 	            r.role.activate();
 	    }else{
@@ -786,31 +787,32 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	    BuildingList.findBuildingWithName("Market 1").addRole(r.role);
 	}
 
-	/**
-	 * @pre Assume that if we are paying back a loan we have a bank role
-	 */
-	private void PayBackLoan(){
-			
-		String transport = getTransportPreference();
-		
-		//needs a way to find a bank quite yet
-		GoToLocation("Bank", transport);
-		
-		if(money >= loanAmount){
+        /**
+         * @pre Assume that if we are paying back a loan we have a bank role
+         */
+        private void PayBackLoan(){
+                        
+                String transport = getTransportPreference();
+                
+                //needs a way to find a bank quite yet
+                GoToLocation("Bank", transport);
+                
+                if(money >= loanAmount){
 
-		    //--------------------NEEDS MSG FOR ENTERING BANK WITH THE INTENT TO PAY LOAN-----------------------//
-		   /* BankCustomerRole bcr = (BankCustomeRole) findRole(Role.BANK_CUSTOMER_ROLE);
-		    bcr.msgPayLoan(loanAmount);*/
-		}else{
-		    //--------------------NEEDS MSG FOR WITHDRAWING FROM BANK------------------------------------------//
-		   /* BankCustomerRole bcr = (BankCustomerRole) findRole(Role.BANK_CUSTOMER_ROLE);
-		    bcr.msgWithdrawMoney();
-		    bcr.msgPayLoan(loanAmount);*/
-		}
-		
-		  /*DoGoToBank();
-		  if(money >= loanAmount){
+                    //--------------------NEEDS MSG FOR ENTERING BANK WITH THE INTENT TO PAY LOAN-----------------------//
+                   /* BankCustomerRole bcr = (BankCustomeRole) findRole(Role.BANK_CUSTOMER_ROLE);
+                    bcr.msgPayLoan(loanAmount);*/
+                }else{
+                    //--------------------NEEDS MSG FOR WITHDRAWING FROM BANK------------------------------------------//
+                   /* BankCustomerRole bcr = (BankCustomerRole) findRole(Role.BANK_CUSTOMER_ROLE);
+                    bcr.msgWithdrawMoney();
+                    bcr.msgPayLoan(loanAmount);*/
+                }
+                
+                  /*DoGoToBank();
+                  if(money >= loanAmount){
 
+<<<<<<< HEAD
 		    //--------------------NEEDS MSG FOR ENTERING BANK WITH THE INTENT TO PAY LOAN-----------------------//
 		    BankCustomerRole bcr = getBankCustomerRole();
 		    bcr.msgPayLoan(loanAmount);

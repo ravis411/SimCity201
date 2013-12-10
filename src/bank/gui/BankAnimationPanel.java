@@ -62,10 +62,8 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
     //test
     private PersonAgent testTeller = new PersonAgent("Test Teller", null);
     private PersonAgent testLoanTeller = new PersonAgent("Test Loan Teller",null);
- //   private PersonAgent testClient = new PersonAgent("Test Client", null);
     private BankTellerRole testTellerRole = new BankTellerRole("Bank");
     private LoanTellerRole testLoanTellerRole = new LoanTellerRole("Bank");
-//    private BankClientRole testClientRole = new BankClientRole();
     
     
 	private List<Gui> guis = new ArrayList<Gui>();
@@ -77,16 +75,11 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 		
 		bufferSize = this.getSize();
 		
-		//test
-		
 
 		testTellerRole.setPerson(testTeller);
 		testLoanTellerRole.setPerson(testLoanTeller);
-//		testClientRole.setPerson(testClient);
 		addGuiForRole(testTellerRole);
 		addGuiForRole(testLoanTellerRole);
-//		addGuiForRole(testClientRole);
-//		testClientRole.setIntent("deposit");
 
 
 		
@@ -173,7 +166,6 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 
 	}
 
-	@Override
 	public void addGuiForRole(Role r) {
 		if (r instanceof BankClientRole){
 		    BankClientRole clientRole = (BankClientRole) r;
@@ -214,28 +206,25 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 		}
 	}
 
-	@Override
 	public void removeGuiForRole(Role r) {
 		if (r instanceof BankClientRole){
 		    BankClientRole clientRole = (BankClientRole) r;
 		    BankClientRoles.remove(clientRole);
-//			BuildingList.findBuildingWithName("Bank").removeRole(clientRole);
-			r.deactivate();
 		    guis.remove(clientRole.getGui());
-
+			r.deactivate();
 		}
 		if (r instanceof BankTellerRole){
 		    BankTellerRole tellerRole = (BankTellerRole) r;
 		    BankTellerRoles.remove(tellerRole);
 			BuildingList.findBuildingWithName("Bank").removeRole(tellerRole);
-		    r.deactivate();
 		    guis.remove(tellerRole.getGui());
+		    r.deactivate();
 		}
 		if (r instanceof LoanTellerRole){
 		    LoanTellerRole loanTellereRole=(LoanTellerRole) r;
 			BuildingList.findBuildingWithName("Bank").removeRole(loanTellereRole);
-		    r.deactivate();
 		    guis.remove(loanTellereRole.getGui());
+		    r.deactivate();
 		}
 	}
 

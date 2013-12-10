@@ -5,11 +5,10 @@ import gui.Building.BuildingGui;
 import javax.swing.*;
 
 import util.MasterTime;
-import building.BuildingList;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -28,7 +27,7 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 	private final int WINDOWY;
 
 
-	private List<Gui> guis = new ArrayList<Gui>();
+	private List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
 	private List<BuildingGui> buildings = new ArrayList<BuildingGui>(); 
 
 	private SimCityLayout layout = null;
@@ -86,12 +85,13 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		
 		g2.setColor(Color.orange);
 
-		for(Gui gui : guis) {
-			if (gui.isPresent()) {
-				gui.updatePosition();
+		synchronized (guis) {
+			for(Gui gui : guis) {
+				if (gui.isPresent()) {
+					gui.updatePosition();
+				}
 			}
 		}
-
 		synchronized(guis){
 			for(Gui gui : guis) {
 				if (gui.isPresent()) {
@@ -153,12 +153,13 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		guis.add(b);
 		
 	}
-	
-	
+
+
 	public void setTestView(boolean testView){
-		for(Gui g : guis){
-			g.setTestView(testView);
-		}
+		synchronized (guis) {
+			for(Gui g : guis){
+				g.setTestView(testView);
+		}}
 		this.testView = testView;
 	}
 

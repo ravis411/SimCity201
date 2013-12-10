@@ -46,7 +46,7 @@ public class JeffreyRestaurantBuildingPanel extends BuildingPanel{
 	
 	@Override
 	public GuiPanel getPanel() {
-		return null;
+		return restaurantPanel;
 	}
 
 	public void displayBuildingPanel() {
@@ -57,7 +57,7 @@ public class JeffreyRestaurantBuildingPanel extends BuildingPanel{
 
 	@Override
 	public void addPersonWithRole(Role r) {
-		// TODO Auto-generated method stub
+		this.getPanel().addGuiForRole(r);
 		
 	}
 

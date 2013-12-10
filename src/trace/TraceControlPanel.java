@@ -32,6 +32,13 @@ public class TraceControlPanel extends Panel implements ActionListener {
 	JCheckBox showHome = new JCheckBox("Show Tag: HOME");
 	JCheckBox showMarket = new JCheckBox("Show Tag: MARKET");
 	JCheckBox showRestaurant = new JCheckBox("Show Tag: RESTAURANT");
+	JCheckBox showRyanRestaurant = new JCheckBox   ("Ryan    RESTAURANT");
+	JCheckBox showDylanRestaurant = new JCheckBox  ("Dylan   RESTAURANT");
+	JCheckBox showByronRestaurant = new JCheckBox  ("Byron   RESTAURANT");
+	JCheckBox showLucaRestaurant = new JCheckBox   ("Luca    RESTAURANT");
+	JCheckBox showJeffreyRestaurant = new JCheckBox("Jeffrey RESTAURANT");
+	JCheckBox showKushRestaurant = new JCheckBox   ("Kush    RESTAURANT");
+	JCheckBox showMikeRestaurant = new JCheckBox   ("Mike    RESTAURANT");
 	
 	
 	private JScrollPane levelPane =
@@ -98,6 +105,29 @@ public class TraceControlPanel extends Panel implements ActionListener {
 		tagView.add(showRestaurant);
 		showRestaurant.addActionListener(this);
 		
+		tagView.add(showKushRestaurant);
+		showKushRestaurant.addActionListener(this);
+		tagView.add(showMikeRestaurant);
+		showMikeRestaurant.addActionListener(this);
+		tagView.add(showDylanRestaurant);
+		showDylanRestaurant.addActionListener(this);
+		tagView.add(showRyanRestaurant);
+		showRyanRestaurant.addActionListener(this);
+		tagView.add(showJeffreyRestaurant);
+		showJeffreyRestaurant.addActionListener(this);
+		tagView.add(showLucaRestaurant);
+		showLucaRestaurant.addActionListener(this);
+		tagView.add(showByronRestaurant);
+		showByronRestaurant.addActionListener(this);
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		
@@ -129,6 +159,14 @@ public class TraceControlPanel extends Panel implements ActionListener {
 		showMarket.setSelected(true);
 		showBank.setSelected(true);
 		showRestaurant.setSelected(true);
+		
+		showKushRestaurant.setSelected(true);
+		showMikeRestaurant.setSelected(true);
+		showDylanRestaurant.setSelected(true);
+		showRyanRestaurant.setSelected(true);
+		showJeffreyRestaurant.setSelected(true);
+		showLucaRestaurant.setSelected(true);
+		showByronRestaurant.setSelected(true);
 	}
 	private void hideAll(){
 		panel.hideAlertsForAllTags();
@@ -146,6 +184,14 @@ public class TraceControlPanel extends Panel implements ActionListener {
 		showMarket.setSelected(false);
 		showBank.setSelected(false);
 		showRestaurant.setSelected(false);
+		
+		showKushRestaurant.setSelected(false);
+		showMikeRestaurant.setSelected(false);
+		showDylanRestaurant.setSelected(false);
+		showRyanRestaurant.setSelected(false);
+		showJeffreyRestaurant.setSelected(false);
+		showLucaRestaurant.setSelected(false);
+		showByronRestaurant.setSelected(false);
 	}
 	
 	@Override
@@ -274,11 +320,100 @@ public class TraceControlPanel extends Panel implements ActionListener {
 			else if(c == showRestaurant){
 				if(c.isSelected()){
 					panel.showAlertsWithTag(AlertTag.RESTAURANT);
+					panel.showAlertsWithTag(AlertTag.KUSHS_RESTAURANT);showKushRestaurant.setSelected(true);
+					panel.showAlertsWithTag(AlertTag.MIKES_RESTAURANT);showMikeRestaurant.setSelected(true);
+					panel.showAlertsWithTag(AlertTag.DYLANS_RESTAURANT);showDylanRestaurant.setSelected(true);
+					panel.showAlertsWithTag(AlertTag.RYANS_RESTAURANT);showRyanRestaurant.setSelected(true);
+					panel.showAlertsWithTag(AlertTag.JEFFREYS_RESTAURANT);showJeffreyRestaurant.setSelected(true);
+					panel.showAlertsWithTag(AlertTag.LUCAS_RESTAURANT);showLucaRestaurant.setSelected(true);
+					panel.showAlertsWithTag(AlertTag.BYRONS_RESTAURANT);showByronRestaurant.setSelected(true);
 				}
 				else
 				{
 					panel.hideAlertsWithTag(AlertTag.RESTAURANT);
 					showAll.setSelected(false);
+					panel.hideAlertsWithTag(AlertTag.KUSHS_RESTAURANT);showKushRestaurant.setSelected(false);
+					panel.hideAlertsWithTag(AlertTag.MIKES_RESTAURANT);showMikeRestaurant.setSelected(false);
+					panel.hideAlertsWithTag(AlertTag.DYLANS_RESTAURANT);showDylanRestaurant.setSelected(false);
+					panel.hideAlertsWithTag(AlertTag.RYANS_RESTAURANT);showRyanRestaurant.setSelected(false);
+					panel.hideAlertsWithTag(AlertTag.JEFFREYS_RESTAURANT);showJeffreyRestaurant.setSelected(false);
+					panel.hideAlertsWithTag(AlertTag.LUCAS_RESTAURANT);showLucaRestaurant.setSelected(false);
+					panel.hideAlertsWithTag(AlertTag.BYRONS_RESTAURANT);showByronRestaurant.setSelected(false);
+				}
+			}
+			
+			
+			
+			//Check for everyones Restaurant
+			else if(c == showKushRestaurant){
+				if(c.isSelected()){
+					panel.showAlertsWithTag(AlertTag.KUSHS_RESTAURANT);
+				}
+				else
+				{
+					showAll.setSelected(false);
+					showRestaurant.setSelected(false);
+					panel.hideAlertsWithTag(AlertTag.KUSHS_RESTAURANT);
+				}
+			}else if(c == showRyanRestaurant){
+				if(c.isSelected()){
+					panel.showAlertsWithTag(AlertTag.RYANS_RESTAURANT);
+				}
+				else
+				{
+					showAll.setSelected(false);
+					showRestaurant.setSelected(false);
+					panel.hideAlertsWithTag(AlertTag.RYANS_RESTAURANT);
+				}
+			}else if(c == showDylanRestaurant){
+				if(c.isSelected()){
+					panel.showAlertsWithTag(AlertTag.DYLANS_RESTAURANT);
+				}
+				else
+				{
+					showAll.setSelected(false);
+					showRestaurant.setSelected(false);
+					panel.hideAlertsWithTag(AlertTag.DYLANS_RESTAURANT);
+				}
+			}else if(c == showByronRestaurant){
+				if(c.isSelected()){
+					panel.showAlertsWithTag(AlertTag.BYRONS_RESTAURANT);
+				}
+				else
+				{
+					showAll.setSelected(false);
+					showRestaurant.setSelected(false);
+					panel.hideAlertsWithTag(AlertTag.BYRONS_RESTAURANT);
+				}
+			}else if(c == showLucaRestaurant){
+				if(c.isSelected()){
+					panel.showAlertsWithTag(AlertTag.LUCAS_RESTAURANT);
+				}
+				else
+				{
+					showAll.setSelected(false);
+					showRestaurant.setSelected(false);
+					panel.hideAlertsWithTag(AlertTag.LUCAS_RESTAURANT);
+				}
+			}else if(c == showJeffreyRestaurant){
+				if(c.isSelected()){
+					panel.showAlertsWithTag(AlertTag.JEFFREYS_RESTAURANT);
+				}
+				else
+				{
+					showAll.setSelected(false);
+					showRestaurant.setSelected(false);
+					panel.hideAlertsWithTag(AlertTag.JEFFREYS_RESTAURANT);
+				}
+			}else if(c == showMikeRestaurant){
+				if(c.isSelected()){
+					panel.showAlertsWithTag(AlertTag.MIKES_RESTAURANT);
+				}
+				else
+				{
+					showAll.setSelected(false);
+					showRestaurant.setSelected(false);
+					panel.hideAlertsWithTag(AlertTag.MIKES_RESTAURANT);
 				}
 			}
 			

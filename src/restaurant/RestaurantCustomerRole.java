@@ -30,7 +30,6 @@ public class RestaurantCustomerRole extends GenericCustomer implements Customer 
 	private int tableY = -1;
 	private int mealChoice = -1;
 	private Menu menu;
-	private double money;
 	private double amountSpent;
 	DecimalFormat moneyForm = new DecimalFormat("#.##");
 	int stayLeave = -1;
@@ -60,7 +59,7 @@ public class RestaurantCustomerRole extends GenericCustomer implements Customer 
 	public RestaurantCustomerRole(){
 		super();
 
-        money = Double.valueOf(moneyForm.format(20.00));
+        //money = Double.valueOf(moneyForm.format(20.00));
 	}
 	
 	public void setPerson(PersonAgent person) {
@@ -72,7 +71,7 @@ public class RestaurantCustomerRole extends GenericCustomer implements Customer 
 	}
 	
 	public void setWaiter(GenericWaiter waiter2) {
-		this.waiter = (OldWaiterRole) waiter2;
+		this.waiter = (Waiter) waiter2;
 	}
 	
 	public void setCashier(GenericCashier cashier) {
@@ -129,9 +128,8 @@ public class RestaurantCustomerRole extends GenericCustomer implements Customer 
 	}
 	
 	public void msgCheckPayed() {
-		money = money - amountSpent;
-        money = Double.valueOf(moneyForm.format(money));
-		print("Spent $" + amountSpent + ". I have $" + money + " left.");
+		myPerson.setMoney(myPerson.getMoney() - amountSpent);
+		print("Spent $" + amountSpent + ". I have $" + myPerson.getMoney() + " left.");
 		event = AgentEvent.donePaying;
 		stateChanged();
 	}
@@ -162,6 +160,7 @@ public class RestaurantCustomerRole extends GenericCustomer implements Customer 
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAction() {
+		print(host.getNameOfRole());
 		//	CustomerAgent is a finite state machine
 		if (stayLeave == 1) {
 			LeaveBeforeSeated();
@@ -240,7 +239,7 @@ public class RestaurantCustomerRole extends GenericCustomer implements Customer 
 	}
 	
 	private void LookAtMenu() {
-		if(money >= 5.99) {
+		if(myPerson.getMoney() >= 5.99) {
 			print("Looking at menu");
 			timer.schedule(new TimerTask() {
 				public void run() {
@@ -353,10 +352,6 @@ public class RestaurantCustomerRole extends GenericCustomer implements Customer 
 		//could be a state change. Maybe you don't
 		//need to eat until hunger lever is > 5?
 	}
-	
-	public double getMoney() {
-		return money;
-	}
 
 	public String toString() {
 		return "customer " + getNameOfRole();
@@ -432,6 +427,11 @@ public class RestaurantCustomerRole extends GenericCustomer implements Customer 
 	@Override
 	public String getNameOfRole() {
 		return Role.RESTAURANT_CUSTOMER_ROLE;
+	}
+
+	@Override
+	public double getMoney() {
+		return myPerson.getMoney();
 	}
 }
 
