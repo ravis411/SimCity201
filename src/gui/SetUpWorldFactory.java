@@ -579,7 +579,7 @@ public class SetUpWorldFactory{
                                 p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_MIKE_HOST_ROLE, "Mike's Restaurant"), "Mike's Restaurant");
                                 break;
                         case "Person 5":
-                                p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_MIKE_COOK_ROLE, "Mike's Restaurant"), "Mike's Restaurant");
+                                p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_CUSTOMER_ROLE, "Dylan's Restaurant"), "Dylan's Restaurant");
                                 break;
                         case "Person 4":
                                 p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_MIKE_CASHIER_ROLE, "Mike's Restaurant"), "Mike's Restaurant");
