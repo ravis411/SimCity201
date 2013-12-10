@@ -66,7 +66,7 @@ public class WaiterGui implements Gui {
 		agent = wtr;
 		this.gui = gui;
 		isPresent = false;
-		moving = false;
+		moving = true;
 		
 		xPos = X_INITIAL;
 		yPos = Y_INITIAL;
@@ -78,6 +78,9 @@ public class WaiterGui implements Gui {
 		
 		IDLE_X = INITIAL_IDLE_X+(WIDTH+PADDING)*col;
 		IDLE_Y = INITIAL_IDLE_Y+(HEIGHT+PADDING)*row;
+		
+		xDestination = IDLE_X;
+		yDestination = IDLE_Y;
 		
 		icon = new ImageIcon(this.getClass().getResource("/mikeRestaurant/res/waitress.png"));
 	}

@@ -622,7 +622,7 @@ public class CustomerRole extends GenericCustomer implements Customer{
 	@Override
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
-		return Role.RESTAURANT_CUSTOMER_ROLE;
+		return Role.RESTAURANT_MIKE_CUSTOMER_ROLE;
 	}
 
 }

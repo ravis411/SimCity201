@@ -550,7 +550,6 @@ public class RyansCookRole extends GenericCook implements ActionListener{
 	public CookGui getGui() {
 		return agentGui;
 	}
-
 	
 	
 	
@@ -583,7 +582,6 @@ public class RyansCookRole extends GenericCook implements ActionListener{
 		// TODO Auto-generated method stub
 		return ShiftTime.DAY_SHIFT;
 	}
-
 
 	@Override
 	public Double getSalary() {

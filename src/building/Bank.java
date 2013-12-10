@@ -7,7 +7,7 @@ import bank.BankClientRole;
 import bank.BankTellerRole;
 import bank.LoanTellerRole;
 
-public class Bank extends Building implements Workplace {
+public class Bank extends Workplace {
 
 	public boolean isOpenSetter = false;
 	public Bank(BuildingPanel panel) {

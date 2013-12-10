@@ -4,7 +4,7 @@ import Person.Role.Employee;
 import Person.Role.Role;
 import gui.Building.BuildingPanel;
 
-public class Market extends Building implements Workplace {
+public class Market extends  Workplace {
 
 	public Market(BuildingPanel panel) {
 		super(panel);

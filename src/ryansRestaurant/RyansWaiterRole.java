@@ -563,6 +563,7 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 	public void setCook(GenericCook c) {
 		// TODO Auto-generated method stub
 		this.cook = (RyansCookRole) c;
+		this.waiterGui.setCook(this.cook.getGui());
 	}
 
 
@@ -584,12 +585,7 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 
 
 	@Override
-	public ShiftTime getShift() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
 	public Double getSalary() {
 		// TODO Auto-generated method stub
 		return 42.00;

@@ -271,13 +271,7 @@ public class LoanTellerRole extends Employee implements LoanTeller{
 	public String getNameOfRole() {
 		return null;
 	}
-
-	@Override
-	public ShiftTime getShift() {
-
-		return null;
-	}
-
+	
 	@Override
 	public Double getSalary() {
 
