@@ -1,19 +1,20 @@
 <?xml version="1.0"?>
 <configuration>
-	<building-config>
-		<building id="1" type="Residence" name="House 1" />
-		<building id="2" type="Residence" name="House 2" />
-		<building id="3" type="Market" name="Market 1" />
-		<building id="4" type="Apartment" name="Apartment Building" />
-		<building id="5" type="Bank" name="Bank" />
-		<building id="6" type="Apartment" name="Apartment Building 1" />
-		<building id="7" type="Apartment" name="Apartment Building 4" />
-		<building id="8" type="Restaurant" name="Restaurant 1" />
-		<building id="9" type="Apartment" name="Apartment Building 2" />
-		<building id="10" type="Default" name="Default" />
-		<building id="11" type="Food Court" name="Food Court" />
-		<building id="12" type="Default" name="Default 1" />
-	</building-config>
+    <building-config>
+        <building id="1" type="Residence" name="House 1"/>
+        <building id="2" type="Residence" name="House 2"/>
+        <building id="3" type="Market" name="Market 1"/>
+        <building id="4" type="Apartment" name="Apartment Building"/>
+        <building id="5" type="Bank" name="Bank" />
+        <building id="6" type="Apartment" name="Apartment Building 1"/>
+        <building id="7" type="Apartment" name="Apartment Building 4"/>
+        <building id="8" type="Restaurant" name="Restaurant 1"/>
+        <building id="9" type="Apartment" name="Apartment Building 2"/>
+        <building id="10" type="Default" name="Default"/>
+        <building id="11" type="Food Court" name="Food Court"/>
+        <building id="12" type="Default" name="Default 1"/>
+    </building-config>
+>>>>>>> develop
 	<people>
 		<person name="Person 1" job="byronRestaurant.HostRole"
 			location="Byron's Restaurant" home="Apartment 1">

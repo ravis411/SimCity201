@@ -3,18 +3,21 @@ package restaurant.luca;
 import interfaces.MarketManager;
 import interfaces.generic_interfaces.GenericCook;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
+import javax.swing.Timer;
+
 import restaurant.gui.luca.CookGui;
 import restaurant.interfaces.luca.LucaCook;
 import restaurant.interfaces.luca.LucaWaiter;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
-import MarketEmployee.MarketEmployeeRole;
 import Person.Role.ShiftTime;
 import agent.Constants;
 
@@ -46,7 +49,7 @@ public class LucaCookRole extends GenericCook implements LucaCook{
 	public enum AgentEvent 
 	{none, recievedOrder, foodOutOfStock, MarketAskedIfTheyHaveFoodType, orderDoneCooking, waiterHasBeenNotified};
 	private AgentEvent event = AgentEvent.none;
-	
+	private RevolvingStand revolvingStand;
 	/**
 	 * Constructor for CustomerAgent class
 	 *
@@ -61,6 +64,20 @@ public class LucaCookRole extends GenericCook implements LucaCook{
 		foodTypes.add(new Food("Burger", 5, 0));//Food type, cooktime, quantity
 		myWaitingOrders = Collections.synchronizedCollection(new ArrayList<Order>());
 		myRejectedOrders = Collections.synchronizedCollection(new ArrayList<Order>());
+		
+		revolvingStand = new RevolvingStand();
+		
+		Timer checkRevolvingStand = new Timer(15000, new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub	
+				stateChanged();
+			}
+			
+		});
+		
+		checkRevolvingStand.start();
 	}
 	
 	public String getName(){
@@ -202,6 +219,17 @@ public class LucaCookRole extends GenericCook implements LucaCook{
 					
 			}
 		}
+
+		else if(!revolvingStand.isEmpty()){
+	              //get the order from the stand
+			LucaWaiterRole.Order order = revolvingStand.getLastOrder();
+		              //structure the order data to fit in with my old cooking routine
+			Order newOrder = new Order(order.getTable(), order.getChoice(), order.getWaiter());
+			event = AgentEvent.recievedOrder;
+			myWaitingOrders.add(newOrder);
+		              //cook the order in the same way
+		return true;
+	}
 
 		return false;
 		//we have tried all our rules and found
@@ -447,6 +475,10 @@ public class LucaCookRole extends GenericCook implements LucaCook{
 			String string) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public RevolvingStand getRevolvingStand() {
+		return revolvingStand;
 	}
 
 

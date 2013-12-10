@@ -23,19 +23,19 @@ public class CookGui implements Gui {
 	private final int HEIGHT = 30;
 	
 	private final int COOKING_X = 675;
-	private final int COOKING_Y = 175;
+	private final int COOKING_Y = 75;
 	
 	private final int GRILL_INITIAL_X = 675;
-	private final int GRILL_INITIAL_Y = 150;
+	private final int GRILL_INITIAL_Y = 50;
 	private final int GRILL_WIDTH = 25;
 	
 	public final static int PICKUP_X = 530;
-	public final static int PICKUP_Y = 175;
+	public final static int PICKUP_Y = 75;
 	
 	public final int FRIDGE_X = 800;
-	public final int FRIDGE_Y = 175;
+	public final int FRIDGE_Y = 75;
 	
-	public final int LABEL_HEIGHT = 135;
+	public final int LABEL_HEIGHT = 35;
 	
 	private boolean moving;
 	private MikeAnimationPanel gui;

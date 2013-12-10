@@ -13,7 +13,7 @@ import Person.Role.ShiftTime;
 
 public interface Person extends DateListener{
 	
-	public void deactivateAllRoles();
+	public void deactivateCurrentRole();
 	
 	public void workIsOpen();
 	

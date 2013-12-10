@@ -4,7 +4,8 @@ import interfaces.Person;
 
 public abstract class Role {
 
-	private boolean isActive = false;
+	public RoleState roleState = RoleState.Inactive;
+
 	protected Person myPerson;
 	
 	private boolean isWaitingAtWork = false;
@@ -25,7 +26,8 @@ public abstract class Role {
 	public final static String RESTAURANT_COOK_ROLE = "restaurant.CookRole";
 	public final static String RESTAURANT_CASHIER_ROLE = "restaurant.CashierRole";
 	public final static String RESTAURANT_LUCA_CUSTOMER_ROLE = "restaurant.luca.LucaRestaurantCustomerRole";
-	public final static String RESTAURANT_LUCA_WAITER_ROLE = "restaurant.luca.LucaWaiterRole";
+	public final static String RESTAURANT_LUCA_WAITER_ROLE = "restaurant.luca.LucaOldWaiterRole";
+	public final static String RESTAURANT_LUCA_NEW_WAITER_ROLE = "restaurant.luca.LucaNewWaiterRole";
 	public final static String RESTAURANT_LUCA_HOST_ROLE = "restaurant.luca.LucaHostRole";
 	public final static String RESTAURANT_LUCA_COOK_ROLE = "restaurant.luca.LucaCookRole";
 	public final static String RESTAURANT_LUCA_CASHIER_ROLE = "restaurant.luca.LucaCashierRole";
@@ -98,7 +100,7 @@ public abstract class Role {
 	 * @return true if active, false otherwise
 	 */
 	public boolean isActive(){
-		return isActive;
+		return roleState == RoleState.Active;
 	}
 	
 	/**
@@ -121,7 +123,7 @@ public abstract class Role {
 	 * Activate the role
 	 */
 	public void activate(){
-		isActive = true;
+		roleState = RoleState.Active;
 		//stateChanged();
 	}
 	
@@ -143,7 +145,12 @@ public abstract class Role {
 	 * Deactivate a specific role
 	 */
 	public void deactivate(){
-		isActive = false;
+		roleState = RoleState.Deactivating;
+		stateChanged();
+	}
+	
+	public void kill(){
+		roleState = RoleState.Inactive;
 		stateChanged();
 	}
 	

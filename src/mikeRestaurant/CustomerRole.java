@@ -150,7 +150,7 @@ public class CustomerRole extends GenericCustomer implements Customer{
 	
 	public void msgArrivedAtLeave(){
 		atLeave.release();
-		deactivate();
+		kill();
 	}
 	
 	/**
