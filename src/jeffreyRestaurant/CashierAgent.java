@@ -222,8 +222,7 @@ public class CashierAgent extends GenericCashier implements Cashier {
 
 	@Override
 	public String getNameOfRole() {
-		// TODO Auto-generated method stub
-		return null;
+		return Role.RESTAURANT_JEFFREY_CASHIER_ROLE;
 	}
 
 	@Override

@@ -53,10 +53,9 @@ public class HostAgent extends GenericHost {
 
 	public HostGui hostGui = null;
 
-	public HostAgent(String name, String location) {
+	public HostAgent(String location) {
 		super(location);
 
-		this.name = name;
 		// make some tables
 		atDesk = true;
 		tables = new ArrayList<Table>(NTABLES);
@@ -66,7 +65,7 @@ public class HostAgent extends GenericHost {
 	}
 
 	public String getName() {
-		return name;
+		return myPerson.getName();
 	}
 
 	public List getCustomers() {
@@ -80,10 +79,10 @@ public class HostAgent extends GenericHost {
 	public void setAtDesk(Boolean state) {
 		atDesk = state;
 	}
-	public void addWaiter(WaiterAgent w) {
-		waiters.add(new myWaiter(w, WaiterState.working));
-		stateChanged();
-	}
+//	public void addWaiter(WaiterAgent w) {
+//		waiters.add(new myWaiter(w, WaiterState.working));
+//		stateChanged();
+//	}TODO
 	// Messages
 
 	public void msgIWantFood(CustomerAgent cust) {
@@ -272,14 +271,13 @@ public class HostAgent extends GenericHost {
 
 	@Override
 	public String getNameOfRole() {
-		// TODO Auto-generated method stub
-		return null;
+		return Role.RESTAURANT_JEFFREY_HOST_ROLE;
 	}
 
 	@Override
 	public void addWaiter(GenericWaiter waiter) {
-		// TODO Auto-generated method stub
-		
+		waiters.add(new myWaiter((WaiterAgent) waiter, WaiterState.working));
+		stateChanged();
 	}
 
 	@Override

@@ -75,10 +75,9 @@ public class WaiterAgent extends GenericWaiter implements Waiter{
 	private CashierAgent ch;
 	public HostGui hostGui = null;
 
-	public WaiterAgent(String name, String location) {
+	public WaiterAgent(String location) {
 		super(location);
 
-		this.name = name;
 		wantsBreak = false;
 		onBreak = false;
 	}
@@ -96,7 +95,7 @@ public class WaiterAgent extends GenericWaiter implements Waiter{
 //		ch = cashier;
 //	}
 	public String getName() {
-		return name;
+		return myPerson.getName();
 	}
 
 	public List getCustomers() {
@@ -449,25 +448,21 @@ public class WaiterAgent extends GenericWaiter implements Waiter{
 
 	@Override
 	public String getNameOfRole() {
-		// TODO Auto-generated method stub
-		return null;
+		return Role.RESTAURANT_JEFFREY_WAITER_ROLE;
 	}
 
 	@Override
 	public void setCook(GenericCook c) {
-		// TODO Auto-generated method stub
 		this.ck = (CookAgent) c;
 	}
 
 	@Override
 	public void setCashier(GenericCashier c) {
-		// TODO Auto-generated method stub
 		this.ch = (CashierAgent) c;
 	}
 
 	@Override
 	public void setHost(GenericHost h) {
-		// TODO Auto-generated method stub
 		this.h = (HostAgent) h;
 	}
 
