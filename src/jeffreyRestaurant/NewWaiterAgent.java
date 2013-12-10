@@ -1,8 +1,8 @@
 package jeffreyRestaurant;
 
-public class OldWaiterAgent extends WaiterAgent {
+public class NewWaiterAgent extends WaiterAgent {
 
-	public OldWaiterAgent(String location) {
+	public NewWaiterAgent(String location) {
 		super(location);
 		// TODO Auto-generated constructor stub
 	}
@@ -16,9 +16,10 @@ public class OldWaiterAgent extends WaiterAgent {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ck.msgHereIsOrder(this, mc.ch, mc.table);
+		ck.getStand().addOrder(this, mc.ch, mc.table);
 		mc.s = CustomerState.Ordered;
 		hostGui.DoLeaveCustomer();
+
 	}
 
 }

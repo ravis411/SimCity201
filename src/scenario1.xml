@@ -314,7 +314,7 @@
 			    <friend name="Person 4" />
 			</friends>
 		</person>
-		<person name="JTest Waiter" job="jeffreyRestaurant.OldWaiterAgent"
+		<person name="JTest Waiter" job="jeffreyRestaurant.NewWaiterAgent"
 		    location="Jeffrey's Restaurant" home="Apartment 13">
 			<friends>
 				<friend name="Person 1" />
