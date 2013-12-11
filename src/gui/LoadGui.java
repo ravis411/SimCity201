@@ -134,6 +134,7 @@ public class LoadGui extends JFrame implements ActionListener{
 		this.revalidate();
 		this.repaint();
 		this.setVisible(true);
+		cancelButton.doClick();
 	}
 
 	
