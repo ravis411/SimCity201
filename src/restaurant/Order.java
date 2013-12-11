@@ -1,9 +1,9 @@
 package restaurant;
 
+import interfaces.Customer;
+import interfaces.Waiter;
 import restaurant.Menu;
 import restaurant.Menu.Dish;
-import restaurant.interfaces.Customer;
-import restaurant.interfaces.Waiter;
 
 public class Order
 {
@@ -13,7 +13,7 @@ public class Order
 	//Dish choice;
 	int table;
 	public enum orderStatus {pending, cooking, cooked}
-	private orderStatus status = orderStatus.pending;
+	public orderStatus status = orderStatus.pending;
 	int cookTime;
 
 	public Order (Waiter waiter, int choice, int table, Customer customer) {

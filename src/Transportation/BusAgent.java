@@ -1,15 +1,17 @@
 package Transportation;
 
+import interfaces.Bus;
+import interfaces.BusStop;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import trace.AlertLog;
 import trace.AlertTag;
-import gui.agentGuis.VehicleGui;
-import gui.interfaces.BusStop;
-import gui.interfaces.Bus;
+import gui.agentGuis.BusGui;
 import agent.Agent;
 
 public class BusAgent extends Agent implements Bus 
@@ -24,7 +26,7 @@ public class BusAgent extends Agent implements Bus
 	private Map<String, BusStop> stopAgents = new HashMap<String,BusStop>();
 	private int count, stopSize;
 	public BusStop currentStop;
-	public VehicleGui agentGui;
+	public BusGui agentGui;
 	
 	private List<myBusPassenger> passengers = Collections.synchronizedList(new ArrayList<myBusPassenger>());
 
@@ -47,6 +49,7 @@ public class BusAgent extends Agent implements Bus
 		state = AgentState.readyToLeave;
 
 		this.name = name;
+		this.agentGui = new BusGui(this);
 	}
 	/**
 	 * Utility function for filling in the map of Bus Stops for the Bus Agent. 
@@ -69,9 +72,10 @@ public class BusAgent extends Agent implements Bus
 	 * @param passengers List of the myBusPassenger class sent from bus stop
 	 */
 	public void msgHereArePassengers(List<myBusPassenger> passengers ){
-		AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, "BusAgent", "Number of People added: "+passengers.size());
-		if(passengers.size() > 0)
+		if(passengers.size() > 0){
+			AlertLog.getInstance().logMessage(AlertTag.BUS_STOP, "BusAgent", "Number of People added: "+passengers.size());
 			this.passengers.addAll(passengers);
+		}
 		state = AgentState.readyToLeave;
 		stateChanged();
 	}
@@ -105,10 +109,11 @@ public class BusAgent extends Agent implements Bus
 	//Actions
 	
 	private void GoToNextStop(){
-		print("going to next stop");
+		agentGui.setNumberPassengers(passengers.size());
+		//print("going to next stop");
 		//currentStop.msgLeavingStop();
 		state = AgentState.inTransit;
-		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Going to next stop");
+		//AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Going to next stop");
 		
 		//print("Count is now: " + count);
 		count++;
@@ -132,6 +137,7 @@ public class BusAgent extends Agent implements Bus
 	private void notifyPassenger(myBusPassenger pas) {
 		pas.passenger.msgWeHaveArrived(location);
 		passengers.remove(pas);
+		agentGui.setNumberPassengers(passengers.size());
 	}
 	
 	

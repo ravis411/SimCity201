@@ -1,29 +1,33 @@
 package restaurant;
 
+import interfaces.Cashier;
+import interfaces.Customer;
+import interfaces.Market;
+import interfaces.Waiter;
+import interfaces.generic_interfaces.GenericCashier;
+
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 
-import bank.BankTellerRole;
-import building.BuildingList;
 import restaurant.gui.CashierGui;
-import restaurant.interfaces.Cashier;
-import restaurant.interfaces.Customer;
-import restaurant.interfaces.Market;
-import restaurant.interfaces.Waiter;
 import trace.AlertLog;
 import trace.AlertTag;
-import MarketEmployee.MarketManagerRole;
 import Person.Role.Role;
+import Person.Role.RoleState;
+import Person.Role.ShiftTime;
+import bank.BankTellerRole;
+import building.BuildingList;
+import building.Restaurant;
 
 
 /**
  * Restaurant Cashier Agent
  */
 
-public class CashierRole extends Role implements Cashier {
+public class CashierRole extends GenericCashier implements Cashier {
 	private Vector<Check> checks = new Vector<Check>();
 	private Vector<Check> payingCustomers = new Vector<Check>();
 	private Vector<MarketBill> marketBills = new Vector<MarketBill>();
@@ -45,12 +49,12 @@ public class CashierRole extends Role implements Cashier {
 	CashierGui cashierGui = null;
 	BankTellerRole teller = null;
 
-	public CashierRole() {
-		super();
+	public CashierRole(String workLocation) {
+		super(workLocation);
 		
 		List<Role> inhabitants = BuildingList.findBuildingWithName("Bank").getInhabitants();
 		for(Role r : inhabitants) {
-			if (r.getNameOfRole() == "BANK_TELLER_ROLE") {
+			if (r.getNameOfRole() == Role.BANK_TELLER_ROLE) {
 				BankTellerRole bt = (BankTellerRole) r;
 				teller = bt;
 			}
@@ -66,24 +70,24 @@ public class CashierRole extends Role implements Cashier {
 	// Messages
 	
 	public void msgPrepareCheck(Waiter waiter, Customer customer, int mealChoice) {
-		print("Received check from " + waiter.getName());
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Received check from " + waiter.getName());
 		checks.add(new Check(waiter, customer, mealChoice));
 		stateChanged();
 	}
 	
 	public void msgPayingCheck(Customer customer, double amountOwed) {
-		print(customer.getName() + " is paying bill.");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), customer.getName() + " is paying bill.");
 		payingCustomers.add(new Check(customer, amountOwed));
 		stateChanged();
 	}
 	
 	public void msgMarketBill(Market market, double amount) {
-		print("Received bill from market for $" + amount);
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Received bill from market for $" + amount);
 		marketBills.add(new MarketBill(market,amount));
 		stateChanged();
 	}
 	public void msgReceivedDeposit(double amount){
-		print("Deposited $" + amount + " to bank.");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Deposited $" + amount + " to bank.");
 		money = money - amount;
 		stateChanged();
 	}
@@ -101,6 +105,10 @@ public class CashierRole extends Role implements Cashier {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAction() {
+		if(roleState == RoleState.Deactivating) {
+			kill();
+			return true;
+		}
 		if(!debts.isEmpty() && money>0.00) {
 			payMarketBill(debts.get(0));
 			debts.remove(0);
@@ -130,7 +138,7 @@ public class CashierRole extends Role implements Cashier {
 	private void ringUpCheck(final Check check) {
 		timer.schedule(new TimerTask() {
 			public void run() {
-				print(check.customer.getName() + " owes $" + menu.getDishPrice(check.mealChoice));
+				AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), check.customer.getName() + " owes $" + menu.getDishPrice(check.mealChoice));
 				check.waiter.msgCheckReady(check.customer, menu.getDishPrice(check.mealChoice));
 				stateChanged();
 			}
@@ -140,24 +148,24 @@ public class CashierRole extends Role implements Cashier {
 	
 	private void chargeCustomer(Check check) {
 		if(check.customer.getMoney() >= check.amount) {
-			print(check.customer.getName() + " has $" + check.customer.getMoney() + ". Enough to pay bill.");
+			AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), check.customer.getName() + " has $" + check.customer.getMoney() + ". Enough to pay bill.");
 			money = money + check.amount;
 			check.customer.msgCheckPayed();
 		}
 		else {
-			print(check.customer.getName() + " has $" + check.customer.getMoney() + ". Not enough to pay bill.");
+			AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), check.customer.getName() + " has $" + check.customer.getMoney() + ". Not enough to pay bill.");
 			check.customer.msgCheckNotPayed();
 		}
 	}
 	
 	private void payMarketBill(MarketBill bill) {
 		if(money >= bill.amount) {
-			print("Paying " + bill.market.getName() + " $" + bill.amount);
+			AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Paying " + bill.market.getName() + " $" + bill.amount);
 			money = money-bill.amount;
 			bill.market.msgReceivePayment(bill.amount);
 		}
 		if(money < bill.amount) {
-			print("I don't have enough money to pay " + bill.market.getName() + ". I'll pay it off next time!");
+			AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "I don't have enough money to pay " + bill.market.getName() + ". I'll pay it off next time!");
 			debts.add(bill);
 		}
 	}
@@ -219,7 +227,13 @@ public class CashierRole extends Role implements Cashier {
 
 	@Override
 	public String getNameOfRole() {
-		return "CashierRole";
+		return Role.RESTAURANT_CASHIER_ROLE;
+	}
+
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 

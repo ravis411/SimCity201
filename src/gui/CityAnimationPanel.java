@@ -1,14 +1,35 @@
 package gui;
 
 import gui.Building.BuildingGui;
+import gui.agentGuis.DrunkDriverAgent;
+import gui.agentGuis.DrunkPersonAgent;
 
 import javax.swing.*;
 
+import util.MasterTime;
+
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Calendar;
-import java.util.List;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
+
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
+import util.MasterTime;
+import building.Building;
+import building.BuildingList;
 
 
 
@@ -25,12 +46,11 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 	private final int WINDOWY;
 
 
-	private List<Gui> guis = new ArrayList<Gui>();
+	private List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
 	private List<BuildingGui> buildings = new ArrayList<BuildingGui>(); 
 
 	private SimCityLayout layout = null;
 
-	public static final Calendar calendar = Calendar.getInstance();
 	private float ampmAlpha = 0f;
 	
 	
@@ -62,13 +82,14 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 
 	public void actionPerformed(ActionEvent e) {
 		repaint();  //Will have paintComponent called
-		
 	}
 
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
 
-		calendar.add(Calendar.MINUTE, 1);
+		MasterTime.getInstance().add(Calendar.SECOND, 10);
+		Building bdg = BuildingList.findBuildingWithName("Mike's Restaurant");
+		//System.out.println(bdg.getInhabitants().size());
 		//AlertLog.getInstance().logInfo(AlertTag.GENERAL_CITY, "Calendar", calendar.toString());
 		
 		
@@ -85,15 +106,18 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		
 		g2.setColor(Color.orange);
 
-		for(Gui gui : guis) {
-			if (gui.isPresent()) {
-				gui.updatePosition();
+		synchronized (guis) {
+			for(Gui gui : guis) {
+				if (gui.isPresent()) {
+					gui.updatePosition();
+				}
 			}
 		}
-
-		for(Gui gui : guis) {
-			if (gui.isPresent()) {
-				gui.draw(g2);
+		synchronized(guis){
+			for(Gui gui : guis) {
+				if (gui.isPresent()) {
+					gui.draw(g2);
+				}
 			}
 		}
 		
@@ -107,10 +131,13 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 //		}
 		
 		
+		
+		
+		
 		//This section makes the city dark at night and draws the clock.
-		if(calendar.get(Calendar.HOUR_OF_DAY) >= 18 && ampmAlpha < .3f){
+		if(MasterTime.getInstance().get(Calendar.HOUR_OF_DAY) >= 18 && ampmAlpha < .3f){
 			ampmAlpha += 0.001f;
-		}else if(calendar.get(Calendar.HOUR_OF_DAY) <= 6 && ampmAlpha > .01f)
+		}else if(MasterTime.getInstance().get(Calendar.HOUR_OF_DAY) <= 6 && ampmAlpha > .01f)
 		{
 			ampmAlpha -= 0.001f;
 		}
@@ -123,10 +150,17 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 			g2.setComposite(orig);
 		}
 		g2.setColor(Color.white);
-		String time = new java.text.SimpleDateFormat("EEEE, MM/dd/yyyy hh:mm a").format(calendar.getTime());
+		String time = MasterTime.getInstance().calendarString();
 		g2.drawString(time, g.getClipBounds().width - 225, g.getClipBounds().height - 30);
 	}
 
+	
+	
+	
+	
+	
+	
+	
 	public void addGui(Gui gui) {
 		guis.add(gui);
 	}
@@ -140,12 +174,13 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		guis.add(b);
 		
 	}
-	
-	
+
+
 	public void setTestView(boolean testView){
-		for(Gui g : guis){
-			g.setTestView(testView);
-		}
+		synchronized (guis) {
+			for(Gui g : guis){
+				g.setTestView(testView);
+		}}
 		this.testView = testView;
 	}
 
@@ -174,14 +209,52 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		
 	}
 
+	Point heldPoint = null;
 	@Override
-	public void mousePressed(MouseEvent arg0) {
-		
+	public void mousePressed(MouseEvent e) {
+		heldPoint = e.getPoint();
 	}
-
+	
+	DrunkDriverAgent dca = null;
+	DrunkPersonAgent dpa = null;
+	
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
+	public void mouseReleased(MouseEvent e) {
 		
-	}
 
+		if( ( heldPoint.x < ((int)WINDOWX/2) && e.getPoint().x > ((int)WINDOWX/2) ) || 
+				( heldPoint.x > ((int)WINDOWX/2) && e.getPoint().x < ((int)WINDOWX/2) ) ||
+				( heldPoint.y < ((int)WINDOWY/2) && e.getPoint().y > ((int)WINDOWY/2) ) ||
+				( heldPoint.y > ((int)WINDOWY/2) && e.getPoint().y < ((int)WINDOWY/2) )	){
+
+			for (BuildingGui b : buildings) {
+				if (b.contains(e.getPoint())) {
+
+					if(e.getButton() == MouseEvent.BUTTON1){
+						//Send the drunk Person here to run into the road.
+						if (dca == null)
+							dca = new DrunkDriverAgent("LIKE OMG");
+						dca.msgGoTo(b.getName());
+						dca.msgRunIntoTheRoad();
+					}else{
+						if (dpa == null)
+							dpa = new DrunkPersonAgent("aahahaaaa");
+						
+						dpa.msgGoTo(b.getName());
+						dpa.msgRunIntoTheRoad();
+					}
+				}
+			}
+
+
+
+		}//end drunk driver loop.
+		
+		
+		
+		
+		
+		heldPoint = null;
+	}
+	
 }

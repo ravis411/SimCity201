@@ -1,66 +1,43 @@
 package restaurant;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
+import interfaces.Customer;
+import interfaces.Waiter;
 
-import restaurant.interfaces.Customer;
-import restaurant.interfaces.Waiter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class RevolvingStand {
 
-	private static RevolvingStand instance = null;
-	private final int CAPACITY = 5;
+	private List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
 	
-	private Queue<Order> incomingOrders;
-	
-	protected RevolvingStand(){
-		incomingOrders = new ArrayDeque<Order>();
+	/**
+	 * Adds an order to the Stand based on the necessary parameters
+	 * @param w the GenericWaiter
+	 * @param choice the choice
+	 * @param t the Table
+	 */
+	public synchronized void addOrder(Waiter w, int choice, int table, Customer c){
+		orders.add(new Order(w, choice, table, c));
 	}
 	
-	public static RevolvingStand getInstance(){
-		if(instance == null){
-			instance = new RevolvingStand();
+	/**
+	 * Will try and take the last order, if it exists,
+	 * removing it from the list if successful.
+	 * @return the final order in the list
+	 */
+	public synchronized Order getLastOrder(){
+		if(orders.size() != 0){
+			return orders.remove(0);
 		}
-		
-		return instance;
+		return null;
 	}
 	
-	public synchronized void addIncomingOrder(Waiter w, int tableNumber, int item, Customer c){
-		if(incomingOrders.size() == CAPACITY){
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		incomingOrders.add(new Order(w, tableNumber, item, c));
-		notify();
-	}
-	
+	/**
+	 * Returns true if there are no orders in the list, false otherwise
+	 * @return true if there are no orders in the list, false otherwise
+	 */
 	public synchronized boolean isEmpty(){
-		return incomingOrders.isEmpty();
+		return orders.isEmpty();
 	}
-	
-	public synchronized boolean isFull(){
-		return incomingOrders.size() == CAPACITY;
-	}
-	
-	public synchronized Order popOrder(){
-		if(incomingOrders.isEmpty()){
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		Order order = incomingOrders.poll();
-		notify();
-		return order;
-	}
-	
-
-	
 }

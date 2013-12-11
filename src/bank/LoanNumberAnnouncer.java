@@ -1,13 +1,11 @@
 package bank;
 
 import agent.Agent;
-
-
 import bank.NumberAnnouncer.numberState;
-import bank.interfaces.AnnouncerB;
-import bank.interfaces.BankClient;
-import bank.interfaces.BankTeller;
-import bank.interfaces.LoanTeller;
+import interfaces.AnnouncerB;
+import interfaces.BankClient;
+import interfaces.BankTeller;
+import interfaces.LoanTeller;
 
 import java.util.*;
 /**
@@ -56,6 +54,12 @@ public class LoanNumberAnnouncer extends Agent implements AnnouncerB{
 		state = numberState.announceL;
 		stateChanged();
 	}
+
+	public void msgRemoveClient(BankClient b){
+		clients.remove(b);
+		stateChanged();
+	}
+
 	public void msgGoodbye(){
 		loanTeller = null;
 		stateChanged();
@@ -66,7 +70,7 @@ public class LoanNumberAnnouncer extends Agent implements AnnouncerB{
 		if (loanTeller == null){
 			Reset();
 		}
-		if (loanTeller != null && state == numberState.announceL){
+		if (loanTeller != null && state == numberState.announceL && !(clients.isEmpty())){
 			announceNumberLoan();
 			return true;
 		}

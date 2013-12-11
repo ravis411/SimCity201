@@ -1,11 +1,12 @@
 package market.gui;
 
 
+import interfaces.MarketManager;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
-import market.interfaces.MarketManager;
 import MarketEmployee.MarketManagerRole;
 
 public class MarketManagerGui implements Gui {
@@ -34,7 +35,6 @@ public class MarketManagerGui implements Gui {
     private int waiterNumber=0;
     private int tableNum;
     private String orderBeingCarried = " ";
-    boolean goToTruck=false;
     public MarketManagerGui(MarketManagerRole marketManagereRole) {
         this.role = marketManagereRole;
         xDestination=xCounterEntranceCord;
@@ -72,11 +72,43 @@ public class MarketManagerGui implements Gui {
         	role.msgMarketEmployeeAtDesk();
         }
         if (xPos == xDestination && yPos == yDestination
+        		& (xDestination ==  xManagerOfficeDoor+60 & (yDestination ==  yManagerOfficeDoor))) {
+        	xDestination= xManagerOfficeDoor+60;
+        	yDestination= yManagerOfficeDoor-100;
+        	
+        }
+        if (xPos == xDestination && yPos == yDestination
+        		& (xDestination ==  xManagerOfficeDoor+60 & (yDestination ==  yManagerOfficeDoor-100))) {
+        	xDestination= xTruck;
+        	yDestination= yTruck;
+        	
+        }
+        if (xPos == xDestination && yPos == yDestination
         		& (xDestination == xTruck & (yDestination == yTruck))) {
         	
+        	xDestination= xManagerOfficeDoor+70;
+        	yDestination= yManagerOfficeDoor-110;
+        	role.msgMarketEmployeeAtTruck();
+        }
+        if (xPos == xDestination && yPos == yDestination
+        		& (xDestination == xManagerOfficeDoor+70 & (yDestination == yManagerOfficeDoor-110))) {
+        	
+        	xDestination= xManagerOfficeDoor+50;
+        	yDestination= yManagerOfficeDoor-1;
+        	
+        }
+        if (xPos == xDestination && yPos == yDestination
+        		& (xDestination == xManagerOfficeDoor+50 & (yDestination == yManagerOfficeDoor-1))) {
+        	
+        	xDestination= xManagerOfficeDoor-20;
+        	yDestination= yManagerOfficeDoor-1;
+        	
+        }
+        if (xPos == xDestination && yPos == yDestination
+        		& (xDestination ==  xManagerOfficeDoor-20 & (yDestination ==  yManagerOfficeDoor-1))) {
         	xDestination= xManagerOfficeDesk;
         	yDestination= yManagerOfficeDesk;
-        	role.msgMarketEmployeeAtTruck();
+        	role.msgMarketEmployeeAtDeskRelease();
         	
         }
         if (xPos == xDestination && yPos == yDestination
@@ -119,9 +151,8 @@ public class MarketManagerGui implements Gui {
     }
 
     public void DoGoToDeliveryTruck() {
-    	xDestination = xTruck;
-	    yDestination = yTruck;		
-	    goToTruck=true;
+    	xDestination = xManagerOfficeDoor+60;
+	    yDestination = yManagerOfficeDoor;		
 	}
     
 

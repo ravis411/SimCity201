@@ -23,13 +23,11 @@ import trace.TracePanel;
 
 
 
-
-
 @SuppressWarnings("serial")
 public class SimCity201Gui extends JFrame {
 
 	private final int WINDOWX = 800;
-	private final int WINDOWY = 800;
+	private final int WINDOWY = 815;
 	
 	SimCityLayout layout = null;// <-This holds the grid information
 	CityAnimationPanel cityPanel = null;//<-AnimationPanel draws the layout and the GUIs
@@ -44,17 +42,16 @@ public class SimCity201Gui extends JFrame {
 	/**
 	 * Default Constructor Initializes gui
 	*/
-	public SimCity201Gui() {
-		setTitle("SimCity201 V 1.0  - Team 29");
+	public SimCity201Gui(String config) {
+		setTitle("SimCity201 V 1.5  - Team 29");
         setVisible(true);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
         menuBar = new GuiJMenuBar(this);
 		this.setJMenuBar(menuBar);
-        
-        setBounds(50, 50, (int)(WINDOWX * 1.5), (WINDOWY + 50));
-		//setLayout(new GridLayout(1, 2));
+             
+        setBounds(50, 50, (int)(WINDOWX * 1.5), (WINDOWY));
 		setLayout(new GridBagLayout());
 		
 		
@@ -74,7 +71,7 @@ public class SimCity201Gui extends JFrame {
 		c.weightx = .8;
 		this.add(tracePanel, c);*/
 		c.gridx = 1; c.gridy = 0;
-		c.ipady = WINDOWY / 7;
+		//c.ipady = WINDOWY / 7;
 		c.gridheight = 2;
 		this.add(new TraceControlPanel(tracePanel), c);
 		
@@ -87,13 +84,15 @@ public class SimCity201Gui extends JFrame {
 		
 		
 		mainPanel.setLayout(new GridLayout(0, 1));
-		//add(mainPanel);
-		//add(tracePanel);
 	
-		
-		loadConfig("Default");
-		//loadConfig("GUI Test 1");
+		loadConfig(config);
 	}
+	
+	
+	
+	
+	
+	
 	
 	
 	/** Loads the config
@@ -111,27 +110,31 @@ public class SimCity201Gui extends JFrame {
 		factory = new SetUpWorldFactory();
 		
 		switch (config) {
-		case "Default":
+		case "Defaulttttt":
 			factory.LoadDefault();
-			layout = factory.layout;
-			cityPanel = factory.cityPanel;
-			buildingsPanels = factory.buildingsPanels;
+			layout = SetUpWorldFactory.layout;
+			cityPanel = SetUpWorldFactory.cityPanel;
+			buildingsPanels = SetUpWorldFactory.buildingsPanels;
 			break;
-			
 		case "GUI Test 1":
 			factory.LoadGUITest1();
-			layout = factory.layout;
-			cityPanel = factory.cityPanel;
-			buildingsPanels = factory.buildingsPanels;
+			layout = SetUpWorldFactory.layout;
+			cityPanel = SetUpWorldFactory.cityPanel;
+			buildingsPanels = SetUpWorldFactory.buildingsPanels;
 			break;
-		case"GUI Test 2":
-			factory.LoadGUITest2();
-			layout = factory.layout;
-			cityPanel = factory.cityPanel;
-			buildingsPanels = factory.buildingsPanels;
+		case "XML":
+			factory.loadXMLFile("/scenario2.xml");
+			layout = SetUpWorldFactory.layout;
+			cityPanel = SetUpWorldFactory.cityPanel;
+			buildingsPanels = SetUpWorldFactory.buildingsPanels;
 			break;
+
 		default:
-			AlertLog.getInstance().logError(AlertTag.GENERAL_CITY, "City", "Error loading " + config + " configuration.");
+			//factory.loadXMLFile("/scenario1.xml");
+			factory.loadXMLFile(config);
+			layout = SetUpWorldFactory.layout;
+			cityPanel = SetUpWorldFactory.cityPanel;
+			buildingsPanels = SetUpWorldFactory.buildingsPanels;
 			break;
 		}
 		
@@ -140,15 +143,13 @@ public class SimCity201Gui extends JFrame {
 		mainPanel.add(cityPanel);
 		mainPanel.add(buildingsPanels);
 		mainPanel.revalidate();
-		mainPanel.repaint();
-		//this.getContentPane().revalidate();
-		//this.getContentPane().repaint();
-		
+		mainPanel.repaint();		
 	}
 	
 	
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		SimCity201Gui gui = new SimCity201Gui();
+		//SimCity201Gui gui = new SimCity201Gui("Default");
+		LoadGui gui = new LoadGui();
 	}
 }

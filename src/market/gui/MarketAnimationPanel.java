@@ -17,11 +17,14 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import building.BuildingList;
+import building.Market;
 import market.data.MarketData;
 import MarketEmployee.MarketCustomerRole;
 import MarketEmployee.MarketEmployeeRole;
 import MarketEmployee.MarketManagerRole;
 import Person.Role.Role;
+import Transportation.DeliveryTruckAgent;
 
 public class MarketAnimationPanel extends JPanel implements ActionListener,GuiPanel {
 
@@ -32,19 +35,20 @@ public class MarketAnimationPanel extends JPanel implements ActionListener,GuiPa
 	final static int storeCounterLeftWIDTH= 700;
 	final static int storeCounterRightWIDTH= 50;
 	final static int storeCounterXHEIGHT = 30;
-	private MarketData marketData = new MarketData();
+	private MarketData marketData;
 	final static int TIMERCOUNTmilliseconds = 1;
 	private Image bufferImage;
 	private Dimension bufferSize;
-
+	private String marketName;
 	private List<Gui> guis = new ArrayList<Gui>();
 
-	public MarketAnimationPanel() {
+	public MarketAnimationPanel(String marketName1) {
 		setSize(WINDOWX, WINDOWY);
 		setVisible(true);
-
+		
 		bufferSize = this.getSize();
-
+		this.marketName=marketName1;
+		
 		Timer timer = new Timer(TIMERCOUNTmilliseconds, this );
 		timer.start();
 	}
@@ -125,6 +129,7 @@ public class MarketAnimationPanel extends JPanel implements ActionListener,GuiPa
 
 	@Override
 	public void addGuiForRole(Role r) {
+		marketData=((Market) (BuildingList.findBuildingWithName(marketName))).getMarketData();
 		if(r instanceof MarketCustomerRole){
 
 			MarketCustomerRole marketCustomerRole = (MarketCustomerRole) r;
@@ -166,6 +171,7 @@ public class MarketAnimationPanel extends JPanel implements ActionListener,GuiPa
 			MarketManagerRole marketManagerRole = (MarketManagerRole) r;
 			MarketManagerGui gui = new MarketManagerGui(marketManagerRole);
 			marketManagerRole.setGui(gui);
+			marketManagerRole.setDeliveryTruck(new DeliveryTruckAgent("Delivery Truck", marketName));
 			marketData.setMarketManager(marketManagerRole);
 			marketManagerRole.setMarketData(marketData);
 			guis.add(gui);

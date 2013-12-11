@@ -1,15 +1,22 @@
 package restaurant;
 
-import Person.Role.Role;
-import agent.Agent;
+import interfaces.Customer;
+import interfaces.Waiter;
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Vector;
+import java.util.concurrent.Semaphore;
+
 import restaurant.gui.HostGui;
-import restaurant.interfaces.Customer;
-import restaurant.interfaces.Waiter;
 import trace.AlertLog;
 import trace.AlertTag;
-
-import java.util.*;
-import java.util.concurrent.Semaphore;
+import Person.Role.Role;
+import Person.Role.RoleState;
+import Person.Role.ShiftTime;
 
 /**
  * Restaurant Host Agent
@@ -18,7 +25,7 @@ import java.util.concurrent.Semaphore;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class HostRole extends Role {
+public class HostRole extends GenericHost {
 	static final int NTABLES = 4;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
@@ -38,13 +45,13 @@ public class HostRole extends Role {
 
 	public HostGui hostGui = null;
 
-	public HostRole() {
-		super();
+	public HostRole(String workLocation) {
+		super(workLocation);
 
 		// make some tables
 		tables = new ArrayList<Table>(NTABLES);
 		for (int ix = 1; ix <= NTABLES; ix++) {
-			tables.add(new Table(ix,ix*60 + 70,ix*60));//how you add to a collections
+			tables.add(new Table(ix,ix*65 + 70,200));//how you add to a collections
 		}
 	}
 	
@@ -69,13 +76,12 @@ public class HostRole extends Role {
 		waitingCustomers.add(cust);
 		waitingCust++;
 		stateChanged();
-		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "Host", "Customer added to waitingCustomers: "+cust);
 	}
 
 	public void msgLeavingTable(Customer customer) {
 		for (Table table : tables) {
 			if (table.getOccupant() == customer) {
-				print(customer + " leaving " + table);
+				AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), customer.getName() + " leaving " + table);
 				table.setUnoccupied();
 				stateChanged();
 			}
@@ -105,6 +111,10 @@ public class HostRole extends Role {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAction() {
+		if(roleState == RoleState.Deactivating && waitingCustomers.size() == 0) {
+			kill();
+			return true;
+		}
 		if (!waitingCustomers.isEmpty()){
 			for(int w=0; w<waitingCustomers.size(); w++){
 				if(waitingCust>3) {
@@ -123,9 +133,7 @@ public class HostRole extends Role {
 		for (Table table : tables) {
 			i = i+1;
 				if (!table.isOccupied() && i<4) {
-					AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "Host", "Inside scheduler table loop");
 					if (!waitingCustomers.isEmpty()) {
-						AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "Host", "We Should Return true here");
 						getWaiter(waitingCustomers.get(0), i-1, ((ArrayList<Table>) tables).get(i).getX(),((ArrayList<Table>) tables).get(i).getY());//the action
 						//waitingCustomers.remove(0);
 						return true;//return true to the abstract agent to reinvoke the scheduler.
@@ -157,11 +165,10 @@ public class HostRole extends Role {
 				assignedWaiter = i;
 			}
 		}
-		customer.setWaiter(waiters.get(assignedWaiter));
+		customer.setWaiter((GenericWaiter)waiters.get(assignedWaiter));
 		customer.setTableX(xCoor);
 		customer.setTableY(yCoor);
 		customer.setTableNum(table);
-		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "Host", "Messaging a Waiter");
 		waiters.get(assignedWaiter).msgSeatCustomer(customer);
 		((ArrayList<Table>) tables).get(table).setOccupant(customer);
 		waitingCustomers.remove(customer);
@@ -169,18 +176,18 @@ public class HostRole extends Role {
 	
 	private void analyzeBreak() {
 		if(waiters.size() > 1) {
-			print(requestedBreak.getName() + " can go on break after current customers leave.");
+			AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), requestedBreak.getName() + " can go on break after current customers leave.");
 			requestedBreak.msgBreakReply(true);
 		}
 		else {
-			print(requestedBreak.getName() + " cannot go on break.");
+			AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), requestedBreak.getName() + " cannot go on break.");
 			requestedBreak.msgBreakReply(false);		
 		}
 		requestedBreak = null;
 	}
 	
 	private void notifyCustomerOfWait(Customer customer) {
-		print(customer.getCustomerName() + ", the restaurant is full. There's a wait to be seated.");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), customer.getCustomerName() + ", the restaurant is full. There's a wait to be seated.");
 		customer.msgRestaurantFull();
 	}
 	
@@ -194,8 +201,8 @@ public class HostRole extends Role {
 		return hostGui;
 	}*/
 	
-	public void addWaiter(Waiter w) {
-		waiters.add(w);
+	public void addWaiter(GenericWaiter w) {
+		waiters.add((Waiter) w);
 	}
 
 	private class Table {
@@ -250,7 +257,13 @@ public class HostRole extends Role {
 
 	@Override
 	public String getNameOfRole() {
-		return "HostRole";
+		return Role.RESTAURANT_HOST_ROLE;
+	}
+
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	/*public boolean setFrontDesk() {

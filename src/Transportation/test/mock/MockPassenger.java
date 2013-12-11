@@ -1,10 +1,10 @@
 package Transportation.test.mock;
 
+import interfaces.Bus;
+import interfaces.Passenger;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import gui.interfaces.Bus;
-import gui.interfaces.Passenger;
 
 public class MockPassenger extends Mock implements Passenger {
 

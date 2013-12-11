@@ -1,8 +1,6 @@
 package residence.test.mock;
 
-import residence.ApartmentManagerRole;
-import residence.HomeRole;
-import residence.interfaces.*;
+import interfaces.Home;
 
 /**
  * MockHomeRole built to unit test a ApartmentManagerRole
@@ -12,17 +10,20 @@ public class MockHome extends Mock implements Home {
 	
 	public EventLog log = new EventLog();
 	
-	public ApartmentManagerRole landlord;
+	
 	public int rentOwed = 0;
 	
 	public MockHome(String name) {
 		super(name);
 	}
-	
-	public void msgRentDue (int amount) {
+
+	@Override
+	public void msgRentDue(double amount, int date) {
 		log.add(new LoggedEvent("I now owe $" + amount + " in rent."));
 	}
-	public void msgFixedFeature (String name) {
-		log.add(new LoggedEvent(name + " has been fixed."));
+
+	@Override
+	public void msgFixedFeature() {
+		log.add(new LoggedEvent("Feature has been fixed."));
 	}
 }

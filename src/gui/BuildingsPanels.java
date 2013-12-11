@@ -4,7 +4,13 @@ import gui.Building.BankBuildingPanel;
 import gui.Building.BuildingPanel;
 import gui.Building.MarketBuildingPanel;
 import gui.Building.ResidenceBuildingPanel;
-import gui.Building.RestaurantBuildingPanel;
+import gui.Building.restaurants.ByronRestaurantBuildingPanel;
+import gui.Building.restaurants.JeffreyRestaurantBuildingPanel;
+import gui.Building.restaurants.KushRestaurantBuildingPanel;
+import gui.Building.restaurants.LucaRestaurantBuildingPanel;
+import gui.Building.restaurants.MikeRestaurantBuildingPanel;
+import gui.Building.restaurants.RestaurantBuildingPanel;
+import gui.Building.restaurants.RyansRestaurantBuildingPanel;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -12,6 +18,7 @@ import java.awt.Component;
 
 import javax.swing.JPanel;
 
+import market.data.MarketData;
 import building.Bank;
 import building.Building;
 import building.BuildingList;
@@ -53,11 +60,22 @@ public class BuildingsPanels extends JPanel{
 		if(buildingPanel instanceof BankBuildingPanel){
 			BuildingList.getInstance().add(new Bank(buildingPanel));
 		}else if(buildingPanel instanceof MarketBuildingPanel){
-			BuildingList.getInstance().add(new Market(buildingPanel));
+			BuildingList.getInstance().add(new Market(buildingPanel,new MarketData()));
+		}else if (buildingPanel instanceof JeffreyRestaurantBuildingPanel) {
+			BuildingList.getInstance().add(new Restaurant(buildingPanel));
+		}else if(buildingPanel instanceof KushRestaurantBuildingPanel){
+			BuildingList.getInstance().add(new Restaurant(buildingPanel));
+		}else if(buildingPanel instanceof LucaRestaurantBuildingPanel){
+			BuildingList.getInstance().add(new Restaurant(buildingPanel));
+		}else if(buildingPanel instanceof MikeRestaurantBuildingPanel){
+			BuildingList.getInstance().add(new Restaurant(buildingPanel));
+		}else if(buildingPanel instanceof RyansRestaurantBuildingPanel){
+			BuildingList.getInstance().add(new Restaurant(buildingPanel));
 		}else if(buildingPanel instanceof RestaurantBuildingPanel){
 			BuildingList.getInstance().add(new Restaurant(buildingPanel));
-		}else{
-			BuildingList.getInstance().add(new Building(buildingPanel));
+		}else if(buildingPanel instanceof ByronRestaurantBuildingPanel){
+			BuildingList.getInstance().add(new Restaurant(buildingPanel));
+		}else{	BuildingList.getInstance().add(new Building(buildingPanel));
 		}
 		
 		this.add(buildingPanel, buildingPanel.getName());

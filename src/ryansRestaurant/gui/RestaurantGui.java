@@ -1,27 +1,37 @@
 package ryansRestaurant.gui;
 
-import ryansRestaurant.CustomerAgent;
-import ryansRestaurant.WaiterAgent;
+import interfaces.GuiPanel;
 
-import javax.swing.*;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+
+import ryansRestaurant.RyansCashierRole;
+import ryansRestaurant.RyansCookRole;
+import ryansRestaurant.RyansCustomerRole;
+import ryansRestaurant.RyansHostRole;
+import ryansRestaurant.RyansWaiterRole;
+import Person.Role.Role;
 /**
  * Main GUI class.
  * Contains the main frame and subsequent panels
  */
 @SuppressWarnings("serial")
-public class RestaurantGui extends JFrame implements ActionListener {
+public class RestaurantGui extends JPanel {
     
 	RestaurantLayout layout = new RestaurantLayout();
-	AnimationPanel animationPanel = new AnimationPanel(layout);
+	RyansRestaurantAnimationPanel animationPanel = new RyansRestaurantAnimationPanel(layout, this);
 	
 	
     /* restPanel holds 2 panels
      * 1) the staff listing, menu, and lists of current customers all constructed
      *    in RestaurantPanel()
-     * 2) the infoPanel about the clicked Customer (created just below)
+     * 2) the infoPanel about the clicked RyansCustomer (created just below)
      */    
     RestaurantPanel restPanel = new RestaurantPanel(this);
     
@@ -33,28 +43,30 @@ public class RestaurantGui extends JFrame implements ActionListener {
     ControlPanel ctrlP = new ControlPanel(this);
     //JButton controlB = new JButton("Control Panel");
     
+    CardLayout cardLayout = new CardLayout();
+    
     
      /**
      * Constructor for RestaurantGui class.
      * Sets up all the gui components.
      */
     public RestaurantGui() {
-        int WINDOWX = 450;
-        int WINDOWY = 350;
+        int WINDOWX = 800;
+        int WINDOWY = 400;
 
        
-        animationPanel.setBounds(new Rectangle(WINDOWX, (int)(WINDOWY*1.5)) );
+        animationPanel.setBounds(new Rectangle(WINDOWX, 400) );
     	    	
-    	setBounds(50, 50, WINDOWX + WINDOWX , WINDOWY + (int)(1.5 * WINDOWY));
+    	
 
-        setLayout(new BoxLayout((Container) getContentPane(), 
-        		BoxLayout.Y_AXIS));
+       // setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setLayout(cardLayout);
         
         restInfoControlPanel = new JPanel();
         restInfoControlPanel.setLayout(new BoxLayout((Container) restInfoControlPanel,BoxLayout.X_AXIS));
         
 
-        Dimension restDim = new Dimension(WINDOWX + (int)(WINDOWX * .2), (int) (WINDOWY  *.9 ));
+        Dimension restDim = new Dimension((int)(WINDOWX *.7), 350);
         restPanel.setPreferredSize(restDim);
         restPanel.setMinimumSize(restDim);
         restPanel.setMaximumSize(restDim);
@@ -63,17 +75,18 @@ public class RestaurantGui extends JFrame implements ActionListener {
         //restInfoControlPanel.add(controlB);
         //controlB.addActionListener(this);
              
-        Dimension ctrlPDim = new Dimension((int)(WINDOWX * .6), WINDOWY);
+        Dimension ctrlPDim = new Dimension((int)(WINDOWX * .3), 400);
         ctrlP.setMinimumSize(ctrlPDim);
         ctrlP.setPreferredSize(ctrlPDim);
         ctrlP.setMaximumSize(ctrlPDim);
         
         restInfoControlPanel.add(ctrlP);
         restInfoControlPanel.add(restPanel);
-        add(restInfoControlPanel);
-        
-        add(animationPanel);
-        
+       
+        add(animationPanel, "Animation Panel");
+       // add(animationPanel);
+        add(restInfoControlPanel, "Info Panel");
+     
         
         //controlFram.setBounds(50, WINDOWY + 100, WINDOWX, WINDOWY);
         //controlFram.add(ctrlP);
@@ -81,28 +94,25 @@ public class RestaurantGui extends JFrame implements ActionListener {
       
         
     }
+    
+    
+    public RyansRestaurantAnimationPanel getAnimationPanel(){
+    	return this.animationPanel;
+    }
    
     
-    @Override
-	public void actionPerformed(ActionEvent e) {
-		
-    	//if(e.getSource() == controlB){
-    		//controlFram.setVisible(true);
-    	//}
-		
-	}
-
+ 
     /**
      * Message sent from a customer gui to enable that customer's
      * "I'm hungry" checkbox.
      *
      * @param c reference to the customer
      */
-    public void setCustomerEnabled(CustomerAgent c) {
+    public void setCustomerEnabled(RyansCustomerRole c) {
         restPanel.setCustomerBox(c.getName(), false, true);
     }
     
-    public void setWaiterBreakStatus(WaiterAgent w, String status) {
+    public void setWaiterBreakStatus(RyansWaiterRole w, String status) {
     	if(status.equalsIgnoreCase("none")) {
     		restPanel.setWaiterBB(w.getName(), Color.green, true, "Break?", "Working. Request a Break?");
     	}
@@ -114,17 +124,14 @@ public class RestaurantGui extends JFrame implements ActionListener {
     	}
     }
     
-    /**
-     * Main routine to get gui started
-     */
-    public static void main(String[] args) {
-        RestaurantGui gui = new RestaurantGui();
-        gui.setTitle("csci201 Restaurant - Ryan Davis");
-        gui.setVisible(true);
-        gui.setResizable(false);
-        gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    
+    public void showInfoPanel(boolean visible){
+    	if(visible)
+    			cardLayout.show(this, "Info Panel");
+    	else
+    		cardLayout.show(this, "Animation Panel");
     }
-
+  
 
 	
 }

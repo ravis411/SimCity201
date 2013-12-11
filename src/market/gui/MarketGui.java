@@ -19,7 +19,7 @@ import Person.PersonAgent;
  */
 public class MarketGui extends JFrame implements ActionListener {
    
-	public MarketAnimationPanel animationPanel = new MarketAnimationPanel();
+	public MarketAnimationPanel animationPanel = new MarketAnimationPanel("Market 1");
 	final int WINDOWX = 800;// window width
     final int WINDOWY = 400;//window height
     final int WINDOWXOpenPosition = 50;//how many pixels from top left of screen window will appear
@@ -29,7 +29,7 @@ public class MarketGui extends JFrame implements ActionListener {
     private Vector<PersonAgent> marketCustomerPersons = new Vector<PersonAgent>();
     private Vector<MarketCustomerRole> marketCustomerRoles = new Vector<MarketCustomerRole>();
  //   private PersonAgent marketManagerPerson= new PersonAgent("Harry");
-    private MarketManagerRole marketManagereRole= new MarketManagerRole();
+   // private MarketManagerRole marketManagereRole= new MarketManagerRole();
     private MarketData marketData = new MarketData();
     private  MarketCustomerGui marketCustomerGui;
     /**

@@ -1,24 +1,34 @@
 package ryansRestaurant.gui;
 
 
-import ryansRestaurant.CookAgent;
-import ryansRestaurant.CustomerAgent;
-import ryansRestaurant.HostAgent;
-import ryansRestaurant.WaiterAgent;
-import ryansRestaurant.interfaces.Customer;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+
+import ryansRestaurant.RyansCookRole;
+import ryansRestaurant.RyansCustomerRole;
+import ryansRestaurant.RyansHostRole;
+import ryansRestaurant.RyansWaiterRole;
+import ryansRestaurant.interfaces.RyansCustomer;
+import trace.AlertLog;
+import trace.AlertTag;
 
 import java.awt.*;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Timer;
-import java.util.concurrent.Semaphore;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Semaphore;
 
-import astar.*;
+import ryansRestaurant.RyansCustomerRole;
+import ryansRestaurant.RyansWaiterRole;
+import ryansRestaurant.interfaces.RyansCustomer;
+import astar.AStarNode;
+import astar.AStarTraversal;
+import astar.Position;
 
 public class WaiterGui implements Gui {
 
-    private WaiterAgent agent = null;
+    private RyansWaiterRole agent = null;
     private CookGui cook = null;
     private CustomerGui currentCustomer = null;
     
@@ -55,10 +65,15 @@ public class WaiterGui implements Gui {
     ASTARSTATE aStarState = ASTARSTATE.none;
     Semaphore aSem = new Semaphore(0, true);
     
-    public WaiterGui(WaiterAgent agent, RestaurantGui gui, RestaurantLayout restLayout, AStarTraversal aStar) {
+    /**
+     * This can be used to interrupt certain functions that otherwise would require more time.
+     */
+    public boolean interrupt = false;
+    
+    public WaiterGui(RyansWaiterRole agent, RestaurantGui gui, RestaurantLayout restLayout, AStarTraversal aStar) {
     	positionMap = new HashMap<Dimension, Dimension>(restLayout.positionMap);
     	this.agent = agent;
-    	this.cook = agent.cook.getGui();
+    	//this.cook = agent.cook.getGui();
         this.gui = gui;
         this.restLayout = restLayout;
         
@@ -74,6 +89,9 @@ public class WaiterGui implements Gui {
         dispName = new String("" + agent.getName().charAt(0) + agent.getName().charAt(agent.getName().length() - 1));
     }
 
+    public void setCook(CookGui gui){
+    	this.cook = this.agent.cook.getGui();
+    }
     
     //from gui to set home coordinates
     public void msgHereAreHomeCoords(Dimension d) {
@@ -104,6 +122,11 @@ public class WaiterGui implements Gui {
         	aStarState = ASTARSTATE.atDestination;
         	aSem.release();
         }
+        
+        if(state == AgentState.goingToHomePosition && currentPosition.equals(originalPosition)){
+        	state = AgentState.none;
+        	agent.msgAtHome();
+        }
     }
 
     public void draw(Graphics2D g) {
@@ -126,8 +149,9 @@ public class WaiterGui implements Gui {
     /**
      * This function assumes the waiter is not in the ryansRestaurant...
      * Will enter the ryansRestaurant and request a home position. Will then GoToHomePostition();
+     * @throws Exception 
      */
-    public void DoEnterRestaurant() {
+    public void DoEnterRestaurant() throws Exception {
     	
     	Position entrance = new Position(1, 1);
     	
@@ -137,34 +161,74 @@ public class WaiterGui implements Gui {
     		try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				System.out.println("EXCEPTION!!!!!!!!!! caught while waiting for entrance to clear.");
+				AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, agent.getName() + " GUI", "EXCEPTION!!!!!!!!!! caught while waiting for entrance to clear.");
 			}    		
     	}
     	
     	try{
+    	xPos = xDestination = -20;
+    	yPos = yDestination = -20;
+    		
     	move(entrance.getX(), entrance.getY());
     	
     	if(restLayout.addWaiterGui(this)) {
     		currentPosition = new Position(entrance.getX(), entrance.getY());
             //currentPosition.moveInto(aStar.getGrid());
             originalPosition = new Position(homePosition.width, homePosition.height);
-    		DoGoToHomePosition();
+            // DoGoToHomePosition();
+            guiMoveFromCurrentPostionTo(originalPosition);
     	}
     	}catch(Exception e) {
-    		DoGoToHomePosition();//Sometime entrance can get clogged so try to find a path again
+    		guiMoveFromCurrentPostionTo(originalPosition);
+    		//DoGoToHomePosition();//Sometime entrance can get clogged so try to find a path again
     	}
     	
     }
+    
+    /** 
+     * Will have the waiter leave the restaurant.
+     */
+    public void doLeaveWork() {
+		Position exit = new Position(restLayout.numxGridPositions - 1, 4);
+		
+		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, agent.getName() + " GUI", " Do Leave work called in waiter GUI");
+		try {
+			guiMoveFromCurrentPostionTo(exit);
+		} catch (Exception e) {AlertLog.getInstance().logError(AlertTag.RYANS_RESTAURANT, agent.getName() + " GUI", "Exception caught while trying to leave.");}
+		currentPosition.release(aStar.getGrid());
+		restLayout.removeGui(this);
+		aStarState = ASTARSTATE.moving;
+		xDestination = 825;
+		yDestination = 25;
+		try {
+			aSem.acquire();
+		} catch (InterruptedException e) {	}
+		
+		
+		currentCustomer = null;
+		currentPosition = null;
+		homeCoordinates = null;
+		homePosition = null;
+		xPos = xDestination = -25;
+		yPos = yDestination = -25;
+		
+		state = AgentState.none;
+		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, agent.getName() + " GUI", " Finished Leaving Restaurant");
+	}
+    
+    
+    
+    
 
-    public void DoBringToTable(CustomerAgent customer, int seatnumber) {
+    public void DoBringToTable(RyansCustomerRole customer, int seatnumber) throws Exception {
        
-    	Dimension dim = new Dimension(AnimationPanel.tableMap.get(seatnumber));
+    	Dimension dim = new Dimension(restLayout.tableXYMap.get(seatnumber));
     	customer.getGui().DoGoToCoords(dim);
     	
     	DoGoToTable(seatnumber);
     }
     
-    public void DoGoToTable(int seatnumber) {
+    public void DoGoToTable(int seatnumber) throws Exception {
     	Dimension p = restLayout.tablePositionMap.get(seatnumber);
     	Position pos = new Position(p.width, p.height - 1);
     	//System.out.println("Table Position!!!" + pos);
@@ -173,7 +237,7 @@ public class WaiterGui implements Gui {
        // state = AgentState.goingToTable;
     }
 
-    public void DoGoToCook() {
+    public void DoGoToCook() throws Exception {
     	//state = AgentState.goingToCook;
     	Dimension d = restLayout.cookOrderCounterPosition;
     	Position p = new Position(d.width, d.height - 1);
@@ -181,20 +245,24 @@ public class WaiterGui implements Gui {
     }
     
     
-    public void DoGoToCustomer(Customer cust) {
-    	currentCustomer = ((CustomerAgent)cust).getGui();
+    public void DoGoToCustomer(RyansCustomer cust) throws Exception {
+    	currentCustomer = ((RyansCustomerRole)cust).getGui();
     	doGoToCustomerUtility();
 //    	try {
 //			sem.acquire();
 //		} catch (InterruptedException e) {
 //		}
     }
-    private void doGoToCustomerUtility(){
+    private void doGoToCustomerUtility() throws Exception{
     	if(currentCustomer != null) {
+    		if(currentCustomer.waitingPosition == null){
+    			guiMoveFromCurrentPostionTo(new Position(3, 2));
+    			return;
+    		}
     		Dimension d = new Dimension(currentCustomer.waitingPosition);
 //    		xDestination = d.width + 25;
 //    		yDestination = d.height + 25;
-    		guiMoveFromCurrentPostionTo(new Position(d.width + 1, d.height));
+    		guiMoveFromCurrentPostionTo(new Position(d.width, d.height + 1));
     		//state = AgentState.goingToCustomer;
     	}
     }
@@ -205,7 +273,7 @@ public class WaiterGui implements Gui {
 //		Dimension d = new Dimension(cook.grillPostionMap.get(grillNumber));
 //		DoGoToGrillCoords(d);	
 //	}
-    public void DoGoToGrill(int grillNumber) {
+    public void DoGoToGrill(int grillNumber) throws Exception {
 		Dimension d = new Dimension(cook.grillPositionMap.get(grillNumber));
 		guiMoveFromCurrentPostionTo(new Position(d.width, d.height - 2));
 		//state = AgentState.goingToGrill;
@@ -218,7 +286,7 @@ public class WaiterGui implements Gui {
 //    	}
 //    }
     
-    public void DoGoToCashier() {
+    public void DoGoToCashier() throws Exception {
     	//xDestination = restLayout.cashierXYCoords.width;
     //	state = AgentState.goingToCashier;
     	//yDestination = restLayout.cashierXYCoords.height - 25;
@@ -226,9 +294,11 @@ public class WaiterGui implements Gui {
     	guiMoveFromCurrentPostionTo(new Position(d.width + 1, d.height));
     }
 
-    public void DoLeaveCustomer() {
+    public void DoLeaveCustomer() throws Exception {
         //xDestination = xCounter;
         //yDestination = yCounter;
+    	interrupt = true;
+    	state = AgentState.goingToHomePosition;
     	DoGoToHomePosition();
     }
     public void DoBeAtHomePosition(){
@@ -236,7 +306,7 @@ public class WaiterGui implements Gui {
     //	state = AgentState.goingToHomePosition;
     	yPos = yDestination = homeCoordinates.height;
     }
-    public void DoGoToHomePosition() {
+    public void DoGoToHomePosition() throws Exception {
 //    	xDestination = homeCoordinates.width;
 //    	yDestination = homeCoordinates.height;
     	guiMoveFromCurrentPostionTo(originalPosition);
@@ -256,9 +326,10 @@ public class WaiterGui implements Gui {
      *  
      * 
      *  @param to The Position to move to. 
+     * @throws Exception 
      *  
      */
-    void guiMoveFromCurrentPostionTo(Position to){
+    void guiMoveFromCurrentPostionTo(Position to) throws Exception{
         
     	//First check to make sure the destination is free otherwise wait
     	int waits = 0;
@@ -269,7 +340,7 @@ public class WaiterGui implements Gui {
     		else
     		{
     			try {
-					Thread.sleep(500);
+					Thread.sleep(3000);
 					waits++;
 					if(waits > 10){
 						if(aStar.getGrid()[to.getX() + 1][to.getY()].availablePermits() > 0)
@@ -330,6 +401,10 @@ public class WaiterGui implements Gui {
          currentPosition.release(aStar.getGrid());
          currentPosition = new Position(tmpPath.getX(), tmpPath.getY ());
          move(currentPosition.getX(), currentPosition.getY());
+         if(interrupt){
+        	 interrupt = false;
+        	 return;
+         }
         }
     }//End A* guiMoveFromCurrent...
 
@@ -428,6 +503,8 @@ public class WaiterGui implements Gui {
     public int getYPos() {
         return yPos;
     }
+
+	
 
 	
 }

@@ -1,13 +1,16 @@
 package market.data;
 
+import interfaces.MarketEmployee;
+import interfaces.MarketManager;
+import interfaces.generic_interfaces.GenericCook;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import market.interfaces.MarketEmployee;
-import market.interfaces.MarketManager;
-
 public class MarketData {
+	String marketName;
 	List<Inventory> marketInventory	= new ArrayList<Inventory>();
+	List<Order> orders	= new ArrayList<Order>();
 	MarketManager currentMarketManager;
 	MarketEmployee currentMarketEmployee1=null;
 	MarketEmployee currentMarketEmployee2=null;
@@ -60,19 +63,19 @@ public class MarketData {
 	public void setMarketEmployeeAtCounter1(MarketEmployee marketEmployee){
 		currentMarketEmployee1=marketEmployee;
 	}
-	public MarketEmployee getMarketCustomerAtCounter1(){
+	public MarketEmployee getMarketEmployeeAtCounter1(){
 		return currentMarketEmployee1;
 	}
 	public void setMarketEmployeeAtCounter2(MarketEmployee marketEmployee){
 		currentMarketEmployee2=marketEmployee;
 	}
-	public MarketEmployee getMarketCustomerAtCounter2(){
+	public MarketEmployee getMarketEmployeeAtCounter2(){
 		return currentMarketEmployee2;
 	}
 	public void setMarketEmployeeAtCounter3(MarketEmployee marketEmployee){
 		currentMarketEmployee3=marketEmployee;
 	}
-	public MarketEmployee getMarketCustomerAtCounter3(){
+	public MarketEmployee getMarketEmployeeAtCounter3(){
 		return currentMarketEmployee3;
 	}
 	public int getNumberOfCustomersInALine(int linenumber){
@@ -82,7 +85,27 @@ public class MarketData {
 		numberOfCustomersInALine.add(linenumber, numberOfCustomersInALine.get(linenumber).intValue()+1);
 	}
 	
-
+	public String getName() {
+		return marketName;
+	}
+	public void msgClosedMarketAFoodOrder(String choice, int howMuchFoodAgentAsksFromMarket, GenericCook CookRole) {
+		
+		orders.add(new Order(choice, howMuchFoodAgentAsksFromMarket, CookRole));
+		
+	}
+	public synchronized Order getLastOrder(){
+		if(orders.size() != 0){
+			return orders.remove(0);
+		}
+		return null;
+	}
+	public boolean anyPendingOrders(){
+		if (orders.size()!=0){
+			return true;
+		}
+		else
+			return false;
+	}
 private class Inventory {
 String foodType;
 int amount;
@@ -104,6 +127,29 @@ private void restockFoodAmount(int amountToRestock) {
 	amount +=amountToRestock;
 }
 }
+
+public class Order{
+	String choice;
+	int amount;
+	GenericCook cookRole;
+	Order(String choice,int howMuchFoodAgentAsksFromMarket, GenericCook lucaCookRole){
+		this.choice=choice;
+		this.amount=howMuchFoodAgentAsksFromMarket;
+		cookRole=lucaCookRole;
+				
+	}
+	public String getChoice(){
+		return choice;
+	}
+	public int getAmount(){
+		return amount;
+	}
+	public GenericCook getCook(){
+		return cookRole;
+	}
+}
+
+
 
 
 

@@ -1,13 +1,13 @@
 package bank.test.mock;
 
+import interfaces.AnnouncerB;
+import interfaces.BankClient;
+import interfaces.LoanTeller;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import Transportation.test.mock.LoggedEvent;
-
-import bank.interfaces.AnnouncerB;
-import bank.interfaces.BankClient;
-import bank.interfaces.LoanTeller;
 
 public class MockLoanNumberAnnouncer extends Mock implements AnnouncerB{
 
@@ -45,5 +45,11 @@ public class MockLoanNumberAnnouncer extends Mock implements AnnouncerB{
 			client.msgCallingLoanTicket(1, 5, loanTeller);	
 		}
 
+	}
+
+	@Override
+	public void msgRemoveClient(BankClient b) {
+		log.add(new LoggedEvent("msgRemoveClient received from bankClient. Removing bankClient to the list."));
+		
 	}
 }

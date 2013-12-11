@@ -1,13 +1,14 @@
 package bank;
 import bank.BankTellerRole.location;
 import bank.gui.LoanGui;
-import bank.interfaces.BankClient;
-import bank.interfaces.LoanTeller;
 import Person.Role.*;
-import interfaces.Employee;
+import interfaces.BankClient;
 
 
 
+
+
+import interfaces.LoanTeller;
 
 
 //import Person.*;
@@ -26,7 +27,7 @@ import util.Interval;
  * @author Byron Choy
  *
  */
-public class LoanTellerRole extends Role implements Employee, LoanTeller{
+public class LoanTellerRole extends Employee implements LoanTeller{
 	public BankClient myClient;
 	private int myClientAge;
 
@@ -35,7 +36,6 @@ public class LoanTellerRole extends Role implements Employee, LoanTeller{
 	public enum location {entrance, station, breakRoom,closing};
 	public location locationState = location.entrance;
 	public double transactionAmount;
-
 	
 	
 	double loanAmount;
@@ -47,8 +47,8 @@ public class LoanTellerRole extends Role implements Employee, LoanTeller{
 	private LoanGui loanGui = null;
 	public boolean HasLoan = false;
  
-	public LoanTellerRole(){
-		super();
+	public LoanTellerRole(String workLocation){
+		super(workLocation);
 		Accounts = Database.INSTANCE.sendDatabase();
 	}
 
@@ -269,20 +269,21 @@ public class LoanTellerRole extends Role implements Employee, LoanTeller{
 
 	@Override
 	public String getNameOfRole() {
-		return null;
+		return Role.LOAN_TELLER_ROLE;
 	}
-
-	@Override
-	public Interval getShift() {
-
-		return null;
-	}
-
+	
 	@Override
 	public Double getSalary() {
 
 		return null;
 	}
+
+//	@Override
+//	public void workplaceIsOpen() {
+//		// TODO Auto-generated method stub
+//		this.activate();
+//		
+//	}
 
 
 }

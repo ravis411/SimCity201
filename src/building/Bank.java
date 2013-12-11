@@ -1,11 +1,20 @@
 package building;
 
+import bank.gui.BankAnimationPanel;
+import interfaces.generic_interfaces.GenericCashier;
+import interfaces.generic_interfaces.GenericCook;
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
 import gui.Building.BuildingPanel;
+import Person.Role.Employee;
+import Person.Role.Role;
 import bank.BankClientRole;
 import bank.BankTellerRole;
+import bank.LoanNumberAnnouncer;
 import bank.LoanTellerRole;
+import bank.NumberAnnouncer;
 
-public class Bank extends Building implements Workplace {
+public class Bank extends Workplace {
 
 	public boolean isOpenSetter = false;
 	public Bank(BuildingPanel panel) {
@@ -37,15 +46,44 @@ public class Bank extends Building implements Workplace {
 				this.panel.getPanel().removeGuiForRole(loanTeller);
 			}
 		}
+		isOpenSetter = false;
 	}
 
 	@Override
 	public boolean isOpen() {
-
-		if (this.isOpenSetter){
-			return true;
+		boolean hasTeller = false, hasLoanTeller = false;
+		synchronized(inhabitants){
+			for(Role r : inhabitants){
+				if(r instanceof BankTellerRole){
+					hasTeller = true;
+				}else if(r instanceof LoanTellerRole){
+					hasLoanTeller = true;
+				}
+			}
 		}
-		else return false;
+		
+		return hasTeller && hasLoanTeller;
+
+	}
+	
+	@Override
+	public void notifyEmployeesTheyCanLeave() {
+		// TODO Auto-generated method stub
+		for(Role r : inhabitants){
+			if(r instanceof Employee){
+				r.deactivate();
+			}
+		}
 	}
 
+	public NumberAnnouncer getAnnouncer() {
+		// TODO Auto-generated method stub
+		return ((BankAnimationPanel) this.panel.getPanel()).getAnnouncer();
+	}
+	
+	public LoanNumberAnnouncer getLoanAnnouncer(){
+		return ((BankAnimationPanel) this.panel.getPanel()).getLoanAnnouncer();
+	}
+
+	
 }

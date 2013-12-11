@@ -82,16 +82,16 @@ public class AStarTraversal extends GraphTraversal
 	for (Position n:path) {if (pos.equals(n)) return true;};
 	return false;
     }
-    public void printCurrentList() {
-	PriorityQueue<Node> pq = new PriorityQueue<Node>(nodes);
-	AStarNode p;
-	System.out.print("\n[");
-	while ((p = (AStarNode)pq.poll()) != null) {
-	    System.out.print("\n");
-	    p.printNode();
-	}
-	System.out.println("]");
-    }
+//    public void printCurrentList() {
+//	PriorityQueue<Node> pq = new PriorityQueue<Node>(nodes);
+//	AStarNode p;
+//	System.out.print("\n[");
+//	while ((p = (AStarNode)pq.poll()) != null) {
+//	    System.out.print("\n");
+//	    p.printNode();
+//	}
+//	System.out.println("]");
+//    }
     public void queueFn(Queue<Node> old, List<Node> newNodes){
 	for (Node m:newNodes) {
 	    old.offer((AStarNode)m);

@@ -1,21 +1,28 @@
 package restaurant;
 
+import interfaces.Cashier;
+import interfaces.Customer;
+import interfaces.Waiter;
+import interfaces.generic_interfaces.GenericCashier;
+import interfaces.generic_interfaces.GenericCustomer;
+import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
+
 import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import restaurant.gui.CustomerGui;
-import restaurant.interfaces.Cashier;
-import restaurant.interfaces.Customer;
-import restaurant.interfaces.Waiter;
+import trace.AlertLog;
+import trace.AlertTag;
 import Person.PersonAgent;
 import Person.Role.Role;
 
 /**
  * Restaurant customer agent.
  */
-public class RestaurantCustomerRole extends Role implements Customer {
+public class RestaurantCustomerRole extends GenericCustomer implements Customer {
 	private String name;
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
@@ -25,7 +32,6 @@ public class RestaurantCustomerRole extends Role implements Customer {
 	private int tableY = -1;
 	private int mealChoice = -1;
 	private Menu menu;
-	private double money;
 	private double amountSpent;
 	DecimalFormat moneyForm = new DecimalFormat("#.##");
 	int stayLeave = -1;
@@ -55,23 +61,23 @@ public class RestaurantCustomerRole extends Role implements Customer {
 	public RestaurantCustomerRole(){
 		super();
 
-        money = Double.valueOf(moneyForm.format(20.00));
+        //money = Double.valueOf(moneyForm.format(20.00));
 	}
 	
 	public void setPerson(PersonAgent person) {
 		super.setPerson(person);
 	}
 	
-	public void setHost(HostRole host) {
-		this.host = host;
+	public void setHost(GenericHost host) {
+		this.host = (HostRole) host;
 	}
 	
-	public void setWaiter(Waiter waiter2) {
-		this.waiter = waiter2;
+	public void setWaiter(GenericWaiter waiter2) {
+		this.waiter = (Waiter) waiter2;
 	}
 	
-	public void setCashier(Cashier cashier) {
-		this.cashier = cashier;
+	public void setCashier(GenericCashier cashier) {
+		this.cashier = (CashierRole) cashier;
 	}
 
 	public String getCustomerName() {
@@ -80,7 +86,6 @@ public class RestaurantCustomerRole extends Role implements Customer {
 	// Messages
 
 	public void gotHungry() {//from animation
-		print("I'm hungry");
 		event = AgentEvent.gotHungry;
 		stateChanged();
 	}
@@ -124,15 +129,14 @@ public class RestaurantCustomerRole extends Role implements Customer {
 	}
 	
 	public void msgCheckPayed() {
-		money = money - amountSpent;
-        money = Double.valueOf(moneyForm.format(money));
-		print("Spent $" + amountSpent + ". I have $" + money + " left.");
+		myPerson.setMoney(myPerson.getMoney() - amountSpent);
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Spent $" + amountSpent + ". I have $" + myPerson.getMoney() + " left.");
 		event = AgentEvent.donePaying;
 		stateChanged();
 	}
 	
 	public void msgCheckNotPayed() {
-		print("I'll pay in full next time. Sorry!");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "I'll pay in full next time. Sorry!");
 		event = AgentEvent.donePaying;
 		stateChanged();
 	}
@@ -157,7 +161,6 @@ public class RestaurantCustomerRole extends Role implements Customer {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAction() {
-		//	CustomerAgent is a finite state machine
 		if (stayLeave == 1) {
 			LeaveBeforeSeated();
 		}
@@ -210,10 +213,12 @@ public class RestaurantCustomerRole extends Role implements Customer {
 		}
 		if (state == AgentState.Leaving && event == AgentEvent.doneLeaving){
 			state = AgentState.DoingNothing;
+			kill();
 			return true;
 		}
 		if (state == AgentState.LeavingEarly && event == AgentEvent.doneLeaving){
 			state = AgentState.DoingNothing;
+			kill();
 			return true;
 		}
 		return false;
@@ -222,38 +227,38 @@ public class RestaurantCustomerRole extends Role implements Customer {
 	// Actions
 
 	private void goToRestaurant() {
-		print("Going to restaurant");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Going to restaurant");
 		host.msgIWantFood(this);//send our instance, so he can respond to us
 	}
 
 	private void SitDown() {
 		//Do("Waiting for host");
 		//if (host.atFrontDesk == true) {
-			print("Being seated. Going to table");
+			AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Being seated. Going to table");
 			customerGui.DoGoToSeat(tableNum);
 		//}
 	}
 	
 	private void LookAtMenu() {
-		if(money >= 5.99) {
-			print("Looking at menu");
+		if(myPerson.getMoney() >= 5.99) {
+			AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Looking at menu");
 			timer.schedule(new TimerTask() {
 				public void run() {
-					print("Done looking at menu");
+					AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Done looking at menu");
 					event = AgentEvent.readyToOrder;
 					stateChanged();
 				}
 			},
-			7000);
+			5000);
 		}
 		else {
-			print("I can't afford anything on this menu!");
+			AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "I can't afford anything on this menu!");
 			LeaveTableEarly();
 		}
 	}
 	
 	private void ReadyToOrder() {
-		print("Ready to order");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Ready to order");
 		waiter.msgGoTakeOrder();
 	}
 	
@@ -262,7 +267,7 @@ public class RestaurantCustomerRole extends Role implements Customer {
 		mealChoice = randNum.nextInt(2);
 		//mealChoice = 0; //hack to test food inventory
 		waiter.msgTakeOrder(this, mealChoice);
-		print("I want the " + menu.getDishName(mealChoice));
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "I want the " + menu.getDishName(mealChoice));
 	}
 	
 	private void Reorder() {
@@ -273,11 +278,11 @@ public class RestaurantCustomerRole extends Role implements Customer {
 		}
 		event = AgentEvent.order;
 		waiter.msgTakeOrder(this, mealChoice);
-		print("I want the " + menu.getDishName(mealChoice));
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "I want the " + menu.getDishName(mealChoice));
 	}
 
 	private void EatFood() {
-		print("Eating Food");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Eating Food");
 		//This next complicated line creates and starts a timer thread.
 		//We schedule a deadline of getHungerLevel()*1000 milliseconds.
 		//When that time elapses, it will call back to the run routine
@@ -288,30 +293,30 @@ public class RestaurantCustomerRole extends Role implements Customer {
 		//anonymous inner class that has the public method run() in it.
 		timer.schedule(new TimerTask() {
 			public void run() {
-				print("Done eating " + menu.getDishName(mealChoice));
+				AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Done eating " + menu.getDishName(mealChoice));
 				event = AgentEvent.doneEating;
 				//isHungry = false;
 				stateChanged();
 			}
 		},
-		5000);//getHungerLevel() * 1000);//how long to wait before running task
+		4000);//getHungerLevel() * 1000);//how long to wait before running task
 	}
 	
 	private void GoPayCheck() {
-		print("Leaving table.");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Leaving table.");
 		waiter.msgLeavingTable(this);
 		customerGui.DoGoPay();
 		event = AgentEvent.goingToCashier;
 	}
 	
 	private void PayCheck() {
-		print("Paying check.");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Paying check.");
 		cashier.msgPayingCheck(this, amountSpent);
 		event = AgentEvent.gaveCashierMoney;
 	}
 
 	private void LeaveTableEarly() {
-		print("Leaving.");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Leaving.");
 		customerGui.DoExitRestaurant();
 		waiter.msgLeavingTable(this);
 		state = AgentState.LeavingEarly;
@@ -319,7 +324,7 @@ public class RestaurantCustomerRole extends Role implements Customer {
 	}
 	
 	private void LeaveRestaurant() {
-		print("Leaving.");
+		AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "Leaving.");
 		customerGui.DoExitRestaurant();
 		state = AgentState.Leaving;
 		deactivate();
@@ -336,7 +341,7 @@ public class RestaurantCustomerRole extends Role implements Customer {
 	// Accessors, etc.
 
 	public String getName() {
-		return name;
+		return myPerson.getName();
 	}
 	
 	public int getHungerLevel() {
@@ -347,10 +352,6 @@ public class RestaurantCustomerRole extends Role implements Customer {
 		this.hungerLevel = hungerLevel;
 		//could be a state change. Maybe you don't
 		//need to eat until hunger lever is > 5?
-	}
-	
-	public double getMoney() {
-		return money;
 	}
 
 	public String toString() {
@@ -426,7 +427,12 @@ public class RestaurantCustomerRole extends Role implements Customer {
 
 	@Override
 	public String getNameOfRole() {
-		return "RestaurantCustomerRole";
+		return Role.RESTAURANT_CUSTOMER_ROLE;
+	}
+
+	@Override
+	public double getMoney() {
+		return myPerson.getMoney();
 	}
 }
 

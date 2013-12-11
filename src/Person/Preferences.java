@@ -2,6 +2,7 @@ package Person;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class Preferences {
 
@@ -15,7 +16,21 @@ public class Preferences {
 	
 	public Preferences(){
 		map = new HashMap<KeyValue, String>();
-		String vehicle_pref = Math.random() < 0.5 ? BUS : WALK;
+		Random r = new Random();
+		String vehicle_pref;
+		switch(r.nextInt()%3){
+			case 0:
+				vehicle_pref = BUS;
+				break;
+			case 1:
+				vehicle_pref = WALK;
+				break;
+			case 2: 
+			default:
+				vehicle_pref = CAR;
+				break;
+		}
+//		String vehicle_pref = Math.random() < 0.5 ? BUS : WALK;
 		//String vehicle_pref = WALK;
 		//String vehicle_pref = BUS;
 		map.put(KeyValue.VEHICLE_PREFERENCE, vehicle_pref);

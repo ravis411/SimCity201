@@ -1,8 +1,9 @@
 package bank;
 
 
+import interfaces.BankClient;
+import interfaces.generic_interfaces.GenericCashier;
 import restaurant.CashierRole;
-import bank.interfaces.BankClient;
 
 
 
@@ -14,7 +15,7 @@ import bank.interfaces.BankClient;
 
 public class Account {
 	public BankClient client = null;
-	public CashierRole business = null;
+	public GenericCashier business = null;
 	public double amount = 0;
 
 	public Account(BankClient bank, double m){
@@ -22,8 +23,9 @@ public class Account {
 		amount = m;
 	}
 	
-	public Account(CashierRole b, double m){
+	public Account(GenericCashier b, double m){
 		business = b;
 		amount = m;
 	}
+
 }

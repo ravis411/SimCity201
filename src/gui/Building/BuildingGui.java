@@ -11,8 +11,8 @@ public class BuildingGui extends Rectangle2D.Double implements Gui{
 	 * 
 	 */
 	private static final long serialVersionUID = -1580400405829679237L;
-	BuildingPanel myBuildingPanel;
-	boolean testView = false;
+	protected BuildingPanel myBuildingPanel;
+	protected boolean testView = false;
 
 	public BuildingGui( double x, double y, double width, double height ) {
 		super( x, y, width, height );

@@ -1,6 +1,9 @@
 package MarketEmployee;
 
 
+import interfaces.MarketCustomer;
+import interfaces.MarketEmployee;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,23 +12,22 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
-import building.BuildingList;
-import trace.AlertLog;
-import trace.AlertTag;
 import market.data.MarketData;
 import market.gui.MarketCustomerGui;
-import market.interfaces.MarketCustomer;
-import market.interfaces.MarketEmployee;
 import market.test.mock.EventLog;
 import market.test.mock.LoggedEvent;
-import Person.Role.Role;
+import trace.AlertLog;
+import trace.AlertTag;
+import Person.Role.Employee;
+import Person.Role.ShiftTime;
 import agent.Constants;
+import building.BuildingList;
 
 /**
  * MarketCustomer Agent
  */
 //MarketCustomer Agent
-public class MarketCustomerRole extends Role implements MarketCustomer{
+public class MarketCustomerRole extends Employee implements MarketCustomer{
 	public MarketCustomerGui gui;
 	String name = "Market Customer";
 	String foodTypeWanted;
@@ -55,8 +57,8 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public MarketCustomerRole(){
-		
+	public MarketCustomerRole(String location){
+		super(location);
 		menu= new HashMap<String, Integer>();
 		menu.put("Steak",  20);
 		menu.put("Chicken", 10);
@@ -154,7 +156,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		}
 		if (counterNumber==0){
 			
-			while(	marketData.getMarketCustomerAtCounter1()==null){
+			while(	marketData.getMarketEmployeeAtCounter1()==null){
 				try {
 					Thread.sleep(1 * Constants.SECOND);
 				} catch (InterruptedException e) {
@@ -163,11 +165,11 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 				}
 			}
 			
-			marketEmployee=marketData.getMarketCustomerAtCounter1();
+			marketEmployee=marketData.getMarketEmployeeAtCounter1();
 		}
 		if (counterNumber==1){
 			
-				while(	marketData.getMarketCustomerAtCounter2()==null){
+				while(	marketData.getMarketEmployeeAtCounter2()==null){
 					try {
 						Thread.sleep(1 * Constants.SECOND);
 					} catch (InterruptedException e) {
@@ -177,12 +179,12 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 				}
 				
 				
-				marketEmployee=marketData.getMarketCustomerAtCounter2();
+				marketEmployee=marketData.getMarketEmployeeAtCounter2();
 		}
 		
 		if (counterNumber==2){
 		
-				while(	marketData.getMarketCustomerAtCounter3()==null){
+				while(	marketData.getMarketEmployeeAtCounter3()==null){
 					try {
 						Thread.sleep(1 * Constants.SECOND);
 					} catch (InterruptedException e) {
@@ -191,7 +193,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 					}
 				}
 				
-				marketEmployee=marketData.getMarketCustomerAtCounter3();
+				marketEmployee=marketData.getMarketEmployeeAtCounter3();
 		
 		}
 		
@@ -227,7 +229,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		state= MarketCustomerState.none;
 		gui.DoLeave();//animation for CustomerRole to leave market
 		deactivate();
-		this.myPerson.msgImHungry();
+		//this.myPerson.msgImHungry();
 		BuildingList.findBuildingWithName("Market 1").removeRole(this);
 		
 	}
@@ -263,6 +265,18 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 
 	public void setCounter(int counterNumber) {
 		this.counterNumber=counterNumber;
+	}
+
+	@Override
+	public ShiftTime getShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

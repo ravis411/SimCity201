@@ -4,7 +4,7 @@ import javax.swing.*;
 
 import agent.Agent;
 import astar.Position;
-import ryansRestaurant.HostAgent;
+import ryansRestaurant.RyansHostRole;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,8 +19,8 @@ import java.util.concurrent.Semaphore;
 
 public class RestaurantLayout  {
 
-    public final int WINDOWX = 2 * 450;
-    public final int WINDOWY = (int)(350 *1.5);
+    public final int WINDOWX = 800;
+    public final int WINDOWY = (int)(400);
     public final int GRID_SIZEX = 25;
     public final int GRID_SIZEY = 25;
     public final int numxGridPositions = WINDOWX / GRID_SIZEX;
@@ -75,12 +75,14 @@ public class RestaurantLayout  {
     	//initialize tablePositions
     	int numTablePos = 1;
     	int xOffset = 5;
-    	int yOffset = 3;
+    	int yOffset = 1;
     	for(int y = 1; y <= 2; y++){
-    		for(int x = 1; x <= 7; x++) {
+    		for(int x = 1; x <= 6; x++) {
     			tablePositionMap.put(numTablePos, new Dimension(xOffset + (x * 4), yOffset + (y * 4) ));
     			tableXYMap.put(numTablePos, positionMap.get(new Dimension(xOffset + (x * 4), yOffset + (y * 4) )));
     			numTablePos++;
+    			if(x == 5 && y == 2)
+    				break;//this is so it don't paint the last table.
     		}
     		xOffset += 2;
     	}
@@ -89,18 +91,19 @@ public class RestaurantLayout  {
     	
     	hostPosition = new Dimension(3, 1);
     	cashierPosition = new Dimension(1, 3);
-    	cookOrderCounterPosition = new Dimension(12, 14);
-    	cookRefrigeratorPosition = new Dimension((int)(numxGridPositions / 3), numyGridPositions - 3);
+    	cookOrderCounterPosition = new Dimension(14, 12);
+    	cookRefrigeratorPosition = new Dimension((int)(numxGridPositions / 2), numyGridPositions - 3);
     	hostXYCoords = new Dimension(positionMap.get(hostPosition));
     	cashierXYCoords = new Dimension(positionMap.get(cashierPosition));
     	cookOrderCounterXYCoords = new Dimension(positionMap.get(cookOrderCounterPosition));
     	cookRefrigeratorXYCoords = new Dimension(positionMap.get(cookRefrigeratorPosition));
     	
     	//initialize waiterHome Positions
-    	for(int x = 1; x < numxGridPositions - 7; x++)
+    	//for(int x = 1; x <= 10; x++)
+    	for(int y = 1; y <= 8; y++)
     	{
-    			waiterHomeXYMap.put(x, new Dimension(positionMap.get(new Dimension(7 + x, 2))));
-    			waiterHomePositionsMap.put(x, new Dimension(x + 7, 2));
+    			waiterHomeXYMap.put(y, new Dimension(positionMap.get(new Dimension(2, y + 4))));
+    			waiterHomePositionsMap.put(y, new Dimension(2, y + 4));
     	}
     	//initialize MywaiterHomePositions
     	for(Integer i : waiterHomeXYMap.keySet()) {
@@ -118,11 +121,12 @@ public class RestaurantLayout  {
 //    	}
     	
     	int numCustPos = 1;
-    	for(int y = 1; y <= 10; y++){
+    	//for(int y = 1; y <= 9; y++)
+    	for(int x = 1; x <= 15; x++){
     		//for(int x = 1; x <= 2; x++)
     		{
-    			customerWaitingPositionMap.put(numCustPos, new Dimension(2, y + 5));
-    			customerWaitingXYMap.put(numCustPos, positionMap.get(new Dimension(2, y + 5)));
+    			customerWaitingPositionMap.put(numCustPos, new Dimension(7 + x, 2));
+    			customerWaitingXYMap.put(numCustPos, positionMap.get(new Dimension(x + 7, 2)));
     			numCustPos++;
     		}
     	}
@@ -214,11 +218,24 @@ public class RestaurantLayout  {
    public void removeGui(Gui agentGui) {
 	   if(agentGui instanceof CustomerGui) {
 		   for(MyHomePosition p : myCustomerWaitingPositions) {
-			   if(p.agentGui == agentGui)
+			   if(p.agentGui == agentGui){
 				   p.agentGui = null;
+				   return;
+			   }
+				   
+		   }
+	   }else if(agentGui instanceof WaiterGui){
+		   for(MyHomePosition h : myWaiterHomePositions) {
+			   if(h.agentGui == agentGui) {
+				   h.agentGui = null;
+				   return;
+			   }
 		   }
 	   }
    }
+   
+   
+   
    
    
    public void draw(Graphics2D g) {
@@ -232,7 +249,7 @@ public class RestaurantLayout  {
    }
    
    public void drawCustomerWaitingArea(Graphics2D g) {
-	   g.setColor(new Color(46, 149, 181)); 
+	   g.setColor(new Color(46, 149, 181));
 	   Dimension d = null;
 	   for(MyHomePosition p : myCustomerWaitingPositions) {
 		   d = p.xyCoords;
@@ -296,7 +313,7 @@ public class RestaurantLayout  {
     
     class MyHomePosition {
     	int number = 0;
-    	String type = "Waiter";
+    	String type = "RyansWaiter";
     	Dimension positionCoords = null;
     	Dimension xyCoords = null;
     	Gui agentGui = null;

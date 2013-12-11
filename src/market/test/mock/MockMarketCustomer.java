@@ -1,6 +1,6 @@
 package market.test.mock;
 
-import market.interfaces.MarketCustomer;
+import interfaces.MarketCustomer;
 
 public class MockMarketCustomer extends Mock implements MarketCustomer {
 

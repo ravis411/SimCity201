@@ -27,11 +27,11 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.text.TabExpander;
 
-import ryansRestaurant.CashierAgent;
-import ryansRestaurant.CookAgent;
-import ryansRestaurant.CustomerAgent;
-import ryansRestaurant.MarketAgent;
-import ryansRestaurant.HostAgent.aTable;
+import ryansRestaurant.RyansCashierRole;
+import ryansRestaurant.RyansCookRole;
+import ryansRestaurant.RyansCustomerRole;
+import ryansRestaurant.RyansMarketRole;
+import ryansRestaurant.RyansHostRole.aTable;
 
 public class ControlPanel extends JPanel implements ActionListener {
 
@@ -45,6 +45,7 @@ public class ControlPanel extends JPanel implements ActionListener {
 	
 	
 	private JButton addTableButton = new JButton("Add Table");//button for adding a table
+	private JButton addAllTables = new JButton("Add All");
 	JComboBox<Integer> tablePosCombo; // ComboBox for table pos/number
 	JComboBox<Integer> numSeatsCB;	//comboBox for table size/ number of seats
 	
@@ -55,7 +56,7 @@ public class ControlPanel extends JPanel implements ActionListener {
 	private List<JButton> markets = new ArrayList<>();
 	
 	private JButton cookButton = new JButton("Cook Info");
-	private JButton cashierButton = new JButton("Cashier Info");
+	private JButton cashierButton = new JButton("Ryan's Cashier Info");
 	
 	//sets the state of the panel
 	private enum GUIState {none, addTable, marketsPanel, cookPanel, cutomerPanel, cashierPanel};
@@ -70,6 +71,7 @@ public class ControlPanel extends JPanel implements ActionListener {
 		
 		//add action listener for addTableButton
 		addTableButton.addActionListener(this);
+		addAllTables.addActionListener(this);
 		cancelButton.addActionListener(this);
 		pauseButton.addActionListener(this);
 		marketButton.addActionListener(this);
@@ -96,17 +98,18 @@ public class ControlPanel extends JPanel implements ActionListener {
 		addTableButton.setText("Click to add Table");
 		
 		add(addTableButton);
-		add(pauseButton);
-		add(marketButton);
+		//add(pauseButton);
+		//add(marketButton);
 		add(cookButton);
 		add(cashierButton);
+		add(cancelButton);
 		this.repaint();
 		validate();
 	}
 	
 	
 	public void showCustomerInfo(String name) {
-		for( CustomerAgent cust : gui.restPanel.customers) {
+		for( RyansCustomerRole cust : gui.restPanel.customers) {
 			if(cust.getName().equals(name)) {
 				this.removeAll();
 				state = GUIState.cutomerPanel;
@@ -145,9 +148,9 @@ public class ControlPanel extends JPanel implements ActionListener {
 		this.removeAll();
 		this.setLayout(new FlowLayout());
 		//find the market
-		MarketAgent market = null;
+		RyansMarketRole market = null;
 		
-		for(MarketAgent m : gui.restPanel.getMarkets()) {
+		for(RyansMarketRole m : gui.restPanel.getMarkets()) {
 			if(m.getName().equals(button.getText())) {
 				market = m;
 			}
@@ -176,7 +179,7 @@ public class ControlPanel extends JPanel implements ActionListener {
         marketListPane.setMinimumSize(paneSize);
         
         markets.clear();
-        for(MarketAgent m : gui.restPanel.getMarkets()) {
+        for(RyansMarketRole m : gui.restPanel.getMarkets()) {
         	JButton button = new JButton(m.getName());
             button.setBackground(Color.white);
             Dimension buttonSize = new Dimension( (int)((paneSize.width) *.9),
@@ -233,6 +236,7 @@ public class ControlPanel extends JPanel implements ActionListener {
 			add(tablNumberP);
 			add(numSeatsPanel);
 			add(addTableButton);
+			add(addAllTables);
 			add(cancelButton);
 		}
 		else{
@@ -269,13 +273,13 @@ public class ControlPanel extends JPanel implements ActionListener {
 		if(pauseButton.getText().equals("Pause"))
 		{
 			pauseButton.setText("Resume");
-		//	gui.restPanel.pause();
+			gui.restPanel.pause();
 			
 		}
 		else
 		{
 			pauseButton.setText("Pause");
-			//gui.restPanel.pause();
+			gui.restPanel.resume();
 		}
 		
 	}
@@ -290,7 +294,9 @@ public class ControlPanel extends JPanel implements ActionListener {
 		else if(state == GUIState.none && e.getSource() == marketButton) {
 			showMarketPanel();
 		}
-		
+		else if(state == GUIState.none && e.getSource() == cancelButton) {
+			gui.showInfoPanel(false);
+		}
 		else if(e.getSource() == pauseButton)
 		{
 			pause();
@@ -311,6 +317,16 @@ public class ControlPanel extends JPanel implements ActionListener {
 			state = GUIState.none;
 			showCtrlPanel();
 		}
+		else if(state == GUIState.addTable && e.getSource() == addAllTables){
+			Vector<Integer> tableNumbers = getAvailableTableLocations();
+			if(!tableNumbers.isEmpty()){
+				for(Integer i : tableNumbers){
+					gui.animationPanel.host.msgAddTable((int)i, (int)numSeatsCB.getSelectedItem());
+				}
+			}
+			state = GUIState.none;
+			showCtrlPanel();
+		}
 		else if( (state == GUIState.addTable || state == GUIState.marketsPanel || state==GUIState.cutomerPanel || state == GUIState.cookPanel || state == GUIState.cashierPanel) && e.getSource() == cancelButton)
 		{
 			state = GUIState.none;
@@ -324,6 +340,7 @@ public class ControlPanel extends JPanel implements ActionListener {
 				}
 			}
 		}
+		
 	}
 	
 	
@@ -331,14 +348,14 @@ public class ControlPanel extends JPanel implements ActionListener {
 	
 	
 	/**
-	 * Customer Info Class
+	 * RyansCustomer Info Class
 	 * @author
 	 *
 	 */
 	private class CustomerInfo extends JPanel implements ActionListener{
 
 		private JLabel label;
-		private CustomerAgent customer;
+		private RyansCustomerRole customer;
 		private JButton saveB = new JButton("Save");
 		private JButton refreshB = new JButton("Refresh");
 		private JButton popB = new JButton("Pop-out");
@@ -348,7 +365,7 @@ public class ControlPanel extends JPanel implements ActionListener {
 		private JCheckBox flakeCB = new JCheckBox("Flake");
 		private JCheckBox leavesCB = new JCheckBox("Leaves");
 		
-		public CustomerInfo(CustomerAgent customer) {
+		public CustomerInfo(RyansCustomerRole customer) {
 			this.customer = customer;
 			
 			setLayout(new GridLayout(6, 0));
@@ -456,12 +473,12 @@ public class ControlPanel extends JPanel implements ActionListener {
 		private JButton popB = new JButton("Pop-out");
 		private JPanel popCancelP = new JPanel();
 		private JButton refreshB = new JButton("Refresh");
-		public CookAgent cook = null;
+		public RyansCookRole cook = null;
 		
 				
 		
 		
-		public CookInfo(CookAgent cook) {
+		public CookInfo(RyansCookRole cook) {
 			this.cook = cook;
 			JPanel panel = new JPanel();
 			//panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
@@ -627,10 +644,10 @@ public class ControlPanel extends JPanel implements ActionListener {
 		private JButton saveB = new JButton("Save");
 		private JButton maximizeB = new JButton("Pop-out");
 		private JButton refreshB = new JButton("Refresh");
-		public MarketAgent market = null;
+		public RyansMarketRole market = null;
 		
 		
-		public MarketInfo(MarketAgent market) {
+		public MarketInfo(RyansMarketRole market) {
 			this.market = market;
 			
 			updateInfo();
@@ -744,10 +761,10 @@ public class ControlPanel extends JPanel implements ActionListener {
 		private JButton saveB = new JButton("Save");
 		private JButton maximizeB = new JButton("Pop-out");
 		private JButton refreshB = new JButton("Refresh");
-		public CashierAgent cashier = null;
+		public RyansCashierRole cashier = null;
 		
 		
-		public CashierInfo(CashierAgent cashier) {
+		public CashierInfo(RyansCashierRole cashier) {
 			this.cashier = cashier;
 			
 			updateInfo();

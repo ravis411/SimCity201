@@ -1,5 +1,10 @@
 package bank.test;
 
+import interfaces.AnnouncerA;
+import interfaces.AnnouncerB;
+import interfaces.BankClient;
+import interfaces.BankTeller;
+import interfaces.LoanTeller;
 import bank.Account;
 import bank.BankClientRole;
 import bank.BankClientRole.bankState;
@@ -7,11 +12,6 @@ import bank.BankClientRole.inLineState;
 import bank.LoanTellerRole.location;
 import bank.LoanTellerRole.requestState;
 import bank.LoanTellerRole;
-import bank.interfaces.AnnouncerA;
-import bank.interfaces.AnnouncerB;
-import bank.interfaces.BankClient;
-import bank.interfaces.BankTeller;
-import bank.interfaces.LoanTeller;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -19,7 +19,6 @@ import residence.HomeRole;
 import residence.HomeRole.AgentEvent;
 import residence.HomeRole.AgentState;
 import residence.gui.HomeRoleGui;
-import residence.test.mock.MockApartmentManager;
 import residence.test.mock.MockHome;
 import trace.AlertLog;
 import Person.PersonAgent;
@@ -49,7 +48,7 @@ public class LoanTellerTest extends TestCase {
 		client.setPerson(personAgent);
 		
 		teller= new MockBankTeller("Teller");
-		loanTeller= new LoanTellerRole();
+		loanTeller= new LoanTellerRole("Bank");
 		loanTeller.setPerson(personAgent2);
 		announcerA= new MockNumberAnnouncer("announcerA");
 		announcerB= new MockLoanNumberAnnouncer("announcerB");

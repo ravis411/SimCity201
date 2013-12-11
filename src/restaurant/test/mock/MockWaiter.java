@@ -1,13 +1,13 @@
 package restaurant.test.mock;
 
 
+import interfaces.Cashier;
+import interfaces.Customer;
+import interfaces.Waiter;
 import restaurant.CashierRole;
 import restaurant.CookRole;
 import restaurant.HostRole;
 import restaurant.Order;
-import restaurant.interfaces.Cashier;
-import restaurant.interfaces.Customer;
-import restaurant.interfaces.Waiter;
 
 /**
  * A sample MockWaiter built to unit test a CashierAgent.
@@ -84,23 +84,23 @@ public class MockWaiter extends Mock implements Waiter {
 			
 		}
 
-		@Override
-		public void setHost(HostRole hr) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void setCook(CookRole cr) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void setCashier(CashierRole cr) {
-			// TODO Auto-generated method stub
-			
-		}
+//		@Override
+//		public void setHost(HostRole hr) {
+//			// TODO Auto-generated method stub
+//			
+//		}
+//
+//		@Override
+//		public void setCook(CookRole cr) {
+//			// TODO Auto-generated method stub
+//			
+//		}
+//
+//		@Override
+//		public void setCashier(CashierRole cr) {
+//			// TODO Auto-generated method stub
+//			
+//		}
 
 		@Override
 		public boolean getBreakStatus() {

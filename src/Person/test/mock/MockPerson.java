@@ -1,16 +1,23 @@
 package Person.test.mock;
 
+import gui.Building.ResidenceBuildingPanel;
+import interfaces.Person;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import interfaces.Person;
-import Transportation.test.mock.Mock;
+import Person.PersonAgent;
+import Person.Role.Role;
+import Person.Role.ShiftTime;
 import Transportation.test.mock.LoggedEvent;
+import Transportation.test.mock.Mock;
 
 public class MockPerson extends Mock implements Person {
 	
 	private List<LoggedEvent> log = new ArrayList<LoggedEvent>();
+	public List<Person> friends = new ArrayList<Person>();
+	public int numParties = 0;
 	
 	public MockPerson(String name) {
 		super(name);
@@ -42,7 +49,7 @@ public class MockPerson extends Mock implements Person {
 	}
 
 	@Override
-	public void msgReportForWork(String role) {
+	public void msgReportForWork() {
 		log.add(new LoggedEvent("Told to go to work"));
 		
 	}
@@ -80,7 +87,9 @@ public class MockPerson extends Mock implements Person {
 	@Override
 	public void msgPartyInvitation(Person p, Calendar rsvpDeadline, Calendar partyTime) {
 		log.add(new LoggedEvent("Invited to a party"));
-		
+		if(p != null) {
+			numParties++;
+		}
 	}
 
 	@Override
@@ -94,5 +103,109 @@ public class MockPerson extends Mock implements Person {
 		log.add(new LoggedEvent("Received a negative RSVP"));
 		
 	}
-	
+
+	@Override
+	public void startThread() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setMoney(double d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setMoneyNeeded(double d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void stateChanged() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public double getMoney() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getAge() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getMoneyNeeded() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<Person> getFriends() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResidenceBuildingPanel getHome() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void msgYouCanLeave() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dateAction(int month, int day, int hour, int minute) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deactivateCurrentRole() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void workIsOpen() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setInitialRole(Role roleFromString, String string,
+			ShiftTime shift) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public int getNumParties() {
+		// TODO Auto-generated method stub
+		return numParties;
+	}
+
+	@Override
+	public void msgRespondToInviteUrgently(Person myPerson) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgPartyOver(Person myPerson) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 }

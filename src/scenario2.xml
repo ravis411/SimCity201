@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<configuration>
+    <building-config>
+        <building id="1" type="Residence" name="House 1"/>
+        <building id="2" type="Residence" name="House 2"/>
+        <building id="3" type="Market" name="Market 1"/>
+        <building id="4" type="Apartment" name="Apartment Building"/>
+        <building id="5" type="Bank" name="Bank" />
+        <building id="6" type="Apartment" name="Apartment Building 1"/>
+        <building id="7" type="Apartment" name="Apartment Building 4"/>
+        <building id="8" type="Restaurant" name="Restaurant 1"/>
+        <building id="9" type="Apartment" name="Apartment Building 2"/>
+        <building id="10" type="Default" name="Default"/>
+        <building id="11" type="Food Court" name="Food Court"/>
+        <building id="12" type="Default" name="Default 1"/>
+    </building-config>
+    <people>
+	    <person name="Mike's AM Waiter" job="mikeRestaurant.OldWaiterRole" shift="AM"
+			    location="Mike's Restaurant" home="Apartment 5">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Mike's AM Host" job="mikeRestaurant.HostRole" shift="AM"
+			    location="Mike's Restaurant" home="Apartment 4">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Mike's AM Cook" job="mikeRestaurant.CookRole" shift="AM"
+			    location="Mike's Restaurant" home="Apartment 3">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Mike's AM Cashier" job="mikeRestaurant.CashierRole" shift="AM"
+			    location="Mike's Restaurant" home="Apartment 2">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Mike's PM Waiter" job="mikeRestaurant.OldWaiterRole" shift="PM"
+			    location="Mike's Restaurant" home="Apartment 11">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Mike's PM Waiter 2" job="mikeRestaurant.OldWaiterRole" shift="PM"
+			    location="Mike's Restaurant" home="Apartment 33">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Mike's PM Host" job="mikeRestaurant.HostRole" shift="PM"
+			    location="Mike's Restaurant" home="Apartment 12">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Mike's PM Cook" job="mikeRestaurant.CookRole" shift="PM"
+			    location="Mike's Restaurant" home="Apartment 13">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Mike's PM Cashier" job="mikeRestaurant.CashierRole" shift="PM"
+			    location="Mike's Restaurant" home="Apartment 14">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends> 
+		</person>
+		<person name="Person 1" 
+			    location="Home" home="Apartment 23">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 2" 
+			    location="Home" home="Apartment 22">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+    </people>
+</configuration>

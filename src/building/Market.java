@@ -1,11 +1,17 @@
 package building;
 
 import gui.Building.BuildingPanel;
+import interfaces.MarketEmployee;
+import interfaces.MarketManager;
+import market.data.MarketData;
+import Person.Role.Employee;
+import Person.Role.Role;
 
-public class Market extends Building implements Workplace {
-
-	public Market(BuildingPanel panel) {
+public class Market extends  Workplace {
+	MarketData marketData;
+	public Market(BuildingPanel panel,MarketData marketData) {
 		super(panel);
+		this.marketData=marketData;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -23,8 +29,33 @@ public class Market extends Building implements Workplace {
 
 	@Override
 	public boolean isOpen() {
+		boolean hasManager = false, hasThreeEmployee = false;
+		int numEmployee=0;
+		synchronized(inhabitants){
+			for(Role r : inhabitants){
+				if(r instanceof MarketManager){
+					hasManager = true;
+				}else if(r instanceof MarketEmployee){
+					numEmployee++;
+					if(numEmployee==3)
+						hasThreeEmployee = true;
+				}
+			}
+		}
+		
+		return hasManager && hasThreeEmployee;
+		}
+	
+	@Override
+	public void notifyEmployeesTheyCanLeave() {
 		// TODO Auto-generated method stub
-		return false;
+		for(Role r : inhabitants){
+			if(r instanceof Employee){
+				r.deactivate();
+			}
+		}
 	}
-
+	public MarketData getMarketData(){
+		return marketData;
+	}
 }

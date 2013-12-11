@@ -5,6 +5,7 @@ package gui.agentGuis;
 
 import gui.Gui;
 import gui.LocationInfo;
+import gui.SetUpWorldFactory;
 import gui.SimCityLayout;
 import gui.MockAgents.PseudoBusAgent;
 import gui.MockAgents.PseudoPerson;
@@ -31,145 +32,34 @@ import Person.PersonAgent;
 import Person.test.mock.MockPerson;
 import astar.AStarNode;
 import astar.AStarTraversal;
+import astar.PersonAStarTraversal;
 import astar.Position;
 
 
 
 public class PersonGui implements Gui {
-
-    private Person agent = null;
-    
-    private boolean isPresent = true;
-    
-    @SuppressWarnings("unused")
-	private SimCityLayout cityLayout = null;
-
-
-    //Coordinate Positions
-    private int xPos = -20, yPos = -20;
-    private int xDestination = 400, yDestination = -20;
-    
-    //A map of Grid Positions to java xy coordinates
-    public final Map<Dimension, Dimension> positionMap;
-    
-    AStarTraversal aStar;
-    Position currentPosition;
-    Position originalPosition;
-    enum ASTARSTATE {none, moving, atDestination};
-    ASTARSTATE aStarState = ASTARSTATE.none;
-    Semaphore aSem = new Semaphore(0, true);
-    private Map<String, LocationInfo> locations = new HashMap<>();//<<-- A Map of locations
-    
-    
-    
-    Image image = null;
-    boolean testView = false;
-    
-    //This holds information about where the person currently is..including how to leave.
-    LocationInfo currentLocation = null;
-    private enum PersonState {none, inCity, inBuilding};
-    private PersonState state = PersonState.none;
-    
-    
-    
-    
-    
-    
-    public PersonGui(PersonAgent agent, SimCityLayout cityLayout, AStarTraversal aStar, List<LocationInfo> locationList) {
-    	positionMap = new HashMap<Dimension, Dimension>(cityLayout.positionMap);
-    	this.agent = agent;
-        this.cityLayout = cityLayout;
-    
-        this.aStar = aStar;
-        
-  
-			//img = new ImageIcon(("movingCar.gif"));
 	
-			try {
-				String s =( this.getClass().getResource("/images/alien.png").getPath() );
-				BufferedImage img = ImageIO.read(new File(s));
-			    if(img == null){
-	        		testView = true;
-	        	} else{
-	        	ImageIcon icon = new ImageIcon(img);
-	        	image = icon.getImage();
-	        	}
-			} catch (Exception e) {
-				AlertLog.getInstance().logWarning(AlertTag.PERSON_GUI, agent.toString(), "Image not found. Switching to test view.");
-				testView = true;
-			}
-			
-
-			
-        for(LocationInfo i : locationList){
-        	if(i != null){
-        		locations.put(i.name, i);
-        	}
-        	
-        }
-        
-    }
-    
-    
-    //Constructor for mockAgents...everything else is the same
-    public PersonGui(PseudoPerson agent, SimCityLayout cityLayout, AStarTraversal aStar, List<LocationInfo> locationList) {
-    	positionMap = new HashMap<Dimension, Dimension>(cityLayout.positionMap);
-    	this.cityLayout = cityLayout;
-    	this.agent = agent;
-        this.aStar = aStar;
-        
-  
-			//img = new ImageIcon(("movingCar.gif"));
 	
-			try {
-				String s =( this.getClass().getResource("/images/alien.png").getPath() );
-				BufferedImage img = ImageIO.read(new File(s));
-			    if(img == null){
-	        		testView = true;
-	        	} else{
-	        	ImageIcon icon = new ImageIcon(img);
-	        	image = icon.getImage();
-	        	}
-			} catch (Exception e) {
-				AlertLog.getInstance().logWarning(AlertTag.PERSON_GUI, agent.toString(), "Image not found. Switching to test view.");
-				testView = true;
-			}
-			
-
-			
-        for(LocationInfo i : locationList){
-        	if(i != null){
-        		locations.put(i.name, i);
-        	}
-        	
-        }
-        
-    }
-    
-    
-    public void setAgent(PersonAgent agent){
-    	this.agent = agent;
-    }
-    
-    
-    public boolean setStartingStates(String location){
-    	LocationInfo i = locations.get(location);
-    	System.out.println(location);
-    	if(i == null)
-    		return false;
-    	
-    	currentLocation = i;
-    	xPos = xDestination = i.entranceFromMainGridPosition.width;
-    	yPos = yDestination = i.entranceFromMainGridPosition.height;
-    	isPresent = false;    	
-    	state = PersonState.inBuilding;
-    	
-    	return true;
-    }
-    
-    
-    
-    /** Gets the Person's current location.
+	
+	
+	
+	
+	/** Sets the current location of the GUI
+	 * 
+	 * @param location The location to be at.
+	 * @return True if the GUI is at location. False otherwise.
+	 */
+	public boolean setCurrentLocation(String location){
+		return setStartingStates(location);
+	}
+	
+	
+	
+	
+	
+	
+	
+	/** Gets the Person's current location.
      * 
      * @return	The name of the guis current location, null otherwise.
      */
@@ -180,64 +70,18 @@ public class PersonGui implements Gui {
     	else
     		return null;
     }
-    
-    
+	
+	
     /**	
      * @return A list of locations that the gui knows about.
      */
     public List<String> getLocations(){
     	return new ArrayList<>(locations.keySet());
     }
+	
+	
     
-    
-    public void updatePosition() {
-        {
-			if (xPos < xDestination)
-				xPos++;
-			else if (xPos > xDestination)
-				xPos--;
-			if (yPos < yDestination)
-				yPos++;
-			else if (yPos > yDestination)
-				yPos--;
-        }
-        
-        
-        if(aStarState == ASTARSTATE.moving && xPos == xDestination && yPos == yDestination) {
-        	aStarState = ASTARSTATE.atDestination;
-        	aSem.release();
-        }
-    }
-
-    
-    
-    public void draw(Graphics2D g) {
-        if(testView){
-        	g.setColor(Color.GREEN);
-        	g.fillOval(xPos, yPos, 20, 20);
-        	g.setColor(Color.GREEN);
-        	g.drawString(agent.toString(), xPos, yPos);
-        }
-        else
-        {
-        	if(image == null){
-        		testView = true;
-        		return;
-        	}
-        	g.drawImage(image, xPos, yPos, 20, 20, null);
-        }
-    }
-
-    
-    
-    
-    
-    public boolean isPresent() {
-        return isPresent;
-    }
-    
-    
-    
+	
     /**	This will move the person from their current location to the BusStop that is the closest
      * 	straight line distance away. The name of that stop is returned.
      * 
@@ -291,7 +135,13 @@ public class PersonGui implements Gui {
     		DoGoTo(closestStop.name);
     		return closestStop.name;
     }
-    
+	
+	
+	
+	
+	
+	
+	
     /**	This will calculate and return the busStop that is closest to a destination.
      * 	When this function returns...the person has been teleported to that busStop.
      * 
@@ -369,12 +219,22 @@ public class PersonGui implements Gui {
     
     
     
+    
     /**	This will move the person from their current location to location
      * When this function returns, the person has arrived or the location does not exist.
      * 
      * @param location	The name of the destination to travel to.
      */
     public void DoGoTo(String location){
+    	LocationInfo info = null;
+    	info = locations.get(location); 
+    	if(info == null){
+    		AlertLog.getInstance().logError(AlertTag.PERSON_GUI, agent.getName() + " GUI", "Person trying to DoGoTo() to a location (" + location + ") that doesn't exist.");
+    		return;
+    	}
+    	
+    	
+    	
     	//System.out.println("Going to " + location);
     	if(state == PersonState.none) {
     		//System.out.println("Entering WORLD ");
@@ -385,15 +245,14 @@ public class PersonGui implements Gui {
     	else if(state == PersonState.inBuilding){
     		DoLeaveBuilding();
     	}
-    	LocationInfo info = null;
-    	info = locations.get(location);    	
+    	   	
     	
     	if(info != null){
     		
     		//See if the location is in the same sector otherwise travel to the next sector
-    		if(currentLocation.sector != info.sector){
+    		//if(currentLocation.sector != info.sector){
     			//DoGoToSector(info.sector);
-    		}
+    	//	}
     		
     		
     		Dimension entrance = info.entranceFromMainGridPosition;
@@ -417,6 +276,266 @@ public class PersonGui implements Gui {
     		currentLocation = info;
     	}
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //END OF PUBLIC METHODS FOR AGENT USE
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	
+	
+	
+	
+	
+	
+	
+
+    private Person agent = null;
+    
+    private boolean isPresent = true;
+    
+    @SuppressWarnings("unused")
+	private SimCityLayout cityLayout = null;
+
+
+    //Coordinate Positions
+    private int xPos = -20, yPos = -20;
+    private int xDestination = 400, yDestination = -20;
+    
+    //A map of Grid Positions to java xy coordinates
+    public final Map<Dimension, Dimension> positionMap;
+    
+    AStarTraversal aStar;
+    Position currentPosition;
+    Position originalPosition;
+    enum ASTARSTATE {none, moving, atDestination};
+    ASTARSTATE aStarState = ASTARSTATE.none;
+    Semaphore aSem = new Semaphore(0, true);
+    private Map<String, LocationInfo> locations = new HashMap<>();//<<-- A Map of locations
+    
+    Image image = null;
+    boolean testView = false;
+    
+    //This holds information about where the person currently is..including how to leave.
+    LocationInfo currentLocation = null;
+    private enum PersonState {none, inCity, inBuilding};
+    private PersonState state = PersonState.none;
+    
+    
+    
+    
+    public PersonGui(PersonAgent agent) {
+    	this.agent = agent;
+    	this.cityLayout = SetUpWorldFactory.layout;
+    	
+    	this.aStar = new PersonAStarTraversal(cityLayout.getAgentGrid(), cityLayout.getCrossWalkGrid(), cityLayout.getRoadGrid());
+    	
+    	positionMap = new HashMap<Dimension, Dimension>(cityLayout.positionMap);
+    	
+  
+			//img = new ImageIcon(("movingCar.gif"));
+	
+			try {
+				String s =( this.getClass().getResource("/images/alien.png").getPath() );
+				BufferedImage img = ImageIO.read(new File(s));
+			    if(img == null){
+	        		testView = true;
+	        	} else{
+	        	ImageIcon icon = new ImageIcon(img);
+	        	image = icon.getImage();
+	        	}
+			} catch (Exception e) {
+				AlertLog.getInstance().logWarning(AlertTag.PERSON_GUI, agent.toString(), "Image not found. Switching to test view.");
+				testView = true;
+			}
+			
+			List<LocationInfo> info = SetUpWorldFactory.locationMap;
+			
+        for(LocationInfo i : info){
+        	if(i != null){
+        		locations.put(i.name, i);
+        		if(i.name.contains("City Entrance")){
+        			currentLocation = new LocationInfo(i);
+        		}
+        	}
+        }
+     
+        SetUpWorldFactory.cityPanel.addGui(this);
+    }
+    
+    
+    //Constructor for mockAgents...everything else is the same
+    public PersonGui(PseudoPerson agent, SimCityLayout cityLayout, AStarTraversal aStar, List<LocationInfo> locationList) {
+    	positionMap = new HashMap<Dimension, Dimension>(cityLayout.positionMap);
+    	this.cityLayout = cityLayout;
+    	this.agent = agent;
+        this.aStar = aStar;
+        
+  
+			//img = new ImageIcon(("movingCar.gif"));
+	
+			try {
+				String s =( this.getClass().getResource("/images/alien.png").getPath() );
+				BufferedImage img = ImageIO.read(new File(s));
+			    if(img == null){
+	        		testView = true;
+	        	} else{
+	        	ImageIcon icon = new ImageIcon(img);
+	        	image = icon.getImage();
+	        	}
+			} catch (Exception e) {
+				AlertLog.getInstance().logWarning(AlertTag.PERSON_GUI, agent.toString(), "Image not found. Switching to test view.");
+				testView = true;
+			}
+			
+
+			
+        for(LocationInfo i : locationList){
+        	if(i != null){
+        		locations.put(i.name, i);
+        	}
+        	
+        }
+        
+    }//endd mockPerson constructor
+    
+    
+    public void setAgent(PersonAgent agent){
+    	this.agent = agent;
+    }
+    
+    /**	Sets the current location for the GUI
+     * 
+     * @param location
+     * @return True if the GUI was successfully teleported to location. False otherwise.
+     */
+    public boolean setStartingStates(String location){
+    	LocationInfo i = locations.get(location);
+    	AlertLog.getInstance().logMessage(AlertTag.PERSON_GUI, agent.getName() + " GUI", "Setting current location to " + location);
+    	if(i == null){
+    		AlertLog.getInstance().logMessage(AlertTag.PERSON_GUI, agent.getName() + " GUI", "" + location + " not found. Returning false.");
+    		return false;
+    	}
+    	
+    	if(state == PersonState.inCity){
+    		if(currentPosition == null)
+    			return false;
+    		currentPosition.release(aStar.getGrid());
+    	}
+    	
+    	
+    	currentLocation = i;
+    	xPos = xDestination = i.entranceFromMainGridPosition.width;
+    	yPos = yDestination = i.entranceFromMainGridPosition.height;
+    	isPresent = false;    	
+    	state = PersonState.inBuilding;
+    	
+    	return true;
+    }
+    
+    
+    public void updatePosition() {
+        {
+			if (xPos < xDestination)
+				xPos++;
+			else if (xPos > xDestination)
+				xPos--;
+			if (yPos < yDestination)
+				yPos++;
+			else if (yPos > yDestination)
+				yPos--;
+        }
+        
+        
+        if(aStarState == ASTARSTATE.moving && xPos == xDestination && yPos == yDestination) {
+        	aStarState = ASTARSTATE.atDestination;
+        	aSem.release();
+        }
+    }
+
+    
+    
+    public void draw(Graphics2D g) {
+        if(testView){
+        	g.setColor(Color.GREEN);
+        	g.fillOval(xPos, yPos, 20, 20);
+        	g.setColor(Color.GREEN);
+        	g.drawString(agent.toString(), xPos, yPos);
+        }
+        else
+        {
+        	if(image == null){
+        		testView = true;
+        		return;
+        	}
+        	g.drawImage(image, xPos, yPos, 20, 20, null);
+        }
+    }
+
+    
+    
+    
+    
+    public boolean isPresent() {
+        return isPresent;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 
    //This will allow the agent to travel to the next sector
@@ -504,7 +623,7 @@ private void DoGoToSector(int sector){
     	//while( !entrance.moveInto(aStar.getGrid()) ) {
     	while( !to.moveInto(aStar.getGrid()) ) {
     		//System.out.println("EntranceBlocked!!!!!!! waiting 1sec");
-    		AlertLog.getInstance().logInfo(AlertTag.PERSON_GUI, agent.toString(), "Entrance blocked. Waiting 2 seconds for path to clear.");
+    		AlertLog.getInstance().logInfo(AlertTag.PERSON_GUI, agent.toString(), "Entrance blocked. Waiting 3 seconds for path to clear.");
     		try {
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
@@ -540,9 +659,10 @@ private void DoGoToSector(int sector){
      *  
      * 
      *  @param to The Position to move to. 
+     * @throws Exception 
      *  
      */
-    void guiMoveFromCurrentPostionTo(Position to){
+    void guiMoveFromCurrentPostionTo(Position to) throws Exception{
         
     	//First check to make sure the destination is free otherwise wait
     	int waits = 0;

@@ -1,7 +1,7 @@
 package restaurant.test.mock;
 
-import restaurant.interfaces.Cashier;
-import restaurant.interfaces.Market;
+import interfaces.Cashier;
+import interfaces.Market;
 
 /**
  * MockMarket built to unit test a CashierAgent
