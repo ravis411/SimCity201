@@ -5,6 +5,7 @@ import gui.Building.BuildingPanel;
 import interfaces.GuiPanel;
 import interfaces.Person;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -21,6 +22,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 import Person.PersonAgent;
 import Person.Role.Role;
@@ -212,6 +214,18 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 		catch (Exception e) {
 			//Catch null pointer exception
 		}
+	}
+	
+	public void errorPopUp(String ErrorMessage) {
+		JFrame window = new JFrame("Error!");
+		JPanel container = new JPanel();
+		JLabel msg = new JLabel(ErrorMessage);
+		msg.setHorizontalAlignment(SwingConstants.CENTER);
+		container.add(msg);
+		window.add(container);
+		
+		window.setBounds(new Rectangle(700, 500, 300, 100));
+		window.setVisible(true);
 	}
 	
 	//Functions from Control Panel
