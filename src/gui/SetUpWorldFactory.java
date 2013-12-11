@@ -147,39 +147,6 @@ public class SetUpWorldFactory{
                 restaurantECList.add("Byron's Restaurant");
                 restaurantECList.add("Jeffrey's Restaurant");
                 restaurantECList.add("Mike's Restaurant");
-                
-                /*
-                locationsList.add("City");
-                locationsList.add("Main Restaurant");
-                locationsList.add("Mike's Restaurant");
-                locationsList.add("Ryan's Restaurant");
-                locationsList.add("Jeffrey's Restaurant");
-                locationsList.add("Luca's Restaurant");
-                locationsList.add("Byron's Restaurant");
-                locationsList.add("Kush's Restaurant");
-                locationsList.add("Bank 1");
-                locationsList.add("Bank 2");
-                locationsList.add("Market 1");
-                locationsList.add("Market 2");
-                locationsList.add("Residence 1");
-                locationsList.add("Residence 2");
-                locationsList.add("Apartment 1A");
-                locationsList.add("Apartment 1B");
-                locationsList.add("Apartment 1C");
-                locationsList.add("Apartment 1D");
-                locationsList.add("Apartment 2A");
-                locationsList.add("Apartment 2B");
-                */
-                /*
-                residenceList.add("Residence 1");
-                residenceList.add("Residence 2");
-                residenceList.add("Apartment 1A");
-                residenceList.add("Apartment 1B");
-                residenceList.add("Apartment 1C");
-                residenceList.add("Apartment 1D");
-                residenceList.add("Apartment 2A");
-                residenceList.add("Apartment 2B");
-                */
 
                 buildingsPanels.addBuildingPanel(new Team29Panel(buildingsPanels));
                 buildingsPanels.addBuildingPanel(controls);
@@ -572,63 +539,6 @@ public class SetUpWorldFactory{
                 p1.startThread();
                  
         }
-
-
-
-//        private void addPerson(String name, ResidenceBuildingPanel home){
-//                
-//                PersonAgent p1 = new PersonAgent(name, home);
-//
-//                switch(name){
-//
-//                        case "Person 1":
-//                                //p1.setInitialRole(new HomeRole(p1), "House 1");
-//                                p1.setInitialRole(new HomeRole(p1), "Apartment 1");
-//                                break;
-//                        case "Person 2":
-//                                p1.setInitialRole(new HomeRole(p1), p1.home.getName());
-//                                break;
-//                        case "Person 6":
-//                                p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_MIKE_WAITER_ROLE, "Mike's Restaurant"), "Mike's Restaurant");
-//                                break;
-//                        case "Person 3":
-//                                p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_MIKE_HOST_ROLE, "Mike's Restaurant"), "Mike's Restaurant");
-//                                break;
-//                        case "Person 5":
-//                                p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_MIKE_COOK_ROLE, "Mike's Restaurant"), "Mike's Restaurant");
-//                                break;
-//                        case "Person 4":
-//                                p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_MIKE_CASHIER_ROLE, "Mike's Restaurant"), "Mike's Restaurant");
-//                                break;
-//                        case "Person 7":
-//                                p1.setInitialRole(RoleFactory.roleFromString(Role.MARKET_MANAGER_ROLE), "Market 1");
-//                                break;
-//                        case "Person 8":
-//                                p1.setInitialRole(RoleFactory.roleFromString(Role.MARKET_EMPLOYEE_ROLE), "Market 1");
-//                                break;
-//                        case "Person 9":
-//                                p1.setInitialRole(RoleFactory.roleFromString(Role.MARKET_EMPLOYEE_ROLE), "Market 1");
-//                                break;
-//                        case "Person 10":
-//                                p1.setInitialRole(new HomeRole(p1), p1.home.getName());
-//                                break;
-//                        case "Person 11":
-//                                p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_LUCA_COOK_ROLE, "Luca's Restaurant"), "Luca's Restaurant");
-//                                break;
-//                        case "Person 12":
-//                                p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_LUCA_HOST_ROLE, "Luca's Restaurant"), "Luca's Restaurant");
-//                                break;
-//                        case "Person 13":
-//                                p1.setInitialRole(RoleFactory.employeeFromString(Role.RESTAURANT_LUCA_WAITER_ROLE, "Luca's Restaurant"), "Luca's Restaurant");
-//                                break;
-//                        default:
-//                                break;
-//                }
-//                //p1.setInitialRole(new HomeRole(p1), "House 1");
-//                
-//                p1.startThread();
-//                agents.add(p1);
-//        }
 
 
         
