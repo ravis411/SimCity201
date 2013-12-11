@@ -16,6 +16,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import Person.Role.Role;
 import Person.Role.ShiftTime;
 /**
  * Class for the sub-window that appears when clicking the 
@@ -256,7 +257,6 @@ public class AddPersonControl extends JFrame implements ActionListener{
 				break;
 			}
 		}
-		//TODO
 		controller.addPerson(SetUpWorldFactory.addPerson(name, home, job, location, money, shift));
 
 	}
@@ -282,100 +282,106 @@ public class AddPersonControl extends JFrame implements ActionListener{
 		String format = "N/A";
 		switch(unformat) {
 		case "Market Employee":
-			format = "MarketEmployee.MarketEmployeeRole";
+			format = Role.MARKET_EMPLOYEE_ROLE;
 			break;
 		case "Market Customer":
-			format = "MarketEmployee.MarketCustomerRole";
+			format = Role.MARKET_CUSTOMER_ROLE;
 			break;
 		case "Market Manager":
-			format = "MarketEmployee.MarketManagerRole";
+			format = Role.MARKET_MANAGER_ROLE;
 			break;
 		case "Bank Client":
-			format = "bank.BankClientRole";
+			format = Role.BANK_CLIENT_ROLE;
 			break;
 		case "Bank Teller":
-			format = "bank.BankTellerRole";
+			format = Role.BANK_TELLER_ROLE;
 			break;
 		case "Bank Loan Teller":
-			format = "bank.LoanTellerRole";
+			format = Role.LOAN_TELLER_ROLE;
 			break;
 		case "Restaurant Customer":
-			format = "restaurant.RestaurantCustomerRole";
+			format = Role.RESTAURANT_CUSTOMER_ROLE;
 			break;
 		case "Restaurant Old Waiter":
-			format = "restaurant.OldWaiterRole";
+			format = Role.RESTAURANT_WAITER_ROLE;
 			break;
 		case "Restaurant New Waiter":
-			format = "restaurant.NewWaiterRole";
+			format = Role.RESTAURANT_NEW_WAITER_ROLE;
 			break;
 		case "Restaurant Host":
-			format = "restaurant.HostRole";
+			format = Role.RESTAURANT_HOST_ROLE;
 			break;
 		case "Restaurant Cook":
-			format = "restaurant.CookRole";
+			format = Role.RESTAURANT_COOK_ROLE;
 			break;
 		case "Restaurant Cashier": 
-			format = "restaurant.CashierRole";
+			format = Role.RESTAURANT_CASHIER_ROLE;
 			break;
 		case "Luca Customer":
-			format = "restaurant.luca.LucaRestaurantCustomerRole";
+			format = Role.RESTAURANT_LUCA_CUSTOMER_ROLE;
 			break;
 		case "Luca Waiter":
-			format = "restaurant.luca.LucaWaiterRole";
+			format = Role.RESTAURANT_LUCA_WAITER_ROLE;
+			break;
+		case "Luca New Waiter":
+			format = Role.RESTAURANT_LUCA_NEW_WAITER_ROLE;
 			break;
 		case "Luca Host":
-			format = "restaurant.luca.LucaHostRole";
+			format = Role.RESTAURANT_LUCA_HOST_ROLE;
 			break;
 		case "Luca Cook":
-			format = "restaurant.luca.LucaCookRole";
+			format = Role.RESTAURANT_LUCA_COOK_ROLE;
 			break;
 		case "Luca Cashier":
-			format = "restaurant.luca.LucaCashierRole";
+			format = Role.RESTAURANT_LUCA_CASHIER_ROLE;
 			break;
 		case "Kush Customer":
-			format = "kushrestaurant.CustomerRole";
+			format = Role.RESTAURANT_KUSH_CUSTOMER_ROLE;
 			break;
 		case "Kush Waiter":
-			format = "kushrestaurant.WaiterRole";
+			format = Role.RESTAURANT_KUSH_WAITER_ROLE;
 			break;
 		case "Kush Host":
-			format = "kushrestaurant.HostRole";
+			format = Role.RESTAURANT_KUSH_HOST_ROLE;
 			break;
 		case "Kush Cook":
-			format = "kushrestaurant.CookRole";
+			format = Role.RESTAURANT_KUSH_COOK_ROLE;
 			break;
 		case "Kush Cashier":
-			format = "kushrestaurant.CashierRole";
+			format = Role.RESTAURANT_KUSH_CASHIER_ROLE;
 			break;
 		case "Jeffrey Customer":
-			format = "jeffreyRestaurant.CustomerAgent";
+			format = Role.RESTAURANT_JEFFREY_CUSTOMER_ROLE;
 			break;
-		case "Jefrey Waiter":
-			format = "jeffreyRestaurant.WaiterAgent";
+		case "Jefrey Old Waiter":
+			format = Role.RESTAURANT_JEFFREY_OLD_WAITER_ROLE;
+			break;
+		case "Jeffrey New Waiter": 
+			format = Role.RESTAURANT_JEFFREY_NEW_WAITER_ROLE;
 			break;
 		case "Jeffrey Host":
-			format = "jeffreyRestaurant.HostAgent";
+			format = Role.RESTAURANT_JEFFREY_HOST_ROLE;
 			break;
 		case "Jeffrey Cook":
-			format = "jeffreyRestaurant.CookAgent";
+			format = Role.RESTAURANT_JEFFREY_COOK_ROLE;
 			break;
 		case "Jeffrey Cashier":
-			format = "jeffreyRestaurant.CashierAgent";
+			format = Role.RESTAURANT_JEFFREY_CASHIER_ROLE;
 			break;
 		case "Mike New Waiter":
-			format = "mikeRestaurant.NewWaiterRole";
+			format = Role.RESTAURANT_MIKE_WAITER_ROLE;
 			break;
 		case "Mike Host":
-			format = "mikeRestaurant.HostRole";
+			format = Role.RESTAURANT_MIKE_HOST_ROLE;
 			break;
 		case "Mike Cook":
-			format = "mikeRestaurant.CookRole";
+			format = Role.RESTAURANT_MIKE_COOK_ROLE;
 			break;
 		case "Mike Cashier":
-			format = "mikeRestaurant.CashierRole";
+			format = Role.RESTAURANT_MIKE_CASHIER_ROLE;
 			break;
 		case "Mike Customer":
-			format = "mikeRestaurant.CustomerRole";
+			format = Role.RESTAURANT_MIKE_CUSTOMER_ROLE;
 			break;
 		}
 		

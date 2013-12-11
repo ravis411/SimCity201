@@ -109,30 +109,23 @@ public class SetUpWorldFactory{
                 jobList.add("Restaurant Customer");
                 jobList.add("Restaurant Old Waiter");
                 jobList.add("Restaurant New Waiter");
-                //jobList.add("Restaurant Host");
                 jobList.add("Restaurant Cook");
-                //jobList.add("Restaurant Cashier");
                 jobList.add("Luca Customer");
                 jobList.add("Luca Waiter");
-                //jobList.add("Luca Host");
+                jobList.add("Luca New Waiter");
                 jobList.add("Luca Cook");
-                //jobList.add("Luca Cashier");
-                //jobList.add("Apartment Manager");
                 jobList.add("Kush Customer");
                 jobList.add("Kush Waiter");
-                //jobList.add("Kush Host");
                 jobList.add("Kush Cook");
-                //jobList.add("Kush Cashier");
                 jobList.add("Jeffrey Customer");
-                jobList.add("Jeffrey Waiter");
-                //jobList.add("Jeffrey Host");
+                jobList.add("Jeffrey Old Waiter");
+                jobList.add("Jeffrey New Waiter");
                 jobList.add("Jeffrey Cook");
-                //jobList.add("Jeffrey Cashier");
                 jobList.add("Mike New Waiter");
-                //jobList.add("Mike Host");
                 jobList.add("Mike Cook");
-                //jobList.add("Mike Cashier");
                 jobList.add("Mike Customer");
+                
+                
                 /*
                 locationsList.add("City");
                 locationsList.add("Main Restaurant");
