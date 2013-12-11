@@ -3,13 +3,10 @@ package building;
 import gui.Building.BuildingPanel;
 import interfaces.generic_interfaces.GenericCashier;
 import interfaces.generic_interfaces.GenericCook;
+import interfaces.generic_interfaces.GenericCustomer;
 import interfaces.generic_interfaces.GenericHost;
 import interfaces.generic_interfaces.GenericWaiter;
-
-import java.util.Collection;
-import java.util.Collections;
-
-import kushrestaurant.HostRole;
+import Person.Role.Employee;
 //import kushrestaurant.OldWaiterRole;
 import Person.Role.Role;
 
@@ -36,15 +33,17 @@ public class Restaurant extends Workplace {
 	public boolean isOpen() {
 		// TODO Auto-generated method stub
 		boolean hasHost = false, hasCook = false, hasWaiter = false, hasCashier = false;
-		for(Role r : inhabitants){
-			if(r instanceof GenericHost){
-				hasHost = true;
-			}else if(r instanceof GenericCook){
-				hasCook = true;
-			}else if(r instanceof GenericCashier){
-				hasCashier = true;
-			}else if(r instanceof GenericWaiter ){
-				hasWaiter = true;
+		synchronized(inhabitants){
+			for(Role r : inhabitants){
+				if(r instanceof GenericHost){
+					hasHost = true;
+				}else if(r instanceof GenericCook){
+					hasCook = true;
+				}else if(r instanceof GenericCashier){
+					hasCashier = true;
+				}else if(r instanceof GenericWaiter ){
+					hasWaiter = true;
+				}
 			}
 		}
 		
@@ -52,19 +51,23 @@ public class Restaurant extends Workplace {
 	}
 	
 	public GenericHost getHostRole(){
+		synchronized(inhabitants){
 			for(Role r : inhabitants){
 				if(r instanceof GenericHost){
 					return (GenericHost) r;
 				}
 			}
+		}
 		
 		return null;
 	}
 	
 	public GenericCashier getCashierRole(){
-		for(Role r : inhabitants){
-			if(r instanceof GenericCashier){
-				return (GenericCashier) r;
+		synchronized(inhabitants){
+			for(Role r : inhabitants){
+				if(r instanceof GenericCashier){
+					return (GenericCashier) r;
+				}
 			}
 		}
 		
@@ -72,22 +75,70 @@ public class Restaurant extends Workplace {
 	}
 		
 	public GenericCook getCookRole(){
-		for(Role r : inhabitants){
-			if(r instanceof GenericCook){
-				return (GenericCook) r;
+		synchronized(inhabitants){
+			for(Role r : inhabitants){
+				if(r instanceof GenericCook){
+					return (GenericCook) r;
+				}
 			}
 		}
 		return null;
+	}
+	
+	public int getNumCustomers(){
+		int ans = 0;
+		synchronized(inhabitants){
+			for(Role r : inhabitants){
+				if(r instanceof GenericCustomer){
+					ans++;
+				}
+			}
+		}
+		return ans;
+	}
+
+	
+
+	@Override
+	public void addRole(Role r) {
+		// TODO Auto-generated method stub
+		super.addRole(r);
+		if(ready){
+			if(r instanceof Employee){
+				Employee e = (Employee) r;
+				if(r instanceof GenericWaiter){
+					GenericWaiter gw = (GenericWaiter) r;
+					Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(e.getWorkLocation());
+					gw.setHost(rest.getHostRole());
+					rest.getHostRole().addWaiter(gw);
+					gw.setCashier(rest.getCashierRole());
+					gw.setCook(rest.getCookRole());
+				}
+			}
+		}
 	}
 
 	@Override
 	public void notifyEmployeesTheyCanLeave() {
 		// TODO Auto-generated method stub
-		/*for(Role r : inhabitants){
-			if(r instanceof Employee){
-				r.deactivate();
-				r.getPerson().msgYouCanLeave();
+		
+		
+		synchronized(inhabitants){
+			//List<Role> removalList = new ArrayList<Role>();
+			
+			for(Role r : inhabitants){
+				if(r instanceof Employee){
+					Employee e = (Employee) r;
+					e.getPerson().msgYouCanLeave();
+					e.deactivate();
+					//removeRole(r);
+				}
 			}
-		}*/
+			
+			//this.removeInhabitants();
+		}
+		
+		
+		
 	}
 }

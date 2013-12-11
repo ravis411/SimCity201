@@ -1,5 +1,7 @@
 package ryansRestaurant;
 
+import Person.Role.Role;
+
 public class RyansNewWaiterRole extends RyansWaiterRole {
 
 	public RyansNewWaiterRole(String workLocation) {
@@ -20,7 +22,7 @@ public class RyansNewWaiterRole extends RyansWaiterRole {
 	@Override
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
-		return "Ryan's New Waiter Role";
+		return Role.RESTAURANT_RYAN_NEW_WAITER_ROLE;
 	}
 
 }

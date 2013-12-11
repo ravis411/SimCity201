@@ -36,4 +36,6 @@ public interface RyansHost {
 	 * @param numSeats currently a value 1-4 for the number of seats
 	 */
 	public abstract void msgAddTable(int tableNumber, int numSeats);
+
+	public abstract void msgRemoveWaiter(RyansWaiter ryansWaiterRole);
 }

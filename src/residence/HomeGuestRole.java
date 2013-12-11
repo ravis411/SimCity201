@@ -2,13 +2,9 @@ package residence;
 
 import interfaces.HomeGuest;
 
-import java.util.Timer;
 import java.util.concurrent.Semaphore;
 
-import residence.HomeRole.AgentEvent;
 import residence.gui.HomeGuestGui;
-import residence.gui.HomeRoleGui;
-import Person.PersonAgent;
 import Person.Role.Role;
 
 /**
@@ -23,7 +19,7 @@ public class HomeGuestRole extends Role implements HomeGuest {
 	
 	public enum AgentState
 	{DoingNothing, WalkingIn, Leaving};
-	private AgentState state = AgentState.DoingNothing;
+	public AgentState state = AgentState.DoingNothing;
 	
 	public HomeGuestRole() {
 		super();

@@ -1,10 +1,12 @@
 package Person.Role;
 
+import building.BuildingList;
 import interfaces.Person;
 
 public abstract class Role {
 
-	private boolean isActive = false;
+	public RoleState roleState = RoleState.Inactive;
+
 	protected Person myPerson;
 	
 	private boolean isWaitingAtWork = false;
@@ -25,7 +27,8 @@ public abstract class Role {
 	public final static String RESTAURANT_COOK_ROLE = "restaurant.CookRole";
 	public final static String RESTAURANT_CASHIER_ROLE = "restaurant.CashierRole";
 	public final static String RESTAURANT_LUCA_CUSTOMER_ROLE = "restaurant.luca.LucaRestaurantCustomerRole";
-	public final static String RESTAURANT_LUCA_WAITER_ROLE = "restaurant.luca.LucaWaiterRole";
+	public final static String RESTAURANT_LUCA_WAITER_ROLE = "restaurant.luca.LucaOldWaiterRole";
+	public final static String RESTAURANT_LUCA_NEW_WAITER_ROLE = "restaurant.luca.LucaNewWaiterRole";
 	public final static String RESTAURANT_LUCA_HOST_ROLE = "restaurant.luca.LucaHostRole";
 	public final static String RESTAURANT_LUCA_COOK_ROLE = "restaurant.luca.LucaCookRole";
 	public final static String RESTAURANT_LUCA_CASHIER_ROLE = "restaurant.luca.LucaCashierRole";
@@ -36,7 +39,8 @@ public abstract class Role {
 	public final static String RESTAURANT_KUSH_COOK_ROLE = "kushrestaurant.CookRole";
 	public final static String RESTAURANT_KUSH_CASHIER_ROLE = "kushrestaurant.CashierRole";
     public final static String RESTAURANT_JEFFREY_CUSTOMER_ROLE = "jeffreyRestaurant.CustomerAgent";
-    public final static String RESTAURANT_JEFFREY_WAITER_ROLE = "jeffreyRestaurant.NewWaiterAgent";
+    public final static String RESTAURANT_JEFFREY_NEW_WAITER_ROLE = "jeffreyRestaurant.NewWaiterAgent";
+    public final static String RESTAURANT_JEFFREY_OLD_WAITER_ROLE = "jeffreyRestaurant.OldWaiterAgent";
     public final static String RESTAURANT_JEFFREY_HOST_ROLE = "jeffreyRestaurant.HostAgent";
     public final static String RESTAURANT_JEFFREY_COOK_ROLE = "jeffreyRestaurant.CookAgent";
     public final static String RESTAURANT_JEFFREY_CASHIER_ROLE = "jeffreyRestaurant.CashierAgent";
@@ -50,7 +54,9 @@ public abstract class Role {
     public final static String RESTAURANT_RYAN_COOK_ROLE = "ryansRestaurant.RyansCookRole"; 
     public final static String RESTAURANT_RYAN_CASHIER_ROLE = "ryansRestaurant.RyansCashierRole"; 
     public final static String RESTAURANT_RYAN_CUSTOMER_ROLE = "ryansRestaurant.RyansCustomerRole";
-    public final static String RESTAURANT_RYAN_WAITER_ROLE = "ryansRestaurant.RyansOldHostRole";//"ryansRestaurant.RyansWaiterRole";
+    public final static String RESTAURANT_RYAN_OLD_WAITER_ROLE = "ryansRestaurant.RyansOldWaiterRole";//"ryansRestaurant.RyansWaiterRole";
+    public final static String RESTAURANT_RYAN_NEW_WAITER_ROLE = "ryansRestaurant.RyansNewWaiterRole";
+    
     public final static String RESTAURANT_BYRON_NEW_WAITER_ROLE = "byronRestaurant.NewWaiterRole";
     public final static String RESTAURANT_BYRON_WAITER_ROLE = "byronRestaurant.OldWaiterRole";
     public final static String RESTAURANT_BYRON_HOST_ROLE = "byronRestaurant.HostRole"; 
@@ -98,7 +104,7 @@ public abstract class Role {
 	 * @return true if active, false otherwise
 	 */
 	public boolean isActive(){
-		return isActive;
+		return roleState == RoleState.Active;
 	}
 	
 	/**
@@ -121,7 +127,7 @@ public abstract class Role {
 	 * Activate the role
 	 */
 	public void activate(){
-		isActive = true;
+		roleState = RoleState.Active;
 		//stateChanged();
 	}
 	
@@ -143,7 +149,12 @@ public abstract class Role {
 	 * Deactivate a specific role
 	 */
 	public void deactivate(){
-		isActive = false;
+		roleState = RoleState.Deactivating;
+		stateChanged();
+	}
+	
+	public void kill(){
+		roleState = RoleState.Inactive;
 		stateChanged();
 	}
 	

@@ -109,30 +109,29 @@ public class SetUpWorldFactory{
                 jobList.add("Restaurant Customer");
                 jobList.add("Restaurant Old Waiter");
                 jobList.add("Restaurant New Waiter");
-                jobList.add("Restaurant Host");
-                jobList.add("Restaurant Cook");
-                jobList.add("Restaurant Cashier");
+                //jobList.add("Restaurant Cook");
                 jobList.add("Luca Customer");
                 jobList.add("Luca Waiter");
-                jobList.add("Luca Host");
-                jobList.add("Luca Cook");
-                jobList.add("Luca Cashier");
-                //jobList.add("Apartment Manager");
+                jobList.add("Luca New Waiter");
+                //jobList.add("Luca Cook");
                 jobList.add("Kush Customer");
                 jobList.add("Kush Waiter");
-                jobList.add("Kush Host");
-                jobList.add("Kush Cook");
-                jobList.add("Kush Cashier");
+                //jobList.add("Kush Cook");
                 jobList.add("Jeffrey Customer");
-                jobList.add("Jeffrey Waiter");
-                jobList.add("Jeffrey Host");
-                jobList.add("Jeffrey Cook");
-                jobList.add("Jeffrey Cashier");
+                jobList.add("Jeffrey Old Waiter");
+                jobList.add("Jeffrey New Waiter");
+                //jobList.add("Jeffrey Cook");
                 jobList.add("Mike New Waiter");
-                jobList.add("Mike Host");
-                jobList.add("Mike Cook");
-                jobList.add("Mike Cashier");
+                //jobList.add("Mike Cook");
                 jobList.add("Mike Customer");
+                jobList.add("Ryan Customer");
+                jobList.add("Ryan Waiter");
+                //jobList.add("Ryan Cook");
+                jobList.add("Byron Customer");
+                jobList.add("Byron Waiter");
+                //jobList.add("Byron Cook");
+                
+                
                 /*
                 locationsList.add("City");
                 locationsList.add("Main Restaurant");
@@ -899,7 +898,7 @@ public class SetUpWorldFactory{
         public static PersonAgent addPerson(String name, String residenceName, String initialRole, String initialLocation, Double Money, ShiftTime shift){
                 try{
                         PersonAgent person = new PersonAgent(name, buildingsPanels.getResidenceBuildingPanel(residenceName));
-                        
+                        person.setGui(new PersonGui(person));
                         if(residenceList.contains(initialLocation)){
                                 person.setInitialRole(RoleFactory.roleFromString(Role.HOME_ROLE), initialLocation, shift);
                         }else {
@@ -1027,6 +1026,7 @@ public class SetUpWorldFactory{
                                                         }
                                                         
                                                         PersonAgent person = new PersonAgent(iName, buildingsPanels.getResidenceBuildingPanel(iHome));
+                                                        person.setGui(new PersonGui(person));
                                                         peopleMap.put(iName, person);
                                                         peopleList.add(new MyPerson(person, iFriends));
                                                         
@@ -1092,7 +1092,7 @@ public class SetUpWorldFactory{
                                                         NamedNodeMap iMap = iElement.getAttributes();
                                                         for(int j = 0; j < iMap.getLength(); j++){
                                                                 Node jNode = iMap.item(j);
-                                                                System.err.println(jNode.getNodeName()+"\t"+jNode.getNodeValue());
+                                                            
                                                                 //System.err.println("ATTRIBUTE-NAME: "+jNode.getNodeName());
                                                                 switch(jNode.getNodeName()){
                                                                         case Config.BUILDING_ID_ATTRIBUTE:

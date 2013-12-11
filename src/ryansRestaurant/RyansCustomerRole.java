@@ -245,7 +245,7 @@ public class RyansCustomerRole extends GenericCustomer implements RyansCustomer 
 			//no action
 			AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Finished Leaving.");
 			activity = "";
-			this.deactivate();
+			super.kill();
 			return true;
 		}
 		return false;
@@ -482,19 +482,16 @@ public class RyansCustomerRole extends GenericCustomer implements RyansCustomer 
 	
 	@Override
 	public void setCashier(GenericCashier c) {
-		// TODO Auto-generated method stub
 		this.cashier = (RyansCashier) c;
 	}
 
 	@Override
 	public boolean canGoGetFood() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public String getNameOfRole() {
-		// TODO Auto-generated method stub
 		return Role.RESTAURANT_RYAN_CUSTOMER_ROLE;
 	}
 
@@ -502,7 +499,12 @@ public class RyansCustomerRole extends GenericCustomer implements RyansCustomer 
 	@Override
 	public void setHost(GenericHost h) {
 		this.host = (RyansHost) h;
-		
+	}
+	
+	@Override
+	public void kill() {
+		AlertLog.getInstance().logDebug(AlertTag.RYANS_RESTAURANT, getName(), "Killed called? But I'm not done eating?");
+		//super.kill();
 	}
 
 	

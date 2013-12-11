@@ -1,8 +1,11 @@
 package building;
 
+import gui.Building.BuildingPanel;
+import interfaces.MarketEmployee;
+import interfaces.MarketManager;
+import interfaces.generic_interfaces.GenericCook;
 import Person.Role.Employee;
 import Person.Role.Role;
-import gui.Building.BuildingPanel;
 
 public class Market extends  Workplace {
 
@@ -25,9 +28,22 @@ public class Market extends  Workplace {
 
 	@Override
 	public boolean isOpen() {
-		// TODO Auto-generated method stub
-		return true;
-	}
+		boolean hasManager = false, hasThreeEmployee = false;
+		int numEmployee=0;
+		synchronized(inhabitants){
+			for(Role r : inhabitants){
+				if(r instanceof MarketManager){
+					hasManager = true;
+				}else if(r instanceof MarketEmployee){
+					numEmployee++;
+					if(numEmployee==3)
+						hasThreeEmployee = true;
+				}
+			}
+		}
+		
+		return hasManager && hasThreeEmployee;
+		}
 	
 	@Override
 	public void notifyEmployeesTheyCanLeave() {

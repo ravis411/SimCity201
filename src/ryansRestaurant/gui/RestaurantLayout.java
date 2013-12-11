@@ -218,11 +218,24 @@ public class RestaurantLayout  {
    public void removeGui(Gui agentGui) {
 	   if(agentGui instanceof CustomerGui) {
 		   for(MyHomePosition p : myCustomerWaitingPositions) {
-			   if(p.agentGui == agentGui)
+			   if(p.agentGui == agentGui){
 				   p.agentGui = null;
+				   return;
+			   }
+				   
+		   }
+	   }else if(agentGui instanceof WaiterGui){
+		   for(MyHomePosition h : myWaiterHomePositions) {
+			   if(h.agentGui == agentGui) {
+				   h.agentGui = null;
+				   return;
+			   }
 		   }
 	   }
    }
+   
+   
+   
    
    
    public void draw(Graphics2D g) {
@@ -236,7 +249,7 @@ public class RestaurantLayout  {
    }
    
    public void drawCustomerWaitingArea(Graphics2D g) {
-	   g.setColor(new Color(46, 149, 181)); 
+	   g.setColor(new Color(46, 149, 181));
 	   Dimension d = null;
 	   for(MyHomePosition p : myCustomerWaitingPositions) {
 		   d = p.xyCoords;

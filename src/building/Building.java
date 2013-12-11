@@ -3,9 +3,9 @@ package building;
 import gui.Building.BuildingPanel;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import residence.HomeRole;
 import Person.Role.Role;
 
 /**
@@ -30,7 +30,7 @@ public class Building {
 		this.panel = panel;
 		this.name = panel.getName();
 		
-		inhabitants = Collections.synchronizedList(new ArrayList<Role>());
+		inhabitants = new ArrayList<Role>();
 	}
 	
 	/**
@@ -45,7 +45,11 @@ public class Building {
 	 * Add a Person to the building
 	 * @param r the role of the person to be added
 	 */
-	public void addRole(Role r){
+	public synchronized void addRole(Role r){
+		boolean b = !inhabitants.contains(r);
+		if(r instanceof HomeRole){
+			int i = 0;
+		}
 		if(!inhabitants.contains(r)){
 			inhabitants.add(r);
 			this.panel.getPanel().addGuiForRole(r);
@@ -60,12 +64,21 @@ public class Building {
 		return inhabitants;
 	}
 	
+	private List<Role> removalList = new ArrayList<Role>();
+	
+	public void removeInhabitants(){
+		for(int i = removalList.size()-1; i >= 0; i--){
+			inhabitants.remove(removalList.get(i));
+			this.panel.getPanel().removeGuiForRole(removalList.get(i));
+			removalList.remove(i);
+		}
+	}
+	
 	/**
 	 * Removes a person from the building
 	 * @param r
 	 */
-	public void removeRole(Role r){
-		inhabitants.remove(r);
-		this.panel.getPanel().removeGuiForRole(r);
+	public synchronized void removeRole(Role r){
+			removalList.add(r);
 	}
 }

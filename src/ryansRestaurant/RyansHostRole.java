@@ -15,6 +15,7 @@ import ryansRestaurant.interfaces.RyansHost;
 import ryansRestaurant.interfaces.RyansWaiter;
 import trace.AlertLog;
 import trace.AlertTag;
+import Person.Role.Role;
 import Person.Role.ShiftTime;
 
 /**
@@ -31,7 +32,7 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 
 	//private List<MyWaiter> waiters = Collections.synchronizedList(new ArrayList<MyWaiter>());
 	private List<MyWaiter> waiters = (new ArrayList<MyWaiter>());
-	enum WaiterState {onBreak, requestedBreak, none};
+	enum WaiterState {onBreak, requestedBreak, leaving, none};
 
 	private String name;
 	private Semaphore atTable = new Semaphore(0,true);
@@ -172,6 +173,18 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 		waiters.add(new MyWaiter((RyansWaiter) waiter));
 		stateChanged();
 	}
+	
+	/** Removes the waiter from my list.
+	 * 
+	 * @param waiter
+	 */
+	public void msgRemoveWaiter(RyansWaiter waiter){
+		for(MyWaiter w: waiters){
+			if(w.waiter == waiter){
+				w.state = WaiterState.leaving;
+			}
+		}
+	}
 
 
 	/**msgAddTable sent from GUI when a table is added.
@@ -222,7 +235,11 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 					if(w.state == WaiterState.requestedBreak) {
 						determineAndNotifyWaiterAboutTheirBreak(w);
 						return true;
+					}else if(w.state == WaiterState.leaving){
+						removeWaiter(w);
 					}
+					
+					
 				} }
 		}
 
@@ -260,6 +277,17 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 	}
 
 	// Actions
+
+	
+	/** Removes a waiter from the restaurant
+	 * 
+	 * @param w
+	 */
+	private void removeWaiter(MyWaiter w) {
+		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, name, "Removing waiter from my list.");
+		waiters.remove(w);
+	}
+
 
 	private void seatCustomer(RyansCustomer customer, Table table, MyWaiter waiter) {
 		{
@@ -407,8 +435,7 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 
 	@Override
 	public Double getSalary() {
-		// TODO Auto-generated method stub
-		return null;
+		return 42.00;
 	}
 
 
@@ -421,8 +448,13 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 
 	@Override
 	public String getNameOfRole() {
-		// TODO Auto-generated method stub
-		return "Ryan's Host";
+		return Role.RESTAURANT_RYAN_HOST_ROLE;
+	}
+	
+	@Override
+	public void kill() {
+		AlertLog.getInstance().logDebug(AlertTag.RYANS_RESTAURANT, getName(), "Killed called.");
+		//super.kill();
 	}
 }
 

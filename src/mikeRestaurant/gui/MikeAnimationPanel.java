@@ -10,8 +10,10 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -23,8 +25,6 @@ import mikeRestaurant.CustomerRole;
 import mikeRestaurant.HostRole;
 import mikeRestaurant.WaiterRole;
 import Person.Role.Role;
-import building.BuildingList;
-import building.Restaurant;
 
 public class MikeAnimationPanel extends JPanel implements ActionListener, GuiPanel {
 
@@ -34,7 +34,7 @@ public class MikeAnimationPanel extends JPanel implements ActionListener, GuiPan
     private Dimension bufferSize;
     
     public static final int TABLE_X = 100;
-    public static final int TABLE_Y = 100;
+    public static final int TABLE_Y = 250;
     
     public static final int TABLE_PADDING = 40;
     
@@ -46,11 +46,11 @@ public class MikeAnimationPanel extends JPanel implements ActionListener, GuiPan
     private int numTables;
     
     //timer refresh differential
-    private final int dt = 10;
+    private final int dt = 5;
    
     private Timer timer;
 
-    private List<Gui> guis = new ArrayList<Gui>();
+    private Map<Role,Gui> guis = Collections.synchronizedMap(new HashMap<Role,Gui>());
     private HashMap<Integer, String> labelMap;
 
     public MikeAnimationPanel() {
@@ -71,11 +71,15 @@ public class MikeAnimationPanel extends JPanel implements ActionListener, GuiPan
 		repaint();  //Will have paintComponent called
 		
 		  //update the positions internally
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.updatePosition();
-            }
-        }
+		synchronized(guis){
+	        for(Gui gui : guis.values()) {
+	            if (gui.isPresent()) {
+	                gui.updatePosition();
+	            }
+	        }
+	        
+	        clearRemovedGuis();
+		}
 	}
 	
 	public void paintLabelAtTable(String label, int tableNumber){
@@ -109,10 +113,12 @@ public class MikeAnimationPanel extends JPanel implements ActionListener, GuiPan
         g2.setColor(Color.BLACK);
 
         //redraw guis with updated positions
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.draw(g2);
-            }
+        synchronized(guis){
+	        for(Gui gui : guis.values()) {
+	            if (gui.isPresent()) {
+	                gui.draw(g2);
+	            }
+	        }
         }
     }
     
@@ -137,8 +143,8 @@ public class MikeAnimationPanel extends JPanel implements ActionListener, GuiPan
     	timer.restart();
     }
 
-    public void addGui(Gui gui) {
-        guis.add(gui);
+    public void addGui(Role r, Gui gui) {
+        guis.put(r, gui);
     }
 
 	@Override
@@ -148,28 +154,37 @@ public class MikeAnimationPanel extends JPanel implements ActionListener, GuiPan
 			CustomerRole cr = (CustomerRole) r;
 			CustomerGui gui = new CustomerGui(cr, this);
 			cr.setGui(gui);
-			guis.add(gui);
+			guis.put(r, gui);
 		}else if(r instanceof CookRole){
 			CookRole cr = (CookRole) r;
 			CookGui gui = new CookGui(cr, this);
 			cr.setGui(gui);
-			guis.add(gui);
+			guis.put(r, gui);
 		}else if(r instanceof CashierRole){
 			//CashierRole cr = (CashierRole) r;
 		}else if(r instanceof WaiterRole){
 			WaiterRole wr = (WaiterRole) r;
 			WaiterGui gui = new WaiterGui(wr, this);
 			wr.setGui(gui);
-			guis.add(gui);
+			guis.put(r, gui);
 		}else if(r instanceof HostRole){
 
 		}
 		
 	}
+	
+	private List<Role> removalList = new ArrayList<Role>();
 
+	private void clearRemovedGuis(){
+		for(int i = removalList.size()-1; i >= 0; i--){
+			guis.remove(removalList.get(i));
+			removalList.remove(i);
+		}
+	}
+	
 	@Override
 	public void removeGuiForRole(Role r) {
 		// TODO Auto-generated method stub
-		
+		removalList.add(r);
 	}
 }

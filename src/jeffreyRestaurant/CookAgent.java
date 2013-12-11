@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 import javax.swing.Timer;
 
+import MarketEmployee.MarketManagerRole;
 import Person.Role.Role;
 import Person.Role.ShiftTime;
 import jeffreyRestaurant.CashierAgent.OrderState;
@@ -19,16 +20,16 @@ import jeffreyRestaurant.Gui.CookGui;
 import jeffreyRestaurant.Gui.HostGui;
 import jeffreyRestaurant.interfaces.Cook;
 
+
 /**
- * Restaurant Host Agent
+ * Restaurant Cook Agent that prepares food and
+ * orders from the market. 
+ * @author JEFFREY
+ *
  */
-//We only have 2 types of agents in this prototype. A customer and an agent that
-//does all the rest. Rather than calling the other agent a waiter, we called him
-//the HostAgent. A Host is the manager of a restaurant who sees that all
-//is proceeded as he wishes.
 public class CookAgent extends GenericCook implements Cook{
 	
-	public void addMarket(MarketAgent m) {
+	public void addMarket(MarketManagerRole m) {
 		markets.add(new myMarket(m));
 	}
 	
@@ -69,22 +70,22 @@ public class CookAgent extends GenericCook implements Cook{
 		int time;
 	}
 	private class myMarket {
-		myMarket(MarketAgent agent) {
+		myMarket(MarketManagerRole agent) {
 			m = agent;
-			marketFoods.put("Steak", m.getFoodNum("Steak"));
-			marketFoods.put("Chicken",m.getFoodNum("Chicken"));
-			marketFoods.put("Salad", m.getFoodNum("Salad"));
-			marketFoods.put("Pizza",m.getFoodNum("Pizza"));
+			marketFoods.put("Steak", m.getMarketData().getAmount(mInventoryMap.get("Steak")));
+			marketFoods.put("Chicken",m.getMarketData().getAmount(mInventoryMap.get("Chicken")));
+			marketFoods.put("Salad", m.getMarketData().getAmount(mInventoryMap.get("Burger")));
 		}
-		MarketAgent m;
+		MarketManagerRole m;
 		void updateMarket() {
-			marketFoods.put("Steak", m.getFoodNum("Steak"));
-			marketFoods.put("Chicken",m.getFoodNum("Chicken"));
-			marketFoods.put("Salad", m.getFoodNum("Salad"));
-			marketFoods.put("Pizza",m.getFoodNum("Pizza"));
+			marketFoods.put("Steak", m.getMarketData().getAmount(mInventoryMap.get("Steak")));
+			marketFoods.put("Chicken",m.getMarketData().getAmount(mInventoryMap.get("Chicken")));
+			marketFoods.put("Salad", m.getMarketData().getAmount(mInventoryMap.get("Burger")));
 		}
 		Map<String, Integer> marketFoods = new HashMap<String, Integer>();
 	}
+	
+	private Map<String, Integer> mInventoryMap = new HashMap<String,Integer>();
 	
 	private RevolvingStand orderStand = new RevolvingStand();
 	
@@ -141,7 +142,7 @@ public class CookAgent extends GenericCook implements Cook{
 		stateChanged();
 	}
 	
-	public void msgPartialMarketOrder(String food, int quantity, MarketAgent mk) {
+	public void msgPartialMarketOrder(String food, int quantity, MarketManagerRole mk) {
 		print("Received " + quantity + " of " + food + " from market");
 		this.food.get(food).quantity += quantity;
 		this.food.get(food).quantityOrdered -= quantity;
@@ -153,7 +154,7 @@ public class CookAgent extends GenericCook implements Cook{
 		waitingForMarket.release();
 	}
 	
-	public void msgMarketOrder(String food, int quantity, MarketAgent mk) {
+	public void msgMarketOrder(String food, int quantity, MarketManagerRole mk) {
 		print("Received " + quantity + " of " + food + " from market");
 		this.food.get(food).quantity += quantity;
 		this.food.get(food).quantityOrdered -= quantity;
@@ -173,6 +174,7 @@ public class CookAgent extends GenericCook implements Cook{
 	//Scheduler
 	@Override
 	public boolean pickAndExecuteAction() {
+		
 		if (orders != null) {
 			synchronized(orders) {
 				for (order o : orders) {
@@ -208,7 +210,7 @@ public class CookAgent extends GenericCook implements Cook{
 				print("We are low in " + o.choice);
 				for (myMarket m : markets) {
 					if (m.marketFoods.get(o.choice) > 0) {
-						m.m.msgNeedFood(o.choice, ORDER_AMOUNT);
+						m.m.msgMarketManagerFoodOrder(o.choice, ORDER_AMOUNT, this);
 						food.get(o.choice).orderedFood(ORDER_AMOUNT);
 						try {
 							waitingForMarket.acquire();
@@ -282,7 +284,6 @@ public class CookAgent extends GenericCook implements Cook{
 
 	@Override
 	public String getNameOfRole() {
-		// TODO Auto-generated method stub
 		return Role.RESTAURANT_JEFFREY_COOK_ROLE;
 	}
 

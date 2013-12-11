@@ -1,5 +1,6 @@
 package ryansRestaurant;
 
+import Person.Role.Role;
 import ryansRestaurant.RyansWaiterRole.MyCustomer;
 import trace.AlertLog;
 import trace.AlertTag;
@@ -43,7 +44,7 @@ public class RyansOldWaiterRole extends RyansWaiterRole {
 	@Override
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
-		return "Ryan's Old Waiter Role";
+		return Role.RESTAURANT_RYAN_OLD_WAITER_ROLE;
 	}
 
 

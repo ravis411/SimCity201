@@ -38,12 +38,13 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 	protected RyansCashier cashier = null;
 	
 	protected enum CustomerState {waiting, seated, readyToOrder, ordering, askedToOrder, ordered, orderOut, waitingForOrder, OrderReady, eating, billReady, billed, leaving,  done};
-	protected enum AgentState {outSide, atTable, atCook, atCounter, atCashier, none, atHome};
+	protected enum AgentState {outSide, atTable, atCook, atCounter, atCashier, none, atHome, leavingWork};
 	protected enum AgentEvent {None, CustomerOrdering};
 	protected enum BreakState {none, OnBreak, requestBreak, requestedBreak, preparingForBreak, backToWork, okayToPrepareForBreak};
 	protected BreakState breakStatus = BreakState.none;
 	protected AgentEvent event = AgentEvent.None;
 	protected AgentState state = AgentState.outSide;
+	protected AgentState shiftStatus = AgentState.none;
 	
 	public WaiterGui waiterGui = null;
 	public String activity = new String();
@@ -63,6 +64,15 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 	}
 
 	// Messages
+	
+	
+	
+	public void msgLeaveWork(){
+		AlertLog.getInstance().logDebug(AlertTag.RYANS_RESTAURANT, getName(), "Preparing to leave work.");
+		shiftStatus = AgentState.leavingWork;
+		stateChanged();
+	}
+	
 
 	public void msgSitAtTable(RyansCustomer cust, int tableNumber) {
 		myCustomers.add(new MyCustomer(cust, tableNumber));
@@ -211,6 +221,17 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 			if(state == AgentState.outSide )
 			{
 				EnterRestaurant();
+				return true;
+			}
+			if(shiftStatus == AgentState.leavingWork && breakStatus == BreakState.none){
+				AlertLog.getInstance().logDebug(AlertTag.RYANS_RESTAURANT, getName(), "Scheduler okayToPrepare for break.");
+				breakStatus = BreakState.okayToPrepareForBreak;
+				return true;
+			}
+			if(breakStatus == BreakState.OnBreak && shiftStatus == AgentState.leavingWork){
+				AlertLog.getInstance().logDebug(AlertTag.RYANS_RESTAURANT, getName(), "Scheduler for called. LeaveWork should be called.");
+				leaveWork();
+				return true;
 			}
 			
 			
@@ -291,6 +312,7 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 			}
 			else if(breakStatus == BreakState.preparingForBreak){
 				goOnBreak();
+				return true;
 			}
 		} catch (ConcurrentModificationException e) {
 			AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "ConcurrentModificationException caught. Returning true.");
@@ -465,6 +487,18 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 		activity = "";
 	}
 	
+	protected void leaveWork(){
+		AlertLog.getInstance().logDebug(AlertTag.RYANS_RESTAURANT, getName(), "Leaving work called.");
+		breakStatus = BreakState.none;
+		event = AgentEvent.None;
+		state = AgentState.outSide;
+		shiftStatus = AgentState.none;
+		activity = "Leaving Work";
+		waiterGui.doLeaveWork();
+		host.msgRemoveWaiter(this);
+		super.kill();
+	}
+	
 	
 	
 	// The animation DoXYZ() routines
@@ -583,9 +617,7 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 		this.host = (RyansHostRole) h;
 	}
 
-
 	@Override
-
 	public Double getSalary() {
 		// TODO Auto-generated method stub
 		return 42.00;
@@ -596,5 +628,10 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 		return false;
 	}
 	
-}
+	@Override
+	public void kill() {
+		AlertLog.getInstance().logDebug(AlertTag.RYANS_RESTAURANT, getName(), "Killed called.");
+		msgLeaveWork();
+	}
 
+}

@@ -44,7 +44,7 @@ public class WaiterGui implements Gui {
             yPos--;
 
         if (xPos == xDestination && yPos == yDestination
-        		& (xDestination == xTable - 50) & (yDestination == yTable - 70)) {
+        		& (xDestination == xTable - 50) & (yDestination == yTable - 30)) {
            agent.msgAtTable();
         }
         else if (xPos == 350 && yPos == 50) {
@@ -82,7 +82,7 @@ public class WaiterGui implements Gui {
     
     public void DoBringToTable(Customer customer) {
         xDestination = customer.getTableX() - 50;
-        yDestination = customer.getTableY() - 70;
+        yDestination = customer.getTableY() - 30;
         xTable = customer.getTableX();
         yTable = customer.getTableY();
     }
@@ -93,10 +93,8 @@ public class WaiterGui implements Gui {
     }
     
     public void DoGoTakeOrder(Customer customer) {
-    	//xDestination = customer.getTableX() + 20;
-        //yDestination = customer.getTableY() - 20;
         xDestination = customer.getTableX() - 50;
-        yDestination = customer.getTableY() - 70;
+        yDestination = customer.getTableY() - 30;
         xTable = customer.getTableX();
         yTable = customer.getTableY();
     }

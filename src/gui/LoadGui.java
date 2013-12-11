@@ -97,9 +97,21 @@ public class LoadGui extends JFrame implements ActionListener{
 		
 		Dimension size = new Dimension(paneSize.width, paneSize.height/8);
 		
-		buttonList.add(new JButton("Default"));
+		
 		buttonList.add(new JButton("Scenario 1"));
 		buttonList.add(new JButton("Scenario 2"));
+		buttonList.add(new JButton("Scenario 3"));
+		buttonList.add(new JButton("Scenario 4"));
+		buttonList.add(new JButton("/ryansTest.xml"));
+		buttonList.add(new JButton("/ScenarioA.xml"));
+		buttonList.add(new JButton("/ScenarioB.xml"));
+		buttonList.add(new JButton("/ScenarioCRestaurantInteraction.xml"));
+		buttonList.add(new JButton("/ScenarioDParty.xml"));
+		buttonList.add(new JButton("/ScenarioEBusStop.xml"));
+		buttonList.add(new JButton("/ScenarioFWorkplaces.xml"));
+		buttonList.add(new JButton("/ScenarioGMarketDelivery.xml"));
+		
+		
 		
 		for(JButton bl : buttonList){
 			bl.addActionListener(this);
@@ -182,7 +194,7 @@ public class LoadGui extends JFrame implements ActionListener{
 				else if(time == 0 && load){
 						//Timer has expired load the current loadThisConfig
 					@SuppressWarnings("unused")
-					SimCity201Gui gui = new SimCity201Gui(loadThisConfig);
+					SimCity201Gui gui = new SimCity201Gui("/scenario1.xml");
 					thisFrame.setVisible(false);
 				}
 			}
@@ -206,12 +218,29 @@ public class LoadGui extends JFrame implements ActionListener{
 			populateLoadingPanel();
 			return;
 		}
-		else if(e.getSource() instanceof JButton){
+		
+		if(e.getSource() instanceof JButton){
 			JButton b = (JButton)e.getSource();
 			loadThisConfig = b.getText();
-			SimCity201Gui gui = new SimCity201Gui(loadThisConfig);
+			
+			if( (loadThisConfig.contains("Scenario ")) && loadThisConfig.length() > 9){
+				//Get last digits
+				String lastDigs = new String();
+				for(int i = 9; i < loadThisConfig.length(); i++){
+					lastDigs += loadThisConfig.charAt(i);
+				}
+				
+				this.setVisible(false);this.removeAll();
+				int number;
+				try {
+					number = Integer.parseInt(lastDigs);
+					SimCity201Gui gui = new SimCity201Gui("/scenario" + number +".xml");
+					return;
+				} catch (NumberFormatException e1) {}
+			}
+			
+			SimCity201Gui gui = new SimCity201Gui(b.getText());
 		}
-		
 		this.setVisible(false);
 	}
 	

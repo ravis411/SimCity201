@@ -16,11 +16,14 @@ public class MockHome extends Mock implements Home {
 	public MockHome(String name) {
 		super(name);
 	}
-	
-	public void msgRentDue (int amount) {
+
+	@Override
+	public void msgRentDue(double amount, int date) {
 		log.add(new LoggedEvent("I now owe $" + amount + " in rent."));
 	}
-	public void msgFixedFeature (String name) {
-		log.add(new LoggedEvent(name + " has been fixed."));
+
+	@Override
+	public void msgFixedFeature() {
+		log.add(new LoggedEvent("Feature has been fixed."));
 	}
 }

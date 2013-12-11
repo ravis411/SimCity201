@@ -1,6 +1,7 @@
 package residence;
 
 import interfaces.Home;
+import interfaces.Person;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,8 +36,8 @@ public class HomeRole extends Role implements Home {
 
 	private List <Item> inventory = new ArrayList<Item>();
 	private List <HomeFeature> features = new ArrayList<HomeFeature>(); //includes appliances, toilets, sinks, etc (anything that can break)
-	public List <PersonAgent> partyAttendees = new ArrayList<PersonAgent>();
-	public List <PersonAgent> partyInvitees= new ArrayList<PersonAgent>();
+	public List <Person> partyAttendees = new ArrayList<Person>();
+	public List <Person> partyInvitees= new ArrayList<Person>();
 	private Semaphore atKitchen = new Semaphore(0, true);
 	private Semaphore atBedroom = new Semaphore(0, true);
 	private Semaphore atBed = new Semaphore(0, true);
@@ -76,6 +77,11 @@ public class HomeRole extends Role implements Home {
 		features.add(new HomeFeature("Sink"));
 		features.add(new HomeFeature("Stove"));
 		features.add(new HomeFeature("Refrigerator"));
+	}
+	
+	public void deactivate(){
+		msgLeaveBuilding();
+		super.deactivate();
 	}
 	
 	public void setGui(HomeRoleGui gui){
@@ -176,7 +182,7 @@ public class HomeRole extends Role implements Home {
 		atBed.release();
 	}
 	public void msgAtFrontDoor() {
-		deactivate();
+		kill();
 		event = AgentEvent.none;
 		atFrontDoor.release();
 	}
@@ -437,6 +443,7 @@ public class HomeRole extends Role implements Home {
 	}
 	private void leaveHome() {
 		gui.DoGoToCenter();
+		//kill();
 		try {
 			atCenter.acquire();
 		} catch (InterruptedException e) {
@@ -451,6 +458,7 @@ public class HomeRole extends Role implements Home {
 			e.printStackTrace();
 		}
 		BuildingList.findBuildingWithName(myPerson.getHome().getName()).removeRole(this);
+		BuildingList.findBuildingWithName(myPerson.getHome().getName()).removeInhabitants();
 		leaveHome = false;
 	}
 	private void enterHome() {
@@ -485,7 +493,7 @@ public class HomeRole extends Role implements Home {
 		}
 	}
 	private void resendInvites() {
-		for(PersonAgent p : partyInvitees) {
+		for(Person p : partyInvitees) {
 			p.msgRespondToInviteUrgently(myPerson);
 		}
 	}
@@ -496,7 +504,7 @@ public class HomeRole extends Role implements Home {
 			public void run() {
 				partyState = PartyState.none;
 				AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Party's over! Thanks for coming!");
-				for(PersonAgent p : partyAttendees) {
+				for(Person p : partyAttendees) {
 					p.msgPartyOver(myPerson);
 				}
 			}

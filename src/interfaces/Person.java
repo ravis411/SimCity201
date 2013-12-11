@@ -7,13 +7,14 @@ import java.util.List;
 
 import util.DateListener;
 import Person.PersonAgent;
+import Person.Role.Employee;
 import Person.Role.Role;
 import Person.Role.ShiftTime;
 
 
 public interface Person extends DateListener{
 	
-	public void deactivateAllRoles();
+	public void deactivateCurrentRole();
 	
 	public void workIsOpen();
 	
@@ -27,6 +28,8 @@ public interface Person extends DateListener{
 	public abstract void msgYouHaveALoan(double loan);
 	
 	public abstract void msgReportForWork();
+	
+	public abstract ShiftTime getCurrentShift();
 	
 	public abstract void msgGoToMarket(String item);
 	
@@ -64,13 +67,17 @@ public interface Person extends DateListener{
 
 	public abstract double getMoneyNeeded();
 
-	public abstract List<PersonAgent> getFriends();
+	public abstract List<Person> getFriends();
 
 	public abstract ResidenceBuildingPanel getHome();
 
 	public abstract void setInitialRole(Role roleFromString, String string, ShiftTime shift);
 	
 	public abstract void dateAction(int month, int day, int hour, int minute);
+
+	public void msgRespondToInviteUrgently(Person myPerson);
+
+	public void msgPartyOver(Person myPerson);
 
 
 }

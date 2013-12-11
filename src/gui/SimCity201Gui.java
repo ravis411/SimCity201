@@ -84,12 +84,8 @@ public class SimCity201Gui extends JFrame {
 		
 		
 		mainPanel.setLayout(new GridLayout(0, 1));
-		//add(mainPanel);
-		//add(tracePanel);
 	
-		loadConfig("XML");
-		//loadConfig(config);
-		//loadConfig("GUI Test 1");
+		loadConfig(config);
 	}
 	
 	
@@ -114,13 +110,12 @@ public class SimCity201Gui extends JFrame {
 		factory = new SetUpWorldFactory();
 		
 		switch (config) {
-		case "Default":
+		case "Defaulttttt":
 			factory.LoadDefault();
 			layout = SetUpWorldFactory.layout;
 			cityPanel = SetUpWorldFactory.cityPanel;
 			buildingsPanels = SetUpWorldFactory.buildingsPanels;
 			break;
-			
 		case "GUI Test 1":
 			factory.LoadGUITest1();
 			layout = SetUpWorldFactory.layout;
@@ -128,13 +123,15 @@ public class SimCity201Gui extends JFrame {
 			buildingsPanels = SetUpWorldFactory.buildingsPanels;
 			break;
 		case "XML":
-			factory.loadXMLFile("/scenario1.xml");
+			factory.loadXMLFile("/scenario2.xml");
 			layout = SetUpWorldFactory.layout;
 			cityPanel = SetUpWorldFactory.cityPanel;
 			buildingsPanels = SetUpWorldFactory.buildingsPanels;
 			break;
+
 		default:
-			factory.LoadDefault();
+			//factory.loadXMLFile("/scenario1.xml");
+			factory.loadXMLFile(config);
 			layout = SetUpWorldFactory.layout;
 			cityPanel = SetUpWorldFactory.cityPanel;
 			buildingsPanels = SetUpWorldFactory.buildingsPanels;
@@ -146,10 +143,7 @@ public class SimCity201Gui extends JFrame {
 		mainPanel.add(cityPanel);
 		mainPanel.add(buildingsPanels);
 		mainPanel.revalidate();
-		mainPanel.repaint();
-		//this.getContentPane().revalidate();
-		//this.getContentPane().repaint();
-		
+		mainPanel.repaint();		
 	}
 	
 	
