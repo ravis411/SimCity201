@@ -16,6 +16,8 @@ import Transportation.test.mock.Mock;
 public class MockPerson extends Mock implements Person {
 	
 	private List<LoggedEvent> log = new ArrayList<LoggedEvent>();
+	public List<Person> friends = new ArrayList<Person>();
+	public int numParties = 0;
 	
 	public MockPerson(String name) {
 		super(name);
@@ -85,7 +87,9 @@ public class MockPerson extends Mock implements Person {
 	@Override
 	public void msgPartyInvitation(Person p, Calendar rsvpDeadline, Calendar partyTime) {
 		log.add(new LoggedEvent("Invited to a party"));
-		
+		if(p != null) {
+			numParties++;
+		}
 	}
 
 	@Override
@@ -144,7 +148,7 @@ public class MockPerson extends Mock implements Person {
 	}
 
 	@Override
-	public List<PersonAgent> getFriends() {
+	public List<Person> getFriends() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -182,6 +186,23 @@ public class MockPerson extends Mock implements Person {
 	@Override
 	public void setInitialRole(Role roleFromString, String string,
 			ShiftTime shift) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public int getNumParties() {
+		// TODO Auto-generated method stub
+		return numParties;
+	}
+
+	@Override
+	public void msgRespondToInviteUrgently(Person myPerson) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgPartyOver(Person myPerson) {
 		// TODO Auto-generated method stub
 		
 	}

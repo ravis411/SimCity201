@@ -14,6 +14,8 @@ import java.util.concurrent.Semaphore;
 
 import javax.swing.Timer;
 
+import building.BuildingList;
+import building.Restaurant;
 import Person.Role.Role;
 import mikeRestaurant.gui.CustomerGui;
 import mikeRestaurant.interfaces.Customer;
@@ -151,6 +153,9 @@ public class CustomerRole extends GenericCustomer implements Customer{
 	public void msgArrivedAtLeave(){
 		atLeave.release();
 		kill();
+		Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(waiter.getWorkLocation());
+		rest.removeRole(this);
+		rest.removeInhabitants();
 	}
 	
 	/**

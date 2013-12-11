@@ -1,6 +1,7 @@
 package residence;
 
 import interfaces.Home;
+import interfaces.Person;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,8 +36,8 @@ public class HomeRole extends Role implements Home {
 
 	private List <Item> inventory = new ArrayList<Item>();
 	private List <HomeFeature> features = new ArrayList<HomeFeature>(); //includes appliances, toilets, sinks, etc (anything that can break)
-	public List <PersonAgent> partyAttendees = new ArrayList<PersonAgent>();
-	public List <PersonAgent> partyInvitees= new ArrayList<PersonAgent>();
+	public List <Person> partyAttendees = new ArrayList<Person>();
+	public List <Person> partyInvitees= new ArrayList<Person>();
 	private Semaphore atKitchen = new Semaphore(0, true);
 	private Semaphore atBedroom = new Semaphore(0, true);
 	private Semaphore atBed = new Semaphore(0, true);
@@ -337,7 +338,7 @@ public class HomeRole extends Role implements Home {
 				stateChanged();
 			}
 		},
-		5000);
+		3000);
 	}
 	private void goToMarket (Item item) {
 		if(callMarket == true) {
@@ -457,6 +458,7 @@ public class HomeRole extends Role implements Home {
 			e.printStackTrace();
 		}
 		BuildingList.findBuildingWithName(myPerson.getHome().getName()).removeRole(this);
+		BuildingList.findBuildingWithName(myPerson.getHome().getName()).removeInhabitants();
 		leaveHome = false;
 	}
 	private void enterHome() {
@@ -472,14 +474,15 @@ public class HomeRole extends Role implements Home {
 	private void sendOutInvites() {
 		if(myPerson.getFriends().size() == 0) {
 			AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "I have no friends to invite to a party.");
+			partyState = PartyState.setUp;
 		}
 		else {
 			rsvpDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH), MasterTime.getInstance().get(Calendar.HOUR_OF_DAY), MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND)); 
-			rsvpDate.add(Calendar.DAY_OF_MONTH, 1);
+			rsvpDate.add(Calendar.HOUR_OF_DAY, 6);
 			MasterTime.getInstance().registerDateListener(rsvpDate.get(Calendar.MONTH), rsvpDate.get(Calendar.DAY_OF_MONTH), rsvpDate.get(Calendar.HOUR_OF_DAY), rsvpDate.get(Calendar.MINUTE), myPerson);
 			
 			partyDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH), MasterTime.getInstance().get(Calendar.HOUR_OF_DAY), MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND)); 
-			partyDate.add(Calendar.DAY_OF_MONTH, 2);
+			partyDate.add(Calendar.DAY_OF_MONTH, 1);
 			MasterTime.getInstance().registerDateListener(partyDate.get(Calendar.MONTH), partyDate.get(Calendar.DAY_OF_MONTH), partyDate.get(Calendar.HOUR_OF_DAY), partyDate.get(Calendar.MINUTE), myPerson);
 			
 			AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Inviting friends to my party.");
@@ -491,7 +494,7 @@ public class HomeRole extends Role implements Home {
 		}
 	}
 	private void resendInvites() {
-		for(PersonAgent p : partyInvitees) {
+		for(Person p : partyInvitees) {
 			p.msgRespondToInviteUrgently(myPerson);
 		}
 	}
@@ -502,18 +505,18 @@ public class HomeRole extends Role implements Home {
 			public void run() {
 				partyState = PartyState.none;
 				AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "Party's over! Thanks for coming!");
-				for(PersonAgent p : partyAttendees) {
+				for(Person p : partyAttendees) {
 					p.msgPartyOver(myPerson);
 				}
 			}
 		},
-		20000);
+		15000);
 		timer.schedule(new TimerTask() {
 			public void run() {
 				gui.hostingParty = false;
 			}
 		},
-		30000);
+		25000);
 	}
 
 	//utilities

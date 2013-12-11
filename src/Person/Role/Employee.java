@@ -1,12 +1,17 @@
 package Person.Role;
 
+import trace.AlertLog;
+import trace.AlertTag;
 import building.BuildingList;
-import util.Interval;
+import building.Workplace;
 
 public abstract class Employee extends Role{
 	
 	protected String workLocation;
 	protected ShiftTime shift;
+	
+	public enum WorkState {AtWork, ReadyToLeave, ToldHost}
+	protected WorkState workState = WorkState.AtWork;
 	
 	protected Employee(String workLocation){
 		this.workLocation = workLocation;
@@ -43,7 +48,36 @@ public abstract class Employee extends Role{
 		//BuildingList.findBuildingWithName(workLocation).addRole(this);
 	}
 	
-	
+	@Override
+	public boolean pickAndExecuteAction() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean canGoGetFood() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getNameOfRole() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void kill() {
+		// TODO Auto-generated method stub
+		super.kill();
+		AlertLog.getInstance().logError(AlertTag.PERSON, "Employee", "KILLED "+getNameOfRole());
+		Workplace w = (Workplace) BuildingList.findBuildingWithName(workLocation);
+		w.removeRole(this);
+		w.removeInhabitants();
+		roleState = RoleState.Inactive;
+		workState = WorkState.AtWork;
+	}
+
 	/**
 	 * Mutator for the Work Location
 	 * @param workLocation

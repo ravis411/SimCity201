@@ -131,6 +131,10 @@ public class HostRole extends GenericHost implements Host{
 		waitingCustomers.add(new WaitingCustomer((CustomerRole)cust));
 		stateChanged();
 	}
+	
+	public void msgImLeaving(WaiterRole r){
+		waiters.remove(r);
+	}
 
 	/**
 	 * Message sent to the host by the waiter agent when a table is free
@@ -199,6 +203,11 @@ public class HostRole extends GenericHost implements Host{
             If so seat him at the table.
 		 */
 		try {
+			if(workState == WorkState.ReadyToLeave && waitingCustomers.size() == 0){
+				kill();
+				return true;
+			}
+			
 			for(MyWaiter wtr : waiters){
 				if(wtr.state == WaiterState.RequestedBreak){
 					replyToWaiterBreakRequest(wtr);

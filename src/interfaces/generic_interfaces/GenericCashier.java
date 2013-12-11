@@ -1,7 +1,14 @@
 package interfaces.generic_interfaces;
 
+import trace.AlertLog;
+import trace.AlertTag;
 import interfaces.MarketManager;
+import interfaces.Person;
 import Person.Role.Employee;
+import Person.Role.ShiftTime;
+import Person.Role.Employee.WorkState;
+import building.BuildingList;
+import building.Restaurant;
 
 public abstract class GenericCashier extends Employee{
 
@@ -14,6 +21,32 @@ public abstract class GenericCashier extends Employee{
 	
 	public double getMoney(){
 		return money;
+	}
+	
+	public void deactivate(){
+		if(this.getPerson().getCurrentShift() == ShiftTime.NONE){
+			super.deactivate();
+			workState = WorkState.ReadyToLeave;
+		}
+	}
+
+	@Override
+	public void setPerson(Person customerPerson) {
+		// TODO Auto-generated method stub
+		Person p = this.getPerson();
+		super.setPerson(customerPerson);
+		Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(workLocation);
+		if(rest.getCashierRole() != null){
+			//kill();
+			p.stateChanged();
+		}
+		
+	}
+
+	@Override
+	public Double getSalary() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public void msgCashierHereIsMarketBill(int orderPrice, MarketManager market) {

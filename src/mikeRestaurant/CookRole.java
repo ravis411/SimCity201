@@ -282,6 +282,12 @@ public class CookRole extends GenericCook implements Cook{
 		// TODO Auto-generated method stub
 		
 		try {
+			
+			if(orders.isEmpty() && grillPickups.isEmpty() && workState == WorkState.ReadyToLeave){
+				kill();
+				return true;
+			}
+			
 			if(!grillPickups.isEmpty()){
 				dealWithGrillPosition(grillPickups.poll().intValue());
 				return true;

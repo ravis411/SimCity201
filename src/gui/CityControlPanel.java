@@ -3,6 +3,7 @@ package gui;
 import gui.Building.BuildingGui;
 import gui.Building.BuildingPanel;
 import interfaces.GuiPanel;
+import interfaces.Person;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -156,7 +157,7 @@ public class CityControlPanel extends BuildingPanel implements ActionListener{
 				"</tr><tr> Current Location: " + agent.getPersonGui().getCurrentLocation() +
 				"</tr><tr> Friends: "; 
 		
-		for (PersonAgent friend : agent.getFriends()) {
+		for (Person friend : agent.getFriends()) {
 			info += ("</tr><tr><pre>    " + friend.getName() + "</pre>");
 		}
 		info += "</tr></table></html>";

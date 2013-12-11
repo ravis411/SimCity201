@@ -138,11 +138,13 @@ public class RyansRestaurantAnimationPanel extends JPanel implements MouseListen
     
    	public void actionPerformed(ActionEvent e) {
 		repaint();  //Will have paintComponent called
-		 for(Gui gui : guis) {
-	            if (gui.isPresent()) {
-	                gui.updatePosition();
-	            }
-	        }
+		 try {
+			for(Gui gui : guis) {
+			        if (gui.isPresent()) {
+			            gui.updatePosition();
+			        }
+			    }
+		} catch (Exception ee) {	}
 	}
 
     public void paintComponent(Graphics g) {

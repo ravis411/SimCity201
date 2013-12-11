@@ -147,19 +147,19 @@ public class HomeRoleTest extends TestCase {
 		 assertTrue("State shoud be Cooking. Instead, state is " + homeRole.state, homeRole.state==AgentState.Cooking);
 		 //step 3
 		 homeRole.msgLeaveBuilding();
-		 assertTrue("Event shoud be leaving. Instead, state is " + homeRole.event, homeRole.event==AgentEvent.leaving);
+		 assertTrue("EventState shoud be leaving. Instead, state is " + homeRole.event, homeRole.event==AgentEvent.leaving);
 		 //step 4
 		 homeRole.msgEnterBuilding();
-		 assertTrue("Event shoud be none. Instead, state is " + homeRole.event, homeRole.event==AgentEvent.none);
+		 assertTrue("EventState shoud be none. Instead, state is " + homeRole.event, homeRole.event==AgentEvent.none);
 		 //step 5
 		 homeRole.msgThrowParty();
-		 assertTrue("Initial PartyState shoud be send invites. Instead, state is " + homeRole.partyState, homeRole.partyState==PartyState.sendInvites);
+		 assertTrue("PartyState shoud be send invites. Instead, state is " + homeRole.partyState, homeRole.partyState==PartyState.sendInvites);
 		 //step 6
 		 homeRole.msgResendInvites();
-		 assertTrue("Initial PartyState shoud be resend invites. Instead, state is " + homeRole.partyState, homeRole.partyState==PartyState.resendInvites);
+		 assertTrue("PartyState shoud be resend invites. Instead, state is " + homeRole.partyState, homeRole.partyState==PartyState.resendInvites);
 		 //step 7
 		 homeRole.msgHostParty();
-		 assertTrue("Initial PartyState shoud be host. Instead, state is " + homeRole.partyState, homeRole.partyState==PartyState.host);
+		 assertTrue("PartyState shoud be host. Instead, state is " + homeRole.partyState, homeRole.partyState==PartyState.host);
 	 }
 	 
 }

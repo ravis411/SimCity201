@@ -27,7 +27,7 @@ public abstract class Workplace extends Building implements TimeListener{
 		this.notifyEmployeesTheyCanLeave();
 	}
 
-	private boolean ready = false;
+	protected boolean ready = false;
 
 	public static int DAY_SHIFT_HOUR = 9;
 	public static int DAY_SHIFT_MIN = 0;

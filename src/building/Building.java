@@ -3,9 +3,9 @@ package building;
 import gui.Building.BuildingPanel;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import residence.HomeRole;
 import Person.Role.Role;
 
 /**
@@ -46,7 +46,10 @@ public class Building {
 	 * @param r the role of the person to be added
 	 */
 	public synchronized void addRole(Role r){
+		boolean b = !inhabitants.contains(r);
+		System.err.println("Trying to add to inhabitant list");
 		if(!inhabitants.contains(r)){
+			System.err.println("already in inhabitant list");
 			inhabitants.add(r);
 			this.panel.getPanel().addGuiForRole(r);
 		}
@@ -62,8 +65,14 @@ public class Building {
 	
 	private List<Role> removalList = new ArrayList<Role>();
 	
-	protected void removeInhabitants(){
-		removalList.clear();
+	public void removeInhabitants(){
+		for(int i = removalList.size()-1; i >= 0; i--){
+			inhabitants.remove(removalList.get(i));
+			this.panel.getPanel().removeGuiForRole(removalList.get(i));
+			if(i <= (removalList.size()-1)) {
+				removalList.remove(i);
+			}
+		}
 	}
 	
 	/**
@@ -72,6 +81,5 @@ public class Building {
 	 */
 	public synchronized void removeRole(Role r){
 			removalList.add(r);
-			this.panel.getPanel().removeGuiForRole(r);
 	}
 }
