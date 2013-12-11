@@ -1,6 +1,7 @@
 package byronRestaurant;
 
 
+import Person.Role.Role;
 import Person.Role.ShiftTime;
 import byronRestaurant.gui.CookGui;
 import interfaces.generic_interfaces.GenericCook;
@@ -11,6 +12,7 @@ import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import javax.swing.Timer;
+
 
 
 import byronRestaurant.RevolvingStand;
@@ -65,10 +67,10 @@ public class CookRole extends GenericCook {
 		private static final long serialVersionUID = 1L;
 
 	{
-		put("Steak", new Food("Steak", 6000,5));
-		put("Chicken", new Food("Chicken", 5000, 5));
-		put("Salad", new Food("Salad", 1000, 5));
-		put("Pizza", new Food("Pizza", 8000, 5));
+		put("Steak", new Food("Steak", 6000,50));
+		put("Chicken", new Food("Chicken", 5000, 50));
+		put("Salad", new Food("Salad", 1000, 50));
+		put("Pizza", new Food("Pizza", 8000, 50));
 	}});
 
 
@@ -119,7 +121,7 @@ public class CookRole extends GenericCook {
 	}
 
 	public void msgNotEnoughFood(String s){
-		AlertLog.getInstance().logMessage(AlertTag.COOK_ROLE, myPerson.getName(),"Market has run out, keep " + s + " off the menu.");
+		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"Market has run out, keep " + s + " off the menu.");
 	}
 	public void msgTakingFood(){
 		cookGui.setOnPlate(false);
@@ -252,7 +254,7 @@ public class CookRole extends GenericCook {
 	@Override
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
-		return null;
+		return Role.RESTAURANT_BYRON_COOK_ROLE;
 	}
 	
 	public RevolvingStand getRevolvingStand(){

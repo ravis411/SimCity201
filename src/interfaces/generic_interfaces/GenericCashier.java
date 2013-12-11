@@ -53,5 +53,19 @@ public abstract class GenericCashier extends Employee{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
+	public void sendMoneyToBank(){
+		// TODO Auto-generated method stub
+	}
+
+	
+	/**
+	 * A message received by a bank teller signaling that the deposit has been received. 
+	 * @param transactionAmount - the amount that has been transferred. Subtract this from your current capital. 
+	 */
+	public void msgReceivedDeposit(double transactionAmount) {
+		
+	}
 
 }

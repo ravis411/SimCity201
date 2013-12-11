@@ -51,9 +51,6 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 	private Dimension bufferSize;
 
 	
-	
-    private Vector<BankTellerRole> BankTellerRoles = new Vector<BankTellerRole>();
-    private Vector<BankClientRole> BankClientRoles = new Vector<BankClientRole>();
     public NumberAnnouncer announcer = new NumberAnnouncer("NumberBot");
     public LoanNumberAnnouncer loanAnnouncer = new LoanNumberAnnouncer("LoanBot");
     
@@ -91,6 +88,7 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 	}
 
 	@Override
+	
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
 
@@ -158,22 +156,14 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 	public void addGuiForRole(Role r) {
 		if (r instanceof BankClientRole){
 		    BankClientRole clientRole = (BankClientRole) r;
-			//Person client = r.getPerson();
-		    BankClientRoles.add(clientRole);
 		    ClientGui clientGui = new ClientGui(clientRole, this);
-	        //clientRole.setPerson(client);
-	        //((PersonAgent) client).addRole(clientRole);
 	        this.addGui(clientGui);
-//	        client.setMoney((double)100);
-//	        client.setMoneyNeeded((double)50);
 	        clientRole.setAnnouncer(announcer);
 	        clientRole.setLoanAnnouncer(loanAnnouncer);
 	        clientRole.setGui(clientGui);
-	        //client.startThread();
 		}
 		if (r instanceof BankTellerRole){
 		    BankTellerRole tellerRole = (BankTellerRole) r;
-		    BankTellerRoles.add(tellerRole);
 		    TellerGui tellerGui = new TellerGui(tellerRole, this, tellerRole.getLine());
 	        this.addGui(tellerGui);
 	        tellerRole.setAnnouncer(announcer);
@@ -181,9 +171,7 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 		}
 		if (r instanceof LoanTellerRole){
 		    LoanTellerRole loanTellereRole=(LoanTellerRole) r;
-		    //Person loanTellerPerson= r.getPerson();
 		    LoanGui loanGui = new LoanGui(loanTellereRole, this);
-		    //((PersonAgent) loanTellerPerson).addRole(loanTellereRole);
 	        this.addGui(loanGui);
 	        loanTellereRole.setAnnouncer(loanAnnouncer);
 	        loanTellereRole.setGui(loanGui);
@@ -193,14 +181,12 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 	public void removeGuiForRole(Role r) {
 		if (r instanceof BankClientRole){
 		    BankClientRole clientRole = (BankClientRole) r;
-		    BankClientRoles.remove(clientRole);
 			BuildingList.findBuildingWithName("Bank").removeRole(clientRole);
 		    guis.remove(clientRole.getGui());
 			r.deactivate();
 		}
 		if (r instanceof BankTellerRole){
 		    BankTellerRole tellerRole = (BankTellerRole) r;
-		    BankTellerRoles.remove(tellerRole);
 			BuildingList.findBuildingWithName("Bank").removeRole(tellerRole);
 		    guis.remove(tellerRole.getGui());
 		    r.deactivate();
@@ -212,7 +198,14 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 		    r.deactivate();
 		}
 	}
-
+	
+	public NumberAnnouncer getAnnouncer(){
+		return announcer;
+	}
+	
+	public LoanNumberAnnouncer getLoanAnnouncer(){
+		return loanAnnouncer;
+	}
 
 
 }
