@@ -19,7 +19,7 @@ public class HomeGuestRole extends Role implements HomeGuest {
 	
 	public enum AgentState
 	{DoingNothing, WalkingIn, Leaving};
-	private AgentState state = AgentState.DoingNothing;
+	public AgentState state = AgentState.DoingNothing;
 	
 	public HomeGuestRole() {
 		super();
