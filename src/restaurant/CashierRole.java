@@ -16,9 +16,11 @@ import restaurant.gui.CashierGui;
 import trace.AlertLog;
 import trace.AlertTag;
 import Person.Role.Role;
+import Person.Role.RoleState;
 import Person.Role.ShiftTime;
 import bank.BankTellerRole;
 import building.BuildingList;
+import building.Restaurant;
 
 
 /**
@@ -103,6 +105,10 @@ public class CashierRole extends GenericCashier implements Cashier {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAction() {
+		if(roleState == RoleState.Deactivating) {
+			kill();
+			return true;
+		}
 		if(!debts.isEmpty() && money>0.00) {
 			payMarketBill(debts.get(0));
 			debts.remove(0);

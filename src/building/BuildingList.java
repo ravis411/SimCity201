@@ -19,6 +19,10 @@ public class BuildingList extends ArrayList<Building> implements TimeListener{
 	private static final long serialVersionUID = 1L;
 	private static BuildingList instance = null;
 	
+	public static String RESTAURANT = "Restaurant";
+	public static String MARKET = "Market";
+	public static String BANK = "Bank";
+	
 	
 	protected BuildingList(){
 		super();
@@ -56,17 +60,17 @@ public class BuildingList extends ArrayList<Building> implements TimeListener{
         ArrayList<Building> buildings = new ArrayList<Building>();
         
             for(Building b : getInstance()){
-                    if(name.equals("Bank")){
+                    if(name.equals(BANK)){
                             if(b instanceof Bank){
                                     buildings.add(b);
                             }
                             }
-                    if(name.equals("Restaurant")){
+                    if(name.equals(RESTAURANT)){
                             if(b instanceof Restaurant){
                                     buildings.add(b);
                             }
                     }
-                    if(name.equals("Market")){
+                    if(name.equals(MARKET)){
                             if(b instanceof Market){
                                     buildings.add(b);
                             }

@@ -14,6 +14,7 @@ import java.util.concurrent.Semaphore;
 import javax.swing.Timer;
 
 import building.Building;
+import building.Market;
 import building.BuildingList;
 import restaurant.gui.luca.CookGui;
 import restaurant.interfaces.luca.LucaCook;
@@ -284,27 +285,39 @@ public class LucaCookRole extends GenericCook implements LucaCook{
 	}
 	
 	private void AskMarketsIfTheyHaveFoodSupplies() {
+		markets.clear();
 		for( Building m : BuildingList.findBuildingsWithType("Market")){
 			for (Role role :m.getInhabitants())
 			{
 				if (role instanceof MarketManager){
-				MarketManager manager = (MarketManager) role;
-				if (!markets.contains(manager)){
-				markets.add(manager);
+					MarketManager manager = (MarketManager) role;
+					markets.add(manager);
 				}
+			}
+		}
+		if (markets.isEmpty()){
+			for(int i=0; i<foodTypes.size(); i++){
+				if (foodTypes.get(i).getFoodQuantity()==0 && !foodTypes.get(i).getMoreOrderedAndOnTheWay())
+				{
+					print(((Market)BuildingList.findBuildingWithName("Market 1")).getName() + "which is CLOSED (NONNORM) is being asked do you Have food " + foodTypes.get(i).getChoice());
+					((Market)BuildingList.findBuildingWithName("Market 1")).getMarketData().msgClosedMarketAFoodOrder(foodTypes.get(i).getChoice(), howMuchFoodAgentAsksFromMarket,this); //order (food type, amount)
+					foodTypes.get(i).setMoreOrderedAndOnTheWay(true);
 			}
 			}
 		}
-		for(int i=0; i<foodTypes.size(); i++){
-			if (foodTypes.get(i).getFoodQuantity()==0 && !foodTypes.get(i).getMoreOrderedAndOnTheWay() && marketCurrentlyBeingAskedForFood != markets.size())
-			{
-				print(markets.get(marketCurrentlyBeingAskedForFood).getMarketName() + " do you Have food " + foodTypes.get(i).getChoice());
-				markets.get(marketCurrentlyBeingAskedForFood).msgMarketManagerFoodOrder(foodTypes.get(i).getChoice(), howMuchFoodAgentAsksFromMarket,this); //order (food type, amount)
-				foodTypes.get(i).setMoreOrderedAndOnTheWay(true);
-				
-					
-			}
 			
+		else{
+			for(int i=0; i<foodTypes.size(); i++){
+				if (foodTypes.get(i).getFoodQuantity()==0 && !foodTypes.get(i).getMoreOrderedAndOnTheWay() && marketCurrentlyBeingAskedForFood != markets.size())
+				{
+					print(markets.get(marketCurrentlyBeingAskedForFood).getMarketName() + " do you Have food " + foodTypes.get(i).getChoice());
+					markets.get(marketCurrentlyBeingAskedForFood).msgMarketManagerFoodOrder(foodTypes.get(i).getChoice(), howMuchFoodAgentAsksFromMarket,this); //order (food type, amount)
+					foodTypes.get(i).setMoreOrderedAndOnTheWay(true);
+					
+						
+				}
+				
+			}
 		}
 		event = AgentEvent.none;
 	}

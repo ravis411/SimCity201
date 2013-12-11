@@ -65,7 +65,7 @@ public class Building {
 	
 	private List<Role> removalList = new ArrayList<Role>();
 	
-	public void removeInhabitants(){
+	public synchronized void removeInhabitants(){
 		for(int i = removalList.size()-1; i >= 0; i--){
 			inhabitants.remove(removalList.get(i));
 			this.panel.getPanel().removeGuiForRole(removalList.get(i));

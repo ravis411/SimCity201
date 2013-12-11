@@ -8,8 +8,8 @@ import gui.Building.restaurants.ByronRestaurantBuildingPanel;
 import gui.Building.restaurants.JeffreyRestaurantBuildingPanel;
 import gui.Building.restaurants.KushRestaurantBuildingPanel;
 import gui.Building.restaurants.LucaRestaurantBuildingPanel;
-import gui.Building.restaurants.RestaurantBuildingPanel;
 import gui.Building.restaurants.MikeRestaurantBuildingPanel;
+import gui.Building.restaurants.RestaurantBuildingPanel;
 import gui.Building.restaurants.RyansRestaurantBuildingPanel;
 
 import java.awt.CardLayout;
@@ -18,6 +18,7 @@ import java.awt.Component;
 
 import javax.swing.JPanel;
 
+import market.data.MarketData;
 import building.Bank;
 import building.Building;
 import building.BuildingList;
@@ -59,7 +60,7 @@ public class BuildingsPanels extends JPanel{
 		if(buildingPanel instanceof BankBuildingPanel){
 			BuildingList.getInstance().add(new Bank(buildingPanel));
 		}else if(buildingPanel instanceof MarketBuildingPanel){
-			BuildingList.getInstance().add(new Market(buildingPanel));
+			BuildingList.getInstance().add(new Market(buildingPanel,new MarketData()));
 		}else if (buildingPanel instanceof JeffreyRestaurantBuildingPanel) {
 			BuildingList.getInstance().add(new Restaurant(buildingPanel));
 		}else if(buildingPanel instanceof KushRestaurantBuildingPanel){

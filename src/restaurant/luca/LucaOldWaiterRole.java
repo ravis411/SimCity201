@@ -2,6 +2,8 @@ package restaurant.luca;
 
 import java.util.concurrent.ExecutionException;
 
+import restaurant.interfaces.luca.LucaCustomer;
+
 public class LucaOldWaiterRole extends LucaWaiterRole {
 
 	public LucaOldWaiterRole(String restLocation) {
@@ -26,5 +28,7 @@ public class LucaOldWaiterRole extends LucaWaiterRole {
 		waiterGui.DoLeave();
 
 	}
+
+
 
 }

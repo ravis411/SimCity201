@@ -40,7 +40,7 @@ public class LucaCashierRole extends GenericCashier implements LucaCashier {
 	public enum AgentEvent 
 	{none, needToPayMarket, notEnoughMoneyToPayMarket};
 	public AgentEvent event = AgentEvent.none;
-	public int restaurantMoney=0;
+	public double restaurantMoney=0;
 	
 	public LucaCashierRole(String restLocation){
 		super(restLocation);
@@ -92,19 +92,19 @@ public class LucaCashierRole extends GenericCashier implements LucaCashier {
 		stateChanged();
 		
 	}
-	public void msgCashierPayForOrder(int moneyFromCustomer, LucaCustomer customer) {
+	public void msgCashierPayForOrder(double money, LucaCustomer customer) {
 		log.add(new LoggedEvent("Recieved msgCashierPayForOrder"/*money: " +money+ "customer: "+ customer*/));
 		for (int i=0; i<Tabs.size(); i++){
 			if (Tabs.get(i).getCustomer() == customer){
-				if (moneyFromCustomer< Tabs.get(i).getTab()){
+				if (money< Tabs.get(i).getTab()){
 					print("You " + Tabs.get(i).getCustomer()  + " don't have enough Money! Your leftover balance will be kept on file for next time!");
-					restaurantMoney=restaurantMoney+moneyFromCustomer;
+					restaurantMoney=restaurantMoney+money;
 			}
 				else{
 					restaurantMoney= restaurantMoney+Tabs.get(i).getTab();
 				}
 					print("Cashier now has $"+ restaurantMoney);
-					Tabs.get(i).payTabAndReturnChange(moneyFromCustomer);
+					Tabs.get(i).payTabAndReturnChange(money);
 					print(Tabs.get(i).getCustomer()  + " now owes " + Tabs.get(i).getTab());
 					break;
 				}
@@ -113,7 +113,7 @@ public class LucaCashierRole extends GenericCashier implements LucaCashier {
 		}
 	@Override
 
-	public void msgCashierHereIsMarketBill(int orderPrice, MarketManager market) {
+	public void msgCashierHereIsMarketBill(double orderPrice, MarketManager market) {
 		log.add(new LoggedEvent("Recieved msgCashierHereIsMarketBill orderPrice: " +orderPrice + " market: "+market));
 		if (orderPrice<=restaurantMoney)
 		{
@@ -242,15 +242,15 @@ public class LucaCashierRole extends GenericCashier implements LucaCashier {
 	
 	public class MarketBill{
 		MarketManager market;
-		int moneyOwed=0;
+		double moneyOwed=0;
 		
 		public MarketBill(MarketManager lucaMarketAgent){
 			this.market= lucaMarketAgent;
 		}
-		void setMoneyOwed(int money){
-			moneyOwed=money;
+		void setMoneyOwed(double orderPrice){
+			moneyOwed=orderPrice;
 		}
-		public int getMoneyOwed(){
+		public double getMoneyOwed(){
 			return moneyOwed;
 		}
 		MarketManager getMarket(){
@@ -265,8 +265,8 @@ public class LucaCashierRole extends GenericCashier implements LucaCashier {
 		boolean billComputed;
 		String orderChoice;
 		boolean waiterMessagedCheckReady;
-		int customerTab=0;
-		int customerChange;
+		double customerTab=0;
+		double customerChange;
 		boolean customerDoneCheckingout;
 
 
@@ -285,7 +285,7 @@ public class LucaCashierRole extends GenericCashier implements LucaCashier {
 			customerChange=i;
 			
 		}
-		public void payTabAndReturnChange(int money) {
+		public void payTabAndReturnChange(double money) {
 			if (money >= customerTab){
 				customerChange=  money - customerTab;
 				customerTab=0;
@@ -312,10 +312,10 @@ public class LucaCashierRole extends GenericCashier implements LucaCashier {
 		void setCustomerDoneCheckingout(boolean tf){
 			customerDoneCheckingout= tf;
 		}
-		public int getChange(){
+		public double getChange(){
 			return customerChange;
 		}
-		public int getTab(){
+		public double getTab(){
 			return customerTab;
 		}
 		String getOrderChoice(){
@@ -374,10 +374,6 @@ public class LucaCashierRole extends GenericCashier implements LucaCashier {
 	}
 
 	
-	public void msgCashierHereIsMarketBill(int orderPrice, LucaMarket market) {
-		// TODO Auto-generated method stub
-		
-	}
 
 
 

@@ -55,8 +55,24 @@ public abstract class Workplace extends Building implements TimeListener{
 	 * @return
 	 */
 	public abstract boolean isOpen();
-
-
+	
+	public void notifyEmployeesTheyCanLeave() {
+		// TODO Auto-generated method stub
+		synchronized(inhabitants){
+			//List<Role> removalList = new ArrayList<Role>();
+			
+			for(Role r : inhabitants){
+				if(r instanceof Employee){
+					Employee e = (Employee) r;
+					e.getPerson().msgYouCanLeave();
+					e.deactivate();
+					//removeRole(r);
+				}
+			}
+			ready = false;
+		}
+	}
+	
 	public void getReadyForWork(){
 		synchronized(inhabitants){
 			for(Role role : inhabitants){
@@ -121,27 +137,6 @@ public abstract class Workplace extends Building implements TimeListener{
 			ready = true;
 			getReadyForWork();
 		}
-	}
-
-	public void notifyEmployeesTheyCanLeave() {
-		
-		synchronized(inhabitants){
-			//List<Role> removalList = new ArrayList<Role>();
-			
-			for(Role r : inhabitants){
-				if(r instanceof Employee){
-					Employee e = (Employee) r;
-					e.getPerson().msgYouCanLeave();
-					e.deactivate();
-					//removeRole(r);
-				}
-			}
-			ready = false;
-			//this.removeInhabitants();
-		}
-		
-		
-		
 	}
 
 

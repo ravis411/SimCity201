@@ -36,9 +36,9 @@ public class LucaRestaurantCustomerRole extends GenericCustomer implements LucaC
 	private LucaHostRole host;
 	private LucaWaiter waiter;
 	private LucaCashierRole cashier;
-	private int money;
+	private double money;
 	private boolean hasEnoughMoney;
-	private int moneyOwedToResturant;
+	private double moneyOwedToResturant;
 	private boolean willWaitforFood;
 	private boolean willOrderFoodEvenIfNotEnoughMoney;
 	private Random randomx = new Random(System.nanoTime());
@@ -87,7 +87,7 @@ public class LucaRestaurantCustomerRole extends GenericCustomer implements LucaC
 
 	public void gotHungry() {//from animation
 		Random random = new Random(System.nanoTime());
-		money = random.nextInt(30) + moneyOwedToResturant; //assigns a random amount of money between 0 and 29 to bring to restaurant + any amount it already owes the restaurant
+		money = myPerson.getMoney() + moneyOwedToResturant; //assigns a random amount of money between 0 and 29 to bring to restaurant + any amount it already owes the restaurant
 		print("I'm hungry and I have $" + money + " of this money, $" + moneyOwedToResturant + " are brought to make sure I have atleast enough to pay for my last debt.");
 		state = AgentState.DoingNothing;
 		event = AgentEvent.gotHungry;
@@ -138,7 +138,7 @@ public class LucaRestaurantCustomerRole extends GenericCustomer implements LucaC
 		orderChoice= choice;
 		stateChanged();
 	}
-	public void msgCustomerHereIsYourCheck(int customersTab) {
+	public void msgCustomerHereIsYourCheck(double customersTab) {
 		event = AgentEvent.checkRecieved;
 		moneyOwedToResturant= customersTab;
 		stateChanged();
@@ -150,7 +150,7 @@ public class LucaRestaurantCustomerRole extends GenericCustomer implements LucaC
 		event = AgentEvent.doneLeaving;
 		stateChanged();
 	}
-	public void msgCustomerHereIsChange(int change, int moneyIOwe) {
+	public void msgCustomerHereIsChange(double change, double moneyIOwe) {
 		money = change;
 		moneyOwedToResturant = moneyIOwe;
 		print(this + " has recieved change, $" +change);
@@ -420,6 +420,8 @@ public class LucaRestaurantCustomerRole extends GenericCustomer implements LucaC
 		this.host = (LucaHostRole) h;
 				
 	}
+
+
 
 
 

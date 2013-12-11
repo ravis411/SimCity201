@@ -15,6 +15,7 @@ import java.util.concurrent.Semaphore;
 import restaurant.gui.WaiterGui;
 import trace.AlertLog;
 import trace.AlertTag;
+import Person.Role.RoleState;
 import Person.Role.ShiftTime;
 
 /**
@@ -171,6 +172,10 @@ public abstract class WaiterAgent extends GenericWaiter implements Waiter {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAction() {
+		if(roleState == RoleState.Deactivating && myCustomers.size() == 0) {
+			kill();
+			return true;
+		}
 		if(requestBreak == true) {
 			requestBreak();
 			return true;

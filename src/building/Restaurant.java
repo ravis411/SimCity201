@@ -96,6 +96,34 @@ public class Restaurant extends Workplace {
 		}
 		return ans;
 	}
+	
+	public final static String MIKE = "Mike's Restaurant";
+	public final static String RYAN = "Ryan's Restaurant";
+	public final static String LUCA = "Luca's Restaurant";
+	public final static String DYLAN = "Dylan's Restaurant";
+	public final static String KUSH = "Kush's Restaurant";
+	public final static String JEFFREY = "Jeffrey's Restaurant";
+	public final static String BYRON = "Byron's Restaurant";
+	
+	public static String getStringForCustomer(String name){
+		switch(name){
+		case Restaurant.MIKE:
+			return Role.RESTAURANT_MIKE_CUSTOMER_ROLE;
+		case Restaurant.RYAN:
+			return Role.RESTAURANT_RYAN_CUSTOMER_ROLE;
+		case Restaurant.LUCA:
+			return Role.RESTAURANT_LUCA_CUSTOMER_ROLE;
+		case Restaurant.DYLAN:
+			return Role.RESTAURANT_CUSTOMER_ROLE;
+		case Restaurant.KUSH:
+			return Role.RESTAURANT_KUSH_CUSTOMER_ROLE;
+		case Restaurant.JEFFREY:
+			return Role.RESTAURANT_JEFFREY_CUSTOMER_ROLE;
+		case Restaurant.BYRON:
+			return Role.RESTAURANT_MIKE_CUSTOMER_ROLE;
+		}
+		return null;
+	}
 
 	
 
@@ -116,11 +144,6 @@ public class Restaurant extends Workplace {
 				}
 			}
 		}
-	}
-
-	@Override
-	public void notifyEmployeesTheyCanLeave() {
-		
 	}
 
 }

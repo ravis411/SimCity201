@@ -368,7 +368,7 @@ public class DeadCarVehicleGui implements Gui {
         		isPresent = false;
         		timeToBeDead = 200;
         		hitByCar = false;
-        		state = GuiState.none; 
+        		state = GuiState.none;
         		currentPosition = null;
         	}
         }
