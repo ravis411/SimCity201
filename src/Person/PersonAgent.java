@@ -674,7 +674,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		List<Building> buildings = BuildingList.findBuildingsWithType(BuildingList.RESTAURANT);
 		buildings.add(BuildingList.findBuildingWithName(home.getName()));
 		Random r = new Random();
-		return "Luca's Restaurant";
+		return "Dylan's Restaurant";
 		//return buildings.get(Math.abs(r.nextInt()) % buildings.size()).getName();
 		
         //return Math.random() > 0.5 ? "Food Court" : this.home.getName();
