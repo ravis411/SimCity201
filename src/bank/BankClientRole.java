@@ -98,6 +98,12 @@ public class BankClientRole extends Role implements BankClient{
 
 
 	//Messages
+	public void msgAtInterim(){
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "At interim.");		
+		atInterim.release();
+		state2 = inLineState.atInterim;
+		stateChanged();
+	}
 	/**
 	 * Message sent by the GUI releasing the semaphore when the client reaches the waiting area
 	 */
@@ -158,12 +164,6 @@ public class BankClientRole extends Role implements BankClient{
 		stateChanged();
 	}
 
-	public void msgAtInterim(){
-		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, myPerson.getName(), "At interim.");		
-		atInterim.release();
-		state2 = inLineState.atInterim;
-		stateChanged();
-	}
 	/**
 	 * sent by the bank teller as a greeting to the client to let the client know he can communicate his needs
 	 */

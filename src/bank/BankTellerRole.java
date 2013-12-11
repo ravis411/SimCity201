@@ -1,7 +1,9 @@
 package bank;
 import interfaces.BankClient;
 import interfaces.BankTeller;
+import interfaces.generic_interfaces.GenericCashier;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
@@ -22,7 +24,8 @@ import bank.gui.TellerGui;
 
 public class BankTellerRole extends Employee implements BankTeller{
 	public BankClient myClient;
-	public CashierRole myRestaurant;
+	public GenericCashier myRestaurant;
+	public List<GenericCashier> Restaurants = new ArrayList<GenericCashier>();
 	private int LineNum = new Random().nextInt(3)+1; //from 1 to n, with 5 being the loan line, should be assigned in creation
 	public enum requestState {pending, withdrawal, deposit, open, none, notBeingHelped, restaurantDeposit, steal};
 	public enum location {entrance, station, breakRoom, closing};
@@ -36,8 +39,8 @@ public class BankTellerRole extends Employee implements BankTeller{
 	private Semaphore atIntermediate = new Semaphore(0,true);
 	private TellerGui tellerGui = null;
 
-	
- 
+
+
 	public BankTellerRole(String workLocation) {
 		super(workLocation);
 		Accounts = Database.INSTANCE.sendDatabase();
@@ -75,7 +78,7 @@ public class BankTellerRole extends Employee implements BankTeller{
 		state = requestState.notBeingHelped;
 		stateChanged();
 	}
-	
+
 	/**
 	 * message received by BankClient asking to open an account.
 	 */
@@ -109,29 +112,29 @@ public class BankTellerRole extends Employee implements BankTeller{
 		stateChanged();
 	}
 
-	
-	public void msgRestaurantDeposit(CashierRole r, double a){
+
+	public void msgRestaurantDeposit(GenericCashier r, double a){
 		transactionAmount = a;
-		myRestaurant = r;
+		Restaurants.add(r);
 		state = requestState.restaurantDeposit;
 		stateChanged();
 	}
-	
+
 	public void bankClosing(){
 		transactionAmount = 0;
 		locationState = location.closing;
 		stateChanged();
-		}
-	
+	}
+
 	//	Scheduler
 	public boolean pickAndExecuteAction() {
 		Accounts = Database.INSTANCE.sendDatabase();
-		if (locationState == location.closing){
-			Leaving();
+		if (!Restaurants.isEmpty()){
+			depositRestaurantMoney();
 			return true;
 		}
-		if(state==requestState.steal){
-			Robbed(myClient);
+		if (locationState == location.closing){
+			Leaving();
 			return true;
 		}
 		if (locationState == location.station){
@@ -146,9 +149,6 @@ public class BankTellerRole extends Employee implements BankTeller{
 			if (state == requestState.open){
 				openAccount(myClient);
 				return true;
-			}
-			if (state == requestState.restaurantDeposit){
-				depositRestaurantMoney();
 			}
 			if (state == requestState.notBeingHelped){
 				receiveClient(myClient);
@@ -189,8 +189,8 @@ public class BankTellerRole extends Employee implements BankTeller{
 	 * @param b - BankClient
 	 */
 	private void receiveClient(BankClient b){
-			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Recieving new client");
-			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Hello " + b + ", how may I help you.");
+		AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Recieving new client");
+		AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Hello " + b + ", how may I help you.");
 		b.msgMayIHelpYou();
 		state = requestState.pending;
 	}
@@ -199,11 +199,11 @@ public class BankTellerRole extends Employee implements BankTeller{
 	 * @param b - BankClient
 	 */
 	private void processDeposit(BankClient b){
-			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Ok, hold on.");
+		AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Ok, hold on.");
 		for (Account a : Accounts){
 			if (a.client == b){
 				a.amount = a.amount + transactionAmount;
-					AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"$" + transactionAmount + " has been deposited into the account.");
+				AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"$" + transactionAmount + " has been deposited into the account.");
 				b.msgTransactionCompleted(transactionAmount - (2*transactionAmount));
 				state = requestState.none;
 				announcer.msgTransactionComplete(LineNum,this,b);
@@ -211,7 +211,7 @@ public class BankTellerRole extends Employee implements BankTeller{
 			}
 		}
 	}
-	
+
 	/**
 	 * Processes a withdrawal. If there is enough money, withdraws that amount. If not, just quits with an error message.
 	 * @param b - BankClient
@@ -220,11 +220,11 @@ public class BankTellerRole extends Employee implements BankTeller{
 		for (Account a : Accounts){
 			if (a.client == b){
 				if (transactionAmount > a.amount){
-						AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Error: Attempted to withdraw more money than is available in account.");
+					AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"Error: Attempted to withdraw more money than is available in account.");
 					b.msgTransactionCompleted(0);
 				}else if (transactionAmount <= a.amount){
 					a.amount = a.amount - transactionAmount;
-						AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"$" + transactionAmount + " has been withdrawn from the account.");
+					AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"$" + transactionAmount + " has been withdrawn from the account.");
 					b.msgTransactionCompleted(transactionAmount);
 				}
 				state = requestState.none;
@@ -234,30 +234,22 @@ public class BankTellerRole extends Employee implements BankTeller{
 		}
 	}
 	/**
-	 * Robs Bank
-	 * @param b - BankClient
-	 */
-	private void Robbed(BankClient b){
-		b.msgTransactionCompleted(transactionAmount);
-		state=requestState.none;
-		myClient=null;
-	}
-	/**
 	 * Opens new account
 	 * @param b - BankClient
 	 */
 	private void openAccount(BankClient b){
 		Account a = new Account(b,0);
-			AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"New bank account has been opened for " + b);
+		AlertLog.getInstance().logMessage(AlertTag.BANK_TELLER, name,"New bank account has been opened for " + b);
 		Database.INSTANCE.addToDatabase(a);
 		b.msgAccountOpened(a);
 		state = requestState.notBeingHelped;
 	}
-	
+
 	/**
 	 * deposits restaurant money
 	 */
 	private void depositRestaurantMoney(){
+		myRestaurant = Restaurants.get(0);
 		for (Account a : Database.INSTANCE.sendDatabase()){
 			if (a.business == myRestaurant){
 				myRestaurant.msgReceivedDeposit(transactionAmount);
@@ -272,9 +264,10 @@ public class BankTellerRole extends Employee implements BankTeller{
 				myRestaurant=null;
 			}
 		}
-		
+		Restaurants.remove(myRestaurant);
+
 	}
-	
+
 	private void Leaving(){
 		announcer.msgGoodbye(this);
 		doLeave();

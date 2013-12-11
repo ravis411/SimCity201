@@ -3,11 +3,9 @@ package byronRestaurant;
 
 import Person.Role.Role;
 import Person.Role.ShiftTime;
-import agent.Agent;
 import interfaces.generic_interfaces.GenericCashier;
 
 import java.util.*;
-import java.util.concurrent.Semaphore;
 
 import trace.AlertLog;
 import trace.AlertTag;
@@ -162,7 +160,7 @@ public class CashierRole extends GenericCashier {
 
 	@Override
 	public Double getSalary() {
-		// TODO Auto-generated method stub
+ 		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -174,7 +172,6 @@ public class CashierRole extends GenericCashier {
 
 	@Override
 	public String getNameOfRole() {
-		// TODO Auto-generated method stub
 		return Role.RESTAURANT_BYRON_CASHIER_ROLE;
 	}	
 }

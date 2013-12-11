@@ -67,10 +67,10 @@ public class CookRole extends GenericCook {
 		private static final long serialVersionUID = 1L;
 
 	{
-		put("Steak", new Food("Steak", 6000,5));
-		put("Chicken", new Food("Chicken", 5000, 5));
-		put("Salad", new Food("Salad", 1000, 5));
-		put("Pizza", new Food("Pizza", 8000, 5));
+		put("Steak", new Food("Steak", 6000,50));
+		put("Chicken", new Food("Chicken", 5000, 50));
+		put("Salad", new Food("Salad", 1000, 50));
+		put("Pizza", new Food("Pizza", 8000, 50));
 	}});
 
 
