@@ -658,8 +658,8 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	private void GoGetFood(){
 		  String transport = getTransportPreference();
 		  this.state = PersonState.GettingFood;
-		  //String location = PickFoodLocation();
-		  String location= "Kush's Restaurant";
+		  String location = PickFoodLocation();
+		  //String location= "Kush's Restaurant";
 
 		  GoToLocation(location, transport);
 		  if(location.equals(home.getName())){
