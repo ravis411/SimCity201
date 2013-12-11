@@ -84,12 +84,8 @@ public class SimCity201Gui extends JFrame {
 		
 		
 		mainPanel.setLayout(new GridLayout(0, 1));
-		//add(mainPanel);
-		//add(tracePanel);
 	
 		loadConfig(config);
-		//loadConfig(config);
-		//loadConfig("GUI Test 1");
 	}
 	
 	

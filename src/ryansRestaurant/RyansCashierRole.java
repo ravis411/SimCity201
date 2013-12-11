@@ -1,5 +1,6 @@
 package ryansRestaurant;
 
+import Person.Role.Role;
 import Person.Role.ShiftTime;
 import agent.Agent;
 import interfaces.generic_interfaces.GenericCashier;
@@ -269,8 +270,7 @@ public class RyansCashierRole extends GenericCashier implements RyansCashier {
 
 	@Override
 	public Double getSalary() {
-		// TODO Auto-generated method stub
-		return null;
+		return 42.00;
 	}
 
 
@@ -283,8 +283,13 @@ public class RyansCashierRole extends GenericCashier implements RyansCashier {
 
 	@Override
 	public String getNameOfRole() {
-		// TODO Auto-generated method stub
-		return "Ryan's Cashier";
+		return Role.RESTAURANT_RYAN_CASHIER_ROLE;
+	}
+	
+	@Override
+	public void kill() {
+		AlertLog.getInstance().logDebug(AlertTag.RYANS_RESTAURANT, getName(), "Killed called.");
+		//super.kill();
 	}
 
 	

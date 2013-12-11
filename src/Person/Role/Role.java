@@ -52,7 +52,9 @@ public abstract class Role {
     public final static String RESTAURANT_RYAN_COOK_ROLE = "ryansRestaurant.RyansCookRole"; 
     public final static String RESTAURANT_RYAN_CASHIER_ROLE = "ryansRestaurant.RyansCashierRole"; 
     public final static String RESTAURANT_RYAN_CUSTOMER_ROLE = "ryansRestaurant.RyansCustomerRole";
-    public final static String RESTAURANT_RYAN_WAITER_ROLE = "ryansRestaurant.RyansOldHostRole";//"ryansRestaurant.RyansWaiterRole";
+    public final static String RESTAURANT_RYAN_OLD_WAITER_ROLE = "ryansRestaurant.RyansOldWaiterRole";//"ryansRestaurant.RyansWaiterRole";
+    public final static String RESTAURANT_RYAN_NEW_WAITER_ROLE = "ryansRestaurant.RyansNewWaiterRole";
+    
     public final static String RESTAURANT_BYRON_NEW_WAITER_ROLE = "byronRestaurant.NewWaiterRole";
     public final static String RESTAURANT_BYRON_WAITER_ROLE = "byronRestaurant.OldWaiterRole";
     public final static String RESTAURANT_BYRON_HOST_ROLE = "byronRestaurant.HostRole"; 
