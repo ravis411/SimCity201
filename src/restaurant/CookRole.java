@@ -17,6 +17,7 @@ import trace.AlertLog;
 import trace.AlertTag;
 import MarketEmployee.MarketManagerRole;
 import Person.Role.Role;
+import Person.Role.RoleState;
 import Person.Role.ShiftTime;
 import agent.Constants;
 import building.BuildingList;
@@ -124,7 +125,10 @@ public class CookRole extends GenericCook {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAction() {
-		
+		if(roleState == RoleState.Deactivating && orders.size() == 0) {
+			kill();
+			return true;
+		}
 		for(int i=0; i<inventory.size(); i++) {
 			if(inventory.get(i).inventory < 1 && event != AgentEvent.placedOrder) {
 				goToMarket(i);
