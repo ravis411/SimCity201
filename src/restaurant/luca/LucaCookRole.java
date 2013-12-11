@@ -13,11 +13,17 @@ import java.util.concurrent.Semaphore;
 
 import javax.swing.Timer;
 
+import building.Building;
+import building.BuildingList;
 import restaurant.gui.luca.CookGui;
 import restaurant.interfaces.luca.LucaCook;
 import restaurant.interfaces.luca.LucaWaiter;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
+import trace.AlertLog;
+import trace.AlertTag;
+import Person.Role.Employee;
+import Person.Role.Role;
 import Person.Role.ShiftTime;
 import agent.Constants;
 
@@ -50,6 +56,7 @@ public class LucaCookRole extends GenericCook implements LucaCook{
 	{none, recievedOrder, foodOutOfStock, MarketAskedIfTheyHaveFoodType, orderDoneCooking, waiterHasBeenNotified};
 	private AgentEvent event = AgentEvent.none;
 	private RevolvingStand revolvingStand;
+
 	/**
 	 * Constructor for CustomerAgent class
 	 *
@@ -64,6 +71,7 @@ public class LucaCookRole extends GenericCook implements LucaCook{
 		foodTypes.add(new Food("Burger", 5, 0));//Food type, cooktime, quantity
 		myWaitingOrders = Collections.synchronizedCollection(new ArrayList<Order>());
 		myRejectedOrders = Collections.synchronizedCollection(new ArrayList<Order>());
+		
 		
 		revolvingStand = new RevolvingStand();
 		
@@ -110,6 +118,7 @@ public class LucaCookRole extends GenericCook implements LucaCook{
 		else if (ingredientNum==1) Food="Chicken"; 
 		else if (ingredientNum==2) Food="Burger";
 		else Food="FoodDOesNtExIStttttWrongNUmber";
+		AlertLog.getInstance().logMessage(AlertTag.LUCAS_RESTAURANT, getNameOfRole(), "Market could not provide " + Food + "s. Will order from different market.");
 		for(int i =0; i<foodTypes.size(); i++)
 			if (foodTypes.get(i).getChoice() == Food){
 			foodTypes.get(i).setMoreOrderedAndOnTheWay(false);
@@ -126,6 +135,7 @@ public class LucaCookRole extends GenericCook implements LucaCook{
 		else if (ingredientNum==1) Food="Chicken"; 
 		else if (ingredientNum==2) Food="Burger";
 		else Food="FoodDOesNtExIStttttWrongNUmber";
+		AlertLog.getInstance().logMessage(AlertTag.LUCAS_RESTAURANT, getNameOfRole(), "Recieved partial shipment of " + quantity + " " + Food + "s. However didn't Recieve: " + quantityOfOrderThatMarketDoesntHave);
 		marketCurrentlyBeingAskedForFood++;
 		if (marketCurrentlyBeingAskedForFood==4){
 			marketCurrentlyBeingAskedForFood=0;
@@ -154,6 +164,7 @@ public class LucaCookRole extends GenericCook implements LucaCook{
 		else if (ingredientNum==1) Food="Chicken"; 
 		else if (ingredientNum==2) Food="Burger";
 		else Food="FoodDOesNtExIStttttWrongNUmber";
+		AlertLog.getInstance().logMessage(AlertTag.LUCAS_RESTAURANT, getNameOfRole(), "Recieved shipment of " + foodAmount + " " + Food + "s.");
 		for(int i =0; i<foodTypes.size(); i++)
 			if (foodTypes.get(i).getChoice() == Food){
 				foodTypes.get(i).addToFoodQuantity(foodAmount);
@@ -273,6 +284,17 @@ public class LucaCookRole extends GenericCook implements LucaCook{
 	}
 	
 	private void AskMarketsIfTheyHaveFoodSupplies() {
+		for( Building m : BuildingList.findBuildingsWithType("Market")){
+			for (Role role :m.getInhabitants())
+			{
+				if (role instanceof MarketManager){
+				MarketManager manager = (MarketManager) role;
+				if (!markets.contains(manager)){
+				markets.add(manager);
+				}
+			}
+			}
+		}
 		for(int i=0; i<foodTypes.size(); i++){
 			if (foodTypes.get(i).getFoodQuantity()==0 && !foodTypes.get(i).getMoreOrderedAndOnTheWay() && marketCurrentlyBeingAskedForFood != markets.size())
 			{

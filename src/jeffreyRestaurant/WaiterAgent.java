@@ -49,8 +49,7 @@ public abstract class WaiterAgent extends GenericWaiter implements Waiter{
 			foods = new HashMap<String, Double>();
 			foods.put("Steak", 15.99);
 			foods.put("Chicken", 10.99);
-			foods.put("Salad", 5.99);
-			foods.put("Pizza", 8.99);
+			foods.put("Burger", 5.99);
 		}
 		HashMap<String, Double> foods;
 		public void removeFood(String food) {
@@ -431,11 +430,6 @@ public abstract class WaiterAgent extends GenericWaiter implements Waiter{
 	public boolean canGoGetFood() {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public String getNameOfRole() {
-		return Role.RESTAURANT_JEFFREY_WAITER_ROLE;
 	}
 
 	@Override

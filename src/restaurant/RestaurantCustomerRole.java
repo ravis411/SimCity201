@@ -247,7 +247,7 @@ public class RestaurantCustomerRole extends GenericCustomer implements Customer 
 					stateChanged();
 				}
 			},
-			7000);
+			5000);
 		}
 		else {
 			AlertLog.getInstance().logMessage(AlertTag.DYLANS_RESTAURANT, myPerson.getName(), "I can't afford anything on this menu!");
@@ -297,7 +297,7 @@ public class RestaurantCustomerRole extends GenericCustomer implements Customer 
 				stateChanged();
 			}
 		},
-		5000);//getHungerLevel() * 1000);//how long to wait before running task
+		4000);//getHungerLevel() * 1000);//how long to wait before running task
 	}
 	
 	private void GoPayCheck() {
