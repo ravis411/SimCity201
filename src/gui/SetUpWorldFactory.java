@@ -447,24 +447,24 @@ public class SetUpWorldFactory{
                 
                         
                         
-                        (new Timer()).schedule(new TimerTask() {
-                                
-                                @Override
-                                public void run() {
-                                        DrunkPersonGui ddp = new DrunkPersonGui("AAAAaaaahhhhAAaaaa");
-                                        ddp.DoGetHitByCar();
-                                }
-                        }, 1500);
+//                        (new Timer()).schedule(new TimerTask() {
+//                                
+//                                @Override
+//                                public void run() {
+//                                        DrunkPersonGui ddp = new DrunkPersonGui("AAAAaaaahhhhAAaaaa");
+//                                        ddp.DoGetHitByCar();
+//                                }
+//                        }, 1500);
                         
-                        (new Timer()).schedule(new TimerTask() {
-                            
-                            @Override
-                            public void run() {
-                                    DrunkDriverAgent dca = new DrunkDriverAgent("LIKE OMG");
-                                  	dca.msgGoTo("Bus Stop 5");
-                                  	dca.msgRunIntoTheRoad();
-                            }
-                    }, 1500);
+//                        (new Timer()).schedule(new TimerTask() {
+//                            
+//                            @Override
+//                            public void run() {
+//                                    DrunkDriverAgent dca = new DrunkDriverAgent("LIKE OMG");
+//                                  	dca.msgGoTo("Bus Stop 5");
+//                                  	dca.msgRunIntoTheRoad();
+//                            }
+//                    }, 1500);
                         
                         
                         

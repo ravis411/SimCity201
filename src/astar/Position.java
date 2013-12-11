@@ -34,6 +34,11 @@ public class Position {
 	//right now this just tests if grid is available. I
 	//suspect this is where the locking done. What's in the grid is
 	//supposed to be taken care of by the gui.
+    	if(grid.length <=x )
+    		return false;
+    	if( grid[x].length <= y )
+    		return false;
+    	
 	return grid[x][y].availablePermits()>0;
     }
     public boolean moveInto(Semaphore[][] grid){

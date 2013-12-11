@@ -39,7 +39,7 @@ public class DrunkDriverAgent extends Agent{
 		
 
 	public void setStartLocation(String location){
-		
+		defaultStartLocation = location;
 	}
 	
 	//////////////////////////////
@@ -51,8 +51,9 @@ public class DrunkDriverAgent extends Agent{
 	protected boolean pickAndExecuteAnAction() {
 		if(goTo){
 			DoGoTo(destination);
+			return true;
 		}
-		if(state == AgentState.spazzing){
+		if(state == AgentState.spazzing && !goTo){
 			DoDrunkDrive();
 			return true;
 		}
@@ -69,13 +70,15 @@ public class DrunkDriverAgent extends Agent{
 	private void DoDrunkDrive(){
 		state = AgentState.dead;
 		agentGui.DoDrunkDrive();
+		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, getName(), "Uhhhhhuhhh what hppnd?");
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(10000);
 		} catch (InterruptedException e) {	}
 	}
 	
 	private void TeleportToDestination(String destination){
 		agentGui.setCurrentLocation(destination);
+		defaultStartLocation = destination;
 		state = AgentState.none;
 	}
 	
@@ -83,9 +86,12 @@ public class DrunkDriverAgent extends Agent{
 		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Drrrrvng to " + destination);
 		agentGui.DoGoTo(destination);
 		if(this.destination.equals(destination)){
+			DoDrunkDrive();
+			TeleportToDestination(destination);
 			goTo = false;
 			destination = null;
 		}
+		
 	}
 	
 	
