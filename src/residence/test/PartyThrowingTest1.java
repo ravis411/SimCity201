@@ -4,17 +4,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import residence.HomeRole;
-<<<<<<< HEAD
-import residence.HomeRole.AgentEvent;
-import residence.HomeRole.AgentState;
-import residence.HomeRole.PartyState;
-import residence.gui.HomeRoleGui;
-import residence.test.mock.MockApartmentManager;
-import residence.test.mock.MockHome;
-import trace.AlertLog;
-import Person.PersonAgent;
-import Person.test.mock.MockRole;
-=======
+
 import residence.HomeRole.AgentState;
 import residence.HomeRole.PartyState;
 import Person.PersonAgent;
