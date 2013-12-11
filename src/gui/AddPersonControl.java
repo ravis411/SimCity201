@@ -226,16 +226,16 @@ public class AddPersonControl extends JFrame implements ActionListener{
 		 * Then send data to SetUpWorldFactory
 		 */
 		String name = nameTF.getText();
-		Double money = Double.parseDouble(moneyTF.getText());
+		Double money = 0.00;
+		try {
+			money = Double.parseDouble(moneyTF.getText());
+		} catch (NumberFormatException ne) {
+			controller.errorPopUp("Must enter a double for money!");
+		}
 		String job = null;
+		String unformatJob = null;
 		ShiftTime shift = ShiftTime.NONE;
 		String shiftText = null;
-		for (JRadioButton myJob : jobs) {
-			if (myJob.isSelected()) {
-				job = formatRole(myJob.getText());
-				break;
-			}
-		}
 		String location = null;
 		for (JRadioButton myLocation : locations) {
 			if (myLocation.isSelected()) {
@@ -257,7 +257,22 @@ public class AddPersonControl extends JFrame implements ActionListener{
 				break;
 			}
 		}
-		controller.addPerson(SetUpWorldFactory.addPerson(name, home, job, location, money, shift));
+		
+		for (JRadioButton myJob : jobs) {
+			if (myJob.isSelected()) {
+				job = formatRole(myJob.getText(), location);
+				unformatJob = myJob.getText();
+				break;
+			}
+		}
+		//Error checking
+		if (!isAllowed(unformatJob, location)) {
+			controller.errorPopUp("You cannot create that job in that location!");
+			return;
+		}
+		else {
+			controller.addPerson(SetUpWorldFactory.addPerson(name, home, job, location, money, shift));
+		}
 
 	}
 	
@@ -278,7 +293,37 @@ public class AddPersonControl extends JFrame implements ActionListener{
 		return time;
 	}
 	
-	private String formatRole(String unformat) {
+	private Boolean isAllowed(String role, String location) {
+		try {
+		if (role.equals("Market Employee") && SetUpWorldFactory.marketECList.contains(location)) {
+			return true;
+		} else if (role.equals("Market Customer") && SetUpWorldFactory.marketECList.contains(location)) {
+			return true;
+		} else if (role.equals("Market Manager") && SetUpWorldFactory.marketECList.contains(location)) {
+			return true;
+		} else if (role.equals("Bank Client") && SetUpWorldFactory.bankECList.contains(location)) {
+			return true;
+		} else if (role.equals("Bank Teller") && SetUpWorldFactory.bankECList.contains(location)) {
+			return true;
+		} else if (role.equals("Bank Loan Teller") && SetUpWorldFactory.bankECList.contains(location)) {
+			return true;
+		} else if (role.equals("Restaurant Customer") && SetUpWorldFactory.restaurantECList.contains(location)) {
+			return true;
+		} else if (role.equals("Restaurant Old Waiter") && SetUpWorldFactory.restaurantECList.contains(location)) {
+			return true;
+		} else if (role.equals("Restaurant New Waiter") && SetUpWorldFactory.restaurantECList.contains(location)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+		} catch (NullPointerException n) {
+			controller.errorPopUp("Must have a value selected for each field!");
+			return false;
+		}
+	}
+	
+	private String formatRole(String unformat, String location) {
 		String format = "N/A";
 		switch(unformat) {
 		case "Market Employee":
@@ -300,13 +345,75 @@ public class AddPersonControl extends JFrame implements ActionListener{
 			format = Role.LOAN_TELLER_ROLE;
 			break;
 		case "Restaurant Customer":
-			format = Role.RESTAURANT_CUSTOMER_ROLE;
+			if (location.equals("Dylan's Restaurant")) {
+				format = Role.RESTAURANT_CUSTOMER_ROLE;
+			}
+			else if (location.equals("Ryan's Restaurant")) {
+				format = Role.RESTAURANT_RYAN_CUSTOMER_ROLE;
+			}
+			else if (location.equals("Kush's Restaurant")) {
+				format = Role.RESTAURANT_KUSH_CUSTOMER_ROLE;
+			}
+			else if (location.equals("Luca's Restaurant")) {
+				format = Role.RESTAURANT_LUCA_CUSTOMER_ROLE;
+			}
+			else if (location.equals("Byron's Restaurant")) {
+				format = Role.RESTAURANT_BYRON_CUSTOMER_ROLE;
+			}
+			else if (location.equals("Jeffrey's Restaurant")) {
+				format = Role.RESTAURANT_JEFFREY_CUSTOMER_ROLE;
+			}
+			else if (location.equals("Mike's Restaurant")) {
+				format = Role.RESTAURANT_MIKE_CUSTOMER_ROLE;
+			}
 			break;
 		case "Restaurant Old Waiter":
-			format = Role.RESTAURANT_WAITER_ROLE;
+			if (location.equals("Dylan's Restaurant")) {
+				format = Role.RESTAURANT_WAITER_ROLE;
+			}
+			else if (location.equals("Ryan's Restaurant")) {
+				format = Role.RESTAURANT_RYAN_OLD_WAITER_ROLE;
+			}
+			else if (location.equals("Kush's Restaurant")) {
+				//TODO need to change to old waiter
+				format = Role.RESTAURANT_KUSH_WAITER_ROLE;
+			}
+			else if (location.equals("Luca's Restaurant")) {
+				format = Role.RESTAURANT_LUCA_WAITER_ROLE;
+			}
+			else if (location.equals("Byron's Restaurant")) {
+				format = Role.RESTAURANT_BYRON_WAITER_ROLE;
+			}
+			else if (location.equals("Jeffrey's Restaurant")) {
+				format = Role.RESTAURANT_JEFFREY_OLD_WAITER_ROLE;
+			}
+			else if (location.equals("Mike's Restaurant")) {
+				//TODO change to old waiter
+				format = Role.RESTAURANT_MIKE_WAITER_ROLE;
+			}
 			break;
 		case "Restaurant New Waiter":
-			format = Role.RESTAURANT_NEW_WAITER_ROLE;
+			if (location.equals("Dylan's Restaurant")) {
+				format = Role.RESTAURANT_NEW_WAITER_ROLE;
+			}
+			else if (location.equals("Ryan's Restaurant")) {
+				format = Role.RESTAURANT_RYAN_NEW_WAITER_ROLE;
+			}
+			else if (location.equals("Kush's Restaurant")) {
+				format = Role.RESTAURANT_KUSH_WAITER_ROLE;
+			}
+			else if (location.equals("Luca's Restaurant")) {
+				format = Role.RESTAURANT_LUCA_NEW_WAITER_ROLE;
+			}
+			else if (location.equals("Byron's Restaurant")) {
+				format = Role.RESTAURANT_BYRON_NEW_WAITER_ROLE;
+			}
+			else if (location.equals("Jeffrey's Restaurant")) {
+				format = Role.RESTAURANT_JEFFREY_NEW_WAITER_ROLE;
+			}
+			else if (location.equals("Mike's Restaurant")) {
+				format = Role.RESTAURANT_MIKE_WAITER_ROLE;
+			}
 			break;
 		case "Restaurant Host":
 			format = Role.RESTAURANT_HOST_ROLE;

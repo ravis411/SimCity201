@@ -16,12 +16,12 @@ public interface LucaCustomer {
 	public abstract void msgCustomerWhatIsYourSecondChoice(String choice) ;
 
 	public abstract void msgCustomerHereIsYourChoice(String choice);
-	public abstract void msgCustomerHereIsYourCheck(int customersTab);
+	public abstract void msgCustomerHereIsYourCheck(double customersTab);
 
 	
 	public abstract void msgAnimationFinishedLeaveRestaurant();
 	
-	public abstract void msgCustomerHereIsChange(int change, int moneyIOwe) ;
+	public abstract void msgCustomerHereIsChange(double d, double moneyIOwe) ;
 
 	public abstract String getName();
 

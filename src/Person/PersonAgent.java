@@ -671,7 +671,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		List<Building> buildings = BuildingList.findBuildingsWithType(BuildingList.RESTAURANT);
 		buildings.add(BuildingList.findBuildingWithName(home.getName()));
 		Random r = new Random();
-		return "Mike's Restaurant";
+		return "Luca's Restaurant";
 		//return buildings.get(Math.abs(r.nextInt()) % buildings.size()).getName();
 		
         //return Math.random() > 0.5 ? "Food Court" : this.home.getName();
@@ -725,7 +725,10 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		Building bdg = BuildingList.findBuildingWithName(r.getWorkLocation());
 		if(BuildingList.findBuildingWithName(r.getWorkLocation()) instanceof Workplace ){
 			Workplace w = (Workplace) bdg;
-			GoToLocation(r.getWorkLocation(), getTransportPreference());
+			
+				GoToLocation(r.getWorkLocation(), getTransportPreference());
+
+			
 			if(w instanceof Restaurant){
 				Restaurant rest = (Restaurant) bdg;
 				if(r instanceof GenericHost){
@@ -748,6 +751,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 					}
 				}
 			}
+
 			w.addRole(r);
 			if(!w.isOpen()){
 				pendingJobs.add(r);
@@ -903,7 +907,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			modeOfTransportation = Preferences.CAR;
 		}
 		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Going to "+location+" via + "+modeOfTransportation);
-		
+
 		switch(modeOfTransportation){
 			case Preferences.BUS:
 				String startStop = gui.DoGoToClosestBusStop();

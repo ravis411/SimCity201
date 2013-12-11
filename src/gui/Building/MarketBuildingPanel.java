@@ -19,10 +19,12 @@ import Person.Role.Role;
  */
 @SuppressWarnings("serial")
 public class MarketBuildingPanel extends BuildingPanel{
-	public MarketAnimationPanel animationPanel = new MarketAnimationPanel();
+	public MarketAnimationPanel animationPanel;
 
 	public MarketBuildingPanel(Rectangle2D r, String name, BuildingsPanels buildingPanels) {
+		
 		super(r, name, buildingPanels);
+		animationPanel =  new MarketAnimationPanel(name);
 		setLayout(new BorderLayout());
 		this.removeAll();
 		

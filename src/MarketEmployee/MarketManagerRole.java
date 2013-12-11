@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
+import agent.Constants;
 import market.data.MarketData;
 import market.gui.MarketManagerGui;
 import residence.HomeRole;
@@ -29,7 +30,9 @@ public class MarketManagerRole extends Employee implements MarketManager{
 	{walkingToDesk, waiting};
 	enum MarketEmployeeEvent
 	{enteredMarket, atDesk, customerNeedsToBeGivenStation,needToBringDeliveryTruckOrder, DeliveryTruckHasBeenBroughtOrder};
-	
+	enum MarketDeliveryTruckState
+	{notAvailable, available};
+	public MarketDeliveryTruckState truckState=MarketDeliveryTruckState.available;
 	public MarketEmployeeEvent event=MarketEmployeeEvent.enteredMarket;
 	public MarketEmployeeState state=MarketEmployeeState.walkingToDesk;
 	List<CounterStation> currentEmployeees	= new ArrayList<CounterStation>();
@@ -148,13 +151,17 @@ public class MarketManagerRole extends Employee implements MarketManager{
 	}
 
 
+	public void atHome() {
+		truckState=MarketDeliveryTruckState.available;
+		
+	}
 
 
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAction() {
-	
+		
 		if (event==MarketEmployeeEvent.customerNeedsToBeGivenStation && myOrders.isEmpty()){
 			giveEmployeeAStation();
 			return true;
@@ -169,6 +176,11 @@ public class MarketManagerRole extends Employee implements MarketManager{
 			return true;
 			}
 		}
+		if (marketData.anyPendingOrders())
+		{
+			myOrders.add(new Order(marketData.getLastOrder().getChoice(),marketData.getLastOrder().getAmount(),orderNum++,marketData.getLastOrder().getCook()));
+			return true;
+		}
 		if (!myOrders.isEmpty() && !currentEmployeees.isEmpty())
 		{
 			for (int i = 0; i<myOrders.size(); i++){
@@ -181,26 +193,12 @@ public class MarketManagerRole extends Employee implements MarketManager{
 			BringDeliveryTruckOrder();
 			return true;
 		}
-			//	if (state == none)
-			//	{
-			//		giveOrderToMarketEmployee(Order order);
-			//		break;
-			//	}
-			//}
-		/*
-			for all orders in MyOrder
-			{
-				if (order state == none)
-				{
-					giveOrderToMarketEmployee(Order order);
-					break;
-				}
-				if (order state == Processed)
-				shipAndOrNotifyCustomerOfOrderProblems(Order order);
-				{
-			}
-	
-*/
+			
+		
+		
+		
+		
+		
 		}
 		return false;
 		//we have tried all our rules and found
@@ -244,6 +242,17 @@ public class MarketManagerRole extends Employee implements MarketManager{
 		}
 		
 	private void BringDeliveryTruckOrder() {
+		if (truckState==MarketDeliveryTruckState.notAvailable)
+		{
+			while (truckState!=MarketDeliveryTruckState.available){
+				try {
+					Thread.sleep(1 * Constants.SECOND);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 		gui.DoGoToDeliveryTruck();
 		
 		try {
@@ -270,6 +279,7 @@ public class MarketManagerRole extends Employee implements MarketManager{
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
+						truckState=MarketDeliveryTruckState.notAvailable;
 						ck.msgOrderFilled(myOrders.get(i).getNumberThatIsAssociatedWithFoodsMenuNumber()
 								,myOrders.get(i).getAmountReadyToBeShipped());
 						myOrders.get(i).setState(Order.OrderState.delivered);
@@ -283,6 +293,7 @@ public class MarketManagerRole extends Employee implements MarketManager{
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
+						truckState=MarketDeliveryTruckState.notAvailable;
 						ck.msgOrderPartiallyFilled(myOrders.get(i).getNumberThatIsAssociatedWithFoodsMenuNumber()
 								,myOrders.get(i).getAmountReadyToBeShipped(),myOrders.get(i).getAmount()-myOrders.get(i).getAmountReadyToBeShipped());
 						myOrders.get(i).setState(Order.OrderState.delivered);
@@ -296,9 +307,18 @@ public class MarketManagerRole extends Employee implements MarketManager{
 					myOrders.get(i).setState(Order.OrderState.delivered);
 
 				}
-				
+				try {
+					atDesk.acquire();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				if (i==myOrders.size()-1)
+				{
+					event=MarketEmployeeEvent.DeliveryTruckHasBeenBroughtOrder;
+				}
+				break;
 			}
-		event=MarketEmployeeEvent.DeliveryTruckHasBeenBroughtOrder;
+		
 	}
 
 	//utilities
@@ -430,6 +450,8 @@ public class MarketManagerRole extends Employee implements MarketManager{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 
 
 

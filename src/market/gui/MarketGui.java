@@ -19,7 +19,7 @@ import Person.PersonAgent;
  */
 public class MarketGui extends JFrame implements ActionListener {
    
-	public MarketAnimationPanel animationPanel = new MarketAnimationPanel();
+	public MarketAnimationPanel animationPanel = new MarketAnimationPanel("Market 1");
 	final int WINDOWX = 800;// window width
     final int WINDOWY = 400;//window height
     final int WINDOWXOpenPosition = 50;//how many pixels from top left of screen window will appear
