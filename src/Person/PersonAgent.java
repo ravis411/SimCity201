@@ -1,5 +1,6 @@
 package Person;
 
+import gui.BuildingsPanels;
 import gui.Building.ResidenceBuildingPanel;
 import gui.agentGuis.PersonGui;
 import interfaces.BusStop;
@@ -8,8 +9,9 @@ import interfaces.generic_interfaces.GenericCashier;
 import interfaces.generic_interfaces.GenericCook;
 import interfaces.generic_interfaces.GenericCustomer;
 import interfaces.generic_interfaces.GenericHost;
-import interfaces.generic_interfaces.GenericWaiter;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,6 +19,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
+
+import javax.swing.Timer;
 
 import residence.HomeGuestRole;
 import residence.HomeRole;
@@ -47,6 +51,8 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
         
         private final double STARTING_MONEY = 100.00;
         private final int HUNGER_THRESHOLD = 50;
+        
+        private static double SALARY = 50.00;
 
 	private String name;
 	private double money;
@@ -622,48 +628,57 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	
 	private void GoGetFood(){
 		  String transport = getTransportPreference();
-		  
-		  String location = PickFoodLocation();
-		  GoToLocation("Food Court", transport);
-		  
-
-		  MyRole role = findRole(Role.RESTAURANT_MIKE_CUSTOMER_ROLE);
-		  if(role == null){
-			  role = new MyRole(RoleFactory.roleFromString(Role.RESTAURANT_MIKE_CUSTOMER_ROLE));
-
-
-			  addRole(role);
-		  }
-		  GenericCustomer cust = (GenericCustomer) role.role;
-		  AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Customer Role = "+role);
-
-		  Restaurant resta =  (Restaurant) BuildingList.findBuildingWithName("Mike's Restaurant");
-		  BuildingList.findBuildingWithName("Mike's Restaurant").addRole(role.role);
-		  Building bdg =  BuildingList.findBuildingWithName("Mike's Restaurant");
-
-		  if(bdg instanceof Restaurant){
-			  Restaurant rest = (Restaurant) bdg;
-			  try {
-				waitingAtWork.acquire();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			  cust.setupCustomer("Mike's Restaurant");
-
-
-			  cust.gotHungry();
-			  cust.activate();
-		  }
 		  this.state = PersonState.GettingFood;
+		  String location = PickFoodLocation();
+		  GoToLocation(location, transport);
+		  if(location.equals(home.getName())){
+			  //go home for food
+			  GoHome();
+			  HomeRole hr = (HomeRole) findRole(Role.HOME_ROLE).role;
+			  hr.msgMakeFood();
+		  }else{
+			  String roleString = Restaurant.getStringForCustomer(location);
+			  MyRole role = findRole(roleString);
+			  if(role == null){
+				  role = new MyRole(RoleFactory.roleFromString(roleString));
+				  addRole(role);
+			  }
+			  GenericCustomer cust = (GenericCustomer) role.role;
+			  AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Customer Role = "+role);
+
+			  Restaurant resta =  (Restaurant) BuildingList.findBuildingWithName(location);
+			  BuildingList.findBuildingWithName(location).addRole(role.role);
+			  Building bdg =  BuildingList.findBuildingWithName(location);
+
+			  if(bdg instanceof Restaurant){
+				  Restaurant rest = (Restaurant) bdg;
+				  try {
+					waitingAtWork.acquire();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				  cust.setupCustomer(location);
+
+
+				  cust.gotHungry();
+				  cust.activate();
+			  }
+		  }
+		  hungerLevel = 0;
 		  this.msgGoToMarket("item");
 	}
 	
 	private String PickFoodLocation(){
-
-        return Math.random() > 0.5 ? "Food Court" : this.home.getName();
-        }
+		List<Building> buildings = BuildingList.findBuildingsWithType(BuildingList.RESTAURANT);
+		buildings.add(BuildingList.findBuildingWithName(home.getName()));
+		Random r = new Random();
+		return "Mike's Restaurant";
+		//return buildings.get(Math.abs(r.nextInt()) % buildings.size()).getName();
+		
+        //return Math.random() > 0.5 ? "Food Court" : this.home.getName();
+    }
 
 	private void GoToParty(String location){
 		  state = PersonState.Partying;
@@ -1198,6 +1213,21 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	
 	public void setGui(PersonGui gui){
 		this.gui = gui;
+		
+		Timer hungerTimer = new Timer(5000, new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				hungerLevel += 1;
+				if(hungerLevel % 20 == 0){
+					stateChanged();
+				}
+			}
+			
+		});
+		
+		hungerTimer.start();
 	}
 	public PersonGui getPersonGui(){
 		return this.gui;
@@ -1244,6 +1274,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			}
 		}else if(hour == Workplace.END_SHIFT_HOUR && minute == Workplace.END_SHIFT_MIN){
 			currentShift = ShiftTime.NONE;
+			money += SALARY;
 		}
 	}
 
