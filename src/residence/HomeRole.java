@@ -31,9 +31,6 @@ public class HomeRole extends Role implements Home {
 	public boolean enterHome = false;
 	public boolean callMarket = false;
 
-	
-	//private Map <String, Integer> inventory = new HashMap<String, Integer>();
-
 	private List <Item> inventory = new ArrayList<Item>();
 	private List <HomeFeature> features = new ArrayList<HomeFeature>(); //includes appliances, toilets, sinks, etc (anything that can break)
 	public List <Person> partyAttendees = new ArrayList<Person>();
@@ -233,10 +230,6 @@ public class HomeRole extends Role implements Home {
 				cook();
 				return true;
 			}
-			/*if (Person.stateOfNourishment == hungry) {
-				eat()
-				return true;
-			}*/
 			if (state == AgentState.Sleeping && event == AgentEvent.none) {
 				goToSleep();
 				return true;
