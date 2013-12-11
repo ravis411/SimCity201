@@ -68,7 +68,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	private double loanAmount;
 	
 	public List<MyRole> roles;
-	public List<PersonAgent> friends;
+	public List<Person> friends;
 	
 	private CarAgent myCar;
 	
@@ -233,15 +233,15 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		money = STARTING_MONEY;
 		moneyNeeded = 0;
 		loanAmount = 0;
-		friends = new ArrayList<PersonAgent>();
+		friends = new ArrayList<Person>();
 		roles = new ArrayList<MyRole>();
 		hungerLevel = 0;
 		state=PersonState.GettingFood;
 		parties = new ArrayList<Party>();
 		prefs = new Preferences();
 		this.home = home;
-		if(home!=null)
-		{
+		
+		if(home != null) {
 			this.myCar = new CarAgent(this, name+" car", home.getName());
 		}
 		
@@ -502,7 +502,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		if(parties.size()!=0){
 			for(Party p:parties){
 				if(p.partyState==PartyState.NeedsResponseUrgently){
-					for(PersonAgent pa:friends){
+					for(Person pa:friends){
 						if(pa==p.getHost()){
 							rsvpYes(pa,p);	
 						}
@@ -517,7 +517,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		if(parties.size()!=0){
 			for(Party p:parties){
 				if(p.partyState==PartyState.ReceivedInvite){
-					for(PersonAgent pa :friends){
+					for(Person pa :friends){
 						if(pa==p.getHost()){
 							int i= new Random().nextInt(40);
 							if(i%2==0){
@@ -673,14 +673,14 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		  hgr.activate();
 	}
 	
-	private void rsvpYes(PersonAgent pa, Party p){
+	private void rsvpYes(Person pa, Party p){
 		p.partyState=PartyState.GoingToParty;
 		pa.msgIAmComing(this);
 		MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY), p.dateOfParty.get(Calendar.MINUTE), this);
 		
 	}
 	
-	private void rsvpNo(PersonAgent pa, Party p){
+	private void rsvpNo(Person pa, Party p){
 		pa.msgIAmNotComing(this);
 		p.partyState=PartyState.NotGoingToParty;
 	}
@@ -1172,7 +1172,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		return getName();
 	}
 
-	public List<PersonAgent> getFriends() {
+	public List<Person> getFriends() {
 		return friends;
 	}
 	public ResidenceBuildingPanel getHome(){

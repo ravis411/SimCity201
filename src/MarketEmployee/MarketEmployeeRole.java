@@ -16,6 +16,7 @@ import trace.AlertLog;
 import trace.AlertTag;
 import Person.Role.Employee;
 import Person.Role.ShiftTime;
+import agent.Constants;
 
 /**
  * MarketEmployee Role
@@ -137,8 +138,19 @@ public class MarketEmployeeRole extends Employee implements MarketEmployee{
 	 */
 	public boolean pickAndExecuteAction() {
 		if ( state==MarketEmployeeState.gettingCounterAssignmentFromManager && event==MarketEmployeeEvent.atManager){
+			
+			while (marketData.getMarketManager() == null){
+				try {
+					Thread.sleep(1 * Constants.SECOND);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			myManager=marketData.getMarketManager();
+		
 			myManager.msgMarketManagerReportingForWork(this);
+
 			state=MarketEmployeeState.walkingToCounter;
 			return true;
 		}

@@ -315,6 +315,9 @@ public class MarketManagerRole extends Employee implements MarketManager{
 	public void setMarketData(MarketData marketData) {
 		this.marketData=marketData;
 	}
+	public MarketData getMarketData() {
+		return this.marketData;
+	}
 	public void setDeliveryTruck(DeliveryTruckAgent deliveryTruckAgent) {
 		this.deliveryTruck=deliveryTruckAgent;
 	}

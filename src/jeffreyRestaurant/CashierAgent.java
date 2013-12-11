@@ -1,5 +1,6 @@
 package jeffreyRestaurant;
 
+import MarketEmployee.MarketManagerRole;
 import Person.Role.Role;
 import Person.Role.ShiftTime;
 import agent.Agent;
@@ -30,8 +31,7 @@ public class CashierAgent extends GenericCashier implements Cashier {
 		menu = new HashMap<String,Double>();
 		menu.put("Steak", 15.99);
 		menu.put("Chicken", 10.99);
-		menu.put("Salad", 5.99);
-		menu.put("Pizza", 8.99);
+		menu.put("Burger", 5.99);
 	}
 	
 	//Data
@@ -55,10 +55,9 @@ public class CashierAgent extends GenericCashier implements Cashier {
 		private CheckState s;
 	}
 	public class Order {
-		Order(Market market, Double p, String f, OrderState state) {
+		Order(MarketManagerRole market, Double p, OrderState state) {
 			m = market;
 			price = p;
-			food = f;
 			setState(state);
 		}
 		public OrderState getState() {
@@ -67,7 +66,7 @@ public class CashierAgent extends GenericCashier implements Cashier {
 		public void setState(OrderState s) {
 			this.s = s;
 		}
-		public Market m;
+		public MarketManagerRole m;
 		Double price;
 		String food;
 		private OrderState s;
@@ -123,10 +122,24 @@ public class CashierAgent extends GenericCashier implements Cashier {
 		}
 		stateChanged();
 	}
-	
-	public void msgPayForOrder(Market market, Double price, String food) {
+	/**
+	 * Old obsolete message from market agent to cashier
+	 * @param market
+	 * @param price
+	 * @param food
+	 */
+	public void msgPayForOrder(MarketManagerRole market, Double price, String food) {
 		print("Received a bill from market for " + price);
-		getOrders().add(new Order(market, price, food, OrderState.pending));
+		getOrders().add(new Order(market, price,/* food,*/ OrderState.pending));
+		stateChanged();
+	}
+	/**
+	 * New message from market manager role to 
+	 * @param orderPrice
+	 * @param market
+	 */
+	public void msgCashierHereIsMarketBill(int orderPrice, MarketManagerRole market) {
+		getOrders().add(new Order(market, (double)orderPrice, OrderState.pending));
 		stateChanged();
 	}
 	
@@ -191,7 +204,7 @@ public class CashierAgent extends GenericCashier implements Cashier {
 	}
 	private void payMarket(Order o) {
 		o.setState(OrderState.paid);
-		o.m.msgOrderPayment("Steak", 15.99);
+		o.m.msgMarketManagerHereIsPayment(15.99);
 		print("Paying market");
 	}
 	private void cleanChecks(Check c) {

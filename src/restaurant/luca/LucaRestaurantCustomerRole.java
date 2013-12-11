@@ -18,6 +18,7 @@ import restaurant.gui.luca.CustomerGui;
 import restaurant.interfaces.luca.LucaCustomer;
 import restaurant.interfaces.luca.LucaWaiter;
 import restaurant.test.mock.EventLog;
+import Person.Role.Role;
 import agent.Constants;
 
 /**
@@ -404,7 +405,7 @@ public class LucaRestaurantCustomerRole extends GenericCustomer implements LucaC
 	@Override
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
-		return null;
+		return Role.RESTAURANT_LUCA_CUSTOMER_ROLE;
 	}
 
 	@Override

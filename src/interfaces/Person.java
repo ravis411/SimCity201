@@ -64,13 +64,17 @@ public interface Person extends DateListener{
 
 	public abstract double getMoneyNeeded();
 
-	public abstract List<PersonAgent> getFriends();
+	public abstract List<Person> getFriends();
 
 	public abstract ResidenceBuildingPanel getHome();
 
 	public abstract void setInitialRole(Role roleFromString, String string, ShiftTime shift);
 	
 	public abstract void dateAction(int month, int day, int hour, int minute);
+
+	public void msgRespondToInviteUrgently(Person myPerson);
+
+	public void msgPartyOver(Person myPerson);
 
 
 }

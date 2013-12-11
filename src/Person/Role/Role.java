@@ -38,7 +38,8 @@ public abstract class Role {
 	public final static String RESTAURANT_KUSH_COOK_ROLE = "kushrestaurant.CookRole";
 	public final static String RESTAURANT_KUSH_CASHIER_ROLE = "kushrestaurant.CashierRole";
     public final static String RESTAURANT_JEFFREY_CUSTOMER_ROLE = "jeffreyRestaurant.CustomerAgent";
-    public final static String RESTAURANT_JEFFREY_WAITER_ROLE = "jeffreyRestaurant.NewWaiterAgent";
+    public final static String RESTAURANT_JEFFREY_NEW_WAITER_ROLE = "jeffreyRestaurant.NewWaiterAgent";
+    public final static String RESTAURANT_JEFFREY_OLD_WAITER_ROLE = "jeffreyRestaurant.OldWaiterAgent";
     public final static String RESTAURANT_JEFFREY_HOST_ROLE = "jeffreyRestaurant.HostAgent";
     public final static String RESTAURANT_JEFFREY_COOK_ROLE = "jeffreyRestaurant.CookAgent";
     public final static String RESTAURANT_JEFFREY_CASHIER_ROLE = "jeffreyRestaurant.CashierAgent";

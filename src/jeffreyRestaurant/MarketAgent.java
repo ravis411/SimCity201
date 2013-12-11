@@ -118,26 +118,26 @@ public class MarketAgent extends Agent implements Market{
 		if (foods.get(o.food).quantity > 0) {
 			//Case 2: market can partially fulfill order
 			if (foods.get(o.food).quantity - o.quantity < 0) {
-				ck.msgPartialMarketOrder(o.food, foods.get(o.food).quantity, this);
+				//ck.msgPartialMarketOrder(o.food, foods.get(o.food).quantity, this);
 				foods.get(o.food).quantity = 0;
 				o.state = orderState.fulfilled;
 			}
 			//Case 1: market can completely fulfill order
 			else if (foods.get(o.food).quantity - o.quantity >= 0) {
-				ck.msgMarketOrder(o.food, o.quantity, this);
+				//ck.msgMarketOrder(o.food, o.quantity, this);
 				foods.get(o.food).quantity -= o.quantity;
 				o.state = orderState.fulfilled;
 			}
 		}
 		//Case 3: market cannot fulfill order at all
 		else if (foods.get(o.food).quantity == 0) {
-			ck.msgPartialMarketOrder(o.food, 0, this);
+			//ck.msgPartialMarketOrder(o.food, 0, this);
 		}
 	}
 	
 	private void askForPayment (foodOrder o) {
 		o.state = orderState.payRequested;
-		cashier.msgPayForOrder(this, o.price, o.food);
+		//cashier.msgPayForOrder(this, o.price, o.food);
 	}
 	
 	
