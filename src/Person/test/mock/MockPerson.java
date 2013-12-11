@@ -207,5 +207,11 @@ public class MockPerson extends Mock implements Person {
 		
 	}
 
+	@Override
+	public ShiftTime getCurrentShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }
