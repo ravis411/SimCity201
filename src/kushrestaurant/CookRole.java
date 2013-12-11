@@ -17,6 +17,7 @@ import kushrestaurant.interfaces.Cook;
 import kushrestaurant.interfaces.Customer;
 import kushrestaurant.interfaces.Waiter;
 import MarketEmployee.MarketManagerRole;
+
 import Person.Role.RoleState;
 import Person.Role.ShiftTime;
 
@@ -49,6 +50,7 @@ public class CookRole extends GenericCook implements Cook {
                 Table table;
                 orderstate s;
         }
+
 enum state {cooking,free,goinggroceryshopping};
 state cookState;
 
@@ -87,6 +89,7 @@ public CookRole(String name) {
 }*/
 
 public CookRole(String workLocation) {
+
         super(workLocation);
         //this.gui=gui;
         
@@ -137,7 +140,9 @@ public class Food{
 
   
 //List<WaiterAgent> waiters;
-
+public void addMarket(MarketManagerRole mr){
+	marketManagers.add(mr);
+}
 public void MsgHereisTheOrder(Waiter w, Customer c, Table t, String choice){
         print("Received order from " +w.getName());
     orders.add(new Order(choice,w,t,c));
@@ -146,6 +151,7 @@ public void MsgHereisTheOrder(Waiter w, Customer c, Table t, String choice){
 }
 public void setGui(CookGui c){this.cookGui=c;}
 public void msgOrderFilled(int ingredientNum, int quantity){
+
     switch(ingredientNum) {      
     	case 0: foods.get("Steak").amount+= quantity;
     	print("Received partial delivery from market have "+ quantity + " steak");
@@ -192,12 +198,14 @@ public void OrderFromMarket(){
         count++;
         stateChanged();
         
+
 }
 public boolean pickAndExecuteAction() {
         /* Think of this next rule as:
         Does there exist a table and customer,
         so that table is unoccupied and customer is waiting.
         If so seat him at the table.
+<<<<<<< HEAD
          */
 	   if(this.workState==WorkState.ReadyToLeave && this.orders.size()==0){
 		   this.cookState= state.free;
@@ -223,7 +231,16 @@ public boolean pickAndExecuteAction() {
                    return true;
             }
             
-    }
+
+	if(cookState==state.goinggroceryshopping){
+		if(count<marketManagers.size()){
+		OrderFromMarket();
+		cookState=state.free;
+		return true;
+		}
+	}
+	
+   
         if(!revolvingStand.isEmpty()){
         Order order = revolvingStand.getLastOrder();
         Order newOrder = new Order(order.choice, order.w, order.table,order.customer);
@@ -234,7 +251,9 @@ public boolean pickAndExecuteAction() {
 }
 
 
+                }
         return false;
+
 }
 public void CookIt(Order o){
         if(cookState==state.free)
@@ -260,6 +279,7 @@ public void CookIt(Order o){
         stateChanged();
 }
 public void doCooking(final Order o){
+
         int cookingtime=getCookTime(o.choice);
         
         timer.schedule(new TimerTask() {
@@ -274,6 +294,7 @@ public void doCooking(final Order o){
         constant*cookingtime);
         
         ;//getHungerLevel() * 1000);//how long to wait before running task
+
 }
 
 public void takenFood(String c){
@@ -328,6 +349,7 @@ public RevolvingStand getRevolvingStand() {
 
 @Override
 public void msgCantRestock() {
+
         // TODO Auto-generated method stub
         
 }

@@ -4,14 +4,16 @@ import gui.Building.BuildingPanel;
 import interfaces.MarketEmployee;
 import interfaces.MarketManager;
 import interfaces.generic_interfaces.GenericCook;
+import market.data.MarketData;
 import MarketEmployee.MarketManagerRole;
 import Person.Role.Employee;
 import Person.Role.Role;
 
 public class Market extends  Workplace {
-
-	public Market(BuildingPanel panel) {
+	MarketData marketData;
+	public Market(BuildingPanel panel,MarketData marketData) {
 		super(panel);
+		this.marketData=marketData;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -69,5 +71,7 @@ public class Market extends  Workplace {
 			}
 		}
 	}
-
+	public MarketData getMarketData(){
+		return marketData;
+	}
 }

@@ -77,12 +77,22 @@ public class SetUpWorldFactory{
         
         //GUI lists for AddPerson
         public static List<String> locationsList = new ArrayList<String>();
+        
+        	//Sub location lists
+        public static List<String> residencesECList = new ArrayList<String>();
+        public static List<String> bankECList = new ArrayList<String>();
+        public static List<String> apartmentECList = new ArrayList<String>();
+        public static List<String> marketECList = new ArrayList<String>();
+        public static List<String> restaurantECList = new ArrayList<String>();
+        
         public static List<String> jobList = new ArrayList<String>();
         public static List<String> residenceList = new ArrayList<String>();
         
+        public static List<String> REECList = new ArrayList<String>();
         
         
-        SetUpWorldFactory() {
+        
+        public SetUpWorldFactory() {
         }
 
         /** Loads the default configuration
@@ -101,36 +111,42 @@ public class SetUpWorldFactory{
                 controls = new CityControlPanel(buildingsPanels, this);
                 
                 //Populate GUI lists
+                jobList.add("Restaurant Customer");
+                jobList.add("Restaurant Old Waiter");
+                jobList.add("Restaurant New Waiter");
+                /*
+                jobList.add("Luca Customer");
+                jobList.add("Luca Waiter");
+                jobList.add("Luca New Waiter");
+                jobList.add("Kush Customer");
+                jobList.add("Kush Waiter");
+                jobList.add("Jeffrey Customer");
+                jobList.add("Jeffrey Old Waiter");
+                jobList.add("Jeffrey New Waiter");
+                jobList.add("Mike New Waiter");
+                jobList.add("Mike Customer");
+                jobList.add("Ryan Customer");
+                jobList.add("Ryan Waiter");
+                jobList.add("Byron Customer");
+                jobList.add("Byron Waiter");
+                */
+                for (String job : jobList) {
+                	REECList.add(job);
+                }
+                
                 jobList.add("Market Employee");
                 jobList.add("Market Customer");
                 jobList.add("Market Manager");
                 jobList.add("Bank Client");
                 jobList.add("Bank Teller");
-                jobList.add("Restaurant Customer");
-                jobList.add("Restaurant Old Waiter");
-                jobList.add("Restaurant New Waiter");
-                //jobList.add("Restaurant Cook");
-                jobList.add("Luca Customer");
-                jobList.add("Luca Waiter");
-                jobList.add("Luca New Waiter");
-                //jobList.add("Luca Cook");
-                jobList.add("Kush Customer");
-                jobList.add("Kush Waiter");
-                //jobList.add("Kush Cook");
-                jobList.add("Jeffrey Customer");
-                jobList.add("Jeffrey Old Waiter");
-                jobList.add("Jeffrey New Waiter");
-                //jobList.add("Jeffrey Cook");
-                jobList.add("Mike New Waiter");
-                //jobList.add("Mike Cook");
-                jobList.add("Mike Customer");
-                jobList.add("Ryan Customer");
-                jobList.add("Ryan Waiter");
-                //jobList.add("Ryan Cook");
-                jobList.add("Byron Customer");
-                jobList.add("Byron Waiter");
-                //jobList.add("Byron Cook");
                 
+                restaurantECList.add("Ryan's Restaurant");
+                restaurantECList.add("Dylan's Restaurant");
+                restaurantECList.add("Kush's Restaurant");
+                restaurantECList.add("Luca's Restaurant");
+                restaurantECList.add("Byron's Restaurant");
+                restaurantECList.add("Jeffrey's Restaurant");
+                restaurantECList.add("Mike's Restaurant");
                 
                 /*
                 locationsList.add("City");
@@ -438,24 +454,24 @@ public class SetUpWorldFactory{
                 
                         
                         
-                        (new Timer()).schedule(new TimerTask() {
-                                
-                                @Override
-                                public void run() {
-                                        DrunkPersonGui ddp = new DrunkPersonGui("AAAAaaaahhhhAAaaaa");
-                                        ddp.DoGetHitByCar();
-                                }
-                        }, 1500);
+//                        (new Timer()).schedule(new TimerTask() {
+//                                
+//                                @Override
+//                                public void run() {
+//                                        DrunkPersonGui ddp = new DrunkPersonGui("AAAAaaaahhhhAAaaaa");
+//                                        ddp.DoGetHitByCar();
+//                                }
+//                        }, 1500);
                         
-                        (new Timer()).schedule(new TimerTask() {
-                            
-                            @Override
-                            public void run() {
-                                    DrunkDriverAgent dca = new DrunkDriverAgent("LIKE OMG");
-                                  	dca.msgGoTo("Bus Stop 5");
-                                  	dca.msgRunIntoTheRoad();
-                            }
-                    }, 1500);
+//                        (new Timer()).schedule(new TimerTask() {
+//                            
+//                            @Override
+//                            public void run() {
+//                                    DrunkDriverAgent dca = new DrunkDriverAgent("LIKE OMG");
+//                                  	dca.msgGoTo("Bus Stop 5");
+//                                  	dca.msgRunIntoTheRoad();
+//                            }
+//                    }, 1500);
                         
                         
                         
@@ -760,7 +776,6 @@ public class SetUpWorldFactory{
                                 busStop.setBuildingPanel(bp);
                                 cityPanel.addGui(busStop);
                                 buildingsPanels.addBuildingPanel(bp);
-                                //locationsList.add(name);
                         }
                         break;
                 case "Residence":
@@ -772,6 +787,7 @@ public class SetUpWorldFactory{
                                 buildingsPanels.addBuildingPanel(bp);
                                 locationsList.add(name);
                                 residenceList.add(name);
+                                residencesECList.add(name);
                         }
                         break;
                 case "Bank":
@@ -782,6 +798,7 @@ public class SetUpWorldFactory{
                                 cityPanel.addGui(bb);
                                 buildingsPanels.addBuildingPanel(bp);
                                 locationsList.add(name);
+                                bankECList.add(name);
                         }
                         break;
                 case "Apartment":
@@ -795,6 +812,7 @@ public class SetUpWorldFactory{
                                 }
                                 cityPanel.addGui(ab);
                                 buildingsPanels.addBuildingPanel(bp);
+                                residencesECList.add(name);
                         }
                         break;
                 case "Market":
@@ -805,6 +823,7 @@ public class SetUpWorldFactory{
                                 cityPanel.addGui(mb);
                                 buildingsPanels.addBuildingPanel(mp);
                                 locationsList.add(name);
+                                marketECList.add(name);
                         }
                         break;
                 case "Restaurant":
@@ -815,6 +834,7 @@ public class SetUpWorldFactory{
                                 cityPanel.addGui(restb);
                                 buildingsPanels.addBuildingPanel(restPanel);
                                 locationsList.add(name);
+                                //restaurantECList.add(name);
                         }
                         break;
 
@@ -826,6 +846,7 @@ public class SetUpWorldFactory{
                                 cityPanel.addGui(restb2);
                                 buildingsPanels.addBuildingPanel(restPanel);
                                 locationsList.add(name);
+                                //restaurantECList.add(name);
                         }
                         break;
                 case "KushsRestaurant":
@@ -836,6 +857,7 @@ public class SetUpWorldFactory{
                                 cityPanel.addGui(restb3);
                                 buildingsPanels.addBuildingPanel(restPanel);
                                 locationsList.add(name);
+                                //restaurantECList.add(name);
                         }
                         break;
                 case "Food Court":
@@ -858,6 +880,7 @@ public class SetUpWorldFactory{
                                 cityPanel.addGui(lrestb);
                                 buildingsPanels.addBuildingPanel(restPanel);
                                 locationsList.add(name);
+                                //restaurantECList.add(name);
                         }
                 
                         break;
@@ -900,7 +923,7 @@ public class SetUpWorldFactory{
                         PersonAgent person = new PersonAgent(name, buildingsPanels.getResidenceBuildingPanel(residenceName));
                         person.setGui(new PersonGui(person));
                         if(residenceList.contains(initialLocation)){
-                                person.setInitialRole(RoleFactory.roleFromString(Role.HOME_ROLE), initialLocation, shift);
+                                person.setInitialRole(new HomeRole(person), initialLocation, shift);
                         }else {
                                 Class e = Employee.class;
                                 Class c = Class.forName(initialRole);

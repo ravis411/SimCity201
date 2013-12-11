@@ -269,7 +269,7 @@ public class LoanTellerRole extends Employee implements LoanTeller{
 
 	@Override
 	public String getNameOfRole() {
-		return null;
+		return Role.LOAN_TELLER_ROLE;
 	}
 	
 	@Override

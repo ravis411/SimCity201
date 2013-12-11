@@ -1,5 +1,6 @@
 package byronRestaurant;
 
+import Person.Role.Role;
 import Person.Role.ShiftTime;
 import byronRestaurant.gui.WaiterGui;
 import interfaces.generic_interfaces.GenericCashier;
@@ -174,7 +175,7 @@ public abstract class WaiterRole extends GenericWaiter {
 	}
 
 	public void msgRestockedItem(String o){
-		AlertLog.getInstance().logMessage(AlertTag.WAITER_ROLE, myPerson.getName(),"Recieved order from cook that " + o + " is restocked");
+		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"Recieved order from cook that " + o + " is restocked");
 		menu.add(o);
 		stateChanged();
 	}
@@ -252,7 +253,7 @@ public abstract class WaiterRole extends GenericWaiter {
 				menu.remove(customer.choice);
 				for (MyCustomer c : Customers){
 					if (c.table == customer.table){
-						print("Food " + c.choice + " is out of stock. Informing customer.");
+						AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"Food " + c.choice + " is out of stock. Informing customer.");
 						c.cust.msgNoMoreChoice(menu);
 					}
 				}
@@ -342,31 +343,31 @@ public abstract class WaiterRole extends GenericWaiter {
 	protected void DoSeatCustomer(CustomerRole customer, int table) {
 		//Notice how we print "customer" directly. It's toString method will do it.
 		//Same with "table"
-		print("Seating " + customer + " at table " + table);
+		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"Seating " + customer + " at table " + table);
 		waiterGui.DoBringToTable(customer, table); 
 
 	}
 	protected void DoGoToCustomer(MyCustomer customer){
-		print("Going to " + customer.cust.getName() + " at table " + customer.table);
+		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"Going to " + customer.cust.getName() + " at table " + customer.table);
 		waiterGui.doGoToTable(customer.table);
 
 	}
 	protected void DoGiveFoodToCustomer(MyCustomer customer){
-		print("Bringing food to " + customer.cust.getName());
+		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"Bringing food to " + customer.cust.getName());
 		waiterGui.doGoToTable(customer.table);
 	}
 	protected void DoGoToLobby(){
-		print("Getting check");
+		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"Getting check");
 		waiterGui.doGoToLobby();
 	}
 	protected void DoGoToKitchen(){
-		print("Grabbing food from kitchen");
+		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"Grabbing food from kitchen");
 		waiterGui.doGoToKitchen();
 	}
 
 	protected void DoClearingTable(MyCustomer customer){
 		waiterGui.doGoToTable(customer.table);
-		print("Clearing table");
+		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"Clearing table");
 	}
 
 
@@ -398,7 +399,7 @@ public abstract class WaiterRole extends GenericWaiter {
 	}
 
 	public String getNameOfRole() {
-		return null;
+		return Role.RESTAURANT_BYRON_WAITER_ROLE;
 	}
 
 }

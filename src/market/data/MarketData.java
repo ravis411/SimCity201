@@ -2,6 +2,7 @@ package market.data;
 
 import interfaces.MarketEmployee;
 import interfaces.MarketManager;
+import interfaces.generic_interfaces.GenericCook;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 public class MarketData {
 	String marketName;
 	List<Inventory> marketInventory	= new ArrayList<Inventory>();
+	List<Order> orders	= new ArrayList<Order>();
 	MarketManager currentMarketManager;
 	MarketEmployee currentMarketEmployee1=null;
 	MarketEmployee currentMarketEmployee2=null;
@@ -83,7 +85,27 @@ public class MarketData {
 		numberOfCustomersInALine.add(linenumber, numberOfCustomersInALine.get(linenumber).intValue()+1);
 	}
 	
-
+	public String getName() {
+		return marketName;
+	}
+	public void msgClosedMarketAFoodOrder(String choice, int howMuchFoodAgentAsksFromMarket, GenericCook CookRole) {
+		
+		orders.add(new Order(choice, howMuchFoodAgentAsksFromMarket, CookRole));
+		
+	}
+	public synchronized Order getLastOrder(){
+		if(orders.size() != 0){
+			return orders.remove(0);
+		}
+		return null;
+	}
+	public boolean anyPendingOrders(){
+		if (orders.size()!=0){
+			return true;
+		}
+		else
+			return false;
+	}
 private class Inventory {
 String foodType;
 int amount;
@@ -106,10 +128,28 @@ private void restockFoodAmount(int amountToRestock) {
 }
 }
 
-
-public String getName() {
-	return marketName;
+public class Order{
+	String choice;
+	int amount;
+	GenericCook cookRole;
+	Order(String choice,int howMuchFoodAgentAsksFromMarket, GenericCook lucaCookRole){
+		this.choice=choice;
+		this.amount=howMuchFoodAgentAsksFromMarket;
+		cookRole=lucaCookRole;
+				
+	}
+	public String getChoice(){
+		return choice;
+	}
+	public int getAmount(){
+		return amount;
+	}
+	public GenericCook getCook(){
+		return cookRole;
+	}
 }
+
+
 
 
 

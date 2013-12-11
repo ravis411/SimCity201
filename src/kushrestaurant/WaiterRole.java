@@ -148,7 +148,7 @@ public void setCashier(GenericCashier cashier){
 		       if(onBreak){
 		    	   return true;
 		       }
-		       if(this.workState==WorkState.ReadyToLeave ){
+		       if(this.workState==WorkState.ReadyToLeave && this.customers.size()==0){
 		    	   this.event=WaiterEvent.none;
 		    	   
 		    	   kill();
@@ -273,6 +273,7 @@ public void setCashier(GenericCashier cashier){
 						
 						
 						host.msgTableAvailable(customer.c);
+						customers.remove(customer);
 						return true;
 					}
 				}

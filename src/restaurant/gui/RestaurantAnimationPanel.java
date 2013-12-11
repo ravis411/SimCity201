@@ -16,12 +16,16 @@ import restaurant.RestaurantCustomerRole;
 import trace.AlertLog;
 import trace.AlertTag;
 import Person.Role.Role;
+import restaurant.gui.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class RestaurantAnimationPanel extends JPanel implements ActionListener, GuiPanel {
 	
@@ -48,7 +52,8 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
     
     private int waiterCount = 1;
 
-    private List<Gui> guis = new ArrayList<Gui>();
+    //private List<Gui> guis = new ArrayList<Gui>();
+    private Map<Role,Gui> guis = Collections.synchronizedMap(new HashMap<Role,Gui>());
 
     public RestaurantAnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
@@ -58,15 +63,17 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
     	timer.start();
     }
 
-	public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) {
 		repaint();  //Will have paintComponent called
-		
-        for(Gui gui : guis) {
-        	
-            if (gui.isPresent()) {
-                gui.updatePosition();
-            }
-        }
+
+		synchronized(guis){
+	        for(Gui gui : guis.values()) {
+	            if (gui.isPresent()) {
+	                gui.updatePosition();
+	            }
+	        }  
+	        clearRemovedGuis();
+		}
 	}
 
     public void paintComponent(Graphics g) {
@@ -100,79 +107,66 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
         g2.setColor(Color.white);
         g2.fillRect(440, 30, 25, 25);
        
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-//            	if(gui instanceof CookGui){
-//            		AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "CustomerGui", "IM BEING DRAWN");
-//            	}
-                gui.draw(g2);
-            }
+        synchronized(guis){
+	        for(Gui gui : guis.values()) {
+	            if (gui.isPresent()) {
+	                gui.draw(g2);
+	            }
+	        }
         }
     }
-
-    public void addGui(CustomerGui gui) {
-        guis.add(gui);
-    }
-
-    public void addGui(HostGui gui) {
-        guis.add(gui);
-    }
     
-    public void addGui(WaiterGui gui) {
-    	guis.add(gui);
-    }
-    
-    public void addGui(CashierGui gui) {
-    	guis.add(gui);
-    }
-    
-    public void addGui(CookGui gui) {
-    	guis.add(gui);
-    }
-
 	@Override
 	public void addGuiForRole(Role r) {
 		if(r instanceof CookRole){
 			CookRole cr = (CookRole) r;
 			CookGui gui = new CookGui(cr);
 			cr.setGui(gui);
-			guis.add(gui);
+			guis.put(r,(Gui) gui);
 			//System.out.println("My person is: " + hr.myPerson.getName());
 		}
 		if(r instanceof CashierRole){
 			CashierRole cr = (CashierRole) r;
 			CashierGui gui = new CashierGui(cr);
 			cr.setGui(gui);
-			guis.add(gui);
+			guis.put(r,(Gui) gui);
 			//System.out.println("My person is: " + hr.myPerson.getName());
 		}
 		if(r instanceof RestaurantCustomerRole){
 			RestaurantCustomerRole rcr = (RestaurantCustomerRole) r;
 			CustomerGui gui = new CustomerGui(rcr);
 			rcr.setGui(gui);
-			AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "CustomerGui", "Assigning the Customer Gui ---------");
-			guis.add(gui);
+			guis.put(r,(Gui) gui);
 			//System.out.println("My person is: " + hr.myPerson.getName());
 		}
 		if(r instanceof NewWaiterRole){
 			NewWaiterRole nwr = (NewWaiterRole) r;
 			WaiterGui gui = new WaiterGui(nwr, waiterCount*50+120, 10);
 			nwr.setGui(gui);
-			guis.add(gui);
+			guis.put(r,(Gui) gui);
 			//System.out.println("My person is: " + hr.myPerson.getName());
 		}
 		if(r instanceof OldWaiterRole){
 			OldWaiterRole owr = (OldWaiterRole) r;
 			WaiterGui gui = new WaiterGui(owr, waiterCount*50+120, 10);
 			owr.setGui(gui);
-			guis.add(gui);
+			guis.put(r,(Gui) gui);
 			//System.out.println("My person is: " + hr.myPerson.getName());
 		}
 	}
 
+	private List<Role> removalList = new ArrayList<Role>();
+
+	private void clearRemovedGuis(){
+		for(int i = removalList.size()-1; i >= 0; i--){
+			guis.remove(removalList.get(i));
+			removalList.remove(i);
+		}
+	}
+	
 	@Override
 	public void removeGuiForRole(Role r) {
 		// TODO Auto-generated method stub
-		
+		removalList.add(r);
 	}
 }

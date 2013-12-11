@@ -309,32 +309,64 @@
 				<friend name="Person 10" />
 			</friends>
 		</person>
-		<person name="JTest Host" job="jeffreyRestaurant.HostAgent"
-			location="Jeffrey's Restaurant" home="Apartment 10">
+		<person name="JTest Host AM" job="jeffreyRestaurant.HostAgent"
+			location="Jeffrey's Restaurant" home="Apartment 10" shift = "AM">
 			<friends>
 				<friend name="Person 1" />
 				<friend name="Person 3" />
 				<friend name="Person 4" />
 			</friends>
 		</person>
-		<person name="JTest Cashier" job="jeffreyRestaurant.CashierAgent"
-			location="Jeffrey's Restaurant" home="Apartment 11">
+		<person name="JTest Cashier AM" job="jeffreyRestaurant.CashierAgent"
+			location="Jeffrey's Restaurant" home="Apartment 11" shift = "AM">
 			<friends>
 				<friend name="Person 1" />
 				<friend name="Person 3" />
 				<friend name="Person 4" />
 			</friends>
 		</person>
-		<person name="JTest Cook" job="jeffreyRestaurant.CookAgent"
-			location="Jeffrey's Restaurant" home="Apartment 12">
+		<person name="JTest Cook AM" job="jeffreyRestaurant.CookAgent"
+			location="Jeffrey's Restaurant" home="Apartment 12" shift = "AM" >
 			<friends>
 				<friend name="Person 1" />
 				<friend name="Person 3" />
 				<friend name="Person 4" />
 			</friends>
 		</person>
-		<person name="JTest Waiter" job="jeffreyRestaurant.NewWaiterAgent"
-			location="Jeffrey's Restaurant" home="Apartment 13">
+		<person name="JTest WaiterAM " job="jeffreyRestaurant.NewWaiterAgent"
+			location="Jeffrey's Restaurant" home="Apartment 13" shift = "AM">
+			<friends>
+				<friend name="Person 1" />
+				<friend name="Person 3" />
+				<friend name="Person 4" />
+			</friends>
+		</person>
+		<person name="JTest Waiter PM " job="jeffreyRestaurant.NewWaiterAgent"
+			location="Jeffrey's Restaurant" home="Apartment 13" shift = "PM">
+			<friends>
+				<friend name="Person 1" />
+				<friend name="Person 3" />
+				<friend name="Person 4" />
+			</friends>
+		</person>
+		<person name="JTest Cook PM" job="jeffreyRestaurant.CookAgent"
+			location="Jeffrey's Restaurant" home="Apartment 12" shift = "PM" >
+			<friends>
+				<friend name="Person 1" />
+				<friend name="Person 3" />
+				<friend name="Person 4" />
+			</friends>
+		</person>
+		<person name="JTest Cashier PM" job="jeffreyRestaurant.CashierAgent"
+			location="Jeffrey's Restaurant" home="Apartment 11" shift = "PM">
+			<friends>
+				<friend name="Person 1" />
+				<friend name="Person 3" />
+				<friend name="Person 4" />
+			</friends>
+		</person>
+		<person name="JTest Host PM" job="jeffreyRestaurant.HostAgent"
+			location="Jeffrey's Restaurant" home="Apartment 10" shift = "PM">
 			<friends>
 				<friend name="Person 1" />
 				<friend name="Person 3" />

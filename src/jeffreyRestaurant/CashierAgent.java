@@ -4,6 +4,8 @@ import MarketEmployee.MarketManagerRole;
 import Person.Role.Role;
 import Person.Role.ShiftTime;
 import agent.Agent;
+import building.BuildingList;
+import building.Restaurant;
 import interfaces.generic_interfaces.GenericCashier;
 
 import java.util.*;
@@ -146,6 +148,13 @@ public class CashierAgent extends GenericCashier implements Cashier {
 	//Scheduler
 	@Override
 	public boolean pickAndExecuteAction() {
+		if (workState == WorkState.ReadyToLeave) {
+			Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(workLocation);
+			if (rest.getNumCustomers() == 0) {
+				kill();
+				return true;
+			}
+		}
 		synchronized(checks) {
 			for (Check c : getChecks()) {
 				if (c.getState() == CheckState.untouched) {

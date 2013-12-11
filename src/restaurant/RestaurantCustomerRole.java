@@ -213,10 +213,12 @@ public class RestaurantCustomerRole extends GenericCustomer implements Customer 
 		}
 		if (state == AgentState.Leaving && event == AgentEvent.doneLeaving){
 			state = AgentState.DoingNothing;
+			kill();
 			return true;
 		}
 		if (state == AgentState.LeavingEarly && event == AgentEvent.doneLeaving){
 			state = AgentState.DoingNothing;
+			kill();
 			return true;
 		}
 		return false;

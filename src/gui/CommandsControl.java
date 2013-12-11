@@ -118,22 +118,38 @@ public class CommandsControl extends JFrame implements ActionListener {
 	}
 	
 	private void addFriends() {
-		List<String> people = new ArrayList<String>();
-		for (JCheckBox person : friendsList) {
-			if (person.isSelected()) {
-				people.add(person.getText());
+		try {
+			List<String> people = new ArrayList<String>();
+			for (JCheckBox person : friendsList) {
+				if (person.isSelected()) {
+					people.add(person.getText());
+				}
 			}
+			controller.personAddFriends(people);
+		} catch (NullPointerException n) {
+			controller.errorPopUp("Select a person first!");
 		}
-		controller.personAddFriends(people);
 	}
 	private void getHungry() {
+		try {
 		controller.personGetHungry();
+		} catch (NullPointerException n) {
+			controller.errorPopUp("Select a person first!");
+		}
 	}
 	private void throwParty() {
-		controller.personThrowParty();
+		try {
+			controller.personThrowParty();
+		} catch (NullPointerException n) {
+			controller.errorPopUp("Select a person first!");
+		}
 	}
 	private void addMoney() {
-		Double funds = Double.parseDouble(moneyTF.getText());
-		controller.personAddMoney(funds);
+		try {
+			Double funds = Double.parseDouble(moneyTF.getText());
+			controller.personAddMoney(funds);
+		} catch (NumberFormatException e) {
+			controller.errorPopUp("Input a double for money!");
+		}
 	}
 }
