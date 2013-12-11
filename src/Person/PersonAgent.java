@@ -419,7 +419,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	  * Message sent by the home role to invite the person to a party
 	  */
 	public void msgPartyInvitation(Person p,Calendar rsvpDeadline,Calendar partyTime){
-		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Received a party invitation!");
+		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Received a party invitation! Party's at " + partyTime.get(Calendar.HOUR_OF_DAY) + ":" + partyTime.get(Calendar.MINUTE) + " tomorrow.");
 		Party party = new Party(p, rsvpDeadline, partyTime);
 		party.partyState = PartyState.ReceivedInvite;
 		parties.add(party);
@@ -448,7 +448,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			hr.partyInvitees.remove((PersonAgent) p);
 		}
 		if(hr.partyInvitees.size()==0 && hr.partyAttendees.size()==0){
-			AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "PARTY CANCELLED SINCE NO ONE IS COMING");
+			AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Party is cancelled since no one is attending.");
 		}
 	}
 	public void msgRespondToInviteUrgently(Person host){

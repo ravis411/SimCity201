@@ -67,6 +67,7 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
                 gui.updatePosition();
             }
         }
+        clearRemovedGuis();
 	}
 
     public void paintComponent(Graphics g) {
@@ -170,9 +171,18 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener, 
 		}
 	}
 
+	private List<Role> removalList = new ArrayList<Role>();
+
+	private void clearRemovedGuis(){
+		for(int i = removalList.size()-1; i >= 0; i--){
+			guis.remove(removalList.get(i));
+			removalList.remove(i);
+		}
+	}
+	
 	@Override
 	public void removeGuiForRole(Role r) {
 		// TODO Auto-generated method stub
-		
+		removalList.add(r);
 	}
 }
