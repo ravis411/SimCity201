@@ -47,10 +47,9 @@ public class Building {
 	 */
 	public synchronized void addRole(Role r){
 		boolean b = !inhabitants.contains(r);
-		if(r instanceof HomeRole){
-			int i = 0;
-		}
+		System.err.println("Trying to add to inhabitant list");
 		if(!inhabitants.contains(r)){
+			System.err.println("already in inhabitant list");
 			inhabitants.add(r);
 			this.panel.getPanel().addGuiForRole(r);
 		}

@@ -387,7 +387,7 @@ public class AddPersonControl extends JFrame implements ActionListener{
 			format = Role.RESTAURANT_RYAN_CUSTOMER_ROLE;
 			break;
 		case "Ryan Waiter":
-			format = Role.RESTAURANT_RYAN_WAITER_ROLE;
+			format = Role.RESTAURANT_RYAN_OLD_WAITER_ROLE;
 			break;
 		case "Ryan Cook":
 			format = Role.RESTAURANT_RYAN_COOK_ROLE;
