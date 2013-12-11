@@ -124,6 +124,12 @@ public class SetUpWorldFactory{
                 jobList.add("Mike New Waiter");
                 jobList.add("Mike Cook");
                 jobList.add("Mike Customer");
+                jobList.add("Ryan Customer");
+                jobList.add("Ryan Waiter");
+                jobList.add("Ryan Cook");
+                jobList.add("Byron Customer");
+                jobList.add("Byron Waiter");
+                jobList.add("Byron Cook");
                 
                 
                 /*
