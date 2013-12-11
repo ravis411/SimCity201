@@ -8,13 +8,14 @@ import java.util.ConcurrentModificationException;
 import java.util.Map;
 import java.util.Queue;
 
-import Person.Role.ShiftTime;
 import mikeRestaurant.interfaces.Cashier;
 import mikeRestaurant.interfaces.Customer;
 import mikeRestaurant.interfaces.Market;
 import mikeRestaurant.interfaces.Waiter;
 import mikeRestaurant.test.mock.EventLog;
 import mikeRestaurant.test.mock.LoggedEvent;
+import building.BuildingList;
+import building.Restaurant;
 
 /**
  * Note that much of this code is public b/c of the tests going on in the CashierTest.java file
@@ -104,6 +105,14 @@ public class CashierRole extends GenericCashier implements Cashier{
 		// TODO Auto-generated method stub
 		
 		try {
+			if(workState == WorkState.ReadyToLeave){
+				Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(workLocation);
+				if(rest.getNumCustomers() == 0){
+					kill();
+					return true;
+				}
+			}
+			
 			//if there are payments to make to markets, do so
 			if(!pendingPayments.isEmpty()){
 				payPayment(pendingPayments.poll());

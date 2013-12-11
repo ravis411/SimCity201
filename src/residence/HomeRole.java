@@ -457,6 +457,7 @@ public class HomeRole extends Role implements Home {
 			e.printStackTrace();
 		}
 		BuildingList.findBuildingWithName(myPerson.getHome().getName()).removeRole(this);
+		BuildingList.findBuildingWithName(myPerson.getHome().getName()).removeInhabitants();
 		leaveHome = false;
 	}
 	private void enterHome() {

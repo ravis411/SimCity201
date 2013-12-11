@@ -3,13 +3,9 @@ package building;
 import gui.Building.BuildingPanel;
 import interfaces.generic_interfaces.GenericCashier;
 import interfaces.generic_interfaces.GenericCook;
+import interfaces.generic_interfaces.GenericCustomer;
 import interfaces.generic_interfaces.GenericHost;
 import interfaces.generic_interfaces.GenericWaiter;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import Person.Role.Employee;
 //import kushrestaurant.OldWaiterRole;
 import Person.Role.Role;
@@ -88,8 +84,39 @@ public class Restaurant extends Workplace {
 		}
 		return null;
 	}
+	
+	public int getNumCustomers(){
+		int ans = 0;
+		synchronized(inhabitants){
+			for(Role r : inhabitants){
+				if(r instanceof GenericCustomer){
+					ans++;
+				}
+			}
+		}
+		return ans;
+	}
 
 	
+
+	@Override
+	public void addRole(Role r) {
+		// TODO Auto-generated method stub
+		super.addRole(r);
+		if(ready){
+			if(r instanceof Employee){
+				Employee e = (Employee) r;
+				if(r instanceof GenericWaiter){
+					GenericWaiter gw = (GenericWaiter) r;
+					Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(e.getWorkLocation());
+					gw.setHost(rest.getHostRole());
+					rest.getHostRole().addWaiter(gw);
+					gw.setCashier(rest.getCashierRole());
+					gw.setCook(rest.getCookRole());
+				}
+			}
+		}
+	}
 
 	@Override
 	public void notifyEmployeesTheyCanLeave() {
@@ -103,12 +130,12 @@ public class Restaurant extends Workplace {
 				if(r instanceof Employee){
 					Employee e = (Employee) r;
 					e.getPerson().msgYouCanLeave();
-					e.kill();
-					removeRole(r);
+					e.deactivate();
+					//removeRole(r);
 				}
 			}
 			
-			this.removeInhabitants();
+			//this.removeInhabitants();
 		}
 		
 		

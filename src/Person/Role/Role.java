@@ -1,5 +1,6 @@
 package Person.Role;
 
+import building.BuildingList;
 import interfaces.Person;
 
 public abstract class Role {

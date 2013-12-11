@@ -173,6 +173,12 @@ public abstract class WaiterRole extends GenericWaiter implements Waiter{
 		stateChanged();
 	}
 	
+	public void deactivate(){
+		super.deactivate();
+		workState = WorkState.ReadyToLeave;
+		stateChanged();
+	}
+	
 	/**
 	 * Message sent by the CustomerAgent when he/she is ready for the check
 	 * from his/her waiter
@@ -371,6 +377,16 @@ public abstract class WaiterRole extends GenericWaiter implements Waiter{
 			return true;
 		}
 		
+		if(workState == WorkState.ReadyToLeave){
+			wantToLeave();
+			return true;
+		}
+		
+		if(customers.size() == 0 && workState == WorkState.ToldHost){
+			kill();
+			return true;
+		}
+		
 		//if the waiter is out of customers and can go on break, do so
 		if(customers.size() == 0 && breakState == BreakState.CanGoOnBreak){
 			becomeIdle(true);
@@ -507,6 +523,11 @@ public abstract class WaiterRole extends GenericWaiter implements Waiter{
 		DoWantToGoOnBreak();
 		host.msgWantToGoOnBreak(this);
 		//stateChanged();
+	}
+	
+	protected void wantToLeave(){
+		host.msgImLeaving(this);
+		workState = WorkState.ToldHost;
 	}
 	
 	/**

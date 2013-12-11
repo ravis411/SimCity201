@@ -8,6 +8,7 @@ import interfaces.generic_interfaces.GenericCashier;
 import interfaces.generic_interfaces.GenericCook;
 import interfaces.generic_interfaces.GenericCustomer;
 import interfaces.generic_interfaces.GenericHost;
+import interfaces.generic_interfaces.GenericWaiter;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -98,9 +99,10 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	
 	public ResidenceBuildingPanel home;
 	
+	public enum MyRoleState {Active, Inactive}
+	
 	private class MyRole{
 		Role role;
-		
 		public MyRole(Role r){
 			this.role = r;
 		}
@@ -182,7 +184,9 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			//but if the role we passed in was an employee, we have to make sure we add it to the role list
 			if(r instanceof Employee){
 				Employee e = (Employee) r;
-				
+				if(shift == ShiftTime.NIGHT_SHIFT){
+					AlertLog.getInstance().logMessage(AlertTag.PERSON, "Shifts", "Night shift added");
+				}
 				//if the role is a shared role, make sure we are adding the same one and not a repeat
 				if(r instanceof GenericHost){
 					Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(e.getWorkLocation());
@@ -213,6 +217,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 
 		}
 	}
+	
 	
 	public void waitForWork(Role r){
 //		BuildingList.findBuildingWithName(em.getWorkLocation()).addRole(em);
@@ -470,7 +475,9 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	 */
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		
+		if(getName().equals("Mike's AM Cashier") && currentShift == ShiftTime.NIGHT_SHIFT){
+			int i = 0; 
+		}
 		//cue the Role schedulers
 		boolean outcome = false;
 			for(MyRole r: roles){
@@ -567,6 +574,9 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		//cue the Role schedulers
 		outcome = false;
 		for(MyRole r: roles){
+			if(r.role.getPerson() != this)
+				continue;
+			
 			boolean somethingIsActive = false;
 			if(r.role.isActive()){
 				somethingIsActive = true;
@@ -576,6 +586,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 //					if(getCurrentJob().role != e)
 //						continue;
 //				}
+				
 				
 				outcome = r.role.pickAndExecuteAction() || outcome;
 				if(outcome)
@@ -699,6 +710,19 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		if(BuildingList.findBuildingWithName(r.getWorkLocation()) instanceof Workplace ){
 			Workplace w = (Workplace) bdg;
 			GoToLocation(r.getWorkLocation(), getTransportPreference());
+			if(w instanceof Restaurant){
+				Restaurant rest = (Restaurant) bdg;
+				if(r instanceof GenericHost){
+					if(rest.getHostRole() != null)
+						rest.getHostRole().setPerson(this);
+				}else if(r instanceof GenericCashier){
+					if(rest.getCashierRole() != null)
+						rest.getCashierRole().setPerson(this);
+				}else if(r instanceof GenericCook){
+					if(rest.getCookRole() != null)
+						rest.getCookRole().setPerson(this);
+				}
+			}
 			w.addRole(r);
 			if(!w.isOpen()){
 				pendingJobs.add(r);
@@ -1201,6 +1225,10 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			}
 		}else if(hour == Workplace.NIGHT_SHIFT_HOUR && minute == Workplace.NIGHT_SHIFT_MIN){
 			currentShift = ShiftTime.NIGHT_SHIFT;
+			if(getCurrentJob() != null && getCurrentJob().shift == ShiftTime.NIGHT_SHIFT){
+				if(workState == WorkState.None)
+					msgReportForWork();
+			}
 		}else if(hour == Workplace.END_SHIFT_HOUR && minute == Workplace.END_SHIFT_MIN){
 			currentShift = ShiftTime.NONE;
 		}
@@ -1293,6 +1321,10 @@ public void dateAction(int month, int day, int hour, int minute) {
 		}
 		
 		return null;
+	}
+	
+	public ShiftTime getCurrentShift(){
+		return currentShift;
 	}
 	
 	public boolean hasCar() {
