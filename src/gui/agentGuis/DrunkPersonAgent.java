@@ -1,5 +1,10 @@
 package gui.agentGuis;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
+import trace.AlertLog;
+import trace.AlertTag;
 import agent.Agent;
 
 
@@ -16,6 +21,7 @@ public class DrunkPersonAgent extends Agent{
 	public DrunkPersonAgent(String name) {
 		this.name = name;
 		agentGui = new DrunkPersonGui(name);
+		this.startThread();
 	}
 	
 	
@@ -31,11 +37,12 @@ public class DrunkPersonAgent extends Agent{
 	public void msgGoTo(String destination){
 		goTo = true;
 		this.destination = destination;
+		stateChanged();
 	}
 		
-
 	public void setStartLocation(String location){
-		
+		agentGui.setCurrentLocation(location);
+		stateChanged();
 	}
 	
 	//////////////////////////////
@@ -45,8 +52,9 @@ public class DrunkPersonAgent extends Agent{
 	
 	@Override
 	protected boolean pickAndExecuteAnAction() {
-		if(state == AgentState.none && goTo){
+		if(goTo){
 			DoGoTo(destination);
+			return true;
 		}
 		if(state == AgentState.spazzing){
 			DoGoGetKilled();
@@ -63,21 +71,27 @@ public class DrunkPersonAgent extends Agent{
 	
 	//Actions
 	private void DoGoGetKilled(){
+		AlertLog.getInstance().logMessage(AlertTag.GENERAL_CITY, getName(), "Running into the middle of the road.");
 		state = AgentState.dead;
 		agentGui.DoGetHitByCar();
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {	}
+		TeleportToDestination(defaultStartLocation);
 	}
 	
 	private void TeleportToDestination(String destination){
 		agentGui.setCurrentLocation(destination);
+		defaultStartLocation = destination;
 		state = AgentState.none;
 	}
 	
 	private void DoGoTo(String destination){
-		
 		agentGui.DoGoTo(destination);
 		if(this.destination.equals(destination)){
 			goTo = false;
 			destination = null;
+			defaultStartLocation = destination;
 		}
 	}
 	

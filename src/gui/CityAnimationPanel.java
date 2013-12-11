@@ -2,19 +2,34 @@ package gui;
 
 import gui.Building.BuildingGui;
 import gui.agentGuis.DrunkDriverAgent;
+import gui.agentGuis.DrunkPersonAgent;
 
 import javax.swing.*;
-
-import com.sun.org.apache.xml.internal.security.utils.HelperNodeList;
 
 import util.MasterTime;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.ArrayList;
+
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
+import util.MasterTime;
+import building.Building;
+import building.BuildingList;
 
 
 
@@ -73,6 +88,8 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		Graphics2D g2 = (Graphics2D)g;
 
 		MasterTime.getInstance().add(Calendar.SECOND, 10);
+		Building bdg = BuildingList.findBuildingWithName("Mike's Restaurant");
+		//System.out.println(bdg.getInhabitants().size());
 		//AlertLog.getInstance().logInfo(AlertTag.GENERAL_CITY, "Calendar", calendar.toString());
 		
 		
@@ -198,39 +215,45 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		heldPoint = e.getPoint();
 	}
 	
-	DrunkDriverAgent dca = null; 
+	DrunkDriverAgent dca = null;
+	DrunkPersonAgent dpa = null;
 	
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		
-		if( ( heldPoint.x < ((int)WINDOWX/2) && e.getPoint().x > ((int)WINDOWX/2) ) || 
-			( heldPoint.x > ((int)WINDOWX/2) && e.getPoint().x < ((int)WINDOWX/2) ) ||
-			( heldPoint.y < ((int)WINDOWX/2) && e.getPoint().y > ((int)WINDOWX/2) ) ||
-			( heldPoint.y > ((int)WINDOWX/2) && e.getPoint().y > ((int)WINDOWX/2) )	){
-			
-			for(BuildingGui b : buildings){
-				if(b.contains(e.getPoint())){
-					//Send the drunk Person here to run into the road.
 
-						if(dca == null)
+		if( ( heldPoint.x < ((int)WINDOWX/2) && e.getPoint().x > ((int)WINDOWX/2) ) || 
+				( heldPoint.x > ((int)WINDOWX/2) && e.getPoint().x < ((int)WINDOWX/2) ) ||
+				( heldPoint.y < ((int)WINDOWY/2) && e.getPoint().y > ((int)WINDOWY/2) ) ||
+				( heldPoint.y > ((int)WINDOWY/2) && e.getPoint().y < ((int)WINDOWY/2) )	){
+
+			for (BuildingGui b : buildings) {
+				if (b.contains(e.getPoint())) {
+
+					if(e.getButton() == MouseEvent.BUTTON1){
+						//Send the drunk Person here to run into the road.
+						if (dca == null)
 							dca = new DrunkDriverAgent("LIKE OMG");
-					
-                        
-                       	dca.msgGoTo(b.getName());
-                       	dca.msgRunIntoTheRoad();
-                       	dca.msgGoTo(b.getName());
-             
-					
-					
-					
-					
-					
+						dca.msgGoTo(b.getName());
+						dca.msgRunIntoTheRoad();
+					}else{
+						if (dpa == null)
+							dpa = new DrunkPersonAgent("aahahaaaa");
+						
+						dpa.msgGoTo(b.getName());
+						dpa.msgRunIntoTheRoad();
+					}
 				}
 			}
-			
-			
-			
-		}
+
+
+
+		}//end drunk driver loop.
+		
+		
+		
+		
+		
 		heldPoint = null;
 	}
 	

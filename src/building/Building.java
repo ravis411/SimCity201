@@ -47,10 +47,9 @@ public class Building {
 	 */
 	public synchronized void addRole(Role r){
 		boolean b = !inhabitants.contains(r);
-		if(r instanceof HomeRole){
-			int i = 0;
-		}
+		System.err.println("Trying to add to inhabitant list");
 		if(!inhabitants.contains(r)){
+			System.err.println("already in inhabitant list");
 			inhabitants.add(r);
 			this.panel.getPanel().addGuiForRole(r);
 		}
@@ -70,7 +69,9 @@ public class Building {
 		for(int i = removalList.size()-1; i >= 0; i--){
 			inhabitants.remove(removalList.get(i));
 			this.panel.getPanel().removeGuiForRole(removalList.get(i));
-			removalList.remove(i);
+			if(i <= (removalList.size()-1)) {
+				removalList.remove(i);
+			}
 		}
 	}
 	

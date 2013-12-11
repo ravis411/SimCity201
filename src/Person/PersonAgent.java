@@ -99,8 +99,6 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	
 	public ResidenceBuildingPanel home;
 	
-	public enum MyRoleState {Active, Inactive}
-	
 	private class MyRole{
 		Role role;
 		public MyRole(Role r){
@@ -184,9 +182,6 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			//but if the role we passed in was an employee, we have to make sure we add it to the role list
 			if(r instanceof Employee){
 				Employee e = (Employee) r;
-				if(shift == ShiftTime.NIGHT_SHIFT){
-					AlertLog.getInstance().logMessage(AlertTag.PERSON, "Shifts", "Night shift added");
-				}
 				//if the role is a shared role, make sure we are adding the same one and not a repeat
 				if(r instanceof GenericHost){
 					Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(e.getWorkLocation());
@@ -342,6 +337,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
                 if(getCurrentJob() == null)
                         return;
                 else{
+                		state = PersonState.Working;
                         workState = WorkState.GoToWork;
                         deactivateCurrentRole();
                 }
@@ -631,9 +627,9 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		  GoToLocation("Food Court", transport);
 		  
 
-		  MyRole role = findRole(Role.RESTAURANT_CUSTOMER_ROLE);
+		  MyRole role = findRole(Role.RESTAURANT_MIKE_CUSTOMER_ROLE);
 		  if(role == null){
-			  role = new MyRole(RoleFactory.roleFromString(Role.RESTAURANT_CUSTOMER_ROLE));
+			  role = new MyRole(RoleFactory.roleFromString(Role.RESTAURANT_MIKE_CUSTOMER_ROLE));
 
 
 			  addRole(role);
@@ -641,9 +637,9 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		  GenericCustomer cust = (GenericCustomer) role.role;
 		  AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Customer Role = "+role);
 
-		  Restaurant resta =  (Restaurant) BuildingList.findBuildingWithName("Dylan's Restaurant");
-		  BuildingList.findBuildingWithName("Dylan's Restaurant").addRole(role.role);
-		  Building bdg =  BuildingList.findBuildingWithName("Dylan's Restaurant");
+		  Restaurant resta =  (Restaurant) BuildingList.findBuildingWithName("Mike's Restaurant");
+		  BuildingList.findBuildingWithName("Mike's Restaurant").addRole(role.role);
+		  Building bdg =  BuildingList.findBuildingWithName("Mike's Restaurant");
 
 		  if(bdg instanceof Restaurant){
 			  Restaurant rest = (Restaurant) bdg;
@@ -654,7 +650,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 				e.printStackTrace();
 			}
 
-			  cust.setupCustomer("Dylan's Restaurant");
+			  cust.setupCustomer("Mike's Restaurant");
 
 
 			  cust.gotHungry();
@@ -723,12 +719,21 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 				if(r instanceof GenericHost){
 					if(rest.getHostRole() != null)
 						rest.getHostRole().setPerson(this);
+					else if(r.getPerson() != this){
+						r.setPerson(this);
+					}
 				}else if(r instanceof GenericCashier){
 					if(rest.getCashierRole() != null)
 						rest.getCashierRole().setPerson(this);
+					else if(r.getPerson() != this){
+						r.setPerson(this);
+					}
 				}else if(r instanceof GenericCook){
 					if(rest.getCookRole() != null)
 						rest.getCookRole().setPerson(this);
+					else if(r.getPerson() != this){
+						r.setPerson(this);
+					}
 				}
 			}
 			w.addRole(r);
@@ -1019,7 +1024,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	}
 	
 	public void homeThrowParty() {
-		MyRole role = findRole("HomeRole");
+		MyRole role = findRole(Role.HOME_ROLE);
 		HomeRole hr = (HomeRole) role.role;
 		hr.msgThrowParty();
 	}

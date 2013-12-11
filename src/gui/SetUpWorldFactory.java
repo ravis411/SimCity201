@@ -438,14 +438,14 @@ public class SetUpWorldFactory{
                 
                         
                         
-                        (new Timer()).schedule(new TimerTask() {
-                                
-                                @Override
-                                public void run() {
-                                        DrunkPersonGui ddp = new DrunkPersonGui("AAAAaaaahhhhAAaaaa");
-                                        ddp.DoGetHitByCar();
-                                }
-                        }, 1500);
+//                        (new Timer()).schedule(new TimerTask() {
+//                                
+//                                @Override
+//                                public void run() {
+//                                        DrunkPersonGui ddp = new DrunkPersonGui("AAAAaaaahhhhAAaaaa");
+//                                        ddp.DoGetHitByCar();
+//                                }
+//                        }, 1500);
                         
 //                        (new Timer()).schedule(new TimerTask() {
 //                            

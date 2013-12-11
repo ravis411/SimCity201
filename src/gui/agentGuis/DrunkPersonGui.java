@@ -550,7 +550,12 @@ public class DrunkPersonGui implements Gui {
         	
         	if(timeToBeDead == 0){
         		isPresent = false;
-        		timeToBeDead = 200;
+        		timeToBeDead = 150;
+   
+        		hitByCar = false;
+        		state = PersonState.none;
+        		currentPosition = null;
+        		aStar = new PersonAStarTraversal(cityLayout.getAgentGrid(), cityLayout.getCrossWalkGrid(), cityLayout.getRoadGrid());
         	}
         }
         else

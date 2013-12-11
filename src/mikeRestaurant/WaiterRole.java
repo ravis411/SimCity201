@@ -110,6 +110,15 @@ public abstract class WaiterRole extends GenericWaiter implements Waiter{
 	public enum BreakState {NoState, WantsToGoOnBreak, AskedToGoOnBreak, CanGoOnBreak, OnBreak};
 	protected BreakState breakState;
 	
+	public void kill(){
+		super.kill();
+		isIdle = false;
+		breakState = BreakState.NoState;
+		
+		ordersForDelivery = Collections.synchronizedList(new ArrayList<Order>());
+		customers = Collections.synchronizedList(new ArrayList<MyCustomer>());
+	}
+	
 //	/**
 //	 * Constructor for the Waiter
 //	 * @param name name of the Waiter
@@ -170,12 +179,6 @@ public abstract class WaiterRole extends GenericWaiter implements Waiter{
 	 */
 	public void msgSitAtTable(Customer customer, Table table){
 		customers.add(new MyCustomer((CustomerRole)customer, table, null));
-		stateChanged();
-	}
-	
-	public void deactivate(){
-		super.deactivate();
-		workState = WorkState.ReadyToLeave;
 		stateChanged();
 	}
 	
@@ -528,6 +531,7 @@ public abstract class WaiterRole extends GenericWaiter implements Waiter{
 	protected void wantToLeave(){
 		host.msgImLeaving(this);
 		workState = WorkState.ToldHost;
+		stateChanged();
 	}
 	
 	/**
