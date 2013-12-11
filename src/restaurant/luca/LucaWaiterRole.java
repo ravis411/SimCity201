@@ -14,13 +14,12 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
 
-import mikeRestaurant.Table;
-import mikeRestaurant.WaiterRole;
 import restaurant.gui.luca.RestaurantGui;
 import restaurant.gui.luca.WaiterGui;
 import restaurant.interfaces.luca.LucaCustomer;
 import restaurant.interfaces.luca.LucaWaiter;
 import restaurant.test.mock.EventLog;
+import Person.Role.Role;
 import Person.Role.ShiftTime;
 
 
@@ -144,7 +143,7 @@ public abstract class LucaWaiterRole extends GenericWaiter implements LucaWaiter
 		stateChanged();
 	}
 
-	public void msgWaiterHereIsCheck(int tab, LucaCustomer customer) {
+	public void msgWaiterHereIsCheck(double tab, LucaCustomer customer) {
 		for (int i=0; i<myCustomers.size(); i++){
 			if (myCustomers.get(i).getCustomer() == customer){
 				myCustomers.get(i).setCustomersCheckReady(true);
@@ -578,7 +577,7 @@ public abstract class LucaWaiterRole extends GenericWaiter implements LucaWaiter
 		protected boolean customerleaving;
 		protected boolean readyForCheck;
 		protected boolean customersCheckReady;
-		protected int customersTab;
+		protected double customersTab;
 		
 		
 		MyCustomers(LucaCustomer C, int tableNum) {
@@ -595,10 +594,10 @@ public abstract class LucaWaiterRole extends GenericWaiter implements LucaWaiter
 			customersTab = 0;
 			
 		}
-		public void setCustomersTab(int tab) {
+		public void setCustomersTab(double tab) {
 			customersTab= tab;			
 		}
-		int getCustomersTab(){
+		double getCustomersTab(){
 			return customersTab;
 		}
 		public void setCustomersCheckReady(boolean b) {
@@ -673,8 +672,7 @@ public abstract class LucaWaiterRole extends GenericWaiter implements LucaWaiter
 
 	@Override
 	public String getNameOfRole() {
-		// TODO Auto-generated method stub
-		return null;
+		return Role.RESTAURANT_LUCA_WAITER_ROLE;
 	}
 
 	@Override
