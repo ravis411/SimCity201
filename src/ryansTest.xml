@@ -49,8 +49,26 @@
 				<friend name="Person 9" />
 			</friends>
 		</person>
+		<person name="Ryans HostPM" job="ryansRestaurant.RyansHostRole" shift="PM"
+		    location="Ryan's Restaurant" home="Apartment 22">
+			<friends>
+				<friend name="Person 1" />
+				<friend name="Person 7" />
+				<friend name="Person 9" />
+			</friends>
+		</person>
 		<person name="Ryan's Cashier" job="ryansRestaurant.RyansCashierRole" shift="AM"
 		    location="Ryan's Restaurant" home="Apartment 3">
+
+			<friends>
+				<friend name="Person 1" />
+				<friend name="Person 2" />
+				<friend name="Person 8" />
+				<friend name="Person 10" />
+			</friends>
+		</person>
+		<person name="Ryan's Cashier 2" job="ryansRestaurant.RyansCashierRole" shift="PM"
+		    location="Ryan's Restaurant" home="Apartment 33">
 
 			<friends>
 				<friend name="Person 1" />
@@ -68,7 +86,16 @@
 				<friend name="Person 10" />
 			</friends>
 		</person>
-		<person name="RyansOldWaiter9" job="ryansRestaurant.RyansOldWaiterRole" shift="AM"
+		<person name="Ryans CookPM" job="ryansRestaurant.RyansCookRole" shift="PM"
+			location="Ryan's Restaurant" home="Apartment 54">
+			<friends>
+				<friend name="Person 1" />
+				<friend name="Person 3" />
+				<friend name="Person 6" />
+				<friend name="Person 10" />
+			</friends>
+		</person>
+		<person name="RyansOldWaiter9" job="ryansRestaurant.RyansOldWaiterRole" shift="PM"
 			location="Ryan's Restaurant" home="Apartment 5">
 			<friends>
 				<friend name="Person 1" />
@@ -121,7 +148,7 @@
 				<friend name="Person 10" />
 			</friends>
 		</person>
-		<person name="RyansOldWaiter7" job="ryansRestaurant.RyansOldWaiterRole" shift = "AM"
+		<person name="RyansOldWaiter7" job="ryansRestaurant.RyansOldWaiterRole" shift = "PM"
 			location="Ryan's Restaurant" home="Apartment 10">
 			<friends>
 				<friend name="Person 1" />
@@ -163,7 +190,7 @@
 				<friend name="Person 10" />
 			</friends>
 		</person>
-		<person name="Ryans New Waiter3" job="ryansRestaurant.RyansNewWaiterRole" shift = "AM"
+		<person name="Ryans New Waiter3" job="ryansRestaurant.RyansNewWaiterRole" shift = "PM"
 			location="Ryan's Restaurant" home="Apartment 50">
 			<friends>
 				<friend name="Person 1" />
