@@ -19,18 +19,20 @@ import java.util.concurrent.Semaphore;
 
 
 
+
 import ryansRestaurant.RyansMarketRole.MarketOrder;
 import ryansRestaurant.gui.CookGui;
 import ryansRestaurant.interfaces.RyansCashier;
 import trace.AlertLog;
 import trace.AlertTag;
+import Person.Role.Role;
 import Person.Role.ShiftTime;
 
 /**
  * Restaurant Cook Agent
  */
 
-public class RyansCookRole extends GenericCook implements ActionListener{
+public class RyansCookRole extends GenericCook{
 	
 	
 	
@@ -576,16 +578,11 @@ public class RyansCookRole extends GenericCook implements ActionListener{
 	
 	
 	
-
-	@Override
-	public ShiftTime getShift() {
-		// TODO Auto-generated method stub
-		return ShiftTime.DAY_SHIFT;
-	}
+	
+	
 
 	@Override
 	public Double getSalary() {
-		// TODO Auto-generated method stub
 		return 42.00;
 	}
 
@@ -599,15 +596,14 @@ public class RyansCookRole extends GenericCook implements ActionListener{
 
 	@Override
 	public String getNameOfRole() {
-		// TODO Auto-generated method stub
-		return "Ryan's Cook";
+		return Role.RESTAURANT_RYAN_COOK_ROLE;
 	}
+
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	public void kill() {
 		// TODO Auto-generated method stub
-		
+		//super.kill();
 	}
-
 }
 

@@ -54,7 +54,7 @@ public class CookRole extends GenericCook {
 			inventory.add(new Food(menu.getDishName(i), 5000, 3));
 		}
 		
-		javax.swing.Timer checkRevolvingStand = new javax.swing.Timer(15000, new ActionListener(){
+		javax.swing.Timer checkRevolvingStand = new javax.swing.Timer(8000, new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -177,7 +177,7 @@ public class CookRole extends GenericCook {
 				stateChanged();
 			}
 		},
-		5000);
+		3000);
 		//currentOrderDone();
 		//o.setCooked();
 		//o.getWaiter().msgBringFoodToTable(o);

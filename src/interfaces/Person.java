@@ -7,6 +7,7 @@ import java.util.List;
 
 import util.DateListener;
 import Person.PersonAgent;
+import Person.Role.Employee;
 import Person.Role.Role;
 import Person.Role.ShiftTime;
 
@@ -27,6 +28,8 @@ public interface Person extends DateListener{
 	public abstract void msgYouHaveALoan(double loan);
 	
 	public abstract void msgReportForWork();
+	
+	public abstract ShiftTime getCurrentShift();
 	
 	public abstract void msgGoToMarket(String item);
 	

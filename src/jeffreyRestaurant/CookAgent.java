@@ -174,6 +174,7 @@ public class CookAgent extends GenericCook implements Cook{
 	//Scheduler
 	@Override
 	public boolean pickAndExecuteAction() {
+		
 		if (orders != null) {
 			synchronized(orders) {
 				for (order o : orders) {

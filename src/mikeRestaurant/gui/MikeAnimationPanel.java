@@ -9,8 +9,10 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
@@ -75,6 +77,8 @@ public class MikeAnimationPanel extends JPanel implements ActionListener, GuiPan
 	                gui.updatePosition();
 	            }
 	        }
+	        
+	        clearRemovedGuis();
 		}
 	}
 	
@@ -168,10 +172,19 @@ public class MikeAnimationPanel extends JPanel implements ActionListener, GuiPan
 		}
 		
 	}
+	
+	private List<Role> removalList = new ArrayList<Role>();
 
+	private void clearRemovedGuis(){
+		for(int i = removalList.size()-1; i >= 0; i--){
+			guis.remove(removalList.get(i));
+			removalList.remove(i);
+		}
+	}
+	
 	@Override
 	public void removeGuiForRole(Role r) {
 		// TODO Auto-generated method stub
-		guis.remove(r);
+		removalList.add(r);
 	}
 }
