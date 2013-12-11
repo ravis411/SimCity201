@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<configuration>
+	<building-config>
+		<building id="1" type="Residence" name="House 1" />
+		<building id="2" type="Residence" name="House 2" />
+		<building id="3" type="Market" name="Market 1" />
+		<building id="4" type="Apartment" name="Apartment Building 1" />
+		<building id="5" type="Bank" name="Bank" />
+		<building id="6" type="Apartment" name="Apartment Building 2" />
+		<building id="7" type="Apartment" name="Apartment Building 3" />
+		<building id="8" type="Residence" name="House 3" />
+		<building id="9" type="Apartment" name="Apartment Building 4" />
+		<building id="10" type="Bank" name="Bank 2" />
+		<building id="11" type="Food Court" name="Food Court" />
+		<building id="12" type="Market" name="Market 2" />
+	</building-config>
+	<people>
+		<person name="Person 1"
+			    location="Home" home="House 1">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 3" />
+				</friends>
+		</person>
+		<person name="Person 2"
+			    location="Home" home="House 2">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 3" />
+				</friends>
+		</person>
+		<person name="Person 3"
+			    location="Home" home="House 3">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 3" />
+				</friends>
+		</person>
+		<person name="Person 4"
+			    location="Home" home="Apartment 1">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 3" />
+				</friends>
+		</person>
+    </people>
+</configuration>
