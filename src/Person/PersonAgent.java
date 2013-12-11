@@ -277,7 +277,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
                 MasterTime.getInstance().registerTimeListener(Workplace.DAY_SHIFT_HOUR, Workplace.DAY_SHIFT_MIN, false, this);
                 MasterTime.getInstance().registerTimeListener(Workplace.NIGHT_SHIFT_HOUR, Workplace.NIGHT_SHIFT_MIN, false, this);
                 MasterTime.getInstance().registerTimeListener(Workplace.END_SHIFT_HOUR, Workplace.END_SHIFT_MIN, false, this);
-                MasterTime.getInstance().registerTimeListener(GO_HOME_HOUR, GO_HOME_MINUTE, true, this);
+                //MasterTime.getInstance().registerTimeListener(GO_HOME_HOUR, GO_HOME_MINUTE, true, this);
                 //Add the gui
                 //setGui(new PersonGui(this));
         }
@@ -479,9 +479,6 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	 */
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		if(getName().equals("Mike's AM Cashier") && currentShift == ShiftTime.NIGHT_SHIFT){
-			int i = 0; 
-		}
 		//cue the Role schedulers
 		boolean outcome = false;
 			for(MyRole r: roles){
