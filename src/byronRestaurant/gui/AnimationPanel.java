@@ -4,14 +4,8 @@ import interfaces.GuiPanel;
 
 import javax.swing.*;
 
-import bank.BankClientRole;
-import bank.BankTellerRole;
-import bank.LoanTellerRole;
 import building.BuildingList;
 import byronRestaurant.*;
-import byronRestaurant.gui.*;
-import trace.AlertLog;
-import trace.AlertTag;
 import Person.Role.Role;
 
 import java.awt.*;
@@ -23,7 +17,11 @@ import java.util.ArrayList;
 public class AnimationPanel extends JPanel implements ActionListener,GuiPanel {
 	//global variables that are necessary
 
-    private final int WINDOWX = 800;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private final int WINDOWX = 800;
     private final int WINDOWY = 400;
     private final int TABLE1X = 200;
     private final int TABLE1Y = 200;
@@ -136,11 +134,13 @@ public class AnimationPanel extends JPanel implements ActionListener,GuiPanel {
 	public void removeGuiForRole(Role r) {
 		if (r instanceof WaiterRole){
 		    WaiterRole waiterRole = (WaiterRole) r;
+		    waiterCount--;
 		    guis.remove(waiterRole.getGui());
 		}
 		if (r instanceof CustomerRole){
 		    CustomerRole customerRole = (CustomerRole) r;
 			BuildingList.findBuildingWithName("Byron's Restaurant").removeRole(customerRole);
+			customerCount--;
 		    guis.remove(customerRole.getGui());
 		}
 		if (r instanceof CookRole){
