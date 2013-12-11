@@ -478,7 +478,7 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 	public void kill() {
 		
 		AlertLog.getInstance().logDebug(AlertTag.RYANS_RESTAURANT, getName(), "Leaving Work.");
-		super.kill();
+		//super.kill();
 	}
 }
 

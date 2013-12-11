@@ -311,7 +311,9 @@ public class RyansRestaurantAnimationPanel extends JPanel implements MouseListen
 
 	@Override
 	public void removeGuiForRole(Role r) {
-		// TODO Auto-generated method stub
+		if(r instanceof RyansCookRole){
+			
+		}
 		
 	}
     

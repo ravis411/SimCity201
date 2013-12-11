@@ -199,11 +199,6 @@ public class PseudoPerson extends Agent implements Person{
 		return 0;
 	}
 	
-	@Override
-	public List<PersonAgent> getFriends() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public ResidenceBuildingPanel getHome() {
@@ -229,11 +224,7 @@ public class PseudoPerson extends Agent implements Person{
 		
 	}
 
-	@Override
-	public void deactivateAllRoles() {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 	@Override
 	public void workIsOpen() {
@@ -246,5 +237,35 @@ public class PseudoPerson extends Agent implements Person{
 			ShiftTime shift) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void deactivateCurrentRole() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ShiftTime getCurrentShift() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void msgRespondToInviteUrgently(Person myPerson) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgPartyOver(Person myPerson) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Person> getFriends() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
