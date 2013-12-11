@@ -91,7 +91,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	private static int GO_HOME_MINUTE = 0;
 	
 	private List<Item> backpack;
-	
+	private boolean plsRob=false;
 	private ShiftTime currentShift;
 	public PersonState state;
 	public StateOfLocation stateOfLocation;
@@ -504,6 +504,13 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	 */
 	@Override
 	public boolean pickAndExecuteAnAction() {
+
+		if(this.name.equals("robber") && !plsRob){
+			GoRobBank();
+			plsRob=true;
+			return true;
+		}
+
 		//cue the Role schedulers
 		boolean outcome = false;
 			for(MyRole r: roles){
@@ -651,7 +658,9 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	private void GoGetFood(){
 		  String transport = getTransportPreference();
 		  this.state = PersonState.GettingFood;
-		  String location = PickFoodLocation();
+		  //String location = PickFoodLocation();
+		  String location= "Kush's Restaurant";
+
 		  GoToLocation(location, transport);
 		  if(location.equals(home.getName())){
 			  //go home for food
@@ -668,9 +677,11 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			  GenericCustomer cust = (GenericCustomer) role.role;
 			  AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Customer Role = "+role);
 
+
 			  Restaurant resta =  (Restaurant) BuildingList.findBuildingWithName(location);
 			  BuildingList.findBuildingWithName(location).addRole(role.role);
 			  Building bdg =  BuildingList.findBuildingWithName(location);
+
 
 			  if(bdg instanceof Restaurant){
 				  Restaurant rest = (Restaurant) bdg;
@@ -682,6 +693,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 				}
 
 				  cust.setupCustomer(location);
+
 
 
 				  cust.gotHungry();

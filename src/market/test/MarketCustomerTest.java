@@ -56,7 +56,7 @@ public class MarketCustomerTest extends TestCase
 		marketData.setMarketEmployeeAtCounter2(employee);
 		MarketGui marketgui= new MarketGui();
 		customer.gui=new MarketCustomerGui(customer, 1);
-		marketgui.animationPanel.addGui(customer.gui);
+	//	marketgui.animationPanel.addGui(customer.gui);
 		marketgui.setVisible(true);
 		marketgui.setResizable(false);
 		

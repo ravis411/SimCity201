@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<configuration>
+	<building-config>
+		<building id="1" type="Residence" name="House 1" />
+		<building id="2" type="Residence" name="House 2" />
+		<building id="3" type="Market" name="Market 1" />
+		<building id="4" type="Apartment" name="Apartment Building 1" />
+		<building id="5" type="Bank" name="Bank" />
+		<building id="6" type="Apartment" name="Apartment Building 2" />
+		<building id="7" type="Apartment" name="Apartment Building 3" />
+		<building id="8" type="Residence" name="House 3" />
+		<building id="9" type="Apartment" name="Apartment Building 4" />
+		<building id="10" type="Bank" name="Bank 2" />
+		<building id="11" type="Food Court" name="Food Court" />
+		<building id="12" type="Market" name="Market 2" />
+	</building-config>
+	<people>
+		<person name="Person 1" job="MarketEmployee.MarketEmployeeRole" shift="AM"
+			    location="Market 1" home="House 1">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 2" job="MarketEmployee.MarketEmployeeRole" shift="AM"
+			    location="Market 1" home="House 2">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 3" job="MarketEmployee.MarketEmployeeRole" shift="AM"
+			    location="Market 1" home="House 3">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 4" job="MarketEmployee.MarketManagerRole" shift="AM"
+			    location="Market 1" home="Apartment 1">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 5" job="MarketEmployee.MarketEmployeeRole" shift="AM"
+			    location="Market 2" home="Apartment 2">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 6" job="MarketEmployee.MarketEmployeeRole" shift="AM"
+			    location="Market 2" home="Apartment 3">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 7" job="MarketEmployee.MarketEmployeeRole" shift="AM"
+			    location="Market 2" home="Apartment 4">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 8" job="MarketEmployee.MarketManagerRole" shift="AM"
+			    location="Market 2" home="Apartment 5">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 9" job="bank.BankTellerRole" shift="AM"
+			    location="Bank" home="Apartment 6">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends> 
+		</person>
+		<person name="Person 10" job="bank.LoanTellerRole" shift="AM"
+			    location="Bank" home="Apartment 7">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 11" job="bank.BankTellerRole" shift="AM"
+			    location="Bank 2" home="Apartment 8">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 12" job="bank.LoanTellerRole" shift="AM"
+			    location="Bank 2" home="Apartment 9">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="robber"
+			    location="Home" home="Apartment 10">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+    </people>
+</configuration>
