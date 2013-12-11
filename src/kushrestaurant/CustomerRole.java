@@ -259,9 +259,17 @@ public class CustomerRole extends GenericCustomer implements Customer {
 		
 	}
   private void OrderAction()
-  {    //int i=new Random().nextInt(20); 
+  {    int i=new Random().nextInt(3); 
 		//Randomly Choose a Food
-	  choice="Chicken";
+        switch(i){
+          case 0: choice="Chicken";
+          case 1: choice= "Steak";
+          case 2: choice= "Pizza";
+          case 3: choice= "Salad";
+        	default: choice= "Chicken";
+          
+        }
+	   
 	    waiter.msgHereisChoice(this, choice);
 		customerGui.orderedFood();
 		stateChanged();

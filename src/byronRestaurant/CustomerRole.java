@@ -1,5 +1,6 @@
 package byronRestaurant;
 
+import Person.Role.Role;
 import agent.Agent;
 import byronRestaurant.WaiterRole;
 import byronRestaurant.gui.CustomerGui;
@@ -68,14 +69,14 @@ public class CustomerRole extends GenericCustomer {
 	// Messages
 
 	public void gotHungry() {//from animation
-		print("I'm hungry");
+		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(), "I'm hungry");
 		event = AgentEvent.gotHungry;
 		stateChanged();
 	}
 	
 	public void msgFollowMeToTable(WaiterRole w, int n, List<String> m){
 		setWaiter(w);
-		print("Going to seat");
+		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"Going to seat");
 		event = AgentEvent.followingWaiter;
 		customerGui.DoGoToSeat(n);//hack; only one table
 		for (String m1 : m){
@@ -213,7 +214,7 @@ public class CustomerRole extends GenericCustomer {
 	}
  
 	private void makeChoice(){
-		print("Deciding menu choice");
+		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"Deciding menu choice");
 		timer.schedule(new TimerTask() {
 			public void run() {
 				msgDecided();
@@ -222,7 +223,7 @@ public class CustomerRole extends GenericCustomer {
 	}
 	
 	private void callWaiter(){
-		print("I decided!");
+		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"I decided!");
 		waiter.msgReadyToOrder(this);
 	}
 	
@@ -315,7 +316,7 @@ public class CustomerRole extends GenericCustomer {
 	@Override
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
-		return null;
+		return Role.RESTAURANT_BYRON_CUSTOMER_ROLE;
 	}
 }
 

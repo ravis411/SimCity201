@@ -9,14 +9,12 @@ import java.util.*;
 import javax.swing.Timer;
 
 import kushrestaurant.HostRole.Table;
-import kushrestaurant.MarketRole.MarketStatus;
-//import restaurant.Order2;
-import kushrestaurant.MarketRole.Order2;
 import kushrestaurant.gui.CookGui;
 //import kushrestaurant.gui.RestaurantGui;
 import kushrestaurant.interfaces.Cook;
 import kushrestaurant.interfaces.Customer;
 import kushrestaurant.interfaces.Waiter;
+import MarketEmployee.MarketManagerRole;
 import Person.Role.ShiftTime;
 
 public class CookRole extends GenericCook implements Cook {
@@ -25,7 +23,7 @@ public class CookRole extends GenericCook implements Cook {
 	private CookGui cookGui=null;
 	//private RestaurantGui gui;
 	private int constant=1000;
-	public List<MarketRole> markets= new ArrayList<MarketRole>();
+	private List<MarketManagerRole> marketManagers= new ArrayList<MarketManagerRole>();
 	private static Map<String, Food> foods = new HashMap<String, Food>();
 	private java.util.Timer timer = new java.util.Timer();
 	public List<Food> inventory = new ArrayList<Food>();
@@ -50,9 +48,7 @@ public class CookRole extends GenericCook implements Cook {
 	}
 enum state {cooking,free,goinggroceryshopping};
 state cookState;
-public void addMarket(MarketRole m){
-	markets.add(m);
-}
+
 enum orderstate {pending,cooking,done,served};
 public int getCookTime(String choice){
 	switch(choice){
@@ -99,8 +95,8 @@ public CookRole(String workLocation) {
 	cookState= state.free;
 	inventory.add(new Food("Steak",3));
 	inventory.add(new Food("Chicken",3));
-	inventory.add(new Food("Salad",3));
-	inventory.add(new Food("Pizza",3));
+	inventory.add(new Food("Salad",300));
+	inventory.add(new Food("Pizza",300));
 	foods.put("Steak",inventory.get(0));
 	foods.put("Chicken",inventory.get(1));
 	foods.put("Pizza",inventory.get(3));
@@ -138,7 +134,9 @@ public class Food{
 
   
 //List<WaiterAgent> waiters;
-
+public void addMarket(MarketManagerRole mr){
+	marketManagers.add(mr);
+}
 public void MsgHereisTheOrder(Waiter w, Customer c, Table t, String choice){
 	print("Received order from " +w.getName());
     orders.add(new Order(choice,w,t,c));
@@ -146,46 +144,45 @@ public void MsgHereisTheOrder(Waiter w, Customer c, Table t, String choice){
 	
 }
 public void setGui(CookGui c){this.cookGui=c;}
-public void msgMarketReStock(Order2 o){
+public void msgOrderFilled(int ingredientNum, int quantity){
 	
-	for(Entry<String, Integer> item : o.restockings.entrySet())
-	{  
-		for(int i = 0; i < inventory.size(); i++)
-		{
-			
-			if(item.getKey().equals( inventory.get(i).type) )
-			{
-				inventory.get(i).amount += item.getValue().intValue();
-				print("Have this again " + item.getKey() + ", The amount =  " + inventory.get(i).amount);
-			}
-		}	
+	switch(ingredientNum){
+	   case 0: inventory.get(0).amount+= quantity;
+	   case 1: inventory.get(1).amount+= quantity;
 	}
-	//cookState=state.goinggroceryshopping;
-	if(o.status==MarketStatus.incompletedelivery){
-		print("Didnt receive a complete delivery");
-		cookState=state.goinggroceryshopping;
-		
-	}
+	cookState=state.free;
 	stateChanged();
-	
+}
+public void msgOrderPartiallyFilled(int ingredientNum,int quantity, int quanityOfOrderMarketDoesntHave){
+	switch(ingredientNum){
+	   case 0: inventory.get(0).amount+= quantity;
+	   case 1: inventory.get(1).amount+= quantity;
+	}
+	cookState= state.goinggroceryshopping;
+	stateChanged();
+}
+public void msgOrderNotFilled(int ingredientNum){
+	cookState=state.goinggroceryshopping;
+	stateChanged();
 }
 public void OrderFromMarket(){
 	
 	HashMap<String,Integer> order = new HashMap<String,Integer>();
+	if(count==2){count=0;}
+	print("ordering from "+ marketManagers.get(count).getNameOfRole());
 	
+
 	for(Food f:inventory ){
 		if(f.threshold>=f.amount){
 		
-			order.put(f.type,f.capacity);
+			marketManagers.get(count).msgMarketManagerFoodOrder(f.type,f.capacity, this);
 			
 			
 		}
 		
 	}
 	//Order2 o= new Order2(order,this);
-	if(count==3){count=0;}
-	print("ordering from "+ markets.get(count).name);
-	markets.get(count).msgReceivedOrderFromCook(order, this);
+	
 	count++;
 	stateChanged();
 	
@@ -197,7 +194,7 @@ public boolean pickAndExecuteAction() {
         If so seat him at the table.
 	 */
 	if(cookState==state.goinggroceryshopping){
-		if(count<markets.size()){
+		if(count<marketManagers.size()){
 		OrderFromMarket();
 		cookState=state.free;
 		return true;
@@ -267,12 +264,7 @@ public void doCooking(final Order o){
 	
 	;//getHungerLevel() * 1000);//how long to wait before running task
 }
-public void msgCantRestock(){
-	//count++;
-	cookState=state.goinggroceryshopping;
-	stateChanged();
-	
-}
+
 public void takenFood(String c){
 	cookGui.doneFree(c);
 }
@@ -321,6 +313,12 @@ public Double getSalary() {
 public RevolvingStand getRevolvingStand() {
 	// TODO Auto-generated method stub
 	return revolvingStand;
+}
+
+@Override
+public void msgCantRestock() {
+	// TODO Auto-generated method stub
+	
 }
 
 
