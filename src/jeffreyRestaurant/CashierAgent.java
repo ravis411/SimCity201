@@ -151,8 +151,8 @@ public class CashierAgent extends GenericCashier implements Cashier {
 		if (workState == WorkState.ReadyToLeave) {
 			Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(workLocation);
 			if (rest.getNumCustomers() == 0) {
-				kill();
-				return true;
+				//kill();
+				//return true;
 			}
 		}
 		synchronized(checks) {
