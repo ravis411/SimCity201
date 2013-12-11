@@ -17,11 +17,14 @@ import java.util.concurrent.Semaphore;
 
 import javax.swing.Timer;
 
+
+
 import mikeRestaurant.gui.CookGui;
 import mikeRestaurant.interfaces.Cashier;
 import mikeRestaurant.interfaces.Cook;
 import mikeRestaurant.interfaces.Market;
 import mikeRestaurant.interfaces.Waiter;
+import MarketEmployee.MarketManagerRole;
 import Person.Role.ShiftTime;
 import agent.Agent;
 
@@ -38,9 +41,9 @@ public class CookRole extends GenericCook implements Cook{
 	private static int CAPACITY = 5;
 	private Map<String, Food> foods;
 	
-	private final static int NUM_MARKETS = 5;
+	private final static int NUM_MARKETS = 2;
 
-	//private List<MarketAgent> markets;
+	private List<MarketManagerRole> markets;
 	private Queue<String> reorders;
 	private int marketIndex;
 	
@@ -60,6 +63,9 @@ public class CookRole extends GenericCook implements Cook{
 	//maps a choice to a list of markets out of that food
 	private Map<String, Set<MarketRole>> choicesExpended;
 	
+	public enum cookState {idle,goingGroceryShopping};
+	private cookState state;
+	
 	/**
 	 * Basic CookAgent constructor
 	 */
@@ -68,7 +74,7 @@ public class CookRole extends GenericCook implements Cook{
 		this.cashier = (CashierRole)cashier;
 		orders = new ArrayList<Order>();
 		foods = initFoods();
-		//markets = initMarkets();
+		markets = new ArrayList<MarketManagerRole>();
 		reorders = new ArrayDeque<String>();
 		marketIndex = 0;
 		grills = new ArrayList<Grill>();
@@ -82,6 +88,7 @@ public class CookRole extends GenericCook implements Cook{
 			}
 		}
 		revolvingStand = new RevolvingStand();
+		state=cookState.idle;
 		
 		Timer checkRevolvingStand = new Timer(15000, new ActionListener(){
 
@@ -138,7 +145,7 @@ public class CookRole extends GenericCook implements Cook{
 		for(String s : WaiterRole.MENU().keySet()){
 			//temp.put(s, new Food(s, getCookTimeForChoice(s), (int)(Math.random()*MAX_FOOD), THRESHOLD, CAPACITY));
 			//hacks a sufficient number of food into the cook inventory
-			temp.put(s, new Food(s, getCookTimeForChoice(s), 900, THRESHOLD, 900));
+			temp.put(s, new Food(s, getCookTimeForChoice(s), 0, THRESHOLD, 900));
 		}
 		return temp;
 	}
@@ -223,36 +230,29 @@ public class CookRole extends GenericCook implements Cook{
 	 * @param stillHasStock true if the market still has food (of any kind) left, false otherwise
 	 * @param market the marketAgent that is sending food
 	 */
-	public void msgHereIsFoodFromMarket(String choice, int quantity, boolean stillHasStock, Market market){
-		foods.get(choice).quantity += quantity;
-		if(quantity == 0){
-			print(market.getName()+" is out of "+choice);
-		}else{
-			print("Restocking "+quantity+ "x"+choice);
-		}
-		
-		//if the menu wasn't filled completely
-		if(foods.get(choice).quantity < foods.get(choice).capacity){
-			reorders.add(choice);
-		}
-		
-		//if we should no longer consider the market b/c it is completely out of food
-		if(!stillHasStock){
-			//markets.remove(market);
-		}
-		
-		stateChanged();
-	}
-	
-	/**
-	 * Message sent by the Market when an order will not be fulfilled
-	 * @param choice the choice that couldn't be fulfilled
-	 * @param mkt the market that cannot fill the order
-	 */
-	public void msgOrderWillNotBeFulfilled(String choice, Market mkt){
-		choicesExpended.get(choice).add((MarketRole)mkt);
-	}
-	
+public void msgOrderFilled(int ingredientNum, int quantity){
+        
+        switch(ingredientNum){
+           case 0: foods.get("Steak").quantity+= quantity;
+           case 1: foods.get("Chicken").quantity+= quantity;
+        }
+        state=cookState.idle;
+        stateChanged();
+}
+public void msgOrderPartiallyFilled(int ingredientNum,int quantity, int quanityOfOrderMarketDoesntHave){
+        switch(ingredientNum){
+        case 0: foods.get("Steak").quantity+= quantity;
+        case 1: foods.get("Chicken").quantity+= quantity;
+        }
+        state=cookState.goingGroceryShopping;
+        stateChanged();
+}
+public void msgOrderNotFilled(int ingredientNum){
+	state=cookState.goingGroceryShopping;
+	stateChanged();
+	  
+}
+
 	/**
 	 * Message sent by the CookGui that the gui has arrived at the cooking location (grills)
 	 */
@@ -299,6 +299,10 @@ public class CookRole extends GenericCook implements Cook{
 //				placeOrderForFood(s, foods.get(s).capacity-foods.get(s).quantity);
 //				return true;
 //			}
+			if(state==cookState.goingGroceryShopping){
+				this.OrderFromMarket();
+				state=cookState.idle;
+			}
 			
 			if(!revolvingStand.isEmpty()){
 				WaiterRole.Order order = revolvingStand.getLastOrder();
@@ -389,6 +393,31 @@ public class CookRole extends GenericCook implements Cook{
 		Timer timer = new Timer(foods.get(order.choice).cookingTime, listener);
 		timer.start();
 	}
+public void OrderFromMarket(){
+        
+        HashMap<String,Integer> order = new HashMap<String,Integer>();
+        if(marketIndex==2){marketIndex=0;}
+        print("ordering from "+ markets.get(marketIndex).getNameOfRole());
+        
+
+        for(Food f : foods.values()){
+			
+                if(f.threshold>=f.quantity){
+                
+                        markets.get(marketIndex).msgMarketManagerFoodOrder(f.choice,f.capacity, this);
+                        
+                        
+                }
+                marketIndex++;
+                stateChanged();
+                
+                
+        }
+}
+        //Order2 o= new Order2(order,this);
+        
+        
+
 	
 //	/**
 //	 * Action called by cookOrder action if and only if more of a particular
@@ -668,6 +697,19 @@ public class CookRole extends GenericCook implements Cook{
 	public String getNameOfRole() {
 		// TODO Auto-generated method stub
 		return "MikeCookRole";
+	}
+
+	@Override
+	public void msgHereIsFoodFromMarket(String choice, int quantity,
+			boolean stillHasStock, Market market) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgOrderWillNotBeFulfilled(String choice, Market mkt) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
