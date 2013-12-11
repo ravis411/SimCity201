@@ -2,6 +2,7 @@ package byronRestaurant;
 
 import Person.Role.Role;
 import Person.Role.ShiftTime;
+import Person.Role.Employee.WorkState;
 import agent.Agent;
 import byronRestaurant.gui.WaiterGui;
 import interfaces.generic_interfaces.GenericHost;
@@ -45,12 +46,10 @@ public class HostRole extends GenericHost {
 			occupiedBy = null;
 		}
 
-		CustomerRole getOccupant() {
-			return occupiedBy;
-		}
 		boolean isOccupied() {
 			return occupiedBy != null;
 		}
+		
 		public String toString() {
 			return "table " + tableNumber;
 		}
@@ -96,8 +95,6 @@ public class HostRole extends GenericHost {
 		stateChanged();		
 	}
 
-	public void addWaiter(WaiterRole waiter){
-	}
 	public void msgPayUsBackLater(CustomerRole cust){
 		redList.add(cust);
 		stateChanged();
@@ -107,26 +104,30 @@ public class HostRole extends GenericHost {
 	 */
 	public boolean pickAndExecuteAction() {
 		try{
-		for (Table table : tables){
-			if (!table.isOccupied()){
-				for (MyWaiter waiter : waiters){
-					if (waiter.atLobby == true && waiter.onBreak == false){
-						if (!waitingCustomers.isEmpty()){
-							for (CustomerRole c : redList){
-								for (CustomerRole c1 : waitingCustomers){
-									if (c.getCustomerName() == c1.getCustomerName()){
-										payBackDebt(c1);
+			if(workState == WorkState.ReadyToLeave && waitingCustomers.size() == 0){
+				kill();
+				return true;
+			}
+			for (Table table : tables){
+				if (!table.isOccupied()){
+					for (MyWaiter waiter : waiters){
+						if (waiter.atLobby == true && waiter.onBreak == false){
+							if (!waitingCustomers.isEmpty()){
+								for (CustomerRole c : redList){
+									for (CustomerRole c1 : waitingCustomers){
+										if (c.getCustomerName() == c1.getCustomerName()){
+											payBackDebt(c1);
+										}
 									}
 								}
+								sitCustomerAtTable(waitingCustomers.get(0),table.tableNumber);
+								return true;
 							}
-							sitCustomerAtTable(waitingCustomers.get(0),table.tableNumber);
-							return true;
 						}
 					}
 				}
 			}
-		}
-		return false;
+			return false;
 		}catch (ConcurrentModificationException e){
 			return true;
 		}

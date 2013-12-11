@@ -15,5 +15,8 @@ public enum LoanTakeANumberDispenser {
 		ticketCount++;
 		return ticketCount;
 	}
+	public void resetTicket(){
+		ticketCount = 0;
+	}
 }
  

@@ -1,12 +1,17 @@
 package byronRestaurant;
 
 
+import MarketEmployee.MarketManagerRole;
 import Person.Role.Role;
 import Person.Role.ShiftTime;
+import Person.Role.Employee.WorkState;
 import interfaces.generic_interfaces.GenericCashier;
 
 import java.util.*;
 
+import bank.BankTellerRole;
+import building.BuildingList;
+import building.Restaurant;
 import trace.AlertLog;
 import trace.AlertTag;
 
@@ -22,8 +27,7 @@ public class CashierRole extends GenericCashier {
 	Map<String, Double> menu = new HashMap<String, Double>();{
 		menu.put("Steak", 15.99);	
 		menu.put("Chicken",10.99);
-		menu.put("Salad", 5.99);
-		menu.put("Pizza", 8.99);
+		menu.put("Burger", 8.99);
 	}
 
 	//class for the customer to generate checks for the waiters
@@ -56,7 +60,8 @@ public class CashierRole extends GenericCashier {
 
 	//list of bills from the markets for the cashier to pay
 	private List<Double> MarketBills = Collections.synchronizedList(new ArrayList<Double>());
-
+	private MarketManagerRole mmr = null;
+	private BankTellerRole teller = null;
 	//Initialize CashierRole
 	public CashierRole(String location){
 		super(location);
@@ -93,14 +98,32 @@ public class CashierRole extends GenericCashier {
 		stateChanged();
 	}
 
-	public void msgFoodDelivered(double p){
-		MarketBills.add(p);
+	public void msgCashierHereIsMarketBill(int orderPrice, MarketManagerRole market){
+		MarketBills.add((double)orderPrice);
+		mmr = market;
 		stateChanged();
 	}
-
+	
+	public void msgReceivedDeposit(double transactionAmount) {
+		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"Getting confirmation from bank.");
+		register = register - transactionAmount;
+		stateChanged();
+	}
+	
 	// Scheduler
 	public boolean pickAndExecuteAction() {
 		synchronized(CompletedOrders){
+			if (register == 0 && workState == WorkState.ReadyToLeave){
+				close();
+				return true;
+			}
+			if(workState == WorkState.ReadyToLeave){
+				Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(workLocation);
+				if(rest.getNumCustomers() == 0){
+					sendMoneyToBank();
+					return true;
+				}
+			}
 			for (CustomerCheck c : CompletedOrders){
 				if (c.amount <= c.wallet){
 					hereIsChange(c);
@@ -144,7 +167,25 @@ public class CashierRole extends GenericCashier {
 	private void payBill(double b){
 		register = register - b;
 		MarketBills.remove(b); 
+		mmr.msgMarketManagerHereIsPayment(b);
 		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"Paying Market for order, total left in register is $" + register);
+	}
+	
+	private void close(){
+		kill();
+	}
+
+	
+	public void sendMoneyToBank(){
+		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"Giving money to bank.");
+		List<Role> inhabitants = BuildingList.findBuildingWithName("Bank").getInhabitants();
+		for(Role r : inhabitants) {
+			if (r.getNameOfRole() == Role.BANK_TELLER_ROLE) {
+				BankTellerRole bt = (BankTellerRole) r;
+				teller = bt;
+			}
+		}
+		teller.msgRestaurantDeposit(this, register);
 	}
 
 	//Utilities

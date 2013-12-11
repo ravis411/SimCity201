@@ -137,6 +137,7 @@ public class MarketEmployeeRole extends Employee implements MarketEmployee{
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAction() {
+	
 		if ( state==MarketEmployeeState.gettingCounterAssignmentFromManager && event==MarketEmployeeEvent.atManager){
 			
 			while (marketData.getMarketManager() == null){
@@ -178,22 +179,13 @@ public class MarketEmployeeRole extends Employee implements MarketEmployee{
 			
 			return true;
 			}
-			/*
-			if (marketCustomerOrder != null && marketCustomerOrder.getState()==none)
-			{
-				checkStockAndBringAmountAvailableToCustomer(marketCustomerOrder);
-			}
-			if (marketCustomerOrder != null && marketCustomerOrder.getState()==partialOrderAcceptable)
-			{
-				marketCustomerOrder.msgMarketCustomerHereIsOrder(marketCustomerOrder.getFoodType(), marketCustomerOrder.getamountAvailable());
-				marketCustomerOrder==null;
-			}
-			if (marketCustomerOrder != null && marketCustomerOrder.getState()==partialOrderNotAcceptable)
-			{
-				restockFood(marketCustomerOrder);
-			}
+		if(workState == WorkState.ReadyToLeave)
+		{
+			kill();
+			return true;
 		}
-		*/
+		
+			
 		return false;
 		//we have tried all our rules and found
 		//nothing to do. So return false to main loop of abstract agent
@@ -466,6 +458,18 @@ public class MarketEmployeeRole extends Employee implements MarketEmployee{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public void deactivate(){
+		super.deactivate();
+//		kill();
+		
+
+	}
+	
+	public void kill(){
+		super.kill();
+		event=MarketEmployeeEvent.enteredMarket;
+		state=MarketEmployeeState.gettingCounterAssignmentFromManager;
 	}
 
 	//utilities

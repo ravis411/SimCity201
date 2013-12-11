@@ -229,6 +229,7 @@ public class MarketCustomerRole extends Employee implements MarketCustomer{
 		state= MarketCustomerState.none;
 		gui.DoLeave();//animation for CustomerRole to leave market
 		deactivate();
+		kill();
 		//this.myPerson.msgImHungry();
 		BuildingList.findBuildingWithName("Market 1").removeRole(this);
 		

@@ -309,13 +309,11 @@ public class CustomerRole extends GenericCustomer {
 
 	@Override
 	public boolean canGoGetFood() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	@Override
 	public String getNameOfRole() {
-		// TODO Auto-generated method stub
 		return Role.RESTAURANT_BYRON_CUSTOMER_ROLE;
 	}
 }

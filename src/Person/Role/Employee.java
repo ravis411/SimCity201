@@ -65,6 +65,11 @@ public abstract class Employee extends Role{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public void deactivate(){
+		super.deactivate();
+		workState = WorkState.ReadyToLeave;
+	}
 
 	@Override
 	public void kill() {
