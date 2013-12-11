@@ -18,6 +18,7 @@ import market.test.mock.EventLog;
 import market.test.mock.LoggedEvent;
 import trace.AlertLog;
 import trace.AlertTag;
+import Person.PersonAgent;
 import Person.Role.Employee;
 import Person.Role.ShiftTime;
 import agent.Constants;
@@ -229,8 +230,9 @@ public class MarketCustomerRole extends Employee implements MarketCustomer{
 		state= MarketCustomerState.none;
 		gui.DoLeave();//animation for CustomerRole to leave market
 		deactivate();
+		kill();
 		//this.myPerson.msgImHungry();
-		BuildingList.findBuildingWithName("Market 1").removeRole(this);
+		BuildingList.findBuildingWithName(((PersonAgent)(getPerson())).getPersonGui().getCurrentLocation()).removeRole(this);
 		
 	}
 	private void payAndLeaveMarket() {

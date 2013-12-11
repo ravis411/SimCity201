@@ -181,21 +181,15 @@ public class BankAnimationPanel extends JPanel implements ActionListener, GuiPan
 	public void removeGuiForRole(Role r) {
 		if (r instanceof BankClientRole){
 		    BankClientRole clientRole = (BankClientRole) r;
-			BuildingList.findBuildingWithName("Bank").removeRole(clientRole);
 		    guis.remove(clientRole.getGui());
-			r.deactivate();
 		}
 		if (r instanceof BankTellerRole){
 		    BankTellerRole tellerRole = (BankTellerRole) r;
-			BuildingList.findBuildingWithName("Bank").removeRole(tellerRole);
 		    guis.remove(tellerRole.getGui());
-		    r.deactivate();
 		}
 		if (r instanceof LoanTellerRole){
 		    LoanTellerRole loanTellereRole=(LoanTellerRole) r;
-			BuildingList.findBuildingWithName("Bank").removeRole(loanTellereRole);
 		    guis.remove(loanTellereRole.getGui());
-		    r.deactivate();
 		}
 	}
 	

@@ -102,7 +102,6 @@ public class CashierRole extends GenericCashier implements Cashier{
 
 	@Override
 	public boolean pickAndExecuteAction() {
-		// TODO Auto-generated method stub
 		
 		try {
 			if(workState == WorkState.ReadyToLeave){

@@ -1,5 +1,7 @@
 package building;
 
+import java.util.ConcurrentModificationException;
+
 import bank.gui.BankAnimationPanel;
 import interfaces.generic_interfaces.GenericCashier;
 import interfaces.generic_interfaces.GenericCook;
@@ -23,30 +25,10 @@ public class Bank extends Workplace {
 
 	@Override
 	public void open() {
-		isOpenSetter=true;
 	}
 
 	@Override
 	public void close() {
-		for(int i = 0; i < this.inhabitants.size(); i++){
-			if (this.inhabitants.get(i) instanceof BankClientRole){
-				BankClientRole client = (BankClientRole)this.inhabitants.get(i);
-				client.bankClosing();
-				this.panel.getPanel().removeGuiForRole(client);
-			}
-			if (this.inhabitants.get(i) instanceof BankTellerRole){
-				BankTellerRole teller = (BankTellerRole)this.inhabitants.get(i);
-				teller.bankClosing();
-				this.panel.getPanel().removeGuiForRole(teller);
-
-			}
-			if (this.inhabitants.get(i) instanceof LoanTellerRole){
-				LoanTellerRole loanTeller = (LoanTellerRole) this.inhabitants.get(i);
-				loanTeller.bankClosing();
-				this.panel.getPanel().removeGuiForRole(loanTeller);
-			}
-		}
-		isOpenSetter = false;
 	}
 
 	@Override
@@ -61,29 +43,48 @@ public class Bank extends Workplace {
 				}
 			}
 		}
-		
-		return hasTeller && hasLoanTeller;
-
+		return hasTeller || hasLoanTeller;
 	}
-	
-	@Override
+
 	public void notifyEmployeesTheyCanLeave() {
-		// TODO Auto-generated method stub
-		for(Role r : inhabitants){
-			if(r instanceof Employee){
-				r.deactivate();
+
+		synchronized(inhabitants){
+			//List<Role> removalList = new ArrayList<Role>();
+			try{
+				for(Role r : inhabitants){
+					if(r instanceof BankClientRole){
+						BankClientRole bcr = (BankClientRole) r;
+						bcr.bankClosing();
+					}else if(r instanceof LoanTellerRole){
+						LoanTellerRole ltr = (LoanTellerRole) r;
+						ltr.bankClosing();
+					}else{
+						BankTellerRole btr = (BankTellerRole) r;
+						btr.bankClosing();
+					}
+
+					if(r instanceof Employee){
+						Employee e = (Employee) r;
+						e.getPerson().msgYouCanLeave();
+						e.deactivate();
+						//removeRole(r);
+					}
+				}
+				ready = false;
+				//this.removeInhabitants();
+			} catch (ConcurrentModificationException e){
+				
 			}
-		}
-	}
+		}	
+	}	
 
-	public NumberAnnouncer getAnnouncer() {
-		// TODO Auto-generated method stub
-		return ((BankAnimationPanel) this.panel.getPanel()).getAnnouncer();
-	}
-	
-	public LoanNumberAnnouncer getLoanAnnouncer(){
-		return ((BankAnimationPanel) this.panel.getPanel()).getLoanAnnouncer();
-	}
+public NumberAnnouncer getAnnouncer() {
+	return ((BankAnimationPanel) this.panel.getPanel()).getAnnouncer();
+}
 
-	
+public LoanNumberAnnouncer getLoanAnnouncer(){
+	return ((BankAnimationPanel) this.panel.getPanel()).getLoanAnnouncer();
+}
+
+
 }

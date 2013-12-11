@@ -8,13 +8,16 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
-import restaurant.CashierRole;
 import trace.AlertLog;
 import trace.AlertTag;
 import Person.Role.Employee;
 import Person.Role.Role;
 import Person.Role.ShiftTime;
+import Person.Role.Employee.WorkState;
 import bank.gui.TellerGui;
+import building.Bank;
+import building.BuildingList;
+import building.Restaurant;
 
 /**
  * 
@@ -77,6 +80,11 @@ public class BankTellerRole extends Employee implements BankTeller{
 		myClient = b;
 		state = requestState.notBeingHelped;
 		stateChanged();
+	}
+	
+	public void deactivate(){
+		super.deactivate();
+		kill();
 	}
 
 	/**
@@ -157,6 +165,10 @@ public class BankTellerRole extends Employee implements BankTeller{
 		}
 		if (locationState == location.entrance){
 			goToStation();
+			return true;
+		}
+		if (workState == WorkState.ReadyToLeave){
+			kill();
 			return true;
 		}
 		return false;
@@ -270,6 +282,7 @@ public class BankTellerRole extends Employee implements BankTeller{
 
 	private void Leaving(){
 		announcer.msgGoodbye(this);
+		TakeANumberDispenser.INSTANCE.resetTicket();
 		doLeave();
 	}
 
