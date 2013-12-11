@@ -15,6 +15,7 @@ import restaurant.gui.HostGui;
 import trace.AlertLog;
 import trace.AlertTag;
 import Person.Role.Role;
+import Person.Role.RoleState;
 import Person.Role.ShiftTime;
 
 /**
@@ -110,6 +111,10 @@ public class HostRole extends GenericHost {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAction() {
+		if(roleState == RoleState.Deactivating && waitingCustomers.size() == 0) {
+			kill();
+			return true;
+		}
 		if (!waitingCustomers.isEmpty()){
 			for(int w=0; w<waitingCustomers.size(); w++){
 				if(waitingCust>3) {

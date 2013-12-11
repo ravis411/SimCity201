@@ -233,6 +233,7 @@ public class AddPersonControl extends JFrame implements ActionListener{
 			controller.errorPopUp("Must enter a double for money!");
 		}
 		String job = null;
+		String unformatJob = null;
 		ShiftTime shift = ShiftTime.NONE;
 		String shiftText = null;
 		String location = null;
@@ -260,11 +261,12 @@ public class AddPersonControl extends JFrame implements ActionListener{
 		for (JRadioButton myJob : jobs) {
 			if (myJob.isSelected()) {
 				job = formatRole(myJob.getText(), location);
+				unformatJob = myJob.getText();
 				break;
 			}
 		}
 		//Error checking
-		if (!isAllowed(job, location)) {
+		if (!isAllowed(unformatJob, location)) {
 			controller.errorPopUp("You cannot create that job in that location!");
 			return;
 		}
@@ -307,14 +309,18 @@ public class AddPersonControl extends JFrame implements ActionListener{
 			return true;
 		} else if (role.equals("Restaurant Customer") && SetUpWorldFactory.restaurantECList.contains(location)) {
 			return true;
-		} 
+		} else if (role.equals("Restaurant Old Waiter") && SetUpWorldFactory.restaurantECList.contains(location)) {
+			return true;
+		} else if (role.equals("Restaurant New Waiter") && SetUpWorldFactory.restaurantECList.contains(location)) {
+			return true;
+		}
 		else {
 			return false;
 		}
 		} catch (NullPointerException n) {
 			controller.errorPopUp("Must have a value selected for each field!");
+			return false;
 		}
-		return false;
 	}
 	
 	private String formatRole(String unformat, String location) {

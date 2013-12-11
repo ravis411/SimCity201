@@ -92,7 +92,7 @@ public class SetUpWorldFactory{
         
         
         
-        SetUpWorldFactory() {
+        public SetUpWorldFactory() {
         }
 
         /** Loads the default configuration
@@ -140,6 +140,13 @@ public class SetUpWorldFactory{
                 jobList.add("Bank Client");
                 jobList.add("Bank Teller");
                 
+                restaurantECList.add("Ryan's Restaurant");
+                restaurantECList.add("Dylan's Restaurant");
+                restaurantECList.add("Kush's Restaurant");
+                restaurantECList.add("Luca's Restaurant");
+                restaurantECList.add("Byron's Restaurant");
+                restaurantECList.add("Jeffrey's Restaurant");
+                restaurantECList.add("Mike's Restaurant");
                 
                 /*
                 locationsList.add("City");
@@ -827,7 +834,7 @@ public class SetUpWorldFactory{
                                 cityPanel.addGui(restb);
                                 buildingsPanels.addBuildingPanel(restPanel);
                                 locationsList.add(name);
-                                restaurantECList.add(name);
+                                //restaurantECList.add(name);
                         }
                         break;
 
@@ -839,7 +846,7 @@ public class SetUpWorldFactory{
                                 cityPanel.addGui(restb2);
                                 buildingsPanels.addBuildingPanel(restPanel);
                                 locationsList.add(name);
-                                restaurantECList.add(name);
+                                //restaurantECList.add(name);
                         }
                         break;
                 case "KushsRestaurant":
@@ -850,7 +857,7 @@ public class SetUpWorldFactory{
                                 cityPanel.addGui(restb3);
                                 buildingsPanels.addBuildingPanel(restPanel);
                                 locationsList.add(name);
-                                restaurantECList.add(name);
+                                //restaurantECList.add(name);
                         }
                         break;
                 case "Food Court":
@@ -873,7 +880,7 @@ public class SetUpWorldFactory{
                                 cityPanel.addGui(lrestb);
                                 buildingsPanels.addBuildingPanel(restPanel);
                                 locationsList.add(name);
-                                restaurantECList.add(name);
+                                //restaurantECList.add(name);
                         }
                 
                         break;

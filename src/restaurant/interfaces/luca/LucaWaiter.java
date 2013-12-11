@@ -16,7 +16,7 @@ public interface LucaWaiter {
 	public abstract void msgWaiterOrderIsReady(int tableOriginNumber, String orderChoice) ;
 	public abstract void msgWaiterReadyForCheck(LucaCustomer customer) ;
 
-	public abstract void msgWaiterHereIsCheck(int tab, LucaCustomer customer) ;
+	public abstract void msgWaiterHereIsCheck(double d, LucaCustomer customer) ;
 
 	public abstract void msgDoneLeavingTable(LucaCustomer customer) ;
 	

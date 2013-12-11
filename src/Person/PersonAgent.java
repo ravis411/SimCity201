@@ -419,7 +419,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	  * Message sent by the home role to invite the person to a party
 	  */
 	public void msgPartyInvitation(Person p,Calendar rsvpDeadline,Calendar partyTime){
-		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Received a party invitation!");
+		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Received a party invitation! Party's at " + partyTime.get(Calendar.HOUR_OF_DAY) + ":" + partyTime.get(Calendar.MINUTE) + " tomorrow.");
 		Party party = new Party(p, rsvpDeadline, partyTime);
 		party.partyState = PartyState.ReceivedInvite;
 		parties.add(party);
@@ -448,7 +448,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			hr.partyInvitees.remove((PersonAgent) p);
 		}
 		if(hr.partyInvitees.size()==0 && hr.partyAttendees.size()==0){
-			AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "PARTY CANCELLED SINCE NO ONE IS COMING");
+			AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Party is cancelled since no one is attending.");
 		}
 	}
 	public void msgRespondToInviteUrgently(Person host){
@@ -674,6 +674,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		List<Building> buildings = BuildingList.findBuildingsWithType(BuildingList.RESTAURANT);
 		buildings.add(BuildingList.findBuildingWithName(home.getName()));
 		Random r = new Random();
+		
 		return "Ryan's Restaurant";
 		//return buildings.get(Math.abs(r.nextInt()) % buildings.size()).getName();
 		
@@ -728,7 +729,10 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		Building bdg = BuildingList.findBuildingWithName(r.getWorkLocation());
 		if(BuildingList.findBuildingWithName(r.getWorkLocation()) instanceof Workplace ){
 			Workplace w = (Workplace) bdg;
-			GoToLocation(r.getWorkLocation(), getTransportPreference());
+			
+				GoToLocation(r.getWorkLocation(), getTransportPreference());
+
+			
 			if(w instanceof Restaurant){
 				Restaurant rest = (Restaurant) bdg;
 				if(r instanceof GenericHost){
@@ -751,6 +755,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 					}
 				}
 			}
+
 			w.addRole(r);
 			if(!w.isOpen()){
 				pendingJobs.add(r);
@@ -906,7 +911,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			modeOfTransportation = Preferences.CAR;
 		}
 		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Going to "+location+" via + "+modeOfTransportation);
-		
+
 		switch(modeOfTransportation){
 			case Preferences.BUS:
 				String startStop = gui.DoGoToClosestBusStop();

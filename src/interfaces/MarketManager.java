@@ -25,6 +25,8 @@ public interface MarketManager {
 	public abstract void msgMarketManagerFoodOrder(String choice,
 			int quantityOfOrderThatMarketDoesntHave, GenericCook CookRole);
 
+	public abstract void atHome();
+
 
 
 
