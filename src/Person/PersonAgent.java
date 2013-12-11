@@ -175,26 +175,26 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			hr.activate();
 //		}
 			
-			if( !(r == null) || shift == ShiftTime.NIGHT_SHIFT) {
-				Random rand = new Random();
-				switch(Math.abs(rand.nextInt() % 6)){
-				case 0:
-					this.msgGoToMarket("Chicken");
-					System.err.println("MARKET");
-					break;
-				case 1:
-					this.msgINeedMoney(40.00);
-					System.err.println("NEEDS MONEY");
-					break;
-				case 2:
-				case 3:
-				case 4:
-				case 5:
-					System.err.println("HUNGRY");
-					this.msgImHungry();
-					break;
-				}
-			}
+//			if( !(r == null) || shift == ShiftTime.NIGHT_SHIFT) {
+//				Random rand = new Random();
+//				switch(Math.abs(rand.nextInt() % 6)){
+//				case 0:
+//					this.msgGoToMarket("Chicken");
+//					System.err.println("MARKET");
+//					break;
+//				case 1:
+//					this.msgINeedMoney(40.00);
+//					System.err.println("NEEDS MONEY");
+//					break;
+//				case 2:
+//				case 3:
+//				case 4:
+//				case 5:
+//					System.err.println("HUNGRY");
+//					this.msgImHungry();
+//					break;
+//				}
+//			}
 			
 
 //			if(r instanceof MarketManagerRole ){
