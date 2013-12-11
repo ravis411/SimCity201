@@ -24,8 +24,8 @@ public class WaiterGui implements Gui {
 	public WaiterGui(WaiterRole w, int c) {
 		this.agent = w;
 		counter = c;
-		yPos = 60 + (20*c);
-		yDestination = 60 + (20*c);
+		yPos = 60 + (22*c);
+		yDestination = 60 + (22*c);
 	}
 
 	public void updatePosition() {
