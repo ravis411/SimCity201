@@ -48,7 +48,6 @@ public class Market extends  Workplace {
 	
 	@Override
 	public void notifyEmployeesTheyCanLeave() {
-		// TODO Auto-generated method stub
 		for(Role r : inhabitants){
 			if(r instanceof Employee){
 				r.deactivate();

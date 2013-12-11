@@ -1,8 +1,10 @@
 package byronRestaurant;
 
 
+import MarketEmployee.MarketManagerRole;
 import Person.Role.Role;
 import Person.Role.ShiftTime;
+import Person.Role.Employee.WorkState;
 import byronRestaurant.gui.CookGui;
 import interfaces.generic_interfaces.GenericCook;
 
@@ -12,6 +14,8 @@ import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import javax.swing.Timer;
+
+
 
 
 
@@ -29,6 +33,7 @@ import trace.AlertTag;
 public class CookRole extends GenericCook {
 	private List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
 	public enum cookStatus {pending, cooking, done};
+	private List<MarketManagerRole> markets = Collections.synchronizedList(new ArrayList<MarketManagerRole>());
 	private String name;
 	private int foodThreshold = 3;
 	private int foodMaximum = 50;
@@ -69,8 +74,7 @@ public class CookRole extends GenericCook {
 	{
 		put("Steak", new Food("Steak", 6000,50));
 		put("Chicken", new Food("Chicken", 5000, 50));
-		put("Salad", new Food("Salad", 1000, 50));
-		put("Pizza", new Food("Pizza", 8000, 50));
+		put("Burger", new Food("Burger", 8000, 50));
 	}});
 
 
@@ -108,20 +112,42 @@ public class CookRole extends GenericCook {
 		stateChanged();
 	}
 
-	public void msgHereIsFood(String s, int a){
-		int temp = inventory.get(s).amount + a;
-		Food tempFood = new Food(s, inventory.get(s).cookTime,temp);
-		inventory.put(s,tempFood);
+	public void msgOrderFilled(int ingredientNum, int quantity){
+		String foodType = null; 
+		if (ingredientNum==0) {
+			foodType="Steak"; 
+
+		}
+		if (ingredientNum==1){
+			foodType="Chicken";
+		}
+		if (ingredientNum==2){
+			foodType="Burger";
+		}
+		int temp = inventory.get(foodType).amount + quantity;
+		Food tempFood = new Food(foodType, inventory.get(foodType).cookTime,temp);
+		inventory.put(foodType,tempFood);
 		synchronized(orders){
 			for (Order o : orders){
-				o.waiter.msgRestockedItem(s);
+				o.waiter.msgRestockedItem(foodType);
 			}
 		}
-		stateChanged();
-	}
+		stateChanged();		
+		}
 
-	public void msgNotEnoughFood(String s){
-		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"Market has run out, keep " + s + " off the menu.");
+	public void msgOrderNotFilled(int ingredientNum){
+		String foodType = null; 
+		if (ingredientNum==0) {
+			foodType="Steak"; 
+
+		}
+		if (ingredientNum==1){
+			foodType="Chicken";
+		}
+		if (ingredientNum==2){
+			foodType="Burger";
+		}
+		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"Market has run out, keep " + foodType + " off the menu.");		
 	}
 	public void msgTakingFood(){
 		cookGui.setOnPlate(false);
@@ -142,6 +168,10 @@ public class CookRole extends GenericCook {
 	// Scheduler
 	public boolean pickAndExecuteAction() {
 		synchronized(orders){
+			if(orders.isEmpty() && workState == WorkState.ReadyToLeave){
+				kill();
+				return true;
+			}
 			for (Order o : orders){
 				if (o.status == cookStatus.done){
 					placeOrder(o);
@@ -189,9 +219,7 @@ public class CookRole extends GenericCook {
 	}
 	private void cookOrder(final Order o){
 		if (inventory.get(o.choice).amount == foodThreshold){
-			//				o.waiter.msgOutOfStock(o.choice, o.table);
-			//				market.msgIWantFood(o.choice, (foodMaximum-inventory.get(o.choice).amount));
-			//				orders.remove(o);
+			markets.get(0).msgMarketManagerFoodOrder(o.choice, (foodMaximum-inventory.get(o.choice).amount), this);
 		}else if (inventory.get(o.choice).amount == 0){
 			o.waiter.msgOutOfStock(o.choice, o.table);
 			orders.remove(o);
@@ -219,7 +247,7 @@ public class CookRole extends GenericCook {
 			print ("Cooking order of " + o.choice + ". " + inventory.get(o.choice).amount + " remaining.");
 		}
 	}
-
+	
 	//Utilities
 	public String getName(){
 		return name;
@@ -253,7 +281,6 @@ public class CookRole extends GenericCook {
 
 	@Override
 	public String getNameOfRole() {
-		// TODO Auto-generated method stub
 		return Role.RESTAURANT_BYRON_COOK_ROLE;
 	}
 	

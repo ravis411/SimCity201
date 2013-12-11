@@ -2,6 +2,7 @@ package bank;
 import bank.BankTellerRole.location;
 import bank.gui.LoanGui;
 import Person.Role.*;
+import Person.Role.Employee.WorkState;
 import interfaces.BankClient;
 
 
@@ -9,6 +10,8 @@ import interfaces.BankClient;
 
 
 import interfaces.LoanTeller;
+
+
 
 
 //import Person.*;
@@ -72,6 +75,12 @@ public class LoanTellerRole extends Employee implements LoanTeller{
 		atIntermediate.release();
 		stateChanged();
 	}
+	
+	public void deactivate(){
+		super.deactivate();
+		kill();
+	}
+	
 	/**
 	 * message received by a bankClientRole that there is someone at the desk. 
 	 * @param b - bankClient being worked with
@@ -116,11 +125,12 @@ public class LoanTellerRole extends Employee implements LoanTeller{
 	//	Scheduler
 	public boolean pickAndExecuteAction() {
 		Accounts = Database.INSTANCE.sendDatabase();
-		if (locationState == location.closing){
-			Leaving();
-			return true;
-		}
-		if (locationState == location.station){
+		if(workState == WorkState.ReadyToLeave){
+			if(announcer.getNumClients() == 0){
+				kill();
+				return true;
+			}
+		}		if (locationState == location.station){
 			if (state == requestState.notBeingHelped){
 				receiveClient(myClient);
 				return true;
@@ -241,6 +251,7 @@ public class LoanTellerRole extends Employee implements LoanTeller{
 		loanGui.DoGoToStation();
 	}
 	private void doLeave(){
+		LoanTakeANumberDispenser.INSTANCE.resetTicket();
 		loanGui.DoLeave();
 	}
 	

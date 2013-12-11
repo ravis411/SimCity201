@@ -103,5 +103,8 @@ public class LoanNumberAnnouncer extends Agent implements AnnouncerB{
 		return "Bank Teller  " + getName();
 	}
 
+	public int getNumClients(){
+		return clients.size();
+	}
 
 }

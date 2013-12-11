@@ -140,5 +140,4 @@ public abstract class Workplace extends Building implements TimeListener{
 	}
 
 
-
 }
