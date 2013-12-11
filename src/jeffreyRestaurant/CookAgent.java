@@ -175,6 +175,11 @@ public class CookAgent extends GenericCook implements Cook{
 	@Override
 	public boolean pickAndExecuteAction() {
 		
+		if (orderStand.isEmtpy() && workState == WorkState.ReadyToLeave) {
+			kill();
+			return true;
+		}
+		
 		if (orders != null) {
 			synchronized(orders) {
 				for (order o : orders) {
