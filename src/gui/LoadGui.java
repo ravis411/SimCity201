@@ -103,6 +103,13 @@ public class LoadGui extends JFrame implements ActionListener{
 		buttonList.add(new JButton("Scenario 3"));
 		buttonList.add(new JButton("Scenario 4"));
 		buttonList.add(new JButton("/ryansTest.xml"));
+		buttonList.add(new JButton("/ScenarioA.xml"));
+		buttonList.add(new JButton("/ScenarioB.xml"));
+		buttonList.add(new JButton("/ScenarioCRestaurantInteraction.xml"));
+		buttonList.add(new JButton("/ScenarioDParty.xml"));
+		buttonList.add(new JButton("/ScenarioEBusStop.xml"));
+		buttonList.add(new JButton("/ScenarioFWorkplaces.xml"));
+		buttonList.add(new JButton("/ScenarioGMarketDelivery.xml"));
 		
 		
 		
