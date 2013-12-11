@@ -154,7 +154,7 @@ public class MarketManagerRole extends Employee implements MarketManager{
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAction() {
-	
+		
 		if (event==MarketEmployeeEvent.customerNeedsToBeGivenStation && myOrders.isEmpty()){
 			giveEmployeeAStation();
 			return true;
@@ -168,6 +168,11 @@ public class MarketManagerRole extends Employee implements MarketManager{
 				}
 			return true;
 			}
+		}
+		if (marketData.anyPendingOrders())
+		{
+			myOrders.add(new Order(marketData.getLastOrder().getChoice(),marketData.getLastOrder().getAmount(),orderNum++,marketData.getLastOrder().getCook()));
+			return true;
 		}
 		if (!myOrders.isEmpty() && !currentEmployeees.isEmpty())
 		{
@@ -183,11 +188,7 @@ public class MarketManagerRole extends Employee implements MarketManager{
 		}
 			
 		
-		if (marketData.anyPendingOrders())
-		{
-			myOrders.add(new Order(marketData.getLastOrder().getChoice(),marketData.getLastOrder().getAmount(),orderNum++,marketData.getLastOrder().getCook()));
-			return true;
-		}
+		
 		
 		
 		

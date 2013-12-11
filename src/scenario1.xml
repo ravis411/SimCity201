@@ -76,7 +76,7 @@
 				<friend name="Person 11" />
 			</friends>
 		</person>
-		<person name="Market 1 Manager" job="MarketEmployee.MarketManagerRole" shift="AM"
+		<person name="Market 1 Manager" job="MarketEmployee.MarketManagerRole" shift="PM"
 		    location="Market 1" home="Apartment 6">
 			<friends>
 				<friend name="Person 1" />
@@ -84,7 +84,7 @@
 				<friend name="Person 10" />
 			</friends>
 		</person>
-		<person name="Person 8" job="MarketEmployee.MarketEmployeeRole" shift="AM"
+		<person name="Person 8" job="MarketEmployee.MarketEmployeeRole" shift="PM"
 			location="Market 1" home="Apartment 7">
 			<friends>
 				<friend name="Person 1" />
@@ -94,7 +94,7 @@
 				<friend name="Person 9" />
 			</friends>
 		</person>
-		<person name="Person 9" job="MarketEmployee.MarketEmployeeRole" shift="AM"
+		<person name="Person 9" job="MarketEmployee.MarketEmployeeRole" shift="PM"
 		    location="Market 1" home="Apartment 8">
 			<friends>
 				<friend name="Person 1" />
@@ -341,7 +341,7 @@
 				<friend name="Person 4" />
 			</friends>
 		</person>
-				<person name="Person 69" job="MarketEmployee.MarketEmployeeRole" shift="AM"
+				<person name="Person 69" job="MarketEmployee.MarketEmployeeRole" shift="PM"
 		    location="Market 1" home="Apartment 8">
 			<friends>
 				<friend name="Person 1" />
