@@ -175,7 +175,7 @@ public class BusGui implements Gui {
 			    }
 			} catch (Exception e) {
 				testView = true;
-				AlertLog.getInstance().logWarning(AlertTag.VEHICLE_GUI, agent.toString(), "Image not found. Switching to Test View");
+				//AlertLog.getInstance().logWarning(AlertTag.VEHICLE_GUI, agent.toString(), "Image not found. Switching to Test View");
 			}
 
 		List<LocationInfo> locationList = SetUpWorldFactory.locationMap;

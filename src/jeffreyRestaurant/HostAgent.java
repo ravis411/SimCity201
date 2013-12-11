@@ -139,8 +139,8 @@ public class HostAgent extends GenericHost {
             If so seat him at the table.
             */
 		if(workState == WorkState.ReadyToLeave && Customers.size() == 0){
-			kill();
-			return true;
+			//kill();
+			//return true;
 		}
 		if (waiters != null) {
 			if (tables != null) {

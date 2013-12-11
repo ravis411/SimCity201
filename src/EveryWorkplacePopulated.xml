@@ -1,0 +1,499 @@
+<?xml version="1.0"?>
+<configuration>
+	<building-config>
+		<building id="1" type="Residence" name="House 1" />
+		<building id="2" type="Residence" name="House 2" />
+		<building id="3" type="Market" name="Market 1" />
+		<building id="4" type="Apartment" name="Apartment Building 1" />
+		<building id="5" type="Bank" name="Bank" />
+		<building id="6" type="Apartment" name="Apartment Building 2" />
+		<building id="7" type="Apartment" name="Apartment Building 3" />
+		<building id="8" type="Residence" name="House 3" />
+		<building id="9" type="Apartment" name="Apartment Building 4" />
+		<building id="10" type="Bank" name="Bank 2" />
+		<building id="11" type="Food Court" name="Food Court" />
+		<building id="12" type="Market" name="Market 2" />
+	</building-config>
+	<people>
+		<person name="Person 1" job="MarketEmployee.MarketEmployeeRole" shift="AM"
+			    location="Market 1" home="House 1">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 2" job="MarketEmployee.MarketEmployeeRole" shift="AM"
+			    location="Market 1" home="House 2">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 3" job="MarketEmployee.MarketEmployeeRole" shift="AM"
+			    location="Market 1" home="House 3">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 4" job="MarketEmployee.MarketManagerRole" shift="AM"
+			    location="Market 1" home="Apartment 1">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 5" job="MarketEmployee.MarketEmployeeRole" shift="AM"
+			    location="Market 2" home="Apartment 2">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 6" job="MarketEmployee.MarketEmployeeRole" shift="AM"
+			    location="Market 2" home="Apartment 3">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 7" job="MarketEmployee.MarketEmployeeRole" shift="AM"
+			    location="Market 2" home="Apartment 4">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 8" job="MarketEmployee.MarketManagerRole" shift="AM"
+			    location="Market 2" home="Apartment 5">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 9" job="bank.BankTellerRole" shift="AM"
+			    location="Bank" home="Apartment 6">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends> 
+		</person>
+		<person name="Person 10" job="bank.LoanTellerRole" shift="AM"
+			    location="Bank" home="Apartment 7">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 11" job="bank.BankTellerRole" shift="AM"
+			    location="Bank 2" home="Apartment 8">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 12" job="bank.LoanTellerRole" shift="AM"
+			    location="Bank 2" home="Apartment 9">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 13" job="restaurant.OldWaiterRole" shift="AM"
+			    location="Dylan's Restaurant" home="Apartment 10">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 14" job="restaurant.NewWaiterRole" shift="AM"
+			    location="Dylan's Restaurant" home="Apartment 11">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 15" job="restaurant.HostRole" shift="AM"
+			    location="Dylan's Restaurant" home="Apartment 12">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 16" job="restaurant.CookRole" shift="AM"
+			    location="Dylan's Restaurant" home="Apartment 13">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 17" job="restaurant.CashierRole" shift="AM"
+			    location="Dylan's Restaurant" home="Apartment 14">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 18" job="restaurant.luca.LucaOldWaiterRole" shift="AM"
+			    location="Luca's Restaurant" home="Apartment 15">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 19" job="restaurant.luca.LucaNewWaiterRole" shift="AM"
+			    location="Luca's Restaurant" home="Apartment 16">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 20" job="restaurant.luca.LucaHostRole" shift="AM"
+			    location="Luca's Restaurant" home="Apartment 17">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 21" job="restaurant.luca.LucaCookRole" shift="AM"
+			    location="Luca's Restaurant" home="Apartment 18">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 22" job="restaurant.luca.LucaCashierRole" shift="AM"
+			    location="Luca's Restaurant" home="Apartment 19">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 23" job="kushrestaurant.NewWaiterRole" shift="AM"
+			    location="Kush's Restaurant" home="Apartment 20">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 24" job="kushrestaurant.OldWaiterRole" shift="AM"
+			    location="Kush's Restaurant" home="Apartment 21">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 25" job="kushrestaurant.HostRole" shift="AM"
+			    location="Kush's Restaurant" home="Apartment 22">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 26" job="kushrestaurant.CookRole" shift="AM"
+			    location="Kush's Restaurant" home="Apartment 23">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 27" job="kushrestaurant.CashierRole" shift="AM"
+			    location="Kush's Restaurant" home="Apartment 24">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 28" job="jeffreyRestaurant.NewWaiterAgent" shift="AM"
+			    location="Jeffrey's Restaurant" home="Apartment 25">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 29" job="jeffreyRestaurant.OldWaiterAgent" shift="AM"
+			    location="Jeffrey's Restaurant" home="Apartment 26">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 30" job="jeffreyRestaurant.HostAgent" shift="AM"
+			    location="Jeffrey's Restaurant" home="Apartment 27">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 31" job="jeffreyRestaurant.CookAgent" shift="AM"
+			    location="Jeffrey's Restaurant" home="Apartment 28">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 32" job="jeffreyRestaurant.CashierAgent" shift="AM"
+			    location="Jeffrey's Restaurant" home="Apartment 29">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 33" job="mikeRestaurant.NewWaiterRole" shift="AM"
+			    location="Mike's Restaurant" home="Apartment 30">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 34" job="mikeRestaurant.OldWaiterRole" shift="AM"
+			    location="Mike's Restaurant" home="Apartment 31">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 35" job="mikeRestaurant.HostRole" shift="AM"
+			    location="Mike's Restaurant" home="Apartment 32">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 36" job="mikeRestaurant.CookRole" shift="AM"
+			    location="Mike's Restaurant" home="Apartment 33">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 37" job="mikeRestaurant.CashierRole" shift="AM"
+			    location="Mike's Restaurant" home="Apartment 34">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 38" job="ryansRestaurant.RyansHostRole" shift="AM"
+			    location="Ryan's Restaurant" home="Apartment 35">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 39" job="ryansRestaurant.RyansCookRole" shift="AM"
+			    location="Ryan's Restaurant" home="Apartment 36">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 40" job="ryansRestaurant.RyansCashierRole" shift="AM"
+			    location="Ryan's Restaurant" home="Apartment 37">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 41" job="ryansRestaurant.RyansOldWaiterRole" shift="AM"
+			    location="Ryan's Restaurant" home="Apartment 38">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 42" job="ryansRestaurant.RyansNewWaiterRole" shift="AM"
+			    location="Ryan's Restaurant" home="Apartment 39">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 43" job="byronRestaurant.NewWaiterRole" shift="AM"
+			    location="Byron's Restaurant" home="Apartment 40">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 44" job="byronRestaurant.OldWaiterRole" shift="AM"
+			    location="Byron's Restaurant" home="Apartment 41">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 45" job="byronRestaurant.HostRole" shift="AM"
+			    location="Byron's Restaurant" home="Apartment 42">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 46" job="byronRestaurant.CookRole" shift="AM"
+			    location="Byron's Restaurant" home="Apartment 43">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 47" job="byronRestaurant.CashierRole" shift="AM"
+			    location="Byron's Restaurant" home="Apartment 44">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 48" job="mikeRestaurant.NewWaiterRole" shift="PM"
+			    location="Home" home="Apartment 45">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 49" job="mikeRestaurant.OldWaiterRole" shift="PM"
+			    location="Mike's Restaurant" home="Apartment 46">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 50" job="mikeRestaurant.HostRole" shift="PM"
+			    location="Mike's Restaurant" home="Apartment 47">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 51" job="mikeRestaurant.CookRole" shift="PM"
+			    location="Mike's Restaurant" home="Apartment 48">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 52" job="mikeRestaurant.CashierRole" shift="PM"
+			    location="Mike's Restaurant" home="Apartment 49">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 53"
+			    location="Home" home="Apartment 50">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 54"
+			    location="Home" home="Apartment 51">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 55"
+			    location="Home" home="Apartment 52">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 56"
+			    location="Home" home="Apartment 53">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 57"
+			    location="Home" home="Apartment 54">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 58"
+			    location="Home" home="Apartment 55">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 59"
+			    location="Home" home="Apartment 56">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+		<person name="Person 60"
+			    location="Home" home="Apartment 57">
+				<friends>
+					<friend name="Person 1" />
+				    <friend name="Person 2" />
+				    <friend name="Person 11" />
+				</friends>
+		</person>
+    </people>
+</configuration>

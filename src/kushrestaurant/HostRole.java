@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 import jeffreyRestaurant.interfaces.Host;
+import Person.Role.RoleState;
 import Person.Role.ShiftTime;
 import kushrestaurant.interfaces.Customer;
 import kushrestaurant.interfaces.Waiter;
@@ -143,6 +144,10 @@ public class HostRole extends GenericHost implements Host{
             If so seat him at the table.
 		 */
 		//print("test");
+		if(this.workState==WorkState.ReadyToLeave && this.waitingCustomers.size()==0){
+			kill();
+			return true;
+		}
 		if(!(waiters.size() > 0))
 		{
 			return true; 

@@ -151,7 +151,7 @@ public class TruckVehicleGui implements Gui {
     		}
     	} catch (Exception e) {
     		testView = true;
-    		AlertLog.getInstance().logWarning(AlertTag.VEHICLE_GUI, agentName, "Image not found. Switching to Test View"+s);
+    	//	AlertLog.getInstance().logWarning(AlertTag.VEHICLE_GUI, agentName, "Image not found. Switching to Test View"+s);
     	}
 
     	

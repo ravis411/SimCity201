@@ -98,19 +98,19 @@ public class LoadGui extends JFrame implements ActionListener{
 		Dimension size = new Dimension(paneSize.width, paneSize.height/8);
 		
 		
-		buttonList.add(new JButton("Scenario 1"));
+		buttonList.add(new JButton("/EveryWorkplacePopulated.xml"));
 		buttonList.add(new JButton("Scenario 2"));
 		buttonList.add(new JButton("Scenario 3"));
-		buttonList.add(new JButton("Scenario 4"));
+		buttonList.add(new JButton("/RobberScenario.xml"));
+		buttonList.add(new JButton("Scenario 5"));
 		buttonList.add(new JButton("/ryansTest.xml"));
 		buttonList.add(new JButton("/ScenarioA.xml"));
 		buttonList.add(new JButton("/ScenarioB.xml"));
 		buttonList.add(new JButton("/ScenarioCRestaurantInteraction.xml"));
 		buttonList.add(new JButton("/ScenarioDParty.xml"));
-		buttonList.add(new JButton("/ScenarioEBusStop.xml"));
+		buttonList.add(new JButton("/NoJobsGenerated.xml"));
 		buttonList.add(new JButton("/ScenarioFWorkplaces.xml"));
 		buttonList.add(new JButton("/ScenarioGMarketDelivery.xml"));
-		
 		
 		
 		for(JButton bl : buttonList){
@@ -134,6 +134,7 @@ public class LoadGui extends JFrame implements ActionListener{
 		this.revalidate();
 		this.repaint();
 		this.setVisible(true);
+		cancelButton.doClick();
 	}
 
 	

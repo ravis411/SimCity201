@@ -6,7 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 
+
+import Person.Role.RoleState;
+
 import restaurant.interfaces.luca.LucaMarket;
+
 import Person.Role.ShiftTime;
 import kushrestaurant.interfaces.Cashier;
 import kushrestaurant.interfaces.Customer;
@@ -130,7 +134,10 @@ public boolean pickAndExecuteAction() {
         Does there exist a table and customer,
         so that table is unoccupied and customer is waiting.
         If so seat him at the table.
-	 */
+	 */if(this.workState==WorkState.ReadyToLeave){
+		 kill();
+		 return true;
+	 }
 	for (Bill b:bills){
 		if(b.state==CState.Unpaid){
 			

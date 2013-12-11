@@ -16,9 +16,12 @@ import market.gui.MarketManagerGui;
 import residence.HomeRole;
 import trace.AlertLog;
 import trace.AlertTag;
+import MarketEmployee.MarketEmployeeRole.MarketEmployeeEvent;
+import MarketEmployee.MarketEmployeeRole.MarketEmployeeState;
 import Person.Role.Employee;
 import Person.Role.Role;
 import Person.Role.ShiftTime;
+import Person.Role.Employee.WorkState;
 import Transportation.DeliveryTruckAgent;
 
 /**
@@ -161,7 +164,11 @@ public class MarketManagerRole extends Employee implements MarketManager{
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAction() {
-		
+		if(workState == WorkState.ReadyToLeave)
+		{
+			kill();
+			return true;
+		}
 		if (event==MarketEmployeeEvent.customerNeedsToBeGivenStation && myOrders.isEmpty()){
 			giveEmployeeAStation();
 			return true;
@@ -320,7 +327,13 @@ public class MarketManagerRole extends Employee implements MarketManager{
 			}
 		
 	}
+	public void deactivate(){
+		super.deactivate();
+//		kill();
+		event=MarketEmployeeEvent.enteredMarket;
+		state=MarketEmployeeState.walkingToDesk;
 
+	}
 	//utilities
 
 	

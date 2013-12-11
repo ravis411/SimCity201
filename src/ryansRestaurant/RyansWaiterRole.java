@@ -496,6 +496,7 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 		shiftStatus = AgentState.none;
 		activity = "Leaving Work";
 		waiterGui.doLeaveWork();
+		activity = "";
 		host.msgRemoveWaiter(this);
 		timer.schedule(new TimerTask() {
 			

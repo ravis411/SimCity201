@@ -18,16 +18,15 @@ public class Preferences {
 		map = new HashMap<KeyValue, String>();
 		Random r = new Random();
 		String vehicle_pref;
-		switch(r.nextInt()%3){
+		switch(r.nextInt()%2){
 			case 0:
 				vehicle_pref = BUS;
 				break;
 			case 1:
 				vehicle_pref = WALK;
 				break;
-			case 2: 
 			default:
-				vehicle_pref = CAR;
+				vehicle_pref = "";
 				break;
 		}
 //		String vehicle_pref = Math.random() < 0.5 ? BUS : WALK;

@@ -19,13 +19,11 @@ public abstract class Workplace extends Building implements TimeListener{
 	public Workplace(BuildingPanel panel) {
 		super(panel);
 		// TODO Auto-generated constructor stub
-		MasterTime.getInstance().registerTimeListener(NIGHT_SHIFT_HOUR, NIGHT_SHIFT_MIN, false, this);
 	}
 
 	@Override
 	public void timeAction(int hour, int minute) {
 		// TODO Auto-generated method stub
-
 		this.notifyEmployeesTheyCanLeave();
 	}
 
@@ -37,8 +35,8 @@ public abstract class Workplace extends Building implements TimeListener{
 	public static int NIGHT_SHIFT_HOUR = 17;
 	public static int NIGHT_SHIFT_MIN = 0;
 
-	public static int END_SHIFT_HOUR = 0;
-	public static int END_SHIFT_MIN = 0;
+	public static int END_SHIFT_HOUR = 23;
+	public static int END_SHIFT_MIN = 59;
 
 	/**
 	 * Message sent to the workplace that it is time to open
@@ -138,7 +136,6 @@ public abstract class Workplace extends Building implements TimeListener{
 			getReadyForWork();
 		}
 	}
-
 
 
 }

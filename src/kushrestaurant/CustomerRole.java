@@ -11,6 +11,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
+import Person.Role.RoleState;
 import Person.Role.ShiftTime;
 import kushrestaurant.WaiterRole.Menu;
 import kushrestaurant.gui.CustomerGui;
@@ -167,7 +168,10 @@ public class CustomerRole extends GenericCustomer implements Customer {
 	 */
 	public boolean pickAndExecuteAction() {
 		//	CustomerAgent is a finite state machine
-
+        if(this.roleState==RoleState.Deactivating){
+        	kill();
+        	return true;
+        }
 		if (state == AgentState.DoingNothing && event == AgentEvent.gotHungry ){
 			state = AgentState.WaitingInRestaurant;
 			goToRestaurant();
