@@ -2,6 +2,9 @@ package byronRestaurant;
 
 import Person.Role.Role;
 import Person.Role.ShiftTime;
+import Person.Role.Employee.WorkState;
+import building.BuildingList;
+import building.Restaurant;
 import byronRestaurant.gui.WaiterGui;
 import interfaces.generic_interfaces.GenericCashier;
 import interfaces.generic_interfaces.GenericCook;
@@ -22,8 +25,7 @@ public abstract class WaiterRole extends GenericWaiter {
 	public List<String>menu = new ArrayList<String>();{
 		menu.add("Steak");
 		menu.add("Chicken");
-		menu.add("Salad");
-		menu.add("Pizza");
+		menu.add("Burger");
 	}
 	protected class MyCustomer{
 		public CustomerState state;
@@ -202,6 +204,13 @@ public abstract class WaiterRole extends GenericWaiter {
 
 	public boolean pickAndExecuteAction() {
 		try {
+			if(workState == WorkState.ReadyToLeave){
+				Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(workLocation);
+				if(rest.getNumCustomers() == 0 && Customers.size() == 0){
+					kill();
+					return true;
+				}
+			}
 			for (MyCustomer customer : Customers){
 				if (customer.state == CustomerState.orderNotAvailable){
 					outOfStock(customer);

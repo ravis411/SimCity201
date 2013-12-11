@@ -132,7 +132,7 @@ public class RyansRestaurantAnimationPanel extends JPanel implements MouseListen
         bufferSize = this.getSize();
         this.setBackground(Color.BLACK);
  
-    	Timer timer = new Timer(10, this );
+    	Timer timer = new Timer(5, this );
     	timer.start();
     }
     
@@ -311,7 +311,9 @@ public class RyansRestaurantAnimationPanel extends JPanel implements MouseListen
 
 	@Override
 	public void removeGuiForRole(Role r) {
-		// TODO Auto-generated method stub
+		if(r instanceof RyansCookRole){
+			
+		}
 		
 	}
     

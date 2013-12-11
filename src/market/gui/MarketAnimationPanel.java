@@ -12,19 +12,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import building.BuildingList;
-import building.Market;
 import market.data.MarketData;
 import MarketEmployee.MarketCustomerRole;
 import MarketEmployee.MarketEmployeeRole;
 import MarketEmployee.MarketManagerRole;
 import Person.Role.Role;
 import Transportation.DeliveryTruckAgent;
+import building.BuildingList;
+import building.Market;
 
 public class MarketAnimationPanel extends JPanel implements ActionListener,GuiPanel {
 
@@ -40,7 +42,7 @@ public class MarketAnimationPanel extends JPanel implements ActionListener,GuiPa
 	private Image bufferImage;
 	private Dimension bufferSize;
 	private String marketName;
-	private List<Gui> guis = new ArrayList<Gui>();
+	private Map<Role,Gui> guis = new HashMap<Role,Gui>();
 
 	public MarketAnimationPanel(String marketName1) {
 		setSize(WINDOWX, WINDOWY);
@@ -56,11 +58,13 @@ public class MarketAnimationPanel extends JPanel implements ActionListener,GuiPa
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		repaint();  //Will have paintComponent called
-		for(Gui gui : guis) {
+		for(Gui gui : guis.values()) {
 			if (gui.isPresent()) {
 				gui.updatePosition();
 			}
 		}
+		
+		clearRemovedGuis();
 	}
 
 	@Override
@@ -108,24 +112,24 @@ public class MarketAnimationPanel extends JPanel implements ActionListener,GuiPa
 		g2.drawString("Chicken", 520, 100);
 		g2.drawString("Burger", 620, 100);
 		
-		for(Gui gui : guis) {
+		for(Gui gui : guis.values()) {
 			if (gui.isPresent()) {
 				gui.draw(g2);
 			}
 		}
 	}
 
-	public void addGui(MarketEmployeeGui gui) {
-		guis.add(gui);
-	}
-
-	public void addGui(MarketManagerGui gui) {
-		guis.add(gui);		
-	}
-	public void addGui(MarketCustomerGui gui) {
-		guis.add(gui);	
-
-	}
+//	public void addGui(MarketEmployeeGui gui) {
+//		guis.add(gui);
+//	}
+//
+//	public void addGui(MarketManagerGui gui) {
+//		guis.add(gui);		
+//	}
+//	public void addGui(MarketCustomerGui gui) {
+//		guis.add(gui);	
+//
+//	}
 
 	@Override
 	public void addGuiForRole(Role r) {
@@ -139,7 +143,7 @@ public class MarketAnimationPanel extends JPanel implements ActionListener,GuiPa
 				marketData.incrementNumerOfCustomersInALine(0);
 				marketCustomerRole.setCounter(0);
 				marketCustomerRole.setMarketData(marketData);
-				guis.add(gui);
+				guis.put(r, gui);
 			}
 			else if (marketData.getNumberOfCustomersInALine(0)>marketData.getNumberOfCustomersInALine(1) && marketData.getNumberOfCustomersInALine(1)==marketData.getNumberOfCustomersInALine(2)){
 				MarketCustomerGui gui = new MarketCustomerGui(marketCustomerRole, 1);
@@ -147,7 +151,7 @@ public class MarketAnimationPanel extends JPanel implements ActionListener,GuiPa
 				marketData.incrementNumerOfCustomersInALine(1);
 				marketCustomerRole.setCounter(1);
 				marketCustomerRole.setMarketData(marketData);
-				guis.add(gui);
+				guis.put(r, gui);
 			}
 			else if (marketData.getNumberOfCustomersInALine(0)==marketData.getNumberOfCustomersInALine(1)){
 				MarketCustomerGui gui = new MarketCustomerGui(marketCustomerRole, 2);
@@ -155,7 +159,7 @@ public class MarketAnimationPanel extends JPanel implements ActionListener,GuiPa
 				marketData.incrementNumerOfCustomersInALine(2);
 				marketCustomerRole.setCounter(2);
 				marketCustomerRole.setMarketData(marketData);
-				guis.add(gui);
+				guis.put(r, gui);
 			}
 
 		}
@@ -164,7 +168,7 @@ public class MarketAnimationPanel extends JPanel implements ActionListener,GuiPa
 			MarketEmployeeGui gui = new MarketEmployeeGui(marketEmployeeRole);
 			marketEmployeeRole.setGui(gui);
 			marketEmployeeRole.setMarketData(marketData);
-			guis.add(gui);
+			guis.put(r, gui);
 
 		}
 		if(r instanceof MarketManagerRole){
@@ -174,13 +178,24 @@ public class MarketAnimationPanel extends JPanel implements ActionListener,GuiPa
 			marketManagerRole.setDeliveryTruck(new DeliveryTruckAgent("Delivery Truck", marketName));
 			marketData.setMarketManager(marketManagerRole);
 			marketManagerRole.setMarketData(marketData);
-			guis.add(gui);
+			guis.put(r, gui);
 
 		}
 	}
+	
+	private List<Role> removalList = new ArrayList<Role>();
+
+	private void clearRemovedGuis(){
+		for(int i = removalList.size()-1; i >= 0; i--){
+			guis.remove(removalList.get(i));
+			removalList.remove(i);
+		}
+	}
+	
 	@Override
 	public void removeGuiForRole(Role r) {
-		// TODO Auto-generated method stub
+		
+		removalList.add(r);
 	}
 
 

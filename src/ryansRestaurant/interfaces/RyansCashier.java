@@ -7,4 +7,5 @@ public interface RyansCashier {
 	public abstract void msgMarketBill(RyansMarket market, double total);
 	
 	public String toString();
+	public abstract void msgWakeUp();
 }

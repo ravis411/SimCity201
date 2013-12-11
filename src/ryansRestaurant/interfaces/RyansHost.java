@@ -38,4 +38,6 @@ public interface RyansHost {
 	public abstract void msgAddTable(int tableNumber, int numSeats);
 
 	public abstract void msgRemoveWaiter(RyansWaiter ryansWaiterRole);
+
+	public abstract void msgWakeUp();
 }

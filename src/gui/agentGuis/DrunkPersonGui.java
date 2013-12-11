@@ -432,7 +432,7 @@ public class DrunkPersonGui implements Gui {
 	        	image = icon.getImage();
 	        	}
 			} catch (Exception e) {
-				AlertLog.getInstance().logWarning(AlertTag.PERSON_GUI, agent.toString(), "Image not found. Switching to test view.");
+			//	AlertLog.getInstance().logWarning(AlertTag.PERSON_GUI, agent.toString(), "Image not found. Switching to test view.");
 				testView = true;
 			}
 			
@@ -551,7 +551,8 @@ public class DrunkPersonGui implements Gui {
         	if(timeToBeDead == 0){
         		isPresent = false;
         		timeToBeDead = 150;
-   
+        		width = 20;
+        		height = 20;
         		hitByCar = false;
         		state = PersonState.none;
         		currentPosition = null;

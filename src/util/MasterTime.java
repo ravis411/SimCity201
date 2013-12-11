@@ -26,6 +26,7 @@ public class MasterTime {
                 dateListeners = Collections.synchronizedList(new ArrayList<MyDateListener>());
                 timeListeners = Collections.synchronizedList(new ArrayList<MyTimeListener>());
                 calendar.set(Calendar.HOUR_OF_DAY, 8);
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
         }
         
         /**

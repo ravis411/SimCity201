@@ -105,14 +105,14 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	
 	public ResidenceBuildingPanel home;
 	
-	private class MyRole{
+	public static class MyRole{
 		Role role;
 		public MyRole(Role r){
 			this.role = r;
 		}
 	}
 	
-	private class MyJob extends MyRole{
+	public static class MyJob extends MyRole{
 
 		ShiftTime shift;
 		public MyJob(Role r, ShiftTime shift) {
@@ -242,7 +242,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		friends = new ArrayList<Person>();
 		roles = new ArrayList<MyRole>();
 		hungerLevel = 0;
-		state=PersonState.GettingFood;
+		state=PersonState.Idle;
 		parties = new ArrayList<Party>();
 		prefs = new Preferences();
 		this.home = home;
@@ -277,7 +277,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
                 MasterTime.getInstance().registerTimeListener(Workplace.DAY_SHIFT_HOUR, Workplace.DAY_SHIFT_MIN, false, this);
                 MasterTime.getInstance().registerTimeListener(Workplace.NIGHT_SHIFT_HOUR, Workplace.NIGHT_SHIFT_MIN, false, this);
                 MasterTime.getInstance().registerTimeListener(Workplace.END_SHIFT_HOUR, Workplace.END_SHIFT_MIN, false, this);
-                MasterTime.getInstance().registerTimeListener(GO_HOME_HOUR, GO_HOME_MINUTE, true, this);
+                //MasterTime.getInstance().registerTimeListener(GO_HOME_HOUR, GO_HOME_MINUTE, true, this);
                 //Add the gui
                 //setGui(new PersonGui(this));
         }
@@ -479,9 +479,6 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	 */
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		if(getName().equals("Mike's AM Cashier") && currentShift == ShiftTime.NIGHT_SHIFT){
-			int i = 0; 
-		}
 		//cue the Role schedulers
 		boolean outcome = false;
 			for(MyRole r: roles){
@@ -674,7 +671,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		List<Building> buildings = BuildingList.findBuildingsWithType(BuildingList.RESTAURANT);
 		buildings.add(BuildingList.findBuildingWithName(home.getName()));
 		Random r = new Random();
-		return "Dylan's Restaurant";
+		return "Mike's Restaurant";
 		//return buildings.get(Math.abs(r.nextInt()) % buildings.size()).getName();
 		
         //return Math.random() > 0.5 ? "Food Court" : this.home.getName();
@@ -816,7 +813,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		return transport;
 	}
 
-        private void GoGetMoney(){
+    private void GoGetMoney(){
 
         //needs a way to find a bank quite yet
         GoToLocation("Bank", getTransportPreference());
@@ -1224,7 +1221,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				hungerLevel += 1;
-				if(hungerLevel % 20 == 0){
+				if(hungerLevel % 5 == 0){
 					stateChanged();
 				}
 			}

@@ -2,6 +2,7 @@ package jeffreyRestaurant;
 
 import Person.Role.Role;
 import Person.Role.ShiftTime;
+import Person.Role.Employee.WorkState;
 import agent.Agent;
 import interfaces.generic_interfaces.GenericHost;
 import interfaces.generic_interfaces.GenericWaiter;
@@ -137,6 +138,10 @@ public class HostAgent extends GenericHost {
             so that table is unoccupied and customer is waiting.
             If so seat him at the table.
             */
+		if(workState == WorkState.ReadyToLeave && Customers.size() == 0){
+			//kill();
+			//return true;
+		}
 		if (waiters != null) {
 			if (tables != null) {
 				synchronized(Customers) {

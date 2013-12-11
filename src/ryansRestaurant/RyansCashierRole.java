@@ -2,7 +2,10 @@ package ryansRestaurant;
 
 import Person.Role.Role;
 import Person.Role.ShiftTime;
+import Person.Role.Employee.WorkState;
 import agent.Agent;
+import building.BuildingList;
+import building.Restaurant;
 import interfaces.generic_interfaces.GenericCashier;
 
 import java.util.*;
@@ -55,6 +58,12 @@ public class RyansCashierRole extends GenericCashier implements RyansCashier {
 	}
 
 	// Messages
+	
+	public void msgWakeUp(){
+		stateChanged();
+	}
+	
+	
 
 	public void msgComputeBill(RyansWaiter waiter, String choice, RyansCustomer customer) {
 		log.add(new LoggedEvent("Received msgComputeBill"));
@@ -119,6 +128,17 @@ public class RyansCashierRole extends GenericCashier implements RyansCashier {
 		
 		
 		try {
+		
+			if(workState == WorkState.ReadyToLeave){
+				Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(workLocation);
+				if(rest.getNumCustomers() == 0){
+					kill();
+					AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Leaving Work.");
+					return true;
+				}
+			}
+			
+
 			synchronized (orders) {
 			for(Order o : orders) {
 				if(o.state == BillState.paid) {
@@ -284,6 +304,12 @@ public class RyansCashierRole extends GenericCashier implements RyansCashier {
 	@Override
 	public String getNameOfRole() {
 		return Role.RESTAURANT_RYAN_CASHIER_ROLE;
+	}
+	
+	@Override
+	public void deactivate() {
+			super.deactivate();	
+			workState = WorkState.ReadyToLeave;
 	}
 	
 	@Override

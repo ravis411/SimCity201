@@ -10,6 +10,8 @@ import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
+import building.BuildingList;
+import building.Restaurant;
 import ryansRestaurant.interfaces.RyansCustomer;
 import ryansRestaurant.interfaces.RyansHost;
 import ryansRestaurant.interfaces.RyansWaiter;
@@ -17,6 +19,7 @@ import trace.AlertLog;
 import trace.AlertTag;
 import Person.Role.Role;
 import Person.Role.ShiftTime;
+import Person.Role.Employee.WorkState;
 
 /**
  * Restaurant RyansHost Agent
@@ -217,13 +220,28 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 		}
 		stateChanged();
 	}
+	
+	public void msgWakeUp(){
+		stateChanged();
+		
+	}
 
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAction() {
 		try {
-		/* Think of this next rule as:
+		
+			if(workState == WorkState.ReadyToLeave){
+				Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(workLocation);
+				if(rest.getNumCustomers() == 0){
+					kill();
+					AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Leaving Work.");
+					return true;
+				}
+			}
+
+			/* Think of this next rule as:
             Does there exist a table and customer,
             so that table is unoccupied and customer is waiting.
             If so seat him at the table.
@@ -237,9 +255,8 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 						return true;
 					}else if(w.state == WaiterState.leaving){
 						removeWaiter(w);
+						return true;
 					}
-					
-					
 				} }
 		}
 
@@ -445,15 +462,22 @@ public class RyansHostRole extends GenericHost implements RyansHost {
 		return false;
 	}
 
-
 	@Override
 	public String getNameOfRole() {
 		return Role.RESTAURANT_RYAN_HOST_ROLE;
 	}
 	
 	@Override
+	public void deactivate() {
+			super.deactivate();	
+			workState = WorkState.ReadyToLeave;
+	}
+	
+	
+	@Override
 	public void kill() {
-		AlertLog.getInstance().logDebug(AlertTag.RYANS_RESTAURANT, getName(), "Killed called.");
+		
+		AlertLog.getInstance().logDebug(AlertTag.RYANS_RESTAURANT, getName(), "Leaving Work.");
 		//super.kill();
 	}
 }
