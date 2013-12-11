@@ -4,6 +4,7 @@ import gui.Building.BuildingPanel;
 import interfaces.MarketEmployee;
 import interfaces.MarketManager;
 import interfaces.generic_interfaces.GenericCook;
+import MarketEmployee.MarketManagerRole;
 import Person.Role.Employee;
 import Person.Role.Role;
 
@@ -44,6 +45,20 @@ public class Market extends  Workplace {
 		
 		return hasManager && hasThreeEmployee;
 		}
+	public MarketManagerRole getManager(){
+		MarketManagerRole m= new MarketManagerRole("market");
+		synchronized(inhabitants){
+			for(Role r : inhabitants){
+				if(r instanceof MarketManager){
+					 m=(MarketManagerRole)r;
+					break;
+				}
+			}
+		}
+		return m;
+			
+	}
+		
 	
 	@Override
 	public void notifyEmployeesTheyCanLeave() {

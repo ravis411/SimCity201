@@ -2,15 +2,26 @@ package gui;
 
 import gui.Building.BuildingGui;
 
-import javax.swing.*;
-
-import util.MasterTime;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.ArrayList;
+
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
+import util.MasterTime;
+import building.Building;
+import building.BuildingList;
 
 
 
@@ -69,6 +80,8 @@ public class CityAnimationPanel extends JPanel implements MouseListener, ActionL
 		Graphics2D g2 = (Graphics2D)g;
 
 		MasterTime.getInstance().add(Calendar.SECOND, 10);
+		Building bdg = BuildingList.findBuildingWithName("Mike's Restaurant");
+		//System.out.println(bdg.getInhabitants().size());
 		//AlertLog.getInstance().logInfo(AlertTag.GENERAL_CITY, "Calendar", calendar.toString());
 		
 		

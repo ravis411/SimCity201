@@ -12,6 +12,8 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
+
+import Person.Role.RoleState;
 import Person.Role.ShiftTime;
 import building.BuildingList;
 import building.Restaurant;
@@ -146,7 +148,12 @@ public void setCashier(GenericCashier cashier){
 		       if(onBreak){
 		    	   return true;
 		       }
-		       
+		       if(this.workState==WorkState.ReadyToLeave ){
+		    	   this.event=WaiterEvent.none;
+		    	   
+		    	   kill();
+		    	   return true;
+		       }
 		      /* if(!host.areAllTablesOccupied()){
 		    	   for(MyCustomer customer:customers)
 		    	   {if(customer.cstate==CustomerState.RestFull){
@@ -540,8 +547,18 @@ public void setCashier(GenericCashier cashier){
 	public void HereIsYourCheck(Customer c,double check){
 		
 		waiterGui.goToTable(c.getTable());
+		if(c.getTable()==1){
 		try {atTable.acquire();} 
 		catch (InterruptedException e) { e.printStackTrace();}
+		}
+		if(c.getTable()==2){
+			try {atTable2.acquire();} 
+			catch (InterruptedException e) { e.printStackTrace();}
+			}
+		if(c.getTable()==3){
+			try {atTable3.acquire();} 
+			catch (InterruptedException e) { e.printStackTrace();}
+			}
 		print(c.getName()+" here is your check");
 		c.msgReceivedCheck(check);
 		waiterGui.DoLeaveCustomer();

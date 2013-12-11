@@ -1,5 +1,7 @@
 package Person.Role;
 
+import trace.AlertLog;
+import trace.AlertTag;
 import building.BuildingList;
 import building.Workplace;
 
@@ -46,8 +48,6 @@ public abstract class Employee extends Role{
 		//BuildingList.findBuildingWithName(workLocation).addRole(this);
 	}
 	
-	
-	
 	@Override
 	public boolean pickAndExecuteAction() {
 		// TODO Auto-generated method stub
@@ -70,9 +70,12 @@ public abstract class Employee extends Role{
 	public void kill() {
 		// TODO Auto-generated method stub
 		super.kill();
+		AlertLog.getInstance().logError(AlertTag.PERSON, "Employee", "KILLED "+getNameOfRole());
 		Workplace w = (Workplace) BuildingList.findBuildingWithName(workLocation);
 		w.removeRole(this);
 		w.removeInhabitants();
+		roleState = RoleState.Inactive;
+		workState = WorkState.AtWork;
 	}
 
 	/**

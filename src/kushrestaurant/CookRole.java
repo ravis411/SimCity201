@@ -8,14 +8,16 @@ import java.util.*;
 
 import javax.swing.Timer;
 
+import building.BuildingList;
+import building.Market;
 import kushrestaurant.HostRole.Table;
-import kushrestaurant.MarketRole.Order2;
 import kushrestaurant.gui.CookGui;
 //import kushrestaurant.gui.RestaurantGui;
 import kushrestaurant.interfaces.Cook;
 import kushrestaurant.interfaces.Customer;
 import kushrestaurant.interfaces.Waiter;
 import MarketEmployee.MarketManagerRole;
+import Person.Role.RoleState;
 import Person.Role.ShiftTime;
 
 public class CookRole extends GenericCook implements Cook {
@@ -135,9 +137,7 @@ public class Food{
 
   
 //List<WaiterAgent> waiters;
-public void addMarket(MarketManagerRole mr){
-        marketManagers.add(mr);
-}
+
 public void MsgHereisTheOrder(Waiter w, Customer c, Table t, String choice){
         print("Received order from " +w.getName());
     orders.add(new Order(choice,w,t,c));
@@ -146,19 +146,24 @@ public void MsgHereisTheOrder(Waiter w, Customer c, Table t, String choice){
 }
 public void setGui(CookGui c){this.cookGui=c;}
 public void msgOrderFilled(int ingredientNum, int quantity){
+    switch(ingredientNum) {      
+    	case 0: foods.get("Steak").amount+= quantity;
+    	print("Received partial delivery from market have "+ quantity + " steak");
+    	case 1: foods.get("Chicken").amount+= quantity;
+    	print("Received partial delivery from market have "+ quantity + " chicken");
         
-        switch(ingredientNum){
-           case 0: inventory.get(0).amount+= quantity;
-           case 1: inventory.get(1).amount+= quantity;
-        }
-        cookState=state.free;
-        stateChanged();
+}
+    cookState=state.free;
+    stateChanged();
 }
 public void msgOrderPartiallyFilled(int ingredientNum,int quantity, int quanityOfOrderMarketDoesntHave){
-        switch(ingredientNum){
-           case 0: inventory.get(0).amount+= quantity;
-           case 1: inventory.get(1).amount+= quantity;
-        }
+	switch(ingredientNum) {      
+	case 0: foods.get("Steak").amount+= quantity;
+	print("Received partial delivery from market have "+ quantity + " steak");
+	case 1: foods.get("Chicken").amount+= quantity;
+	print("Received partial delivery from market have "+ quantity + " chicken");
+    
+}
         cookState= state.goinggroceryshopping;
         stateChanged();
 }
@@ -167,9 +172,9 @@ public void msgOrderNotFilled(int ingredientNum){
         stateChanged();
 }
 public void OrderFromMarket(){
-        
+		marketManagers.add((MarketManagerRole)((Market) BuildingList.findBuildingWithName("Market 1")).getManager());
         HashMap<String,Integer> order = new HashMap<String,Integer>();
-        if(count==2){count=0;}
+        if(count==1){count=0;}
         print("ordering from "+ marketManagers.get(count).getNameOfRole());
         
 
@@ -194,6 +199,11 @@ public boolean pickAndExecuteAction() {
         so that table is unoccupied and customer is waiting.
         If so seat him at the table.
          */
+	   if(this.workState==WorkState.ReadyToLeave && this.orders.size()==0){
+		   this.cookState= state.free;
+		   kill();
+		   return true;
+	   }
         if(cookState==state.goinggroceryshopping){
                 if(count<marketManagers.size()){
                 OrderFromMarket();
@@ -320,12 +330,6 @@ public RevolvingStand getRevolvingStand() {
 public void msgCantRestock() {
         // TODO Auto-generated method stub
         
-}
-
-@Override
-public void msgMarketReStock(Order2 o) {
-	// TODO Auto-generated method stub
-	
 }
 
 

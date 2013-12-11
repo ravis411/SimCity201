@@ -15,10 +15,8 @@ public abstract class GenericWaiter extends Employee{
 	public abstract void setHost(GenericHost h);
 	
 	public void deactivate(){
-		if(this.getPerson().getCurrentShift() == ShiftTime.NIGHT_SHIFT){
-			super.deactivate();
-			workState = WorkState.ReadyToLeave;
-		}
+		super.deactivate();
+		workState = WorkState.ReadyToLeave;
 	}
 	
 }

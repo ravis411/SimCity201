@@ -12,8 +12,10 @@ import Person.Role.Role;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 
 import kushrestaurant.CashierRole;
 import kushrestaurant.CookRole;
@@ -37,7 +39,7 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
     private Image bufferImage;
     private Dimension bufferSize;
 
-    private List<Gui> guis = new ArrayList<Gui>();
+    private Map<Role,Gui> guis = new HashMap<Role,Gui>();
 
     public AnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
@@ -45,18 +47,21 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
         
         bufferSize = this.getSize();
  
-    	Timer timer = new Timer(20, this );
+    	Timer timer = new Timer(5, this );
     	timer.start();
     }
 
 	public void actionPerformed(ActionEvent e) {
 		repaint(); 
 		
-		for(Gui gui : guis) {
+		for(Gui gui : guis.values()) {
             if (gui.isPresent()) {
                 gui.updatePosition();
             }
-        }//Will have paintComponent called
+            
+        }//Wil
+		this.clearRemovedGuis();
+		
 	}
 
     public void paintComponent(Graphics g) {
@@ -83,10 +88,11 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
 		g.drawString("PLATING AREA", GRILLX, GRILLY+65);
 
         
-        for(Gui gui : guis) {
+        for(Gui gui : guis.values()) {
             if (gui.isPresent()) {
                 gui.draw(g2);
             }
+            
         }
   
     }
@@ -97,16 +103,16 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
         g.setColor(Color.BLACK);
         g.drawString(s, x, y);
   }
-    public void addGui(CustomerGui gui) {
-        guis.add(gui);
-    }
-
-    public void addGui(WaiterGui gui) {
-        guis.add(gui);
-    }
-    public void addGui(CookGui gui){
-    	guis.add(gui);
-    }
+//    public void addGui(CustomerGui gui) {
+//        guis.add(gui);
+//    }
+//
+//    public void addGui(WaiterGui gui) {
+//        guis.add(gui);
+//    }
+//    public void addGui(CookGui gui){
+//    	guis.add(gui);
+//    }
 
     @Override
     public void addGuiForRole(Role r) {
@@ -114,7 +120,7 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
                     CookRole cr = (CookRole) r;
                     CookGui gui = new CookGui(cr);
                     cr.setGui(gui);
-                    guis.add(gui);
+                    guis.put(cr,gui);
                     //System.out.println("My person is: " + hr.myPerson.getName());
             }
             if(r instanceof CashierRole){
@@ -129,7 +135,7 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
                     CustomerGui gui = new CustomerGui(rcr);
                     rcr.setGui(gui);
                     AlertLog.getInstance().logMessage(AlertTag.RESTAURANT, "CustomerGui", "Assigning the Customer Gui ---------");
-                    guis.add(gui);
+                    guis.put(rcr,gui);
                     //System.out.println("My person is: " + hr.myPerson.getName());
             }
             
@@ -137,15 +143,24 @@ public class AnimationPanel extends JPanel implements ActionListener, GuiPanel {
                     WaiterRole owr = (WaiterRole) r;
                     WaiterGui gui = new WaiterGui(owr);
                     owr.setGui(gui);
-                    guis.add(gui);
+                    guis.put(owr,gui);
                     //System.out.println("My person is: " + hr.myPerson.getName());
             }
     }
 
-    @Override
-    public void removeGuiForRole(Role r) {
-            // TODO Auto-generated method stub
-            
-    }
+    private List<Role> removalList = new ArrayList<Role>();
+
+	private void clearRemovedGuis(){
+		for(int i = removalList.size()-1; i >= 0; i--){
+			guis.remove(removalList.get(i));
+			removalList.remove(i);
+		}
+	}
+	
+	@Override
+	public void removeGuiForRole(Role r) {
+		// TODO Auto-generated method stub
+		removalList.add(r);
+	}
 }
 
