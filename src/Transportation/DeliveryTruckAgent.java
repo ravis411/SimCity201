@@ -103,6 +103,7 @@ public class DeliveryTruckAgent extends Agent implements MarketDeliveryTruck{
 		agentGui.DoGoTo(dest);
 		AlertLog.getInstance().logMessage(AlertTag.VEHICLE_GUI, name, "Arrived at " + dest);
 		state = CarState.parked;
+		marketManager.atHome();
 	}
 	
 	
