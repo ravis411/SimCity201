@@ -619,17 +619,17 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		  String location = PickFoodLocation();
 		  GoToLocation("Food Court", transport);
 		  
-		  MyRole role = findRole(Role.RESTAURANT_MIKE_CUSTOMER_ROLE);
+		  MyRole role = findRole(Role.RESTAURANT_CUSTOMER_ROLE);
 		  if(role == null){
-			  role = new MyRole(RoleFactory.roleFromString(Role.RESTAURANT_MIKE_CUSTOMER_ROLE));
+			  role = new MyRole(RoleFactory.roleFromString(Role.RESTAURANT_CUSTOMER_ROLE));
 
 			  addRole(role);
 		  }
 		  GenericCustomer cust = (GenericCustomer) role.role;
 		  AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Customer Role = "+role);
-		  Restaurant resta =  (Restaurant) BuildingList.findBuildingWithName("Mike's Restaurant");
-		  BuildingList.findBuildingWithName("Mike's Restaurant").addRole(role.role);
-		  Building bdg =  BuildingList.findBuildingWithName("Mike's Restaurant");
+		  Restaurant resta =  (Restaurant) BuildingList.findBuildingWithName("Dylan's Restaurant");
+		  BuildingList.findBuildingWithName("Dylan's Restaurant").addRole(role.role);
+		  Building bdg =  BuildingList.findBuildingWithName("Dylan's Restaurant");
 		  if(bdg instanceof Restaurant){
 			  Restaurant rest = (Restaurant) bdg;
 			  try {
@@ -638,7 +638,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			  cust.setupCustomer("Mike's Restaurant");
+			  cust.setupCustomer("Dylan's Restaurant");
 
 			  cust.gotHungry();
 			  cust.activate();
