@@ -23,7 +23,6 @@ public class Bank extends Workplace {
 
 	@Override
 	public void open() {
-		isOpenSetter=true;
 	}
 
 	@Override
@@ -46,7 +45,6 @@ public class Bank extends Workplace {
 				this.panel.getPanel().removeGuiForRole(loanTeller);
 			}
 		}
-		isOpenSetter = false;
 	}
 
 	@Override
@@ -61,29 +59,48 @@ public class Bank extends Workplace {
 				}
 			}
 		}
-		
-		return hasTeller && hasLoanTeller;
-
+		return hasTeller || hasLoanTeller;
 	}
-	
-	@Override
-	public void notifyEmployeesTheyCanLeave() {
-		// TODO Auto-generated method stub
-		for(Role r : inhabitants){
-			if(r instanceof Employee){
-				r.deactivate();
+
+public void notifyEmployeesTheyCanLeave() {
+		
+		synchronized(inhabitants){
+			//List<Role> removalList = new ArrayList<Role>();
+			
+			for(Role r : inhabitants){
+				if(r instanceof BankClientRole){
+					BankClientRole bcr = (BankClientRole) r;
+					bcr.bankClosing();
+				}else if(r instanceof LoanTellerRole){
+					LoanTellerRole ltr = (LoanTellerRole) r;
+					ltr.bankClosing();
+				}else{
+					BankTellerRole btr = (BankTellerRole) r;
+					btr.bankClosing();
+				}
+				
+				if(r instanceof Employee){
+					Employee e = (Employee) r;
+					e.getPerson().msgYouCanLeave();
+					e.deactivate();
+					//removeRole(r);
+				}
 			}
+			ready = false;
+			//this.removeInhabitants();
 		}
+		
+		
+		
 	}
 
 	public NumberAnnouncer getAnnouncer() {
-		// TODO Auto-generated method stub
 		return ((BankAnimationPanel) this.panel.getPanel()).getAnnouncer();
 	}
-	
+
 	public LoanNumberAnnouncer getLoanAnnouncer(){
 		return ((BankAnimationPanel) this.panel.getPanel()).getLoanAnnouncer();
 	}
 
-	
+
 }

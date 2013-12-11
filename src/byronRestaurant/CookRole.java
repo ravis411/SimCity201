@@ -253,7 +253,6 @@ public class CookRole extends GenericCook {
 
 	@Override
 	public String getNameOfRole() {
-		// TODO Auto-generated method stub
 		return Role.RESTAURANT_BYRON_COOK_ROLE;
 	}
 	

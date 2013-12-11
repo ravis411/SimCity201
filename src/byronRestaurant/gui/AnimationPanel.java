@@ -136,22 +136,17 @@ public class AnimationPanel extends JPanel implements ActionListener,GuiPanel {
 	public void removeGuiForRole(Role r) {
 		if (r instanceof WaiterRole){
 		    WaiterRole waiterRole = (WaiterRole) r;
-//		    BankClientRoles.remove(waiterRole);
 		    guis.remove(waiterRole.getGui());
-			r.deactivate();
 		}
 		if (r instanceof CustomerRole){
 		    CustomerRole customerRole = (CustomerRole) r;
-//		    BankTellerRoles.remove(customerRole);
 			BuildingList.findBuildingWithName("Byron's Restaurant").removeRole(customerRole);
 		    guis.remove(customerRole.getGui());
-		    r.deactivate();
 		}
 		if (r instanceof CookRole){
 		    CookRole cookRole=(CookRole) r;
 			BuildingList.findBuildingWithName("Byron's Restaurant").removeRole(cookRole);
 		    guis.remove(cookRole.getGui());
-		    r.deactivate();
 		}
 		
 	}	

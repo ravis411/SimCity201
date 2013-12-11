@@ -120,24 +120,7 @@ public class Restaurant extends Workplace {
 
 	@Override
 	public void notifyEmployeesTheyCanLeave() {
-		// TODO Auto-generated method stub
-		
-		synchronized(inhabitants){
-			//List<Role> removalList = new ArrayList<Role>();
-			
-			for(Role r : inhabitants){
-				if(r instanceof Employee){
-					Employee e = (Employee) r;
-					e.getPerson().msgYouCanLeave();
-					e.deactivate();
-					//removeRole(r);
-				}
-			}
-			ready = false;
-			//this.removeInhabitants();
-		}
-		
-		
 		
 	}
+
 }

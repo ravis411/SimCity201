@@ -13,8 +13,8 @@ import java.util.*;
  */
 
 public class NumberAnnouncer extends Agent implements AnnouncerA{
-	List<BankClient> clients = new ArrayList<BankClient>();
-	List<BankTeller> tellers = new ArrayList<BankTeller>();
+	public List<BankClient> clients = new ArrayList<BankClient>();
+	public List<BankTeller> tellers = new ArrayList<BankTeller>();
 	Queue<BankTeller> openTeller = new ArrayDeque<BankTeller>();
 	private BankClient robber = null;
 	private int doneTeller;
@@ -133,7 +133,7 @@ public class NumberAnnouncer extends Agent implements AnnouncerA{
 	public String toString() {
 		return "Bank Teller  " + getName();
 	}
-
-
-
+	public int getNumClients(){
+		return clients.size();
+	}
 }

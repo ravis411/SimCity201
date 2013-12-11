@@ -25,12 +25,8 @@ public class TellerGui implements Gui {
 	private final static int yIntermediateEntrance = 180;
 	private final int xTellerDesk= 195;
 	private final int yTellerDesk= 180;
-//	private final static int xBreakRoom= 450;
-//	private final static int yBreakRoom= 10;
 	private int lane;
 	BankAnimationPanel gui;
-//	private int xcounter = 0;
-//	private int ycounter = 0;
 	public TellerGui(BankTellerRole tellerRole, BankAnimationPanel bankAnimationPanel, int laneNum) {
 		this.role = tellerRole;
 		lane = laneNum;
@@ -64,23 +60,6 @@ public class TellerGui implements Gui {
 				&& (xDestination == xTellerDesk + (100*(lane-1)) & (yDestination == yTellerDesk))) {
 			role.msgAtStation();
 		}
-		/*
-        if (xPos == xDestination && yPos == yDestination
-                        & (xDestination == xTable + 20 + ((tableNum-1)*60)) & (yDestination == yTable - 20)) {
-           agent.msgAtTable();
-        }
-        else if (((xDestination == xCookCord) && (yDestination == yCookCord))&& ((xCookCord == xPos) & (yCookCord == yPos) ))
-        {
-                agent.msgAtCook();
-        }
-        else if (((xDestination == xTellerDesk) && (yDestination == yTellerDesk))&& ((xTellerDesk == xPos) && (yTellerDesk == yPos) ))
-        {
-                agent.msgAtCook();
-        }
-        else if (((xDestination == xBankEntrance) && (yDestination == yBankEntrance))&& ((xBankEntrance == xPos) & (yBankEntrance == yPos) ))
-                {agent.msgAtEntrance();
-                 agent.msgWaiterReadytoSeat(true);}
-		 */
 	}
 
 	public void draw(Graphics2D g) {

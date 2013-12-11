@@ -8,13 +8,16 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
-import restaurant.CashierRole;
 import trace.AlertLog;
 import trace.AlertTag;
 import Person.Role.Employee;
 import Person.Role.Role;
 import Person.Role.ShiftTime;
+import Person.Role.Employee.WorkState;
 import bank.gui.TellerGui;
+import building.Bank;
+import building.BuildingList;
+import building.Restaurant;
 
 /**
  * 
@@ -78,6 +81,11 @@ public class BankTellerRole extends Employee implements BankTeller{
 		state = requestState.notBeingHelped;
 		stateChanged();
 	}
+	
+	public void deactivate(){
+		super.deactivate();
+		kill();
+	}
 
 	/**
 	 * message received by BankClient asking to open an account.
@@ -132,6 +140,12 @@ public class BankTellerRole extends Employee implements BankTeller{
 		if (!Restaurants.isEmpty()){
 			depositRestaurantMoney();
 			return true;
+		}
+		if(workState == WorkState.ReadyToLeave){
+			if(announcer.getNumClients() == 0){
+				kill();
+				return true;
+			}
 		}
 		if (locationState == location.closing){
 			Leaving();
@@ -270,6 +284,7 @@ public class BankTellerRole extends Employee implements BankTeller{
 
 	private void Leaving(){
 		announcer.msgGoodbye(this);
+		TakeANumberDispenser.INSTANCE.resetTicket();
 		doLeave();
 	}
 

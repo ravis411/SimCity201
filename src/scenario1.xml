@@ -83,5 +83,30 @@
 				<friend name="Person 10" />
 			</friends>
 		</person>
+				<person name="Person 10" home="House 1" location="Home" hasCar="false">
+			<friends>
+				<friend name="Person 1" />
+				<friend name="Person 4" />
+				<friend name="Person 6" />
+			</friends>
+		</person>
+				<person name="Person 11" job="bank.BankTellerRole" location="Bank"
+			shift="PM" home="Apartment 12">
+			<friends>
+				<friend name="Person 1" />
+				<friend name="Person 2" />
+				<friend name="Person 11" />
+			</friends>
+		</person>
+		<person name="Person 12" job="bank.LoanTellerRole" location="Bank"
+			shift="PM" home="Apartment 13">
+			<friends>
+				<friend name="Person 1" />
+				<friend name="Person 3" />
+				<friend name="Person 5" />
+				<friend name="Person 10" />
+			</friends>
+		</person>
+		
 	</people>
 </configuration>

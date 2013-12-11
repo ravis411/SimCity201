@@ -113,6 +113,11 @@ public class BankClientRole extends Role implements BankClient{
 		state2 = inLineState.waiting;
 		stateChanged();
 	}
+	
+	public void deactivate(){
+		super.deactivate();
+		kill();
+	}
 
 	/**
 	 * 

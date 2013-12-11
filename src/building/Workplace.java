@@ -56,7 +56,6 @@ public abstract class Workplace extends Building implements TimeListener{
 	 */
 	public abstract boolean isOpen();
 
-	public abstract void notifyEmployeesTheyCanLeave();
 
 	public void getReadyForWork(){
 		synchronized(inhabitants){
@@ -124,6 +123,26 @@ public abstract class Workplace extends Building implements TimeListener{
 		}
 	}
 
+	public void notifyEmployeesTheyCanLeave() {
+		
+		synchronized(inhabitants){
+			//List<Role> removalList = new ArrayList<Role>();
+			
+			for(Role r : inhabitants){
+				if(r instanceof Employee){
+					Employee e = (Employee) r;
+					e.getPerson().msgYouCanLeave();
+					e.deactivate();
+					//removeRole(r);
+				}
+			}
+			ready = false;
+			//this.removeInhabitants();
+		}
+		
+		
+		
+	}
 
 
 }
