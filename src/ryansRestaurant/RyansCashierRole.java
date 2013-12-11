@@ -315,7 +315,7 @@ public class RyansCashierRole extends GenericCashier implements RyansCashier {
 	@Override
 	public void kill() {
 		AlertLog.getInstance().logDebug(AlertTag.RYANS_RESTAURANT, getName(), "Killed called.");
-		super.kill();
+		//super.kill();
 	}
 
 	

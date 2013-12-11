@@ -25,7 +25,7 @@ public class BusStopBuilding extends BuildingGui {
 				image = imageI.getImage();
 			}
 		} catch (Exception e) {
-			AlertLog.getInstance().logWarning(AlertTag.BUS_STOP, "Bus Stop Building", "Error loading image.");
+			//AlertLog.getInstance().logWarning(AlertTag.BUS_STOP, "Bus Stop Building", "Error loading image.");
 		}
 	
 	

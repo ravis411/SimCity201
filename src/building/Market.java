@@ -46,6 +46,7 @@ public class Market extends  Workplace {
 		return hasManager && hasThreeEmployee;
 		}
 	
+
 	public MarketData getMarketData(){
 		return marketData;
 	}

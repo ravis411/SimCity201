@@ -84,7 +84,7 @@
 				<friend name="Person 10" />
 			</friends>
 		</person>
-		<person name="Person 8" job="MarketEmployee.MarketEmployeeRole" shift="AM"
+		<person name="Market 1 Employee 1" job="MarketEmployee.MarketEmployeeRole" shift="AM"
 			location="Market 1" home="Apartment 7">
 			<friends>
 				<friend name="Person 1" />
@@ -94,7 +94,17 @@
 				<friend name="Person 9" />
 			</friends>
 		</person>
-		<person name="Person 9" job="MarketEmployee.MarketEmployeeRole" shift="AM"
+		<person name="Market 1 Employee 2" job="MarketEmployee.MarketEmployeeRole" shift="AM"
+		    location="Market 1" home="Apartment 8">
+			<friends>
+				<friend name="Person 1" />
+				<friend name="Person 3" />
+				<friend name="Person 8" />
+				<friend name="Person 10" />
+				<friend name="Person 11" />
+			</friends>
+		</person>
+		<person name="Market 1 Employee 3" job="MarketEmployee.MarketEmployeeRole" shift="AM"
 		    location="Market 1" home="Apartment 8">
 			<friends>
 				<friend name="Person 1" />
@@ -299,5 +309,6 @@
 				<friend name="Person 10" />
 			</friends>
 		</person>
+
 	</people>
 </configuration>

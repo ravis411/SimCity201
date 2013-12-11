@@ -391,7 +391,7 @@ public class PersonGui implements Gui {
 	        	image = icon.getImage();
 	        	}
 			} catch (Exception e) {
-				AlertLog.getInstance().logWarning(AlertTag.PERSON_GUI, agent.toString(), "Image not found. Switching to test view.");
+		//		AlertLog.getInstance().logWarning(AlertTag.PERSON_GUI, agent.toString(), "Image not found. Switching to test view.");
 				testView = true;
 			}
 			

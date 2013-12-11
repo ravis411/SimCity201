@@ -199,6 +199,7 @@ public class PseudoPerson extends Agent implements Person{
 		return 0;
 	}
 
+
 	@Override
 	public ResidenceBuildingPanel getHome() {
 		// TODO Auto-generated method stub
@@ -222,7 +223,6 @@ public class PseudoPerson extends Agent implements Person{
 		// TODO Auto-generated method stub
 		
 	}
-
 
 	@Override
 	public void workIsOpen() {

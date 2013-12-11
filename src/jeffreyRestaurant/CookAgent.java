@@ -176,8 +176,8 @@ public class CookAgent extends GenericCook implements Cook{
 	public boolean pickAndExecuteAction() {
 		
 		if (orderStand.isEmtpy() && workState == WorkState.ReadyToLeave) {
-			kill();
-			return true;
+			//kill();
+			//return true;
 		}
 		
 		if (orders != null) {

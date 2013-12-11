@@ -62,6 +62,7 @@ public class DrunkPersonAgent extends Agent{
 		}
 		if(state == AgentState.dead){
 			TeleportToDestination(defaultStartLocation);
+			state = AgentState.none;
 			return true;
 		}
 		
@@ -83,15 +84,16 @@ public class DrunkPersonAgent extends Agent{
 	private void TeleportToDestination(String destination){
 		agentGui.setCurrentLocation(destination);
 		defaultStartLocation = destination;
-		state = AgentState.none;
+		//state = AgentState.none;
 	}
 	
 	private void DoGoTo(String destination){
+		defaultStartLocation = destination;
 		agentGui.DoGoTo(destination);
 		if(this.destination.equals(destination)){
 			goTo = false;
 			destination = null;
-			defaultStartLocation = destination;
+			TeleportToDestination(destination);
 		}
 	}
 	
