@@ -84,7 +84,7 @@
 				<friend name="Person 10" />
 			</friends>
 		</person>
-		<person name="Person 8" job="MarketEmployee.MarketEmployeeRole"
+		<person name="Person 8" job="MarketEmployee.MarketEmployeeRole" shift="AM"
 			location="Market 1" home="Apartment 7">
 			<friends>
 				<friend name="Person 1" />
@@ -197,7 +197,7 @@
 				<friend name="Person 11" />
 			</friends>
 		</person>
-		<person name="Person 22" job="restaurant.luca.LucaHostRole"
+		<person name="Person 22" job="restaurant.luca.LucaHostRole" shift="AM"
 			location="Luca's Restaurant" home="Apartment 2">
 			<friends>
 				<friend name="Person 1" />
@@ -205,7 +205,7 @@
 				<friend name="Person 9" />
 			</friends>
 		</person>
-		<person name="Person 23" job="restaurant.luca.LucaCashierRole"
+		<person name="Person 23" job="restaurant.luca.LucaCashierRole" shift="AM"
 			location="Luca's Restaurant" home="Apartment 3">
 			<friends>
 				<friend name="Person 1" />
@@ -214,7 +214,7 @@
 				<friend name="Person 10" />
 			</friends>
 		</person>
-		<person name="Person 24" job="restaurant.luca.LucaCookRole"
+		<person name="Person 24" job="restaurant.luca.LucaCookRole" shift="AM"
 			location="Luca's Restaurant" home="Apartment 4">
 			<friends>
 				<friend name="Person 1" />
@@ -223,7 +223,7 @@
 				<friend name="Person 10" />
 			</friends>
 		</person>
-		<person name="Person 25" job="restaurant.luca.LucaWaiterRole"
+		<person name="Person 25" job="restaurant.luca.LucaNewWaiterRole" shift="AM"
 			location="Luca's Restaurant" home="Apartment 5">
 			<friends>
 				<friend name="Person 1" />
@@ -339,6 +339,16 @@
 				<friend name="Person 1" />
 				<friend name="Person 3" />
 				<friend name="Person 4" />
+			</friends>
+		</person>
+				<person name="Person 69" job="MarketEmployee.MarketEmployeeRole" shift="AM"
+		    location="Market 1" home="Apartment 8">
+			<friends>
+				<friend name="Person 1" />
+				<friend name="Person 3" />
+				<friend name="Person 8" />
+				<friend name="Person 10" />
+				<friend name="Person 11" />
 			</friends>
 		</person>
 	</people>
