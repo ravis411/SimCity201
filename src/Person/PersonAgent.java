@@ -700,7 +700,13 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		Building bdg = BuildingList.findBuildingWithName(r.getWorkLocation());
 		if(BuildingList.findBuildingWithName(r.getWorkLocation()) instanceof Workplace ){
 			Workplace w = (Workplace) bdg;
-			GoToLocation(r.getWorkLocation(), getTransportPreference());
+			if(getName().equals("Market 1 Manager")){
+				myCar = null;
+				GoToLocation(r.getWorkLocation(), "BUS");
+			}else{
+				GoToLocation(r.getWorkLocation(), getTransportPreference());
+			}
+			
 			w.addRole(r);
 			if(!w.isOpen()){
 				pendingJobs.add(r);
@@ -856,7 +862,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			modeOfTransportation = Preferences.CAR;
 		}
 		AlertLog.getInstance().logMessage(AlertTag.PERSON, getName(), "Going to "+location+" via + "+modeOfTransportation);
-		
+
 		switch(modeOfTransportation){
 			case Preferences.BUS:
 				String startStop = gui.DoGoToClosestBusStop();

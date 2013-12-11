@@ -181,26 +181,16 @@ public class MarketManagerRole extends Employee implements MarketManager{
 			BringDeliveryTruckOrder();
 			return true;
 		}
-			//	if (state == none)
-			//	{
-			//		giveOrderToMarketEmployee(Order order);
-			//		break;
-			//	}
-			//}
-		/*
-			for all orders in MyOrder
-			{
-				if (order state == none)
-				{
-					giveOrderToMarketEmployee(Order order);
-					break;
-				}
-				if (order state == Processed)
-				shipAndOrNotifyCustomerOfOrderProblems(Order order);
-				{
-			}
-	
-*/
+			
+		
+		if (marketData.anyPendingOrders())
+		{
+			myOrders.add(new Order(marketData.getLastOrder().getChoice(),marketData.getLastOrder().getAmount(),orderNum++,marketData.getLastOrder().getCook()));
+			return true;
+		}
+		
+		
+		
 		}
 		return false;
 		//we have tried all our rules and found

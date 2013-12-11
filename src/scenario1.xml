@@ -76,7 +76,7 @@
 				<friend name="Person 11" />
 			</friends>
 		</person>
-		<person name="Person 7" job="MarketEmployee.MarketManagerRole" shift="AM"
+		<person name="Market 1 Manager" job="MarketEmployee.MarketManagerRole" shift="AM"
 		    location="Market 1" home="Apartment 6">
 			<friends>
 				<friend name="Person 1" />
