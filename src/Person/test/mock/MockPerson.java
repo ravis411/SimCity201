@@ -1,16 +1,17 @@
 package Person.test.mock;
 
+import gui.Building.ResidenceBuildingPanel;
+import interfaces.Person;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import building.Building;
-import gui.Building.ResidenceBuildingPanel;
-import interfaces.Person;
 import Person.PersonAgent;
 import Person.Role.Role;
-import Transportation.test.mock.Mock;
+import Person.Role.ShiftTime;
 import Transportation.test.mock.LoggedEvent;
+import Transportation.test.mock.Mock;
 
 public class MockPerson extends Mock implements Person {
 	
@@ -155,12 +156,6 @@ public class MockPerson extends Mock implements Person {
 	}
 
 	@Override
-	public void setInitialRole(Role roleFromString, String string) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void msgYouCanLeave() {
 		// TODO Auto-generated method stub
 		
@@ -168,6 +163,25 @@ public class MockPerson extends Mock implements Person {
 
 	@Override
 	public void dateAction(int month, int day, int hour, int minute) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deactivateCurrentRole() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void workIsOpen() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setInitialRole(Role roleFromString, String string,
+			ShiftTime shift) {
 		// TODO Auto-generated method stub
 		
 	}
