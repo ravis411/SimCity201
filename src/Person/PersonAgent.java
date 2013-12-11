@@ -175,19 +175,22 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			hr.activate();
 //		}
 			
-			if( !(r instanceof Employee) || shift == ShiftTime.NIGHT_SHIFT) {
+			if( !(r == null) || shift == ShiftTime.NIGHT_SHIFT) {
 				Random rand = new Random();
 				switch(Math.abs(rand.nextInt() % 6)){
 				case 0:
 					this.msgGoToMarket("Chicken");
+					System.err.println("MARKET");
 					break;
 				case 1:
 					this.msgINeedMoney(40.00);
+					System.err.println("NEEDS MONEY");
 					break;
 				case 2:
 				case 3:
 				case 4:
 				case 5:
+					System.err.println("HUNGRY");
 					this.msgImHungry();
 					break;
 				}
@@ -207,6 +210,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 			if(r instanceof Employee){
 				Employee e = (Employee) r;
 				//if the role is a shared role, make sure we are adding the same one and not a repeat
+				System.out.println(e.getWorkLocation()+" "+getName());
 				if(r instanceof GenericHost){
 					Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(e.getWorkLocation());
 					//if the hostrole exists, add that role
@@ -1252,7 +1256,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	
 	public void setGui(PersonGui gui){
 		this.gui = gui;
-		
+		stateChanged();
 		Timer hungerTimer = new Timer(5000, new ActionListener(){
 
 			@Override

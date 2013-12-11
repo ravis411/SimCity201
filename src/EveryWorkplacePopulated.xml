@@ -400,7 +400,7 @@
 				</friends>
 		</person>
 		<person name="Person 49" job="mikeRestaurant.OldWaiterRole" shift="PM"
-			    location="Home" home="Apartment 46">
+			    location="Mike's Restaurant" home="Apartment 46">
 				<friends>
 					<friend name="Person 1" />
 				    <friend name="Person 2" />
@@ -408,7 +408,7 @@
 				</friends>
 		</person>
 		<person name="Person 50" job="mikeRestaurant.HostRole" shift="PM"
-			    location="Home" home="Apartment 47">
+			    location="Mike's Restaurant" home="Apartment 47">
 				<friends>
 					<friend name="Person 1" />
 				    <friend name="Person 2" />
@@ -416,7 +416,7 @@
 				</friends>
 		</person>
 		<person name="Person 51" job="mikeRestaurant.CookRole" shift="PM"
-			    location="Home" home="Apartment 48">
+			    location="Mike's Restaurant" home="Apartment 48">
 				<friends>
 					<friend name="Person 1" />
 				    <friend name="Person 2" />
@@ -424,7 +424,7 @@
 				</friends>
 		</person>
 		<person name="Person 52" job="mikeRestaurant.CashierRole" shift="PM"
-			    location="Home" home="Apartment 49">
+			    location="Mike's Restaurant" home="Apartment 49">
 				<friends>
 					<friend name="Person 1" />
 				    <friend name="Person 2" />
