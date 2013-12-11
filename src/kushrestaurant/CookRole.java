@@ -154,9 +154,9 @@ public void msgOrderFilled(int ingredientNum, int quantity){
 
     switch(ingredientNum) {      
     	case 0: foods.get("Steak").amount+= quantity;
-    	print("Received partial delivery from market have "+ quantity + " steak");
+    	print("Received complete delivery from market have "+ quantity + " steak");
     	case 1: foods.get("Chicken").amount+= quantity;
-    	print("Received partial delivery from market have "+ quantity + " chicken");
+    	print("Received complete delivery from market have "+ quantity + " chicken");
         
 }
     cookState=state.free;
