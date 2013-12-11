@@ -1,6 +1,10 @@
 package market.test;
 
+import gui.BuildingsPanels;
+import gui.CityAnimationPanel;
+import gui.SetUpWorldFactory;
 import gui.SimCity201Gui;
+import gui.SimCityLayout;
 import interfaces.Person;
 import junit.framework.TestCase;
 import market.data.MarketData;
@@ -25,7 +29,9 @@ public class MarketCustomerTest extends TestCase
 	MarketCustomerRole customer;
 	MockMarketEmployee employee;
 	Person customerPerson;
-
+	SimCityLayout layout = null;// <-This holds the grid information
+	CityAnimationPanel cityPanel = null;//<-AnimationPanel draws the layout and the GUIs
+	BuildingsPanels buildingsPanels = null;//<-Zoomed in view of buildings
 	
 	/**
 	 * This method is run before each test. You can use it to instantiate the class variables
@@ -35,7 +41,11 @@ public class MarketCustomerTest extends TestCase
 
 		super.setUp();		
 		
-		
+		layout = SetUpWorldFactory.layout;
+		cityPanel = SetUpWorldFactory.cityPanel;
+		buildingsPanels = SetUpWorldFactory.buildingsPanels;
+		SetUpWorldFactory factory = new SetUpWorldFactory();
+		factory.loadXMLFile("/scenario2.xml");
 		customer = new MarketCustomerRole("Market 1");
 		employee = new MockMarketEmployee("CARrrl");
 		customerPerson= new MockPerson("fd");

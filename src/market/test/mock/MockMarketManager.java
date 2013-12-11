@@ -68,6 +68,12 @@ public class MockMarketManager extends Mock implements MarketManager {
 		
 	}
 
+	@Override
+	public void atHome() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 
