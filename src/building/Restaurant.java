@@ -122,7 +122,6 @@ public class Restaurant extends Workplace {
 	public void notifyEmployeesTheyCanLeave() {
 		// TODO Auto-generated method stub
 		
-		
 		synchronized(inhabitants){
 			//List<Role> removalList = new ArrayList<Role>();
 			
@@ -134,7 +133,7 @@ public class Restaurant extends Workplace {
 					//removeRole(r);
 				}
 			}
-			
+			ready = false;
 			//this.removeInhabitants();
 		}
 		
