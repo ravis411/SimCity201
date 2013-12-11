@@ -82,10 +82,10 @@ public class BankTellerRole extends Employee implements BankTeller{
 		stateChanged();
 	}
 	
-	public void deactivate(){
-		super.deactivate();
-		kill();
-	}
+//	public void deactivate(){
+//		super.deactivate();
+//		kill();
+//	}
 
 	/**
 	 * message received by BankClient asking to open an account.
@@ -138,14 +138,8 @@ public class BankTellerRole extends Employee implements BankTeller{
 	public boolean pickAndExecuteAction() {
 		Accounts = Database.INSTANCE.sendDatabase();
 		if (!Restaurants.isEmpty()){
-			depositRestaurantMoney();
+//			depositRestaurantMoney();
 			return true;
-		}
-		if(workState == WorkState.ReadyToLeave){
-			if(announcer.getNumClients() == 0){
-				kill();
-				return true;
-			}
 		}
 		if (locationState == location.closing){
 			Leaving();
@@ -171,6 +165,10 @@ public class BankTellerRole extends Employee implements BankTeller{
 		}
 		if (locationState == location.entrance){
 			goToStation();
+			return true;
+		}
+		if (workState == WorkState.ReadyToLeave){
+			kill();
 			return true;
 		}
 		return false;
