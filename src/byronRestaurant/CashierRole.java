@@ -4,7 +4,6 @@ package byronRestaurant;
 import MarketEmployee.MarketManagerRole;
 import Person.Role.Role;
 import Person.Role.ShiftTime;
-import Person.Role.Employee.WorkState;
 import interfaces.generic_interfaces.GenericCashier;
 
 import java.util.*;
@@ -23,6 +22,7 @@ public class CashierRole extends GenericCashier {
 	HostRole h;
 	String name;
 	public enum checkState {created, requested};
+	private boolean sentBankCheck = false;
 	private double register = 10000;
 	Map<String, Double> menu = new HashMap<String, Double>();{
 		menu.put("Steak", 15.99);	
@@ -107,6 +107,7 @@ public class CashierRole extends GenericCashier {
 	public void msgReceivedDeposit(double transactionAmount) {
 		AlertLog.getInstance().logMessage(AlertTag.BYRONS_RESTAURANT, myPerson.getName(),"Getting confirmation from bank.");
 		register = register - transactionAmount;
+		sentBankCheck = false;
 		stateChanged();
 	}
 	
@@ -117,7 +118,7 @@ public class CashierRole extends GenericCashier {
 				close();
 				return true;
 			}
-			if(workState == WorkState.ReadyToLeave){
+			if(workState == WorkState.ReadyToLeave && sentBankCheck == false){
 				Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(workLocation);
 				if(rest.getNumCustomers() == 0){
 					sendMoneyToBank();
@@ -135,6 +136,7 @@ public class CashierRole extends GenericCashier {
 				}
 			}
 		}
+		
 		synchronized(PendingOrders){
 			for (WaiterCheck w : PendingOrders){
 				if (w.state == checkState.requested){
@@ -186,6 +188,7 @@ public class CashierRole extends GenericCashier {
 			}
 		}
 		teller.msgRestaurantDeposit(this, register);
+		sentBankCheck = true;
 	}
 
 	//Utilities
