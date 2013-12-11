@@ -32,9 +32,9 @@ public class CustomerGui implements Gui{
 
 	public CustomerGui(CustomerRole c, int i){ 
 		agent = c;
-		xPos = 40 + (10*i);
+		xPos = 40 + (15*i);
 		yPos = 20;
-		xDestination = 40 + (10*i);
+		xDestination = 40 + (15*i);
 		yDestination = 20;
 		//maitreD = m;
 		width = 20;
