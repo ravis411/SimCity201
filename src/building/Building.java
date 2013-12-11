@@ -70,7 +70,9 @@ public class Building {
 		for(int i = removalList.size()-1; i >= 0; i--){
 			inhabitants.remove(removalList.get(i));
 			this.panel.getPanel().removeGuiForRole(removalList.get(i));
-			removalList.remove(i);
+			if(i <= (removalList.size()-1)) {
+				removalList.remove(i);
+			}
 		}
 	}
 	

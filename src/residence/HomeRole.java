@@ -474,6 +474,7 @@ public class HomeRole extends Role implements Home {
 	private void sendOutInvites() {
 		if(myPerson.getFriends().size() == 0) {
 			AlertLog.getInstance().logMessage(AlertTag.HOME_ROLE, myPerson.getName(), "I have no friends to invite to a party.");
+			partyState = PartyState.setUp;
 		}
 		else {
 			rsvpDate.set(MasterTime.getInstance().get(Calendar.YEAR), MasterTime.getInstance().get(Calendar.MONTH), MasterTime.getInstance().get(Calendar.DAY_OF_MONTH), MasterTime.getInstance().get(Calendar.HOUR_OF_DAY), MasterTime.getInstance().get(Calendar.MINUTE), MasterTime.getInstance().get(Calendar.SECOND)); 
