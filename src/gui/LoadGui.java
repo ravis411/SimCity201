@@ -102,6 +102,7 @@ public class LoadGui extends JFrame implements ActionListener{
 		buttonList.add(new JButton("Scenario 2"));
 		buttonList.add(new JButton("Scenario 3"));
 		buttonList.add(new JButton("Scenario 4"));
+		buttonList.add(new JButton("/ryansTest.xml"));
 		
 		
 		
@@ -227,18 +228,12 @@ public class LoadGui extends JFrame implements ActionListener{
 				try {
 					number = Integer.parseInt(lastDigs);
 					SimCity201Gui gui = new SimCity201Gui("/scenario" + number +".xml");
-					
 					return;
 				} catch (NumberFormatException e1) {}
 			}
+			
+			SimCity201Gui gui = new SimCity201Gui(b.getText());
 		}
-		
-		SimCity201Gui gui;
-		try {
-		//	gui = new SimCity201Gui(loadThisConfig);
-		} catch (Exception e1) {}
-		
-		gui = new SimCity201Gui("/scenario1.xml");
 		this.setVisible(false);
 	}
 	

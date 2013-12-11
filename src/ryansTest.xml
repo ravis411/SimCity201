@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <configuration>
     <building-config>
-        <building id="1" type="Residence" name="House 1"/>
+        <building id="11" type="Residence" name="House 1"/>
         <building id="2" type="Residence" name="House 2"/>
         <building id="3" type="Market" name="Market 1"/>
         <building id="4" type="Apartment" name="Apartment Building"/>
@@ -11,7 +11,7 @@
         <building id="8" type="Restaurant" name="Restaurant 1"/>
         <building id="9" type="Apartment" name="Apartment Building 2"/>
         <building id="10" type="Default" name="Default"/>
-        <building id="11" type="Food Court" name="Food Court"/>
+        <building id="1" type="Food Court" name="Food Court"/>
         <building id="12" type="Default" name="Default 1"/>
     </building-config>
 	<people>
@@ -41,7 +41,7 @@
 				<friend name="Person 6" />
 			</friends>
 		</person>
-		<person name="Person 3" job="ryansRestaurant.RyansHostRole" shift="AM"
+		<person name="Ryans Host" job="ryansRestaurant.RyansHostRole" shift="AM"
 		    location="Ryan's Restaurant" home="Apartment 2">
 			<friends>
 				<friend name="Person 1" />
@@ -49,7 +49,7 @@
 				<friend name="Person 9" />
 			</friends>
 		</person>
-		<person name="Person 4" job="ryansRestaurant.RyansCashierRole" shift="AM"
+		<person name="Ryan's Cashier" job="ryansRestaurant.RyansCashierRole" shift="AM"
 		    location="Ryan's Restaurant" home="Apartment 3">
 
 			<friends>
@@ -59,7 +59,7 @@
 				<friend name="Person 10" />
 			</friends>
 		</person>
-		<person name="Person 5" job="ryansRestaurant.RyansCookRole"
+		<person name="Ryans Cook" job="ryansRestaurant.RyansCookRole" shift="AM"
 			location="Ryan's Restaurant" home="Apartment 4">
 			<friends>
 				<friend name="Person 1" />
@@ -68,7 +68,7 @@
 				<friend name="Person 10" />
 			</friends>
 		</person>
-		<person name="Person 6" job="ryansRestaurant.RyansOldWaiterRole"
+		<person name="RyansOldWaiter" job="ryansRestaurant.RyansOldWaiterRole" shift="AM"
 			location="Ryan's Restaurant" home="Apartment 5">
 			<friends>
 				<friend name="Person 1" />
@@ -84,7 +84,7 @@
 				<friend name="Person 10" />
 			</friends>
 		</person>
-		<person name="Person 8" job="MarketEmployee.MarketEmployeeRole" shift="AM"
+		<person name="Person 8" job="MarketEmployee.MarketEmployeeRole"
 			location="Market 1" home="Apartment 7">
 			<friends>
 				<friend name="Person 1" />
@@ -197,7 +197,7 @@
 				<friend name="Person 11" />
 			</friends>
 		</person>
-		<person name="Person 22" job="restaurant.luca.LucaHostRole" shift="AM"
+		<person name="Person 22" job="restaurant.luca.LucaHostRole"
 			location="Luca's Restaurant" home="Apartment 2">
 			<friends>
 				<friend name="Person 1" />
@@ -205,7 +205,7 @@
 				<friend name="Person 9" />
 			</friends>
 		</person>
-		<person name="Person 23" job="restaurant.luca.LucaCashierRole" shift="AM"
+		<person name="Person 23" job="restaurant.luca.LucaCashierRole"
 			location="Luca's Restaurant" home="Apartment 3">
 			<friends>
 				<friend name="Person 1" />
@@ -214,7 +214,7 @@
 				<friend name="Person 10" />
 			</friends>
 		</person>
-		<person name="Person 24" job="restaurant.luca.LucaCookRole" shift="AM"
+		<person name="Person 24" job="restaurant.luca.LucaCookRole"
 			location="Luca's Restaurant" home="Apartment 4">
 			<friends>
 				<friend name="Person 1" />
@@ -223,7 +223,7 @@
 				<friend name="Person 10" />
 			</friends>
 		</person>
-		<person name="Person 25" job="restaurant.luca.LucaNewWaiterRole" shift="AM"
+		<person name="Person 25" job="restaurant.luca.LucaWaiterRole"
 			location="Luca's Restaurant" home="Apartment 5">
 			<friends>
 				<friend name="Person 1" />
@@ -339,16 +339,6 @@
 				<friend name="Person 1" />
 				<friend name="Person 3" />
 				<friend name="Person 4" />
-			</friends>
-		</person>
-				<person name="Person 69" job="MarketEmployee.MarketEmployeeRole" shift="AM"
-		    location="Market 1" home="Apartment 8">
-			<friends>
-				<friend name="Person 1" />
-				<friend name="Person 3" />
-				<friend name="Person 8" />
-				<friend name="Person 10" />
-				<friend name="Person 11" />
 			</friends>
 		</person>
 	</people>

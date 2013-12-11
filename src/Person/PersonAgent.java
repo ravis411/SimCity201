@@ -69,7 +69,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 	private double loanAmount;
 	
 	public List<MyRole> roles;
-	public List<PersonAgent> friends;
+	public List<Person> friends;
 	
 	private CarAgent myCar;
 	
@@ -238,7 +238,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		money = STARTING_MONEY;
 		moneyNeeded = 0;
 		loanAmount = 0;
-		friends = new ArrayList<PersonAgent>();
+		friends = new ArrayList<Person>();
 		roles = new ArrayList<MyRole>();
 		hungerLevel = 0;
 		state=PersonState.GettingFood;
@@ -246,7 +246,9 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		prefs = new Preferences();
 		this.home = home;
 		
-		this.myCar = new CarAgent(this, name+" car", home.getName());
+		if(home != null) {
+			this.myCar = new CarAgent(this, name+" car", home.getName());
+		}
 		
 		backpack = new ArrayList<Item>();
 		itemsNeeded = new ArrayDeque<Item>();
@@ -507,7 +509,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		if(parties.size()!=0){
 			for(Party p:parties){
 				if(p.partyState==PartyState.NeedsResponseUrgently){
-					for(PersonAgent pa:friends){
+					for(Person pa:friends){
 						if(pa==p.getHost()){
 							rsvpYes(pa,p);	
 						}
@@ -522,7 +524,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		if(parties.size()!=0){
 			for(Party p:parties){
 				if(p.partyState==PartyState.ReceivedInvite){
-					for(PersonAgent pa :friends){
+					for(Person pa :friends){
 						if(pa==p.getHost()){
 							int i= new Random().nextInt(40);
 							if(i%2==0){
@@ -628,17 +630,21 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		  String location = PickFoodLocation();
 		  GoToLocation("Food Court", transport);
 		  
-		  MyRole role = findRole(Role.RESTAURANT_MIKE_CUSTOMER_ROLE);
+
+		  MyRole role = findRole(Role.RESTAURANT_CUSTOMER_ROLE);
 		  if(role == null){
-			  role = new MyRole(RoleFactory.roleFromString(Role.RESTAURANT_MIKE_CUSTOMER_ROLE));
+			  role = new MyRole(RoleFactory.roleFromString(Role.RESTAURANT_CUSTOMER_ROLE));
+
 
 			  addRole(role);
 		  }
 		  GenericCustomer cust = (GenericCustomer) role.role;
 		  AlertLog.getInstance().logMessage(AlertTag.PERSON, "Person", "Customer Role = "+role);
-		  Restaurant resta =  (Restaurant) BuildingList.findBuildingWithName("Mike's Restaurant");
-		  BuildingList.findBuildingWithName("Mike's Restaurant").addRole(role.role);
-		  Building bdg =  BuildingList.findBuildingWithName("Mike's Restaurant");
+
+		  Restaurant resta =  (Restaurant) BuildingList.findBuildingWithName("Dylan's Restaurant");
+		  BuildingList.findBuildingWithName("Dylan's Restaurant").addRole(role.role);
+		  Building bdg =  BuildingList.findBuildingWithName("Dylan's Restaurant");
+
 		  if(bdg instanceof Restaurant){
 			  Restaurant rest = (Restaurant) bdg;
 			  try {
@@ -647,7 +653,9 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			  cust.setupCustomer("Mike's Restaurant");
+
+			  cust.setupCustomer("Dylan's Restaurant");
+
 
 			  cust.gotHungry();
 			  cust.activate();
@@ -682,14 +690,14 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		  hgr.activate();
 	}
 	
-	private void rsvpYes(PersonAgent pa, Party p){
+	private void rsvpYes(Person pa, Party p){
 		p.partyState=PartyState.GoingToParty;
 		pa.msgIAmComing(this);
 		MasterTime.getInstance().registerDateListener(p.dateOfParty.get(Calendar.MONTH), p.dateOfParty.get(Calendar.DAY_OF_MONTH), p.dateOfParty.get(Calendar.HOUR_OF_DAY), p.dateOfParty.get(Calendar.MINUTE), this);
 		
 	}
 	
-	private void rsvpNo(PersonAgent pa, Party p){
+	private void rsvpNo(Person pa, Party p){
 		pa.msgIAmNotComing(this);
 		p.partyState=PartyState.NotGoingToParty;
 	}
@@ -1194,7 +1202,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		return getName();
 	}
 
-	public List<PersonAgent> getFriends() {
+	public List<Person> getFriends() {
 		return friends;
 	}
 	public ResidenceBuildingPanel getHome(){

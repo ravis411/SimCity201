@@ -1,5 +1,7 @@
 package jeffreyRestaurant;
 
+import Person.Role.Role;
+
 public class NewWaiterAgent extends WaiterAgent {
 
 	public NewWaiterAgent(String location) {
@@ -20,6 +22,11 @@ public class NewWaiterAgent extends WaiterAgent {
 		mc.s = CustomerState.Ordered;
 		hostGui.DoLeaveCustomer();
 
+	}
+	
+	@Override
+	public String getNameOfRole() {
+		return Role.RESTAURANT_JEFFREY_NEW_WAITER_ROLE;
 	}
 
 }

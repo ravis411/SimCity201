@@ -166,6 +166,9 @@ public class WaiterGui implements Gui {
     	}
     	
     	try{
+    	xPos = xDestination = -20;
+    	yPos = yDestination = -20;
+    		
     	move(entrance.getX(), entrance.getY());
     	
     	if(restLayout.addWaiterGui(this)) {
@@ -181,6 +184,41 @@ public class WaiterGui implements Gui {
     	}
     	
     }
+    
+    /** 
+     * Will have the waiter leave the restaurant.
+     */
+    public void doLeaveWork() {
+		Position exit = new Position(restLayout.numxGridPositions - 1, 4);
+		
+		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, agent.getName() + " GUI", " Do Leave work called in waiter GUI");
+		try {
+			guiMoveFromCurrentPostionTo(exit);
+		} catch (Exception e) {AlertLog.getInstance().logError(AlertTag.RYANS_RESTAURANT, agent.getName() + " GUI", "Exception caught while trying to leave.");}
+		currentPosition.release(aStar.getGrid());
+		restLayout.removeGui(this);
+		aStarState = ASTARSTATE.moving;
+		xDestination = 825;
+		yDestination = 25;
+		try {
+			aSem.acquire();
+		} catch (InterruptedException e) {	}
+		
+		
+		currentCustomer = null;
+		currentPosition = null;
+		homeCoordinates = null;
+		homePosition = null;
+		xPos = xDestination = -25;
+		yPos = yDestination = -25;
+		
+		state = AgentState.none;
+		AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, agent.getName() + " GUI", " Finished Leaving Restaurant");
+	}
+    
+    
+    
+    
 
     public void DoBringToTable(RyansCustomerRole customer, int seatnumber) throws Exception {
        
@@ -465,6 +503,8 @@ public class WaiterGui implements Gui {
     public int getYPos() {
         return yPos;
     }
+
+	
 
 	
 }
