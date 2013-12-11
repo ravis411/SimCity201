@@ -132,7 +132,7 @@ public class RyansRestaurantAnimationPanel extends JPanel implements MouseListen
         bufferSize = this.getSize();
         this.setBackground(Color.BLACK);
  
-    	Timer timer = new Timer(10, this );
+    	Timer timer = new Timer(5, this );
     	timer.start();
     }
     

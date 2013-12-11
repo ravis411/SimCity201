@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
 import ryansRestaurant.gui.WaiterGui;
@@ -496,7 +497,19 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 		activity = "Leaving Work";
 		waiterGui.doLeaveWork();
 		host.msgRemoveWaiter(this);
+		timer.schedule(new TimerTask() {
+			
+			@Override
+			public void run() {
+				host.msgWakeUp();
+				cook.msgWakeUp();
+				cashier.msgWakeUp();
+			}
+		}, 5000);
+		
+		super.deactivate();
 		super.kill();
+		
 	}
 	
 	
@@ -626,6 +639,11 @@ public abstract class RyansWaiterRole extends GenericWaiter implements RyansWait
 	@Override
 	public boolean canGoGetFood() {
 		return false;
+	}
+	
+	@Override
+	public void deactivate() {
+		kill();
 	}
 	
 	@Override

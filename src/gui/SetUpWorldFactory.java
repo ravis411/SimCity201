@@ -92,7 +92,7 @@ public class SetUpWorldFactory{
         
         
         
-        SetUpWorldFactory() {
+        public SetUpWorldFactory() {
         }
 
         /** Loads the default configuration

@@ -20,6 +20,10 @@ import java.util.concurrent.Semaphore;
 
 
 
+
+
+import building.BuildingList;
+import building.Restaurant;
 import ryansRestaurant.RyansMarketRole.MarketOrder;
 import ryansRestaurant.gui.CookGui;
 import ryansRestaurant.interfaces.RyansCashier;
@@ -27,6 +31,7 @@ import trace.AlertLog;
 import trace.AlertTag;
 import Person.Role.Role;
 import Person.Role.ShiftTime;
+import Person.Role.Employee.WorkState;
 
 /**
  * Restaurant Cook Agent
@@ -130,6 +135,11 @@ public class RyansCookRole extends GenericCook{
 	}
 
 	// Messages
+	
+	
+	public void msgWakeUp(){
+		stateChanged();
+	}
 
 	public void msgHereIsOrder(RyansWaiterRole waiter, String choice, int tableNumber) {
 		orders.add(new Order(waiter, choice, tableNumber));
@@ -181,6 +191,19 @@ public class RyansCookRole extends GenericCook{
 	 */
 	public boolean pickAndExecuteAction() {
 		try {
+			
+			
+			if(workState == WorkState.ReadyToLeave){
+				Restaurant rest = (Restaurant) BuildingList.findBuildingWithName(workLocation);
+				if(rest.getNumCustomers() == 0){
+					kill();
+					AlertLog.getInstance().logMessage(AlertTag.RYANS_RESTAURANT, getName(), "Leaving Work.");
+					return true;
+				}
+			}
+			
+			
+			
 			if(newInventory) {
 				updateMenu();
 				return true;
@@ -599,7 +622,12 @@ public class RyansCookRole extends GenericCook{
 		return Role.RESTAURANT_RYAN_COOK_ROLE;
 	}
 
-
+	@Override
+	public void deactivate() {
+			super.deactivate();	
+			workState = WorkState.ReadyToLeave;
+	}
+	
 	@Override
 	public void kill() {
 		// TODO Auto-generated method stub

@@ -310,7 +310,7 @@ public class CustomerAgent extends GenericCustomer implements Customer{
 		event = AgentEvent.doneLeaving;
 		//stateChanged();
 		customerGui.DoExitRestaurant();
-		deactivate();
+		kill();
 	}
 
 	// Accessors, etc.

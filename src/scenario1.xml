@@ -15,7 +15,6 @@
 		<building id="12" type="Default" name="Default 1" />
 	</building-config>
 	<people>
-<<<<<<< HEAD
 	    <person name="Mike's Waiter" job="mikeRestaurant.OldWaiterRole" shift="AM"
 		    location="Mike's Restaurant" home="Apartment 5">
 			<friends>
@@ -233,9 +232,6 @@
 			</friends>
 		</person>
 		<person name="Person 26" job="byronRestaurant.HostRole"
-=======
-		<person name="Person 1" job="byronRestaurant.HostRole" shift="AM"
->>>>>>> develop
 			location="Byron's Restaurant" home="Apartment 1">
 			<friends>
 				<friend name="Person 1" />
