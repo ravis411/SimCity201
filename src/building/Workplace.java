@@ -24,7 +24,6 @@ public abstract class Workplace extends Building implements TimeListener{
 	@Override
 	public void timeAction(int hour, int minute) {
 		// TODO Auto-generated method stub
-
 		this.notifyEmployeesTheyCanLeave();
 	}
 

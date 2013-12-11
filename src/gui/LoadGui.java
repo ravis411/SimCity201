@@ -98,7 +98,7 @@ public class LoadGui extends JFrame implements ActionListener{
 		Dimension size = new Dimension(paneSize.width, paneSize.height/8);
 		
 		
-		buttonList.add(new JButton("Scenario 1"));
+		buttonList.add(new JButton("/EveryWorkplacePopulated.xml"));
 		buttonList.add(new JButton("Scenario 2"));
 		buttonList.add(new JButton("Scenario 3"));
 		buttonList.add(new JButton("Scenario 4"));
