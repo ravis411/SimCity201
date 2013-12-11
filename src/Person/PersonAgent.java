@@ -242,7 +242,7 @@ public class PersonAgent extends Agent implements Person, TimeListener, DateList
 		friends = new ArrayList<Person>();
 		roles = new ArrayList<MyRole>();
 		hungerLevel = 0;
-		state=PersonState.GettingFood;
+		state=PersonState.Idle;
 		parties = new ArrayList<Party>();
 		prefs = new Preferences();
 		this.home = home;
