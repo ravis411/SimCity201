@@ -46,15 +46,6 @@ public class Market extends  Workplace {
 		return hasManager && hasThreeEmployee;
 		}
 	
-	@Override
-	public void notifyEmployeesTheyCanLeave() {
-		// TODO Auto-generated method stub
-		for(Role r : inhabitants){
-			if(r instanceof Employee){
-				r.deactivate();
-			}
-		}
-	}
 	public MarketData getMarketData(){
 		return marketData;
 	}

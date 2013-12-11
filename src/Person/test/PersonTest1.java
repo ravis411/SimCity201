@@ -3,8 +3,8 @@ package Person.test;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import trace.AlertLog;
 import Person.PersonAgent;
+import Person.PersonAgent.MyRole;
 import Person.test.mock.MockRole;
 
 public class PersonTest1 extends TestCase {
@@ -36,20 +36,20 @@ public class PersonTest1 extends TestCase {
 		
 		//-------------------ELEMENTARY PRECONDITIONS-----------------//
 		
-		assertEquals("Person should initially have no roles, it doesn't.", 0, person.roles.size());
+		assertEquals("Person should initially have one role --. the home role, it doesn't.", 1, person.roles.size());
 		assertFalse("Role agent should not have been activated", role.isActive());
 		assertFalse("The person scheduler should perform no action and return false, it doesn't.", person.pickAndExecuteAnAction());		
 		//add a role to the person
-		person.addRole(role);
-		assertEquals("Person should now have 1 roles, it doesn't.", 1, person.roles.size());
+		person.addRole(new MyRole(role));
+		assertEquals("Person should now have 2 roles, it doesn't.", 2, person.roles.size());
 		assertFalse("The person scheduler now has a role, but should still return false because it isn't activated.", person.pickAndExecuteAnAction());		
 		//activate the role
 		role.activate();
 		assertTrue("Role should be activated, it isn't.", role.isActive());
 		assertTrue("Run the Person scheduler, which should enter the Role scheduler, and return true", person.pickAndExecuteAnAction());
 		
-		role.deactivate();
-		assertFalse("Role will be deactivated, it wasn't.", role.isActive());
+		role.kill();
+		assertFalse("Role as killed, it wasn't.", role.isActive());
 		//running the scheduler another time will return false again
 		assertFalse("The person scheduler now has a role, but should still return false because it isn't activated.", person.pickAndExecuteAnAction());	
 		//assertTrue("Log should contain a message \"Role Scheduler Called\", but it doesn't.", role.log.)
